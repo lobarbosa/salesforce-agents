@@ -1,14 +1,15 @@
 """Ferramentas custom (MCP in-process) usadas pelos agentes especialistas Salesforce.
 
 Duas famílias de ferramentas:
-  - spec_*: leitura/normalização de specs de clientes (md, pdf, docx) em texto plano.
+  - spec_read: leitura de anexos de uma demanda (md, pdf, docx) em texto plano. A
+    própria demanda (demandas/<ID>/demanda.md) é lida com a ferramenta Read padrão;
+    isso serve para documentos complementares referenciados na demanda.
   - sf_*: wrapper fino sobre a Salesforce CLI (`sf`) para orgs autenticados por alias
     (um alias por cliente, ver clients/<nome>/README.md).
 """
 
 from __future__ import annotations
 
-import json
 import subprocess
 from pathlib import Path
 
@@ -21,7 +22,7 @@ def _text_result(text: str) -> dict:
 
 @tool(
     "spec_read",
-    "Lê um arquivo de spec de cliente (.md, .pdf ou .docx) e retorna o texto extraído.",
+    "Lê um arquivo anexo de uma demanda (.md, .pdf ou .docx) e retorna o texto extraído.",
     {"path": str},
 )
 async def spec_read(args: dict) -> dict:

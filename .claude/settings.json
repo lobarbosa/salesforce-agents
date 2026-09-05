@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sf org list*)",
+      "Bash(sf org display*)",
+      "Bash(sf sobject list*)",
+      "Bash(sf sobject describe*)",
+      "Bash(sf project retrieve*)",
+      "Bash(sf project deploy start*--dry-run*)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git checkout -b*)",
+      "Bash(git add*)",
+      "Bash(git commit*)"
+    ],
+    "ask": [
+      "Bash(sf project deploy start*)",
+      "Bash(sf apex run*)",
+      "Bash(sf data*)",
+      "Bash(git push*)"
+    ],
+    "deny": [
+      "Bash(sf org delete*)",
+      "Bash(git push --force*)",
+      "Bash(git merge*)",
+      "Read(./force-app/**/*.key)",
+      "Read(./.env)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          { "type": "command", "command": ".claude/hooks/guard-prod.sh" }
+        ]
+      }
+    ]
+  }
+}

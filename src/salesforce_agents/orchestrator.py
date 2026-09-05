@@ -1,4 +1,10 @@
-"""Orquestrador: lê a spec de um cliente e delega para os agentes especialistas."""
+"""Orquestrador: aciona os agentes de .claude/agents para uma demanda de cliente.
+
+Os agentes, skills, hooks e guardrails vivem no scaffold do projeto (.claude/ na raiz
+do repo + CLAUDE.md em cada nível), carregados automaticamente pelo Claude Agent SDK
+via setting_sources=["project"]. Este módulo só decide quando disparar uma sessão e
+em qual workspace de cliente.
+"""
 
 from __future__ import annotations
 
@@ -11,57 +17,35 @@ from claude_agent_sdk import (
     TextBlock,
 )
 
-from .agents import SPECIALISTS
 from .tools import salesforce_tools_server
 
-ORCHESTRATOR_SYSTEM_PROMPT = """\
-Você orquestra a implementação de uma solução Salesforce para um cliente, a
-partir de uma spec de requisitos. Seu workspace é clients/<client>/.
-
-Fluxo obrigatório:
-1. Leia a spec inteira (ferramenta spec_read) antes de qualquer implementação.
-2. Delegue ao subagente 'solution-architect' para obter o plano de
-   implementação (data model, declarativo vs. código, riscos).
-3. Execute o plano delegando cada parte ao especialista certo:
-   'declarative-builder' para Flow/config, 'apex-developer' para Apex,
-   'lwc-developer' para Lightning Web Components.
-4. Ao final, resuma o que foi implementado, o que ficou pendente e, se
-   deploy foi solicitado, o resultado do 'sf_deploy'.
-
-Nunca invente metadata que não foi pedido na spec. Se a spec for ambígua,
-registre a suposição feita e siga em frente — não pare o fluxo esperando
-resposta humana.
-"""
+ALLOWED_TOOLS = [
+    "Read", "Write", "Edit", "Grep", "Glob", "Bash", "Task",
+    "mcp__salesforce-tools__spec_read",
+    "mcp__salesforce-tools__sf_deploy",
+    "mcp__salesforce-tools__sf_retrieve",
+    "mcp__salesforce-tools__sf_query",
+    "mcp__salesforce-tools__sf_org_list",
+]
 
 
-async def run(spec_path: str, client: str, deploy: bool = False) -> None:
+async def run(client: str, demand_id: str) -> None:
     workspace = f"clients/{client}"
-    deploy_note = (
-        f"Ao final, faça deploy via sf_deploy para o org de alias '{client}' "
-        f"(target_org='{client}')." if deploy
-        else "Não faça deploy — apenas gere os arquivos de metadata localmente."
-    )
 
     options = ClaudeAgentOptions(
-        system_prompt=ORCHESTRATOR_SYSTEM_PROMPT,
         cwd=workspace,
+        setting_sources=["project"],
         mcp_servers={"salesforce-tools": salesforce_tools_server},
-        agents=SPECIALISTS,
-        allowed_tools=[
-            "Read", "Write", "Edit", "Grep", "Glob", "Task",
-            "mcp__salesforce-tools__spec_read",
-            "mcp__salesforce-tools__sf_deploy",
-            "mcp__salesforce-tools__sf_retrieve",
-            "mcp__salesforce-tools__sf_query",
-            "mcp__salesforce-tools__sf_org_list",
-        ],
+        allowed_tools=ALLOWED_TOOLS,
         permission_mode="acceptEdits",
     )
 
     prompt = (
-        f"Implemente a spec do cliente '{client}' localizada em '{spec_path}' "
-        f"(caminho absoluto ou relativo ao diretório atual, não a {workspace}). "
-        f"{deploy_note}"
+        f"Continue o ciclo de delivery da demanda {demand_id} do cliente {client}. "
+        f"A história está em demandas/{demand_id}/demanda.md e o estágio atual em "
+        f"demandas/{demand_id}/status.yaml. Siga o fluxo canônico descrito em CLAUDE.md "
+        f"a partir do estágio atual, acionando o subagente correspondente via Task, e "
+        f"pare no próximo gate humano."
     )
 
     async with ClaudeSDKClient(options=options) as client_sdk:
@@ -75,5 +59,5 @@ async def run(spec_path: str, client: str, deploy: bool = False) -> None:
                 print(f"\n--- concluído (custo: ${message.total_cost_usd:.4f}) ---")
 
 
-def run_sync(spec_path: str, client: str, deploy: bool = False) -> None:
-    anyio.run(run, spec_path, client, deploy)
+def run_sync(client: str, demand_id: str) -> None:
+    anyio.run(run, client, demand_id)

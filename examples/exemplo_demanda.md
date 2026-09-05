@@ -1,5 +1,3 @@
-# Spec de exemplo — Cliente Acme
-
 ## Contexto
 A Acme usa Sales Cloud e quer melhorar o processo de qualificação de Leads.
 
