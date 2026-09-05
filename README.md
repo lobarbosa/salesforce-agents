@@ -31,6 +31,11 @@ Cada cliente tem seu próprio projeto Salesforce DX isolado em
 `clients/<nome-do-cliente>/`, com seu próprio `CLAUDE.md` de briefing de conta ("Conhecimento
 do Cliente" — veja `clients/README.md` e o template em `clients/_template/CLAUDE.md`).
 
+**Squad OS** — um front-end publicado (artifact) onde a demanda nasce e o briefing de
+cada cliente é editado por quem não mexe em terminal. Hoje a ponte para este repositório
+é manual (leia a demanda no OS, rode `sfagents demanda nova` com o mesmo texto); ver
+`docs/conexoes-e-setup.md` para o runbook completo de conexões e credenciais.
+
 ## Setup
 
 ```bash
