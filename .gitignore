@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.env
+.DS_Store
+
+# Per-client Salesforce DX projects are real deliverables; only ignore local auth/log noise
+clients/*/.sfdx/
+clients/*/.sf/
+clients/*/logs/

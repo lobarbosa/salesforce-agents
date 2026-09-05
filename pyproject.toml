@@ -1,0 +1,23 @@
+[project]
+name = "salesforce-agents"
+version = "0.1.0"
+description = "Agentes especialistas Salesforce que leem specs de clientes e implementam soluções declarativas ou em código."
+requires-python = ">=3.10"
+dependencies = [
+    "claude-agent-sdk>=0.1.0",
+    "click>=8.1",
+    "pydantic>=2.6",
+    "pypdf>=4.0",
+    "python-docx>=1.1",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+sfagents = "salesforce_agents.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
