@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { Client } from "@/lib/generated/prisma/client";
+import type { CurrentUsuario } from "@/lib/current-user";
 import { createClient as createSupabaseClient } from "@/lib/supabase/client";
 
 function hueFor(name: string) {
@@ -12,13 +13,13 @@ function hueFor(name: string) {
   return h;
 }
 
-export function Sidebar({
-  clients,
-  userEmail,
-}: {
-  clients: Client[];
-  userEmail: string | null;
-}) {
+const ROLE_LABEL: Record<CurrentUsuario["role"], string> = {
+  admin: "admin",
+  consultor: "consultor",
+  cliente: "cliente",
+};
+
+export function Sidebar({ clients, usuario }: { clients: Client[]; usuario: CurrentUsuario }) {
   const pathname = usePathname();
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -27,6 +28,7 @@ export function Sidebar({
   const [segmento, setSegmento] = useState("");
   const [saving, setSaving] = useState(false);
 
+  const podeGerenciarClientes = usuario.role !== "cliente";
   const filtered = clients.filter((c) => c.nome.toLowerCase().includes(query.toLowerCase()));
   const activeClientId = pathname?.startsWith("/clients/") ? pathname.split("/")[2] : null;
 
@@ -57,6 +59,33 @@ export function Sidebar({
     router.refresh();
   }
 
+  // role=cliente: sidebar mínima — sem lista de outros clientes, sem busca,
+  // sem criar cliente, sem Visão Geral (o proxy já nem deixa navegar pra lá).
+  if (!podeGerenciarClientes) {
+    const meuCliente = clients[0];
+    return (
+      <aside className="sidebar">
+        <div className="brand">
+          <div className="name">Squad OS</div>
+          <div className="sub">{meuCliente?.nome ?? "seu espaço"}</div>
+        </div>
+        <div style={{ padding: "0.6rem 1.1rem", marginTop: "auto", borderTop: "1px solid var(--border)" }}>
+          <div className="save-note" style={{ marginBottom: "0.35rem" }}>
+            {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
+          </div>
+          <button
+            className="btn-ghost"
+            type="button"
+            onClick={handleSignOut}
+            style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+          >
+            Sair
+          </button>
+        </div>
+      </aside>
+    );
+  }
+
   return (
     <aside className="sidebar">
       <div className="brand">
@@ -64,10 +93,16 @@ export function Sidebar({
         <div className="sub">gestão de demandas Salesforce</div>
       </div>
 
-      <Link href="/" className={`nav-item${!activeClientId ? " active" : ""}`}>
+      <Link href="/" className={`nav-item${!activeClientId && pathname === "/" ? " active" : ""}`}>
         <span className="icon" />
         Visão Geral
       </Link>
+      {usuario.role === "admin" && (
+        <Link href="/admin/usuarios" className={`nav-item${pathname?.startsWith("/admin") ? " active" : ""}`}>
+          <span className="icon" />
+          Administração
+        </Link>
+      )}
       <hr />
 
       <div className="search">
@@ -127,14 +162,19 @@ export function Sidebar({
         )}
       </div>
 
-      {userEmail && (
-        <div style={{ padding: "0.6rem 1.1rem", borderTop: "1px solid var(--border)" }}>
-          <div className="save-note" style={{ marginBottom: "0.35rem" }}>{userEmail}</div>
-          <button className="btn-ghost" type="button" onClick={handleSignOut} style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}>
-            Sair
-          </button>
+      <div style={{ padding: "0.6rem 1.1rem", borderTop: "1px solid var(--border)" }}>
+        <div className="save-note" style={{ marginBottom: "0.35rem" }}>
+          {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
         </div>
-      )}
+        <button
+          className="btn-ghost"
+          type="button"
+          onClick={handleSignOut}
+          style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+        >
+          Sair
+        </button>
+      </div>
     </aside>
   );
 }

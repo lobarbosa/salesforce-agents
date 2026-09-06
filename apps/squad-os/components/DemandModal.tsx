@@ -6,7 +6,15 @@ import type { Demanda } from "@/lib/generated/prisma/client";
 import { Modal } from "@/components/Modal";
 import { asPerguntas, asAprovacao, timeAgo } from "@/lib/demandas";
 
-export function DemandModal({ demanda, onClose }: { demanda: Demanda; onClose: () => void }) {
+export function DemandModal({
+  demanda,
+  canManage,
+  onClose,
+}: {
+  demanda: Demanda;
+  canManage: boolean;
+  onClose: () => void;
+}) {
   const router = useRouter();
   const perguntasIniciais = asPerguntas(demanda.perguntas);
   const aprovacao = asAprovacao(demanda.aprovacao);
@@ -147,7 +155,7 @@ export function DemandModal({ demanda, onClose }: { demanda: Demanda; onClose: (
         </>
       )}
 
-      {demanda.status === "backlog" && (
+      {canManage && demanda.status === "backlog" && (
         <div className="approval-banner pendente">
           {materializeErro && <div style={{ marginBottom: "0.4rem" }}>{materializeErro}</div>}
           {demanda.materializadoEm

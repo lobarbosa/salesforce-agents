@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 
 const ERROR_MESSAGES: Record<string, string> = {
   not_allowed:
-    "Esse e-mail não está na lista de acesso do Squad OS. Peça pra alguém do time te adicionar.",
+    "Esse e-mail ainda não tem acesso ao Squad OS. Peça pra um admin te conceder acesso em Administração.",
   auth_failed: "O link expirou ou já foi usado. Peça um novo abaixo.",
 };
 

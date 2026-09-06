@@ -1,15 +1,24 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { materializeDemanda, triggerRunDemand } from "@/lib/github";
+import { getCurrentUsuario } from "@/lib/current-user";
+import { canManageClientData } from "@/lib/auth";
 
 // Materializa a demanda em clients/<slug>/demandas/<code>/ neste repo e
 // dispara run-demand.yml. Chamado a partir do card (ver componentes/DemandModal)
 // quando a demanda sai da triagem — não roda sozinho na criação, porque nem
-// toda demanda criada vai virar execução imediatamente.
+// toda demanda criada vai virar execução imediatamente. Só admin/consultor:
+// disparar o pipeline de agentes contra a sandbox é decisão operacional, não
+// algo que o cliente final aciona sozinho.
 export async function POST(
   _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const usuario = await getCurrentUsuario();
+  if (!usuario || !canManageClientData(usuario.role)) {
+    return NextResponse.json({ error: "sem permissão" }, { status: 403 });
+  }
+
   const { id } = await params;
   const demanda = await prisma.demanda.findUnique({ where: { id }, include: { client: true } });
   if (!demanda) {

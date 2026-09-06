@@ -1,10 +1,19 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateUniqueSlug } from "@/lib/slug";
+import { getCurrentUsuario } from "@/lib/current-user";
+import { canManageClientData } from "@/lib/auth";
 
-// Auth já é garantida pelo proxy.ts (sessão Supabase + allowlist) pra toda
-// rota fora de /login e /auth/callback — inclusive /api/**.
+// Auth (sessão Supabase + Usuario autorizado) já é garantida pelo proxy.ts
+// pra toda rota fora de /login e /auth/callback — inclusive /api/**. O que
+// falta checar aqui é autorização por papel: só admin/consultor criam
+// cliente (tenant) novo, nunca role=cliente.
 export async function POST(request: NextRequest) {
+  const usuario = await getCurrentUsuario();
+  if (!usuario || !canManageClientData(usuario.role)) {
+    return NextResponse.json({ error: "sem permissão" }, { status: 403 });
+  }
+
   const body = await request.json();
   const nome = String(body.nome ?? "").trim();
   if (!nome) {

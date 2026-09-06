@@ -22,6 +22,12 @@ enum TipoDemanda {
   sustentacao
 }
 
+enum Role {
+  admin
+  consultor
+  cliente
+}
+
 enum StatusDemanda {
   // triagem
   backlog
@@ -71,8 +77,33 @@ model Client {
   testeSolicitadoEm  DateTime?      @map("teste_solicitado_em")
 
   demandas Demanda[]
+  usuarios Usuario[]
 
   @@map("clients")
+}
+
+// Quem pode entrar no Squad OS e com que escopo — substitui a allowlist por
+// domínio/lista de e-mail (ADMIN_BOOTSTRAP_EMAILS continua existindo só pra
+// destravar o primeiro admin, ver lib/auth.ts). Login em si continua sendo
+// magic link do Supabase Auth pra qualquer e-mail; esta tabela é quem decide
+// se esse e-mail tem autorização, com que papel, e (pra role=cliente) de
+// qual cliente — não existe fluxo de convite por e-mail próprio: o admin
+// concede acesso aqui, a pessoa só faz login normalmente depois.
+model Usuario {
+  id       String  @id @default(cuid())
+  email    String  @unique
+  nome     String  @default("")
+  role     Role
+  // Obrigatório (em código, não em constraint) quando role = cliente;
+  // null pra admin/consultor, que não são escopados a um cliente.
+  clientId String? @map("client_id")
+  client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  criadoEm     DateTime @default(now()) @map("criado_em")
+  concedidoPor String?  @map("concedido_por")
+
+  @@map("usuarios")
+  @@index([clientId])
 }
 
 model Demanda {

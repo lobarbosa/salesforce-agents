@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Client, Demanda } from "@/lib/generated/prisma/client";
+import type { CurrentUsuario } from "@/lib/current-user";
 import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
 import { DemandasTab } from "@/components/DemandasTab";
@@ -11,15 +12,32 @@ type Tab = "conhecimento" | "conexao" | "demandas";
 export function ClientDetail({
   client,
   demandas,
+  usuario,
   initialTab,
   openDemandId,
 }: {
   client: Client;
   demandas: Demanda[];
+  usuario: CurrentUsuario;
   initialTab?: Tab;
   openDemandId?: string;
 }) {
-  const [tab, setTab] = useState<Tab>(initialTab ?? (openDemandId ? "demandas" : "conhecimento"));
+  const podeGerenciarClientes = usuario.role !== "cliente";
+  const [tab, setTab] = useState<Tab>(podeGerenciarClientes ? initialTab ?? (openDemandId ? "demandas" : "conhecimento") : "demandas");
+
+  // role=cliente só vê Demandas — Conhecimento/Conexão são dados internos de
+  // delivery (avaliação da conta, credenciais de org), não algo que o
+  // cliente final edita ou precisa ver.
+  if (!podeGerenciarClientes) {
+    return (
+      <>
+        <div className="client-header">
+          <h1>{client.nome}</h1>
+        </div>
+        <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} canManage={false} />
+      </>
+    );
+  }
 
   return (
     <>
@@ -51,7 +69,9 @@ export function ClientDetail({
 
       {tab === "conhecimento" && <ConhecimentoTab client={client} />}
       {tab === "conexao" && <ConexaoTab client={client} />}
-      {tab === "demandas" && <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} />}
+      {tab === "demandas" && (
+        <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} canManage />
+      )}
     </>
   );
 }

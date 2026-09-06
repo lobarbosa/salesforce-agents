@@ -1,13 +1,23 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { generateDemandCode } from "@/lib/slug";
+import { getCurrentUsuario } from "@/lib/current-user";
+import { canAccessClient } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
+  const usuario = await getCurrentUsuario();
+  if (!usuario) {
+    return NextResponse.json({ error: "sem permissão" }, { status: 403 });
+  }
+
   const body = await request.json();
   const clientId = String(body.clientId ?? "");
   const titulo = String(body.titulo ?? "").trim();
   if (!clientId || !titulo) {
     return NextResponse.json({ error: "clientId e titulo são obrigatórios" }, { status: 400 });
+  }
+  if (!canAccessClient(usuario.role, usuario.clientId, clientId)) {
+    return NextResponse.json({ error: "sem permissão" }, { status: 403 });
   }
 
   const client = await prisma.client.findUnique({ where: { id: clientId } });

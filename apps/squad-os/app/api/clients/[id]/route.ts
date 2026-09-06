@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { getCurrentUsuario } from "@/lib/current-user";
+import { canManageClientData } from "@/lib/auth";
 
 // Campos editáveis por PATCH — um por vez, no mesmo padrão de autosave-on-blur
 // da versão anterior. Nunca inclui statusConexao/testeSolicitado* (esses só
@@ -24,6 +26,11 @@ export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const usuario = await getCurrentUsuario();
+  if (!usuario || !canManageClientData(usuario.role)) {
+    return NextResponse.json({ error: "sem permissão" }, { status: 403 });
+  }
+
   const { id } = await params;
   const body = await request.json();
 

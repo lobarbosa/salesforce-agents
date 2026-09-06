@@ -25,11 +25,13 @@ function ApprovalBadge({ demanda }: { demanda: Demanda }) {
 export function DemandCard({
   demanda,
   triageColumn,
+  canMove,
   onOpen,
   onMove,
 }: {
   demanda: Demanda;
   triageColumn: boolean;
+  canMove?: boolean;
   onOpen: () => void;
   onMove?: (status: string) => void;
 }) {
@@ -58,7 +60,7 @@ export function DemandCard({
         <span>{demanda.autor}</span>
         <span>{timeAgo(demanda.criadoEm)}</span>
       </div>
-      {triageColumn ? (
+      {triageColumn && canMove ? (
         <select
           className="move"
           value={demanda.status}
@@ -74,6 +76,8 @@ export function DemandCard({
             </option>
           ))}
         </select>
+      ) : triageColumn ? (
+        <span className="readonly-note">{TRIAGE_LABEL[demanda.status] ?? demanda.status}</span>
       ) : (
         <span className="readonly-note">avança via sfagents</span>
       )}

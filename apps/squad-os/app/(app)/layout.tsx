@@ -1,5 +1,5 @@
-import { getClients } from "@/lib/data";
-import { createClient } from "@/lib/supabase/server";
+import { getClients, getClientById } from "@/lib/data";
+import { getCurrentUsuario } from "@/lib/current-user";
 import { Sidebar } from "@/components/Sidebar";
 
 // Toda página aqui lê direto do Postgres (sem fetch(), então o Next não
@@ -8,14 +8,27 @@ import { Sidebar } from "@/components/Sidebar";
 export const dynamic = "force-dynamic";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
-  const [clients, supabase] = await Promise.all([getClients(), createClient()]);
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const usuario = await getCurrentUsuario();
+  // proxy.ts já garante um Usuario válido pra chegar aqui — null só numa
+  // execução fora do proxy (ex.: teste isolado); trata como deslogado.
+  if (!usuario) {
+    return (
+      <div className="shell">
+        <main>{children}</main>
+      </div>
+    );
+  }
+
+  // role=cliente não precisa (e não deve) ver a lista dos outros clientes —
+  // só o próprio, pra exibir o nome na sidebar.
+  const clients =
+    usuario.role === "cliente"
+      ? await getClientById(usuario.clientId ?? "").then((c) => (c ? [c] : []))
+      : await getClients();
 
   return (
     <div className="shell">
-      <Sidebar clients={clients} userEmail={user?.email ?? null} />
+      <Sidebar clients={clients} usuario={usuario} />
       <main>{children}</main>
     </div>
   );

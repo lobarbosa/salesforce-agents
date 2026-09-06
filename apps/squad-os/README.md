@@ -11,11 +11,17 @@ o consultor responde perguntas/aprova gates sem precisar de ninguém no meio.
 - **Next.js 16** (App Router) na Vercel.
 - **Postgres via Supabase** — schema em `prisma/schema.prisma`. Prisma 7 usa
   driver adapters em vez de `url` no datasource (ver `lib/prisma.ts`).
-- **Supabase Auth** (magic link) — só o time interno loga; allowlist por
-  `ALLOWED_EMAIL_DOMAIN`/`ALLOWED_EMAILS` (`lib/auth.ts`), aplicada em todo
-  request por `proxy.ts` (Next.js 16 renomeou `middleware.ts` → `proxy.ts`,
-  mesma função — ver `node_modules/next/dist/docs/.../proxy.md` se for mexer
-  nisso, a API mudou de nome mas o resto é igual ao que você já conhece).
+- **Supabase Auth** (magic link) + **acesso por papel** (`Usuario` em
+  `prisma/schema.prisma`): `admin` (gerencia acesso, tela `/admin/usuarios`),
+  `consultor` (time interno, vê todos os clientes) e `cliente` (só o próprio
+  cliente, só a aba Demandas — sem editar briefing/conexão, sem disparar
+  agentes). Quem pode logar não é mais allowlist por domínio de e-mail; é
+  essa tabela. `proxy.ts` resolve sessão + papel numa passada só e injeta o
+  resultado como headers `x-squad-os-*` pro resto do app ler (`lib/current-user.ts`)
+  sem repetir a consulta — Next.js 16 renomeou `middleware.ts` → `proxy.ts` e
+  passou a rodar em runtime Node.js por padrão (por isso dá pra usar Prisma
+  ali direto; ver `node_modules/next/dist/docs/.../proxy.md` se for mexer
+  nisso). `ADMIN_BOOTSTRAP_EMAILS` só existe pra destravar o primeiro admin.
 - **Ponte de materialização** (`lib/github.ts`) — o pedaço que antes era
   manual (ver `docs/conexoes-e-setup.md` §3 passo 7 na raiz do repo): ao
   clicar "Materializar e disparar agentes" numa demanda, o app commita
@@ -57,11 +63,15 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
 2. Copie `.env.example` pra `.env.local` e preencha — `DATABASE_URL` vem de
    **Project Settings → Database → Connection string** (use a pooler
    "Transaction", porta 6543); `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` vêm de
-   **Project Settings → API**.
+   **Project Settings → API**; `ADMIN_BOOTSTRAP_EMAILS` com o(s) seu(s)
+   e-mail(s), pra conseguir logar a primeira vez.
 3. `npm install`
 4. `npx prisma migrate dev --name init` — cria as tabelas no Supabase a
-   partir de `prisma/schema.prisma`.
+   partir de `prisma/schema.prisma` (inclui `usuarios`).
 5. `npm run dev` — http://localhost:3000, deve redirecionar pra `/login`.
+   Peça o link com um e-mail de `ADMIN_BOOTSTRAP_EMAILS`; a partir daí, use
+   `/admin/usuarios` pra conceder acesso a consultores e a cada cliente
+   (papel `cliente` + qual cliente).
 6. Gere um GitHub PAT fine-grained (Contents:write + Actions:write, escopo só
    neste repositório) pra `GITHUB_TOKEN`, se for testar a materialização.
 

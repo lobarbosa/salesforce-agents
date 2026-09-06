@@ -12,10 +12,12 @@ export function DemandasTab({
   client,
   demandas,
   openDemandId,
+  canManage,
 }: {
   client: Client;
   demandas: Demanda[];
   openDemandId?: string;
+  canManage: boolean;
 }) {
   const router = useRouter();
   const [newOpen, setNewOpen] = useState(false);
@@ -62,6 +64,7 @@ export function DemandasTab({
                     key={d.id}
                     demanda={d}
                     triageColumn
+                    canMove={canManage}
                     onOpen={() => setOpenId(d.id)}
                     onMove={(status) => handleMove(d.id, status)}
                   />
@@ -94,7 +97,7 @@ export function DemandasTab({
         </div>
       </div>
 
-      {open && <DemandModal demanda={open} onClose={() => setOpenId(null)} />}
+      {open && <DemandModal demanda={open} canManage={canManage} onClose={() => setOpenId(null)} />}
       {newOpen && <NewDemandModal clientId={client.id} clientNome={client.nome} onClose={() => setNewOpen(false)} />}
     </>
   );
