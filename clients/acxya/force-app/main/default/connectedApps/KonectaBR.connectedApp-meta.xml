@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>contato@konectabr.com.br</contactEmail>
+    <description>Especialistas em CRM: Salesforce, Zendesk e mais</description>
+    <iconUrl>https://attendzap.com//uploads/plugins/88/7ba726d4e276cc0bb6ddc8c67897d536.png</iconUrl>
+    <label>KonectaBR</label>
+    <logoUrl>https://attendzap.com//uploads/plugins/88/7ba726d4e276cc0bb6ddc8c67897d536.png</logoUrl>
+    <oauthConfig>
+        <callbackUrl>https://ellosdesignprojetos.com.br/lp-konectabr/acoes/api/forcesales.php</callbackUrl>
+        <consumerKey>3MVG96WMoUG6yB9IfJryrZnRV.t.KhH0O8Y68NPE0JtiE71q91cULdVVEYBx_i6ek6lwUujTbVYjxqMn4w.B.</consumerKey>
+        <isAdminApproved>false</isAdminApproved>
+        <isClientCredentialEnabled>false</isClientCredentialEnabled>
+        <isCodeCredentialEnabled>false</isCodeCredentialEnabled>
+        <isCodeCredentialPostOnly>false</isCodeCredentialPostOnly>
+        <isConsumerSecretOptional>false</isConsumerSecretOptional>
+        <isIntrospectAllTokens>false</isIntrospectAllTokens>
+        <isNamedUserJwtEnabled>false</isNamedUserJwtEnabled>
+        <isPkceRequired>false</isPkceRequired>
+        <isRefreshTokenRotationEnabled>false</isRefreshTokenRotationEnabled>
+        <isSecretRequiredForRefreshToken>false</isSecretRequiredForRefreshToken>
+        <isSecretRequiredForTokenExchange>false</isSecretRequiredForTokenExchange>
+        <isTokenExchangeEnabled>false</isTokenExchangeEnabled>
+        <scopes>Full</scopes>
+    </oauthConfig>
+    <oauthPolicy>
+        <ipRelaxation>BYPASS</ipRelaxation>
+        <isTokenExchangeFlowEnabled>false</isTokenExchangeFlowEnabled>
+        <refreshTokenPolicy>zero</refreshTokenPolicy>
+    </oauthPolicy>
+</ConnectedApp>
