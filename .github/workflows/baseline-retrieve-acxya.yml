@@ -1,0 +1,80 @@
+name: Baseline — Retrieve metadata (acxya)
+
+# Traz o metadata existente da sandbox acxya para o repo, em fases (dados/código
+# primeiro, segurança por último — Profile só traz permissão do que já está no
+# repo). Cada fase vira um commit separado. Roda manualmente; não é acionado por
+# push/PR porque só faz sentido rodar de novo quando quisermos re-sincronizar o
+# baseline, não a cada mudança de código.
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+env:
+  CLIENT_DIR: clients/acxya
+  TARGET_ORG: sbx-acxya
+
+jobs:
+  retrieve:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Autenticar via JWT
+        run: |
+          echo "${{ secrets.SF_JWT_KEY_ACXYA }}" > server.key
+          sf org login jwt \
+            --client-id "${{ secrets.SF_CLIENT_ID_ACXYA }}" \
+            --jwt-key-file server.key \
+            --username "${{ secrets.SF_USERNAME_ACXYA }}" \
+            --instance-url https://test.salesforce.com \
+            --alias "$TARGET_ORG"
+          rm -f server.key
+
+      - name: Configurar git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: "Fase 1 — núcleo (dados e código)"
+        run: |
+          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-01-core.xml --target-org "$TARGET_ORG" --wait 30
+          git add "$CLIENT_DIR"
+          git commit -m "acxya: baseline fase 1 - núcleo (dados e código)" --allow-empty -q
+
+      - name: "Fase 2 — automação e regras"
+        run: |
+          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-02-automacao.xml --target-org "$TARGET_ORG" --wait 30
+          git add "$CLIENT_DIR"
+          git commit -m "acxya: baseline fase 2 - automação e regras" --allow-empty -q
+
+      - name: "Fase 3 — segurança (depende das fases 1 e 2)"
+        run: |
+          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-03-seguranca.xml --target-org "$TARGET_ORG" --wait 30
+          git add "$CLIENT_DIR"
+          git commit -m "acxya: baseline fase 3 - segurança" --allow-empty -q
+
+      - name: "Fase 4 — interface e o resto"
+        run: |
+          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-04-ui.xml --target-org "$TARGET_ORG" --wait 30
+          git add "$CLIENT_DIR"
+          git commit -m "acxya: baseline fase 4 - interface" --allow-empty -q
+
+      - name: Inventário
+        run: |
+          cd "$CLIENT_DIR"
+          echo "arquivos: $(find force-app -type f | wc -l)"
+          for t in objects classes triggers flows permissionsets layouts; do
+            n=$(find force-app -type d -name "$t" -exec sh -c 'ls -1 "$1" | wc -l' _ {} \; 2>/dev/null | paste -sd+ | bc 2>/dev/null)
+            echo "$t: ${n:-0}"
+          done
+
+      - name: Push
+        run: git push origin HEAD:${{ github.ref_name }}
