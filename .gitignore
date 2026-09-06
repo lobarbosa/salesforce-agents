@@ -12,3 +12,6 @@ build/
 clients/*/.sfdx/
 clients/*/.sf/
 clients/*/logs/
+
+# Local-machine permission overrides (not shared doctrine, that's .claude/settings.json)
+.claude/settings.local.json
