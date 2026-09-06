@@ -18,7 +18,8 @@ do template — só o que veio do próprio processo de conexão está confirmado
 - Org: produção — **não configurada, agente nunca deve tocar**; sandbox de trabalho `sbx-acxya`
   (`https://acxya--sbxacxya.sandbox.my.salesforce.com`, API v67.0)
 - Convenção de nomenclatura própria do cliente (se houver — sobrepõe a skill `padrao-entrega`):
-  - Prefixo de campo custom: a confirmar
+  - Prefixo de campo custom: **nenhum** — nomear direto, sem marcador de origem (decidido em
+    ACXYA-1, ex.: `Data_Aniversario__c`, não `KTA_Data_Aniversario__c`)
   - Padrão de branch/commit, se diferente do padrão do squad: nenhum registrado — usa o padrão
 
 ## Concorrentes / contexto de mercado

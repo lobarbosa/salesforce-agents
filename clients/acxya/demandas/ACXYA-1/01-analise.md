@@ -92,12 +92,22 @@ deixar explícito que são lacunas de critério de aceite, não critérios já d
 
 | # | Premissa | Status |
 |---|----------|--------|
-| P1 | Campo é do tipo Date (não Date/Time) | Pendente de confirmação com Leonardo |
-| P2 | Campo é apenas informativo, sem validação de data futura | Pendente |
-| P3 | Campo não é obrigatório | Pendente |
-| P4 | Não há necessidade de mapear o campo na conversão de Lead para Contact/Account | Pendente |
+| P1 | Campo é do tipo Date (não Date/Time) | **Confirmado pelo solicitante** |
+| P2 | Campo bloqueia data futura (Validation Rule) | **Confirmado pelo solicitante** — sai do escopo P, entra Validation Rule |
+| P3 | Obrigatoriedade do campo | Ainda pendente — não perguntado nesta rodada, assumir opcional até dizerem o contrário |
+| P4 | Valor deve ser mapeado para `Contact.Birthdate` na conversão do Lead | **Confirmado pelo solicitante** — precisa configurar Lead Conversion Field Mapping |
 | P5 | Um único layout de Lead é usado (não há Record Type segregando o layout) | Pendente — depende do recon (etapa 2) |
-| P6 | Prefixo de campo custom do cliente ainda não definido — bloqueia nome final do campo | Pendente — precisa ser resolvido no `CLAUDE.md` do cliente antes do design |
+| P6 | Prefixo de campo custom do cliente | **Resolvido**: nenhum prefixo — registrado em `clients/acxya/CLAUDE.md`. Campo: `Data_Aniversario__c` |
+
+## Decisões do solicitante (registradas em 2026-09-06, via gate de aprovação da análise)
+- Tipo do campo: **Date**.
+- Validação: **bloquear data futura** — vira `ValidationRule` no design.
+- Conversão de Lead: **mapear para `Contact.Birthdate`** — vira configuração de Lead Conversion Field Mapping no design.
+- Prefixo de campo: **nenhum** — API name proposto: `Data_Aniversario__c`.
+
+Com P2 e P4 confirmados, a estimativa de complexidade sobe de **P para M**: além do campo,
+o design agora inclui uma Validation Rule e a configuração de mapeamento de conversão de Lead
+— ambos declarativos, não muda a escolha declarativo vs. código, só o escopo do build.
 
 ## Estimativa de complexidade
 **P (Pequeno).** Criação de um único campo custom em um objeto padrão, sem lógica de
