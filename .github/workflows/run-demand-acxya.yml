@@ -1,0 +1,79 @@
+name: Rodar demanda (agentes) — acxya
+
+# Aciona o orquestrador de verdade (Claude Agent SDK + .claude/agents) para uma
+# demanda do cliente acxya. Diferente do smoke test e do baseline retrieve
+# (que só rodam sf CLI puro), este workflow precisa autenticar com a
+# Anthropic também, porque aqui não existe a sessão de Claude Code já
+# logada que esta conversa tem.
+#
+# Escopo de um único cliente por enquanto: os nomes de secret (*_ACXYA) são
+# fixos. Se/quando entrar um segundo cliente real, isso vira um workflow por
+# cliente ou uma resolução dinâmica de secret — não faz sentido generalizar
+# agora com um caso só.
+
+on:
+  workflow_dispatch:
+    inputs:
+      demand_id:
+        description: 'ID da demanda (ex.: ACXYA-1)'
+        required: true
+
+permissions:
+  contents: write
+
+env:
+  CLIENT: acxya
+  TARGET_ORG: sbx-acxya
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar Salesforce CLI e Claude Code CLI
+        run: npm install -g @salesforce/cli @anthropic-ai/claude-code
+
+      - name: Instalar dependências Python
+        run: pip install -e .
+
+      - name: Autenticar Salesforce via JWT
+        run: |
+          echo "${{ secrets.SF_JWT_KEY_ACXYA }}" > server.key
+          sf org login jwt \
+            --client-id "${{ secrets.SF_CLIENT_ID_ACXYA }}" \
+            --jwt-key-file server.key \
+            --username "${{ secrets.SF_USERNAME_ACXYA }}" \
+            --instance-url https://test.salesforce.com \
+            --alias "$TARGET_ORG"
+          rm -f server.key
+
+      - name: Configurar git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Rodar orquestrador
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          DEMAND_ID: ${{ inputs.demand_id }}
+        run: |
+          python3 -c "
+          import os
+          from salesforce_agents.orchestrator import run_sync
+          run_sync(os.environ['CLIENT'], os.environ['DEMAND_ID'])
+          "
+
+      - name: Commit e push dos artefatos gerados
+        env:
+          DEMAND_ID: ${{ inputs.demand_id }}
+        run: |
+          git add "clients/$CLIENT"
+          git commit -m "$DEMAND_ID: sessão de agente via CI" --allow-empty -q
+          git push origin HEAD:${{ github.ref_name }}
