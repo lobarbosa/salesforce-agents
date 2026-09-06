@@ -28,6 +28,16 @@ ALLOWED_TOOLS = [
     "mcp__salesforce-tools__sf_org_list",
 ]
 
+# Note on permissions in headless runs: this grants whole tools (Bash included) at
+# the SDK level, which is what lets an unattended session run without a human to
+# answer an interactive prompt. That deliberately makes .claude/settings.json's
+# fine-grained `allow` list redundant here — and redundant is fine, because it was
+# never the safety boundary. Verified empirically (2026-09-06, untrusted workspace):
+# the `deny` list (e.g. `git merge*`) and the guard-prod.sh PreToolUse hook both
+# still fire and block regardless of workspace trust; only `allow` entries are
+# ignored when untrusted, and this module never relied on them. Do not "fix" the
+# workspace-trust warning by loosening this — it isn't gating anything that matters.
+
 
 async def run(client: str, demand_id: str) -> None:
     workspace = f"clients/{client}"

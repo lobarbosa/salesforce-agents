@@ -77,3 +77,15 @@ clients/<cliente>/demandas/<DEMAND-ID>/
 2. Confirme qual cliente e qual demanda está sendo tratada. O `CLAUDE.md` deste cliente
    (na raiz do workspace atual) é o briefing de conta — leia-o antes de desenhar qualquer
    solução, ele é fonte de verdade sobre quem é o cliente e como trabalhar por ele.
+
+## Nota sobre permissões em execução headless
+
+O orquestrador roda sessões sem humano para responder prompt de permissão, então
+concede ferramentas inteiras (`Bash` incluído) via `allowed_tools` no próprio SDK —
+isso torna a lista `allow` de `.claude/settings.json` redundante nesse modo, e o aviso
+de "workspace não confiável" do Claude Code é sobre exatamente essa lista, nada além.
+A rede de segurança real não depende dela: a lista `deny` (`git merge*`, `git push
+--force*`, `sf org delete*`) e o hook `guard-prod.sh` continuam bloqueando
+normalmente independente de o workspace estar marcado como confiável — verificado
+empiricamente. Não "resolva" esse aviso afrouxando permissão; ele não protege nada
+que já não esteja protegido por hook ou pela lista `deny`.
