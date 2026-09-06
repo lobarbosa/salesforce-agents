@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Criação de Task após 3 dias da Oportunidade em Stage &quot;Solução&quot;</description>
+    <masterLabel>Oportunidades - Stage Solução - Follow Up</masterLabel>
+</FlowDefinition>

@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Criação de Tarefas quando o Lead é criado, acompanhando a cadência</description>
+    <environments>Default</environments>
+    <interviewLabel>Lead - Criação de Tarefas {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Lead - Criação de Tarefas</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Add_Linkedin_NP</name>
+        <label>Add Linkedin + NP</label>
+        <locationX>50</locationX>
+        <locationY>528</locationY>
+        <connector>
+            <targetReference>Atualiza_Campo_Atividades</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Add Linkedin + NP</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Call_Manha</name>
+        <label>Cold Call Manhã</label>
+        <locationX>314</locationX>
+        <locationY>288</locationY>
+        <connector>
+            <targetReference>Msg_Whatsapp</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Call Manhã</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Call_Manha_1</name>
+        <label>Cold Call Manhã</label>
+        <locationX>842</locationX>
+        <locationY>288</locationY>
+        <connector>
+            <targetReference>Msg_Linkedin_Inmail</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Call Manhã</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Call_Manha_2</name>
+        <label>Cold Call Manhã</label>
+        <locationX>1370</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Call Manhã</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Call_Tarde</name>
+        <label>Cold Call Tarde</label>
+        <locationX>578</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Call Tarde</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Call_Tarde_1</name>
+        <label>Cold Call Tarde</label>
+        <locationX>1106</locationX>
+        <locationY>288</locationY>
+        <connector>
+            <targetReference>Msg_Whatsapp_1</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Call Tarde</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Mail</name>
+        <label>Cold Mail</label>
+        <locationX>50</locationX>
+        <locationY>408</locationY>
+        <connector>
+            <targetReference>Add_Linkedin_NP</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Mail</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Mail_1</name>
+        <label>Cold Mail</label>
+        <locationX>578</locationX>
+        <locationY>288</locationY>
+        <connector>
+            <targetReference>Cold_Call_Tarde</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Mail</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Cold_Mail_2</name>
+        <label>Cold Mail</label>
+        <locationX>1370</locationX>
+        <locationY>288</locationY>
+        <connector>
+            <targetReference>Cold_Call_Manha_2</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Cold Mail</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Msg_Linkedin_Inmail</name>
+        <label>Msg Linkedin / Inmail</label>
+        <locationX>842</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Msg Linkedin / Inmail</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Msg_Whatsapp</name>
+        <label>Msg Whatsapp</label>
+        <locationX>314</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Msg Whatsapp</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Msg_Whatsapp_1</name>
+        <label>Msg Whatsapp</label>
+        <locationX>1106</locationX>
+        <locationY>408</locationY>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Msg Whatsapp</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>Pesquisa_de_Ativacao</name>
+        <label>Pesquisa de Ativação</label>
+        <locationX>50</locationX>
+        <locationY>288</locationY>
+        <connector>
+            <targetReference>Cold_Mail</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Pesquisa de Ativação</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhoId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <name>Atualiza_Campo_Atividades</name>
+        <label>Atualiza Campo Atividades</label>
+        <locationX>50</locationX>
+        <locationY>648</locationY>
+        <inputAssignments>
+            <field>Status_Atividades__c</field>
+            <value>
+                <stringValue>Atividades Pendentes</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>452</locationX>
+        <locationY>0</locationY>
+        <object>Lead</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>Tarefa_1</name>
+            <connector>
+                <targetReference>Pesquisa_de_Ativacao</targetReference>
+            </connector>
+            <label>Dia 1</label>
+            <offsetNumber>1</offsetNumber>
+            <offsetUnit>Minutes</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Dia_4</name>
+            <connector>
+                <targetReference>Cold_Call_Manha</targetReference>
+            </connector>
+            <label>Dia 4</label>
+            <offsetNumber>4</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Dia_7</name>
+            <connector>
+                <targetReference>Cold_Mail_1</targetReference>
+            </connector>
+            <label>Dia 7</label>
+            <offsetNumber>7</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Dia_10</name>
+            <connector>
+                <targetReference>Cold_Call_Manha_1</targetReference>
+            </connector>
+            <label>Dia 10</label>
+            <offsetNumber>10</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Dia_13</name>
+            <connector>
+                <targetReference>Cold_Call_Tarde_1</targetReference>
+            </connector>
+            <label>Dia 13</label>
+            <offsetNumber>13</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Dia_16</name>
+            <connector>
+                <targetReference>Cold_Mail_2</targetReference>
+            </connector>
+            <label>Dia 16</label>
+            <offsetNumber>16</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>
