@@ -148,7 +148,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 }
 .drag-handle { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.02em; }
 .card .titulo { font-weight: 600; }
-.card .meta { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
+.meta { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
 .badge { padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.65rem; }
 .badge.projeto { background: var(--accent-soft); color: var(--accent); }
 .badge.sustentacao { background: var(--surface-alt); border: 1px solid var(--border-strong); color: var(--text-muted); }

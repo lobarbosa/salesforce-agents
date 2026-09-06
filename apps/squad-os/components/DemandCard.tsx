@@ -1,6 +1,6 @@
 "use client";
 
-import type { DragEvent } from "react";
+import { useRef, type DragEvent } from "react";
 import type { Demanda } from "@/lib/generated/prisma/client";
 import { TRIAGE, TRIAGE_LABEL, STAGE_LABEL, perguntasPendentes, timeAgo } from "@/lib/demandas";
 
@@ -43,11 +43,33 @@ export function DemandCard({
   onDragEnd?: () => void;
 }) {
   const podeArrastar = triageColumn && canMove;
+  // Depois de um drop, alguns navegadores ainda despacham um click no card de
+  // origem (mouseup da mesma interação) — sem essa guarda, soltar o card
+  // reabre o modal de detalhe por cima. dragend limpa a guarda logo em
+  // seguida (setTimeout 0), só depois de qualquer click da mesma interação já
+  // ter sido processado.
+  const acabouDeArrastar = useRef(false);
 
   function handleDragStart(e: DragEvent<HTMLDivElement>) {
     e.dataTransfer.setData("text/plain", demanda.id);
     e.dataTransfer.effectAllowed = "move";
+    acabouDeArrastar.current = true;
     onDragStart?.(demanda.id);
+  }
+
+  function handleDragEnd() {
+    onDragEnd?.();
+    setTimeout(() => {
+      acabouDeArrastar.current = false;
+    }, 0);
+  }
+
+  function handleClick() {
+    if (acabouDeArrastar.current) {
+      acabouDeArrastar.current = false;
+      return;
+    }
+    onOpen();
   }
 
   return (
@@ -58,8 +80,8 @@ export function DemandCard({
       aria-label={`Abrir demanda ${demanda.titulo}`}
       draggable={podeArrastar}
       onDragStart={podeArrastar ? handleDragStart : undefined}
-      onDragEnd={podeArrastar ? onDragEnd : undefined}
-      onClick={onOpen}
+      onDragEnd={podeArrastar ? handleDragEnd : undefined}
+      onClick={handleClick}
       onKeyDown={(e) => {
         if (e.target !== e.currentTarget) return;
         if (e.key === "Enter" || e.key === " ") {
