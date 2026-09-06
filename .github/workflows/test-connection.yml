@@ -1,0 +1,34 @@
+name: Testar conexão JWT com a sandbox
+
+# Smoke test manual: só confirma que o JWT bearer flow autentica contra a
+# sandbox. Não faz deploy nem toca em metadata. Rode isso antes de confiar em
+# qualquer outro workflow que dependa da mesma credencial.
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Autenticar via JWT
+        run: |
+          echo "${{ secrets.SF_JWT_KEY_ACXYA }}" > server.key
+          sf org login jwt \
+            --client-id "${{ secrets.SF_CLIENT_ID_ACXYA }}" \
+            --jwt-key-file server.key \
+            --username "${{ secrets.SF_USERNAME_ACXYA }}" \
+            --instance-url https://test.salesforce.com \
+            --alias sbx-acxya
+
+      - name: Confirmar org conectada
+        run: sf org display --target-org sbx-acxya --json
+
+      - name: Limpar credencial
+        if: always()
+        run: rm -f server.key
