@@ -31,16 +31,25 @@ Cada cliente tem seu próprio projeto Salesforce DX isolado em
 `clients/<nome-do-cliente>/`, com seu próprio `CLAUDE.md` de briefing de conta ("Conhecimento
 do Cliente" — veja `clients/README.md` e o template em `clients/_template/CLAUDE.md`).
 
-**Squad OS** — um front-end publicado (artifact) onde a demanda nasce e o briefing de
-cada cliente é editado por quem não mexe em terminal. Cada card de demanda também é onde
-o consultor responde as perguntas em aberto que um agente levantou (ex.: prefixo de campo,
-tipo de dado, regra de validação) e aprova o gate — sem precisar de ninguém no meio. Uma
-aba "Conexão Salesforce" por cliente guarda os identificadores não-sensíveis da conexão
-(alias, login URL, username, Consumer Key) e um status de teste — **nunca** a chave
-privada nem qualquer secret real, que ficam só no GitHub Environment do cliente. Hoje a
-ponte para este repositório é manual (leio a demanda, as respostas e os pedidos de teste
-de conexão no OS e materializo/executo aqui); ver `docs/conexoes-e-setup.md` para o
-runbook completo de conexões e credenciais.
+**Squad OS** — onde a demanda nasce e o briefing de cada cliente é editado por quem não
+mexe em terminal. Cada card de demanda também é onde o consultor responde as perguntas em
+aberto que um agente levantou (ex.: prefixo de campo, tipo de dado, regra de validação) e
+aprova o gate — sem precisar de ninguém no meio. Uma aba "Conexão Salesforce" por cliente
+guarda os identificadores não-sensíveis da conexão (alias, login URL, username, Consumer
+Key) e um status de teste — **nunca** a chave privada nem qualquer secret real, que ficam
+só no GitHub Environment do cliente. Existem duas versões em paralelo neste momento:
+
+- **`apps/squad-os/`** — a versão em migração: Next.js + Postgres (Supabase) + auth real,
+  destinada a rodar num domínio nosso. Materializa demanda (`demanda.md` + `status.yaml`)
+  e dispara `run-demand.yml` automaticamente — a ponte deixa de ser manual. Ver
+  `apps/squad-os/README.md` para arquitetura e setup; ainda não tem deploy nem projeto
+  Supabase criado.
+- **[O Artifact publicado](https://claude.ai/code/artifact/d17fac68-5684-42da-9817-77757600e828)**
+  — a versão em uso hoje, ainda a fonte de verdade até o piloto do Next.js validar. Aqui a
+  ponte para este repositório é manual (leio a demanda, as respostas e os pedidos de teste
+  de conexão no OS e materializo/executo aqui).
+
+Ver `docs/conexoes-e-setup.md` para o runbook completo de conexões e credenciais.
 
 ## Setup
 

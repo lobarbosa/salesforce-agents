@@ -1,0 +1,108 @@
+// Squad OS — schema relacional que substitui as coleções `clients`/`demandas`
+// do Artifact db. Ver apps/squad-os/README.md para o runbook de migração.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum StatusConexao {
+  nao_configurado
+  aguardando_teste
+  conectado
+  erro
+}
+
+enum TipoDemanda {
+  projeto
+  sustentacao
+}
+
+enum StatusDemanda {
+  // triagem
+  backlog
+  planejada
+  recorrente
+  standby
+  // execução (fluxo canônico do CLAUDE.md raiz)
+  analise
+  aguardando_gate_analise
+  design
+  aguardando_gate_design
+  build
+  aguardando_gate_build
+  qa
+  aguardando_homologacao
+  release
+  entregue
+}
+
+model Client {
+  id        String   @id @default(cuid())
+  // Nome do diretório em clients/<slug>/ neste repo — é a chave que liga
+  // este registro ao workspace Salesforce DX do cliente (CLAUDE.md de conta,
+  // force-app/, demandas materializadas). Gerado do nome na criação, estável
+  // depois disso mesmo que o nome de exibição mude.
+  slug      String   @unique
+  nome      String
+  segmento  String   @default("")
+  criadoEm  DateTime @default(now()) @map("criado_em")
+
+  // Conhecimento do Cliente (briefing de conta)
+  marcas             String @default("")
+  contatos           String @default("")
+  ambienteSalesforce String @default("") @map("ambiente_salesforce")
+  concorrentes       String @default("")
+  integracoes        String @default("")
+  regras             String @default("")
+
+  // Conexão Salesforce — nunca a chave privada nem Consumer Secret,
+  // esses ficam só no GitHub Environment do cliente (docs/conexoes-e-setup.md).
+  orgAlias           String?        @map("org_alias")
+  loginUrl           String?        @map("login_url")
+  username           String?
+  consumerKey        String?        @map("consumer_key")
+  statusConexao      StatusConexao  @default(nao_configurado) @map("status_conexao")
+  testeSolicitadoPor String?        @map("teste_solicitado_por")
+  testeSolicitadoEm  DateTime?      @map("teste_solicitado_em")
+
+  demandas Demanda[]
+
+  @@map("clients")
+}
+
+model Demanda {
+  id       String        @id @default(cuid())
+  clientId String        @map("client_id")
+  client   Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // <CODE>-<n> (ex.: ACXYA-1) — mesmo formato e mesma numeração sequencial
+  // por cliente que src/salesforce_agents/demands.py:_next_id() já usa pra
+  // nomear clients/<slug>/demandas/<code>/. Gerado na criação, nunca reusado.
+  code     String
+
+  titulo   String
+  tipo     TipoDemanda    @default(sustentacao)
+  texto    String         @default("")
+  autor    String         @default("")
+  status   StatusDemanda  @default(backlog)
+  criadoEm DateTime       @default(now()) @map("criado_em")
+
+  // Perguntas em aberto, aprovação de gate e histórico de transição —
+  // mantidos como JSON (mesma forma de documento do modelo anterior;
+  // não ganham nada sendo normalizados em tabelas próprias).
+  perguntas  Json @default("[]")
+  aprovacao  Json?
+  historico  Json @default("[]")
+
+  materializadoEm DateTime? @map("materializado_em")
+
+  @@map("demandas")
+  @@unique([clientId, code])
+  @@index([clientId])
+  @@index([status])
+}

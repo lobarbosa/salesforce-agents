@@ -12,8 +12,8 @@ em arquivo (`clients/<cliente>/demandas/<ID>/`).
 | 2 | **Connected App + JWT** (por ambiente) | Autenticação do CI sem senha/MFA | GitHub Secrets | Pipeline |
 | 3 | **GitHub + Actions** | Versionamento, PR, deploy determinístico | Repo do cliente | Deploy |
 | 4 | **`ANTHROPIC_API_KEY`** | Autentica o orquestrador (Claude Agent SDK) | variável de ambiente onde `sfagents` roda | Todo o pipeline de agentes |
-| 5 | **Squad OS** (artifact publicado) | Intake de demanda + briefing de cliente — substitui o Jira | claude.ai (artifact), banco próprio | Início do ciclo |
-| 6 | Sincronização OS → repositório | Materializa a demanda criada no OS como `demanda.md` + `status.yaml` | manual por ora (ver §3, passo 7) | Início do ciclo de execução |
+| 5 | **Squad OS** | Intake de demanda + briefing de cliente — substitui o Jira | claude.ai (artifact) hoje; `apps/squad-os/` (Next.js + Supabase) em migração — ver `apps/squad-os/README.md` | Início do ciclo |
+| 6 | Sincronização OS → repositório | Materializa a demanda criada no OS como `demanda.md` + `status.yaml` | manual no artifact (ver §3, passo 7); automática em `apps/squad-os/` via GitHub API + `run-demand.yml` assim que estiver em produção | Início do ciclo de execução |
 | 7 | **Slack MCP** (opcional) | Notificação de gate esperando humano | `claude mcp add` | Nada (opcional) |
 | 8 | **Dev Hub** (opcional) | Scratch orgs por demanda | `sf org login` | Isolamento por demanda |
 | 9 | ClickUp / Clockify | Horas e status comercial | — | Nada — fora do v1 |
