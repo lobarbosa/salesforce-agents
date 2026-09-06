@@ -34,10 +34,13 @@ do Cliente" — veja `clients/README.md` e o template em `clients/_template/CLAU
 **Squad OS** — um front-end publicado (artifact) onde a demanda nasce e o briefing de
 cada cliente é editado por quem não mexe em terminal. Cada card de demanda também é onde
 o consultor responde as perguntas em aberto que um agente levantou (ex.: prefixo de campo,
-tipo de dado, regra de validação) e aprova o gate — sem precisar de ninguém no meio. Hoje a
-ponte para este repositório é manual (leio a demanda e as respostas no OS e materializo os
-arquivos aqui); ver `docs/conexoes-e-setup.md` para o runbook completo de conexões e
-credenciais.
+tipo de dado, regra de validação) e aprova o gate — sem precisar de ninguém no meio. Uma
+aba "Conexão Salesforce" por cliente guarda os identificadores não-sensíveis da conexão
+(alias, login URL, username, Consumer Key) e um status de teste — **nunca** a chave
+privada nem qualquer secret real, que ficam só no GitHub Environment do cliente. Hoje a
+ponte para este repositório é manual (leio a demanda, as respostas e os pedidos de teste
+de conexão no OS e materializo/executo aqui); ver `docs/conexoes-e-setup.md` para o
+runbook completo de conexões e credenciais.
 
 ## Setup
 
