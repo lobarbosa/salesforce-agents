@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Obrigar_Papeis_do_Contato</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    ISPICKVAL(StageName, &quot;Solução&quot;),
+    ISBLANK(ContactId)
+)</errorConditionFormula>
+    <errorMessage>Para mover a oportunidade para a fase de Solução, você deve adicionar pelo menos um &apos;Papéis do contato&apos;</errorMessage>
+</ValidationRule>

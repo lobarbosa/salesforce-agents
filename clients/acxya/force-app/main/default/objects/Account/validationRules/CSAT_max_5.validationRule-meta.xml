@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CSAT_max_5</fullName>
+    <active>true</active>
+    <errorConditionFormula>CSAT__c &gt; 5</errorConditionFormula>
+    <errorDisplayField>CSAT__c</errorDisplayField>
+    <errorMessage>CSAT máximo = 5</errorMessage>
+</ValidationRule>

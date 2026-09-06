@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_de_Telefone</fullName>
+    <active>false</active>
+    <description>O número de telefone deve começar com + (código de país).</description>
+    <errorConditionFormula>LEFT(MobilePhone, 1) &lt;&gt; &quot;+&quot;</errorConditionFormula>
+    <errorMessage>O número de telefone deve começar com + (código de país).</errorMessage>
+</ValidationRule>

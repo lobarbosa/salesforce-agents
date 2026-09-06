@@ -1,0 +1,191 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Melhoria</fullName>
+    <active>true</active>
+    <businessProcess>Melhoria</businessProcess>
+    <label>Melhoria</label>
+    <picklistValues>
+        <picklist>Departamento__c</picklist>
+        <values>
+            <fullName>Diretoria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vendas</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ImpactoNoNegocio__c</picklist>
+        <values>
+            <fullName>Ajuste e pequenas falhas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Impacto parcial%2C mas com alternativa temporária</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Melhoria%2C dúvida operacional ou ajustes menores</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sistema inoperante</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Navegador__c</picklist>
+        <values>
+            <fullName>Firefox Developer Edition</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Google Chrome</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Microsoft Edge</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mozilla Firefox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QB Browser</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Safari</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UC Browser</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Complex functionality</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Existing problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instructions not clear</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>User didn%27t attend training</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SistemaOperacional__c</picklist>
+        <values>
+            <fullName>Android</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Linux</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Windows 10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Windows 11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>iOS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>macOS</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Feature Request</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Question</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

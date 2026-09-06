@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Atividades__c</fullName>
+    <label>Status Atividades</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sem atividade(s)</fullName>
+                <default>true</default>
+                <label>Sem atividade(s)</label>
+            </value>
+            <value>
+                <fullName>Atividades Pendentes</fullName>
+                <default>false</default>
+                <label>Atividades Pendentes</label>
+            </value>
+            <value>
+                <fullName>Atividades Concluídas</fullName>
+                <default>false</default>
+                <label>Atividades Concluídas</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

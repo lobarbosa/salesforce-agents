@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_de_Campos</fullName>
+    <active>false</active>
+    <description>Verifica se todos os campos informados foram preenchidos.</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(Status , &apos;Prospect&apos;),
+OR(
+ISPICKVAL(Status , &apos;&apos;),
+ISBLANK( Phone ),
+ISBLANK( FirstName ),
+ISBLANK( Company ),
+ISBLANK( Email ),
+ISBLANK( Title ),
+ISPICKVAL(Rating, &apos;&apos;),
+ISBLANK( Capital_Social__c ),
+ISBLANK( Need_Contexto__c ),
+ISBLANK( AE_do_Parceiro__c ),
+ISBLANK( Ferramenta_que_utilizam_hoje__c ),
+ISPICKVAL(Tecnologia_proposta__c, &apos;&apos;),
+ISBLANK( Volume_de_Dados__c   ),
+ISBLANK( CNAE__c ),
+ISBLANK( Possui_Fluxo_de_Atendimento__c ),
+ISNULL( CNPJ__c ),
+ISPICKVAL(Timeline__c, &apos;&apos;),
+ISNULL( NumberOfEmployees ),
+ISNULL( Numero_de_Agentes__c ),
+ISPICKVAL(Budget__c, &apos;&apos;),
+ISPICKVAL(Canais_de_Atendimento__c, &apos;&apos;),
+ISBLANK( Competitors__c ),
+ISBLANK( Cargo__c ),
+ISBLANK( Address ),
+ISBLANK(  Website ),
+ISBLANK(  Street ),
+ISBLANK(  City ),
+ISBLANK(  State ),
+ISBLANK(  PostalCode ),
+ISBLANK(  Country ),
+ISPICKVAL(LeadSource, &apos;&apos;),
+ISBLANK(  AnnualRevenue ),
+ISPICKVAL(Industry, &apos;&apos;)
+)
+)</errorConditionFormula>
+    <errorMessage>Existem campos à serem preenchidos. Por favor, preencher todos os campos.</errorMessage>
+</ValidationRule>

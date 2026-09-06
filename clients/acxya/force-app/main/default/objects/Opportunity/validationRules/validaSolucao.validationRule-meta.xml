@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validaSolucao</fullName>
+    <active>true</active>
+    <description>Regra de Validação para selecionar Estágio Solução.</description>
+    <errorConditionFormula>AND (
+   ISPICKVAL (StageName, &quot;Solução&quot;),
+   ISBLANK (estimated_close_date__c)
+)</errorConditionFormula>
+    <errorDisplayField>estimated_close_date__c</errorDisplayField>
+    <errorMessage>Verifique se o campo Estimated Close Date está preenchido. Para alterar a Oportunidade para Solução é necessário o preenchimento desta informação.</errorMessage>
+</ValidationRule>

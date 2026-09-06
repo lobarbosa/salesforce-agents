@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_licenciamento__c</fullName>
+    <label>Tipo de licenciamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Suíte Team</fullName>
+                <default>false</default>
+                <label>Suíte Team</label>
+            </value>
+            <value>
+                <fullName>Suíte Growth</fullName>
+                <default>false</default>
+                <label>Suíte Growth</label>
+            </value>
+            <value>
+                <fullName>Suíte Professional</fullName>
+                <default>false</default>
+                <label>Suíte Professional</label>
+            </value>
+            <value>
+                <fullName>Suite Enterprise</fullName>
+                <default>false</default>
+                <label>Suite Enterprise</label>
+            </value>
+            <value>
+                <fullName>Sell Team</fullName>
+                <default>false</default>
+                <label>Sell Team</label>
+            </value>
+            <value>
+                <fullName>Sell Professional</fullName>
+                <default>false</default>
+                <label>Sell Professional</label>
+            </value>
+            <value>
+                <fullName>Sell Enterprise</fullName>
+                <default>false</default>
+                <label>Sell Enterprise</label>
+            </value>
+            <value>
+                <fullName>Sell Elite</fullName>
+                <default>false</default>
+                <label>Sell Elite</label>
+            </value>
+            <value>
+                <fullName>Sales Cloud</fullName>
+                <default>false</default>
+                <label>Sales Cloud</label>
+            </value>
+            <value>
+                <fullName>Service Cloud</fullName>
+                <default>false</default>
+                <label>Service Cloud</label>
+            </value>
+            <value>
+                <fullName>Experience Cloud</fullName>
+                <default>false</default>
+                <label>Experience Cloud</label>
+            </value>
+            <value>
+                <fullName>Marketing Cloud</fullName>
+                <default>false</default>
+                <label>Marketing Cloud</label>
+            </value>
+            <value>
+                <fullName>Field Service</fullName>
+                <default>false</default>
+                <label>Field Service</label>
+            </value>
+            <value>
+                <fullName>Digital Engagement</fullName>
+                <default>false</default>
+                <label>Digital Engagement</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

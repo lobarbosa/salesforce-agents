@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Budget__c</fullName>
+    <label>Budget</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Não tem budget definido</fullName>
+                <default>false</default>
+                <label>Não tem budget definido</label>
+            </value>
+            <value>
+                <fullName>Até R$ 5.000</fullName>
+                <default>false</default>
+                <label>Até R$ 5.000</label>
+            </value>
+            <value>
+                <fullName>de R$ 5.000 a R$ 15.000</fullName>
+                <default>false</default>
+                <label>de R$ 5.000 a R$ 15.000</label>
+            </value>
+            <value>
+                <fullName>de R$ 15.000 a R$ 50.000</fullName>
+                <default>false</default>
+                <label>de R$ 15.000 a R$ 50.000</label>
+            </value>
+            <value>
+                <fullName>Acima de R$ 50.000</fullName>
+                <default>false</default>
+                <label>Acima de R$ 50.000</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

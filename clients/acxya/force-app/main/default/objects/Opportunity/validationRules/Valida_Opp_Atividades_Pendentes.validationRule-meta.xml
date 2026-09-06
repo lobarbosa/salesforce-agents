@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_Opp_Atividades_Pendentes</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (
+ISPICKVAL (StageName, &apos;Closed Won&apos;),
+Atividades_Pendentes__c = true
+)</errorConditionFormula>
+    <errorMessage>Revise as atividades pendentes. Para alterar a fase da oportunidade para Closed Won é necessário concluir todas as atividades.</errorMessage>
+</ValidationRule>

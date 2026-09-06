@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qualified_Lead__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Campo utilizado no Flow de Tela &quot;Lead Qualification Wizard&quot;, habilitando o True quando finaliza o Fluxo de Tela</description>
+    <label>Qualified Lead</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Timeline__c</fullName>
+    <label>Timeline</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>&lt;1 mês</fullName>
+                <default>false</default>
+                <label>&lt;1 mês</label>
+            </value>
+            <value>
+                <fullName>1 a 3 meses</fullName>
+                <default>false</default>
+                <label>1 a 3 meses</label>
+            </value>
+            <value>
+                <fullName>&gt; 3 meses</fullName>
+                <default>false</default>
+                <label>&gt; 3 meses</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

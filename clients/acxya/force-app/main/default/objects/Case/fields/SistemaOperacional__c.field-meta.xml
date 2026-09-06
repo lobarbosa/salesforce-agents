@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SistemaOperacional__c</fullName>
+    <inlineHelpText>Se aplicável.</inlineHelpText>
+    <label>Sistema Operacional</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Android</fullName>
+                <default>false</default>
+                <label>Android</label>
+            </value>
+            <value>
+                <fullName>iOS</fullName>
+                <default>false</default>
+                <label>iOS</label>
+            </value>
+            <value>
+                <fullName>Linux</fullName>
+                <default>false</default>
+                <label>Linux</label>
+            </value>
+            <value>
+                <fullName>macOS</fullName>
+                <default>false</default>
+                <label>macOS</label>
+            </value>
+            <value>
+                <fullName>Windows 10</fullName>
+                <default>false</default>
+                <label>Windows 10</label>
+            </value>
+            <value>
+                <fullName>Windows 11</fullName>
+                <default>false</default>
+                <label>Windows 11</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

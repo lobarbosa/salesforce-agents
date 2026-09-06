@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validaPagamento</fullName>
+    <active>true</active>
+    <description>Regra de Validação para selecionar Estágio Solução.</description>
+    <errorConditionFormula>AND (
+   ISPICKVAL ( Condi_o_de_parcelamento__c , &quot;Especial (especificar)&quot;),
+   ISBLANK( Condicao_especial__c )
+)</errorConditionFormula>
+    <errorDisplayField>Condicao_especial__c</errorDisplayField>
+    <errorMessage>Especifique a condição de pagamento especial.</errorMessage>
+</ValidationRule>

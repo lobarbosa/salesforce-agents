@@ -1,0 +1,11 @@
+<aura:component implements="forceCommunity:availableForAllPageTypes" access="global">
+    
+    <aura:attribute name="flowName" type="String" default="CaseCreateFlow"/>
+    
+    <lightning:navigation aura:id="navService"/>
+
+    <div class="slds-text-align_center">
+        <lightning:button label="Criar Caso de Suporte" variant="brand" onclick="{!c.navigateToCriacaso}"/>
+    </div>
+
+</aura:component>

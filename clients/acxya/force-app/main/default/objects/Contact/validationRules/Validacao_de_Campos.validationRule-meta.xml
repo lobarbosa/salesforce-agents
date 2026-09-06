@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_de_Campos</fullName>
+    <active>false</active>
+    <description>Verifica se os campos &quot;Endereço&quot;, &quot;Cargo&quot; e &quot;Departamento&quot; foram preenchidos.</description>
+    <errorConditionFormula>OR
+(
+ISBLANK(MailingAddress),
+ISBLANK(Title)
+)</errorConditionFormula>
+    <errorMessage>Existem campos à serem preenchidos. Por favor, preencher os campos &quot;Endereço&quot;, &quot;Cargo&quot; e &quot;Departamento&quot;.</errorMessage>
+</ValidationRule>

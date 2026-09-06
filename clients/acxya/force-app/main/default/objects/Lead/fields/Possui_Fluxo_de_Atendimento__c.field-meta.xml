@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Possui_Fluxo_de_Atendimento__c</fullName>
+    <description>Vocês já teriam alguns desenhos de fluxo de atendimento hoje</description>
+    <externalId>false</externalId>
+    <label>Já teriam alguns desenhos de fluxo hoje</label>
+    <length>100</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

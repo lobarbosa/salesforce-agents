@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validaClosedLost</fullName>
+    <active>true</active>
+    <description>Regra de Validação para selecionar Fase de Oportunidade Closed Lost.</description>
+    <errorConditionFormula>AND (
+     ISPICKVAL (StageName, &quot;Closed Lost&quot;),
+     ISPICKVAL (Loss_reason__c, &quot;&quot; )
+)</errorConditionFormula>
+    <errorDisplayField>Loss_reason__c</errorDisplayField>
+    <errorMessage>O campo Motivo de Perda deve ser preenchido.</errorMessage>
+</ValidationRule>

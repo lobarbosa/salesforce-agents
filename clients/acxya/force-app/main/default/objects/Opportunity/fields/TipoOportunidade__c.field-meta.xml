@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TipoOportunidade__c</fullName>
+    <label>Tipo de Oportunidade</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Salesforce Sales Cloud</fullName>
+                <default>false</default>
+                <label>Salesforce Sales Cloud</label>
+            </value>
+            <value>
+                <fullName>Salesforce Service Cloud</fullName>
+                <default>false</default>
+                <label>Salesforce Service Cloud</label>
+            </value>
+            <value>
+                <fullName>Salesforce Marketing Cloud</fullName>
+                <default>false</default>
+                <label>Salesforce Marketing Cloud</label>
+            </value>
+            <value>
+                <fullName>Salesforce Digital Engagement</fullName>
+                <default>false</default>
+                <label>Salesforce Digital Engagement</label>
+            </value>
+            <value>
+                <fullName>Salesforce Agentforce</fullName>
+                <default>false</default>
+                <label>Salesforce Agentforce</label>
+            </value>
+            <value>
+                <fullName>Salesforce tableau</fullName>
+                <default>false</default>
+                <label>Salesforce tableau</label>
+            </value>
+            <value>
+                <fullName>Salesforce data cloud</fullName>
+                <default>false</default>
+                <label>Salesforce data cloud</label>
+            </value>
+            <value>
+                <fullName>Salesforce outros</fullName>
+                <default>false</default>
+                <label>Salesforce outros</label>
+            </value>
+            <value>
+                <fullName>AMS salesforce</fullName>
+                <default>false</default>
+                <label>AMS salesforce</label>
+            </value>
+            <value>
+                <fullName>Alocação/outsourcing</fullName>
+                <default>false</default>
+                <label>Alocação/outsourcing</label>
+            </value>
+            <value>
+                <fullName>Treinamento</fullName>
+                <default>false</default>
+                <label>Treinamento</label>
+            </value>
+            <value>
+                <fullName>Melhorias salesforce</fullName>
+                <default>false</default>
+                <label>Melhorias salesforce</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

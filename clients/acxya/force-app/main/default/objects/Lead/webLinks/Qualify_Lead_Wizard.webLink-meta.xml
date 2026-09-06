@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qualify_Lead_Wizard</fullName>
+    <availability>online</availability>
+    <description>Qualificar Lead</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <height>600</height>
+    <linkType>url</linkType>
+    <masterLabel>Qualify Lead Wizard</masterLabel>
+    <openType>sidebar</openType>
+    <protected>false</protected>
+    <url>/flow/Lead_Qualification_Custom_Flow?LeadID={!Lead.Id}</url>
+</WebLink>

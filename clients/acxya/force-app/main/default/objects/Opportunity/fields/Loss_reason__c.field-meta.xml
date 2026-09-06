@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loss_reason__c</fullName>
+    <label>Motivo da Perda</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+            <value>
+                <fullName>Poor follow up</fullName>
+                <default>false</default>
+                <label>Perdemos o timing</label>
+            </value>
+            <value>
+                <fullName>Product/Service Gap</fullName>
+                <default>false</default>
+                <label>Product/Service Gap</label>
+            </value>
+            <value>
+                <fullName>Timing Gap</fullName>
+                <default>false</default>
+                <label>Timing errado</label>
+            </value>
+            <value>
+                <fullName>We were too expensive</fullName>
+                <default>false</default>
+                <label>Achou caro</label>
+            </value>
+            <value>
+                <fullName>Já é cliente</fullName>
+                <default>false</default>
+                <label>Já é cliente</label>
+            </value>
+            <value>
+                <fullName>Fora do perfil</fullName>
+                <default>false</default>
+                <label>Fora do perfil</label>
+            </value>
+            <value>
+                <fullName>Não conseguimos conexão</fullName>
+                <default>false</default>
+                <label>Não conseguimos conexão</label>
+            </value>
+            <value>
+                <fullName>Não abordar novamente (LGPD)</fullName>
+                <default>false</default>
+                <label>Não abordar novamente (LGPD)</label>
+            </value>
+            <value>
+                <fullName>Sem interesse / não quis conversar</fullName>
+                <default>false</default>
+                <label>Sem interesse / não quis conversar</label>
+            </value>
+            <value>
+                <fullName>Não é a pessoa certa</fullName>
+                <default>false</default>
+                <label>Não é a pessoa certa</label>
+            </value>
+            <value>
+                <fullName>Não quer mudar de solução</fullName>
+                <default>false</default>
+                <label>Não quer mudar de solução</label>
+            </value>
+            <value>
+                <fullName>Parou de responder</fullName>
+                <default>false</default>
+                <label>Parou de responder</label>
+            </value>
+            <value>
+                <fullName>Não conseguimos atender</fullName>
+                <default>false</default>
+                <label>Não conseguimos atender</label>
+            </value>
+            <value>
+                <fullName>Desistiu após o agendamento</fullName>
+                <default>false</default>
+                <label>Desistiu após o agendamento</label>
+            </value>
+            <value>
+                <fullName>Não cumpre critérios de SQL</fullName>
+                <default>false</default>
+                <label>Não cumpre critérios de SQL</label>
+            </value>
+            <value>
+                <fullName>Falta de orçamento</fullName>
+                <default>false</default>
+                <label>Falta de orçamento</label>
+            </value>
+            <value>
+                <fullName>Lost to competition</fullName>
+                <default>false</default>
+                <label>Competidor (preço)</label>
+            </value>
+            <value>
+                <fullName>Competidor (técnico)</fullName>
+                <default>false</default>
+                <label>Competidor (técnico)</label>
+            </value>
+            <value>
+                <fullName>Competidor (relacionamento)</fullName>
+                <default>false</default>
+                <label>Competidor (relacionamento)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

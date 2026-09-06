@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_de_Endereco</fullName>
+    <active>false</active>
+    <description>Verifica se campo &quot;Endereço de cobrança&quot; foi preenchido.</description>
+    <errorConditionFormula>ISBLANK(BillingAddress)</errorConditionFormula>
+    <errorMessage>Por favor, preencher o campo &quot;Endereço de cobrança&quot;.</errorMessage>
+</ValidationRule>

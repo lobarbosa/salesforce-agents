@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Licenciamento</fullName>
+    <active>true</active>
+    <businessProcess>Licenciamento</businessProcess>
+    <label>Licenciamento</label>
+    <picklistValues>
+        <picklist>Condi_o_de_parcelamento__c</picklist>
+        <values>
+            <fullName>2x</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>30%25 na entrada%2C 70%25 na entrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3x</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4x</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50%25 na entrada%2C 50%25 na entrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Especial %28especificar%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>À vista</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ForecastCategoryName</picklist>
+        <values>
+            <fullName>Best Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pipeline</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Forma_de_Pagamento__c</picklist>
+        <values>
+            <fullName>Boleto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cartão de Crédito</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cartão de Débito</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Link de Pagamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pix</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transferência Bancária</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LeadSource</picklist>
+        <values>
+            <fullName>Base de clientes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inbound</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inteligência Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Partner</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loss_reason__c</picklist>
+        <values>
+            <fullName>Competidor %28relacionamento%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Competidor %28técnico%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desistiu após o agendamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta de orçamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fora do perfil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Já é cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lost to competition</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não abordar novamente %28LGPD%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não conseguimos atender</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não conseguimos conexão</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não cumpre critérios de SQL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não quer mudar de solução</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não é a pessoa certa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Other</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Parou de responder</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Poor follow up</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Product%2FService Gap</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sem interesse %2F não quis conversar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Timing Gap</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>We were too expensive</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PL_Associada__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Proposta_Comercial__c</picklist>
+        <values>
+            <fullName>Proposta anexada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sem proposta</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tecnologia_utilizada__c</picklist>
+        <values>
+            <fullName>CRM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CXM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zendesk</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TipoOportunidade__c</picklist>
+        <values>
+            <fullName>AMS salesforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alocação%2Foutsourcing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Melhorias salesforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce Agentforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce Digital Engagement</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce Marketing Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce Sales Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce Service Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce data cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salesforce tableau</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Treinamento</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Proposta__c</picklist>
+        <values>
+            <fullName>Salesforce</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Zendesk</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Receita__c</picklist>
+        <values>
+            <fullName>MRR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MRR %2B RNR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RNR</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Existing Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New Business</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

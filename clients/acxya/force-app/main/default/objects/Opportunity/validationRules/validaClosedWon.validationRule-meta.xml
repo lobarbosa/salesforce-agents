@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>validaClosedWon</fullName>
+    <active>true</active>
+    <description>Regra de Validação para selecionar Fase de Oportunidade Closed Won.</description>
+    <errorConditionFormula>AND (
+   ISPICKVAL (StageName, &quot;Closed Won&quot;),
+      OR ( ISBLANK (Escopo_de_Projeto__c),
+           ISBLANK (Account.CNPJ__c),
+           ISPICKVAL (Forma_de_Pagamento__c , &quot;&quot;),
+           ISNULL (Account.Tipo_de_licenciamento__c))
+)</errorConditionFormula>
+    <errorMessage>Verifique os campos Escopo do Projeto, Forma de Pagamento, CNPJ da Conta e Tipo de Licenciamento da Conta estão preenchidos. Para Oportunidade Ganha é necessário o preenchimento dessas informações.</errorMessage>
+</ValidationRule>

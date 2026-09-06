@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Setup_Done__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Marcado pelo Project Setup Agent (Jira sync)</description>
+    <label>Setup de Projeto Feito</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>
