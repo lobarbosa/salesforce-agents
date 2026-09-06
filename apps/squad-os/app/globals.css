@@ -1,8 +1,24 @@
 :root {
-  --bg: #F5F7F6; --surface: #FFFFFF; --surface-alt: #E9EEED;
-  --border: #D2DBD9; --border-strong: #AEBDB9;
-  --text: #16211F; --text-muted: #56655F;
-  --accent: #146767; --accent-soft: #E3EFEE;
+  /* Cores institucionais: magenta #de00ff, ciano #00f6ff, branco puro
+     #ffffff, azul-marinho institucional. O magenta/ciano puros são
+     eletrizantes demais pra texto sobre branco (contraste ~3.8:1, abaixo do
+     4.5:1 mínimo do WCAG AA) — --accent/--accent2 são variantes escurecidas
+     acessíveis pra uso funcional (texto, botão, foco); --accent-vivid/
+     --accent2-vivid guardam o hex institucional puro, só pro gradiente e
+     usos decorativos (nunca atrás de texto). Cores semânticas (gate/success/
+     danger) continuam à parte — não é papel da marca carregar "erro" ou
+     "aviso", isso confundiria o significado.
+  */
+  --bg: #F6F5FB; --surface: #FFFFFF; --surface-alt: #EEEDF6;
+  --border: #DEDCEC; --border-strong: #BDBAD6;
+  --text: #0A0E24; --text-muted: #5C5A79;
+  --accent: #A600C7; --accent-soft: #FBE6FC; --accent-vivid: #DE00FF;
+  --accent2: #007680; --accent2-soft: #E2F7F9; --accent2-vivid: #00F6FF;
+  /* Rótulo de botão preenchido com --accent — separado de --text porque a
+     versão escura de --accent é clara o bastante pra pedir um rótulo escuro,
+     não branco (ver o bloco dark abaixo). */
+  --accent-contrast: #FFFFFF;
+  --gradient: linear-gradient(135deg, var(--accent-vivid), var(--accent2-vivid));
   --gate: #A9600F; --gate-soft: #F6E9D8; --gate-strong: #8A4C0B;
   --success: #2B7A45; --success-soft: #E1F0E4;
   --danger: #B3261E; --danger-soft: #FBE7E5;
@@ -13,10 +29,17 @@
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg: #101615; --surface: #17201F; --surface-alt: #1D2827;
-    --border: #2C3A38; --border-strong: #43534F;
-    --text: #E7EEEC; --text-muted: #9BADA8;
-    --accent: #56C2C0; --accent-soft: #16302E;
+    /* No escuro o azul-marinho institucional vira o fundo, e magenta/ciano
+       puros já rendem 4.6:1 e 13:1 de contraste — usa o hex de marca direto,
+       sem precisar escurecer. */
+    --bg: #05060F; --surface: #0E1130; --surface-alt: #171B45;
+    --border: #2B2F5C; --border-strong: #40447A;
+    --text: #F3F2FC; --text-muted: #A6A3C9;
+    --accent: #DE00FF; --accent-soft: #2E0A3D; --accent-vivid: #DE00FF;
+    --accent2: #00F6FF; --accent2-soft: #08313A; --accent2-vivid: #00F6FF;
+    /* --accent no escuro é o magenta vívido (L≈0.23) — claro demais pra
+       rótulo branco em cima (~3.8:1, reprova AA); rótulo escuro passa ~5.2:1. */
+    --accent-contrast: #1B0424;
     --gate: #E7A254; --gate-soft: #332615; --gate-strong: #F2B76B;
     --success: #6FCB8A; --success-soft: #16301F;
     --danger: #E7796F; --danger-soft: #331A17;
@@ -45,9 +68,20 @@ select:focus-visible, [tabindex]:focus-visible {
   position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column;
   background: var(--surface);
 }
-.sidebar .brand { padding: 1.1rem 1.1rem 0.8rem; }
+.sidebar .brand { padding: 1.1rem 1.1rem 1.1rem; position: relative; }
 .sidebar .brand .name { font-weight: 600; font-size: 0.92rem; }
 .sidebar .brand .sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
+/* Gradiente institucional — reservado ao símbolo (aqui, a marca escrita),
+   nunca usado como cor de função (botão, link, estado). */
+.sidebar .brand::after {
+  content: ""; position: absolute; left: 1.1rem; right: 1.1rem; bottom: 0;
+  height: 3px; border-radius: 999px; background: var(--gradient);
+}
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+  .sidebar .brand .name, .auth-card > div:first-child .name {
+    background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+}
 .sidebar .search { padding: 0 1.1rem 0.7rem; }
 .sidebar .search input {
   width: 100%; padding: 0.4rem 0.6rem; border: 1px solid var(--border);
@@ -77,7 +111,7 @@ select:focus-visible, [tabindex]:focus-visible {
 .new-client-form .row { display: flex; gap: 0.4rem; }
 .new-client-form button {
   padding: 0.4rem; border-radius: 6px; border: 1px solid var(--accent);
-  background: var(--accent); color: #fff; font-size: 0.78rem; cursor: pointer; font-weight: 500;
+  background: var(--accent); color: var(--accent-contrast); font-size: 0.78rem; cursor: pointer; font-weight: 500;
 }
 .new-client-form .cancel { background: none; color: var(--text-muted); border-color: var(--border); }
 
@@ -128,7 +162,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 /* kanban */
 .board-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; gap: 0.8rem; flex-wrap: wrap; }
 .btn-primary {
-  background: var(--accent); color: #fff; border: none; border-radius: 7px;
+  background: var(--accent); color: var(--accent-contrast); border: none; border-radius: 7px;
   padding: 0.5rem 0.9rem; font-size: 0.82rem; cursor: pointer; font-weight: 500;
 }
 .btn-primary:disabled { opacity: 0.6; cursor: default; }
@@ -224,6 +258,10 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 /* login */
 .auth-shell { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem; }
 .auth-card { width: 100%; max-width: 360px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.6rem; display: flex; flex-direction: column; gap: 1rem; }
+.auth-card { position: relative; overflow: hidden; }
+.auth-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient);
+}
 .auth-card .name { font-family: var(--mono); font-weight: 600; font-size: 1rem; }
 .auth-card .sub { font-size: 0.8rem; color: var(--text-muted); margin-top: -0.6rem; }
 .auth-card .field input { padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 7px; background: var(--surface-alt); font-size: 0.88rem; width: 100%; }
