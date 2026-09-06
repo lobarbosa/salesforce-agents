@@ -1,0 +1,84 @@
+name: CI — validar deploy Salesforce (PR)
+
+# Deploy check-only (--dry-run) contra a sandbox de cada cliente cujo
+# force-app mudou no PR — nunca deploy de verdade, isso continua exclusivo
+# do fluxo de demanda (sfagents demanda avancar -> run-demand.yml).
+#
+# Genérico pros 6 clientes desde já: se o GitHub Environment do cliente
+# ainda não tem SF_CLIENT_ID/SF_USERNAME/SF_JWT_KEY cadastrados (ver
+# docs/conexoes-e-setup.md), o job não falha — avisa e pula a validação
+# real, porque ainda não é possível autenticar. Cadastrar as credenciais
+# depois é suficiente pra esse mesmo workflow passar a validar de verdade,
+# sem precisar editar nada aqui.
+
+on:
+  pull_request:
+    paths:
+      - "clients/*/force-app/**"
+
+permissions:
+  contents: read
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      clients: ${{ steps.changed.outputs.clients }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Descobrir quais clients/<cliente>/force-app mudaram
+        id: changed
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          CLIENTS=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- 'clients/*/force-app/**' \
+            | sed -E 's#^clients/([^/]+)/force-app/.*#\1#' | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          echo "clientes com force-app alterado: $CLIENTS"
+          echo "clients=$CLIENTS" >> "$GITHUB_OUTPUT"
+
+  validate:
+    needs: detect
+    if: needs.detect.outputs.clients != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        client: ${{ fromJson(needs.detect.outputs.clients) }}
+    environment: ${{ matrix.client }}
+    env:
+      TARGET_ORG: sbx-${{ matrix.client }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Autenticar via JWT
+        id: auth
+        run: |
+          if [ -z "${{ secrets.SF_CLIENT_ID }}" ]; then
+            echo "::warning::Environment '${{ matrix.client }}' ainda não tem credenciais (SF_CLIENT_ID/SF_USERNAME/SF_JWT_KEY) — pulando validação real. Ver docs/conexoes-e-setup.md."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          sf org login jwt \
+            --client-id "${{ secrets.SF_CLIENT_ID }}" \
+            --jwt-key-file server.key \
+            --username "${{ secrets.SF_USERNAME }}" \
+            --instance-url https://test.salesforce.com \
+            --alias "$TARGET_ORG"
+          rm -f server.key
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy check-only (validate)
+        if: steps.auth.outputs.ok == 'true'
+        run: |
+          sf project deploy validate \
+            --source-dir "clients/${{ matrix.client }}/force-app" \
+            --target-org "$TARGET_ORG" \
+            --wait 30

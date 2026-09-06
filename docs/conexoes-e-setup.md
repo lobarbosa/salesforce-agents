@@ -43,6 +43,13 @@ Os workflows (`test-connection.yml`, `baseline-retrieve.yml`, `run-demand.yml`) 
 `client` como input e usam `environment: ${{ inputs.client }}` — então rodam pra qualquer
 cliente sem duplicar arquivo de workflow, só apontando o Environment certo.
 
+`ci-salesforce-validate.yml` usa os mesmos 3 secrets, mas dispara sozinho em todo PR que
+mexe em `clients/<cliente>/force-app/**` (detecta o cliente pelo path alterado, sem input
+manual) e só faz `sf project deploy validate` — nunca deploy de verdade. Hoje só `acxya`
+tem os secrets cadastrados; nos outros 5 clientes o job roda, avisa que o Environment
+ainda não tem credencial, e passa sem validar nada — cadastrar os secrets depois é
+suficiente pra esse mesmo workflow passar a validar de verdade, sem editar nada nele.
+
 Quando precisar de INT/UAT/PROD além da sandbox por cliente, o padrão vira Environments
 compostos: `<cliente>-int`, `<cliente>-uat`, `<cliente>-prod` — **`<cliente>-prod` sempre
 com required reviewer nomeado** (Settings do Environment → Deployment protection rules).

@@ -32,7 +32,12 @@ O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
    confirme via `sf` CLI contra a org. Se não confirmou, declare a incerteza.
 4. **Git é obrigatório.** Todo build acontece em branch `feature/<DEMAND-ID>`. Nada é
-   commitado direto na main. Todo merge passa por PR com revisor humano.
+   commitado direto na main. Todo merge passa por PR com revisor humano — `main` é
+   protegida (push direto bloqueado) e exige os checks de CI abaixo passando:
+   - `ci-python.yml` — testes do orquestrador (`src/salesforce_agents/`)
+   - `ci-squad-os.yml` — lint + build do Squad OS (`apps/squad-os/`)
+   - `ci-salesforce-validate.yml` — `sf project deploy validate` (check-only, nunca
+     deploy de verdade) contra a sandbox do cliente cujo `force-app` mudou no PR
 5. **Estado em disco.** Cada demanda gera `clients/<cliente>/demandas/<DEMAND-ID>/` com os
    artefatos numerados. Se a sessão cair, o próximo agente lê a pasta e retoma de onde parou.
 6. **Uma demanda por vez, por cliente.** Não paralelize builds na mesma sandbox sem alinhar
