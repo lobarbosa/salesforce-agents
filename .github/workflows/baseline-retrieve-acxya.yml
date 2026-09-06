@@ -45,25 +45,25 @@ jobs:
 
       - name: "Fase 1 — núcleo (dados e código)"
         run: |
-          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-01-core.xml --target-org "$TARGET_ORG" --wait 30
+          ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-01-core.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
           git commit -m "acxya: baseline fase 1 - núcleo (dados e código)" --allow-empty -q
 
       - name: "Fase 2 — automação e regras"
         run: |
-          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-02-automacao.xml --target-org "$TARGET_ORG" --wait 30
+          ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-02-automacao.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
           git commit -m "acxya: baseline fase 2 - automação e regras" --allow-empty -q
 
       - name: "Fase 3 — segurança (depende das fases 1 e 2)"
         run: |
-          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-03-seguranca.xml --target-org "$TARGET_ORG" --wait 30
+          ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-03-seguranca.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
           git commit -m "acxya: baseline fase 3 - segurança" --allow-empty -q
 
       - name: "Fase 4 — interface e o resto"
         run: |
-          cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-04-ui.xml --target-org "$TARGET_ORG" --wait 30
+          ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-04-ui.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
           git commit -m "acxya: baseline fase 4 - interface" --allow-empty -q
 
