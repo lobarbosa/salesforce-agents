@@ -32,9 +32,12 @@ Cada cliente tem seu próprio projeto Salesforce DX isolado em
 do Cliente" — veja `clients/README.md` e o template em `clients/_template/CLAUDE.md`).
 
 **Squad OS** — um front-end publicado (artifact) onde a demanda nasce e o briefing de
-cada cliente é editado por quem não mexe em terminal. Hoje a ponte para este repositório
-é manual (leia a demanda no OS, rode `sfagents demanda nova` com o mesmo texto); ver
-`docs/conexoes-e-setup.md` para o runbook completo de conexões e credenciais.
+cada cliente é editado por quem não mexe em terminal. Cada card de demanda também é onde
+o consultor responde as perguntas em aberto que um agente levantou (ex.: prefixo de campo,
+tipo de dado, regra de validação) e aprova o gate — sem precisar de ninguém no meio. Hoje a
+ponte para este repositório é manual (leio a demanda e as respostas no OS e materializo os
+arquivos aqui); ver `docs/conexoes-e-setup.md` para o runbook completo de conexões e
+credenciais.
 
 ## Setup
 
