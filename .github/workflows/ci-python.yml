@@ -1,0 +1,34 @@
+name: CI — agentes (Python)
+
+# pytest sobre src/salesforce_agents/ a cada PR/push que toca no orquestrador,
+# no modelo de demanda ou nos próprios testes.
+
+on:
+  pull_request:
+    paths:
+      - "src/salesforce_agents/**"
+      - "tests/**"
+      - "pyproject.toml"
+  push:
+    branches: [main]
+    paths:
+      - "src/salesforce_agents/**"
+      - "tests/**"
+      - "pyproject.toml"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -e . pytest
+
+      - run: pytest -q

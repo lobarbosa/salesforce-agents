@@ -1,0 +1,43 @@
+name: CI — Squad OS (Next.js)
+
+# Lint + build do app apps/squad-os/ a cada PR/push que toca ali. Roda com
+# credenciais placeholder — prisma generate/next build não precisam de
+# Postgres ou Supabase reais pra validar tipo e compilação (o `npm run build`
+# manual desta sessão sempre usou os mesmos valores fictícios).
+
+on:
+  pull_request:
+    paths:
+      - "apps/squad-os/**"
+  push:
+    branches: [main]
+    paths:
+      - "apps/squad-os/**"
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/squad-os
+    env:
+      DATABASE_URL: "postgresql://placeholder:placeholder@localhost:5432/placeholder"
+      NEXT_PUBLIC_SUPABASE_URL: "https://placeholder.supabase.co"
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "placeholder"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/squad-os/package-lock.json
+
+      - run: npm ci
+
+      - run: npm run lint
+
+      - run: npm run build
