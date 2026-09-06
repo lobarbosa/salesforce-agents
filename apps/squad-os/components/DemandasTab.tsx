@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type DragEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { Client, Demanda } from "@/lib/generated/prisma/client";
 import { TRIAGE, TRIAGE_LABEL, EXEC_STAGES } from "@/lib/demandas";
@@ -22,6 +22,8 @@ export function DemandasTab({
   const router = useRouter();
   const [newOpen, setNewOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(openDemandId ?? null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
 
   const byId = new Map(demandas.map((d) => [d.id, d]));
   const open = openId ? byId.get(openId) : null;
@@ -33,6 +35,38 @@ export function DemandasTab({
       body: JSON.stringify({ status }),
     });
     if (res.ok) router.refresh();
+  }
+
+  function clearDrag() {
+    setDraggingId(null);
+    setDragOverStatus(null);
+  }
+
+  // Drag-and-drop é um atalho pra quem prefere arrastar — a lista <select> em
+  // cada card continua sendo o jeito sem arrastar de mudar a triagem (WCAG
+  // 2.2 "Dragging Movements": nunca deixar arrastar como única forma).
+  function dropHandlers(status: string) {
+    return {
+      onDragOver(e: DragEvent<HTMLDivElement>) {
+        if (!draggingId) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "move";
+        if (dragOverStatus !== status) setDragOverStatus(status);
+      },
+      onDragLeave(e: DragEvent<HTMLDivElement>) {
+        if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+        setDragOverStatus((cur) => (cur === status ? null : cur));
+      },
+      onDrop(e: DragEvent<HTMLDivElement>) {
+        e.preventDefault();
+        const id = e.dataTransfer.getData("text/plain") || draggingId;
+        clearDrag();
+        if (!id) return;
+        const atual = byId.get(id);
+        if (!atual || atual.status === status) return;
+        handleMove(id, status);
+      },
+    };
   }
 
   const execItems = demandas.filter((d) => (EXEC_STAGES as readonly string[]).includes(d.status));
@@ -51,7 +85,11 @@ export function DemandasTab({
         {TRIAGE.map((s) => {
           const items = demandas.filter((d) => d.status === s);
           return (
-            <div className="column" key={s}>
+            <div
+              className={`column${canManage && dragOverStatus === s ? " drag-over" : ""}`}
+              key={s}
+              {...(canManage ? dropHandlers(s) : {})}
+            >
               <h3>
                 {TRIAGE_LABEL[s]}
                 <span className="count">{items.length}</span>
@@ -65,8 +103,11 @@ export function DemandasTab({
                     demanda={d}
                     triageColumn
                     canMove={canManage}
+                    isDragging={d.id === draggingId}
                     onOpen={() => setOpenId(d.id)}
                     onMove={(status) => handleMove(d.id, status)}
+                    onDragStart={setDraggingId}
+                    onDragEnd={clearDrag}
                   />
                 ))
               )}

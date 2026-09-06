@@ -138,7 +138,15 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .column h3 .count { font-family: var(--mono); }
 .column.exec h3 { color: var(--accent); }
 .column.done h3 { color: var(--success); }
+.column.drag-over { background: var(--accent-soft); border-color: var(--accent); border-style: dashed; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.65rem; font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.35rem; cursor: pointer; }
+.card[draggable="true"] { cursor: grab; }
+.card.dragging { opacity: 0.5; }
+@media (prefers-reduced-motion: no-preference) {
+  .card { transition: opacity 0.12s ease, box-shadow 0.12s ease; }
+  .column { transition: background-color 0.12s ease, border-color 0.12s ease; }
+}
+.drag-handle { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.02em; }
 .card .titulo { font-weight: 600; }
 .card .meta { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
 .badge { padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.65rem; }

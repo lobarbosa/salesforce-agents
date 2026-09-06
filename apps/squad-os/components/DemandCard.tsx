@@ -1,5 +1,6 @@
 "use client";
 
+import type { DragEvent } from "react";
 import type { Demanda } from "@/lib/generated/prisma/client";
 import { TRIAGE, TRIAGE_LABEL, STAGE_LABEL, perguntasPendentes, timeAgo } from "@/lib/demandas";
 
@@ -26,21 +27,38 @@ export function DemandCard({
   demanda,
   triageColumn,
   canMove,
+  isDragging,
   onOpen,
   onMove,
+  onDragStart,
+  onDragEnd,
 }: {
   demanda: Demanda;
   triageColumn: boolean;
   canMove?: boolean;
+  isDragging?: boolean;
   onOpen: () => void;
   onMove?: (status: string) => void;
+  onDragStart?: (id: string) => void;
+  onDragEnd?: () => void;
 }) {
+  const podeArrastar = triageColumn && canMove;
+
+  function handleDragStart(e: DragEvent<HTMLDivElement>) {
+    e.dataTransfer.setData("text/plain", demanda.id);
+    e.dataTransfer.effectAllowed = "move";
+    onDragStart?.(demanda.id);
+  }
+
   return (
     <div
-      className="card"
+      className={`card${isDragging ? " dragging" : ""}`}
       tabIndex={0}
       role="button"
       aria-label={`Abrir demanda ${demanda.titulo}`}
+      draggable={podeArrastar}
+      onDragStart={podeArrastar ? handleDragStart : undefined}
+      onDragEnd={podeArrastar ? onDragEnd : undefined}
       onClick={onOpen}
       onKeyDown={(e) => {
         if (e.target !== e.currentTarget) return;
@@ -61,21 +79,25 @@ export function DemandCard({
         <span>{timeAgo(demanda.criadoEm)}</span>
       </div>
       {triageColumn && canMove ? (
-        <select
-          className="move"
-          value={demanda.status}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => {
-            e.stopPropagation();
-            onMove?.(e.target.value);
-          }}
-        >
-          {TRIAGE.map((s) => (
-            <option key={s} value={s}>
-              {TRIAGE_LABEL[s]}
-            </option>
-          ))}
-        </select>
+        <>
+          {podeArrastar && <span className="drag-handle" aria-hidden="true">⠿ arraste ou use a lista</span>}
+          <select
+            className="move"
+            value={demanda.status}
+            onClick={(e) => e.stopPropagation()}
+            onPointerDown={(e) => e.stopPropagation()}
+            onChange={(e) => {
+              e.stopPropagation();
+              onMove?.(e.target.value);
+            }}
+          >
+            {TRIAGE.map((s) => (
+              <option key={s} value={s}>
+                {TRIAGE_LABEL[s]}
+              </option>
+            ))}
+          </select>
+        </>
       ) : triageColumn ? (
         <span className="readonly-note">{TRIAGE_LABEL[demanda.status] ?? demanda.status}</span>
       ) : (
