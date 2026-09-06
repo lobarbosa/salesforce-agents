@@ -1,24 +1,32 @@
-name: Baseline — Retrieve metadata (acxya)
+name: Baseline — Retrieve metadata
 
-# Traz o metadata existente da sandbox acxya para o repo, em fases (dados/código
-# primeiro, segurança por último — Profile só traz permissão do que já está no
-# repo). Cada fase vira um commit separado. Roda manualmente; não é acionado por
-# push/PR porque só faz sentido rodar de novo quando quisermos re-sincronizar o
-# baseline, não a cada mudança de código.
+# Traz o metadata existente da sandbox de um cliente para o repo, em fases
+# (dados/código primeiro, segurança por último — Profile só traz permissão do
+# que já está no repo). Cada fase vira um commit separado. Roda manualmente;
+# não é acionado por push/PR porque só faz sentido rodar de novo quando
+# quisermos re-sincronizar o baseline, não a cada mudança de código.
+#
+# Credenciais vêm do GitHub Environment com o mesmo nome do cliente.
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Nome do cliente (= clients/<client>/ e o GitHub Environment)'
+        required: true
+        default: acxya
 
 permissions:
   contents: write
 
 env:
-  CLIENT_DIR: clients/acxya
-  TARGET_ORG: sbx-acxya
+  CLIENT_DIR: clients/${{ inputs.client }}
+  TARGET_ORG: sbx-${{ inputs.client }}
 
 jobs:
   retrieve:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -29,11 +37,11 @@ jobs:
 
       - name: Autenticar via JWT
         run: |
-          echo "${{ secrets.SF_JWT_KEY_ACXYA }}" > server.key
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
           sf org login jwt \
-            --client-id "${{ secrets.SF_CLIENT_ID_ACXYA }}" \
+            --client-id "${{ secrets.SF_CLIENT_ID }}" \
             --jwt-key-file server.key \
-            --username "${{ secrets.SF_USERNAME_ACXYA }}" \
+            --username "${{ secrets.SF_USERNAME }}" \
             --instance-url https://test.salesforce.com \
             --alias "$TARGET_ORG"
           rm -f server.key
@@ -47,25 +55,25 @@ jobs:
         run: |
           ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-01-core.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
-          git commit -m "acxya: baseline fase 1 - núcleo (dados e código)" --allow-empty -q
+          git commit -m "${{ inputs.client }}: baseline fase 1 - núcleo (dados e código)" --allow-empty -q
 
       - name: "Fase 2 — automação e regras"
         run: |
           ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-02-automacao.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
-          git commit -m "acxya: baseline fase 2 - automação e regras" --allow-empty -q
+          git commit -m "${{ inputs.client }}: baseline fase 2 - automação e regras" --allow-empty -q
 
       - name: "Fase 3 — segurança (depende das fases 1 e 2)"
         run: |
           ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-03-seguranca.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
-          git commit -m "acxya: baseline fase 3 - segurança" --allow-empty -q
+          git commit -m "${{ inputs.client }}: baseline fase 3 - segurança" --allow-empty -q
 
       - name: "Fase 4 — interface e o resto"
         run: |
           ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-04-ui.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
-          git commit -m "acxya: baseline fase 4 - interface" --allow-empty -q
+          git commit -m "${{ inputs.client }}: baseline fase 4 - interface" --allow-empty -q
 
       - name: Inventário
         run: |

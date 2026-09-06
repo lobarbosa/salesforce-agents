@@ -1,19 +1,21 @@
-name: Rodar demanda (agentes) — acxya
+name: Rodar demanda (agentes)
 
 # Aciona o orquestrador de verdade (Claude Agent SDK + .claude/agents) para uma
-# demanda do cliente acxya. Diferente do smoke test e do baseline retrieve
-# (que só rodam sf CLI puro), este workflow precisa autenticar com a
-# Anthropic também, porque aqui não existe a sessão de Claude Code já
-# logada que esta conversa tem.
+# demanda de um cliente. Diferente do smoke test e do baseline retrieve (que só
+# rodam sf CLI puro), este workflow precisa autenticar com a Anthropic também,
+# porque aqui não existe a sessão de Claude Code já logada que esta conversa tem.
 #
-# Escopo de um único cliente por enquanto: os nomes de secret (*_ACXYA) são
-# fixos. Se/quando entrar um segundo cliente real, isso vira um workflow por
-# cliente ou uma resolução dinâmica de secret — não faz sentido generalizar
-# agora com um caso só.
+# Credenciais Salesforce vêm do GitHub Environment com o nome do cliente.
+# ANTHROPIC_API_KEY é secret de repositório (compartilhada entre clientes —
+# a conta Anthropic é do squad, não do cliente).
 
 on:
   workflow_dispatch:
     inputs:
+      client:
+        description: 'Nome do cliente (= clients/<client>/ e o GitHub Environment)'
+        required: true
+        default: acxya
       demand_id:
         description: 'ID da demanda (ex.: ACXYA-1)'
         required: true
@@ -22,12 +24,13 @@ permissions:
   contents: write
 
 env:
-  CLIENT: acxya
-  TARGET_ORG: sbx-acxya
+  CLIENT: ${{ inputs.client }}
+  TARGET_ORG: sbx-${{ inputs.client }}
 
 jobs:
   run:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,11 +48,11 @@ jobs:
 
       - name: Autenticar Salesforce via JWT
         run: |
-          echo "${{ secrets.SF_JWT_KEY_ACXYA }}" > server.key
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
           sf org login jwt \
-            --client-id "${{ secrets.SF_CLIENT_ID_ACXYA }}" \
+            --client-id "${{ secrets.SF_CLIENT_ID }}" \
             --jwt-key-file server.key \
-            --username "${{ secrets.SF_USERNAME_ACXYA }}" \
+            --username "${{ secrets.SF_USERNAME }}" \
             --instance-url https://test.salesforce.com \
             --alias "$TARGET_ORG"
           rm -f server.key

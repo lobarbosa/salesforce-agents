@@ -29,14 +29,29 @@ em arquivo (`clients/<cliente>/demandas/<ID>/`).
 | Usuário de integração | Usuário dedicado, licença própria, **nunca** usuário nominal de pessoa |
 | Pré-autorização | Manage → Permitted Users: *Admin approved users*, com Permission Set atribuído |
 
-### GitHub Secrets (por environment)
+### GitHub Environments (um por cliente)
+Cada cliente é um **GitHub Environment** com o mesmo nome do diretório em `clients/`
+(Settings → Environments → New environment → nome = `<cliente>`, ex.: `acxya`). Dentro
+dele, 3 secrets **sem sufixo** (o Environment já isola por cliente, não precisa repetir
+o nome na chave):
 ```
-SF_CLIENT_ID_INT / SF_USERNAME_INT / SF_JWT_KEY_INT
-SF_CLIENT_ID_UAT / SF_USERNAME_UAT / SF_JWT_KEY_UAT
-SF_CLIENT_ID_PROD / SF_USERNAME_PROD / SF_JWT_KEY_PROD
+SF_CLIENT_ID
+SF_USERNAME
+SF_JWT_KEY
 ```
-Environments `int`, `uat` e `producao` criados em Settings → Environments.
-**`producao` com required reviewer nomeado.** Sem isso o guard humano é ficção.
+Os workflows (`test-connection.yml`, `baseline-retrieve.yml`, `run-demand.yml`) recebem
+`client` como input e usam `environment: ${{ inputs.client }}` — então rodam pra qualquer
+cliente sem duplicar arquivo de workflow, só apontando o Environment certo.
+
+Quando precisar de INT/UAT/PROD além da sandbox por cliente, o padrão vira Environments
+compostos: `<cliente>-int`, `<cliente>-uat`, `<cliente>-prod` — **`<cliente>-prod` sempre
+com required reviewer nomeado** (Settings do Environment → Deployment protection rules).
+Sem isso o guard humano é ficção. Nenhum cliente tem environment de prod configurado
+ainda — isso é o passo 11 do mapa de execução, não algo a antecipar.
+
+`ANTHROPIC_API_KEY` fica em **Settings → Secrets → Actions** do repositório (não dentro de
+um Environment) — é a mesma conta Anthropic do squad para todos os clientes, não algo que
+se isola por conta.
 
 ### Ambiente local / CI onde `sfagents` roda
 ```
@@ -58,8 +73,8 @@ Sem isso o orquestrador (`orchestrator.py`) não consegue abrir sessão do Claud
 | 2 | Criar/usar `clients/<cliente>/` e trazer o metadata atual (`sf project retrieve start`) | 1 | 1h | `force-app/` reflete a org |
 | 3 | Preencher `clients/<cliente>/CLAUDE.md` a partir do template | 2 | 15min | Briefing preenchido |
 | 4 | Criar branches `develop` e proteger `main` | 2 | 15min | PR obrigatório em `main` |
-| 5 | Gerar certificado + Connected App **na sandbox INT** | 1 | 45min | `sf org login jwt` funciona |
-| 6 | Cadastrar secrets e environments no GitHub | 4, 5 | 30min | Workflow de deploy verde |
+| 5 | Gerar certificado + Connected App/External Client App **na sandbox do cliente** | 1 | 45min | `sf org login jwt` funciona |
+| 6 | Criar o GitHub Environment `<cliente>` e cadastrar `SF_CLIENT_ID`/`SF_USERNAME`/`SF_JWT_KEY` nele | 4, 5 | 30min | `test-connection.yml` roda verde pra esse cliente |
 | 7 | Registrar uma demanda real no Squad OS e materializá-la em `clients/<cliente>/demandas/<ID>/demanda.md` | 5 | 15min | `sfagents demanda listar` mostra a demanda |
 | 8 | Rodar `sfagents demanda avancar` com essa demanda até `release` | 3, 6, 7 | 1 dia | Ciclo completo com gates registrados em `gates.md` |
 | 9 | Repetir com mais 4 demandas, anotando cada correção humana | 8 | 2 semanas | Retrabalho < 30% |

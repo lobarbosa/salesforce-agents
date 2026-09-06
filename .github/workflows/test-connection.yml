@@ -1,15 +1,26 @@
 name: Testar conexão JWT com a sandbox
 
 # Smoke test manual: só confirma que o JWT bearer flow autentica contra a
-# sandbox. Não faz deploy nem toca em metadata. Rode isso antes de confiar em
-# qualquer outro workflow que dependa da mesma credencial.
+# sandbox de um cliente. Não faz deploy nem toca em metadata. Rode isso antes
+# de confiar em qualquer outro workflow que dependa da mesma credencial.
+#
+# Credenciais vêm do GitHub Environment com o mesmo nome do cliente
+# (Settings → Environments → <client> → secrets: SF_CLIENT_ID, SF_USERNAME,
+# SF_JWT_KEY). Um Environment por cliente = isolamento de credencial por
+# cliente, sem duplicar workflow.
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Nome do cliente (= nome do diretório em clients/ e do GitHub Environment)'
+        required: true
+        default: acxya
 
 jobs:
   test:
     runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}
     steps:
       - uses: actions/checkout@v4
 
@@ -18,16 +29,16 @@ jobs:
 
       - name: Autenticar via JWT
         run: |
-          echo "${{ secrets.SF_JWT_KEY_ACXYA }}" > server.key
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
           sf org login jwt \
-            --client-id "${{ secrets.SF_CLIENT_ID_ACXYA }}" \
+            --client-id "${{ secrets.SF_CLIENT_ID }}" \
             --jwt-key-file server.key \
-            --username "${{ secrets.SF_USERNAME_ACXYA }}" \
+            --username "${{ secrets.SF_USERNAME }}" \
             --instance-url https://test.salesforce.com \
-            --alias sbx-acxya
+            --alias "sbx-${{ inputs.client }}"
 
       - name: Confirmar org conectada
-        run: sf org display --target-org sbx-acxya --json
+        run: sf org display --target-org "sbx-${{ inputs.client }}" --json
 
       - name: Limpar credencial
         if: always()
