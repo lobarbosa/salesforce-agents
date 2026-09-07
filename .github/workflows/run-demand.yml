@@ -49,10 +49,15 @@ jobs:
       - name: Autenticar Salesforce via JWT
         run: |
           echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          # Remove espaço/quebra de linha acidental — client-id e username nunca
+          # deveriam ter (achado real: um dos secrets veio com "NOME_VAR=" colado
+          # na frente do valor, ver test-connection.yml).
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
           sf org login jwt \
-            --client-id "${{ secrets.SF_CLIENT_ID }}" \
+            --client-id "$CLIENT_ID" \
             --jwt-key-file server.key \
-            --username "${{ secrets.SF_USERNAME }}" \
+            --username "$USERNAME" \
             --instance-url https://test.salesforce.com \
             --alias "$TARGET_ORG"
           rm -f server.key
