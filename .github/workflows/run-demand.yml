@@ -22,10 +22,12 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 env:
   CLIENT: ${{ inputs.client }}
   TARGET_ORG: sbx-${{ inputs.client }}
+  DEMAND_BRANCH: feature/${{ inputs.demand_id }}
 
 jobs:
   run:
@@ -67,6 +69,18 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # CLAUDE.md guardrail #4: nada é commitado direto numa branch protegida.
+      # Toda demanda vive numa branch dedicada feature/<DEMAND-ID> — se ela já
+      # existe (uma etapa anterior já rodou), continua dali; senão, nasce da
+      # branch que disparou o workflow.
+      - name: Preparar branch da demanda
+        run: |
+          if git fetch origin "$DEMAND_BRANCH" 2>/dev/null; then
+            git checkout -B "$DEMAND_BRANCH" "origin/$DEMAND_BRANCH"
+          else
+            git checkout -b "$DEMAND_BRANCH"
+          fi
+
       - name: Rodar orquestrador
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -93,4 +107,17 @@ jobs:
           # dos artefatos junto.
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$DEMAND_ID: sessão de agente via CI" --allow-empty -q
-          git push origin HEAD:${{ github.ref_name }}
+          git push origin "HEAD:$DEMAND_BRANCH"
+
+      - name: Abrir PR da demanda (se ainda não existir)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DEMAND_ID: ${{ inputs.demand_id }}
+        run: |
+          if ! gh pr view "$DEMAND_BRANCH" --json number >/dev/null 2>&1; then
+            gh pr create \
+              --base main \
+              --head "$DEMAND_BRANCH" \
+              --title "$DEMAND_ID: acompanhamento da demanda" \
+              --body "Aberto automaticamente por \`run-demand.yml\`. Acumula os artefatos de cada etapa da demanda **$DEMAND_ID** (\`clients/$CLIENT/demandas/$DEMAND_ID/\`). Merge só depois dos gates humanos bloqueantes da doutrina (\`CLAUDE.md\`) — revise \`gates.md\` antes de aprovar."
+          fi

@@ -33,7 +33,15 @@ O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
    confirme via `sf` CLI contra a org. Se não confirmou, declare a incerteza.
 4. **Git é obrigatório.** Todo build acontece em branch `feature/<DEMAND-ID>`. Nada é
    commitado direto na main. Todo merge passa por PR com revisor humano — `main` é
-   protegida (push direto bloqueado) e exige os checks de CI abaixo passando:
+   protegida (push direto bloqueado) e exige os checks de CI abaixo passando. Vale pra
+   sessão de agente inteira, não só pro build declarativo/Apex: `run-demand.yml` cria/
+   reusa `feature/<DEMAND-ID>` (sem o sufixo de descrição — quem cria manualmente pode
+   adicionar) e abre PR automaticamente na primeira etapa; `baseline-retrieve.yml` usa
+   `baseline/<cliente>` do mesmo jeito. Achado real (ACXYA-1, 2026-09-07): antes dessa
+   correção, `run-demand.yml` empurrava direto pra branch que disparou o workflow —
+   funcionava só por acaso enquanto isso era uma branch não protegida; quebrou na
+   primeira vez que rodou em `main`.
+
    - `ci-python.yml` — testes do orquestrador (`src/salesforce_agents/`)
    - `ci-squad-os.yml` — lint + build do Squad OS (`apps/squad-os/`)
    - `ci-salesforce-validate.yml` — `sf project deploy validate` (check-only, nunca
