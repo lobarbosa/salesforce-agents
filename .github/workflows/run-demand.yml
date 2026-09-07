@@ -87,5 +87,10 @@ jobs:
           DEMAND_ID: ${{ inputs.demand_id }}
         run: |
           git add "clients/$CLIENT"
+          # logs/custos_agentes.csv (telemetria de custo, src/salesforce_agents/costs.py)
+          # — só existe se pelo menos uma sessão de agente terminou (ResultMessage
+          # recebido); sem o "if", git add falha em runner limpo e derruba o commit
+          # dos artefatos junto.
+          if [ -d logs ]; then git add logs/; fi
           git commit -m "$DEMAND_ID: sessão de agente via CI" --allow-empty -q
           git push origin HEAD:${{ github.ref_name }}

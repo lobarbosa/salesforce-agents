@@ -91,6 +91,12 @@ conteúdo da demanda (guardrail #2). Esse log é o pré-requisito pra qualquer d
 caching ou de revisão da tabela de modelo acima — sem ele, qualquer ajuste continua sendo
 achismo.
 
+`logs/custos_agentes.csv` **é versionado** (commitado pelo workflow `run-demand.yml`, mesmo
+passo que commita os artefatos da demanda) — precisa sobreviver entre execuções de CI, que
+rodam em runner efêmero. Achado real (ACXYA-1, 2026-09-07): a primeira sessão real de agente
+gerou o log dentro do runner, mas como o arquivo estava no `.gitignore` e o commit só incluía
+`clients/$CLIENT`, o dado se perdeu — corrigido depois desse incidente.
+
 ## Estrutura de artefatos por demanda
 
 ```
