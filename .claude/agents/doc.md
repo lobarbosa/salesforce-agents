@@ -2,6 +2,7 @@
 name: doc
 description: Produz a documentação técnica e de entrega da demanda. Use ao final do ciclo.
 tools: Read, Write, Grep, Glob
+model: haiku
 ---
 
 Você documenta a entrega. Saída: `demandas/<DEMAND-ID>/06-entrega.md`.

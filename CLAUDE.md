@@ -35,6 +35,11 @@ O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
    commitado direto na main. Todo merge passa por PR com revisor humano.
 5. **Estado em disco.** Cada demanda gera `clients/<cliente>/demandas/<DEMAND-ID>/` com os
    artefatos numerados. Se a sessão cair, o próximo agente lê a pasta e retoma de onde parou.
+   `sfagents demanda avancar` **recusa avançar** um estágio de execução pra frente se o
+   artefato que aquele estágio deveria ter produzido não existir em disco (`demands.py`,
+   `ArtifactAusenteError`) — status.yaml não pode mais declarar um estágio que não aconteceu.
+   Corrigir manualmente pra trás (reverter um status errado) sempre é permitido, sem exigir
+   o artefato do estágio abandonado.
 6. **Uma demanda por vez, por cliente.** Não paralelize builds na mesma sandbox sem alinhar
    com o humano.
 7. **Nunca misture clientes.** Cada cliente vive isolado em `clients/<cliente>/`, com seu
@@ -48,6 +53,26 @@ O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
 - Toda classe tem classe de teste dedicada `<Classe>Test`
 - Nomenclatura de campo/Flow/classe: ver skill `padrao-entrega` (convenção específica de
   cada cliente pode sobrepor a convenção padrão — confira o `CLAUDE.md` do cliente primeiro)
+
+## Seleção de modelo por agente
+
+Cada agente em `.claude/agents/*.md` declara `model:` no frontmatter — não roda mais tudo
+no mesmo modelo default por acidente. Heurística aplicada (council de 2026-09-07, ver
+`gates.md`/histórico de sessão — não repita a análise, ela já foi feita):
+
+- **haiku** — `ba-discovery`, `doc`: extração e formatação de texto, sem decisão de risco.
+- **sonnet** — `builder-declarativo`, `dev-apex`, `devops`, `qa`, `release`: trabalho
+  estruturado com julgamento, mas revisado por PR ou gate antes de valer. Cavalo de batalha.
+- **opus** — só `arquiteto`, e só pela decisão declarativo-vs-código em si: é o único gate
+  humano bloqueante da doutrina, erro ali compõe nos 6 clientes, e já paga a latência de
+  revisão humana de qualquer forma.
+
+**Isso é hipótese reversível, não doutrina validada.** Ninguém tem sinal empírico de
+custo/latência/taxa-de-retrabalho por agente ainda — nenhuma demanda completou o ciclo
+inteiro. Antes de tratar esta tabela como padrão para os outros 5 clientes, rode pelo menos
+um ciclo completo real (ACXYA-1) e confira se algum agente errou por estar num modelo
+barato demais ou custou caro demais num modelo caro demais para o que fez. Ajuste com dado,
+não com a heurística sozinha.
 
 ## Estrutura de artefatos por demanda
 

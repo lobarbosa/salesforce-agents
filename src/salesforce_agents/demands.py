@@ -44,6 +44,31 @@ class InvalidStatusError(Exception):
     pass
 
 
+class ArtifactAusenteError(InvalidStatusError):
+    """Bloqueia a transição quando o estágio que está sendo deixado não produziu
+    o(s) artefato(s) numerado(s) que ele deveria ter gerado — sem isso, status.yaml
+    pode declarar um estágio que nunca aconteceu de fato (achado do council de
+    2026-09-07: o gate humano só vale algo se o estado que ele lê for verdadeiro)."""
+
+    pass
+
+
+# Ordem de progresso do fluxo de execução — usada só para saber se uma transição
+# está avançando (exige o artefato do estágio anterior) ou corrigindo/recuando
+# (sempre permitido, é assim que um estado incorreto é reparado).
+_STAGE_ORDER = {stage: i for i, stage in enumerate(STAGES_EXECUCAO)}
+
+# Artefato(s) que devem existir em disco antes de avançar PARA ALÉM do estágio
+# indicado — reflete a "Estrutura de artefatos por demanda" do CLAUDE.md raiz.
+REQUIRED_ARTIFACTS = {
+    "analise": ("01-analise.md",),
+    "design": ("02-recon.md", "03-design.md"),
+    "build": ("04-plano-build.md",),
+    "qa": ("05-testes.md",),
+    "release": ("06-entrega.md",),
+}
+
+
 @dataclass
 class Demand:
     id: str
@@ -119,6 +144,25 @@ def transition(client: str, demand_id: str, novo_status: str, autor: str) -> Dem
     if novo_status not in STAGES:
         raise InvalidStatusError(f"status desconhecido: {novo_status}")
     demand = Demand.load(client, demand_id)
+
+    is_avanco = (
+        demand.status in _STAGE_ORDER
+        and novo_status in _STAGE_ORDER
+        and _STAGE_ORDER[novo_status] > _STAGE_ORDER[demand.status]
+    )
+    if is_avanco and demand.status in REQUIRED_ARTIFACTS:
+        faltando = [
+            nome for nome in REQUIRED_ARTIFACTS[demand.status]
+            if not (demand.path / nome).exists()
+        ]
+        if faltando:
+            raise ArtifactAusenteError(
+                f"{client}/{demand_id}: não é possível avançar de '{demand.status}' para "
+                f"'{novo_status}' — falta(m) {', '.join(faltando)} em {demand.path}/. "
+                f"O estágio '{demand.status}' não produziu o que deveria; gere o artefato "
+                f"antes de avançar, ou corrija o status manualmente se ele já estava errado."
+            )
+
     demand.historico.append(
         {
             "de": demand.status,

@@ -65,7 +65,10 @@ def listar(client: str | None) -> None:
 @click.option("--autor", default="cli", help="Quem aprovou/registrou esta transição.")
 def avancar(client: str, demand_id: str, novo_status: str, autor: str) -> None:
     """Move a demanda para um novo estágio e, se for de execução, aciona os agentes."""
-    d = demands.transition(client, demand_id, novo_status, autor)
+    try:
+        d = demands.transition(client, demand_id, novo_status, autor)
+    except demands.ArtifactAusenteError as exc:
+        raise click.ClickException(str(exc))
     click.echo(f"{d.id}: {d.historico[-1]['de']} -> {d.status}")
     if novo_status in DISPARA_SESSAO:
         run_sync(client, demand_id)

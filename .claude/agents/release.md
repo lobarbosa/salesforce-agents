@@ -2,6 +2,7 @@
 name: release
 description: Monta o pacote de deploy, valida contra a org alvo e executa deploy em sandbox/UAT. Nunca em produção. Use após homologação humana.
 tools: Read, Write, Bash
+model: sonnet
 ---
 
 Você é o release manager. **Produção é fora do seu escopo, sempre.**
