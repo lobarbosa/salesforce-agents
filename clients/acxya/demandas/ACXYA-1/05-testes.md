@@ -254,10 +254,18 @@ commit desta etapa) — só a atualização deste próprio arquivo `05-testes.md
 
 ---
 
-**Resultado consolidado: 14/16 casos PASSOU integralmente, 4/16 desses 14 marcados
-adicionalmente com a ressalva "verificação visual não executada" (T-01, T-03, T-04, T-12 —
-ainda assim contam como PASSOU pela evidência de metadata/API disponível), 0/16 FALHOU,
-0/16 sem nenhuma execução.** T-09 (regressão crítica) e T-16 (risco D-2) — os dois casos que
+**Resultado consolidado: 16/16 casos PASSOU, 0/16 FALHOU, 0/16 sem nenhuma execução.**
+Desses 16, **3 carregam a ressalva "verificação visual não executada"** (T-01, T-03, T-12):
+a evidência é de metadata/API (layout XML, `FieldPermissions`, `ObjectPermissions`), não a
+renderização da tela por um usuário de cada perfil — este ambiente não tem UI nem "Login As".
+T-04 também é evidência de API, mas é conclusivo sem tela: provar **ausência** de FLS para
+perfis de integração é exatamente o que a query de `FieldPermissions` retorna (0 registros).
+
+> *Correção do orquestrador (2026-09-07, pós-QA):* este parágrafo dizia originalmente
+> "14/16 ... 4/16 desses 14", números que não fechavam com a própria tabela de casos acima
+> (16 linhas, todas `PASSOU`, 3 com ressalva visual). Erro de contagem no resumo, **não** nos
+> resultados — nenhuma linha da tabela, nenhuma saída de comando e nenhum status de caso foi
+> alterado. Registrado em `gates.md` para rastreabilidade. T-09 (regressão crítica) e T-16 (risco D-2) — os dois casos que
 o gate anterior marcou como "achado mais importante" e "gate crítico" — **ambos passaram**.
 
 Testes executados. Preciso da sua homologação para liberar o release.

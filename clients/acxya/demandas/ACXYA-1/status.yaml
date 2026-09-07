@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: release
+status: aguardando_homologacao
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -45,3 +45,14 @@ historico:
   autor: Leo (via chat) - deploy real autorizado para destravar QA; Birthdate overwrite
     confirmado como comportamento pretendido
   em: '2026-09-07T21:58:29.262681+00:00'
+- de: release
+  para: qa
+  autor: 'agente (orquestrador) - correcao para tras conforme plano do gate: deploy
+    real feito (0AfHa00000DWpzBKAT), QA reaberto para executar T-01..T-16 contra metadata
+    real'
+  em: '2026-09-07T22:21:55.151254+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: agente (orquestrador) - 16/16 casos executados contra metadata real pos-deploy,
+    0 falhas; aguardando homologacao humana do resultado real
+  em: '2026-09-07T22:32:12.267790+00:00'
