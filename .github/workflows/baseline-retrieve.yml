@@ -18,10 +18,12 @@ on:
 
 permissions:
   contents: write
+  pull-requests: write
 
 env:
   CLIENT_DIR: clients/${{ inputs.client }}
   TARGET_ORG: sbx-${{ inputs.client }}
+  BASELINE_BRANCH: baseline/${{ inputs.client }}
 
 jobs:
   retrieve:
@@ -55,6 +57,15 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # CLAUDE.md guardrail #4: nada é commitado direto numa branch protegida.
+      - name: Preparar branch do baseline
+        run: |
+          if git fetch origin "$BASELINE_BRANCH" 2>/dev/null; then
+            git checkout -B "$BASELINE_BRANCH" "origin/$BASELINE_BRANCH"
+          else
+            git checkout -b "$BASELINE_BRANCH"
+          fi
 
       - name: "Fase 1 — núcleo (dados e código)"
         run: |
@@ -90,4 +101,16 @@ jobs:
           done
 
       - name: Push
-        run: git push origin HEAD:${{ github.ref_name }}
+        run: git push origin "HEAD:$BASELINE_BRANCH"
+
+      - name: Abrir PR do baseline (se ainda não existir)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh pr view "$BASELINE_BRANCH" --json number >/dev/null 2>&1; then
+            gh pr create \
+              --base main \
+              --head "$BASELINE_BRANCH" \
+              --title "${{ inputs.client }}: baseline retrieve" \
+              --body "Aberto automaticamente por \`baseline-retrieve.yml\`. Sincroniza \`$CLIENT_DIR\` com o metadata atual da sandbox, em 4 fases. Revise antes de aprovar."
+          fi
