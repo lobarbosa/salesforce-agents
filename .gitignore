@@ -15,3 +15,7 @@ clients/*/logs/
 
 # Local-machine permission overrides (not shared doctrine, that's .claude/settings.json)
 .claude/settings.local.json
+
+# Telemetria de custo por invocação de agente (src/salesforce_agents/costs.py)
+# — operacional, não doutrina; não precisa de histórico versionado.
+/logs/

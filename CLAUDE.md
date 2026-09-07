@@ -79,6 +79,18 @@ um ciclo completo real (ACXYA-1) e confira se algum agente errou por estar num m
 barato demais ou custou caro demais num modelo caro demais para o que fez. Ajuste com dado,
 não com a heurística sozinha.
 
+### Telemetria de custo
+
+Segundo council de otimização de custo (2026-09-07): a variável que domina o custo deste
+pipeline não é qual modelo cada agente usa — é o reprocessamento de `CLAUDE.md`/skills sem
+cache em 7 etapas × 6 clientes × ciclo indefinido. Antes de mexer em cache, model routing ou
+Batch API, é preciso medir. `src/salesforce_agents/orchestrator.py` agora loga cada sessão
+de agente (`src/salesforce_agents/costs.py`) em `logs/custos_agentes.csv` — modelo, tokens
+de input/output/cache, custo em USD, etapa, cliente, demanda. Só metadata e contagens, nunca
+conteúdo da demanda (guardrail #2). Esse log é o pré-requisito pra qualquer decisão futura de
+caching ou de revisão da tabela de modelo acima — sem ele, qualquer ajuste continua sendo
+achismo.
+
 ## Estrutura de artefatos por demanda
 
 ```
