@@ -27,13 +27,28 @@ jobs:
       - name: Instalar Salesforce CLI
         run: npm install -g @salesforce/cli
 
+      # TEMPORÁRIO — remover depois de diagnosticar o "client identifier invalid".
+      # Só mostra a contagem de bytes de cada secret, nunca o valor: serve pra
+      # confirmar se sobrou espaço/quebra de linha colado sem querer no GitHub
+      # (Consumer Key não deveria ter espaço nenhum; se o total aqui vier maior
+      # que o tamanho visível na tela do Salesforce, é isso).
+      - name: "Diagnóstico temporário: tamanho das secrets"
+        run: |
+          echo "SF_CLIENT_ID: $(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | wc -c) bytes"
+          echo "SF_USERNAME: $(printf '%s' "${{ secrets.SF_USERNAME }}" | wc -c) bytes"
+          echo "SF_JWT_KEY: $(printf '%s' "${{ secrets.SF_JWT_KEY }}" | wc -c) bytes"
+
       - name: Autenticar via JWT
         run: |
           echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          # Remove espaço/quebra de linha acidental — client-id e username nunca
+          # deveriam ter, mas colar do navegador pode grudar um caractere invisível.
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
           sf org login jwt \
-            --client-id "${{ secrets.SF_CLIENT_ID }}" \
+            --client-id "$CLIENT_ID" \
             --jwt-key-file server.key \
-            --username "${{ secrets.SF_USERNAME }}" \
+            --username "$USERNAME" \
             --instance-url https://test.salesforce.com \
             --alias "sbx-${{ inputs.client }}"
 
