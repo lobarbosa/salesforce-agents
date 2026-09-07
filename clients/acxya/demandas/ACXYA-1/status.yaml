@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: qa
+status: aguardando_homologacao
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -35,3 +35,8 @@ historico:
   autor: Leo (via chat) - build revisado, pendencias D-1/D-2/D-3 resolvidas, LGPD
     segue aberta
   em: '2026-09-07T21:29:19.870767+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: agente (orquestrador) - roteiro de QA produzido; execucao funcional bloqueada
+    por ausencia de deploy na sandbox
+  em: '2026-09-07T21:36:51.164041+00:00'
