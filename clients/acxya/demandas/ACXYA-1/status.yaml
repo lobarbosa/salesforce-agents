@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: aguardando_homologacao
+status: release
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -56,3 +56,8 @@ historico:
   autor: agente (orquestrador) - 16/16 casos executados contra metadata real pos-deploy,
     0 falhas; aguardando homologacao humana do resultado real
   em: '2026-09-07T22:32:12.267790+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Leonardo (via Leo, nesta sessao) - LGPD confirmada, homologacao aprovada
+    (16/16 real)
+  em: '2026-09-07T22:42:44.805688+00:00'
