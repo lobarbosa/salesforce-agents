@@ -109,6 +109,11 @@ jobs:
           git commit -m "$DEMAND_ID: sessão de agente via CI" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
 
+      # Não fatal: o que importa (artefatos da demanda) já está empurrado pra
+      # $DEMAND_BRANCH no passo anterior. Se o GITHUB_TOKEN não tiver permissão
+      # pra abrir PR (Settings → Actions → General → Workflow permissions →
+      # "Allow GitHub Actions to create and approve pull requests"), cai aqui
+      # sem derrubar o job inteiro — alguém abre o PR manualmente.
       - name: Abrir PR da demanda (se ainda não existir)
         env:
           GH_TOKEN: ${{ github.token }}
@@ -119,5 +124,6 @@ jobs:
               --base main \
               --head "$DEMAND_BRANCH" \
               --title "$DEMAND_ID: acompanhamento da demanda" \
-              --body "Aberto automaticamente por \`run-demand.yml\`. Acumula os artefatos de cada etapa da demanda **$DEMAND_ID** (\`clients/$CLIENT/demandas/$DEMAND_ID/\`). Merge só depois dos gates humanos bloqueantes da doutrina (\`CLAUDE.md\`) — revise \`gates.md\` antes de aprovar."
+              --body "Aberto automaticamente por \`run-demand.yml\`. Acumula os artefatos de cada etapa da demanda **$DEMAND_ID** (\`clients/$CLIENT/demandas/$DEMAND_ID/\`). Merge só depois dos gates humanos bloqueantes da doutrina (\`CLAUDE.md\`) — revise \`gates.md\` antes de aprovar." \
+              || echo "::warning::Não consegui abrir o PR automaticamente (permissão do GITHUB_TOKEN?). A branch $DEMAND_BRANCH já está no ar — abra o PR manualmente."
           fi

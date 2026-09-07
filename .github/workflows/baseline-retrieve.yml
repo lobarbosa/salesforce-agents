@@ -103,6 +103,7 @@ jobs:
       - name: Push
         run: git push origin "HEAD:$BASELINE_BRANCH"
 
+      # Não fatal — ver mesmo comentário em run-demand.yml.
       - name: Abrir PR do baseline (se ainda não existir)
         env:
           GH_TOKEN: ${{ github.token }}
@@ -112,5 +113,6 @@ jobs:
               --base main \
               --head "$BASELINE_BRANCH" \
               --title "${{ inputs.client }}: baseline retrieve" \
-              --body "Aberto automaticamente por \`baseline-retrieve.yml\`. Sincroniza \`$CLIENT_DIR\` com o metadata atual da sandbox, em 4 fases. Revise antes de aprovar."
+              --body "Aberto automaticamente por \`baseline-retrieve.yml\`. Sincroniza \`$CLIENT_DIR\` com o metadata atual da sandbox, em 4 fases. Revise antes de aprovar." \
+              || echo "::warning::Não consegui abrir o PR automaticamente (permissão do GITHUB_TOKEN?). A branch $BASELINE_BRANCH já está no ar — abra o PR manualmente."
           fi
