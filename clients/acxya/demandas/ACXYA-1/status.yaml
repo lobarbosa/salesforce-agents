@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: aguardando_gate_build
+status: qa
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -30,3 +30,8 @@ historico:
   para: aguardando_gate_build
   autor: agente (orquestrador) - build concluido, aguardando revisao de PR
   em: '2026-09-07T21:24:52.560455+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leo (via chat) - build revisado, pendencias D-1/D-2/D-3 resolvidas, LGPD
+    segue aberta
+  em: '2026-09-07T21:29:19.870767+00:00'
