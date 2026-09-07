@@ -71,7 +71,7 @@ def avancar(client: str, demand_id: str, novo_status: str, autor: str) -> None:
         raise click.ClickException(str(exc))
     click.echo(f"{d.id}: {d.historico[-1]['de']} -> {d.status}")
     if novo_status in DISPARA_SESSAO:
-        run_sync(client, demand_id)
+        run_sync(client, demand_id, novo_status)
 
 
 if __name__ == "__main__":

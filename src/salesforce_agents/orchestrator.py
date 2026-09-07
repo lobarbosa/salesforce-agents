@@ -17,6 +17,7 @@ from claude_agent_sdk import (
     TextBlock,
 )
 
+from .costs import log_usage
 from .tools import salesforce_tools_server
 
 ALLOWED_TOOLS = [
@@ -39,7 +40,7 @@ ALLOWED_TOOLS = [
 # workspace-trust warning by loosening this — it isn't gating anything that matters.
 
 
-async def run(client: str, demand_id: str) -> None:
+async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
 
     options = ClaudeAgentOptions(
@@ -67,7 +68,8 @@ async def run(client: str, demand_id: str) -> None:
                         print(block.text)
             elif isinstance(message, ResultMessage):
                 print(f"\n--- concluído (custo: ${message.total_cost_usd:.4f}) ---")
+                log_usage(client, demand_id, etapa, message)
 
 
-def run_sync(client: str, demand_id: str) -> None:
-    anyio.run(run, client, demand_id)
+def run_sync(client: str, demand_id: str, etapa: str) -> None:
+    anyio.run(run, client, demand_id, etapa)
