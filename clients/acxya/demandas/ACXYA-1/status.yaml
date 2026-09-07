@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: build
+status: aguardando_gate_build
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -26,3 +26,7 @@ historico:
   autor: Leo (via chat) - seguindo recomendacao do arquiteto, LGPD como pergunta aberta
     nao-bloqueante
   em: '2026-09-07T20:56:24.753048+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: agente (orquestrador) - build concluido, aguardando revisao de PR
+  em: '2026-09-07T21:24:52.560455+00:00'
