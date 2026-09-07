@@ -78,7 +78,8 @@ jobs:
       - name: Deploy check-only (validate)
         if: steps.auth.outputs.ok == 'true'
         run: |
+          cd "clients/${{ matrix.client }}"
           sf project deploy validate \
-            --source-dir "clients/${{ matrix.client }}/force-app" \
+            --source-dir force-app \
             --target-org "$TARGET_ORG" \
             --wait 30
