@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_Data_Aniversario_Nao_Futura</fullName>
+    <active>true</active>
+    <description>ACXYA-1 — Impede que a data de aniversário do prospect seja futura. Escopo restrito a ISNEW/ISCHANGED (gate B-2, Opção B) para não travar updates de integração em registros antigos que já tenham o valor preenchido.</description>
+    <errorConditionFormula>AND(
+  OR(ISNEW(), ISCHANGED(Data_Aniversario__c)),
+  NOT(ISBLANK(Data_Aniversario__c)),
+  Data_Aniversario__c &gt; TODAY()
+)</errorConditionFormula>
+    <errorDisplayField>Data_Aniversario__c</errorDisplayField>
+    <errorMessage>A data de aniversário não pode ser uma data futura.</errorMessage>
+</ValidationRule>

@@ -2,6 +2,11 @@
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <custom>false</custom>
     <userLicense>Salesforce</userLicense>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Data_Aniversario__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>AIViewInsightObjects</name>

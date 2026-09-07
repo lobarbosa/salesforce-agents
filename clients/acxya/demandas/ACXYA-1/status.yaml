@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: design
+status: entregue
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -17,3 +17,52 @@ historico:
   para: design
   autor: leo
   em: '2026-09-06T09:50:02.737015+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: agente (orquestrador)
+  em: '2026-09-07T17:49:19.703275+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leo (via chat) - seguindo recomendacao do arquiteto, LGPD como pergunta aberta
+    nao-bloqueante
+  em: '2026-09-07T20:56:24.753048+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: agente (orquestrador) - build concluido, aguardando revisao de PR
+  em: '2026-09-07T21:24:52.560455+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leo (via chat) - build revisado, pendencias D-1/D-2/D-3 resolvidas, LGPD
+    segue aberta
+  em: '2026-09-07T21:29:19.870767+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: agente (orquestrador) - roteiro de QA produzido; execucao funcional bloqueada
+    por ausencia de deploy na sandbox
+  em: '2026-09-07T21:36:51.164041+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Leo (via chat) - deploy real autorizado para destravar QA; Birthdate overwrite
+    confirmado como comportamento pretendido
+  em: '2026-09-07T21:58:29.262681+00:00'
+- de: release
+  para: qa
+  autor: 'agente (orquestrador) - correcao para tras conforme plano do gate: deploy
+    real feito (0AfHa00000DWpzBKAT), QA reaberto para executar T-01..T-16 contra metadata
+    real'
+  em: '2026-09-07T22:21:55.151254+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: agente (orquestrador) - 16/16 casos executados contra metadata real pos-deploy,
+    0 falhas; aguardando homologacao humana do resultado real
+  em: '2026-09-07T22:32:12.267790+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Leonardo (via Leo, nesta sessao) - LGPD confirmada, homologacao aprovada
+    (16/16 real)
+  em: '2026-09-07T22:42:44.805688+00:00'
+- de: release
+  para: entregue
+  autor: Leonardo (via Leo, nesta sessao) - spot check de 06-entrega.md aprovado,
+    documento revisado e preciso
+  em: '2026-09-07T23:00:34.324074+00:00'
