@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: aguardando_homologacao
+status: release
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -40,3 +40,8 @@ historico:
   autor: agente (orquestrador) - roteiro de QA produzido; execucao funcional bloqueada
     por ausencia de deploy na sandbox
   em: '2026-09-07T21:36:51.164041+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Leo (via chat) - deploy real autorizado para destravar QA; Birthdate overwrite
+    confirmado como comportamento pretendido
+  em: '2026-09-07T21:58:29.262681+00:00'
