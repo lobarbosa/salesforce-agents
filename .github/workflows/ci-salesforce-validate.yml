@@ -53,6 +53,8 @@ jobs:
       TARGET_ORG: sbx-${{ matrix.client }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Instalar Salesforce CLI
         run: npm install -g @salesforce/cli
@@ -77,9 +79,29 @@ jobs:
 
       - name: Deploy check-only (validate)
         if: steps.auth.outputs.ok == 'true'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          # Só o que este PR mudou, não o force-app inteiro do cliente — um
+          # cliente com 6 meses de metadata legado pode ter erros pré-existentes
+          # sem relação com esta demanda, e isso não pode reprovar todo PR que
+          # tocar em qualquer arquivo do mesmo force-app (achado real, ACXYA-1,
+          # 2026-09-07: 4 erros legados — Case Layout, 2 QuickAction, EnvironmentHub
+          # — bloqueavam um PR que só criava campo/VR/Flow novos, sem tocar neles).
+          CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- "clients/${{ matrix.client }}/force-app/**" \
+            | sed -E "s#^clients/${{ matrix.client }}/##")
+          if [ -z "$CHANGED" ]; then
+            echo "Nenhum arquivo de force-app deste cliente mudou entre $BASE_SHA e $HEAD_SHA — nada a validar."
+            exit 0
+          fi
           cd "clients/${{ matrix.client }}"
-          sf project deploy validate \
-            --source-dir force-app \
-            --target-org "$TARGET_ORG" \
-            --wait 30
+          ARGS=()
+          while IFS= read -r f; do
+            [ -e "$f" ] && ARGS+=(--source-dir "$f")
+          done <<< "$CHANGED"
+          if [ "${#ARGS[@]}" -eq 0 ]; then
+            echo "Todos os arquivos mudados neste PR foram removidos — nada a validar."
+            exit 0
+          fi
+          sf project deploy validate "${ARGS[@]}" --target-org "$TARGET_ORG" --wait 30
