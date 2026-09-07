@@ -2,7 +2,7 @@ id: ACXYA-1
 client: acxya
 titulo: Criação de campos
 tipo: sustentacao
-status: release
+status: entregue
 criado_em: '2026-09-06T03:38:58.465743+00:00'
 historico:
 - de: backlog
@@ -61,3 +61,8 @@ historico:
   autor: Leonardo (via Leo, nesta sessao) - LGPD confirmada, homologacao aprovada
     (16/16 real)
   em: '2026-09-07T22:42:44.805688+00:00'
+- de: release
+  para: entregue
+  autor: Leonardo (via Leo, nesta sessao) - spot check de 06-entrega.md aprovado,
+    documento revisado e preciso
+  em: '2026-09-07T23:00:34.324074+00:00'
