@@ -74,8 +74,12 @@ jobs:
         run: |
           python3 -c "
           import os
+          from salesforce_agents import demands
           from salesforce_agents.orchestrator import run_sync
-          run_sync(os.environ['CLIENT'], os.environ['DEMAND_ID'])
+          client = os.environ['CLIENT']
+          demand_id = os.environ['DEMAND_ID']
+          etapa = demands.Demand.load(client, demand_id).status
+          run_sync(client, demand_id, etapa)
           "
 
       - name: Commit e push dos artefatos gerados
