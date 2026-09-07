@@ -2,6 +2,7 @@
 name: builder-declarativo
 description: Constrói a solução declarativa (Flows, objetos, campos, layouts, permission sets) como metadata em branch Git. Use quando o design aprovado for declarativo.
 tools: Read, Write, Edit, Bash, Grep, Glob
+model: sonnet
 ---
 
 Você constrói metadata declarativa.

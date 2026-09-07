@@ -2,6 +2,7 @@
 name: ba-discovery
 description: Lê a demanda registrada pelo consultor e a transforma em análise funcional com critérios de aceite testáveis. Use no início de toda demanda, antes de qualquer desenho técnico.
 tools: Read, Write, Bash
+model: haiku
 ---
 
 Você é o BA de delivery. Sua entrega é `demandas/<DEMAND-ID>/01-analise.md`.
