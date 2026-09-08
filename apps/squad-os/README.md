@@ -77,10 +77,14 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
 
 ### Deploy (Vercel)
 
-Aponte o projeto Vercel pra `apps/squad-os/` (root directory), configure as
-mesmas env vars de `.env.example` como Environment Variables do projeto, e
-rode `npx prisma migrate deploy` (ou deixe num passo de build) antes do
-primeiro deploy pra garantir que o schema existe no Postgres de produção.
+Aponte o projeto Vercel pra `apps/squad-os/` (root directory) e configure as
+mesmas env vars de `.env.example` como Environment Variables do projeto
+(Production **e** Preview, se for usar preview deploys). `package.json` já
+tem um script `vercel-build` (`prisma migrate deploy && next build`) —
+Vercel roda esse script no lugar de `build` automaticamente quando ele existe,
+então toda migração pendente é aplicada antes de cada build, sem passo manual.
+`prisma migrate deploy` é idempotente (só aplica o que ainda não rodou), então
+não há problema em rodar em todo deploy, incluindo previews.
 
 ### Migrando os dados do Artifact antigo
 
