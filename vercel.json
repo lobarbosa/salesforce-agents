@@ -1,5 +1,4 @@
 {
-  "root": "apps/squad-os",
-  "framework": "nextjs",
-  "buildCommand": "npm run vercel-build"
+  "buildCommand": "cd apps/squad-os && npm run vercel-build",
+  "outputDirectory": "apps/squad-os/.next"
 }
