@@ -1,0 +1,8 @@
+{
+  "name": "salesforce-agents-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Salesforce Agent Orchestrator com Squad OS (Next.js)",
+  "workspaces": ["apps/squad-os"],
+  "devDependencies": {}
+}
