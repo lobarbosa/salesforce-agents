@@ -45,6 +45,14 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
 
     options = ClaudeAgentOptions(
         cwd=workspace,
+        # Sem `model` explícito a sessão orquestradora herda o default (Opus 1M)
+        # em todas as 7 etapas. Isso custava caro e, pior, cegava a telemetria:
+        # `costs.py` grava uma linha por modelo, então o orquestrador Opus e o
+        # arquiteto (`model: opus` no frontmatter) colapsavam na mesma linha —
+        # impossível saber quanto foi decisão de arquitetura e quanto foi o loop
+        # relendo CLAUDE.md. Com Sonnet aqui, os dois passam a ser linhas
+        # distintas. Os subagentes seguem o frontmatter e não são afetados.
+        model="claude-sonnet-5",
         setting_sources=["project"],
         mcp_servers={"salesforce-tools": salesforce_tools_server},
         allowed_tools=ALLOWED_TOOLS,
