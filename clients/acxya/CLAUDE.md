@@ -15,8 +15,16 @@ do template — só o que veio do próprio processo de conexão está confirmado
 
 ## Ambiente Salesforce
 - Clouds em uso (Sales/Service/Marketing/Commerce/etc.): a confirmar
-- Org: produção — **não configurada, agente nunca deve tocar**; sandbox de trabalho `sbx-acxya`
-  (`https://acxya--sbxacxya.sandbox.my.salesforce.com`, API v67.0)
+- Org: produção — **não configurada, agente nunca deve tocar**
+- Sandboxes da esteira (aliases `sbx-acxya-dev` e `sbx-acxya-qa`, Environments `acxya-dev`
+  e `acxya-qa`):
+  - **dev** — `https://acxya--sbxacxya.sandbox.my.salesforce.com` (API v67.0). É a org que
+    já existe e onde ACXYA-1 foi construída, quando o alias ainda era `sbx-acxya` sem
+    sufixo; os artefatos daquela demanda citam o nome antigo e ficam como estão, são
+    registro do que aconteceu.
+  - **qa** — a criar. Enquanto não existir, nenhuma demanda deste cliente passa da etapa
+    `qa`: o job vai falhar dizendo que o Environment `acxya-qa` não tem credencial, que é
+    o comportamento correto — não force o alias de dev ali pra "destravar".
 - Convenção de nomenclatura própria do cliente (se houver — sobrepõe a skill `padrao-entrega`):
   - Prefixo de campo custom: **nenhum** — nomear direto, sem marcador de origem (decidido em
     ACXYA-1, ex.: `Data_Aniversario__c`, não `KTA_Data_Aniversario__c`)

@@ -6,15 +6,23 @@ name: Baseline — Retrieve metadata
 # não é acionado por push/PR porque só faz sentido rodar de novo quando
 # quisermos re-sincronizar o baseline, não a cada mudança de código.
 #
-# Credenciais vêm do GitHub Environment com o mesmo nome do cliente.
+# Credenciais vêm do GitHub Environment `<cliente>-<ambiente>`. O baseline sai
+# por padrão de dev, que é onde a esteira constrói — puxar de QA traria também
+# o que ainda está em homologação e não foi aceito.
 
 on:
   workflow_dispatch:
     inputs:
       client:
-        description: 'Nome do cliente (= clients/<client>/ e o GitHub Environment)'
+        description: 'Nome do cliente (= clients/<client>/ e prefixo do GitHub Environment)'
         required: true
         default: acxya
+      ambiente:
+        description: 'De qual sandbox puxar o baseline'
+        required: true
+        type: choice
+        default: dev
+        options: [dev, qa]
 
 permissions:
   contents: write
@@ -22,13 +30,13 @@ permissions:
 
 env:
   CLIENT_DIR: clients/${{ inputs.client }}
-  TARGET_ORG: sbx-${{ inputs.client }}
+  TARGET_ORG: sbx-${{ inputs.client }}-${{ inputs.ambiente }}
   BASELINE_BRANCH: baseline/${{ inputs.client }}
 
 jobs:
   retrieve:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.client }}
+    environment: ${{ inputs.client }}-${{ inputs.ambiente }}
     steps:
       - uses: actions/checkout@v4
         with:

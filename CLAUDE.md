@@ -27,6 +27,13 @@ O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
 
 1. **Produção é proibida.** Nenhum agente executa deploy, DML ou anonymous Apex em org
    de produção. Aliases contendo `prod`, `prd` ou `production` são bloqueados por hook.
+   A esteira tem dois ambientes e só dois: **dev** (`sbx-<cliente>-dev`) e **qa**
+   (`sbx-<cliente>-qa`). Build e tudo antes acontece em dev; a partir da etapa `qa` a
+   demanda já vive na sandbox de QA, onde o roteiro roda, o humano homologa e o release
+   entrega — e o agente para ali. Quem sabe dessa regra é
+   `src/salesforce_agents/ambientes.py`, que recusa qualquer ambiente fora de
+   `("dev", "qa")` antes de montar comando `sf` nenhum; os workflows perguntam pra ele
+   (`sfagents demanda ambiente`) em vez de repetirem a condição em YAML.
 2. **Dados reais não entram no contexto.** Nunca rodar SOQL que retorne dados de cliente
    (CPF, e-mail, telefone, valores). Só metadata e contagens agregadas. LGPD.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
@@ -40,7 +47,9 @@ O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
    `baseline/<cliente>` do mesmo jeito. Achado real (ACXYA-1, 2026-09-07): antes dessa
    correção, `run-demand.yml` empurrava direto pra branch que disparou o workflow —
    funcionava só por acaso enquanto isso era uma branch não protegida; quebrou na
-   primeira vez que rodou em `main`.
+   primeira vez que rodou em `main`. `run-demand.yml` roda em dois jobs (`decidir` sem
+   environment, `rodar` no `<cliente>-<ambiente>` que o primeiro apontou) porque um job
+   do Actions declara um `environment:` só e a esteira atravessa dois.
 
    - `ci-python.yml` — testes do orquestrador (`src/salesforce_agents/`)
    - `ci-squad-os.yml` — lint + build do Squad OS (`apps/squad-os/`)

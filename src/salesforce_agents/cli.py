@@ -10,8 +10,7 @@ from pathlib import Path
 
 import click
 
-from . import demands
-from .orchestrator import run_sync
+from . import ambientes, demands
 
 # Estágios de execução que, ao serem definidos, disparam uma sessão de agente.
 # Os estágios "aguardando_*" são gates humanos puros — não disparam sessão.
@@ -71,7 +70,34 @@ def avancar(client: str, demand_id: str, novo_status: str, autor: str) -> None:
         raise click.ClickException(str(exc))
     click.echo(f"{d.id}: {d.historico[-1]['de']} -> {d.status}")
     if novo_status in DISPARA_SESSAO:
+        # Import tardio de propósito: `orchestrator` puxa o Claude Agent SDK
+        # inteiro, e os comandos de leitura (listar, ambiente) não precisam
+        # dele. Sem isso, um step de CI que só quer saber em qual org a etapa
+        # roda teria que instalar o SDK antes de perguntar.
+        from .orchestrator import run_sync
+
         run_sync(client, demand_id, novo_status)
+
+
+@demanda.command("ambiente")
+@click.option("--client", required=True)
+@click.argument("demand_id")
+def ambiente(client: str, demand_id: str) -> None:
+    """Diz em qual org o estágio atual da demanda roda (dev ou qa).
+
+    Sai em `chave=valor`, uma por linha, pra ser redirecionado direto pro
+    $GITHUB_OUTPUT de um step do Actions — é assim que run-demand.yml decide
+    qual GitHub Environment abrir sem repetir a regra em YAML.
+    """
+    try:
+        d = demands.Demand.load(client, demand_id)
+    except demands.DemandNotFoundError as exc:
+        raise click.ClickException(str(exc))
+    amb = ambientes.ambiente_do_estagio(d.status)
+    click.echo(f"etapa={d.status}")
+    click.echo(f"ambiente={amb}")
+    click.echo(f"org_alias={ambientes.org_alias(client, amb)}")
+    click.echo(f"github_environment={ambientes.github_environment(client, amb)}")
 
 
 if __name__ == "__main__":

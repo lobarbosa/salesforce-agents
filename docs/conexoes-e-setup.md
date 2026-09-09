@@ -8,7 +8,7 @@ em arquivo (`clients/<cliente>/demandas/<ID>/`).
 
 | # | Conexão | Para quê | Onde vive | Bloqueia o quê |
 |---|---|---|---|---|
-| 1 | **Sandbox Salesforce dedicada** (`sbx-<cliente>`) | Onde os agentes constroem e testam | `sf` CLI local | Tudo |
+| 1 | **Sandboxes dedicadas** (`sbx-<cliente>-dev`, `sbx-<cliente>-qa`) | Onde os agentes constroem (dev) e onde a demanda é testada e homologada (qa) | `sf` CLI local | Tudo |
 | 2 | **Connected App + JWT** (por ambiente) | Autenticação do CI sem senha/MFA | GitHub Secrets | Pipeline |
 | 3 | **GitHub + Actions** | Versionamento, PR, deploy determinístico | Repo do cliente | Deploy |
 | 4 | **`ANTHROPIC_API_KEY`** | Autentica o orquestrador (Claude Agent SDK) | variável de ambiente onde `sfagents` roda | Todo o pipeline de agentes |
@@ -29,32 +29,42 @@ em arquivo (`clients/<cliente>/demandas/<ID>/`).
 | Usuário de integração | Usuário dedicado, licença própria, **nunca** usuário nominal de pessoa |
 | Pré-autorização | Manage → Permitted Users: *Admin approved users*, com Permission Set atribuído |
 
-### GitHub Environments (um por cliente)
-Cada cliente é um **GitHub Environment** com o mesmo nome do diretório em `clients/`
-(Settings → Environments → New environment → nome = `<cliente>`, ex.: `acxya`). Dentro
-dele, 3 secrets **sem sufixo** (o Environment já isola por cliente, não precisa repetir
-o nome na chave):
+### GitHub Environments (um por cliente **por ambiente**)
+Cada par cliente+ambiente é um **GitHub Environment** chamado `<cliente>-<ambiente>`
+(Settings → Environments → New environment → `acxya-dev`, `acxya-qa`). Dentro de cada um,
+os mesmos 3 secrets **sem sufixo** — o Environment já isola, não precisa repetir o nome
+na chave:
 ```
 SF_CLIENT_ID
 SF_USERNAME
 SF_JWT_KEY
 ```
-Os workflows (`test-connection.yml`, `baseline-retrieve.yml`, `run-demand.yml`) recebem
-`client` como input e usam `environment: ${{ inputs.client }}` — então rodam pra qualquer
-cliente sem duplicar arquivo de workflow, só apontando o Environment certo.
+Cada ambiente tem a **sua própria** Connected App e o seu próprio usuário de integração:
+dev e qa não compartilham credencial. Compartilhar anularia o motivo de existirem dois.
 
-`ci-salesforce-validate.yml` usa os mesmos 3 secrets, mas dispara sozinho em todo PR que
-mexe em `clients/<cliente>/force-app/**` (detecta o cliente pelo path alterado, sem input
-manual) e só faz `sf project deploy validate` — nunca deploy de verdade. Hoje só `acxya`
-tem os secrets cadastrados; nos outros 5 clientes o job roda, avisa que o Environment
-ainda não tem credencial, e passa sem validar nada — cadastrar os secrets depois é
-suficiente pra esse mesmo workflow passar a validar de verdade, sem editar nada nele.
+> **Se você já tinha um Environment `<cliente>` sem sufixo** (o formato anterior), ele
+> não é mais lido por workflow nenhum. Crie `<cliente>-dev`, recadastre os 3 secrets nele
+> (secrets são write-only — não dá pra copiar de um Environment pro outro, tem que colar
+> de novo da fonte) e só então apague o antigo. Enquanto `<cliente>-dev` não existir, os
+> workflows falham com uma mensagem dizendo exatamente isso.
 
-Quando precisar de INT/UAT/PROD além da sandbox por cliente, o padrão vira Environments
-compostos: `<cliente>-int`, `<cliente>-uat`, `<cliente>-prod` — **`<cliente>-prod` sempre
-com required reviewer nomeado** (Settings do Environment → Deployment protection rules).
-Sem isso o guard humano é ficção. Nenhum cliente tem environment de prod configurado
-ainda — isso é o passo 11 do mapa de execução, não algo a antecipar.
+Qual Environment cada etapa abre não está escrito em YAML: `run-demand.yml` tem um job
+`decidir` que pergunta pra `src/salesforce_agents/ambientes.py` (via
+`sfagents demanda ambiente`) em qual org a etapa atual roda, e o job seguinte abre esse
+Environment. Um job do Actions declara um `environment:` só — por isso são dois jobs, e
+por isso o `decidir` não abre nenhum: ele não precisa ver secret pra ler um arquivo.
+
+`test-connection.yml` e `baseline-retrieve.yml` recebem `client` **e** `ambiente` como
+input. `ci-salesforce-validate.yml` dispara sozinho em todo PR que mexe em
+`clients/<cliente>/force-app/**` (detecta o cliente pelo path alterado, sem input manual),
+sempre contra `<cliente>-dev`, e nunca faz deploy de verdade — só validação check-only.
+Hoje só `acxya` tem secrets cadastrados; nos outros 5 clientes o job roda, avisa que o
+Environment ainda não tem credencial, e passa sem validar nada.
+
+**Produção não tem Environment neste repositório, e isso é deliberado** (guardrail #1).
+Não é "ainda não configuramos": `ambientes.py` só conhece `dev` e `qa` e recusa qualquer
+outro valor antes de montar qualquer comando `sf`. Se um dia existir entrega em produção,
+ela nasce fora desta esteira, com required reviewer nomeado — não estendendo este mapa.
 
 `ANTHROPIC_API_KEY` fica em **Settings → Secrets → Actions** do repositório (não dentro de
 um Environment) — é a mesma conta Anthropic do squad para todos os clientes, não algo que
@@ -76,12 +86,12 @@ Sem isso o orquestrador (`orchestrator.py`) não consegue abrir sessão do Claud
 
 | Passo | Ação | Depende de | Tempo | Feito quando |
 |---|---|---|---|---|
-| 1 | Criar sandbox dedicada `sbx-<cliente>` (Developer Pro) | — | 1–4h (refresh) | `sf org list` mostra a org |
+| 1 | Criar as sandboxes `sbx-<cliente>-dev` e `sbx-<cliente>-qa` (Developer Pro) | — | 1–4h (refresh) | `sf org list` mostra as duas |
 | 2 | Criar/usar `clients/<cliente>/` e trazer o metadata atual (`sf project retrieve start`) | 1 | 1h | `force-app/` reflete a org |
 | 3 | Preencher `clients/<cliente>/CLAUDE.md` a partir do template | 2 | 15min | Briefing preenchido |
 | 4 | Criar branches `develop` e proteger `main` | 2 | 15min | PR obrigatório em `main` |
-| 5 | Gerar certificado + Connected App/External Client App **na sandbox do cliente** | 1 | 45min | `sf org login jwt` funciona |
-| 6 | Criar o GitHub Environment `<cliente>` e cadastrar `SF_CLIENT_ID`/`SF_USERNAME`/`SF_JWT_KEY` nele | 4, 5 | 30min | `test-connection.yml` roda verde pra esse cliente |
+| 5 | Gerar certificado + Connected App/External Client App **em cada sandbox** (dev e qa têm as suas) | 1 | 45min | `sf org login jwt` funciona nas duas |
+| 6 | Criar os Environments `<cliente>-dev` e `<cliente>-qa` e cadastrar `SF_CLIENT_ID`/`SF_USERNAME`/`SF_JWT_KEY` em cada um | 4, 5 | 30min | `test-connection.yml` roda verde nos dois ambientes |
 | 7 | Registrar uma demanda real no Squad OS e materializá-la em `clients/<cliente>/demandas/<ID>/demanda.md` | 5 | 15min | `sfagents demanda listar` mostra a demanda |
 | 8 | Rodar `sfagents demanda avancar` com essa demanda até `release` | 3, 6, 7 | 1 dia | Ciclo completo com gates registrados em `gates.md` |
 | 9 | Repetir com mais 4 demandas, anotando cada correção humana | 8 | 2 semanas | Retrabalho < 30% |
@@ -97,13 +107,21 @@ Sem isso o orquestrador (`orchestrator.py`) não consegue abrir sessão do Claud
 
 ## 4. Ambientes
 
-| Org | Tipo | Quem toca | Refresh |
-|---|---|---|---|
-| `sbx-<cliente>` | Developer Pro | Agentes + você | Sob demanda |
-| `sbx-int-<cliente>` | Developer Pro | Pipeline (`develop`) | Mensal |
-| `sbx-uat-<cliente>` | Partial/Full | Cliente homologa | Por release |
-| `prod-<cliente>` | Produção | **Só humano, janela acordada** | — |
+A esteira tem exatamente dois ambientes. Ela vai de dev até a sandbox de QA e **o agente
+para ali**.
 
-Se orçamento de sandbox for restrito, `sbx-<cliente>` e `sbx-int-<cliente>` podem ser a
-mesma org no piloto — mas nunca misture a org dos agentes com a de homologação do cliente,
-e nunca misture orgs de clientes diferentes.
+| Org | Alias | Tipo | Quem toca | Etapas |
+|---|---|---|---|---|
+| Dev | `sbx-<cliente>-dev` | Developer Pro | Agentes + você | análise → design → build (e os gates entre elas) |
+| QA | `sbx-<cliente>-qa` | Partial/Full | Agente entrega; cliente homologa | qa → homologação → release |
+| Produção | — | Produção | **Só humano, fora desta esteira** | nenhuma |
+
+O corte fica em `qa` e não em `release` de propósito: assim a homologação humana acontece
+na org em que a coisa vai ser aceita. Homologar em dev e mover pra QA depois é homologar
+uma coisa e entregar outra. Esse ponto é uma constante só (`PRIMEIRO_ESTAGIO_QA` em
+`ambientes.py`) — mudar de ideia é mudar uma linha, não caçar condições espalhadas em YAML.
+
+Se o orçamento de sandbox for restrito, dev e qa podem ser a mesma org no piloto — mas aí
+cadastre os mesmos secrets nos dois Environments, em vez de apontar workflow pro
+Environment errado; senão a próxima pessoa lê o YAML e conclui a coisa errada. Nunca
+misture orgs de clientes diferentes.

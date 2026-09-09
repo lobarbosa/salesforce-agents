@@ -5,15 +5,23 @@ name: Rodar demanda (agentes)
 # rodam sf CLI puro), este workflow precisa autenticar com a Anthropic também,
 # porque aqui não existe a sessão de Claude Code já logada que esta conversa tem.
 #
-# Credenciais Salesforce vêm do GitHub Environment com o nome do cliente.
-# ANTHROPIC_API_KEY é secret de repositório (compartilhada entre clientes —
-# a conta Anthropic é do squad, não do cliente).
+# Dois jobs, e não um: um job do Actions declara UM `environment:` só, e a
+# esteira agora atravessa dois (build em dev, teste/homologação/release na
+# sandbox de QA). Então `decidir` — que não abre environment nenhum e por isso
+# não vê secret nenhum — lê o status.yaml da demanda e diz qual ambiente a
+# etapa atual precisa; `rodar` abre exatamente esse. A regra de qual etapa vai
+# pra onde mora em src/salesforce_agents/ambientes.py, não aqui: repetida em
+# YAML ela sairia de sincronia com a CLI na primeira mudança.
+#
+# ANTHROPIC_API_KEY é secret de repositório (compartilhada entre clientes — a
+# conta Anthropic é do squad, não do cliente). As credenciais Salesforce vêm do
+# GitHub Environment `<cliente>-<ambiente>` (ex.: acxya-dev, acxya-qa).
 
 on:
   workflow_dispatch:
     inputs:
       client:
-        description: 'Nome do cliente (= clients/<client>/ e o GitHub Environment)'
+        description: 'Nome do cliente (= clients/<client>/ e prefixo do GitHub Environment)'
         required: true
         default: acxya
       demand_id:
@@ -24,15 +32,14 @@ permissions:
   contents: write
   pull-requests: write
 
-env:
-  CLIENT: ${{ inputs.client }}
-  TARGET_ORG: sbx-${{ inputs.client }}
-  DEMAND_BRANCH: feature/${{ inputs.demand_id }}
-
 jobs:
-  run:
+  decidir:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.client }}
+    outputs:
+      etapa: ${{ steps.amb.outputs.etapa }}
+      ambiente: ${{ steps.amb.outputs.ambiente }}
+      org_alias: ${{ steps.amb.outputs.org_alias }}
+      github_environment: ${{ steps.amb.outputs.github_environment }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,6 +49,44 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Só click e pyyaml: `sfagents demanda ambiente` não importa o
+      # orquestrador (o import de orchestrator é tardio, ver cli.py), então
+      # este job não precisa instalar o Claude Agent SDK nem a CLI Salesforce
+      # pra responder uma pergunta que é leitura de um arquivo.
+      - name: Instalar o mínimo pra ler a demanda
+        run: pip install click pyyaml
+
+      - name: Descobrir o ambiente da etapa atual
+        id: amb
+        env:
+          PYTHONPATH: src
+        run: |
+          python3 -m salesforce_agents.cli demanda ambiente \
+            --client "${{ inputs.client }}" "${{ inputs.demand_id }}" \
+            | tee -a "$GITHUB_OUTPUT"
+
+  rodar:
+    needs: decidir
+    runs-on: ubuntu-latest
+    environment: ${{ needs.decidir.outputs.github_environment }}
+    env:
+      CLIENT: ${{ inputs.client }}
+      TARGET_ORG: ${{ needs.decidir.outputs.org_alias }}
+      AMBIENTE: ${{ needs.decidir.outputs.ambiente }}
+      DEMAND_BRANCH: feature/${{ inputs.demand_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Anunciar org alvo
+        run: |
+          echo "::notice::Etapa '${{ needs.decidir.outputs.etapa }}' roda no ambiente '$AMBIENTE' (org $TARGET_ORG, secrets de ${{ needs.decidir.outputs.github_environment }})."
+
       - name: Instalar Salesforce CLI e Claude Code CLI
         run: npm install -g @salesforce/cli @anthropic-ai/claude-code
 
@@ -50,6 +95,10 @@ jobs:
 
       - name: Autenticar Salesforce via JWT
         run: |
+          if [ -z "${{ secrets.SF_CLIENT_ID }}" ]; then
+            echo "::error::O GitHub Environment '${{ needs.decidir.outputs.github_environment }}' não tem SF_CLIENT_ID/SF_USERNAME/SF_JWT_KEY. Cadastre os secrets desse ambiente (ver docs/conexoes-e-setup.md) — cada ambiente tem o seu, dev e qa não compartilham credencial."
+            exit 1
+          fi
           echo "${{ secrets.SF_JWT_KEY }}" > server.key
           # Remove espaço/quebra de linha acidental — client-id e username nunca
           # deveriam ter (achado real: um dos secrets veio com "NOME_VAR=" colado
@@ -106,7 +155,7 @@ jobs:
           # recebido); sem o "if", git add falha em runner limpo e derruba o commit
           # dos artefatos junto.
           if [ -d logs ]; then git add logs/; fi
-          git commit -m "$DEMAND_ID: sessão de agente via CI" --allow-empty -q
+          git commit -m "$DEMAND_ID: sessão de agente via CI ($AMBIENTE)" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
 
       # Não fatal: o que importa (artefatos da demanda) já está empurrado pra

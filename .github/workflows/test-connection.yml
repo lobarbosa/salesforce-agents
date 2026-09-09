@@ -4,23 +4,30 @@ name: Testar conexão JWT com a sandbox
 # sandbox de um cliente. Não faz deploy nem toca em metadata. Rode isso antes
 # de confiar em qualquer outro workflow que dependa da mesma credencial.
 #
-# Credenciais vêm do GitHub Environment com o mesmo nome do cliente
-# (Settings → Environments → <client> → secrets: SF_CLIENT_ID, SF_USERNAME,
-# SF_JWT_KEY). Um Environment por cliente = isolamento de credencial por
-# cliente, sem duplicar workflow.
+# Credenciais vêm do GitHub Environment `<cliente>-<ambiente>` (Settings →
+# Environments → acxya-dev → secrets: SF_CLIENT_ID, SF_USERNAME, SF_JWT_KEY).
+# Um Environment por cliente POR ambiente: isolamento de credencial por
+# cliente e por org, sem duplicar workflow. A esteira só conhece dev e qa —
+# produção não tem Environment aqui de propósito (guardrail #1).
 
 on:
   workflow_dispatch:
     inputs:
       client:
-        description: 'Nome do cliente (= nome do diretório em clients/ e do GitHub Environment)'
+        description: 'Nome do cliente (= nome do diretório em clients/ e prefixo do GitHub Environment)'
         required: true
         default: acxya
+      ambiente:
+        description: 'Qual sandbox testar'
+        required: true
+        type: choice
+        default: dev
+        options: [dev, qa]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-    environment: ${{ inputs.client }}
+    environment: ${{ inputs.client }}-${{ inputs.ambiente }}
     steps:
       - uses: actions/checkout@v4
 
@@ -39,10 +46,10 @@ jobs:
             --jwt-key-file server.key \
             --username "$USERNAME" \
             --instance-url https://test.salesforce.com \
-            --alias "sbx-${{ inputs.client }}"
+            --alias "sbx-${{ inputs.client }}-${{ inputs.ambiente }}"
 
       - name: Confirmar org conectada
-        run: sf org display --target-org "sbx-${{ inputs.client }}" --json
+        run: sf org display --target-org "sbx-${{ inputs.client }}-${{ inputs.ambiente }}" --json
 
       - name: Limpar credencial
         if: always()
