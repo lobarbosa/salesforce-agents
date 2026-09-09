@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { AmbienteOrg, Client, Demanda } from "@/lib/generated/prisma/client";
+import type { AmbienteOrg, Client, Comentario, Demanda } from "@/lib/generated/prisma/client";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
@@ -17,7 +17,7 @@ export function ClientDetail({
   openDemandId,
 }: {
   client: Client & { ambientes: AmbienteOrg[] };
-  demandas: Demanda[];
+  demandas: (Demanda & { comentarios: Comentario[] })[];
   usuario: CurrentUsuario;
   initialTab?: Tab;
   openDemandId?: string;

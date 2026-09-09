@@ -2,7 +2,7 @@
 
 import { useState, type DragEvent } from "react";
 import { useRouter } from "next/navigation";
-import type { Client, Demanda } from "@/lib/generated/prisma/client";
+import type { Client, Comentario, Demanda } from "@/lib/generated/prisma/client";
 import { TRIAGE, TRIAGE_LABEL, EXEC_STAGES } from "@/lib/demandas";
 import { DemandCard } from "@/components/DemandCard";
 import { DemandModal } from "@/components/DemandModal";
@@ -15,7 +15,7 @@ export function DemandasTab({
   canManage,
 }: {
   client: Client;
-  demandas: Demanda[];
+  demandas: (Demanda & { comentarios: Comentario[] })[];
   openDemandId?: string;
   canManage: boolean;
 }) {

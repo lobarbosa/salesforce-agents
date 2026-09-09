@@ -13,10 +13,14 @@ export function getClientById(id: string) {
   return prisma.client.findUnique({ where: { id }, include: { ambientes: true } });
 }
 
+// Só aqui os comentários vêm junto: é a tela que abre o modal da demanda.
+// getAllDemandas() alimenta a Visão Geral, que não os exibe — carregar lá
+// seria puxar a conversa inteira de todas as demandas sem ninguém ler.
 export function getDemandasByClient(clientId: string) {
   return prisma.demanda.findMany({
     where: { clientId },
     orderBy: { criadoEm: "desc" },
+    include: { comentarios: { orderBy: { criadoEm: "asc" } } },
   });
 }
 

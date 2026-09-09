@@ -306,3 +306,12 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
   font-size: 0.76rem; color: var(--text-muted); text-decoration: underline;
 }
 .auth-links button:hover { color: var(--accent); }
+
+.atividade { border-top: 1px solid var(--border); margin-top: 0.9rem; padding-top: 0.9rem; }
+.atividade h4 { margin: 0 0 0.6rem; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text-muted); }
+.atividade-vazia { font-size: 0.8rem; color: var(--text-muted); margin: 0 0 0.7rem; }
+.atividade-lista { list-style: none; margin: 0 0 0.9rem; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.atividade-lista li { background: var(--surface-alt); border-radius: 8px; padding: 0.55rem 0.7rem; }
+.atividade-meta { display: flex; align-items: baseline; gap: 0.5rem; font-size: 0.76rem; margin-bottom: 0.2rem; }
+.atividade-meta .mono { color: var(--text-muted); font-size: 0.72rem; }
+.atividade-texto { margin: 0; font-size: 0.84rem; white-space: pre-wrap; }

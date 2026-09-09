@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { Demanda } from "@/lib/generated/prisma/client";
+import type { Comentario, Demanda } from "@/lib/generated/prisma/client";
 import { Modal } from "@/components/Modal";
 import { asPerguntas, asAprovacao, timeAgo } from "@/lib/demandas";
 
@@ -11,11 +11,15 @@ export function DemandModal({
   canManage,
   onClose,
 }: {
-  demanda: Demanda;
+  demanda: Demanda & { comentarios: Comentario[] };
   canManage: boolean;
   onClose: () => void;
 }) {
   const router = useRouter();
+  const [comentarios, setComentarios] = useState<Comentario[]>(demanda.comentarios);
+  const [novoComentario, setNovoComentario] = useState("");
+  const [comentando, setComentando] = useState(false);
+  const [comentarioErro, setComentarioErro] = useState<string | null>(null);
   const perguntasIniciais = asPerguntas(demanda.perguntas);
   const aprovacao = asAprovacao(demanda.aprovacao);
 
@@ -31,6 +35,28 @@ export function DemandModal({
   const [materializeErro, setMaterializeErro] = useState("");
 
   const jaAprovada = !!aprovacao?.aprovado;
+
+  async function comentar() {
+    const texto = novoComentario.trim();
+    if (!texto) return;
+    setComentando(true);
+    setComentarioErro(null);
+    const res = await fetch(`/api/demandas/${demanda.id}/comentarios`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ texto }),
+    });
+    setComentando(false);
+    if (!res.ok) {
+      const body = await res.json().catch(() => null);
+      setComentarioErro(body?.error ?? "não consegui salvar o comentário");
+      return;
+    }
+    const criado: Comentario = await res.json();
+    setComentarios((atuais) => [...atuais, criado]);
+    setNovoComentario("");
+    router.refresh();
+  }
   const faltandoResposta = respostas.filter((p) => !p.resposta.trim()).length;
 
   async function salvarResposta(id: string, valor: string) {
@@ -170,6 +196,52 @@ export function DemandModal({
           )}
         </div>
       )}
+
+      <section className="atividade">
+        <h4>Atividade</h4>
+
+        {comentarios.length === 0 ? (
+          <p className="atividade-vazia">Nenhum comentário ainda.</p>
+        ) : (
+          <ol className="atividade-lista">
+            {comentarios.map((c) => (
+              <li key={c.id}>
+                <div className="atividade-meta">
+                  <strong>{c.autor}</strong>
+                  <span className="mono">{timeAgo(new Date(c.criadoEm))}</span>
+                </div>
+                <p className="atividade-texto">{c.texto}</p>
+              </li>
+            ))}
+          </ol>
+        )}
+
+        <div className="field">
+          <label htmlFor="novo-comentario">Escreva um comentário</label>
+          <textarea
+            id="novo-comentario"
+            value={novoComentario}
+            onChange={(e) => setNovoComentario(e.target.value)}
+            placeholder="o que precisa ficar registrado nesta demanda"
+            aria-describedby={comentarioErro ? "comentario-erro" : undefined}
+          />
+          <div style={{ marginTop: "0.5rem" }}>
+            <button
+              className="btn-secondary"
+              type="button"
+              onClick={comentar}
+              disabled={comentando || !novoComentario.trim()}
+            >
+              {comentando ? "Enviando..." : "Comentar"}
+            </button>
+          </div>
+          {comentarioErro && (
+            <div className="auth-note error" id="comentario-erro" role="alert" style={{ marginTop: "0.5rem" }}>
+              {comentarioErro}
+            </div>
+          )}
+        </div>
+      </section>
 
       <div className="modal-actions">
         <button className="btn-ghost" type="button" onClick={onClose}>

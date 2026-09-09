@@ -48,15 +48,15 @@ enum StatusDemanda {
 }
 
 model Client {
-  id        String   @id @default(cuid())
+  id       String   @id @default(cuid())
   // Nome do diretório em clients/<slug>/ neste repo — é a chave que liga
   // este registro ao workspace Salesforce DX do cliente (CLAUDE.md de conta,
   // force-app/, demandas materializadas). Gerado do nome na criação, estável
   // depois disso mesmo que o nome de exibição mude.
-  slug      String   @unique
-  nome      String
-  segmento  String   @default("")
-  criadoEm  DateTime @default(now()) @map("criado_em")
+  slug     String   @unique
+  nome     String
+  segmento String   @default("")
+  criadoEm DateTime @default(now()) @map("criado_em")
 
   // Conhecimento do Cliente (briefing de conta)
   marcas             String @default("")
@@ -129,38 +129,62 @@ model Usuario {
   criadoEm     DateTime @default(now()) @map("criado_em")
   concedidoPor String?  @map("concedido_por")
 
-  @@map("usuarios")
   @@index([clientId])
+  @@map("usuarios")
 }
 
 model Demanda {
-  id       String        @id @default(cuid())
-  clientId String        @map("client_id")
-  client   Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  clientId String @map("client_id")
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   // <CODE>-<n> (ex.: ACXYA-1) — mesmo formato e mesma numeração sequencial
   // por cliente que src/salesforce_agents/demands.py:_next_id() já usa pra
   // nomear clients/<slug>/demandas/<code>/. Gerado na criação, nunca reusado.
-  code     String
+  code String
 
   titulo   String
-  tipo     TipoDemanda    @default(sustentacao)
-  texto    String         @default("")
-  autor    String         @default("")
-  status   StatusDemanda  @default(backlog)
-  criadoEm DateTime       @default(now()) @map("criado_em")
+  tipo     TipoDemanda   @default(sustentacao)
+  texto    String        @default("")
+  autor    String        @default("")
+  status   StatusDemanda @default(backlog)
+  criadoEm DateTime      @default(now()) @map("criado_em")
 
   // Perguntas em aberto, aprovação de gate e histórico de transição —
   // mantidos como JSON (mesma forma de documento do modelo anterior;
   // não ganham nada sendo normalizados em tabelas próprias).
-  perguntas  Json @default("[]")
-  aprovacao  Json?
-  historico  Json @default("[]")
+  perguntas Json  @default("[]")
+  aprovacao Json?
+  historico Json  @default("[]")
 
   materializadoEm DateTime? @map("materializado_em")
 
-  @@map("demandas")
+  comentarios Comentario[]
+
   @@unique([clientId, code])
   @@index([clientId])
   @@index([status])
+  @@map("demandas")
+}
+
+// A conversa em torno da demanda — hoje ela acontece fora do sistema, o que
+// deixa o gate humano sem rastro: quem aprovou vê a decisão, não o caminho
+// até ela. Tabela própria, e não JSON como `perguntas`/`historico`, porque
+// aqui a granularidade é a linha (autor, momento, texto) e ela cresce sem
+// limite — os outros dois são documentos pequenos e fechados.
+model Comentario {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  // Nome de exibição no momento do comentário, congelado de propósito: se a
+  // pessoa mudar de nome depois, o histórico não reescreve quem falou o quê.
+  autor      String
+  autorEmail String @map("autor_email")
+  texto      String
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("comentarios")
 }
