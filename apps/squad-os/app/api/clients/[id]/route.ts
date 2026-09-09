@@ -4,9 +4,9 @@ import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
 
 // Campos editáveis por PATCH — um por vez, no mesmo padrão de autosave-on-blur
-// da versão anterior. Nunca inclui statusConexao/testeSolicitado* (esses só
-// mudam via /test-connection) nem chave privada/secret (essa nunca entra aqui,
-// ver docs/conexoes-e-setup.md).
+// da versão anterior. Os campos de conexão saíram daqui: agora são por
+// ambiente, em /api/clients/[id]/ambientes/[tipo]. Chave privada e Consumer
+// Secret nunca entram em nenhuma das duas (ver docs/conexoes-e-setup.md).
 const EDITABLE_FIELDS = [
   "nome",
   "segmento",
@@ -16,10 +16,6 @@ const EDITABLE_FIELDS = [
   "concorrentes",
   "integracoes",
   "regras",
-  "orgAlias",
-  "loginUrl",
-  "username",
-  "consumerKey",
 ] as const;
 
 export async function PATCH(

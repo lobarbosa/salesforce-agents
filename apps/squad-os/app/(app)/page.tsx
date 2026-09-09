@@ -21,7 +21,15 @@ export default async function OverviewPage() {
     })
     .sort((a, b) => b.criadoEm.getTime() - a.criadoEm.getTime());
 
-  const conexoesPendentes = clients.filter((c) => c.statusConexao !== "conectado");
+  // Pendência agora é por ambiente, não por cliente: a esteira só roda ponta
+  // a ponta se dev e qa estiverem conectados. Ambiente ainda não cadastrado
+  // conta como pendente — a linha só existe depois do primeiro save.
+  const conexoesPendentes = clients.flatMap((c) =>
+    (["dev", "qa"] as const).flatMap((tipo) => {
+      const status = c.ambientes.find((a) => a.tipo === tipo)?.statusConexao ?? "nao_configurado";
+      return status === "conectado" ? [] : [{ client: c, tipo, status }];
+    })
+  );
 
   return (
     <>
@@ -58,13 +66,18 @@ export default async function OverviewPage() {
       <div className="overview-section">
         <h2>Conexões Salesforce pendentes</h2>
         {conexoesPendentes.length === 0 ? (
-          <div className="overview-empty ok">Todos os clientes com conexão configurada.</div>
+          <div className="overview-empty ok">Todos os ambientes com conexão configurada.</div>
         ) : (
           <div className="overview-list">
-            {conexoesPendentes.map((c) => (
-              <Link key={c.id} className="overview-row" href={`/clients/${c.id}?tab=conexao`}>
-                <span className="oc-client">{c.nome}</span>
-                <span className="oc-title">{CONN_STATUS_LABEL[c.statusConexao] ?? c.statusConexao}</span>
+            {conexoesPendentes.map((p) => (
+              <Link
+                key={`${p.client.id}-${p.tipo}`}
+                className="overview-row"
+                href={`/clients/${p.client.id}?tab=conexao`}
+              >
+                <span className="oc-client">{p.client.nome}</span>
+                <span className="badge stage mono">{p.tipo}</span>
+                <span className="oc-title">{CONN_STATUS_LABEL[p.status] ?? p.status}</span>
               </Link>
             ))}
           </div>

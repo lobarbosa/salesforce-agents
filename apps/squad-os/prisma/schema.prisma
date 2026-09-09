@@ -66,20 +66,47 @@ model Client {
   integracoes        String @default("")
   regras             String @default("")
 
-  // Conexão Salesforce — nunca a chave privada nem Consumer Secret,
-  // esses ficam só no GitHub Environment do cliente (docs/conexoes-e-setup.md).
-  orgAlias           String?        @map("org_alias")
-  loginUrl           String?        @map("login_url")
-  username           String?
-  consumerKey        String?        @map("consumer_key")
-  statusConexao      StatusConexao  @default(nao_configurado) @map("status_conexao")
-  testeSolicitadoPor String?        @map("teste_solicitado_por")
-  testeSolicitadoEm  DateTime?      @map("teste_solicitado_em")
-
-  demandas Demanda[]
-  usuarios Usuario[]
+  ambientes AmbienteOrg[]
+  demandas  Demanda[]
+  usuarios  Usuario[]
 
   @@map("clients")
+}
+
+// A esteira vai de dev até o deploy na sandbox de QA, e o agente para ali —
+// por isso o enum tem exatamente esses dois. Produção não é modelada aqui de
+// propósito: o guardrail #1 proíbe o agente de tocar prod, e registrar a
+// credencial dela no app criaria justamente a superfície que a doutrina diz
+// não existir. Prod vive só no GitHub Environment, com required reviewer.
+enum TipoAmbiente {
+  dev
+  qa
+}
+
+// Uma linha por ambiente por cliente — antes esses campos eram achatados em
+// `clients`, o que só comportava uma org. O Environment correspondente no
+// GitHub segue `<slug>-<tipo>` (ex.: acxya-dev, acxya-qa), e o alias da org
+// segue `sbx-<slug>-<tipo>`.
+model AmbienteOrg {
+  id       String       @id @default(cuid())
+  clientId String       @map("client_id")
+  client   Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  tipo     TipoAmbiente
+
+  // Nunca a chave privada nem o Consumer Secret — esses ficam só no GitHub
+  // Environment do cliente (docs/conexoes-e-setup.md). Aqui fica só o que
+  // identifica a conexão, não o que autentica sozinho.
+  orgAlias           String?       @map("org_alias")
+  loginUrl           String?       @map("login_url")
+  username           String?
+  consumerKey        String?       @map("consumer_key")
+  statusConexao      StatusConexao @default(nao_configurado) @map("status_conexao")
+  testeSolicitadoPor String?       @map("teste_solicitado_por")
+  testeSolicitadoEm  DateTime?     @map("teste_solicitado_em")
+
+  @@unique([clientId, tipo])
+  @@index([clientId])
+  @@map("ambientes_org")
 }
 
 // Quem pode entrar no Squad OS e com que escopo — substitui a allowlist por

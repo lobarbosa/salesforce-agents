@@ -17,7 +17,6 @@ export function NewDemandModal({
   const [titulo, setTitulo] = useState("");
   const [tipo, setTipo] = useState<"sustentacao" | "projeto">("sustentacao");
   const [texto, setTexto] = useState("");
-  const [autor, setAutor] = useState("");
   const [saving, setSaving] = useState(false);
 
   async function handleSave() {
@@ -26,7 +25,7 @@ export function NewDemandModal({
     const res = await fetch("/api/demandas", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ clientId, titulo: titulo.trim(), tipo, texto, autor }),
+      body: JSON.stringify({ clientId, titulo: titulo.trim(), tipo, texto }),
     });
     setSaving(false);
     if (res.ok) {
@@ -55,10 +54,6 @@ export function NewDemandModal({
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
         />
-      </div>
-      <div className="field">
-        <label>Seu nome</label>
-        <input type="text" placeholder="quem está registrando" value={autor} onChange={(e) => setAutor(e.target.value)} />
       </div>
       <div className="modal-actions">
         <button className="btn-ghost" type="button" onClick={onClose}>

@@ -25,7 +25,10 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
   }
 
-  const autor = String(body.autor ?? "").trim();
+  // Autor sai da sessão, não do corpo: além de poupar o preenchimento manual,
+  // impede que quem chama a API registre a demanda em nome de outra pessoa.
+  // `nome` é opcional em `usuarios` (default ""), daí o fallback pro e-mail.
+  const autor = usuario.nome.trim() || usuario.email;
   const tipo = body.tipo === "projeto" ? "projeto" : "sustentacao";
   const code = await generateDemandCode(clientId, client.slug);
 
@@ -38,7 +41,7 @@ export async function POST(request: NextRequest) {
       texto: String(body.texto ?? "").trim(),
       autor,
       status: "backlog",
-      historico: [{ de: null, para: "backlog", autor: autor || "os", em: new Date().toISOString() }],
+      historico: [{ de: null, para: "backlog", autor, em: new Date().toISOString() }],
     },
   });
 

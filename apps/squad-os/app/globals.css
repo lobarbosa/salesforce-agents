@@ -243,6 +243,15 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 
 .conn-warning { max-width: 980px; background: var(--gate-soft); border: 1px solid var(--gate); color: var(--text); border-radius: 9px; padding: 0.7rem 0.9rem; font-size: 0.78rem; margin-bottom: 1.2rem; }
 .conn-warning strong { color: var(--gate-strong); }
+
+.ambiente-card { max-width: 980px; margin-bottom: 1.6rem; }
+.ambiente-head { display: flex; align-items: baseline; gap: 0.7rem; margin-bottom: 0.6rem; flex-wrap: wrap; }
+.ambiente-head h3 { margin: 0; font-size: 0.95rem; }
+.ambiente-head .sub { font-size: 0.76rem; color: var(--text-muted); }
+.ambiente-env {
+  margin-left: auto; font-size: 0.72rem; padding: 0.2rem 0.5rem; border-radius: 5px;
+  background: var(--accent-soft); color: var(--accent);
+}
 .conn-status { display: flex; align-items: center; gap: 0.6rem; max-width: 980px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
 .conn-status .dot2 { width: 10px; height: 10px; border-radius: 50%; flex: none; }
 .conn-status .dot2.nao_configurado { background: var(--text-muted); }
@@ -283,19 +292,6 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .auth-note.info { background: var(--accent-soft); color: var(--text); }
 .auth-note.error { background: var(--danger-soft); color: var(--danger); }
 .auth-note.ok { background: var(--success-soft); color: var(--success); }
-
-.btn-google {
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  width: 100%; padding: 0.55rem 0.9rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;
-  background: var(--surface); color: var(--text);
-  border: 1px solid var(--border-strong); border-radius: 7px;
-}
-.btn-google:hover { background: var(--surface-alt); }
-
-.auth-divider { display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.72rem; }
-.auth-divider::before, .auth-divider::after {
-  content: ""; flex: 1; border-top: 1px solid var(--border);
-}
 
 .auth-switch { display: flex; gap: 0.3rem; border-bottom: 1px solid var(--border); }
 .auth-switch button {

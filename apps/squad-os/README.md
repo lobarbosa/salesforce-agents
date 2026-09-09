@@ -75,16 +75,11 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
    Sintoma: o e-mail chega com link pra raiz do Site URL (`.../?code=...`) em
    vez de `/auth/callback`. Achado real (2026-09-09).
 
-   A tela de login oferece três caminhos, todos passando pelo mesmo
+   A tela de login oferece dois caminhos, ambos passando pelo mesmo
    `/auth/callback` (que troca o `code` por sessão) e pela mesma allowlist da
    tabela `usuarios` — autenticar nunca é o mesmo que ter acesso:
 
    - **Link por e-mail** (magic link) — habilitado por padrão.
-   - **Google** — em **Authentication → Providers → Google**, cole o Client ID
-     e o Client Secret gerados no [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
-     (OAuth 2.0 Client ID, tipo "Web application"). No console do Google, o
-     Authorized redirect URI é o do **Supabase**, não o da app:
-     `https://<project-ref>.supabase.co/auth/v1/callback`.
    - **E-mail e senha**, com cadastro aberto — qualquer pessoa cria conta, mas
      entra só depois que um admin conceder acesso em Administração. A
      redefinição de senha cai em `/auth/nova-senha`, que exige sessão válida
