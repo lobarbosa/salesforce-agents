@@ -58,8 +58,22 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
 
 1. Crie um projeto no [Supabase](https://supabase.com) (Postgres + Auth já
    vêm juntos). Em **Authentication → Providers**, confirme que Email (magic
-   link) está habilitado; em **Authentication → URL Configuration**, adicione
-   a URL do deploy (`https://.../auth/callback`) em Redirect URLs.
+   link) está habilitado; em **Authentication → URL Configuration**, preencha
+   **Site URL** com o alias estável de produção da Vercel (`https://<projeto>.vercel.app`)
+   e cadastre os Redirect URLs **com wildcard**:
+
+   - `https://<projeto>.vercel.app/**`
+   - `https://*-<team-slug>.vercel.app/**`
+   - `http://localhost:3000/**`
+
+   O wildcard não é conveniência, é requisito: `app/login/page.tsx` manda
+   `emailRedirectTo` a partir de `window.location.origin`, e a Vercel emite uma
+   URL de deployment nova (`<projeto>-<hash>-<team>.vercel.app`) a cada deploy.
+   Cadastrar a URL de um deployment específico quebra no deploy seguinte —
+   quando o `emailRedirectTo` não bate com a allow list, o Supabase descarta o
+   valor silenciosamente e cai no Site URL, perdendo o path `/auth/callback`.
+   Sintoma: o e-mail chega com link pra raiz do Site URL (`.../?code=...`) em
+   vez de `/auth/callback`. Achado real (2026-09-09).
 2. Copie `.env.example` pra `.env.local` e preencha — `DATABASE_URL` vem de
    **Project Settings → Database → Connection string** (use a pooler
    "Transaction", porta 6543); `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` vêm de
