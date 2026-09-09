@@ -22,7 +22,6 @@ export function ConexaoTab({ client }: { client: Client }) {
   const [status, setStatus] = useState(client.statusConexao);
   const [testeSolicitadoPor, setTesteSolicitadoPor] = useState(client.testeSolicitadoPor);
   const [testeSolicitadoEm, setTesteSolicitadoEm] = useState(client.testeSolicitadoEm);
-  const [testerNome, setTesterNome] = useState("");
   const [requesting, setRequesting] = useState(false);
 
   async function save(key: string, value: string) {
@@ -35,13 +34,9 @@ export function ConexaoTab({ client }: { client: Client }) {
   }
 
   async function handleTestRequest() {
-    const nome = testerNome.trim();
-    if (!nome) return;
     setRequesting(true);
     const res = await fetch(`/api/clients/${client.id}/test-connection`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome }),
     });
     setRequesting(false);
     if (res.ok) {
@@ -75,20 +70,6 @@ export function ConexaoTab({ client }: { client: Client }) {
           </div>
         </div>
         <div style={{ marginLeft: "auto", display: "flex", gap: "0.4rem", alignItems: "center" }}>
-          <input
-            type="text"
-            placeholder="seu nome"
-            value={testerNome}
-            onChange={(e) => setTesterNome(e.target.value)}
-            style={{
-              width: "9rem",
-              padding: "0.45rem 0.6rem",
-              border: "1px solid var(--border)",
-              borderRadius: "6px",
-              background: "var(--surface-alt)",
-              fontSize: "0.78rem",
-            }}
-          />
           <button className="btn-secondary" type="button" onClick={handleTestRequest} disabled={requesting}>
             {requesting ? "Enviando..." : "Solicitar teste de conexão"}
           </button>

@@ -4,7 +4,7 @@ import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
 
 export async function POST(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const usuario = await getCurrentUsuario();
@@ -13,17 +13,15 @@ export async function POST(
   }
 
   const { id } = await params;
-  const body = await request.json();
-  const nome = String(body.nome ?? "").trim();
-  if (!nome) {
-    return NextResponse.json({ error: "nome de quem solicita é obrigatório" }, { status: 400 });
-  }
 
+  // Mesmo padrão do POST /api/demandas: quem solicitou sai da sessão, não do
+  // corpo — o registro de "quem pediu o teste" só vale se não puder ser
+  // informado por quem chama.
   const client = await prisma.client.update({
     where: { id },
     data: {
       statusConexao: "aguardando_teste",
-      testeSolicitadoPor: nome,
+      testeSolicitadoPor: usuario.nome.trim() || usuario.email,
       testeSolicitadoEm: new Date(),
     },
   });
