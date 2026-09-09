@@ -1,0 +1,133 @@
+name: Assessment da org (onboarding do cliente)
+
+# O diagnóstico que antecede a primeira demanda: o que existe na org do cliente,
+# o que está fora de boa prática, e o que recomendar. Roda no onboarding — o
+# Squad OS dispara sozinho quando a conexão de dev é confirmada — e pode ser
+# repetido quando a org mudar muito.
+#
+# **Read-only.** Nada aqui altera a org: o agente é instruído a não escrever, a
+# lista de ferramentas em assessment.py não inclui `sf_deploy`, e guard-prod.sh
+# continua valendo. A primeira camada é instrução, a segunda é mecânica.
+#
+# Sempre contra a org de **dev** (`<cliente>-dev`): é onde a esteira trabalha, e
+# é a org cuja saúde determina o que a esteira vai encontrar pela frente.
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Nome do cliente (= clients/<client>/ e prefixo do GitHub Environment)'
+        required: true
+        default: acxya
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  assessment:
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-dev
+    env:
+      CLIENT: ${{ inputs.client }}
+      TARGET_ORG: sbx-${{ inputs.client }}-dev
+      ASSESSMENT_BRANCH: assessment/${{ inputs.client }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Instalar Salesforce CLI e Claude Code CLI
+        run: npm install -g @salesforce/cli @anthropic-ai/claude-code
+
+      - name: Instalar dependências Python
+        run: pip install -e .
+
+      - name: Autenticar Salesforce via JWT
+        run: |
+          if [ -z "${{ secrets.SF_CLIENT_ID }}" ]; then
+            echo "::error::O GitHub Environment '${{ inputs.client }}-dev' não tem SF_CLIENT_ID/SF_USERNAME/SF_JWT_KEY. Ver docs/conexoes-e-setup.md."
+            exit 1
+          fi
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt \
+            --client-id "$CLIENT_ID" \
+            --jwt-key-file server.key \
+            --username "$USERNAME" \
+            --instance-url https://test.salesforce.com \
+            --alias "$TARGET_ORG"
+          rm -f server.key
+
+      - name: Configurar git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Guardrail #4: nada é commitado direto numa branch protegida. O
+      # assessment é substituído a cada rodada, então a branch é reusada.
+      - name: Preparar branch do assessment
+        run: |
+          if git fetch origin "$ASSESSMENT_BRANCH" 2>/dev/null; then
+            git checkout -B "$ASSESSMENT_BRANCH" "origin/$ASSESSMENT_BRANCH"
+          else
+            git checkout -b "$ASSESSMENT_BRANCH"
+          fi
+
+      # Se o agente não produzir assessment.json válido, o comando falha e o job
+      # fica vermelho — é o mesmo princípio do ArtifactAusenteError nas demandas:
+      # melhor falhar alto que gravar "saúde: undefined" no perfil do cliente.
+      - name: Rodar o assessment
+        id: assess
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: sfagents cliente assessment --client "$CLIENT" --target-org "$TARGET_ORG" --github-output
+
+      - name: Commit e push
+        run: |
+          git add "clients/$CLIENT"
+          if [ -d logs ]; then git add logs/; fi
+          git commit -m "$CLIENT: assessment da org (saúde ${{ steps.assess.outputs.saude }})" --allow-empty -q
+          git push origin "HEAD:$ASSESSMENT_BRANCH"
+
+      - name: Abrir PR do assessment (se ainda não existir)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh pr view "$ASSESSMENT_BRANCH" --json number >/dev/null 2>&1; then
+            gh pr create \
+              --base main \
+              --head "$ASSESSMENT_BRANCH" \
+              --title "$CLIENT: assessment da org" \
+              --body "Aberto automaticamente por \`run-assessment.yml\`. Diagnóstico read-only da org \`$TARGET_ORG\` — **nada foi alterado na org**. Saúde: **${{ steps.assess.outputs.saude }}**, ${{ steps.assess.outputs.recomendacoes }} recomendações (${{ steps.assess.outputs.altas }} de severidade alta). Revise \`clients/$CLIENT/assessment.md\` antes do merge." \
+              || echo "::warning::Não consegui abrir o PR automaticamente. A branch $ASSESSMENT_BRANCH já está no ar."
+          fi
+
+      # O resumo vai pro perfil do cliente no Squad OS. O relatório longo fica no
+      # git; o app mostra o veredito e as recomendações que cabem num card.
+      - name: Sincronizar o assessment com o Squad OS
+        if: success()
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_ASSESSMENT_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::SQUAD_OS_SYNC_ASSESSMENT_URL/SQUAD_OS_SYNC_TOKEN não configurados — o assessment está no git, mas não aparece no perfil do cliente. Ver docs/conexoes-e-setup.md."
+            exit 0
+          fi
+          sfagents cliente assessment-json --client "$CLIENT" \
+            | curl -fsS -X POST "$SYNC_URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @- \
+            || echo "::warning::Falha ao sincronizar com o Squad OS — o assessment já está no git."

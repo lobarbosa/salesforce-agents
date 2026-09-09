@@ -66,6 +66,19 @@ Não é "ainda não configuramos": `ambientes.py` só conhece `dev` e `qa` e rec
 outro valor antes de montar qualquer comando `sf`. Se um dia existir entrega em produção,
 ela nasce fora desta esteira, com required reviewer nomeado — não estendendo este mapa.
 
+### Secrets de repositório (não de Environment)
+
+Além de `ANTHROPIC_API_KEY`, o ciclo automático precisa dos secrets abaixo — são eles que
+deixam o pipeline devolver o estado pro Squad OS. Sem eles nada quebra no git, mas o
+quadro do app para de refletir a realidade, que é o mesmo que não ter automação:
+
+| Secret | Pra quê |
+|---|---|
+| `SQUAD_OS_SYNC_TOKEN` | Autentica os três endpoints de sync. Mesma string cadastrada como env var na Vercel |
+| `SQUAD_OS_SYNC_URL` | `https://<domínio>/api/sync/demanda` — estágio da demanda voltando |
+| `SQUAD_OS_SYNC_ASSESSMENT_URL` | `https://<domínio>/api/sync/assessment` — saúde da org voltando |
+| `SQUAD_OS_SYNC_CONEXAO_URL` | `https://<domínio>/api/sync/conexao` — resultado do teste de JWT voltando, e o gatilho do assessment de onboarding |
+
 `ANTHROPIC_API_KEY` fica em **Settings → Secrets → Actions** do repositório (não dentro de
 um Environment) — é a mesma conta Anthropic do squad para todos os clientes, não algo que
 se isola por conta.
@@ -92,7 +105,8 @@ Sem isso o orquestrador (`orchestrator.py`) não consegue abrir sessão do Claud
 | 4 | Criar branches `develop` e proteger `main` | 2 | 15min | PR obrigatório em `main` |
 | 5 | Gerar certificado + Connected App/External Client App **em cada sandbox** (dev e qa têm as suas) | 1 | 45min | `sf org login jwt` funciona nas duas |
 | 6 | Criar os Environments `<cliente>-dev` e `<cliente>-qa` e cadastrar `SF_CLIENT_ID`/`SF_USERNAME`/`SF_JWT_KEY` em cada um | 4, 5 | 30min | `test-connection.yml` roda verde nos dois ambientes |
-| 7 | Registrar uma demanda real no Squad OS e materializá-la em `clients/<cliente>/demandas/<ID>/demanda.md` | 5 | 15min | `sfagents demanda listar` mostra a demanda |
+| 6b | Testar a conexão de dev pelo Squad OS — o assessment da org dispara sozinho | 6 | 10min | Bloco "Saúde da org" preenchido no perfil do cliente |
+| 7 | Registrar uma demanda real no Squad OS e materializá-la (o botão faz os dois) | 5 | 5min | `sfagents demanda listar` mostra a demanda |
 | 8 | Rodar `sfagents demanda avancar` com essa demanda até `release` | 3, 6, 7 | 1 dia | Ciclo completo com gates registrados em `gates.md` |
 | 9 | Repetir com mais 4 demandas, anotando cada correção humana | 8 | 2 semanas | Retrabalho < 30% |
 | 10 | Converter as correções em linhas de skill (`.claude/skills/`) | 9 | 2h | Doutrina atualizada |
@@ -100,10 +114,10 @@ Sem isso o orquestrador (`orchestrator.py`) não consegue abrir sessão do Claud
 
 **Passos 1 a 8 são o caminho crítico.** Nada mais importa até o ciclo completo rodar uma vez.
 
-> Nota sobre o passo 7: hoje a materialização é manual — leia a demanda no Squad OS e
-> rode `sfagents demanda nova` com o mesmo texto. Automatizar essa ponte (sync
-> periódico OS → repo) é o próximo passo natural depois que o piloto validar o
-> restante do fluxo.
+> Nota sobre os passos 7 e 8: já não são manuais. Materializar no Squad OS commita
+> `demanda.md` + `status.yaml` e dispara os agentes; cada etapa avança sozinha até o
+> gate seguinte e volta pro quadro pelo sync. O que resta de humano é aprovar os gates
+> — que é o ponto. Ver `ativacao.md`.
 
 ## 4. Ambientes
 

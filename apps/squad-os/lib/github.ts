@@ -120,3 +120,18 @@ export async function triggerAssessment(clientSlug: string) {
     inputs: { client: clientSlug },
   });
 }
+
+// Dispara o smoke test de JWT contra uma org do cliente. O resultado volta por
+// /api/sync/conexao — é esse retorno que marca a org como conectada e, no caso
+// da org de dev, acende o assessment de onboarding.
+export async function triggerTestConnection(clientSlug: string, ambiente: "dev" | "qa") {
+  const gh = octokit();
+  const { owner, repo, branch } = repoConfig();
+  await gh.actions.createWorkflowDispatch({
+    owner,
+    repo,
+    workflow_id: "test-connection.yml",
+    ref: branch,
+    inputs: { client: clientSlug, ambiente },
+  });
+}

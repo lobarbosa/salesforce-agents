@@ -25,6 +25,73 @@ def main() -> None:
 
 
 @main.group()
+def cliente() -> None:
+    """Ações no nível do cliente (não de uma demanda)."""
+
+
+@cliente.command("assessment")
+@click.option("--client", required=True, help="Nome do cliente (= clients/<client>/).")
+@click.option(
+    "--target-org",
+    default=None,
+    help="Alias da org. Por padrão, a org de dev do cliente (sbx-<client>-dev).",
+)
+@click.option(
+    "--github-output",
+    is_flag=True,
+    help="Escreve saude/n_recomendacoes em $GITHUB_OUTPUT (uso do run-assessment.yml).",
+)
+def assessment_cmd(client: str, target_org: str | None, github_output: bool) -> None:
+    """Diagnostica a saúde da org do cliente e grava assessment.md + .json.
+
+    É a primeira coisa que roda quando um cliente é onboardado: ninguém desenha
+    solução numa org que não conhece. Read-only — nada na org é alterado.
+    """
+    workspace = Path("clients") / client
+    if not workspace.exists():
+        raise click.ClickException(f"'{workspace}' não existe. Crie o workspace do cliente primeiro.")
+
+    alias = target_org or ambientes.org_alias(client, "dev")
+    click.echo(f"Assessment de {client} contra {alias}...")
+
+    from . import assessment as assessment_mod
+
+    assessment_mod.run_sync(client, alias)
+
+    try:
+        dados = assessment_mod.ler_resultado(client)
+    except assessment_mod.AssessmentError as exc:
+        raise click.ClickException(str(exc))
+
+    recs = dados.get("recomendacoes", [])
+    altas = sum(1 for r in recs if str(r.get("severidade", "")).lower() == "alta")
+    click.echo(f"{client}: saúde {dados['saude']} — {len(recs)} recomendações ({altas} altas)")
+
+    if github_output:
+        destino = os.environ.get("GITHUB_OUTPUT")
+        if not destino:
+            raise click.ClickException("--github-output pedido, mas $GITHUB_OUTPUT não existe.")
+        with open(destino, "a", encoding="utf-8") as fh:
+            fh.write(f"saude={dados['saude']}\n")
+            fh.write(f"recomendacoes={len(recs)}\n")
+            fh.write(f"altas={altas}\n")
+
+
+@cliente.command("assessment-json")
+@click.option("--client", required=True)
+def assessment_json(client: str) -> None:
+    """Imprime o assessment.json do cliente, pro sync com o Squad OS."""
+    from . import assessment as assessment_mod
+
+    try:
+        dados = assessment_mod.ler_resultado(client)
+    except assessment_mod.AssessmentError as exc:
+        raise click.ClickException(str(exc))
+    dados["client"] = client
+    click.echo(json.dumps(dados, ensure_ascii=False))
+
+
+@main.group()
 def demanda() -> None:
     """Gerencia demandas (substitui o fluxo de estórias do Jira)."""
 

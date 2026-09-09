@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
-import { BUCKET_ANEXOS, createStorageClient, storageConfigurado } from "@/lib/supabase/storage";
+import { BUCKET_ANEXOS, createServiceClient, serviceRoleConfigurado } from "@/lib/supabase/storage";
 
 const TAMANHO_MAX = 10 * 1024 * 1024;
 const NOME_MAX = 200;
@@ -29,7 +29,7 @@ export async function POST(
   if (acesso.erro) return acesso.erro;
   const { usuario } = acesso;
 
-  if (!storageConfigurado()) {
+  if (!serviceRoleConfigurado()) {
     return NextResponse.json(
       { error: "anexos ainda não configurados (falta SUPABASE_SERVICE_ROLE_KEY)" },
       { status: 503 }
@@ -51,7 +51,7 @@ export async function POST(
   const nome = (arquivo.name || "arquivo").slice(0, NOME_MAX);
   const caminho = `${id}/${crypto.randomUUID()}-${chaveSegura(nome)}`;
 
-  const storage = createStorageClient();
+  const storage = createServiceClient();
   const { error: uploadErro } = await storage.storage
     .from(BUCKET_ANEXOS)
     .upload(caminho, arquivo, { contentType: arquivo.type || undefined, upsert: false });

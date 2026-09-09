@@ -21,7 +21,28 @@ explícita. Não existe "vou seguindo e depois você revisa".
 | 6 | Empacotamento e deploy sandbox/UAT | `release` | **Prod: proibido ao agente** |
 | 7 | Documentação de entrega | `doc` | Spot check |
 
+Antes da etapa 1 de todo cliente novo vem o **assessment da org** (`org-assessment`,
+`run-assessment.yml`): diagnóstico read-only da saúde da org, que vira `assessment.md` +
+`assessment.json` em `clients/<cliente>/` e o bloco "Saúde da org" no perfil do cliente no
+Squad OS. Dispara sozinho quando a org de dev conecta pela primeira vez. Não é demanda —
+não tem `status.yaml` nem gate; é o que evita desenhar solução numa org desconhecida.
+
 O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
+
+## O ciclo anda sozinho — e onde ele para
+
+Ninguém abre o GitHub Actions pra mover uma demanda. `src/salesforce_agents/fluxo.py`
+roda a etapa atual, avança até o próximo gate e devolve o controle; o sync de volta
+(`/api/sync/demanda`) faz o quadro do Squad OS mostrar o gate esperando; quando alguém
+aprova no card, a próxima etapa dispara sozinha. Detalhes em `docs/ativacao.md`.
+
+Isso **não afrouxa a regra de ouro**: toda etapa de agente continua sendo seguida por um
+gate humano bloqueante — essa invariante tem teste (`tests/test_fluxo.py`). O que ficou
+automático é a borda: agente→humano (o gate aparece pra quem precisa ver) e humano→agente
+(aprovar aciona). O que era manual antes era o transporte, não a decisão.
+
+O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
+(`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.
 
 ## Guardrails inegociáveis
 

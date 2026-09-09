@@ -75,7 +75,7 @@ export function ClientDetail({
         </button>
       </div>
 
-      {tab === "conhecimento" && <ConhecimentoTab client={client} />}
+      {tab === "conhecimento" && <ConhecimentoTab client={client} canManage={podeGerenciarClientes} />}
       {tab === "conexao" && (
         <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} />
       )}

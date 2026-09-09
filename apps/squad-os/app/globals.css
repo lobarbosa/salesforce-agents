@@ -311,6 +311,40 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 }
 .auth-links button:hover { color: var(--accent); }
 
+/* assessment de org no perfil do cliente */
+.assessment {
+  border: 1px solid var(--border); background: var(--surface); border-radius: 12px;
+  padding: 1rem 1.1rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.7rem;
+}
+.assessment-head { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; flex-wrap: wrap; }
+.assessment-head h3 { margin: 0; font-size: 0.95rem; }
+/* Saúde é informação que nasce como cor. Cada estado carrega palavra + símbolo
+   além do tom — cor sozinha não comunica pra quem não a distingue. */
+.saude {
+  display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 600;
+  padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid currentColor;
+}
+.saude.ok { color: var(--success); background: var(--success-soft); }
+.saude.alerta { color: var(--gate-strong); background: var(--gate-soft); }
+.saude.critico { color: var(--danger); background: var(--danger-soft); }
+.saude.pendente { color: var(--text-muted); background: var(--surface-alt); border-color: var(--border); font-weight: 400; }
+.assessment-resumo { margin: 0; font-size: 0.86rem; white-space: pre-wrap; }
+.assessment-recs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.assessment-recs li {
+  display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
+  background: var(--surface-alt); border-radius: 8px; padding: 0.45rem 0.6rem; font-size: 0.83rem;
+}
+.sev {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700;
+  padding: 0.1rem 0.4rem; border-radius: 5px; flex-shrink: 0;
+}
+.sev-alta { color: var(--danger); background: var(--danger-soft); }
+.sev-media { color: var(--gate-strong); background: var(--gate-soft); }
+.sev-baixa { color: var(--text-muted); background: var(--surface); }
+.rec-titulo { flex: 1; min-width: 12rem; }
+.rec-area { font-size: 0.7rem; color: var(--text-muted); }
+.assessment-nota { margin: 0; font-size: 0.76rem; color: var(--text-muted); }
+
 /* gate humano no card — a ação mais consequente do app: aciona agente contra a
    org do cliente. Borda em --gate (a cor semântica de "esperando gente"), não
    em --accent, pra não competir com botão comum. */

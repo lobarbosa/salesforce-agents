@@ -2,6 +2,7 @@
 
 import type { Client } from "@/lib/generated/prisma/client";
 import { SaveField } from "@/components/SaveField";
+import { AssessmentCard } from "@/components/AssessmentCard";
 
 const BRIEF_FIELDS = [
   { key: "segmento", label: "Segmento / indústria", multiline: false },
@@ -11,7 +12,7 @@ const BRIEF_FIELDS = [
   { key: "regras", label: "Regras específicas desta conta", multiline: true, full: true },
 ] as const;
 
-export function ConhecimentoTab({ client }: { client: Client }) {
+export function ConhecimentoTab({ client, canManage }: { client: Client; canManage: boolean }) {
   async function save(key: string, value: string) {
     const res = await fetch(`/api/clients/${client.id}`, {
       method: "PATCH",
@@ -22,7 +23,9 @@ export function ConhecimentoTab({ client }: { client: Client }) {
   }
 
   return (
-    <div className="brief-grid">
+    <>
+      <AssessmentCard client={client} canManage={canManage} />
+      <div className="brief-grid">
       {BRIEF_FIELDS.map((f) => (
         <SaveField
           key={f.key}
@@ -32,7 +35,8 @@ export function ConhecimentoTab({ client }: { client: Client }) {
           full={"full" in f && f.full}
           onSave={(value) => save(f.key, value)}
         />
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 }
