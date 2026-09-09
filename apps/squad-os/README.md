@@ -134,6 +134,39 @@ então toda migração pendente é aplicada antes de cada build, sem passo manua
 `prisma migrate deploy` é idempotente (só aplica o que ainda não rodou), então
 não há problema em rodar em todo deploy, incluindo previews.
 
+#### Preview e Production compartilham o mesmo banco
+
+Hoje as duas Environments da Vercel apontam pro mesmo `DATABASE_URL`. A
+consequência não é óbvia e custou caro em 2026-09-09: **o build de preview de
+um PR aplica a migração em produção**, antes do merge. Enquanto a migração for
+aditiva (criar tabela, criar coluna) isso é inofensivo — o código antigo
+simplesmente ignora o que não conhece. Deixa de ser inofensivo no instante em
+que a migração remove ou renomeia algo que o código de `main` ainda lê.
+
+Enquanto for um banco só, toda mudança destrutiva vai em **dois merges**:
+
+1. o merge que tira o campo do `schema.prisma` e do código (sem migration
+   nenhuma) — a coluna continua no banco, só deixa de ser lida;
+2. o merge seguinte, com o `DROP` sozinho.
+
+A alternativa de verdade é dar um banco próprio ao Preview (um projeto Supabase
+separado, ou um branch de banco do Supabase) e apontar só a env var de Preview
+pra ele. Aí um PR volta a poder carregar schema e código no mesmo merge, que é
+como deveria ser. Enquanto isso não acontecer, os dois merges não são
+burocracia — são a única coisa separando um PR aberto de uma produção fora do ar.
+
+##### Por que o DROP não vem junto
+
+`clients.marcas` e `clients.concorrentes` saíram do briefing a pedido e já
+saíram do `schema.prisma` — este é o merge (1). As colunas seguem no banco,
+vazias (verificado: 5 clientes, nenhuma linha com conteúdo em nenhuma das
+duas). O merge (2) é uma migration com exatamente isto:
+
+```sql
+ALTER TABLE "clients" DROP COLUMN "marcas";
+ALTER TABLE "clients" DROP COLUMN "concorrentes";
+```
+
 ### Migrando os dados do Artifact antigo
 
 ```bash

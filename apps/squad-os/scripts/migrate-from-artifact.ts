@@ -26,10 +26,8 @@ interface OldClient {
   nome: string;
   segmento?: string;
   criadoEm?: string;
-  marcas?: string;
   contatos?: string;
   ambienteSalesforce?: string;
-  concorrentes?: string;
   integracoes?: string;
   regras?: string;
   orgAlias?: string;
@@ -91,10 +89,8 @@ async function main() {
     const data = {
       nome: oc.nome,
       segmento: oc.segmento ?? "",
-      marcas: oc.marcas ?? "",
       contatos: oc.contatos ?? "",
       ambienteSalesforce: oc.ambienteSalesforce ?? "",
-      concorrentes: oc.concorrentes ?? "",
       integracoes: oc.integracoes ?? "",
       regras: oc.regras ?? "",
       orgAlias: oc.orgAlias || null,
