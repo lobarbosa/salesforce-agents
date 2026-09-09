@@ -160,6 +160,10 @@ model Demanda {
   materializadoEm DateTime? @map("materializado_em")
 
   comentarios Comentario[]
+  subtarefas  Subtarefa[]
+  checklist   ChecklistItem[]
+  tempos      RegistroTempo[]
+  anexos      Anexo[]
 
   @@unique([clientId, code])
   @@index([clientId])
@@ -187,4 +191,85 @@ model Comentario {
 
   @@index([demandaId])
   @@map("comentarios")
+}
+
+// Subtarefa é unidade de trabalho: tem título e pode ser atribuída. Checklist
+// é lista de verificação: só texto e feito/não feito. Parecem a mesma coisa e
+// não são — separá-las evita que "conferir X" e "implementar Y" disputem a
+// mesma lista, que é o que faz um card virar depósito.
+model Subtarefa {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  titulo      String
+  feita       Boolean @default(false)
+  responsavel String  @default("")
+  // Posição na lista. Int em vez de índice do array porque reordenar não pode
+  // depender da ordem de chegada no banco.
+  ordem       Int     @default(0)
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("subtarefas")
+}
+
+model ChecklistItem {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  texto String
+  feito Boolean @default(false)
+  ordem Int     @default(0)
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("checklist_itens")
+}
+
+// `fimEm` nulo é o timer rodando — é o estado, não uma flag separada, para não
+// existir a combinação impossível "parado mas sem fim". `minutos` é gravado no
+// stop (ou direto, no lançamento manual) em vez de calculado toda leitura:
+// congela o valor mesmo que o relógio do servidor mude depois.
+model RegistroTempo {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  autor      String
+  autorEmail String @map("autor_email")
+  descricao  String @default("")
+
+  inicioEm DateTime  @map("inicio_em")
+  fimEm    DateTime? @map("fim_em")
+  minutos  Int?
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("registros_tempo")
+}
+
+// Só metadado — o arquivo em si vive no Supabase Storage, no bucket
+// `anexos-demanda`. `caminho` é a chave lá dentro; nada de binário no Postgres.
+model Anexo {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  nome    String
+  caminho String @unique
+  tamanho Int
+  tipo    String @default("")
+
+  autor      String
+  autorEmail String @map("autor_email")
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("anexos")
 }

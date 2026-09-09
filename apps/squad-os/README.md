@@ -49,6 +49,10 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
   token, não por sessão de usuário) é o próximo passo natural — não entrou
   nesta primeira versão pra não misturar "trocar a plataforma" com "mudar o
   modelo de sincronização" no mesmo lote de mudança.
+- **Reordenar subtarefa/checklist por arrastar**: a coluna `ordem` existe e a
+  API respeita, mas a UI ainda só adiciona no fim. Reordenar é conveniência;
+  o que faltava de verdade era ter a lista.
+
 - **Realtime entre abas**: sem WebSocket/Supabase Realtime ainda — mutação
   local dá `router.refresh()`, outra aba só vê a mudança ao navegar de novo.
   O Artifact tinha `onSnapshot` "de graça"; aqui é uma escolha consciente de
@@ -109,6 +113,15 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
    (papel `cliente` + qual cliente).
 6. Gere um GitHub PAT fine-grained (Contents:write + Actions:write, escopo só
    neste repositório) pra `GITHUB_TOKEN`, se for testar a materialização.
+7. **Anexos** (opcional — sem isso o app sobe igual, só a aba Anexos recusa
+   upload com mensagem explícita): no painel do Supabase, **Storage → New
+   bucket**, nome `anexos-demanda`, **Public desmarcado**. Não crie policy
+   nenhuma no bucket: a API do Squad OS acessa com a service role key
+   (`SUPABASE_SERVICE_ROLE_KEY`, em **Project Settings → API Keys**) e é ela
+   que autoriza, sabendo o cliente de cada demanda. Uma policy de
+   `authenticated` no bucket deixaria o papel `cliente` do cliente A baixar
+   anexo do cliente B — o download sai por URL assinada de 60s gerada pela
+   rota, nunca por link público.
 
 ### Deploy (Vercel)
 

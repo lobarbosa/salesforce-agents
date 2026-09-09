@@ -68,3 +68,22 @@ export function timeAgo(iso: string | Date | null | undefined): string {
   if (diff < 86400) return Math.round(diff / 3600) + "h";
   return Math.round(diff / 86400) + "d";
 }
+
+// Minutos viram "1h20" em vez de "80min" a partir de uma hora: é como a
+// pessoa fala do próprio tempo, e a lista de lançamentos fica comparável de
+// relance.
+export function formatarMinutos(total: number): string {
+  const m = Math.max(0, Math.round(total));
+  if (m < 60) return `${m}min`;
+  const horas = Math.floor(m / 60);
+  const resto = m % 60;
+  return resto === 0 ? `${horas}h` : `${horas}h${String(resto).padStart(2, "0")}`;
+}
+
+// Tamanho de anexo em unidade legível — o número cru em bytes não ajuda
+// ninguém a decidir se vale baixar.
+export function formatarTamanho(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
+}

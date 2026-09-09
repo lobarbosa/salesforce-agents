@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import type { AmbienteOrg, Client, Comentario, Demanda } from "@/lib/generated/prisma/client";
+import type { AmbienteOrg, Client } from "@/lib/generated/prisma/client";
+import type { DemandaCompleta } from "@/lib/data";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
@@ -17,7 +18,7 @@ export function ClientDetail({
   openDemandId,
 }: {
   client: Client & { ambientes: AmbienteOrg[] };
-  demandas: (Demanda & { comentarios: Comentario[] })[];
+  demandas: DemandaCompleta[];
   usuario: CurrentUsuario;
   initialTab?: Tab;
   openDemandId?: string;
@@ -34,7 +35,14 @@ export function ClientDetail({
         <div className="client-header">
           <h1>{client.nome}</h1>
         </div>
-        <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} canManage={false} />
+        <DemandasTab
+          client={client}
+          demandas={demandas}
+          openDemandId={openDemandId}
+          canManage={false}
+          usuarioEmail={usuario.email}
+          isAdmin={false}
+        />
       </>
     );
   }
@@ -72,7 +80,14 @@ export function ClientDetail({
         <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} />
       )}
       {tab === "demandas" && (
-        <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} canManage />
+        <DemandasTab
+          client={client}
+          demandas={demandas}
+          openDemandId={openDemandId}
+          canManage
+          usuarioEmail={usuario.email}
+          isAdmin={usuario.role === "admin"}
+        />
       )}
     </>
   );

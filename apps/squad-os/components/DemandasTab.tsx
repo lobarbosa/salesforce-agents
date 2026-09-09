@@ -2,7 +2,8 @@
 
 import { useState, type DragEvent } from "react";
 import { useRouter } from "next/navigation";
-import type { Client, Comentario, Demanda } from "@/lib/generated/prisma/client";
+import type { Client } from "@/lib/generated/prisma/client";
+import type { DemandaCompleta } from "@/lib/data";
 import { TRIAGE, TRIAGE_LABEL, EXEC_STAGES } from "@/lib/demandas";
 import { DemandCard } from "@/components/DemandCard";
 import { DemandModal } from "@/components/DemandModal";
@@ -13,11 +14,15 @@ export function DemandasTab({
   demandas,
   openDemandId,
   canManage,
+  usuarioEmail,
+  isAdmin,
 }: {
   client: Client;
-  demandas: (Demanda & { comentarios: Comentario[] })[];
+  demandas: DemandaCompleta[];
   openDemandId?: string;
   canManage: boolean;
+  usuarioEmail: string;
+  isAdmin: boolean;
 }) {
   const router = useRouter();
   const [newOpen, setNewOpen] = useState(false);
@@ -138,7 +143,15 @@ export function DemandasTab({
         </div>
       </div>
 
-      {open && <DemandModal demanda={open} canManage={canManage} onClose={() => setOpenId(null)} />}
+      {open && (
+        <DemandModal
+          demanda={open}
+          canManage={canManage}
+          usuarioEmail={usuarioEmail}
+          isAdmin={isAdmin}
+          onClose={() => setOpenId(null)}
+        />
+      )}
       {newOpen && <NewDemandModal clientId={client.id} clientNome={client.nome} onClose={() => setNewOpen(false)} />}
     </>
   );
