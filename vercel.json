@@ -1,4 +1,0 @@
-{
-  "buildCommand": "cd apps/squad-os && npm run vercel-build",
-  "outputDirectory": "apps/squad-os/.next"
-}
