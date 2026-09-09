@@ -19,7 +19,36 @@ const ROLE_LABEL: Record<CurrentUsuario["role"], string> = {
   cliente: "cliente",
 };
 
-export function Sidebar({ clients, usuario }: { clients: Client[]; usuario: CurrentUsuario }) {
+// A marca escrita não é placeholder: é a alternativa quando `public/marca.svg`
+// não existe (ver lib/marca.ts e public/README.md). Quando o arquivo existe, o
+// alt fica vazio de propósito — o nome do produto aparece logo abaixo como
+// texto de verdade, e repeti-lo no alt faria o leitor de tela dizer "Squad OS
+// Squad OS".
+function Marca({ src, sub }: { src: string | null; sub: string }) {
+  return (
+    <div className="brand">
+      {src ? (
+        // `next/image` exigiria width/height conhecidos no build, e quem sobe
+        // o arquivo da marca é o time, em proporção que o build não conhece.
+        // Uma imagem de ~26px de altura na sidebar não move LCP.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className="brand-logo" src={src} alt="" />
+      ) : null}
+      <div className="name">Squad OS</div>
+      <div className="sub">{sub}</div>
+    </div>
+  );
+}
+
+export function Sidebar({
+  clients,
+  usuario,
+  marcaSrc,
+}: {
+  clients: Client[];
+  usuario: CurrentUsuario;
+  marcaSrc: string | null;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -65,10 +94,7 @@ export function Sidebar({ clients, usuario }: { clients: Client[]; usuario: Curr
     const meuCliente = clients[0];
     return (
       <aside className="sidebar">
-        <div className="brand">
-          <div className="name">Squad OS</div>
-          <div className="sub">{meuCliente?.nome ?? "seu espaço"}</div>
-        </div>
+        <Marca src={marcaSrc} sub={meuCliente?.nome ?? "seu espaço"} />
         <div style={{ padding: "0.6rem 1.1rem", marginTop: "auto", borderTop: "1px solid var(--border)" }}>
           <div className="save-note" style={{ marginBottom: "0.35rem" }}>
             {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
@@ -88,10 +114,7 @@ export function Sidebar({ clients, usuario }: { clients: Client[]; usuario: Curr
 
   return (
     <aside className="sidebar">
-      <div className="brand">
-        <div className="name">Squad OS</div>
-        <div className="sub">gestão de demandas Salesforce</div>
-      </div>
+      <Marca src={marcaSrc} sub="gestão de demandas Salesforce" />
 
       <Link href="/" className={`nav-item${!activeClientId && pathname === "/" ? " active" : ""}`}>
         <span className="icon" />

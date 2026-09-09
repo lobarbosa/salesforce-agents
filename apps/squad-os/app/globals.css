@@ -84,6 +84,10 @@ select:focus-visible, [tabindex]:focus-visible {
 }
 .sidebar .brand { padding: 1.1rem 1.1rem 1.1rem; position: relative; }
 .sidebar .brand .name { font-family: var(--display); font-weight: 600; font-size: 0.92rem; }
+/* Altura fixa e largura automática: o arquivo da marca pode chegar em qualquer
+   proporção, e travar a largura distorceria um logotipo largo. `display:block`
+   evita a folga de linha-base embaixo de img inline. */
+.sidebar .brand-logo { display: block; height: 26px; width: auto; max-width: 100%; margin-bottom: 0.4rem; }
 .sidebar .brand .sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
 /* Gradiente institucional — reservado ao símbolo (aqui, a marca escrita),
    nunca usado como cor de função (botão, link, estado). */
