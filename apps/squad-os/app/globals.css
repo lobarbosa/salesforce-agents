@@ -284,19 +284,6 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .auth-note.error { background: var(--danger-soft); color: var(--danger); }
 .auth-note.ok { background: var(--success-soft); color: var(--success); }
 
-.btn-google {
-  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-  width: 100%; padding: 0.55rem 0.9rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;
-  background: var(--surface); color: var(--text);
-  border: 1px solid var(--border-strong); border-radius: 7px;
-}
-.btn-google:hover { background: var(--surface-alt); }
-
-.auth-divider { display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.72rem; }
-.auth-divider::before, .auth-divider::after {
-  content: ""; flex: 1; border-top: 1px solid var(--border);
-}
-
 .auth-switch { display: flex; gap: 0.3rem; border-bottom: 1px solid var(--border); }
 .auth-switch button {
   background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer;
