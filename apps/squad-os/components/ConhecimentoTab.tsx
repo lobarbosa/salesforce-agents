@@ -5,10 +5,8 @@ import { SaveField } from "@/components/SaveField";
 
 const BRIEF_FIELDS = [
   { key: "segmento", label: "Segmento / indústria", multiline: false },
-  { key: "marcas", label: "Marcas atendidas", multiline: false },
   { key: "contatos", label: "Contatos principais", multiline: true },
   { key: "ambienteSalesforce", label: "Ambiente Salesforce (clouds, orgs, convenções)", multiline: true, full: true },
-  { key: "concorrentes", label: "Concorrentes / contexto de mercado", multiline: true },
   { key: "integracoes", label: "Integrações existentes", multiline: true },
   { key: "regras", label: "Regras específicas desta conta", multiline: true, full: true },
 ] as const;

@@ -10,13 +10,15 @@ import { canManageClientData } from "@/lib/auth";
 const EDITABLE_FIELDS = [
   "nome",
   "segmento",
-  "marcas",
   "contatos",
   "ambienteSalesforce",
-  "concorrentes",
   "integracoes",
   "regras",
 ] as const;
+// `marcas` e `concorrentes` saíram do briefing a pedido. As colunas seguem no
+// banco (vazias nos 5 clientes na remoção) — dropar exige migration, e depois
+// do incidente de 2026-09-09 migration destrutiva não entra de carona em
+// mudança de UI.
 
 export async function PATCH(
   request: NextRequest,
