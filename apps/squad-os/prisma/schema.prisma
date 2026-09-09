@@ -67,6 +67,19 @@ model Client {
   integracoes        String @default("")
   regras             String @default("")
 
+  // Assessment da org, produzido pelo agente `org-assessment` no onboarding do
+  // cliente (ver .claude/agents/org-assessment.md e run-assessment.yml). Fica
+  // no Client e não em tabela própria porque é um por cliente e é substituído
+  // a cada nova rodada — histórico de assessment mora no git, em
+  // clients/<slug>/assessment.md, que é a versão longa disto aqui.
+  assessmentEm            DateTime? @map("assessment_em")
+  // verde | amarelo | vermelho — o veredito de uma palavra que cabe no card.
+  assessmentSaude         String    @default("") @map("assessment_saude")
+  assessmentResumo        String    @default("") @map("assessment_resumo")
+  // [{ titulo, severidade, area }] — o suficiente pra listar e contar por
+  // severidade no perfil sem reprocessar o markdown.
+  assessmentRecomendacoes Json      @default("[]") @map("assessment_recomendacoes")
+
   ambientes AmbienteOrg[]
   demandas  Demanda[]
   usuarios  Usuario[]
@@ -159,6 +172,15 @@ model Demanda {
   historico Json  @default("[]")
 
   materializadoEm DateTime? @map("materializado_em")
+
+  // Preenchidos pelo sync de volta (/api/sync/demanda), a cada execução de
+  // run-demand.yml. Sem isso o quadro mostra a etapa do momento em que a
+  // demanda foi materializada e uma etapa que falhou fica indistinguível de
+  // uma que nunca rodou.
+  ultimaExecucaoEm DateTime? @map("ultima_execucao_em")
+  // success | failure | cancelled — o `job.status` do Actions, como veio.
+  ultimoResultado  String    @default("") @map("ultimo_resultado")
+  ultimoRunUrl     String    @default("") @map("ultimo_run_url")
 
   comentarios Comentario[]
   subtarefas  Subtarefa[]

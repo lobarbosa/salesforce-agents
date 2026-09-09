@@ -11,7 +11,12 @@ import { resolveUsuario } from "@/lib/auth";
 // aplica o roteamento por papel. O resultado vira headers `x-squad-os-*` no
 // request — Server Components e Route Handlers leem via lib/current-user.ts
 // em vez de repetir essa consulta.
-const PUBLIC_PATHS = ["/login", "/auth/callback"];
+// `/api/sync` é a única rota que não passa por sessão de usuário: quem chama é
+// o GitHub Actions, que não tem cookie nem navegador. Ela se autentica com o
+// bearer token SQUAD_OS_SYNC_TOKEN, validado dentro da própria rota — deixar
+// passar aqui não a torna aberta, só troca o mecanismo de autenticação. Ver
+// app/api/sync/demanda/route.ts.
+const PUBLIC_PATHS = ["/login", "/auth/callback", "/api/sync"];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;

@@ -80,7 +80,15 @@ export async function materializeDemanda(d: DemandaParaMaterializar) {
   await putFile(`${base}/status.yaml`, statusYaml, `${d.code}: materializar status via Squad OS`);
 }
 
-export async function triggerRunDemand(clientSlug: string, demandCode: string) {
+// `aprovarGate` é o que fecha o laço humano -> agente: quando alguém aprova o
+// gate no card, o workflow recebe o nome de quem aprovou, move o status.yaml
+// pra etapa seguinte e roda a sessão. Sem isso, aprovar no app só mudava o
+// Postgres e alguém ainda tinha que abrir o GitHub e disparar na mão.
+export async function triggerRunDemand(
+  clientSlug: string,
+  demandCode: string,
+  opts: { aprovarGate?: string } = {}
+) {
   const gh = octokit();
   const { owner, repo, branch } = repoConfig();
   await gh.actions.createWorkflowDispatch({
@@ -88,6 +96,27 @@ export async function triggerRunDemand(clientSlug: string, demandCode: string) {
     repo,
     workflow_id: "run-demand.yml",
     ref: branch,
-    inputs: { client: clientSlug, demand_id: demandCode },
+    inputs: {
+      client: clientSlug,
+      demand_id: demandCode,
+      // Sempre presente (string vazia quando não é aprovação de gate): o
+      // Actions rejeita input não declarado, mas aceita declarado e vazio.
+      aprovar_gate: opts.aprovarGate ?? "",
+    },
+  });
+}
+
+// O assessment é por cliente, não por demanda — workflow próprio, sem
+// DEMAND_ID. Roda contra a org de dev (é onde a esteira trabalha) e é
+// read-only por construção, ver .claude/agents/org-assessment.md.
+export async function triggerAssessment(clientSlug: string) {
+  const gh = octokit();
+  const { owner, repo, branch } = repoConfig();
+  await gh.actions.createWorkflowDispatch({
+    owner,
+    repo,
+    workflow_id: "run-assessment.yml",
+    ref: branch,
+    inputs: { client: clientSlug },
   });
 }

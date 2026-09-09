@@ -6,15 +6,17 @@ orientado a Jira: aqui a demanda é um registro no próprio repositório.
 
 from __future__ import annotations
 
+import json
+import os
 from pathlib import Path
 
 import click
 
-from . import ambientes, demands
+from . import ambientes, demands, fluxo
 
-# Estágios de execução que, ao serem definidos, disparam uma sessão de agente.
-# Os estágios "aguardando_*" são gates humanos puros — não disparam sessão.
-DISPARA_SESSAO = {"analise", "design", "build", "qa", "release"}
+# Quais estágios disparam sessão de agente vive em fluxo.py, junto com a regra
+# de qual etapa vem depois de qual — eram dois lugares dizendo a mesma coisa.
+DISPARA_SESSAO = fluxo.DISPARA_SESSAO
 
 
 @click.group()
@@ -77,6 +79,68 @@ def avancar(client: str, demand_id: str, novo_status: str, autor: str) -> None:
         from .orchestrator import run_sync
 
         run_sync(client, demand_id, novo_status)
+
+
+@demanda.command("rodar")
+@click.option("--client", required=True)
+@click.argument("demand_id")
+@click.option(
+    "--aprovar-gate",
+    default=None,
+    metavar="AUTOR",
+    help="Aprova o gate humano em que a demanda está antes de rodar. É o que o "
+    "Squad OS manda quando alguém clica em aprovar no card.",
+)
+@click.option(
+    "--github-output",
+    is_flag=True,
+    help="Escreve o motivo da parada em $GITHUB_OUTPUT (uso do run-demand.yml).",
+)
+def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: bool) -> None:
+    """Roda a demanda a partir do estágio atual até o próximo gate humano.
+
+    É o comando que run-demand.yml chama. Diferente de `avancar`, não recebe
+    o estágio de destino: quem decide é o fluxo, lendo status.yaml. Assim não
+    existe a possibilidade de alguém disparar a etapa errada por engano.
+    """
+    try:
+        if aprovar_gate:
+            d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
+            click.echo(f"{demand_id}: gate aprovado por {aprovar_gate} -> {d.status}")
+        parada = fluxo.rodar(client, demand_id)
+    except (fluxo.FluxoError, demands.InvalidStatusError, demands.DemandNotFoundError) as exc:
+        raise click.ClickException(str(exc))
+
+    if parada.etapas_rodadas:
+        click.echo(f"{demand_id}: rodou {', '.join(parada.etapas_rodadas)}")
+    if parada.motivo == "gate":
+        click.echo(f"{demand_id}: parado em '{parada.etapa}' — esperando aprovação humana.")
+    else:
+        click.echo(f"{demand_id}: {parada.motivo} em '{parada.etapa}'.")
+
+    if github_output:
+        destino = os.environ.get("GITHUB_OUTPUT")
+        if not destino:
+            raise click.ClickException("--github-output pedido, mas $GITHUB_OUTPUT não existe.")
+        with open(destino, "a", encoding="utf-8") as fh:
+            fh.write(parada.as_github_output() + "\n")
+
+
+@demanda.command("status-json")
+@click.option("--client", required=True)
+@click.argument("demand_id")
+def status_json(client: str, demand_id: str) -> None:
+    """Imprime o status.yaml da demanda como JSON.
+
+    Existe pro workflow mandar o estado novo de volta pro Squad OS sem ter que
+    parsear YAML em bash. status.yaml continua sendo a fonte de verdade
+    (guardrail #5); o Postgres é espelho.
+    """
+    try:
+        d = demands.Demand.load(client, demand_id)
+    except demands.DemandNotFoundError as exc:
+        raise click.ClickException(str(exc))
+    click.echo(json.dumps(d.to_dict(), ensure_ascii=False))
 
 
 @demanda.command("ambiente")

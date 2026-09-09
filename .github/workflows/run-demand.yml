@@ -6,16 +6,24 @@ name: Rodar demanda (agentes)
 # porque aqui não existe a sessão de Claude Code já logada que esta conversa tem.
 #
 # Dois jobs, e não um: um job do Actions declara UM `environment:` só, e a
-# esteira agora atravessa dois (build em dev, teste/homologação/release na
-# sandbox de QA). Então `decidir` — que não abre environment nenhum e por isso
-# não vê secret nenhum — lê o status.yaml da demanda e diz qual ambiente a
-# etapa atual precisa; `rodar` abre exatamente esse. A regra de qual etapa vai
-# pra onde mora em src/salesforce_agents/ambientes.py, não aqui: repetida em
-# YAML ela sairia de sincronia com a CLI na primeira mudança.
+# esteira atravessa dois (build em dev, teste/homologação/release na sandbox de
+# QA). Então `decidir` — que não abre environment nenhum e por isso não vê
+# secret nenhum — lê o status.yaml da demanda e diz qual ambiente a etapa atual
+# precisa; `rodar` abre exatamente esse. A regra de qual etapa vai pra onde mora
+# em src/salesforce_agents/ambientes.py, não aqui.
 #
-# ANTHROPIC_API_KEY é secret de repositório (compartilhada entre clientes — a
-# conta Anthropic é do squad, não do cliente). As credenciais Salesforce vêm do
-# GitHub Environment `<cliente>-<ambiente>` (ex.: acxya-dev, acxya-qa).
+# **Como a demanda anda sozinha.** Quem decide o que rodar é
+# `sfagents demanda rodar`, lendo status.yaml — este workflow não recebe etapa
+# como input, justamente pra não existir a chance de alguém disparar a etapa
+# errada. Ao terminar, o comando já deixou o status no gate seguinte, e o passo
+# de sync manda esse estado pro Squad OS, onde a pessoa vê que tem gate
+# esperando. Quando ela aprova no card, o próprio Squad OS dispara este
+# workflow de novo com `aprovar_gate` preenchido. O laço fecha sem ninguém
+# abrir o GitHub.
+#
+# ANTHROPIC_API_KEY e os secrets do Squad OS são de repositório (a conta é do
+# squad, não do cliente). As credenciais Salesforce vêm do GitHub Environment
+# `<cliente>-<ambiente>`.
 
 on:
   workflow_dispatch:
@@ -27,6 +35,10 @@ on:
       demand_id:
         description: 'ID da demanda (ex.: ACXYA-1)'
         required: true
+      aprovar_gate:
+        description: 'Nome de quem aprovou o gate humano (deixe vazio pra só continuar de onde está)'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -51,19 +63,39 @@ jobs:
 
       # Só click e pyyaml: `sfagents demanda ambiente` não importa o
       # orquestrador (o import de orchestrator é tardio, ver cli.py), então
-      # este job não precisa instalar o Claude Agent SDK nem a CLI Salesforce
-      # pra responder uma pergunta que é leitura de um arquivo.
+      # este job não precisa do Claude Agent SDK nem da CLI Salesforce pra
+      # responder uma pergunta que é leitura de um arquivo.
       - name: Instalar o mínimo pra ler a demanda
         run: pip install click pyyaml
 
-      - name: Descobrir o ambiente da etapa atual
+      # Se o gate vai ser aprovado, o ambiente que importa é o da etapa DEPOIS
+      # do gate — é ela que vai rodar. Sem isso, aprovar aguardando_gate_build
+      # abriria o Environment de dev pra uma etapa que roda em QA.
+      - name: Descobrir o ambiente da etapa que vai rodar
         id: amb
+        # Os inputs entram por env, não interpolados no corpo do script: quem
+        # dispara o workflow controla esse texto.
         env:
           PYTHONPATH: src
+          CLIENT: ${{ inputs.client }}
+          DEMAND_ID: ${{ inputs.demand_id }}
+          APROVAR_GATE: ${{ inputs.aprovar_gate }}
         run: |
-          python3 -m salesforce_agents.cli demanda ambiente \
-            --client "${{ inputs.client }}" "${{ inputs.demand_id }}" \
-            | tee -a "$GITHUB_OUTPUT"
+          python3 - <<'PY' | tee -a "$GITHUB_OUTPUT"
+          import os
+          from salesforce_agents import ambientes, demands, fluxo
+
+          client = os.environ["CLIENT"]
+          demand_id = os.environ["DEMAND_ID"]
+          etapa = demands.Demand.load(client, demand_id).status
+          if os.environ.get("APROVAR_GATE") and fluxo.eh_gate(etapa):
+              etapa = fluxo.proxima_etapa(etapa)
+          amb = ambientes.ambiente_do_estagio(etapa)
+          print(f"etapa={etapa}")
+          print(f"ambiente={amb}")
+          print(f"org_alias={ambientes.org_alias(client, amb)}")
+          print(f"github_environment={ambientes.github_environment(client, amb)}")
+          PY
 
   rodar:
     needs: decidir
@@ -71,6 +103,7 @@ jobs:
     environment: ${{ needs.decidir.outputs.github_environment }}
     env:
       CLIENT: ${{ inputs.client }}
+      DEMAND_ID: ${{ inputs.demand_id }}
       TARGET_ORG: ${{ needs.decidir.outputs.org_alias }}
       AMBIENTE: ${{ needs.decidir.outputs.ambiente }}
       DEMAND_BRANCH: feature/${{ inputs.demand_id }}
@@ -82,6 +115,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/squad-os/package-lock.json
 
       - name: Anunciar org alvo
         run: |
@@ -130,24 +170,25 @@ jobs:
             git checkout -b "$DEMAND_BRANCH"
           fi
 
-      - name: Rodar orquestrador
+      # Aqui mora o auto-avanço: o comando lê status.yaml, roda a etapa atual,
+      # avança até o próximo gate humano e escreve o motivo da parada no
+      # $GITHUB_OUTPUT. Se o agente não produzir o artefato da etapa,
+      # `demands.transition` levanta ArtifactAusenteError e o job fica
+      # vermelho — de propósito: um pipeline que engole isso deixa status.yaml
+      # declarando etapa que não aconteceu.
+      - name: Rodar a demanda até o próximo gate
+        id: fluxo
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          DEMAND_ID: ${{ inputs.demand_id }}
         run: |
-          python3 -c "
-          import os
-          from salesforce_agents import demands
-          from salesforce_agents.orchestrator import run_sync
-          client = os.environ['CLIENT']
-          demand_id = os.environ['DEMAND_ID']
-          etapa = demands.Demand.load(client, demand_id).status
-          run_sync(client, demand_id, etapa)
-          "
+          if [ -n "${{ inputs.aprovar_gate }}" ]; then
+            sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" \
+              --aprovar-gate "${{ inputs.aprovar_gate }}" --github-output
+          else
+            sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" --github-output
+          fi
 
       - name: Commit e push dos artefatos gerados
-        env:
-          DEMAND_ID: ${{ inputs.demand_id }}
         run: |
           git add "clients/$CLIENT"
           # logs/custos_agentes.csv (telemetria de custo, src/salesforce_agents/costs.py)
@@ -155,7 +196,7 @@ jobs:
           # recebido); sem o "if", git add falha em runner limpo e derruba o commit
           # dos artefatos junto.
           if [ -d logs ]; then git add logs/; fi
-          git commit -m "$DEMAND_ID: sessão de agente via CI ($AMBIENTE)" --allow-empty -q
+          git commit -m "$DEMAND_ID: ${{ steps.fluxo.outputs.etapas_rodadas || 'sessão' }} via CI ($AMBIENTE)" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
 
       # Não fatal: o que importa (artefatos da demanda) já está empurrado pra
@@ -166,7 +207,6 @@ jobs:
       - name: Abrir PR da demanda (se ainda não existir)
         env:
           GH_TOKEN: ${{ github.token }}
-          DEMAND_ID: ${{ inputs.demand_id }}
         run: |
           if ! gh pr view "$DEMAND_BRANCH" --json number >/dev/null 2>&1; then
             gh pr create \
@@ -176,3 +216,43 @@ jobs:
               --body "Aberto automaticamente por \`run-demand.yml\`. Acumula os artefatos de cada etapa da demanda **$DEMAND_ID** (\`clients/$CLIENT/demandas/$DEMAND_ID/\`). Merge só depois dos gates humanos bloqueantes da doutrina (\`CLAUDE.md\`) — revise \`gates.md\` antes de aprovar." \
               || echo "::warning::Não consegui abrir o PR automaticamente (permissão do GITHUB_TOKEN?). A branch $DEMAND_BRANCH já está no ar — abra o PR manualmente."
           fi
+
+      # Fecha o laço na direção git → app. Sem isso o quadro do Squad OS mostra
+      # a etapa em que a demanda estava quando foi materializada, e o gate que
+      # está esperando alguém fica invisível justamente pra quem precisa vê-lo.
+      # `if: always()` porque saber que a etapa falhou é tão importante quanto
+      # saber que passou.
+      - name: Sincronizar status de volta pro Squad OS
+        if: always()
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+          RESULTADO: ${{ job.status }}
+        run: |
+          if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::SQUAD_OS_SYNC_URL/SQUAD_OS_SYNC_TOKEN não configurados — o quadro do Squad OS não vai refletir esta execução. Ver docs/conexoes-e-setup.md."
+            exit 0
+          fi
+          PAYLOAD=$(sfagents demanda status-json --client "$CLIENT" "$DEMAND_ID")
+          echo "$PAYLOAD" \
+            | jq --arg r "$RESULTADO" --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+                 '. + {resultado: $r, run_url: $run}' \
+            | curl -fsS -X POST "$SYNC_URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @- \
+            || echo "::warning::Falha ao sincronizar com o Squad OS — os artefatos já estão no git, só o quadro ficou desatualizado."
+
+      # Um comentário por gate, no PR onde a demanda vive. Não substitui o
+      # quadro (é lá que a pessoa aprova), mas é o aviso que chega a quem já
+      # acompanha o PR.
+      - name: Avisar no PR que tem gate esperando
+        if: steps.fluxo.outputs.motivo == 'gate'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment "$DEMAND_BRANCH" --body \
+            "⏸️ **Gate humano** — \`$DEMAND_ID\` parou em \`${{ steps.fluxo.outputs.etapa }}\` depois de rodar \`${{ steps.fluxo.outputs.etapas_rodadas }}\` em \`$AMBIENTE\`.
+
+          Aprove no card da demanda no Squad OS — a próxima etapa dispara sozinha a partir de lá. Revise os artefatos desta etapa neste PR antes." \
+            || echo "::warning::Não consegui comentar no PR — o gate está registrado em status.yaml e no Squad OS de qualquer forma."
