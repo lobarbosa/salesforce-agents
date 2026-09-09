@@ -58,11 +58,51 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
 
 1. Crie um projeto no [Supabase](https://supabase.com) (Postgres + Auth já
    vêm juntos). Em **Authentication → Providers**, confirme que Email (magic
-   link) está habilitado; em **Authentication → URL Configuration**, adicione
-   a URL do deploy (`https://.../auth/callback`) em Redirect URLs.
-2. Copie `.env.example` pra `.env.local` e preencha — `DATABASE_URL` vem de
-   **Project Settings → Database → Connection string** (use a pooler
-   "Transaction", porta 6543); `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` vêm de
+   link) está habilitado; em **Authentication → URL Configuration**, preencha
+   **Site URL** com o alias estável de produção da Vercel (`https://<projeto>.vercel.app`)
+   e cadastre os Redirect URLs **com wildcard**:
+
+   - `https://<projeto>.vercel.app/**`
+   - `https://*-<team-slug>.vercel.app/**`
+   - `http://localhost:3000/**`
+
+   O wildcard não é conveniência, é requisito: `app/login/page.tsx` manda
+   `emailRedirectTo` a partir de `window.location.origin`, e a Vercel emite uma
+   URL de deployment nova (`<projeto>-<hash>-<team>.vercel.app`) a cada deploy.
+   Cadastrar a URL de um deployment específico quebra no deploy seguinte —
+   quando o `emailRedirectTo` não bate com a allow list, o Supabase descarta o
+   valor silenciosamente e cai no Site URL, perdendo o path `/auth/callback`.
+   Sintoma: o e-mail chega com link pra raiz do Site URL (`.../?code=...`) em
+   vez de `/auth/callback`. Achado real (2026-09-09).
+
+   A tela de login oferece três caminhos, todos passando pelo mesmo
+   `/auth/callback` (que troca o `code` por sessão) e pela mesma allowlist da
+   tabela `usuarios` — autenticar nunca é o mesmo que ter acesso:
+
+   - **Link por e-mail** (magic link) — habilitado por padrão.
+   - **Google** — em **Authentication → Providers → Google**, cole o Client ID
+     e o Client Secret gerados no [Google Cloud Console](https://console.cloud.google.com/apis/credentials)
+     (OAuth 2.0 Client ID, tipo "Web application"). No console do Google, o
+     Authorized redirect URI é o do **Supabase**, não o da app:
+     `https://<project-ref>.supabase.co/auth/v1/callback`.
+   - **E-mail e senha**, com cadastro aberto — qualquer pessoa cria conta, mas
+     entra só depois que um admin conceder acesso em Administração. A
+     redefinição de senha cai em `/auth/nova-senha`, que exige sessão válida
+     (por isso não está em `PUBLIC_PATHS` do `proxy.ts`). Para fechar o
+     auto-cadastro depois, desligue "Allow new users to sign up" em
+     **Authentication → Sign In / Providers**; a tela de login continua
+     funcionando, só o cadastro passa a falhar.
+2. Copie `.env.example` pra `.env.local` e preencha — `DATABASE_URL` vem do
+   botão **Connect** do projeto, aba **Session pooler**
+   (`aws-<região>.pooler.supabase.com`, porta **5432**), e não da aba
+   Transaction: `vercel-build` roda `prisma migrate deploy` com essa mesma
+   variável, e `prisma/schema.prisma` não declara `directUrl`. O transaction
+   pooler (6543) não suporta prepared statements e a doc do Supabase lista
+   migrations sob conexão direta; a conexão direta (`db.<ref>.supabase.co:5432`)
+   é IPv6-only sem o add-on de IPv4, então não serve pro build runner da Vercel.
+   O session pooler é IPv4 e suporta sessão — atende migração e runtime.
+   Percent-encode a senha (`@` vira `%40`, `#` vira `%23`).
+   `NEXT_PUBLIC_SUPABASE_URL`/`ANON_KEY` vêm de
    **Project Settings → API**; `ADMIN_BOOTSTRAP_EMAILS` com o(s) seu(s)
    e-mail(s), pra conseguir logar a primeira vez.
 3. `npm install`
@@ -77,10 +117,14 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
 
 ### Deploy (Vercel)
 
-Aponte o projeto Vercel pra `apps/squad-os/` (root directory), configure as
-mesmas env vars de `.env.example` como Environment Variables do projeto, e
-rode `npx prisma migrate deploy` (ou deixe num passo de build) antes do
-primeiro deploy pra garantir que o schema existe no Postgres de produção.
+Aponte o projeto Vercel pra `apps/squad-os/` (root directory) e configure as
+mesmas env vars de `.env.example` como Environment Variables do projeto
+(Production **e** Preview, se for usar preview deploys). `package.json` já
+tem um script `vercel-build` (`prisma migrate deploy && next build`) —
+Vercel roda esse script no lugar de `build` automaticamente quando ele existe,
+então toda migração pendente é aplicada antes de cada build, sem passo manual.
+`prisma migrate deploy` é idempotente (só aplica o que ainda não rodou), então
+não há problema em rodar em todo deploy, incluindo previews.
 
 ### Migrando os dados do Artifact antigo
 

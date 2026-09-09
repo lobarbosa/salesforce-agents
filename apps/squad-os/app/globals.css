@@ -1,45 +1,58 @@
 :root {
-  /* Cores institucionais: magenta #de00ff, ciano #00f6ff, branco puro
-     #ffffff, azul-marinho institucional. O magenta/ciano puros são
-     eletrizantes demais pra texto sobre branco (contraste ~3.8:1, abaixo do
-     4.5:1 mínimo do WCAG AA) — --accent/--accent2 são variantes escurecidas
-     acessíveis pra uso funcional (texto, botão, foco); --accent-vivid/
-     --accent2-vivid guardam o hex institucional puro, só pro gradiente e
-     usos decorativos (nunca atrás de texto). Cores semânticas (gate/success/
+  /* Marca 2026: azul #3e46fa (primária) e laranja #fa511e (contraste) —
+     "Hierarquia de Cores" do guideline. Azul puro já rende 6.07:1 em branco,
+     usa direto. Laranja puro rende só 3.35:1 (abaixo do 4.5:1 mínimo AA) —
+     --accent2 é uma variante escurecida (#d63505, 4.81:1) pra uso funcional
+     (texto, botão, foco); --accent2-vivid guarda o laranja puro do guideline,
+     só pro gradiente e usos decorativos (nunca atrás de texto). Turquesa
+     #68cbc7 e verde #99cc33 são os tons secundários do guideline — --accent3/
+     --accent4 guardam variantes escurecidas acessíveis (4.83:1/4.84:1) pra
+     quando precisarem de uso funcional; ainda não estão ligados a nenhum
+     componente (são "tons que complementam a cena", não cor primária).
+     Todas as variantes calculadas com a mesma fórmula de luminância relativa
+     WCAG já usada aqui antes (ver histórico). Cores semânticas (gate/success/
      danger) continuam à parte — não é papel da marca carregar "erro" ou
      "aviso", isso confundiria o significado.
   */
   --bg: #F6F5FB; --surface: #FFFFFF; --surface-alt: #EEEDF6;
   --border: #DEDCEC; --border-strong: #BDBAD6;
   --text: #0A0E24; --text-muted: #5C5A79;
-  --accent: #A600C7; --accent-soft: #FBE6FC; --accent-vivid: #DE00FF;
-  --accent2: #007680; --accent2-soft: #E2F7F9; --accent2-vivid: #00F6FF;
-  /* Rótulo de botão preenchido com --accent — separado de --text porque a
-     versão escura de --accent é clara o bastante pra pedir um rótulo escuro,
-     não branco (ver o bloco dark abaixo). */
+  --accent: #3E46FA; --accent-soft: #E7E8F8; --accent-vivid: #3E46FA;
+  --accent2: #D63505; --accent2-soft: #F8EBE7; --accent2-vivid: #FA511E;
+  --accent3: #2B7E7A; --accent3-soft: #E4F3F2; --accent3-vivid: #68CBC7;
+  --accent4: #5D7B1F; --accent4-soft: #EEF4E2; --accent4-vivid: #99CC33;
+  /* Rótulo de botão preenchido com --accent — branco passa 6.07:1 em cima do
+     azul funcional (ver bloco dark abaixo pra por que o escuro inverte). */
   --accent-contrast: #FFFFFF;
   --gradient: linear-gradient(135deg, var(--accent-vivid), var(--accent2-vivid));
   --gate: #A9600F; --gate-soft: #F6E9D8; --gate-strong: #8A4C0B;
   --success: #2B7A45; --success-soft: #E1F0E4;
   --danger: #B3261E; --danger-soft: #FBE7E5;
   --mono: var(--font-mono), ui-monospace, monospace;
-  --sans: var(--font-sans), system-ui, sans-serif;
+  /* Nome real primeiro (só resolve se a máquina tiver a fonte instalada/
+     licenciada), Google Fonts como aproximação visual documentada, sistema
+     como último fallback. Ver comentário em app/layout.tsx. */
+  --sans: "Trebuchet MS", var(--font-body), Verdana, system-ui, sans-serif;
+  --display: futura, "Futura PT", var(--font-display), var(--sans);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    /* No escuro o azul-marinho institucional vira o fundo, e magenta/ciano
-       puros já rendem 4.6:1 e 13:1 de contraste — usa o hex de marca direto,
-       sem precisar escurecer. */
     --bg: #05060F; --surface: #0E1130; --surface-alt: #171B45;
     --border: #2B2F5C; --border-strong: #40447A;
     --text: #F3F2FC; --text-muted: #A6A3C9;
-    --accent: #DE00FF; --accent-soft: #2E0A3D; --accent-vivid: #DE00FF;
-    --accent2: #00F6FF; --accent2-soft: #08313A; --accent2-vivid: #00F6FF;
-    /* --accent no escuro é o magenta vívido (L≈0.23) — claro demais pra
-       rótulo branco em cima (~3.8:1, reprova AA); rótulo escuro passa ~5.2:1. */
-    --accent-contrast: #1B0424;
+    /* Laranja/turquesa/verde vívidos já rendem 6-10.6:1 no fundo escuro, usa
+       direto. Azul vívido cai pra 3.33:1 no escuro (abaixo do mínimo) — clareia
+       pra #656bfb (4.85:1) só pro uso funcional; --accent-vivid mantém o azul
+       puro do guideline pro gradiente/logo. */
+    --accent: #656BFB; --accent-soft: #101241; --accent-vivid: #3E46FA;
+    --accent2: #FA511E; --accent2-soft: #411C10; --accent2-vivid: #FA511E;
+    --accent3: #68CBC7; --accent3-soft: #0F2E2C; --accent3-vivid: #68CBC7;
+    --accent4: #99CC33; --accent4-soft: #232D0F; --accent4-vivid: #99CC33;
+    /* --accent no escuro (#656bfb) só passa AA com rótulo escuro (4.59:1);
+       branco fica em 4.16:1, reprova. */
+    --accent-contrast: #0A0E24;
     --gate: #E7A254; --gate-soft: #332615; --gate-strong: #F2B76B;
     --success: #6FCB8A; --success-soft: #16301F;
     --danger: #E7796F; --danger-soft: #331A17;
@@ -52,7 +65,8 @@ body {
   color: var(--text); font-family: var(--sans); line-height: 1.5;
   min-height: 100%; margin: 0;
 }
-h1, h2, h3, .mono { font-family: var(--mono); }
+h1, h2, h3 { font-family: var(--display); }
+.mono { font-family: var(--mono); }
 button, input, textarea, select { font-family: inherit; color: inherit; }
 a { color: inherit; }
 
@@ -69,7 +83,7 @@ select:focus-visible, [tabindex]:focus-visible {
   background: var(--surface);
 }
 .sidebar .brand { padding: 1.1rem 1.1rem 1.1rem; position: relative; }
-.sidebar .brand .name { font-weight: 600; font-size: 0.92rem; }
+.sidebar .brand .name { font-family: var(--display); font-weight: 600; font-size: 0.92rem; }
 .sidebar .brand .sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
 /* Gradiente institucional — reservado ao símbolo (aqui, a marca escrita),
    nunca usado como cor de função (botão, link, estado). */
@@ -262,10 +276,37 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .auth-card::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient);
 }
-.auth-card .name { font-family: var(--mono); font-weight: 600; font-size: 1rem; }
+.auth-card .name { font-family: var(--display); font-weight: 600; font-size: 1rem; }
 .auth-card .sub { font-size: 0.8rem; color: var(--text-muted); margin-top: -0.6rem; }
 .auth-card .field input { padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 7px; background: var(--surface-alt); font-size: 0.88rem; width: 100%; }
 .auth-note { font-size: 0.78rem; border-radius: 8px; padding: 0.6rem 0.8rem; }
 .auth-note.info { background: var(--accent-soft); color: var(--text); }
 .auth-note.error { background: var(--danger-soft); color: var(--danger); }
 .auth-note.ok { background: var(--success-soft); color: var(--success); }
+
+.btn-google {
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+  width: 100%; padding: 0.55rem 0.9rem; font-size: 0.85rem; font-weight: 500; cursor: pointer;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--border-strong); border-radius: 7px;
+}
+.btn-google:hover { background: var(--surface-alt); }
+
+.auth-divider { display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.72rem; }
+.auth-divider::before, .auth-divider::after {
+  content: ""; flex: 1; border-top: 1px solid var(--border);
+}
+
+.auth-switch { display: flex; gap: 0.3rem; border-bottom: 1px solid var(--border); }
+.auth-switch button {
+  background: none; border: none; border-bottom: 2px solid transparent; cursor: pointer;
+  padding: 0.4rem 0.6rem; font-size: 0.8rem; color: var(--text-muted);
+}
+.auth-switch button.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 500; }
+
+.auth-links { display: flex; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; }
+.auth-links button {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font-size: 0.76rem; color: var(--text-muted); text-decoration: underline;
+}
+.auth-links button:hover { color: var(--accent); }

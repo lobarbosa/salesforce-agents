@@ -1,11 +1,27 @@
 import type { Metadata } from "next";
-import { IBM_Plex_Mono, IBM_Plex_Sans } from "next/font/google";
+import { IBM_Plex_Mono, Poppins, PT_Sans } from "next/font/google";
 import "./globals.css";
 
-const plexSans = IBM_Plex_Sans({
-  variable: "--font-sans",
+// Marca 2026 pede Futura Medium (display) + Trebuchet Regular (corpo).
+// Nenhuma das duas é distribuível como webfont sem licença própria (Futura é
+// comercial — Monotype/Bauer; Trebuchet MS é da Microsoft) — nenhuma licença
+// foi confirmada nesta sessão. `--display`/`--sans` (em globals.css) citam o
+// nome real primeiro (`futura`, `Trebuchet MS`), pra usar a fonte de verdade
+// em qualquer máquina que já a tenha instalada/licenciada, com Poppins/PT
+// Sans como aproximação visual carregada via Google Fonts pra todo o resto —
+// documentado como aproximação, não como a fonte final. Trocar por
+// self-hosted com licença real é troca só destes dois imports + do arquivo de
+// fonte, nada mais no app depende disso.
+const poppins = Poppins({
+  variable: "--font-display",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["500", "600", "700"],
+});
+
+const ptSans = PT_Sans({
+  variable: "--font-body",
+  subsets: ["latin"],
+  weight: ["400", "700"],
 });
 
 const plexMono = IBM_Plex_Mono({
@@ -22,7 +38,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="pt-BR" className={`${plexSans.variable} ${plexMono.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${poppins.variable} ${ptSans.variable} ${plexMono.variable}`}
+    >
       <body>{children}</body>
     </html>
   );
