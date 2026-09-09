@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import type { Client, Demanda } from "@/lib/generated/prisma/client";
+import type { AmbienteOrg, Client, Demanda } from "@/lib/generated/prisma/client";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
@@ -16,7 +16,7 @@ export function ClientDetail({
   initialTab,
   openDemandId,
 }: {
-  client: Client;
+  client: Client & { ambientes: AmbienteOrg[] };
   demandas: Demanda[];
   usuario: CurrentUsuario;
   initialTab?: Tab;
@@ -68,7 +68,9 @@ export function ClientDetail({
       </div>
 
       {tab === "conhecimento" && <ConhecimentoTab client={client} />}
-      {tab === "conexao" && <ConexaoTab client={client} />}
+      {tab === "conexao" && (
+        <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} />
+      )}
       {tab === "demandas" && (
         <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} canManage />
       )}
