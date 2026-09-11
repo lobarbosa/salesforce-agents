@@ -46,11 +46,30 @@ E acrescente as que ainda não existem:
 | `SQUAD_OS_SYNC_TOKEN` | uma string aleatória longa que você inventa (ex.: `openssl rand -hex 32`) | O pipeline não consegue devolver o status — o quadro congela na etapa da materialização |
 | `DIRECT_URL` | botão Connect → **Session pooler**, porta **5432** | Nada quebra hoje (cai no `DATABASE_URL`), mas o passo abaixo fica pela metade |
 
-E **troque o `DATABASE_URL`** pela aba **Transaction pooler**, porta **6543**
-(hoje ele aponta pro session pooler, 5432). Vercel Functions são clientes
-efêmeros: transaction mode devolve a conexão a cada statement, session mode
-segura uma sessão por conexão até esgotá-las. Com `DIRECT_URL` cadastrada, a
-migração continua indo pelo session pooler, que é onde DDL precisa rodar.
+🔴 **Troque o `DATABASE_URL`** pela aba **Transaction pooler**, porta **6543**
+(hoje ele aponta pro session pooler, 5432). Isto deixou de ser precaução em
+2026-09-11: **o app caiu por isso em produção.**
+
+Vercel Functions são clientes efêmeros. Em session mode cada invocação segura
+uma sessão até esgotar o pool, e o pool do Supabase em session mode tem teto de
+**15 clientes** — não os 60 de `max_connections` do Postgres, que é outro
+número e o que enganou o diagnóstico na primeira tentativa. Passou disso, o
+pooler recusa:
+
+```
+(EMAXCONNSESSION) max clients reached in session mode
+  — max clients are limited to pool_size: 15
+(ECHECKOUTFAILED) checkout failed
+```
+
+O Prisma não conecta, a rota lança, e a tela mostra um erro genérico. Foram
+**90 recusas em três minutos** de navegação normal de uma pessoa só —
+09:04 (24), 09:09 (55), 09:38-09:39 (11). Uma pessoa. Com dois consultores
+mexendo ao mesmo tempo não há navegação possível.
+
+Transaction mode devolve a conexão a cada statement e não tem esse teto. Com
+`DIRECT_URL` cadastrada, a migração continua indo pelo session pooler, que é
+onde DDL precisa rodar.
 
 Se algo der errado, voltar o `DATABASE_URL` pra 5432 desfaz — é uma variável de
 ambiente, não um deploy.
