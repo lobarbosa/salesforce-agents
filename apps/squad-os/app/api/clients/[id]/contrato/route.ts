@@ -2,15 +2,17 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
-import { asSla, SLA_PADRAO } from "@/lib/contrato";
-import type { TipoContrato } from "@/lib/generated/prisma/client";
-
-const TIPOS: TipoContrato[] = ["ams", "projeto"];
-const HORAS_MAX = 10_000;
+import { ContratoInvalidoError, montarDadosDoContrato } from "@/lib/contrato";
 
 // Um contrato por cliente, criado ou atualizado pelo mesmo PUT — não existe
 // "criar contrato" como ato separado: o cliente ou tem um, ou passa a ter.
 // Só admin/consultor: é dado comercial, não algo que o cliente final edita.
+//
+// **O PUT é parcial, não substituição.** Campo ausente no corpo mantém o que
+// está guardado; quem decide isso é `montarDadosDoContrato`, em lib/contrato.ts,
+// onde a regra é testável sem servidor. Era substituição total até 2026-09-11,
+// e o botão de trocar de tipo — que manda só `{ tipo }` — zerava as horas e
+// reiniciava o SLA de quem já tinha preenchido.
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -31,33 +33,17 @@ export async function PUT(
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
   }
 
-  const tipo = body.tipo as TipoContrato;
-  if (!TIPOS.includes(tipo)) {
-    return NextResponse.json({ error: "tipo precisa ser 'ams' ou 'projeto'" }, { status: 400 });
+  const atual = await prisma.contrato.findUnique({ where: { clientId: id } });
+
+  let dados;
+  try {
+    dados = montarDadosDoContrato(body as Record<string, unknown>, atual);
+  } catch (err) {
+    if (err instanceof ContratoInvalidoError) {
+      return NextResponse.json({ error: err.message }, { status: 400 });
+    }
+    throw err;
   }
-
-  const horas = Math.round(Number(body.horasContratadas) || 0);
-  if (horas < 0 || horas > HORAS_MAX) {
-    return NextResponse.json(
-      { error: `horas contratadas fora da faixa (0 a ${HORAS_MAX})` },
-      { status: 400 }
-    );
-  }
-
-  // SLA só faz sentido em AMS; num contrato de projeto ele fica vazio em vez
-  // de guardar a tabela de um tipo que não se aplica.
-  const sla = tipo === "ams" ? (body.sla === undefined ? SLA_PADRAO : asSla(body.sla)) : [];
-
-  const dados = {
-    tipo,
-    horasContratadas: tipo === "ams" ? horas : 0,
-    cicloHoras: String(body.cicloHoras ?? "mensal").trim().slice(0, 30) || "mensal",
-    sla,
-    projetoNome: tipo === "projeto" ? String(body.projetoNome ?? "").trim().slice(0, 200) : "",
-    projetoEscopo: tipo === "projeto" ? String(body.projetoEscopo ?? "").trim().slice(0, 4000) : "",
-    inicioEm: tipo === "projeto" ? dataOuNull(body.inicioEm) : null,
-    fimPrevistoEm: tipo === "projeto" ? dataOuNull(body.fimPrevistoEm) : null,
-  };
 
   const contrato = await prisma.contrato.upsert({
     where: { clientId: id },
@@ -67,10 +53,4 @@ export async function PUT(
   });
 
   return NextResponse.json(contrato);
-}
-
-function dataOuNull(valor: unknown): Date | null {
-  if (!valor) return null;
-  const d = new Date(String(valor));
-  return Number.isNaN(d.getTime()) ? null : d;
 }

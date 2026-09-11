@@ -40,4 +40,9 @@ jobs:
 
       - run: npm run lint
 
+      # Regras puras do app (lib/), que `next build` não exercita: hoje é a
+      # montagem do contrato a partir de um PUT parcial, que já perdeu dado em
+      # produção uma vez. Roda antes do build por ser barato e falhar rápido.
+      - run: npm test
+
       - run: npm run build

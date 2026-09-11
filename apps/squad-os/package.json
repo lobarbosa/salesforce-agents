@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
-    "migrate:from-artifact": "tsx scripts/migrate-from-artifact.ts"
+    "migrate:from-artifact": "tsx scripts/migrate-from-artifact.ts",
+    "test": "tsx scripts/testa-contrato.ts"
   },
   "dependencies": {
     "@octokit/rest": "^22.0.1",
