@@ -69,9 +69,9 @@ model Client {
   criadoEm DateTime @default(now()) @map("criado_em")
 
   // Conhecimento do Cliente (briefing de conta). `marcas` e `concorrentes`
-  // saíram a pedido; as colunas ainda existem no banco (vazias nos 5 clientes,
-  // verificado antes da remoção) e o DROP vem numa migration separada, no
-  // merge seguinte — ver README, "Por que o DROP não vem junto".
+  // saíram a pedido, em dois passos: fora do schema em 2026-09-09, fora do
+  // banco na migration `drop_marcas_e_concorrentes`, depois que a `main` já
+  // não as lia — ver README, "Por que o DROP não vem junto".
   contatos           String @default("")
   ambienteSalesforce String @default("") @map("ambiente_salesforce")
   integracoes        String @default("")
