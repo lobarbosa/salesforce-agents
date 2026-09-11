@@ -27,7 +27,28 @@ Antes da etapa 1 de todo cliente novo vem o **assessment da org** (`org-assessme
 Squad OS. Dispara sozinho quando a org de dev conecta pela primeira vez. Não é demanda —
 não tem `status.yaml` nem gate; é o que evita desenhar solução numa org desconhecida.
 
+Num cliente de **contrato de projeto**, as demandas não precisam ser digitadas uma a uma:
+o agente `planejador` (`run-planejamento.yml`) lê os entregáveis contratados e propõe as
+demandas que eles viram, que entram no quadro em `backlog`. Ele não toca em org nenhuma,
+não decide declarativo vs. código e não materializa nada — quem decide o que vira esteira
+continua sendo o humano.
+
 O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
+
+## Como a conta é vendida muda o que o time acompanha
+
+O `Contrato` de cada cliente é **AMS** ou **projeto**, e a aba Contrato do Squad OS mostra
+coisas diferentes porque as perguntas são diferentes:
+
+- **AMS** — horas contratadas por ciclo, SLA por severidade, e o consumo mês a mês contra
+  o contratado. A pergunta é "quanto do balde já foi?".
+- **Projeto** — cadastro, entregáveis com peso e progresso ponderado. A pergunta é "quanto
+  do escopo já saiu?". O peso existe porque "migrar 12 Flows" e "ajustar um layout"
+  contariam igual numa média simples, e o progresso mentiria perto do fim.
+
+As horas vêm dos `RegistroTempo` das demandas do cliente, agrupadas pelo mês em que o
+trabalho aconteceu (`inicioEm`), não pelo mês do lançamento. Cronômetro ainda rodando não
+entra: hora que não fechou não é hora gasta.
 
 ## O ciclo anda sozinho — e onde ele para
 
@@ -104,7 +125,8 @@ no mesmo modelo default por acidente. Heurística aplicada (council de 2026-09-0
 `gates.md`/histórico de sessão — não repita a análise, ela já foi feita):
 
 - **haiku** — `ba-discovery`, `doc`: extração e formatação de texto, sem decisão de risco.
-- **sonnet** — `builder-declarativo`, `dev-apex`, `devops`, `qa`, `release`: trabalho
+- **sonnet** — `builder-declarativo`, `dev-apex`, `devops`, `qa`, `release`, `planejador`,
+  `org-assessment`: trabalho
   estruturado com julgamento, mas revisado por PR ou gate antes de valer. Cavalo de batalha.
 - **opus** — só `arquiteto`, e só pela decisão declarativo-vs-código em si: é o único gate
   humano bloqueante da doutrina, erro ali compõe nos 6 clientes, e já paga a latência de

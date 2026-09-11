@@ -22,6 +22,16 @@ enum TipoDemanda {
   sustentacao
 }
 
+// Como a conta é vendida. Muda o que o time acompanha, não só um rótulo:
+// AMS é um balde de horas que renova e um SLA a cumprir; projeto é um escopo
+// fechado com entregáveis e uma data. As duas telas são diferentes porque as
+// duas perguntas são diferentes — "quanto do balde já foi?" contra "quanto do
+// escopo já saiu?".
+enum TipoContrato {
+  ams
+  projeto
+}
+
 enum Role {
   admin
   consultor
@@ -81,6 +91,7 @@ model Client {
   assessmentRecomendacoes Json      @default("[]") @map("assessment_recomendacoes")
 
   ambientes AmbienteOrg[]
+  contrato  Contrato?
   demandas  Demanda[]
   usuarios  Usuario[]
 
@@ -173,6 +184,13 @@ model Demanda {
 
   materializadoEm DateTime? @map("materializado_em")
 
+  // De qual entregável contratado esta demanda nasceu, quando nasceu de um.
+  // Opcional porque demanda de AMS não tem entregável, e porque mesmo em
+  // projeto alguém pode abrir uma demanda fora do escopo contratado — e é
+  // justamente isso que interessa enxergar depois.
+  entregavelId String?     @map("entregavel_id")
+  entregavel   Entregavel? @relation(fields: [entregavelId], references: [id], onDelete: SetNull)
+
   // Preenchidos pelo sync de volta (/api/sync/demanda), a cada execução de
   // run-demand.yml. Sem isso o quadro mostra a etapa do momento em que a
   // demanda foi materializada e uma etapa que falhou fica indistinguível de
@@ -191,6 +209,7 @@ model Demanda {
   @@unique([clientId, code])
   @@index([clientId])
   @@index([status])
+  @@index([entregavelId])
   @@map("demandas")
 }
 
@@ -295,4 +314,65 @@ model Anexo {
 
   @@index([demandaId])
   @@map("anexos")
+}
+
+// Um contrato ativo por cliente (`clientId` é unique). Renegociação substitui
+// o conteúdo; o histórico comercial não vive aqui — isto é o que o time de
+// delivery precisa saber pra trabalhar, não o dossiê do contrato.
+model Contrato {
+  id       String       @id @default(cuid())
+  clientId String       @unique @map("client_id")
+  client   Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  tipo     TipoContrato
+
+  // --- AMS ---
+  // Horas do ciclo. Int e não decimal: contrato de AMS se fala em hora cheia,
+  // e meia hora contratada não existe na prática.
+  horasContratadas Int    @default(0) @map("horas_contratadas")
+  // "mensal" | "trimestral" — texto e não enum porque o comercial fecha o que
+  // quiser, e travar num enum faria o app recusar um contrato real.
+  cicloHoras       String @default("mensal") @map("ciclo_horas")
+  // [{ severidade, primeiraRespostaHoras, resolucaoHoras }] — a tabela que o
+  // time consulta quando chega um chamado. JSON porque é uma tabela pequena,
+  // fechada, lida inteira de uma vez; normalizar não daria nada.
+  sla              Json   @default("[]")
+
+  // --- Projeto ---
+  projetoNome   String    @default("") @map("projeto_nome")
+  projetoEscopo String    @default("") @map("projeto_escopo")
+  inicioEm      DateTime? @map("inicio_em")
+  fimPrevistoEm DateTime? @map("fim_previsto_em")
+
+  entregaveis Entregavel[]
+
+  criadoEm     DateTime @default(now()) @map("criado_em")
+  atualizadoEm DateTime @updatedAt @map("atualizado_em")
+
+  @@map("contratos")
+}
+
+// O que foi vendido, item a item. É a lista que o agente `planejador` lê pra
+// propor as demandas do quadro, e a base do progresso do projeto.
+model Entregavel {
+  id         String   @id @default(cuid())
+  contratoId String   @map("contrato_id")
+  contrato   Contrato @relation(fields: [contratoId], references: [id], onDelete: Cascade)
+
+  titulo    String
+  descricao String  @default("")
+  ordem     Int     @default(0)
+  // Peso relativo no progresso. Entregável não vale todo o mesmo: "migrar 12
+  // Flows" e "ajustar um layout" contariam igual numa média simples, e o
+  // progresso mentiria na hora em que mais importa.
+  peso      Int     @default(1)
+  concluido Boolean @default(false)
+
+  // Demandas geradas a partir deste entregável. Um entregável costuma virar
+  // mais de uma.
+  demandas Demanda[]
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([contratoId])
+  @@map("entregaveis")
 }

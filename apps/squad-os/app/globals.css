@@ -311,6 +311,84 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 }
 .auth-links button:hover { color: var(--accent); }
 
+/* contrato: AMS e projeto */
+.contrato { display: flex; flex-direction: column; gap: 1rem; }
+.contrato-head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.contrato-head .trocar-tipo { margin-left: auto; font-size: 0.75rem; padding: 0.3rem 0.55rem; }
+.painel-bloco {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.8rem;
+}
+.bloco-head { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.bloco-head h3 { margin: 0; font-size: 0.95rem; }
+.campos-linha { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: flex-end; }
+.campos-linha .field { flex: 0 0 auto; }
+.campos-linha .field.grow { flex: 1 1 14rem; }
+.campos-linha input, .campos-linha select {
+  min-height: 40px; padding: 0.45rem 0.6rem; border: 1px solid var(--border);
+  border-radius: 8px; background: var(--surface); font-size: 0.9rem;
+}
+
+/* escolha do tipo de contrato */
+.contrato-vazio { display: flex; flex-direction: column; gap: 0.8rem; max-width: 48rem; }
+.contrato-vazio h3 { margin: 0; font-size: 1rem; }
+.contrato-vazio p { margin: 0; font-size: 0.88rem; color: var(--text-muted); }
+.tipo-escolha { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.8rem; }
+.tipo-card {
+  text-align: left; display: flex; flex-direction: column; gap: 0.3rem; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 0.9rem 1rem; transition: border-color 120ms ease, background-color 120ms ease;
+}
+.tipo-card:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.tipo-card strong { font-family: var(--display); font-size: 1rem; }
+.tipo-card span { font-size: 0.82rem; color: var(--text-muted); }
+
+/* gráfico de horas — uma série (gastas) + linha de referência (contratadas) */
+.chart { margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.chart svg { display: block; max-width: 100%; overflow: visible; }
+.chart .barra { fill: var(--accent); }
+/* Cor de status, não uma segunda série: acompanha o rótulo "excedeu". */
+.chart .barra.excedeu { fill: var(--danger); }
+.chart .eixo { stroke: var(--border-strong); stroke-width: 1; }
+.chart .limite { stroke: var(--text-muted); stroke-width: 2; stroke-dasharray: 4 3; }
+.chart .rot-limite, .chart .rot-x { fill: var(--text-muted); font-size: 10px; font-family: var(--mono); }
+.chart .valor { fill: var(--text); font-size: 11px; font-family: var(--mono); font-weight: 600; }
+.chart-nota { font-size: 0.76rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
+.pill-excedeu {
+  background: var(--danger-soft); color: var(--danger); border-radius: 5px;
+  padding: 0.1em 0.4em; font-family: var(--mono); font-size: 0.68rem;
+}
+
+/* SLA */
+table.sla { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+table.sla th, table.sla td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); }
+table.sla th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 500; }
+table.sla tbody tr:last-child td { border-bottom: 0; }
+table.sla input {
+  width: 3.4rem; padding: 0.25rem 0.4rem; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--surface); font-family: var(--mono); font-size: 0.82rem;
+  text-align: right;
+}
+
+/* progresso do projeto */
+.progresso-grande { display: flex; align-items: center; gap: 0.8rem; }
+.progresso-grande .progresso-trilho { flex: 1; height: 12px; }
+.progresso-pct { font-size: 1.4rem; font-family: var(--display); min-width: 3.5rem; text-align: right; }
+
+/* entregáveis */
+.entregaveis { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.entregaveis li {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.15rem 0.4rem; border-radius: 8px;
+}
+.entregaveis li:hover { background: var(--surface-alt); }
+.entregaveis label { display: flex; align-items: center; gap: 0.55rem; min-height: 44px; flex: 1; cursor: pointer; font-size: 0.88rem; }
+.entregaveis input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+.entregaveis li.feito .ent-titulo { text-decoration: line-through; color: var(--text-muted); }
+.ent-meta { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+.gerar-demandas { display: flex; flex-direction: column; gap: 0.4rem; border-top: 1px solid var(--border); padding-top: 0.8rem; }
+
+@media (prefers-reduced-motion: reduce) { .tipo-card { transition: none; } }
+
 /* assessment de org no perfil do cliente */
 .assessment {
   border: 1px solid var(--border); background: var(--surface); border-radius: 12px;

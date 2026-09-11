@@ -50,6 +50,7 @@ Settings → Secrets and variables → Actions → **Repository secrets**:
 | `SQUAD_OS_SYNC_URL` | `https://<seu-domínio>/api/sync/demanda` |
 | `SQUAD_OS_SYNC_ASSESSMENT_URL` | `https://<seu-domínio>/api/sync/assessment` |
 | `SQUAD_OS_SYNC_CONEXAO_URL` | `https://<seu-domínio>/api/sync/conexao` |
+| `SQUAD_OS_SYNC_PLANO_URL` | `https://<seu-domínio>/api/sync/plano` |
 | `ANTHROPIC_API_KEY` | já existe |
 
 Enquanto o domínio próprio não existir, use a URL de produção da Vercel — mas
@@ -122,6 +123,15 @@ Cliente novo
                            └─ volta por /api/sync/assessment
                                 └─ saúde e recomendações no perfil do cliente
 
+Projeto (contrato de projeto)
+  └─ você cadastra os entregáveis contratados na aba Contrato
+       └─ clica "Gerar demandas dos entregáveis"
+            └─ o contrato é materializado em clients/<slug>/contrato.md
+                 └─ run-planejamento.yml aciona o agente `planejador`
+                      └─ ele quebra cada entregável nas demandas que ele vira
+                           └─ volta por /api/sync/plano → cartões em `backlog`
+                                └─ você decide quais viram esteira
+
 Demanda
   └─ consultor registra no Squad OS e clica "materializar"
        └─ run-demand.yml roda a etapa e avança até o gate
@@ -142,6 +152,7 @@ Ninguém abre o GitHub Actions em nenhum ponto.
 | `aguardando_gate_build` | consultor/admin, depois de revisar o PR |
 | `aguardando_homologacao` | **o cliente** — é o único gate que o papel `cliente` aprova |
 | Produção | ninguém, por aqui. A esteira termina na sandbox de QA |
+| Demandas propostas pelo planejador | ficam em `backlog`; nada é materializado nem executado sozinho |
 
 ### Onde ele **falha de propósito**, em vez de seguir
 
@@ -153,6 +164,9 @@ Ninguém abre o GitHub Actions em nenhum ponto.
   sandbox.
 - O assessment não produziu `assessment.json` válido → job vermelho, em vez de
   gravar "saúde: undefined" no perfil do cliente.
+- O planejador devolveu um `entregavelId` que não existe no contrato → job
+  vermelho, e a rota de sync recusa o lote inteiro. Meia importação deixaria o
+  quadro num estado que ninguém consegue auditar depois.
 
 ---
 

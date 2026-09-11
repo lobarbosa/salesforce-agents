@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getClientById, getDemandasByClient } from "@/lib/data";
+import { getClientById, getDemandasByClient, demandasPorEntregavel, horasPorMes } from "@/lib/data";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { ClientDetail } from "@/components/ClientDetail";
 
@@ -20,14 +20,20 @@ export default async function ClientPage({
   const client = await getClientById(id);
   if (!client) notFound();
 
-  const demandas = await getDemandasByClient(id);
+  const [demandas, horas, porEntregavel] = await Promise.all([
+    getDemandasByClient(id),
+    horasPorMes(id),
+    demandasPorEntregavel(id),
+  ]);
 
   return (
     <ClientDetail
       client={client}
       demandas={demandas}
       usuario={usuario}
-      initialTab={sp.tab as "conhecimento" | "conexao" | "demandas" | undefined}
+      horas={horas}
+      demandasPorEntregavel={porEntregavel}
+      initialTab={sp.tab as "conhecimento" | "contrato" | "conexao" | "demandas" | undefined}
       openDemandId={sp.demand}
     />
   );

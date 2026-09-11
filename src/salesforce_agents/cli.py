@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 from pathlib import Path
 
 import click
@@ -75,6 +76,59 @@ def assessment_cmd(client: str, target_org: str | None, github_output: bool) -> 
             fh.write(f"saude={dados['saude']}\n")
             fh.write(f"recomendacoes={len(recs)}\n")
             fh.write(f"altas={altas}\n")
+
+
+@cliente.command("planejar")
+@click.option("--client", required=True, help="Nome do cliente (= clients/<client>/).")
+@click.option(
+    "--github-output",
+    is_flag=True,
+    help="Escreve n_demandas em $GITHUB_OUTPUT (uso do run-planejamento.yml).",
+)
+def planejar(client: str, github_output: bool) -> None:
+    """Quebra os entregáveis contratados nas demandas que eles viram.
+
+    Lê `contrato.md` (materializado pelo Squad OS) e grava
+    `plano-demandas.json`. Não materializa nem executa nada — quem decide o que
+    entra na esteira é o humano, no quadro.
+    """
+    workspace = Path("clients") / client
+    if not workspace.exists():
+        raise click.ClickException(f"'{workspace}' não existe. Crie o workspace do cliente primeiro.")
+
+    from . import planejamento
+
+    try:
+        planejamento.run_sync(client)
+        # Os ids válidos saem do próprio contrato.md, pra pegar id inventado.
+        contrato = planejamento.caminho_contrato(client).read_text(encoding="utf-8")
+        validos = set(re.findall(r"`id:\s*([A-Za-z0-9_-]+)`", contrato))
+        dados = planejamento.ler_plano(client, validos or None)
+    except planejamento.PlanejamentoError as exc:
+        raise click.ClickException(str(exc))
+
+    n = len(dados["demandas"])
+    click.echo(f"{client}: {n} demandas propostas a partir do contrato")
+
+    if github_output:
+        destino = os.environ.get("GITHUB_OUTPUT")
+        if not destino:
+            raise click.ClickException("--github-output pedido, mas $GITHUB_OUTPUT não existe.")
+        with open(destino, "a", encoding="utf-8") as fh:
+            fh.write(f"n_demandas={n}\n")
+
+
+@cliente.command("plano-json")
+@click.option("--client", required=True)
+def plano_json(client: str) -> None:
+    """Imprime o plano-demandas.json, pro sync com o Squad OS."""
+    from . import planejamento
+
+    try:
+        dados = planejamento.ler_plano(client)
+    except planejamento.PlanejamentoError as exc:
+        raise click.ClickException(str(exc))
+    click.echo(json.dumps(dados, ensure_ascii=False))
 
 
 @cliente.command("assessment-json")

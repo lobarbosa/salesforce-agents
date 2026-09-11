@@ -16,17 +16,6 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import anyio
-from claude_agent_sdk import (
-    AssistantMessage,
-    ClaudeAgentOptions,
-    ClaudeSDKClient,
-    ResultMessage,
-    TextBlock,
-)
-
-from .costs import log_usage
-from .tools import salesforce_tools_server
 
 # Sem `sf_deploy`: o assessment não altera a org, e tirar a ferramenta é mais
 # forte do que pedir por escrito que não use.
@@ -94,6 +83,20 @@ def ler_resultado(client: str) -> dict:
 
 
 async def run(client: str, target_org: str) -> None:
+    # Import tardio: o Claude Agent SDK só é necessário pra rodar o agente. As
+    # funções de validação deste módulo são puras e precisam ser testáveis sem
+    # ele — mesma disciplina do `orchestrator` na CLI.
+    from claude_agent_sdk import (
+        AssistantMessage,
+        ClaudeAgentOptions,
+        ClaudeSDKClient,
+        ResultMessage,
+        TextBlock,
+    )
+
+    from .costs import log_usage
+    from .tools import salesforce_tools_server
+
     workspace = f"clients/{client}"
 
     options = ClaudeAgentOptions(
@@ -131,4 +134,6 @@ async def run(client: str, target_org: str) -> None:
 
 
 def run_sync(client: str, target_org: str) -> None:
+    import anyio
+
     anyio.run(run, client, target_org)
