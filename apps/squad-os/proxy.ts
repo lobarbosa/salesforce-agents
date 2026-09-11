@@ -72,6 +72,18 @@ export async function proxy(request: NextRequest) {
     return res;
   }
 
+  // Chamada de API não pode ser redirecionada para uma página de login: o
+  // `fetch` segue o redirect, recebe 200 com HTML, e o app conclui "sem
+  // conexão com o servidor" quando o que houve foi sessão expirada. Verificado
+  // em 2026-09-11 (`PUT /api/clients/.../contrato` sem sessão → 200 text/html).
+  // Para `/api/*` a resposta honesta é 401 com JSON, que o cliente sabe ler.
+  const ehApi = pathname.startsWith("/api/");
+  function naoAutenticado(motivo: string) {
+    return withRefreshedCookies(
+      NextResponse.json({ error: motivo, sessaoExpirada: true }, { status: 401 })
+    );
+  }
+
   function redirectTo(pathname: string, search?: Record<string, string>) {
     const url = request.nextUrl.clone();
     url.pathname = pathname;
@@ -95,6 +107,7 @@ export async function proxy(request: NextRequest) {
 
   if (!user) {
     if (isPublic) return withRefreshedCookies(NextResponse.next({ request }));
+    if (ehApi) return naoAutenticado("sua sessão expirou — entre de novo");
     return redirectTo("/login", { next: pathname });
   }
 
@@ -103,6 +116,7 @@ export async function proxy(request: NextRequest) {
   if (!usuario) {
     await supabase.auth.signOut();
     if (isPublic) return withRefreshedCookies(NextResponse.next({ request }));
+    if (ehApi) return naoAutenticado("este acesso não está mais liberado");
     return redirectTo("/login", { error: "not_allowed" });
   }
 

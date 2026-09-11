@@ -103,7 +103,7 @@ function AmbienteCard({
       return;
     }
     const body = await res.json().catch(() => null);
-    setErro(body?.error ?? "não consegui solicitar o teste");
+    setErro(body?.error ?? `não consegui solicitar o teste (HTTP ${res.status})`);
   }
 
   return (
