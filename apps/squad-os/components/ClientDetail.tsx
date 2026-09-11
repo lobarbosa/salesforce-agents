@@ -51,6 +51,7 @@ export function ClientDetail({
           canManage={false}
           usuarioEmail={usuario.email}
           isAdmin={false}
+          visaoCliente
         />
       </>
     );

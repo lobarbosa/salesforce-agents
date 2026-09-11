@@ -434,6 +434,23 @@ table.sla input {
 .gate-texto { margin: 0; font-size: 0.82rem; color: var(--text); }
 .gate-confirma { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; font-size: 0.82rem; }
 
+/* visão do cliente — o quadro na língua de quem está do lado de fora.
+   O aviso existe porque as colunas ficam em ordem cronológica: "precisa da
+   sua aprovação" é a terceira, e uma coluna do meio não é chamado à ação. */
+.aviso-sua-vez {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem;
+  border: 1px solid var(--gate); background: var(--gate-soft); border-radius: 10px;
+  padding: 0.7rem 0.9rem; margin-bottom: 1rem; font-size: 0.82rem; color: var(--text);
+}
+.aviso-sua-vez strong { color: var(--gate-strong); }
+/* Nunca só a cor: o rótulo da coluna já diz o que ela é (WCAG 1.4.1). A borda
+   e o tom são reforço para quem bate o olho, não o portador da informação. */
+.column.estado-voce { border-color: var(--gate); background: var(--gate-soft); }
+.column.estado-voce h3 { color: var(--gate-strong); }
+.column.estado-entregue h3 { color: var(--success); }
+.badge.fase { background: var(--surface-alt); border: 1px solid var(--border-strong); color: var(--text-muted); }
+.estado-cliente { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
 /* painel do card: atividade, subtarefas, checklist, tempo, anexos */
 .painel { border-top: 1px solid var(--border); margin-top: 0.9rem; padding-top: 0.9rem; }
 .painel-abas { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.8rem; }

@@ -7,8 +7,11 @@ import {
   TRIAGE,
   TRIAGE_LABEL,
   STAGE_LABEL,
+  ESTADO_CLIENTE_LABEL,
+  estadoDoCliente,
   formatarMinutos,
   perguntasPendentes,
+  progressoDaDemanda,
   timeAgo,
 } from "@/lib/demandas";
 
@@ -82,7 +85,22 @@ function Indicadores({ demanda }: { demanda: DemandaDeCard }) {
   );
 }
 
-function StageChip({ status }: { status: string }) {
+function StageChip({ status, visaoCliente }: { status: string; visaoCliente?: boolean }) {
+  // Para o cliente, o chip diz o estado dele e a fase; o jargão interno some.
+  if (visaoCliente) {
+    const estado = estadoDoCliente(status);
+    const progresso = progressoDaDemanda(status);
+    return (
+      <>
+        <span className={`badge ${estado === "voce" ? "gate" : "stage"}`}>
+          {ESTADO_CLIENTE_LABEL[estado]}
+        </span>
+        {progresso && estado === "andamento" && (
+          <span className="badge fase">{progresso.rotulo}</span>
+        )}
+      </>
+    );
+  }
   if (status === "aguardando_gate_design") return <span className="badge gate">gate bloqueante</span>;
   if (status.startsWith("aguardando")) return <span className="badge gate">{STAGE_LABEL[status] ?? status}</span>;
   return <span className="badge stage">{STAGE_LABEL[status] ?? status}</span>;
@@ -110,9 +128,11 @@ export function DemandCard({
   onMove,
   onDragStart,
   onDragEnd,
+  visaoCliente,
 }: {
   demanda: DemandaDeCard;
   triageColumn: boolean;
+  visaoCliente?: boolean;
   canMove?: boolean;
   isDragging?: boolean;
   onOpen: () => void;
@@ -173,7 +193,7 @@ export function DemandCard({
         <span className={`badge ${demanda.tipo === "projeto" ? "projeto" : "sustentacao"}`}>
           {demanda.tipo === "projeto" ? "projeto" : "sustentação"}
         </span>
-        {!triageColumn && <StageChip status={demanda.status} />}
+        {!triageColumn && <StageChip status={demanda.status} visaoCliente={visaoCliente} />}
         <ApprovalBadge demanda={demanda} />
         <span>{demanda.autor}</span>
         <span>{timeAgo(demanda.criadoEm)}</span>
@@ -201,7 +221,7 @@ export function DemandCard({
         </>
       ) : triageColumn ? (
         <span className="readonly-note">{TRIAGE_LABEL[demanda.status] ?? demanda.status}</span>
-      ) : (
+      ) : visaoCliente ? null : (
         <span className="readonly-note">avança via sfagents</span>
       )}
     </div>

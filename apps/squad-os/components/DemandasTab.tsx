@@ -4,7 +4,14 @@ import { useState, type DragEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { Client } from "@/lib/generated/prisma/client";
 import type { DemandaCompleta } from "@/lib/data";
-import { TRIAGE, TRIAGE_LABEL, EXEC_STAGES } from "@/lib/demandas";
+import {
+  TRIAGE,
+  TRIAGE_LABEL,
+  EXEC_STAGES,
+  ESTADOS_CLIENTE,
+  ESTADO_CLIENTE_LABEL,
+  estadoDoCliente,
+} from "@/lib/demandas";
 import { DemandCard } from "@/components/DemandCard";
 import { DemandModal } from "@/components/DemandModal";
 import { NewDemandModal } from "@/components/NewDemandModal";
@@ -16,6 +23,7 @@ export function DemandasTab({
   canManage,
   usuarioEmail,
   isAdmin,
+  visaoCliente = false,
 }: {
   client: Client;
   demandas: DemandaCompleta[];
@@ -23,6 +31,8 @@ export function DemandasTab({
   canManage: boolean;
   usuarioEmail: string;
   isAdmin: boolean;
+  /** Quadro na lingua de quem esta do lado de fora — ver lib/demandas.ts. */
+  visaoCliente?: boolean;
 }) {
   const router = useRouter();
   const [newOpen, setNewOpen] = useState(false);
@@ -76,6 +86,72 @@ export function DemandasTab({
 
   const execItems = demandas.filter((d) => (EXEC_STAGES as readonly string[]).includes(d.status));
   const doneItems = demandas.filter((d) => d.status === "entregue");
+
+  // Quadro do cliente: as mesmas demandas, nas quatro palavras que ele
+  // reconhece. Ver ESTADOS_CLIENTE em lib/demandas.ts para o porquê de cada
+  // uma. Sem triagem e sem arrastar — mover a esteira não é dele, e as colunas
+  // de triagem só exporiam decisão interna de priorização.
+  if (visaoCliente) {
+    const porEstado = ESTADOS_CLIENTE.map((estado) => ({
+      estado,
+      items: demandas.filter((d) => estadoDoCliente(d.status) === estado),
+    }));
+    const suas = porEstado.find((c) => c.estado === "voce")!.items;
+
+    return (
+      <>
+        {/* As colunas ficam na ordem cronológica, que é o que um quadro
+            promete. Quem chama atenção para o que pede ação é este aviso —
+            enterrar "precisa de você" na terceira coluna é o mesmo que não
+            mostrar. */}
+        {suas.length > 0 && (
+          <div className="aviso-sua-vez" role="status">
+            <strong>
+              {suas.length === 1
+                ? "1 demanda esperando a sua aprovação"
+                : `${suas.length} demandas esperando a sua aprovação`}
+            </strong>
+            <span>Abra o cartão para ver o que foi entregue e aprovar.</span>
+          </div>
+        )}
+
+        <div className="board">
+          {porEstado.map(({ estado, items }) => (
+            <div className={`column estado-${estado}`} key={estado}>
+              <h3>
+                {ESTADO_CLIENTE_LABEL[estado]}
+                <span className="count">{items.length}</span>
+              </h3>
+              {items.length === 0 ? (
+                <div className="empty-col">nenhuma</div>
+              ) : (
+                items.map((d) => (
+                  <DemandCard
+                    key={d.id}
+                    demanda={d}
+                    triageColumn={false}
+                    visaoCliente
+                    onOpen={() => setOpenId(d.id)}
+                  />
+                ))
+              )}
+            </div>
+          ))}
+        </div>
+
+        {open && (
+          <DemandModal
+            demanda={open}
+            canManage={canManage}
+            usuarioEmail={usuarioEmail}
+            isAdmin={isAdmin}
+            visaoCliente
+            onClose={() => setOpenId(null)}
+          />
+        )}
+      </>
+    );
+  }
 
   return (
     <>

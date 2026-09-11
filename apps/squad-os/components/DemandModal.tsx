@@ -5,19 +5,30 @@ import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
 import { Modal } from "@/components/Modal";
 import { DemandaPainel } from "@/components/DemandaPainel";
-import { asPerguntas, asAprovacao, STAGE_LABEL, timeAgo } from "@/lib/demandas";
+import {
+  asPerguntas,
+  asAprovacao,
+  STAGE_LABEL,
+  ESTADO_CLIENTE_LABEL,
+  estadoDoCliente,
+  progressoDaDemanda,
+  timeAgo,
+} from "@/lib/demandas";
 
 export function DemandModal({
   demanda,
   canManage,
   usuarioEmail,
   isAdmin,
+  visaoCliente = false,
   onClose,
 }: {
   demanda: DemandaCompleta;
   canManage: boolean;
   usuarioEmail: string;
   isAdmin: boolean;
+  /** Sem jargão de esteira — ver ESTADOS_CLIENTE em lib/demandas.ts. */
+  visaoCliente?: boolean;
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -129,18 +140,37 @@ export function DemandModal({
 
       <div className="demanda-texto">{demanda.texto || "(sem descrição)"}</div>
 
+      {visaoCliente && !emGate && (
+        <div className="estado-cliente">
+          <span className={`badge ${estadoDoCliente(demanda.status) === "entregue" ? "aprovado" : "stage"}`}>
+            {ESTADO_CLIENTE_LABEL[estadoDoCliente(demanda.status)]}
+          </span>
+          {progressoDaDemanda(demanda.status) && (
+            <span className="gate-texto">{progressoDaDemanda(demanda.status)!.rotulo}</span>
+          )}
+        </div>
+      )}
+
       {emGate && (
         <div className="gate-box">
           <div className="gate-titulo">
-            <span className="badge gate">gate humano</span>
-            {STAGE_LABEL[demanda.status] ?? demanda.status}
+            {visaoCliente ? (
+              <span className="badge gate">
+                {ESTADO_CLIENTE_LABEL[estadoDoCliente(demanda.status)]}
+              </span>
+            ) : (
+              <>
+                <span className="badge gate">gate humano</span>
+                {STAGE_LABEL[demanda.status] ?? demanda.status}
+              </>
+            )}
           </div>
           {podeAprovarEsteGate ? (
             <>
               <p className="gate-texto">
-                A esteira parou aqui esperando aprovação. Ao liberar, a próxima etapa dispara
-                sozinha na sandbox correspondente — e o seu nome fica registrado como quem
-                aprovou.
+                {visaoCliente
+                  ? "Revise o que foi entregue e aprove quando estiver de acordo. Seu nome e a data ficam registrados, junto com a versão exata do que você aprovou."
+                  : "A esteira parou aqui esperando aprovação. Ao liberar, a próxima etapa dispara sozinha na sandbox correspondente — e o seu nome fica registrado como quem aprovou."}
               </p>
               {!confirmandoGate ? (
                 <button
@@ -149,14 +179,18 @@ export function DemandModal({
                   onClick={() => setConfirmandoGate(true)}
                   disabled={!demanda.materializadoEm}
                 >
-                  Aprovar e liberar a próxima etapa
+                  {visaoCliente ? "Aprovar a entrega" : "Aprovar e liberar a próxima etapa"}
                 </button>
               ) : (
                 // Dois passos de propósito: isto aciona agente contra a org do
                 // cliente e não tem desfazer. Um clique só num botão que fica
                 // ao lado de "Fechar" é acidente esperando acontecer.
                 <div className="gate-confirma" role="group" aria-label="Confirmar aprovação do gate">
-                  <span>Confirma? Isso aciona os agentes agora.</span>
+                  <span>
+                    {visaoCliente
+                      ? "Confirma a aprovação? Não dá pra desfazer."
+                      : "Confirma? Isso aciona os agentes agora."}
+                  </span>
                   <button
                     className="btn-primary"
                     type="button"
