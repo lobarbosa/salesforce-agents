@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { resolveUsuario } from "@/lib/auth";
+import { mensagemDeConfiguracao, variaveisFaltando } from "@/lib/env";
 
 // Next.js 16 renomeou middleware.ts -> proxy.ts (mesma função, novo nome —
 // ver node_modules/next/dist/docs/01-app/03-api-reference/03-file-conventions/proxy.md).
@@ -21,6 +22,24 @@ const PUBLIC_PATHS = ["/login", "/auth/callback", "/api/sync"];
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
+
+  // Antes de qualquer outra coisa: um proxy que lança derruba **toda** rota,
+  // `/login` inclusive, e o Next devolve "Internal Server Error" em texto puro
+  // sem dizer o motivo. Conferir aqui troca isso por uma resposta que nomeia a
+  // variável que falta. Ver lib/env.ts — é uma resposta de operação, não uma
+  // tela: 503 porque o app não subiu, não porque a requisição estava errada.
+  const faltando = variaveisFaltando();
+  if (faltando.length > 0) {
+    return new NextResponse(mensagemDeConfiguracao(faltando), {
+      status: 503,
+      headers: {
+        "content-type": "text/plain; charset=utf-8",
+        // Configuração errada não pode ficar em cache de CDN e sobreviver ao
+        // conserto da variável.
+        "cache-control": "no-store",
+      },
+    });
+  }
 
   // Supabase pode renovar o access token durante getUser() e escrever os
   // novos cookies aqui dentro de setAll — precisa sobreviver até a response
@@ -61,9 +80,18 @@ export async function proxy(request: NextRequest) {
     return withRefreshedCookies(NextResponse.redirect(url));
   }
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  // Falha de rede com o Supabase não pode virar 500 em toda rota: sem este
+  // try/catch, uma indisponibilidade momentânea tira até o `/login` do ar e
+  // ninguém consegue nem ver o que aconteceu. Tratar como deslogado **nega**
+  // acesso, nunca concede — é a direção segura de errar.
+  let user: Awaited<ReturnType<typeof supabase.auth.getUser>>["data"]["user"] = null;
+  try {
+    ({
+      data: { user },
+    } = await supabase.auth.getUser());
+  } catch (err) {
+    console.error("proxy: falha ao consultar a sessão no Supabase", err);
+  }
 
   if (!user) {
     if (isPublic) return withRefreshedCookies(NextResponse.next({ request }));

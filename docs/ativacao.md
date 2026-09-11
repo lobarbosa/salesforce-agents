@@ -20,7 +20,25 @@ Ordem importa: cada bloco depende do anterior.
 
 ## 2. Vercel — variáveis de ambiente
 
-Em Settings → Environment Variables, **Production e Preview**:
+Em Settings → Environment Variables, **Production e Preview**.
+
+⚠️ **O escopo por ambiente é a pegadinha.** Cada variável na Vercel é marcada
+para Production, Preview e/ou Development, e uma marcada só em Production deixa
+o Preview num estado traiçoeiro: **build verde, toda rota em erro** — inclusive
+`/login`, porque o `proxy.ts` roda antes de qualquer página. Aconteceu em
+2026-09-11 com `NEXT_PUBLIC_SUPABASE_URL`. Hoje o app responde dizendo qual
+variável falta (503, `lib/env.ts`) em vez de "Internal Server Error" em branco —
+mas quem conserta é quem marca o escopo certo aqui.
+
+Confira que **estas três** estão marcadas nos dois ambientes:
+
+| Variável | Onde pegar |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | idem (é pública por definição — vai no browser) |
+| `DATABASE_URL` | botão Connect (ver abaixo qual pooler) |
+
+E acrescente as que ainda não existem:
 
 | Variável | Valor | Sem ela |
 |---|---|---|
