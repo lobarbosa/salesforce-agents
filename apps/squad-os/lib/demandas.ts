@@ -34,6 +34,64 @@ export const STAGE_LABEL: Record<string, string> = {
   release: "release",
 };
 
+// --- As fases da esteira, que são as colunas do quadro interno -------------
+//
+// O quadro dava **quatro colunas para a triagem** (backlog/planejada/
+// recorrente/standby) e **uma só para as nove etapas de execução**, chamada
+// "Em execução". Ou seja: quatro colunas para decidir se algo vira trabalho, e
+// uma para o trabalho inteiro acontecer. A doutrina — 7 etapas, 4 gates
+// bloqueantes, quem espera quem — ficava invisível justamente na tela que
+// existe para mostrá-la.
+//
+// A correção não é acrescentar colunas: o quadro já rola na horizontal com
+// 240px por coluna, e "evitar rolagem horizontal" é regra de severidade alta.
+// É **redistribuir** — a triagem inteira colapsa em uma, e as cinco que sobram
+// vão para onde o trabalho acontece. Mesmo número de colunas, outra informação.
+//
+// Gate não vira coluna. Gate é uma *parada dentro* da fase: a demanda continua
+// em Design, só que travada esperando gente. Coluna própria para gate sugeriria
+// que a demanda saiu da fase, e dobraria a largura do quadro.
+
+export interface FaseDoQuadro {
+  chave: string;
+  titulo: string;
+  /** Estágios de `demands.py` que caem nesta coluna. */
+  estagios: readonly string[];
+}
+
+export const FASES: readonly FaseDoQuadro[] = [
+  { chave: "triagem", titulo: "Backlog", estagios: TRIAGE },
+  { chave: "analise", titulo: "Análise", estagios: ["analise", "aguardando_gate_analise"] },
+  { chave: "design", titulo: "Design", estagios: ["design", "aguardando_gate_design"] },
+  { chave: "build", titulo: "Build", estagios: ["build", "aguardando_gate_build"] },
+  { chave: "qa", titulo: "QA e entrega", estagios: ["qa", "aguardando_homologacao", "release"] },
+  { chave: "entregue", titulo: "Entregue", estagios: ["entregue"] },
+];
+
+export function faseDoEstagio(status: string): FaseDoQuadro | null {
+  return FASES.find((f) => f.estagios.includes(status)) ?? null;
+}
+
+/** Quem precisa agir para a demanda sair da parada — vazio quando ela está andando. */
+export function quemDestrava(status: string): string {
+  switch (status) {
+    case "aguardando_gate_analise":
+      return "consultor";
+    case "aguardando_gate_design":
+      return "arquiteto";
+    case "aguardando_gate_build":
+      return "revisor do PR";
+    case "aguardando_homologacao":
+      return "cliente";
+    default:
+      return "";
+  }
+}
+
+export function estaEmGate(status: string): boolean {
+  return status.startsWith("aguardando_");
+}
+
 // --- A mesma esteira, dita para quem está do lado de fora ------------------
 //
 // `aguardando_gate_design` é vocabulário de quem opera a esteira. Para o

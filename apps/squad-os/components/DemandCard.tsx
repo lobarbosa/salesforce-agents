@@ -1,6 +1,5 @@
 "use client";
 
-import { useRef, type DragEvent } from "react";
 import type { Demanda } from "@/lib/generated/prisma/client";
 import type { DemandaCompleta } from "@/lib/data";
 import {
@@ -8,7 +7,9 @@ import {
   TRIAGE_LABEL,
   STAGE_LABEL,
   ESTADO_CLIENTE_LABEL,
+  estaEmGate,
   estadoDoCliente,
+  quemDestrava,
   formatarMinutos,
   perguntasPendentes,
   progressoDaDemanda,
@@ -85,7 +86,16 @@ function Indicadores({ demanda }: { demanda: DemandaDeCard }) {
   );
 }
 
-function StageChip({ status, visaoCliente }: { status: string; visaoCliente?: boolean }) {
+function StageChip({
+  status,
+  visaoCliente,
+  faseVisivel,
+}: {
+  status: string;
+  visaoCliente?: boolean;
+  /** O card está numa coluna que já nomeia a fase — ver DemandasTab. */
+  faseVisivel?: boolean;
+}) {
   // Para o cliente, o chip diz o estado dele e a fase; o jargão interno some.
   if (visaoCliente) {
     const estado = estadoDoCliente(status);
@@ -101,8 +111,23 @@ function StageChip({ status, visaoCliente }: { status: string; visaoCliente?: bo
       </>
     );
   }
-  if (status === "aguardando_gate_design") return <span className="badge gate">gate bloqueante</span>;
-  if (status.startsWith("aguardando")) return <span className="badge gate">{STAGE_LABEL[status] ?? status}</span>;
+  // Dentro da coluna da fase, repetir o nome dela no chip não diz nada novo.
+  // O que muda a decisão de quem olha é **se está parada e esperando quem** —
+  // e `aguardando_gate_design` é o gate bloqueante da doutrina, que ganha peso
+  // próprio em vez de parecer igual aos outros três.
+  if (estaEmGate(status)) {
+    const quem = quemDestrava(status);
+    const bloqueante = status === "aguardando_gate_design";
+    return (
+      <span className={`badge gate${bloqueante ? " bloqueante" : ""}`}>
+        {bloqueante ? `trava: ${quem}` : `aguarda ${quem}`}
+      </span>
+    );
+  }
+  // Demanda andando dentro da coluna da própria fase: o chip repetiria o
+  // título da coluna. Na Visão Geral, onde não há colunas de fase, ele é a
+  // única pista de onde a demanda está — por isso continua.
+  if (faseVisivel) return null;
   return <span className="badge stage">{STAGE_LABEL[status] ?? status}</span>;
 }
 
@@ -123,63 +148,27 @@ export function DemandCard({
   demanda,
   triageColumn,
   canMove,
-  isDragging,
   onOpen,
   onMove,
-  onDragStart,
-  onDragEnd,
   visaoCliente,
+  faseVisivel,
 }: {
   demanda: DemandaDeCard;
   triageColumn: boolean;
   visaoCliente?: boolean;
+  /** O card está numa coluna nomeada pela fase, então o chip não a repete. */
+  faseVisivel?: boolean;
   canMove?: boolean;
-  isDragging?: boolean;
   onOpen: () => void;
   onMove?: (status: string) => void;
-  onDragStart?: (id: string) => void;
-  onDragEnd?: () => void;
 }) {
-  const podeArrastar = triageColumn && canMove;
-  // Depois de um drop, alguns navegadores ainda despacham um click no card de
-  // origem (mouseup da mesma interação) — sem essa guarda, soltar o card
-  // reabre o modal de detalhe por cima. dragend limpa a guarda logo em
-  // seguida (setTimeout 0), só depois de qualquer click da mesma interação já
-  // ter sido processado.
-  const acabouDeArrastar = useRef(false);
-
-  function handleDragStart(e: DragEvent<HTMLDivElement>) {
-    e.dataTransfer.setData("text/plain", demanda.id);
-    e.dataTransfer.effectAllowed = "move";
-    acabouDeArrastar.current = true;
-    onDragStart?.(demanda.id);
-  }
-
-  function handleDragEnd() {
-    onDragEnd?.();
-    setTimeout(() => {
-      acabouDeArrastar.current = false;
-    }, 0);
-  }
-
-  function handleClick() {
-    if (acabouDeArrastar.current) {
-      acabouDeArrastar.current = false;
-      return;
-    }
-    onOpen();
-  }
-
   return (
     <div
-      className={`card${isDragging ? " dragging" : ""}`}
+      className="card"
       tabIndex={0}
       role="button"
       aria-label={`Abrir demanda ${demanda.titulo}`}
-      draggable={podeArrastar}
-      onDragStart={podeArrastar ? handleDragStart : undefined}
-      onDragEnd={podeArrastar ? handleDragEnd : undefined}
-      onClick={handleClick}
+      onClick={onOpen}
       onKeyDown={(e) => {
         if (e.target !== e.currentTarget) return;
         if (e.key === "Enter" || e.key === " ") {
@@ -193,7 +182,13 @@ export function DemandCard({
         <span className={`badge ${demanda.tipo === "projeto" ? "projeto" : "sustentacao"}`}>
           {demanda.tipo === "projeto" ? "projeto" : "sustentação"}
         </span>
-        {!triageColumn && <StageChip status={demanda.status} visaoCliente={visaoCliente} />}
+        {!triageColumn && (
+          <StageChip
+            status={demanda.status}
+            visaoCliente={visaoCliente}
+            faseVisivel={faseVisivel}
+          />
+        )}
         <ApprovalBadge demanda={demanda} />
         <span>{demanda.autor}</span>
         <span>{timeAgo(demanda.criadoEm)}</span>
@@ -201,7 +196,6 @@ export function DemandCard({
       <Indicadores demanda={demanda} />
       {triageColumn && canMove ? (
         <>
-          {podeArrastar && <span className="drag-handle" aria-hidden="true">⠿ arraste ou use a lista</span>}
           <select
             className="move"
             value={demanda.status}

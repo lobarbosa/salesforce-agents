@@ -185,20 +185,55 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 }
 .btn-primary:disabled { opacity: 0.6; cursor: default; }
 .board { display: grid; grid-auto-flow: column; grid-auto-columns: 240px; gap: 0.8rem; overflow-x: auto; padding-bottom: 0.5rem; }
+
+/* Quadro por fase da esteira. Colunas que **cabem** em vez de rolar: seis
+   colunas de 240px fixos dão ~1500px e obrigam rolagem horizontal em quase
+   toda tela — e "evitar rolagem horizontal" é regra de severidade alta. Com
+   auto-fit elas se acomodam na largura disponível e quebram para uma segunda
+   linha quando não cabem, em vez de sumir para fora da tela. */
+.board-fases {
+  grid-auto-flow: row;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  overflow-x: visible;
+  align-items: start;
+}
+/* Coluna com demanda parada esperando gente. A borda é reforço: quem carrega
+   a informação é a linha "N esperando gente" abaixo do título (WCAG 1.4.1). */
+.column.tem-parada { border-color: var(--gate); }
+.fase-parados {
+  font-size: 0.68rem; color: var(--gate-strong); font-weight: 600;
+  margin: -0.3rem 0 0.1rem;
+}
+.column.fase-entregue h3 { color: var(--success); }
+.column.fase-triagem h3 { color: var(--text-muted); }
+
+/* O único chamado à ação do quadro: o que a esteira espera de gente agora.
+   Fica no topo porque a resposta está espalhada por quatro colunas — nenhuma
+   delas sozinha responde "tem algo comigo?". */
+.aviso-parado {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem;
+  border: 1px solid var(--gate); background: var(--gate-soft); border-radius: 10px;
+  padding: 0.7rem 0.9rem; margin-bottom: 1rem; font-size: 0.82rem; color: var(--text);
+}
+.aviso-parado strong { color: var(--gate-strong); }
+
+/* O gate do arquiteto é o único bloqueante da doutrina — pesa mais que os
+   outros três, e o contorno diz isso sem depender só de cor. */
+.badge.gate.bloqueante { border: 1px solid var(--gate); font-weight: 600; }
 .column { background: var(--surface-alt); border: 1px solid var(--border); border-radius: 10px; padding: 0.7rem; display: flex; flex-direction: column; gap: 0.55rem; min-height: 140px; }
 .column h3 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; margin: 0 0 0.2rem; color: var(--text-muted); display: flex; justify-content: space-between; }
 .column h3 .count { font-family: var(--mono); }
-.column.exec h3 { color: var(--accent); }
-.column.done h3 { color: var(--success); }
-.column.drag-over { background: var(--accent-soft); border-color: var(--accent); border-style: dashed; }
+/* As fases de execução herdam o azul de "está andando"; triagem e entregue
+   têm cor própria (regras em .board-fases, abaixo). */
+.column.fase-analise h3,
+.column.fase-design h3,
+.column.fase-build h3,
+.column.fase-qa h3 { color: var(--accent); }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 0.6rem 0.65rem; font-size: 0.8rem; display: flex; flex-direction: column; gap: 0.35rem; cursor: pointer; }
-.card[draggable="true"] { cursor: grab; }
-.card.dragging { opacity: 0.5; }
 @media (prefers-reduced-motion: no-preference) {
   .card { transition: opacity 0.12s ease, box-shadow 0.12s ease; }
   .column { transition: background-color 0.12s ease, border-color 0.12s ease; }
 }
-.drag-handle { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.02em; }
 .card .titulo { font-weight: 600; }
 .meta { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
 .badge { padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.65rem; }
