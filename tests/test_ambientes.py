@@ -50,3 +50,48 @@ def test_producao_nao_existe_neste_mapa(proibido):
         ambientes.org_alias("acxya", proibido)
     with pytest.raises(ValueError):
         ambientes.github_environment("acxya", proibido)
+
+
+@pytest.mark.parametrize(
+    "alias",
+    ["sbx-acxya-dev", "sbx-acxya-qa", "sbx-mais-polimeros-qa", "sbx-c3-dev"],
+)
+def test_alias_da_esteira_passa(alias):
+    assert ambientes.alias_permitido(alias)
+
+
+@pytest.mark.parametrize(
+    "alias",
+    [
+        "sbx-acxya-prod",       # o caso óbvio
+        "acxya-main",           # o caso que o denylist antigo deixava passar
+        "NPSP-Playground",
+        "sbx-acxya",            # sem ambiente
+        "sbx-acxya-dev-prod",   # ambiente no meio não conta
+        "sbx--dev",             # cliente vazio
+        "sbx-Acxya-dev",        # maiúscula
+        "prod-acxya",
+        " sbx-acxya-dev",
+        "",
+    ],
+)
+def test_alias_fora_da_esteira_e_recusado(alias):
+    """Allowlist, não denylist: a pergunta não é 'parece produção?', é 'é um dos
+    dois ambientes da esteira?'. `acxya-main` é o caso que motivou a mudança —
+    passava limpo por um filtro que só procurava 'prod' no texto."""
+    assert not ambientes.alias_permitido(alias)
+
+
+def test_alias_de_todo_cliente_real_passa():
+    import os
+
+    # `_template` é scaffold de `sfagents cliente novo`, não cliente — nenhum
+    # alias é montado a partir dele. O prefixo `_` é a marca disso.
+    clientes = [
+        d for d in os.listdir("clients")
+        if os.path.isdir(os.path.join("clients", d)) and not d.startswith("_")
+    ]
+    assert clientes, "nenhum cliente em clients/ — o teste perderia o sentido"
+    for client in clientes:
+        for amb in ambientes.AMBIENTES:
+            assert ambientes.alias_permitido(ambientes.org_alias(client, amb)), client

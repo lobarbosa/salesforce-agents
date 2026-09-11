@@ -10,10 +10,11 @@ Duas famílias de ferramentas:
 
 from __future__ import annotations
 
-import subprocess
 from pathlib import Path
 
 from claude_agent_sdk import create_sdk_mcp_server, tool
+
+from .guarda import CliAusenteError, recusa_de_alias, recusa_de_escrita, sf
 
 
 def _text_result(text: str) -> dict:
@@ -53,14 +54,8 @@ async def spec_read(args: dict) -> dict:
 
 def _run_sf(args: list[str]) -> dict:
     try:
-        proc = subprocess.run(
-            ["sf", *args],
-            capture_output=True,
-            text=True,
-            timeout=600,
-            check=False,
-        )
-    except FileNotFoundError:
+        proc = sf(args)
+    except CliAusenteError:
         return _text_result(
             "Salesforce CLI ('sf') não encontrada no PATH. Instale com "
             "'npm install -g @salesforce/cli' e autentique o org do cliente."
@@ -76,6 +71,9 @@ def _run_sf(args: list[str]) -> dict:
     {"source_dir": str, "target_org": str, "check_only": bool},
 )
 async def sf_deploy(args: dict) -> dict:
+    recusa = recusa_de_escrita(args.get("target_org", ""))
+    if recusa:
+        return _text_result(recusa)
     cli_args = [
         "project", "deploy", "start",
         "--source-dir", args["source_dir"],
@@ -93,6 +91,12 @@ async def sf_deploy(args: dict) -> dict:
     {"metadata": str, "target_org": str, "output_dir": str},
 )
 async def sf_retrieve(args: dict) -> dict:
+    # Só a forma do alias: retrieve não escreve na org. Mas puxar metadata de
+    # produção pro workspace de um cliente é o caminho mais curto pra alguém
+    # fazer deploy disso de volta sem perceber de onde veio.
+    recusa = recusa_de_alias(args.get("target_org", ""))
+    if recusa:
+        return _text_result(recusa)
     return _run_sf([
         "project", "retrieve", "start",
         "--metadata", args["metadata"],
@@ -108,6 +112,11 @@ async def sf_retrieve(args: dict) -> dict:
     {"soql": str, "target_org": str},
 )
 async def sf_query(args: dict) -> dict:
+    # SOQL contra produção é o cenário do guardrail #2: a org de produção é a
+    # que tem CPF, e-mail e telefone de verdade pra vazar pro contexto.
+    recusa = recusa_de_alias(args.get("target_org", ""))
+    if recusa:
+        return _text_result(recusa)
     return _run_sf([
         "data", "query",
         "--query", args["soql"],

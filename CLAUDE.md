@@ -68,14 +68,29 @@ O fluxo falha alto em vez de contornar quando o agente não produz o artefato da
 ## Guardrails inegociáveis
 
 1. **Produção é proibida.** Nenhum agente executa deploy, DML ou anonymous Apex em org
-   de produção. Aliases contendo `prod`, `prd` ou `production` são bloqueados por hook.
-   A esteira tem dois ambientes e só dois: **dev** (`sbx-<cliente>-dev`) e **qa**
-   (`sbx-<cliente>-qa`). Build e tudo antes acontece em dev; a partir da etapa `qa` a
-   demanda já vive na sandbox de QA, onde o roteiro roda, o humano homologa e o release
+   de produção. A esteira tem dois ambientes e só dois: **dev** (`sbx-<cliente>-dev`) e
+   **qa** (`sbx-<cliente>-qa`). Build e tudo antes acontece em dev; a partir da etapa `qa`
+   a demanda já vive na sandbox de QA, onde o roteiro roda, o humano homologa e o release
    entrega — e o agente para ali. Quem sabe dessa regra é
    `src/salesforce_agents/ambientes.py`, que recusa qualquer ambiente fora de
    `("dev", "qa")` antes de montar comando `sf` nenhum; os workflows perguntam pra ele
    (`sfagents demanda ambiente`) em vez de repetirem a condição em YAML.
+
+   A checagem acontece em **três camadas, e as três respondem perguntas diferentes**:
+
+   - `ambientes.alias_permitido` — **allowlist** de formato: só `sbx-<cliente>-dev|qa`.
+   - `.claude/hooks/guard-prod.sh` — PreToolUse do Bash, mesma allowlist, para o `sf`
+     que o agente digita no terminal.
+   - `src/salesforce_agents/guarda.py` — pergunta à própria org (`Organization.IsSandbox`)
+     antes de qualquer escrita, e recusa se ela não se declarar sandbox.
+
+   As duas primeiras conferem o **nome**; a terceira confere o **destino**. Achado do
+   council de 2026-09-11: até ali o guardrail era um denylist (`prod|prd|production` no
+   texto do comando) registrado só no hook do Bash — e as ferramentas `sf_*` chamam `sf`
+   por subprocess de dentro do Python, onde PreToolUse do Bash nunca dispara. Uma org de
+   produção autenticada como `sbx-acxya-dev` passava limpo pelas duas pontas. Não
+   substitua nenhuma das três pelas outras: um denylist responde "esse nome parece
+   produção?", e a pergunta certa sempre foi "essa org é sandbox?".
 2. **Dados reais não entram no contexto.** Nunca rodar SOQL que retorne dados de cliente
    (CPF, e-mail, telefone, valores). Só metadata e contagens agregadas. LGPD.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
@@ -195,5 +210,7 @@ de "workspace não confiável" do Claude Code é sobre exatamente essa lista, na
 A rede de segurança real não depende dela: a lista `deny` (`git merge*`, `git push
 --force*`, `sf org delete*`) e o hook `guard-prod.sh` continuam bloqueando
 normalmente independente de o workspace estar marcado como confiável — verificado
-empiricamente. Não "resolva" esse aviso afrouxando permissão; ele não protege nada
+empiricamente. O que o hook **não** cobre são as ferramentas `sf_*` do MCP, que não
+passam pela ferramenta Bash: quem guarda aquele caminho é `guarda.py` (guardrail #1).
+Não "resolva" esse aviso afrouxando permissão; ele não protege nada
 que já não esteja protegido por hook ou pela lista `deny`.

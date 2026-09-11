@@ -53,6 +53,11 @@ def assessment_cmd(client: str, target_org: str | None, github_output: bool) -> 
         raise click.ClickException(f"'{workspace}' não existe. Crie o workspace do cliente primeiro.")
 
     alias = target_org or ambientes.org_alias(client, "dev")
+    if not ambientes.alias_permitido(alias):
+        raise click.ClickException(
+            f"Alias {alias!r} fora da esteira. Só `sbx-<cliente>-dev` e `sbx-<cliente>-qa` "
+            f"(guardrail #1) — o assessment é read-only, mas ler produção é o guardrail #2."
+        )
     click.echo(f"Assessment de {client} contra {alias}...")
 
     from . import assessment as assessment_mod

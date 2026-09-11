@@ -12,6 +12,8 @@ condição em YAML, onde ela sairia de sincronia na primeira mudança.
 
 from __future__ import annotations
 
+import re
+
 from .demands import STAGES, STAGES_TRIAGEM
 
 AMBIENTES = ("dev", "qa")
@@ -59,6 +61,24 @@ def github_environment(client: str, ambiente: str) -> str:
     """
     _validar(ambiente)
     return f"{client}-{ambiente}"
+
+
+# Formato exato de alias que a esteira aceita: `sbx-<slug>-dev|qa`. É uma
+# **allowlist**, não uma lista de proibidos — a diferença importa. Negar aliases
+# que contenham "prod" deixa passar tudo que não usa essa palavra, e o problema
+# nunca foi o nome: era o destino. Isto aqui fecha a forma; quem confere o
+# destino de verdade é `tools.py`, perguntando à org se ela é sandbox.
+ALIAS_RE = re.compile(r"^sbx-[a-z0-9][a-z0-9-]*-(dev|qa)$")
+
+
+def alias_permitido(alias: str) -> bool:
+    """True só para alias no formato da esteira.
+
+    Usado pelo hook `guard-prod.sh` (que repete esta regex em bash — duplicação
+    consciente: o hook precisa rodar sem Python no PATH) e por qualquer código
+    que monte comando `sf`.
+    """
+    return bool(ALIAS_RE.match(alias or ""))
 
 
 def _validar(ambiente: str) -> None:
