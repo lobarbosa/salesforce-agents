@@ -290,5 +290,42 @@ def ambiente(client: str, demand_id: str) -> None:
     click.echo(f"github_environment={ambientes.github_environment(client, amb)}")
 
 
+@demanda.command("conferir-gates")
+@click.option("--client", required=True)
+@click.argument("demand_id")
+def conferir_gates(client: str, demand_id: str) -> None:
+    """Diz se os artefatos em disco ainda são os que os humanos aprovaram.
+
+    Sai diferente de zero quando algum artefato mudou depois da aprovação. Não
+    é acusação de nada — correção depois do gate é normal e às vezes é o certo.
+    É a pergunta ficando respondível: hoje, quem auditasse a entrega meses
+    depois só teria "fulano aprovou o design", sem saber qual design.
+    """
+    from . import gates as gates_mod
+
+    try:
+        d = demands.Demand.load(client, demand_id)
+    except demands.DemandNotFoundError as exc:
+        raise click.ClickException(str(exc))
+
+    aprovados = gates_mod.registrados(d)
+    if not aprovados:
+        click.echo(f"{demand_id}: nenhum gate aprovado ainda.")
+        return
+
+    divergentes = {gate: gates_mod.conferir(d, gate) for gate in aprovados}
+    divergentes = {gate: arquivos for gate, arquivos in divergentes.items() if arquivos}
+
+    for gate, arquivos in divergentes.items():
+        click.echo(f"{gate}: mudou depois da aprovação -> {', '.join(arquivos)}")
+
+    if divergentes:
+        raise click.ClickException(
+            f"{len(divergentes)} de {len(aprovados)} gate(s) aprovaram um conteúdo que não "
+            f"é mais o que está em disco."
+        )
+    click.echo(f"{demand_id}: {len(aprovados)} gate(s) conferem com o que está em disco.")
+
+
 if __name__ == "__main__":
     main()

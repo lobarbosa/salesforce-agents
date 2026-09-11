@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import ambientes, demands
+from . import ambientes, demands, gates
 
 # Etapas de execução que acionam uma sessão de agente. As `aguardando_*` são
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
@@ -112,6 +112,13 @@ def aprovar_gate(client: str, demand_id: str, autor: str) -> demands.Demand:
     prox = proxima_etapa(d.status)
     if prox is None:
         raise FluxoError(f"{client}/{demand_id}: '{d.status}' não tem etapa seguinte.")
+
+    # Registra ANTES de transicionar: o bloco precisa dizer o que estava na mesa
+    # no gate, e depois da transição o estágio já é outro. Fica aqui, e não no
+    # prompt do agente, porque instrução é ignorável e este é o único rastro do
+    # gate bloqueante da doutrina.
+    gates.registrar(d, d.status, autor)
+
     return demands.transition(client, demand_id, prox, autor)
 
 

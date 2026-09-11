@@ -184,8 +184,19 @@ clients/<cliente>/demandas/<DEMAND-ID>/
   04-plano-build.md  # passo a passo do que será criado/alterado
   05-testes.md       # roteiro + resultado
   06-entrega.md      # documentação final
-  gates.md           # log de aprovações humanas (quem, quando, o quê)
+  gates.md           # log de aprovações humanas — escrito por sfagents, não pelo agente
 ```
+
+`gates.md` é **mecânico**: `src/salesforce_agents/gates.py` escreve o bloco no
+momento em que o humano aprova, com o sha256 de cada artefato que estava na mesa.
+Nenhum agente escreve nele — era instrução no prompt até 2026-09-11, e instrução
+é a camada mais fraca que existe pro único rastro do gate bloqueante da doutrina.
+
+O hash é o que transforma "fulano aprovou o design" em "fulano aprovou **este**
+design": `sfagents demanda conferir-gates --client <cliente> <DEMAND-ID>` responde
+se o que está em disco hoje ainda é o que foi aprovado, e sai diferente de zero
+quando não é. Divergir não é erro — corrigir depois do gate às vezes é o certo.
+O que não pode é ninguém conseguir saber.
 
 ## Escopo duplo: projeto e sustentação
 
