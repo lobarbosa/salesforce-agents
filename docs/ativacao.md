@@ -26,6 +26,16 @@ Em Settings → Environment Variables, **Production e Preview**:
 |---|---|---|
 | `SUPABASE_SERVICE_ROLE_KEY` | a chave do passo 1.2 | Anexos recusam upload **e** conceder acesso não envia convite — ninguém novo consegue entrar |
 | `SQUAD_OS_SYNC_TOKEN` | uma string aleatória longa que você inventa (ex.: `openssl rand -hex 32`) | O pipeline não consegue devolver o status — o quadro congela na etapa da materialização |
+| `DIRECT_URL` | botão Connect → **Session pooler**, porta **5432** | Nada quebra hoje (cai no `DATABASE_URL`), mas o passo abaixo fica pela metade |
+
+E **troque o `DATABASE_URL`** pela aba **Transaction pooler**, porta **6543**
+(hoje ele aponta pro session pooler, 5432). Vercel Functions são clientes
+efêmeros: transaction mode devolve a conexão a cada statement, session mode
+segura uma sessão por conexão até esgotá-las. Com `DIRECT_URL` cadastrada, a
+migração continua indo pelo session pooler, que é onde DDL precisa rodar.
+
+Se algo der errado, voltar o `DATABASE_URL` pra 5432 desfaz — é uma variável de
+ambiente, não um deploy.
 
 ⚠️ `SUPABASE_SERVICE_ROLE_KEY` **nunca** com prefixo `NEXT_PUBLIC_`: ela ignora
 RLS, e com o prefixo iria pro bundle do browser.
@@ -84,9 +94,19 @@ Ver `publicacao-producao.md`. Os dois bloqueantes que estavam lá:
   senha. Depende do passo 2 (service role key).
 - **Banco próprio pro Preview** — ⛔ **ainda aberto, e é a sua decisão.**
   Preview e Production compartilham o `DATABASE_URL`, então o build de preview
-  de um PR migra a produção antes do merge. Já derrubou a produção uma vez. A
-  saída é um segundo projeto Supabase (free serve) apontado só na env var de
-  **Preview**.
+  de um PR migra a produção antes do merge. Já derrubou a produção uma vez.
+
+  Recomendação, com os custos conferidos na sua org: **um segundo projeto
+  Supabase, no free — custa $0** (`get_cost` devolveu 0/mês) — apontado só na
+  env var de Preview. **Não use o branching do Supabase**: $0,0134/hora
+  (≈ $9,70/mês por branch) e ainda exige o plano Pro.
+
+  E o item que eu colocaria antes desse: a org está no **plano free**, e este
+  banco virou fonte de verdade de demanda de 6 clientes, com credencial de
+  integração e briefing de conta. Sem PITR, com retenção mínima de backup e com
+  auto-pause por inatividade. **Produção no Pro ($25/mês)** compra backup e
+  disponibilidade; o preview compartilhado é um risco que se contorna com
+  disciplina, perder o banco não.
 
 ---
 

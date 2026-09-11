@@ -9,6 +9,15 @@ export default defineConfig({
     path: "prisma/migrations",
   },
   datasource: {
-    url: process.env["DATABASE_URL"],
+    // Migração usa o **session pooler** (DIRECT_URL, porta 5432); o runtime do
+    // app usa o **transaction pooler** (DATABASE_URL, 6543) em lib/prisma.ts.
+    // Os dois modos existem por motivos opostos: `prisma migrate deploy` roda
+    // DDL numa sessão longa, e transaction mode devolve a conexão a cada
+    // statement; já Vercel Functions são clientes efêmeros, e session mode
+    // segura uma sessão por conexão até esgotá-las.
+    //
+    // O fallback pro DATABASE_URL mantém quem ainda não separou as duas
+    // variáveis funcionando exatamente como antes.
+    url: process.env["DIRECT_URL"] ?? process.env["DATABASE_URL"],
   },
 });
