@@ -1,6 +1,7 @@
 import { getClients, getClientById } from "@/lib/data";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { Sidebar } from "@/components/Sidebar";
+import { marcaUrl } from "@/lib/marca";
 
 // Toda página aqui lê direto do Postgres (sem fetch(), então o Next não
 // detecta dinamismo sozinho) e depende da sessão do usuário logado — nunca
@@ -28,7 +29,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="shell">
-      <Sidebar clients={clients} usuario={usuario} />
+      <Sidebar marcaSrc={marcaUrl()} clients={clients} usuario={usuario} />
       <main>{children}</main>
     </div>
   );

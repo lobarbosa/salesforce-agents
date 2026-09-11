@@ -34,6 +34,71 @@ export const STAGE_LABEL: Record<string, string> = {
   release: "release",
 };
 
+// --- A mesma esteira, dita para quem está do lado de fora ------------------
+//
+// `aguardando_gate_design` é vocabulário de quem opera a esteira. Para o
+// cliente, é ruído: ele não sabe o que é um gate, e a palavra "design" o faz
+// pensar em tela. Pior, os três gates internos parecem pedir uma ação dele —
+// e só um dos quatro é dele de verdade.
+//
+// Quatro estados, e a pergunta que cada um responde:
+//   recebida  — "chegou?"
+//   andamento — "estão trabalhando?"
+//   voce      — "preciso fazer alguma coisa?"   ← o único que pede ação dele
+//   entregue  — "acabou?"
+//
+// Não é simplificação por estética: um cliente que não distingue "esperando a
+// Acxya" de "esperando você" ou não age quando devia, ou cobra o que não é seu.
+
+export type EstadoCliente = "recebida" | "andamento" | "voce" | "entregue";
+
+export const ESTADOS_CLIENTE = ["recebida", "andamento", "voce", "entregue"] as const;
+
+export const ESTADO_CLIENTE_LABEL: Record<EstadoCliente, string> = {
+  recebida: "Recebida",
+  andamento: "Em andamento",
+  voce: "Precisa da sua aprovação",
+  entregue: "Entregue",
+};
+
+// O único gate da esteira que o papel `cliente` aprova — a mesma constante que
+// a rota /api/demandas/[id]/aprovar-gate usa pra decidir quem pode aprovar.
+const GATE_DO_CLIENTE = "aguardando_homologacao";
+
+export function estadoDoCliente(status: string): EstadoCliente {
+  if (status === GATE_DO_CLIENTE) return "voce";
+  if (status === "entregue") return "entregue";
+  if ((TRIAGE as readonly string[]).includes(status)) return "recebida";
+  return "andamento";
+}
+
+// As quatro fases que o cliente reconhece como progresso. Os gates internos
+// somem porque não são fases do trabalho dele: são pontos de controle nossos.
+const FASES_CLIENTE = [
+  ["analise", "aguardando_gate_analise"],
+  ["design", "aguardando_gate_design"],
+  ["build", "aguardando_gate_build"],
+  ["qa", "aguardando_homologacao", "release"],
+];
+
+export interface ProgressoDemanda {
+  fase: number;
+  total: number;
+  rotulo: string;
+}
+
+/**
+ * "Etapa 3 de 4" para uma demanda em execução, ou null fora dela.
+ *
+ * Estado sem progresso deixa o cliente sem saber se "em andamento" é o
+ * primeiro dia ou o último — que é justamente a informação que ele quer.
+ */
+export function progressoDaDemanda(status: string): ProgressoDemanda | null {
+  const i = FASES_CLIENTE.findIndex((fase) => fase.includes(status));
+  if (i < 0) return null;
+  return { fase: i + 1, total: FASES_CLIENTE.length, rotulo: `etapa ${i + 1} de ${FASES_CLIENTE.length}` };
+}
+
 export interface Pergunta {
   id: string;
   texto: string;
@@ -67,4 +132,23 @@ export function timeAgo(iso: string | Date | null | undefined): string {
   if (diff < 3600) return Math.max(1, Math.round(diff / 60)) + "min";
   if (diff < 86400) return Math.round(diff / 3600) + "h";
   return Math.round(diff / 86400) + "d";
+}
+
+// Minutos viram "1h20" em vez de "80min" a partir de uma hora: é como a
+// pessoa fala do próprio tempo, e a lista de lançamentos fica comparável de
+// relance.
+export function formatarMinutos(total: number): string {
+  const m = Math.max(0, Math.round(total));
+  if (m < 60) return `${m}min`;
+  const horas = Math.floor(m / 60);
+  const resto = m % 60;
+  return resto === 0 ? `${horas}h` : `${horas}h${String(resto).padStart(2, "0")}`;
+}
+
+// Tamanho de anexo em unidade legível — o número cru em bytes não ajuda
+// ninguém a decidir se vale baixar.
+export function formatarTamanho(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
+  return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }

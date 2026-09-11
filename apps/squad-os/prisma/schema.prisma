@@ -22,6 +22,16 @@ enum TipoDemanda {
   sustentacao
 }
 
+// Como a conta é vendida. Muda o que o time acompanha, não só um rótulo:
+// AMS é um balde de horas que renova e um SLA a cumprir; projeto é um escopo
+// fechado com entregáveis e uma data. As duas telas são diferentes porque as
+// duas perguntas são diferentes — "quanto do balde já foi?" contra "quanto do
+// escopo já saiu?".
+enum TipoContrato {
+  ams
+  projeto
+}
+
 enum Role {
   admin
   consultor
@@ -48,25 +58,40 @@ enum StatusDemanda {
 }
 
 model Client {
-  id        String   @id @default(cuid())
+  id       String   @id @default(cuid())
   // Nome do diretório em clients/<slug>/ neste repo — é a chave que liga
   // este registro ao workspace Salesforce DX do cliente (CLAUDE.md de conta,
   // force-app/, demandas materializadas). Gerado do nome na criação, estável
   // depois disso mesmo que o nome de exibição mude.
-  slug      String   @unique
-  nome      String
-  segmento  String   @default("")
-  criadoEm  DateTime @default(now()) @map("criado_em")
+  slug     String   @unique
+  nome     String
+  segmento String   @default("")
+  criadoEm DateTime @default(now()) @map("criado_em")
 
-  // Conhecimento do Cliente (briefing de conta)
-  marcas             String @default("")
+  // Conhecimento do Cliente (briefing de conta). `marcas` e `concorrentes`
+  // saíram a pedido; as colunas ainda existem no banco (vazias nos 5 clientes,
+  // verificado antes da remoção) e o DROP vem numa migration separada, no
+  // merge seguinte — ver README, "Por que o DROP não vem junto".
   contatos           String @default("")
   ambienteSalesforce String @default("") @map("ambiente_salesforce")
-  concorrentes       String @default("")
   integracoes        String @default("")
   regras             String @default("")
 
+  // Assessment da org, produzido pelo agente `org-assessment` no onboarding do
+  // cliente (ver .claude/agents/org-assessment.md e run-assessment.yml). Fica
+  // no Client e não em tabela própria porque é um por cliente e é substituído
+  // a cada nova rodada — histórico de assessment mora no git, em
+  // clients/<slug>/assessment.md, que é a versão longa disto aqui.
+  assessmentEm            DateTime? @map("assessment_em")
+  // verde | amarelo | vermelho — o veredito de uma palavra que cabe no card.
+  assessmentSaude         String    @default("") @map("assessment_saude")
+  assessmentResumo        String    @default("") @map("assessment_resumo")
+  // [{ titulo, severidade, area }] — o suficiente pra listar e contar por
+  // severidade no perfil sem reprocessar o markdown.
+  assessmentRecomendacoes Json      @default("[]") @map("assessment_recomendacoes")
+
   ambientes AmbienteOrg[]
+  contrato  Contrato?
   demandas  Demanda[]
   usuarios  Usuario[]
 
@@ -129,38 +154,225 @@ model Usuario {
   criadoEm     DateTime @default(now()) @map("criado_em")
   concedidoPor String?  @map("concedido_por")
 
-  @@map("usuarios")
   @@index([clientId])
+  @@map("usuarios")
 }
 
 model Demanda {
-  id       String        @id @default(cuid())
-  clientId String        @map("client_id")
-  client   Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  clientId String @map("client_id")
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
 
   // <CODE>-<n> (ex.: ACXYA-1) — mesmo formato e mesma numeração sequencial
   // por cliente que src/salesforce_agents/demands.py:_next_id() já usa pra
   // nomear clients/<slug>/demandas/<code>/. Gerado na criação, nunca reusado.
-  code     String
+  code String
 
   titulo   String
-  tipo     TipoDemanda    @default(sustentacao)
-  texto    String         @default("")
-  autor    String         @default("")
-  status   StatusDemanda  @default(backlog)
-  criadoEm DateTime       @default(now()) @map("criado_em")
+  tipo     TipoDemanda   @default(sustentacao)
+  texto    String        @default("")
+  autor    String        @default("")
+  status   StatusDemanda @default(backlog)
+  criadoEm DateTime      @default(now()) @map("criado_em")
 
   // Perguntas em aberto, aprovação de gate e histórico de transição —
   // mantidos como JSON (mesma forma de documento do modelo anterior;
   // não ganham nada sendo normalizados em tabelas próprias).
-  perguntas  Json @default("[]")
-  aprovacao  Json?
-  historico  Json @default("[]")
+  perguntas Json  @default("[]")
+  aprovacao Json?
+  historico Json  @default("[]")
 
   materializadoEm DateTime? @map("materializado_em")
 
-  @@map("demandas")
+  // De qual entregável contratado esta demanda nasceu, quando nasceu de um.
+  // Opcional porque demanda de AMS não tem entregável, e porque mesmo em
+  // projeto alguém pode abrir uma demanda fora do escopo contratado — e é
+  // justamente isso que interessa enxergar depois.
+  entregavelId String?     @map("entregavel_id")
+  entregavel   Entregavel? @relation(fields: [entregavelId], references: [id], onDelete: SetNull)
+
+  // Preenchidos pelo sync de volta (/api/sync/demanda), a cada execução de
+  // run-demand.yml. Sem isso o quadro mostra a etapa do momento em que a
+  // demanda foi materializada e uma etapa que falhou fica indistinguível de
+  // uma que nunca rodou.
+  ultimaExecucaoEm DateTime? @map("ultima_execucao_em")
+  // success | failure | cancelled — o `job.status` do Actions, como veio.
+  ultimoResultado  String    @default("") @map("ultimo_resultado")
+  ultimoRunUrl     String    @default("") @map("ultimo_run_url")
+
+  comentarios Comentario[]
+  subtarefas  Subtarefa[]
+  checklist   ChecklistItem[]
+  tempos      RegistroTempo[]
+  anexos      Anexo[]
+
   @@unique([clientId, code])
   @@index([clientId])
   @@index([status])
+  @@index([entregavelId])
+  @@map("demandas")
+}
+
+// A conversa em torno da demanda — hoje ela acontece fora do sistema, o que
+// deixa o gate humano sem rastro: quem aprovou vê a decisão, não o caminho
+// até ela. Tabela própria, e não JSON como `perguntas`/`historico`, porque
+// aqui a granularidade é a linha (autor, momento, texto) e ela cresce sem
+// limite — os outros dois são documentos pequenos e fechados.
+model Comentario {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  // Nome de exibição no momento do comentário, congelado de propósito: se a
+  // pessoa mudar de nome depois, o histórico não reescreve quem falou o quê.
+  autor      String
+  autorEmail String @map("autor_email")
+  texto      String
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("comentarios")
+}
+
+// Subtarefa é unidade de trabalho: tem título e pode ser atribuída. Checklist
+// é lista de verificação: só texto e feito/não feito. Parecem a mesma coisa e
+// não são — separá-las evita que "conferir X" e "implementar Y" disputem a
+// mesma lista, que é o que faz um card virar depósito.
+model Subtarefa {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  titulo      String
+  feita       Boolean @default(false)
+  responsavel String  @default("")
+  // Posição na lista. Int em vez de índice do array porque reordenar não pode
+  // depender da ordem de chegada no banco.
+  ordem       Int     @default(0)
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("subtarefas")
+}
+
+model ChecklistItem {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  texto String
+  feito Boolean @default(false)
+  ordem Int     @default(0)
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("checklist_itens")
+}
+
+// `fimEm` nulo é o timer rodando — é o estado, não uma flag separada, para não
+// existir a combinação impossível "parado mas sem fim". `minutos` é gravado no
+// stop (ou direto, no lançamento manual) em vez de calculado toda leitura:
+// congela o valor mesmo que o relógio do servidor mude depois.
+model RegistroTempo {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  autor      String
+  autorEmail String @map("autor_email")
+  descricao  String @default("")
+
+  inicioEm DateTime  @map("inicio_em")
+  fimEm    DateTime? @map("fim_em")
+  minutos  Int?
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("registros_tempo")
+}
+
+// Só metadado — o arquivo em si vive no Supabase Storage, no bucket
+// `anexos-demanda`. `caminho` é a chave lá dentro; nada de binário no Postgres.
+model Anexo {
+  id        String  @id @default(cuid())
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  nome    String
+  caminho String @unique
+  tamanho Int
+  tipo    String @default("")
+
+  autor      String
+  autorEmail String @map("autor_email")
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([demandaId])
+  @@map("anexos")
+}
+
+// Um contrato ativo por cliente (`clientId` é unique). Renegociação substitui
+// o conteúdo; o histórico comercial não vive aqui — isto é o que o time de
+// delivery precisa saber pra trabalhar, não o dossiê do contrato.
+model Contrato {
+  id       String       @id @default(cuid())
+  clientId String       @unique @map("client_id")
+  client   Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  tipo     TipoContrato
+
+  // --- AMS ---
+  // Horas do ciclo. Int e não decimal: contrato de AMS se fala em hora cheia,
+  // e meia hora contratada não existe na prática.
+  horasContratadas Int    @default(0) @map("horas_contratadas")
+  // "mensal" | "trimestral" — texto e não enum porque o comercial fecha o que
+  // quiser, e travar num enum faria o app recusar um contrato real.
+  cicloHoras       String @default("mensal") @map("ciclo_horas")
+  // [{ severidade, primeiraRespostaHoras, resolucaoHoras }] — a tabela que o
+  // time consulta quando chega um chamado. JSON porque é uma tabela pequena,
+  // fechada, lida inteira de uma vez; normalizar não daria nada.
+  sla              Json   @default("[]")
+
+  // --- Projeto ---
+  projetoNome   String    @default("") @map("projeto_nome")
+  projetoEscopo String    @default("") @map("projeto_escopo")
+  inicioEm      DateTime? @map("inicio_em")
+  fimPrevistoEm DateTime? @map("fim_previsto_em")
+
+  entregaveis Entregavel[]
+
+  criadoEm     DateTime @default(now()) @map("criado_em")
+  atualizadoEm DateTime @updatedAt @map("atualizado_em")
+
+  @@map("contratos")
+}
+
+// O que foi vendido, item a item. É a lista que o agente `planejador` lê pra
+// propor as demandas do quadro, e a base do progresso do projeto.
+model Entregavel {
+  id         String   @id @default(cuid())
+  contratoId String   @map("contrato_id")
+  contrato   Contrato @relation(fields: [contratoId], references: [id], onDelete: Cascade)
+
+  titulo    String
+  descricao String  @default("")
+  ordem     Int     @default(0)
+  // Peso relativo no progresso. Entregável não vale todo o mesmo: "migrar 12
+  // Flows" e "ajustar um layout" contariam igual numa média simples, e o
+  // progresso mentiria na hora em que mais importa.
+  peso      Int     @default(1)
+  concluido Boolean @default(false)
+
+  // Demandas geradas a partir deste entregável. Um entregável costuma virar
+  // mais de uma.
+  demandas Demanda[]
+
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@index([contratoId])
+  @@map("entregaveis")
 }

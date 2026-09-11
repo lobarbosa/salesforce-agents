@@ -21,12 +21,76 @@ explícita. Não existe "vou seguindo e depois você revisa".
 | 6 | Empacotamento e deploy sandbox/UAT | `release` | **Prod: proibido ao agente** |
 | 7 | Documentação de entrega | `doc` | Spot check |
 
+Antes da etapa 1 de todo cliente novo vem o **assessment da org** (`org-assessment`,
+`run-assessment.yml`): diagnóstico read-only da saúde da org, que vira `assessment.md` +
+`assessment.json` em `clients/<cliente>/` e o bloco "Saúde da org" no perfil do cliente no
+Squad OS. Dispara sozinho quando a org de dev conecta pela primeira vez. Não é demanda —
+não tem `status.yaml` nem gate; é o que evita desenhar solução numa org desconhecida.
+
+Num cliente de **contrato de projeto**, as demandas não precisam ser digitadas uma a uma:
+o agente `planejador` (`run-planejamento.yml`) lê os entregáveis contratados e propõe as
+demandas que eles viram, que entram no quadro em `backlog`. Ele não toca em org nenhuma,
+não decide declarativo vs. código e não materializa nada — quem decide o que vira esteira
+continua sendo o humano.
+
 O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
+
+## Como a conta é vendida muda o que o time acompanha
+
+O `Contrato` de cada cliente é **AMS** ou **projeto**, e a aba Contrato do Squad OS mostra
+coisas diferentes porque as perguntas são diferentes:
+
+- **AMS** — horas contratadas por ciclo, SLA por severidade, e o consumo mês a mês contra
+  o contratado. A pergunta é "quanto do balde já foi?".
+- **Projeto** — cadastro, entregáveis com peso e progresso ponderado. A pergunta é "quanto
+  do escopo já saiu?". O peso existe porque "migrar 12 Flows" e "ajustar um layout"
+  contariam igual numa média simples, e o progresso mentiria perto do fim.
+
+As horas vêm dos `RegistroTempo` das demandas do cliente, agrupadas pelo mês em que o
+trabalho aconteceu (`inicioEm`), não pelo mês do lançamento. Cronômetro ainda rodando não
+entra: hora que não fechou não é hora gasta.
+
+## O ciclo anda sozinho — e onde ele para
+
+Ninguém abre o GitHub Actions pra mover uma demanda. `src/salesforce_agents/fluxo.py`
+roda a etapa atual, avança até o próximo gate e devolve o controle; o sync de volta
+(`/api/sync/demanda`) faz o quadro do Squad OS mostrar o gate esperando; quando alguém
+aprova no card, a próxima etapa dispara sozinha. Detalhes em `docs/ativacao.md`.
+
+Isso **não afrouxa a regra de ouro**: toda etapa de agente continua sendo seguida por um
+gate humano bloqueante — essa invariante tem teste (`tests/test_fluxo.py`). O que ficou
+automático é a borda: agente→humano (o gate aparece pra quem precisa ver) e humano→agente
+(aprovar aciona). O que era manual antes era o transporte, não a decisão.
+
+O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
+(`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.
 
 ## Guardrails inegociáveis
 
 1. **Produção é proibida.** Nenhum agente executa deploy, DML ou anonymous Apex em org
-   de produção. Aliases contendo `prod`, `prd` ou `production` são bloqueados por hook.
+   de produção. A esteira tem dois ambientes e só dois: **dev** (`sbx-<cliente>-dev`) e
+   **qa** (`sbx-<cliente>-qa`). Build e tudo antes acontece em dev; a partir da etapa `qa`
+   a demanda já vive na sandbox de QA, onde o roteiro roda, o humano homologa e o release
+   entrega — e o agente para ali. Quem sabe dessa regra é
+   `src/salesforce_agents/ambientes.py`, que recusa qualquer ambiente fora de
+   `("dev", "qa")` antes de montar comando `sf` nenhum; os workflows perguntam pra ele
+   (`sfagents demanda ambiente`) em vez de repetirem a condição em YAML.
+
+   A checagem acontece em **três camadas, e as três respondem perguntas diferentes**:
+
+   - `ambientes.alias_permitido` — **allowlist** de formato: só `sbx-<cliente>-dev|qa`.
+   - `.claude/hooks/guard-prod.sh` — PreToolUse do Bash, mesma allowlist, para o `sf`
+     que o agente digita no terminal.
+   - `src/salesforce_agents/guarda.py` — pergunta à própria org (`Organization.IsSandbox`)
+     antes de qualquer escrita, e recusa se ela não se declarar sandbox.
+
+   As duas primeiras conferem o **nome**; a terceira confere o **destino**. Achado do
+   council de 2026-09-11: até ali o guardrail era um denylist (`prod|prd|production` no
+   texto do comando) registrado só no hook do Bash — e as ferramentas `sf_*` chamam `sf`
+   por subprocess de dentro do Python, onde PreToolUse do Bash nunca dispara. Uma org de
+   produção autenticada como `sbx-acxya-dev` passava limpo pelas duas pontas. Não
+   substitua nenhuma das três pelas outras: um denylist responde "esse nome parece
+   produção?", e a pergunta certa sempre foi "essa org é sandbox?".
 2. **Dados reais não entram no contexto.** Nunca rodar SOQL que retorne dados de cliente
    (CPF, e-mail, telefone, valores). Só metadata e contagens agregadas. LGPD.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
@@ -40,7 +104,9 @@ O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
    `baseline/<cliente>` do mesmo jeito. Achado real (ACXYA-1, 2026-09-07): antes dessa
    correção, `run-demand.yml` empurrava direto pra branch que disparou o workflow —
    funcionava só por acaso enquanto isso era uma branch não protegida; quebrou na
-   primeira vez que rodou em `main`.
+   primeira vez que rodou em `main`. `run-demand.yml` roda em dois jobs (`decidir` sem
+   environment, `rodar` no `<cliente>-<ambiente>` que o primeiro apontou) porque um job
+   do Actions declara um `environment:` só e a esteira atravessa dois.
 
    - `ci-python.yml` — testes do orquestrador (`src/salesforce_agents/`)
    - `ci-squad-os.yml` — lint + build do Squad OS (`apps/squad-os/`)
@@ -74,7 +140,8 @@ no mesmo modelo default por acidente. Heurística aplicada (council de 2026-09-0
 `gates.md`/histórico de sessão — não repita a análise, ela já foi feita):
 
 - **haiku** — `ba-discovery`, `doc`: extração e formatação de texto, sem decisão de risco.
-- **sonnet** — `builder-declarativo`, `dev-apex`, `devops`, `qa`, `release`: trabalho
+- **sonnet** — `builder-declarativo`, `dev-apex`, `devops`, `qa`, `release`, `planejador`,
+  `org-assessment`: trabalho
   estruturado com julgamento, mas revisado por PR ou gate antes de valer. Cavalo de batalha.
 - **opus** — só `arquiteto`, e só pela decisão declarativo-vs-código em si: é o único gate
   humano bloqueante da doutrina, erro ali compõe nos 6 clientes, e já paga a latência de
@@ -117,8 +184,19 @@ clients/<cliente>/demandas/<DEMAND-ID>/
   04-plano-build.md  # passo a passo do que será criado/alterado
   05-testes.md       # roteiro + resultado
   06-entrega.md      # documentação final
-  gates.md           # log de aprovações humanas (quem, quando, o quê)
+  gates.md           # log de aprovações humanas — escrito por sfagents, não pelo agente
 ```
+
+`gates.md` é **mecânico**: `src/salesforce_agents/gates.py` escreve o bloco no
+momento em que o humano aprova, com o sha256 de cada artefato que estava na mesa.
+Nenhum agente escreve nele — era instrução no prompt até 2026-09-11, e instrução
+é a camada mais fraca que existe pro único rastro do gate bloqueante da doutrina.
+
+O hash é o que transforma "fulano aprovou o design" em "fulano aprovou **este**
+design": `sfagents demanda conferir-gates --client <cliente> <DEMAND-ID>` responde
+se o que está em disco hoje ainda é o que foi aprovado, e sai diferente de zero
+quando não é. Divergir não é erro — corrigir depois do gate às vezes é o certo.
+O que não pode é ninguém conseguir saber.
 
 ## Escopo duplo: projeto e sustentação
 
@@ -143,5 +221,7 @@ de "workspace não confiável" do Claude Code é sobre exatamente essa lista, na
 A rede de segurança real não depende dela: a lista `deny` (`git merge*`, `git push
 --force*`, `sf org delete*`) e o hook `guard-prod.sh` continuam bloqueando
 normalmente independente de o workspace estar marcado como confiável — verificado
-empiricamente. Não "resolva" esse aviso afrouxando permissão; ele não protege nada
+empiricamente. O que o hook **não** cobre são as ferramentas `sf_*` do MCP, que não
+passam pela ferramenta Bash: quem guarda aquele caminho é `guarda.py` (guardrail #1).
+Não "resolva" esse aviso afrouxando permissão; ele não protege nada
 que já não esteja protegido por hook ou pela lista `deny`.

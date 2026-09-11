@@ -84,6 +84,10 @@ select:focus-visible, [tabindex]:focus-visible {
 }
 .sidebar .brand { padding: 1.1rem 1.1rem 1.1rem; position: relative; }
 .sidebar .brand .name { font-family: var(--display); font-weight: 600; font-size: 0.92rem; }
+/* Altura fixa e largura automática: o arquivo da marca pode chegar em qualquer
+   proporção, e travar a largura distorceria um logotipo largo. `display:block`
+   evita a folga de linha-base embaixo de img inline. */
+.sidebar .brand-logo { display: block; height: 26px; width: auto; max-width: 100%; margin-bottom: 0.4rem; }
 .sidebar .brand .sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
 /* Gradiente institucional — reservado ao símbolo (aqui, a marca escrita),
    nunca usado como cor de função (botão, link, estado). */
@@ -306,3 +310,242 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
   font-size: 0.76rem; color: var(--text-muted); text-decoration: underline;
 }
 .auth-links button:hover { color: var(--accent); }
+
+/* contrato: AMS e projeto */
+.contrato { display: flex; flex-direction: column; gap: 1rem; }
+.contrato-head { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.contrato-head .trocar-tipo { margin-left: auto; font-size: 0.75rem; padding: 0.3rem 0.55rem; }
+.painel-bloco {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.8rem;
+}
+.bloco-head { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.bloco-head h3 { margin: 0; font-size: 0.95rem; }
+.campos-linha { display: flex; gap: 0.8rem; flex-wrap: wrap; align-items: flex-end; }
+.campos-linha .field { flex: 0 0 auto; }
+.campos-linha .field.grow { flex: 1 1 14rem; }
+.campos-linha input, .campos-linha select {
+  min-height: 40px; padding: 0.45rem 0.6rem; border: 1px solid var(--border);
+  border-radius: 8px; background: var(--surface); font-size: 0.9rem;
+}
+
+/* escolha do tipo de contrato */
+.contrato-vazio { display: flex; flex-direction: column; gap: 0.8rem; max-width: 48rem; }
+.contrato-vazio h3 { margin: 0; font-size: 1rem; }
+.contrato-vazio p { margin: 0; font-size: 0.88rem; color: var(--text-muted); }
+.tipo-escolha { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 0.8rem; }
+.tipo-card {
+  text-align: left; display: flex; flex-direction: column; gap: 0.3rem; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 0.9rem 1rem; transition: border-color 120ms ease, background-color 120ms ease;
+}
+.tipo-card:hover:not(:disabled) { border-color: var(--accent); background: var(--accent-soft); }
+.tipo-card strong { font-family: var(--display); font-size: 1rem; }
+.tipo-card span { font-size: 0.82rem; color: var(--text-muted); }
+
+/* gráfico de horas — uma série (gastas) + linha de referência (contratadas) */
+.chart { margin: 0; display: flex; flex-direction: column; gap: 0.5rem; }
+.chart svg { display: block; max-width: 100%; overflow: visible; }
+.chart .barra { fill: var(--accent); }
+/* Cor de status, não uma segunda série: acompanha o rótulo "excedeu". */
+.chart .barra.excedeu { fill: var(--danger); }
+.chart .eixo { stroke: var(--border-strong); stroke-width: 1; }
+.chart .limite { stroke: var(--text-muted); stroke-width: 2; stroke-dasharray: 4 3; }
+.chart .rot-limite, .chart .rot-x { fill: var(--text-muted); font-size: 10px; font-family: var(--mono); }
+.chart .valor { fill: var(--text); font-size: 11px; font-family: var(--mono); font-weight: 600; }
+.chart-nota { font-size: 0.76rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.4rem; }
+.pill-excedeu {
+  background: var(--danger-soft); color: var(--danger); border-radius: 5px;
+  padding: 0.1em 0.4em; font-family: var(--mono); font-size: 0.68rem;
+}
+
+/* SLA */
+table.sla { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
+table.sla th, table.sla td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); }
+table.sla th { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); font-weight: 500; }
+table.sla tbody tr:last-child td { border-bottom: 0; }
+table.sla input {
+  width: 3.4rem; padding: 0.25rem 0.4rem; border: 1px solid var(--border);
+  border-radius: 6px; background: var(--surface); font-family: var(--mono); font-size: 0.82rem;
+  text-align: right;
+}
+
+/* progresso do projeto */
+.progresso-grande { display: flex; align-items: center; gap: 0.8rem; }
+.progresso-grande .progresso-trilho { flex: 1; height: 12px; }
+.progresso-pct { font-size: 1.4rem; font-family: var(--display); min-width: 3.5rem; text-align: right; }
+
+/* entregáveis */
+.entregaveis { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.entregaveis li {
+  display: flex; align-items: center; gap: 0.6rem; padding: 0.15rem 0.4rem; border-radius: 8px;
+}
+.entregaveis li:hover { background: var(--surface-alt); }
+.entregaveis label { display: flex; align-items: center; gap: 0.55rem; min-height: 44px; flex: 1; cursor: pointer; font-size: 0.88rem; }
+.entregaveis input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+.entregaveis li.feito .ent-titulo { text-decoration: line-through; color: var(--text-muted); }
+.ent-meta { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+.gerar-demandas { display: flex; flex-direction: column; gap: 0.4rem; border-top: 1px solid var(--border); padding-top: 0.8rem; }
+
+@media (prefers-reduced-motion: reduce) { .tipo-card { transition: none; } }
+
+/* assessment de org no perfil do cliente */
+.assessment {
+  border: 1px solid var(--border); background: var(--surface); border-radius: 12px;
+  padding: 1rem 1.1rem; margin-bottom: 1rem; display: flex; flex-direction: column; gap: 0.7rem;
+}
+.assessment-head { display: flex; align-items: center; justify-content: space-between; gap: 0.7rem; flex-wrap: wrap; }
+.assessment-head h3 { margin: 0; font-size: 0.95rem; }
+/* Saúde é informação que nasce como cor. Cada estado carrega palavra + símbolo
+   além do tom — cor sozinha não comunica pra quem não a distingue. */
+.saude {
+  display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; font-weight: 600;
+  padding: 0.2rem 0.55rem; border-radius: 999px; border: 1px solid currentColor;
+}
+.saude.ok { color: var(--success); background: var(--success-soft); }
+.saude.alerta { color: var(--gate-strong); background: var(--gate-soft); }
+.saude.critico { color: var(--danger); background: var(--danger-soft); }
+.saude.pendente { color: var(--text-muted); background: var(--surface-alt); border-color: var(--border); font-weight: 400; }
+.assessment-resumo { margin: 0; font-size: 0.86rem; white-space: pre-wrap; }
+.assessment-recs { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.assessment-recs li {
+  display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
+  background: var(--surface-alt); border-radius: 8px; padding: 0.45rem 0.6rem; font-size: 0.83rem;
+}
+.sev {
+  font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700;
+  padding: 0.1rem 0.4rem; border-radius: 5px; flex-shrink: 0;
+}
+.sev-alta { color: var(--danger); background: var(--danger-soft); }
+.sev-media { color: var(--gate-strong); background: var(--gate-soft); }
+.sev-baixa { color: var(--text-muted); background: var(--surface); }
+.rec-titulo { flex: 1; min-width: 12rem; }
+.rec-area { font-size: 0.7rem; color: var(--text-muted); }
+.assessment-nota { margin: 0; font-size: 0.76rem; color: var(--text-muted); }
+
+/* gate humano no card — a ação mais consequente do app: aciona agente contra a
+   org do cliente. Borda em --gate (a cor semântica de "esperando gente"), não
+   em --accent, pra não competir com botão comum. */
+.gate-box {
+  border: 1px solid var(--gate); background: var(--gate-soft); border-radius: 10px;
+  padding: 0.8rem 0.9rem; display: flex; flex-direction: column; gap: 0.5rem;
+}
+.gate-titulo { display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; font-weight: 600; }
+.gate-texto { margin: 0; font-size: 0.82rem; color: var(--text); }
+.gate-confirma { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; font-size: 0.82rem; }
+
+/* visão do cliente — o quadro na língua de quem está do lado de fora.
+   O aviso existe porque as colunas ficam em ordem cronológica: "precisa da
+   sua aprovação" é a terceira, e uma coluna do meio não é chamado à ação. */
+.aviso-sua-vez {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 0.6rem;
+  border: 1px solid var(--gate); background: var(--gate-soft); border-radius: 10px;
+  padding: 0.7rem 0.9rem; margin-bottom: 1rem; font-size: 0.82rem; color: var(--text);
+}
+.aviso-sua-vez strong { color: var(--gate-strong); }
+/* Nunca só a cor: o rótulo da coluna já diz o que ela é (WCAG 1.4.1). A borda
+   e o tom são reforço para quem bate o olho, não o portador da informação. */
+.column.estado-voce { border-color: var(--gate); background: var(--gate-soft); }
+.column.estado-voce h3 { color: var(--gate-strong); }
+.column.estado-entregue h3 { color: var(--success); }
+.badge.fase { background: var(--surface-alt); border: 1px solid var(--border-strong); color: var(--text-muted); }
+.estado-cliente { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+
+/* painel do card: atividade, subtarefas, checklist, tempo, anexos */
+.painel { border-top: 1px solid var(--border); margin-top: 0.9rem; padding-top: 0.9rem; }
+.painel-abas { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.8rem; }
+.painel-aba {
+  display: inline-flex; align-items: center; gap: 0.35rem; min-height: 36px;
+  padding: 0.4rem 0.7rem; border: 1px solid var(--border); border-radius: 999px;
+  background: var(--surface); color: var(--text-muted); font-size: 0.78rem; cursor: pointer;
+  /* 120ms: troca de aba é resposta direta ao clique — mais que isso e o
+     conteúdo parece chegar atrasado. Só cor, nunca layout. */
+  transition: background-color 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+.painel-aba:hover { border-color: var(--border-strong); color: var(--text); }
+.painel-aba.active { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.painel-count {
+  min-width: 1.15rem; padding: 0 0.3rem; border-radius: 999px; background: var(--surface-alt);
+  font-family: var(--mono); font-size: 0.68rem; line-height: 1.15rem; text-align: center; color: var(--text);
+}
+.painel-aba.active .painel-count { background: var(--accent); color: var(--accent-contrast); }
+.painel-pane { display: flex; flex-direction: column; gap: 0.8rem; }
+.painel-pane:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 8px; }
+.painel-vazio { font-size: 0.8rem; color: var(--text-muted); margin: 0; }
+
+/* barra de progresso de subtarefa/checklist */
+.progresso { display: flex; align-items: center; gap: 0.55rem; }
+.progresso-trilho { flex: 1; height: 6px; border-radius: 999px; background: var(--surface-alt); overflow: hidden; }
+.progresso-barra { height: 100%; background: var(--success); border-radius: 999px; transition: width 200ms ease; }
+.progresso-num { font-size: 0.75rem; color: var(--text-muted); }
+
+/* listas marcáveis (subtarefa e checklist compartilham a mesma linha) */
+.lista-marcavel { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
+.lista-marcavel li {
+  display: flex; align-items: center; gap: 0.5rem; justify-content: space-between;
+  padding: 0.15rem 0.4rem; border-radius: 8px;
+}
+.lista-marcavel li:hover { background: var(--surface-alt); }
+.lista-marcavel label {
+  /* 44px de alvo de toque na linha inteira, não só na caixinha — marcar item
+     em telefone com o polegar é o uso mais provável desta lista. */
+  display: flex; align-items: center; gap: 0.55rem; min-height: 44px;
+  flex: 1; font-size: 0.85rem; cursor: pointer;
+}
+.lista-marcavel input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--accent); flex-shrink: 0; }
+.lista-marcavel li.feito label span { text-decoration: line-through; color: var(--text-muted); }
+.btn-remover {
+  min-height: 32px; padding: 0 0.5rem; border: 0; border-radius: 6px; background: none;
+  color: var(--text-muted); font-size: 0.72rem; cursor: pointer;
+}
+.btn-remover:hover:not(:disabled) { background: var(--danger-soft); color: var(--danger); }
+.btn-remover:disabled { opacity: 0.5; cursor: default; }
+
+.linha-nova { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+.linha-nova input[type="text"] {
+  flex: 1; min-width: 12rem; min-height: 40px; padding: 0.45rem 0.6rem;
+  border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font-size: 0.85rem;
+}
+
+/* tempo */
+.tempo-total { font-size: 0.85rem; display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.tempo-rodando { color: var(--accent2); font-size: 0.78rem; font-weight: 600; }
+.tempo-form { display: flex; flex-direction: column; gap: 0.5rem; }
+.tempo-acoes { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+.tempo-ou { font-size: 0.75rem; color: var(--text-muted); }
+.tempo-minutos { width: 5rem; min-height: 40px; padding: 0.45rem 0.6rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); font-size: 0.85rem; }
+.tempo-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.tempo-lista li { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; background: var(--surface-alt); border-radius: 8px; padding: 0.45rem 0.6rem; font-size: 0.8rem; }
+.tempo-quem { margin-left: 0.5rem; color: var(--text-muted); }
+.tempo-desc { margin-left: 0.5rem; }
+.tempo-linha-acoes { display: flex; align-items: center; gap: 0.35rem; color: var(--text-muted); font-size: 0.72rem; flex-shrink: 0; }
+
+/* anexos */
+.anexo-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; }
+.anexo-lista li { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; background: var(--surface-alt); border-radius: 8px; padding: 0.45rem 0.6rem; font-size: 0.82rem; }
+.anexo-lista a { color: var(--accent); text-decoration: underline; word-break: break-all; }
+.anexo-meta { color: var(--text-muted); font-size: 0.72rem; }
+
+/* indicadores no card do quadro */
+.card-indicadores { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.35rem; }
+.indicador {
+  font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted);
+  background: var(--surface-alt); border-radius: 6px; padding: 0.1rem 0.35rem;
+}
+
+/* Texto só pro leitor de tela: os indicadores acima usam símbolo pra caber no
+   card, e o símbolo sozinho não diz nada em voz alta. */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .painel-aba, .progresso-barra { transition: none; }
+}
+
+.atividade-lista { list-style: none; margin: 0 0 0.9rem; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+.atividade-lista li { background: var(--surface-alt); border-radius: 8px; padding: 0.55rem 0.7rem; }
+.atividade-meta { display: flex; align-items: baseline; gap: 0.5rem; font-size: 0.76rem; margin-bottom: 0.2rem; }
+.atividade-meta .mono { color: var(--text-muted); font-size: 0.72rem; }
+.atividade-texto { margin: 0; font-size: 0.84rem; white-space: pre-wrap; }

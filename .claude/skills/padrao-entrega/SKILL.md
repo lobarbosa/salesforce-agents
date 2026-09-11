@@ -39,8 +39,27 @@ cliente primeiro — convenção de conta sobrepõe convenção padrão.
 - Escopo além da demanda (refatoração não pedida)
 
 ## Registro de gate (`gates.md`)
+
+**Não escreva neste arquivo.** Quem escreve é `sfagents`, em
+`src/salesforce_agents/gates.py`, no momento em que o humano aprova — e cada
+bloco carrega o sha256 de cada artefato que estava na mesa naquele momento:
+
 ```
-| Gate | Artefato | Aprovador | Data | Observação |
-|------|----------|-----------|------|------------|
-| Análise | 01-analise.md | Leo | 2026-09-01 | ok com ressalva no CA-03 |
+## aguardando_gate_design
+
+- **Aprovado por:** Leonardo
+- **Quando:** 2026-09-11T14:02:11+00:00
+- **Commit:** `357b791`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `9f2b1c4a7e5d0836` (2140 bytes)
+  - `03-design.md` — sha256 `1a7c9e02b4f6d381` (8812 bytes)
 ```
+
+Era tabela escrita à mão pelo agente até 2026-09-11. O problema não era o
+formato: "Leo aprovou a análise em 01/09" não diz nada se `01-analise.md` mudou
+depois, e o único rastro do gate bloqueante da doutrina dependia de o modelo
+lembrar de escrever. Agora `sfagents demanda conferir-gates` responde se o que
+está em disco ainda é o que foi aprovado.
+
+**Leia** o arquivo antes de começar sua etapa — é lá que está o aceite da etapa
+anterior, e vários agentes são instruídos a parar se ele não existir.

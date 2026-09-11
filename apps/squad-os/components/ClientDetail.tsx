@@ -1,23 +1,33 @@
 "use client";
 
 import { useState } from "react";
-import type { AmbienteOrg, Client, Demanda } from "@/lib/generated/prisma/client";
+import type { AmbienteOrg, Client, Contrato, Entregavel } from "@/lib/generated/prisma/client";
+import type { MesDeHoras } from "@/lib/contrato";
+import type { DemandaCompleta } from "@/lib/data";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
+import { ContratoTab } from "@/components/ContratoTab";
 import { DemandasTab } from "@/components/DemandasTab";
 
-type Tab = "conhecimento" | "conexao" | "demandas";
+type Tab = "conhecimento" | "contrato" | "conexao" | "demandas";
 
 export function ClientDetail({
   client,
   demandas,
   usuario,
+  horas,
+  demandasPorEntregavel,
   initialTab,
   openDemandId,
 }: {
-  client: Client & { ambientes: AmbienteOrg[] };
-  demandas: Demanda[];
+  client: Client & {
+    ambientes: AmbienteOrg[];
+    contrato: (Contrato & { entregaveis: Entregavel[] }) | null;
+  };
+  horas: MesDeHoras[];
+  demandasPorEntregavel: Record<string, { total: number; entregues: number }>;
+  demandas: DemandaCompleta[];
   usuario: CurrentUsuario;
   initialTab?: Tab;
   openDemandId?: string;
@@ -34,7 +44,15 @@ export function ClientDetail({
         <div className="client-header">
           <h1>{client.nome}</h1>
         </div>
-        <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} canManage={false} />
+        <DemandasTab
+          client={client}
+          demandas={demandas}
+          openDemandId={openDemandId}
+          canManage={false}
+          usuarioEmail={usuario.email}
+          isAdmin={false}
+          visaoCliente
+        />
       </>
     );
   }
@@ -59,6 +77,9 @@ export function ClientDetail({
         <button className={`tab-btn${tab === "conhecimento" ? " active" : ""}`} onClick={() => setTab("conhecimento")} type="button">
           Conhecimento do Cliente
         </button>
+        <button className={`tab-btn${tab === "contrato" ? " active" : ""}`} onClick={() => setTab("contrato")} type="button">
+          Contrato
+        </button>
         <button className={`tab-btn${tab === "conexao" ? " active" : ""}`} onClick={() => setTab("conexao")} type="button">
           Conexão Salesforce
         </button>
@@ -67,12 +88,29 @@ export function ClientDetail({
         </button>
       </div>
 
-      {tab === "conhecimento" && <ConhecimentoTab client={client} />}
+      {tab === "conhecimento" && <ConhecimentoTab client={client} canManage={podeGerenciarClientes} />}
+      {tab === "contrato" && (
+        <ContratoTab
+          clientId={client.id}
+          clientNome={client.nome}
+          contrato={client.contrato}
+          horas={horas}
+          demandasPorEntregavel={demandasPorEntregavel}
+          canManage={podeGerenciarClientes}
+        />
+      )}
       {tab === "conexao" && (
         <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} />
       )}
       {tab === "demandas" && (
-        <DemandasTab client={client} demandas={demandas} openDemandId={openDemandId} canManage />
+        <DemandasTab
+          client={client}
+          demandas={demandas}
+          openDemandId={openDemandId}
+          canManage
+          usuarioEmail={usuario.email}
+          isAdmin={usuario.role === "admin"}
+        />
       )}
     </>
   );

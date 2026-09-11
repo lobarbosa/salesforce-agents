@@ -4,6 +4,10 @@ name: CI — validar deploy Salesforce (PR)
 # force-app mudou no PR — nunca deploy de verdade, isso continua exclusivo
 # do fluxo de demanda (sfagents demanda avancar -> run-demand.yml).
 #
+# Valida sempre contra a sandbox de DEV (`<cliente>-dev`): é onde a demanda
+# está sendo construída quando o PR existe. Validar contra QA reprovaria o PR
+# por diferenças que a própria demanda vai levar pra lá depois.
+#
 # Genérico pros 6 clientes desde já: se o GitHub Environment do cliente
 # ainda não tem SF_CLIENT_ID/SF_USERNAME/SF_JWT_KEY cadastrados (ver
 # docs/conexoes-e-setup.md), o job não falha — avisa e pula a validação
@@ -48,9 +52,9 @@ jobs:
       fail-fast: false
       matrix:
         client: ${{ fromJson(needs.detect.outputs.clients) }}
-    environment: ${{ matrix.client }}
+    environment: ${{ matrix.client }}-dev
     env:
-      TARGET_ORG: sbx-${{ matrix.client }}
+      TARGET_ORG: sbx-${{ matrix.client }}-dev
     steps:
       - uses: actions/checkout@v4
         with:
@@ -63,7 +67,7 @@ jobs:
         id: auth
         run: |
           if [ -z "${{ secrets.SF_CLIENT_ID }}" ]; then
-            echo "::warning::Environment '${{ matrix.client }}' ainda não tem credenciais (SF_CLIENT_ID/SF_USERNAME/SF_JWT_KEY) — pulando validação real. Ver docs/conexoes-e-setup.md."
+            echo "::warning::Environment '${{ matrix.client }}-dev' ainda não tem credenciais (SF_CLIENT_ID/SF_USERNAME/SF_JWT_KEY) — pulando validação real. Ver docs/conexoes-e-setup.md."
             echo "ok=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi

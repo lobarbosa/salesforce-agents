@@ -10,12 +10,18 @@ const ERROR_MESSAGES: Record<string, string> = {
   auth_failed: "O link expirou ou já foi usado. Peça um novo abaixo.",
 };
 
-type Modo = "link" | "senha" | "cadastro" | "recuperar";
+// Sem "cadastro": o auto-cadastro foi fechado quando o app passou a viver num
+// domínio próprio. Criar conta nunca concedeu acesso (a tabela `usuarios` é
+// quem decide), mas deixava qualquer pessoa da internet gerar linha em
+// auth.users e disparar e-mail com a marca da Acxya. O caminho de entrada é:
+// admin concede acesso em /admin/usuarios, a pessoa usa "Esqueci minha senha"
+// pra definir a dela. Nenhum passo a mais para quem é do time, uma porta a
+// menos aberta.
+type Modo = "link" | "senha" | "recuperar";
 
 const TITULO_ACAO: Record<Modo, string> = {
   link: "Enviar link de acesso",
   senha: "Entrar",
-  cadastro: "Criar conta",
   recuperar: "Enviar link de redefinição",
 };
 
@@ -58,7 +64,13 @@ function LoginForm() {
     if (modo === "link") {
       const { error } = await supabase.auth.signInWithOtp({
         email: mail,
-        options: { emailRedirectTo: callbackUrl(next) },
+        options: {
+          emailRedirectTo: callbackUrl(next),
+          // Sem isto, pedir um link cria a conta no Supabase Auth — ou seja, o
+          // auto-cadastro continuaria existindo por outra porta, só que sem
+          // tela. Quem cria usuário agora é o admin, ao conceder acesso.
+          shouldCreateUser: false,
+        },
       });
       setStatus(error ? "idle" : "ok");
       setAviso(
@@ -84,32 +96,6 @@ function LoginForm() {
       return;
     }
 
-    if (modo === "cadastro") {
-      if (senha.length < 8) {
-        setStatus("idle");
-        setAviso({ tipo: "error", texto: "A senha precisa ter pelo menos 8 caracteres." });
-        return;
-      }
-      const { error } = await supabase.auth.signUp({
-        email: mail,
-        password: senha,
-        options: { emailRedirectTo: callbackUrl(next) },
-      });
-      setStatus(error ? "idle" : "ok");
-      // Resposta idêntica com ou sem conta existente, de novo pra não permitir
-      // descobrir quem já está cadastrado.
-      setAviso(
-        error
-          ? { tipo: "error", texto: "Não consegui concluir o cadastro. Tente de novo em instantes." }
-          : {
-              tipo: "ok",
-              texto:
-                "Se esse e-mail puder ser usado, você vai receber um link de confirmação. Criar conta não concede acesso — um admin ainda precisa liberar você em Administração.",
-            }
-      );
-      return;
-    }
-
     const { error } = await supabase.auth.resetPasswordForEmail(mail, {
       redirectTo: callbackUrl("/auth/nova-senha"),
     });
@@ -124,7 +110,7 @@ function LoginForm() {
     );
   }
 
-  const pedeSenha = modo === "senha" || modo === "cadastro";
+  const pedeSenha = modo === "senha";
 
   return (
     <div className="auth-shell">
@@ -153,8 +139,8 @@ function LoginForm() {
           <button
             type="button"
             role="tab"
-            aria-selected={modo === "senha" || modo === "cadastro"}
-            className={modo === "senha" || modo === "cadastro" ? "active" : ""}
+            aria-selected={modo === "senha"}
+            className={modo === "senha" ? "active" : ""}
             onClick={() => trocarModo("senha")}
           >
             Senha
@@ -182,9 +168,8 @@ function LoginForm() {
                 id="senha"
                 type="password"
                 required
-                minLength={modo === "cadastro" ? 8 : undefined}
-                autoComplete={modo === "cadastro" ? "new-password" : "current-password"}
-                placeholder={modo === "cadastro" ? "mínimo 8 caracteres" : "sua senha"}
+                autoComplete="current-password"
+                placeholder="sua senha"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
               />
@@ -211,16 +196,13 @@ function LoginForm() {
 
         {modo === "senha" && (
           <div className="auth-links">
-            <button type="button" onClick={() => trocarModo("cadastro")}>
-              Criar conta
-            </button>
             <button type="button" onClick={() => trocarModo("recuperar")}>
-              Esqueci minha senha
+              Definir ou esqueci minha senha
             </button>
           </div>
         )}
 
-        {(modo === "cadastro" || modo === "recuperar") && (
+        {modo === "recuperar" && (
           <div className="auth-links">
             <button type="button" onClick={() => trocarModo("senha")}>
               Voltar para o login

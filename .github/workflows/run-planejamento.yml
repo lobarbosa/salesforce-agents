@@ -1,0 +1,108 @@
+name: Planejar projeto (entregáveis → demandas)
+
+# Lê os entregáveis contratados de um projeto e propõe as demandas que eles
+# viram, devolvendo-as pro quadro do Squad OS em `backlog`.
+#
+# **Não toca em org nenhuma.** O planejador lê `contrato.md` e o briefing do
+# cliente; o que existe na org é assunto do recon, na etapa 2 do fluxo, com o
+# `sf` CLI. Por isso este workflow não abre GitHub Environment e não autentica
+# no Salesforce — não tem o que autenticar.
+#
+# **Não materializa nem executa nada.** As demandas entram em `backlog`; quem
+# decide o que vira esteira continua sendo o humano, no quadro.
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Nome do cliente (= clients/<client>/)'
+        required: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  planejar:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT: ${{ inputs.client }}
+      PLANO_BRANCH: plano/${{ inputs.client }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Instalar Claude Code CLI
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Instalar dependências Python
+        run: pip install -e .
+
+      - name: Configurar git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Preparar branch do plano
+        run: |
+          if git fetch origin "$PLANO_BRANCH" 2>/dev/null; then
+            git checkout -B "$PLANO_BRANCH" "origin/$PLANO_BRANCH"
+          else
+            git checkout -b "$PLANO_BRANCH"
+          fi
+
+      # Falha vermelho se o plano não for válido — id de entregável inventado,
+      # demanda sem título, lista vazia. Mesmo princípio do assessment: melhor
+      # o job quebrar que despejar cartão vazio no quadro de um cliente.
+      - name: Gerar o plano
+        id: plano
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: sfagents cliente planejar --client "$CLIENT" --github-output
+
+      - name: Commit e push
+        run: |
+          git add "clients/$CLIENT"
+          if [ -d logs ]; then git add logs/; fi
+          git commit -m "$CLIENT: plano de demandas (${{ steps.plano.outputs.n_demandas }} propostas)" --allow-empty -q
+          git push origin "HEAD:$PLANO_BRANCH"
+
+      - name: Abrir PR do plano (se ainda não existir)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh pr view "$PLANO_BRANCH" --json number >/dev/null 2>&1; then
+            gh pr create \
+              --base main \
+              --head "$PLANO_BRANCH" \
+              --title "$CLIENT: plano de demandas do projeto" \
+              --body "Aberto automaticamente por \`run-planejamento.yml\`. ${{ steps.plano.outputs.n_demandas }} demandas propostas a partir dos entregáveis contratados, em \`clients/$CLIENT/plano-demandas.json\`. As demandas já estão no quadro do Squad OS em \`backlog\` — este PR é o registro de como elas foram derivadas." \
+              || echo "::warning::Não consegui abrir o PR automaticamente. A branch $PLANO_BRANCH já está no ar."
+          fi
+
+      - name: Mandar as demandas pro quadro
+        if: success()
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_PLANO_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::SQUAD_OS_SYNC_PLANO_URL/SQUAD_OS_SYNC_TOKEN não configurados — o plano está no git, mas as demandas não entraram no quadro. Ver docs/ativacao.md."
+            exit 0
+          fi
+          sfagents cliente plano-json --client "$CLIENT" \
+            | curl -fsS -X POST "$SYNC_URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @- \
+            || echo "::warning::Falha ao mandar o plano pro Squad OS — ele já está no git."

@@ -10,13 +10,14 @@ import { canManageClientData } from "@/lib/auth";
 const EDITABLE_FIELDS = [
   "nome",
   "segmento",
-  "marcas",
   "contatos",
   "ambienteSalesforce",
-  "concorrentes",
   "integracoes",
   "regras",
 ] as const;
+// `marcas` e `concorrentes` saíram do briefing a pedido e já saíram também do
+// schema Prisma — o código não lê nem escreve mais essas colunas. O DROP em si
+// vem no merge seguinte, sozinho: ver README, "Por que o DROP não vem junto".
 
 export async function PATCH(
   request: NextRequest,
