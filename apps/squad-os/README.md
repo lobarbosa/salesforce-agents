@@ -173,15 +173,26 @@ burocracia — são a única coisa separando um PR aberto de uma produção fora
 
 ##### Por que o DROP não vem junto
 
-`clients.marcas` e `clients.concorrentes` saíram do briefing a pedido e já
-saíram do `schema.prisma` — este é o merge (1). As colunas seguem no banco,
-vazias (verificado: 5 clientes, nenhuma linha com conteúdo em nenhuma das
-duas). O merge (2) é uma migration com exatamente isto:
+`clients.marcas` e `clients.concorrentes` saíram do briefing a pedido, em dois
+merges separados — e a separação não era zelo, era necessidade.
 
-```sql
-ALTER TABLE "clients" DROP COLUMN "marcas";
-ALTER TABLE "clients" DROP COLUMN "concorrentes";
-```
+Preview e Production compartilham o mesmo `DATABASE_URL`, então o build de
+preview de um PR roda `prisma migrate deploy` **na produção, antes do merge**.
+Uma migration que remove coluna que a `main` ainda lê derruba a produção no
+instante em que o PR abre, e continua derrubada até o merge. Por isso:
+
+| Merge | O que vai | Efeito na produção enquanto o PR está aberto |
+|---|---|---|
+| (1) `#12` | as colunas saem do `schema.prisma` | nenhum — o banco ainda tem as colunas, e coluna a mais não incomoda ninguém |
+| (2) `drop_marcas_e_concorrentes` | as colunas saem do banco | nenhum — a `main` já não as lê |
+
+Ambos feitos. A migration (2) é `ALTER TABLE ... DROP COLUMN IF EXISTS`, com
+`IF EXISTS` para ser idempotente num banco que possa ter sido mexido à mão.
+
+**A regra que fica:** enquanto Preview e Production dividirem o `DATABASE_URL`,
+toda migration destrutiva precisa deste par de passos. A alternativa é dar ao
+Preview um banco próprio — segundo projeto Supabase no free, $0 — e aí a regra
+deixa de ser necessária.
 
 ### Migrando os dados do Artifact antigo
 

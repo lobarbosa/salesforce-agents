@@ -15,9 +15,9 @@ const EDITABLE_FIELDS = [
   "integracoes",
   "regras",
 ] as const;
-// `marcas` e `concorrentes` saíram do briefing a pedido e já saíram também do
-// schema Prisma — o código não lê nem escreve mais essas colunas. O DROP em si
-// vem no merge seguinte, sozinho: ver README, "Por que o DROP não vem junto".
+// `marcas` e `concorrentes` saíram do briefing a pedido, e já saíram do schema
+// e do banco — ver README, "Por que o DROP não vem junto", que explica por que
+// as duas coisas não podiam ir no mesmo merge.
 
 export async function PATCH(
   request: NextRequest,
