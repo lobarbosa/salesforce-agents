@@ -44,13 +44,18 @@ export function ContratoTab({
       const res = await fetch(url, init);
       if (!res.ok) {
         const b = await res.json().catch(() => ({}));
-        setErro((b as { error?: string }).error ?? "não consegui salvar");
+        // O status entra na mensagem quando o servidor não mandou motivo.
+        // "não consegui salvar" sozinho não dá o que investigar: 401 é sessão
+        // expirada, 403 é permissão, 500 é defeito nosso — e quem relata o
+        // problema não abre o DevTools. Achado real: um relato desses custou
+        // uma sessão inteira de diagnóstico às cegas (2026-09-11).
+        setErro((b as { error?: string }).error ?? `não consegui salvar (HTTP ${res.status})`);
         return null;
       }
       router.refresh();
       return res.status === 204 ? null : await res.json();
-    } catch {
-      setErro("sem conexão com o servidor");
+    } catch (err) {
+      setErro(`sem conexão com o servidor (${err instanceof Error ? err.name : "falha"})`);
       return null;
     } finally {
       setSalvando(false);
@@ -108,7 +113,7 @@ export function ContratoTab({
     setGerando(false);
     if (!res.ok) {
       const b = await res.json().catch(() => ({}));
-      setErro((b as { error?: string }).error ?? "não consegui disparar o planejador");
+      setErro((b as { error?: string }).error ?? `não consegui disparar o planejador (HTTP ${res.status})`);
       return;
     }
     setGerouMsg(
