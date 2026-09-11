@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, type DragEvent } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Client } from "@/lib/generated/prisma/client";
 import type { DemandaCompleta } from "@/lib/data";
 import {
-  TRIAGE,
-  TRIAGE_LABEL,
-  EXEC_STAGES,
+  FASES,
   ESTADOS_CLIENTE,
   ESTADO_CLIENTE_LABEL,
+  estaEmGate,
   estadoDoCliente,
+  quemDestrava,
 } from "@/lib/demandas";
 import { DemandCard } from "@/components/DemandCard";
 import { DemandModal } from "@/components/DemandModal";
@@ -37,8 +37,6 @@ export function DemandasTab({
   const router = useRouter();
   const [newOpen, setNewOpen] = useState(false);
   const [openId, setOpenId] = useState<string | null>(openDemandId ?? null);
-  const [draggingId, setDraggingId] = useState<string | null>(null);
-  const [dragOverStatus, setDragOverStatus] = useState<string | null>(null);
 
   const byId = new Map(demandas.map((d) => [d.id, d]));
   const open = openId ? byId.get(openId) : null;
@@ -52,40 +50,16 @@ export function DemandasTab({
     if (res.ok) router.refresh();
   }
 
-  function clearDrag() {
-    setDraggingId(null);
-    setDragOverStatus(null);
-  }
-
-  // Drag-and-drop é um atalho pra quem prefere arrastar — a lista <select> em
-  // cada card continua sendo o jeito sem arrastar de mudar a triagem (WCAG
-  // 2.2 "Dragging Movements": nunca deixar arrastar como única forma).
-  function dropHandlers(status: string) {
-    return {
-      onDragOver(e: DragEvent<HTMLDivElement>) {
-        if (!draggingId) return;
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
-        if (dragOverStatus !== status) setDragOverStatus(status);
-      },
-      onDragLeave(e: DragEvent<HTMLDivElement>) {
-        if (e.currentTarget.contains(e.relatedTarget as Node)) return;
-        setDragOverStatus((cur) => (cur === status ? null : cur));
-      },
-      onDrop(e: DragEvent<HTMLDivElement>) {
-        e.preventDefault();
-        const id = e.dataTransfer.getData("text/plain") || draggingId;
-        clearDrag();
-        if (!id) return;
-        const atual = byId.get(id);
-        if (!atual || atual.status === status) return;
-        handleMove(id, status);
-      },
-    };
-  }
-
-  const execItems = demandas.filter((d) => (EXEC_STAGES as readonly string[]).includes(d.status));
-  const doneItems = demandas.filter((d) => d.status === "entregue");
+  // O que a esteira está esperando de gente, agora. É a única pergunta que o
+  // quadro precisa responder de relance — o resto ele responde com as colunas.
+  const paradas = demandas.filter((d) => estaEmGate(d.status));
+  const resumoDasParadas = [
+    ...new Map(
+      paradas.map((d) => [quemDestrava(d.status), quemDestrava(d.status)])
+    ).keys(),
+  ]
+    .filter(Boolean)
+    .join(", ");
 
   // Quadro do cliente: as mesmas demandas, nas quatro palavras que ele
   // reconhece. Ver ESTADOS_CLIENTE em lib/demandas.ts para o porquê de cada
@@ -162,61 +136,56 @@ export function DemandasTab({
         </button>
       </div>
 
-      <div className="board">
-        {TRIAGE.map((s) => {
-          const items = demandas.filter((d) => d.status === s);
+      {paradas.length > 0 && (
+        <div className="aviso-parado" role="status">
+          <strong>
+            {paradas.length === 1
+              ? "1 demanda parada esperando gente"
+              : `${paradas.length} demandas paradas esperando gente`}
+          </strong>
+          <span>{resumoDasParadas}</span>
+        </div>
+      )}
+
+      <div className="board board-fases">
+        {FASES.map((fase) => {
+          const items = demandas.filter((d) => fase.estagios.includes(d.status));
+          const parados = items.filter((d) => estaEmGate(d.status)).length;
+          const ehTriagem = fase.chave === "triagem";
           return (
             <div
-              className={`column${canManage && dragOverStatus === s ? " drag-over" : ""}`}
-              key={s}
-              {...(canManage ? dropHandlers(s) : {})}
+              className={`column fase-${fase.chave}${parados > 0 ? " tem-parada" : ""}`}
+              key={fase.chave}
             >
               <h3>
-                {TRIAGE_LABEL[s]}
+                {fase.titulo}
                 <span className="count">{items.length}</span>
               </h3>
+              {/* Quantos estão travados nesta fase. Só aparece quando há —
+                  um "0 parada" em toda coluna seria ruído constante. */}
+              {parados > 0 && (
+                <span className="fase-parados">
+                  {parados === 1 ? "1 esperando gente" : `${parados} esperando gente`}
+                </span>
+              )}
               {items.length === 0 ? (
-                <div className="empty-col">sem demandas</div>
+                <div className="empty-col">{ehTriagem ? "sem demandas" : "nenhuma aqui"}</div>
               ) : (
                 items.map((d) => (
                   <DemandCard
                     key={d.id}
                     demanda={d}
-                    triageColumn
-                    canMove={canManage}
-                    isDragging={d.id === draggingId}
+                    triageColumn={ehTriagem}
+                    faseVisivel
+                    canMove={canManage && ehTriagem}
                     onOpen={() => setOpenId(d.id)}
                     onMove={(status) => handleMove(d.id, status)}
-                    onDragStart={setDraggingId}
-                    onDragEnd={clearDrag}
                   />
                 ))
               )}
             </div>
           );
         })}
-
-        <div className="column exec">
-          <h3>
-            Em execução<span className="count">{execItems.length}</span>
-          </h3>
-          {execItems.length === 0 ? (
-            <div className="empty-col">nenhuma em andamento</div>
-          ) : (
-            execItems.map((d) => <DemandCard key={d.id} demanda={d} triageColumn={false} onOpen={() => setOpenId(d.id)} />)
-          )}
-        </div>
-
-        <div className="column done">
-          <h3>
-            Entregue<span className="count">{doneItems.length}</span>
-          </h3>
-          {doneItems.length === 0 ? (
-            <div className="empty-col">nenhuma ainda</div>
-          ) : (
-            doneItems.map((d) => <DemandCard key={d.id} demanda={d} triageColumn={false} onOpen={() => setOpenId(d.id)} />)
-          )}
-        </div>
       </div>
 
       {open && (

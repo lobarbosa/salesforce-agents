@@ -1,4 +1,4 @@
-import type { Contrato, Entregavel } from "@/lib/generated/prisma/client";
+import type { Contrato, Entregavel, TipoContrato } from "@/lib/generated/prisma/client";
 
 // Puro de propósito: sem Prisma, importável de Server e Client Components —
 // mesma convenção de lib/demandas.ts. `ContratoTab` é client component, e uma
@@ -44,6 +44,110 @@ export interface MesDeHoras {
   mes: string;
   horasGastas: number;
   horasContratadas: number;
+}
+
+// --- Montagem do contrato a partir de um PUT parcial ----------------------
+
+export const HORAS_MAX = 10_000;
+
+/** O que já está guardado, no formato que interessa à montagem. */
+export interface ContratoGuardado {
+  tipo: TipoContrato;
+  horasContratadas: number;
+  cicloHoras: string;
+  sla: unknown;
+  projetoNome: string;
+  projetoEscopo: string;
+  inicioEm: Date | null;
+  fimPrevistoEm: Date | null;
+}
+
+export interface DadosDoContrato {
+  tipo: TipoContrato;
+  horasContratadas: number;
+  cicloHoras: string;
+  sla: LinhaSla[];
+  projetoNome: string;
+  projetoEscopo: string;
+  inicioEm: Date | null;
+  fimPrevistoEm: Date | null;
+}
+
+export class ContratoInvalidoError extends Error {}
+
+function dataOuNull(valor: unknown): Date | null {
+  if (!valor) return null;
+  const d = valor instanceof Date ? valor : new Date(String(valor));
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
+/**
+ * Monta o contrato a ser gravado a partir do corpo do PUT e do que já existe.
+ *
+ * Duas regras, e as duas existem por causa de perda de dado real (2026-09-11,
+ * navegando em produção):
+ *
+ * 1. **Campo ausente no corpo mantém o valor guardado.** A rota era substituição
+ *    total, e o botão "Mudar para AMS/projeto" manda só `{ tipo }` — trocar de
+ *    tipo zerava as horas e reiniciava a tabela de SLA. `centric` nasceu com 0
+ *    horas exatamente assim.
+ *
+ * 2. **Trocar de tipo não apaga o que é do outro tipo.** A tela promete, com
+ *    estas palavras, que "o que já estiver preenchido do outro tipo fica
+ *    guardado" — e a rota zerava. Guardar um número que não está em exibição
+ *    não custa nada; refazer o cadastro custa. Quem decide o que aparece é a
+ *    aba, pelo `tipo`, não o banco esquecendo.
+ *
+ * Pura de propósito: é a regra mais fácil de quebrar em silêncio deste app, e
+ * aqui ela é testável sem Prisma e sem servidor.
+ */
+export function montarDadosDoContrato(
+  body: Record<string, unknown>,
+  atual: ContratoGuardado | null
+): DadosDoContrato {
+  const tipo = body.tipo as TipoContrato;
+  if (tipo !== "ams" && tipo !== "projeto") {
+    throw new ContratoInvalidoError("tipo precisa ser 'ams' ou 'projeto'");
+  }
+
+  const manter = <T>(recebido: unknown, guardado: T, converter: (v: unknown) => T): T =>
+    recebido === undefined ? guardado : converter(recebido);
+
+  const horasContratadas = manter(
+    body.horasContratadas,
+    atual?.horasContratadas ?? 0,
+    (v) => Math.round(Number(v) || 0)
+  );
+  if (horasContratadas < 0 || horasContratadas > HORAS_MAX) {
+    throw new ContratoInvalidoError(`horas contratadas fora da faixa (0 a ${HORAS_MAX})`);
+  }
+
+  // SLA nasce com o rascunho padrão só quando não existe nenhum — para a tabela
+  // não abrir vazia. Depois disso, o que vale é o que está guardado.
+  const slaGuardado = asSla(atual?.sla);
+  const sla = manter(
+    body.sla,
+    slaGuardado.length > 0 ? slaGuardado : SLA_PADRAO,
+    (v) => asSla(v)
+  );
+
+  return {
+    tipo,
+    horasContratadas,
+    cicloHoras:
+      manter(body.cicloHoras, atual?.cicloHoras ?? "mensal", (v) =>
+        String(v ?? "").trim().slice(0, 30)
+      ) || "mensal",
+    sla,
+    projetoNome: manter(body.projetoNome, atual?.projetoNome ?? "", (v) =>
+      String(v ?? "").trim().slice(0, 200)
+    ),
+    projetoEscopo: manter(body.projetoEscopo, atual?.projetoEscopo ?? "", (v) =>
+      String(v ?? "").trim().slice(0, 4000)
+    ),
+    inicioEm: manter(body.inicioEm, atual?.inicioEm ?? null, dataOuNull),
+    fimPrevistoEm: manter(body.fimPrevistoEm, atual?.fimPrevistoEm ?? null, dataOuNull),
+  };
 }
 
 // --- Progresso (Projeto) -------------------------------------------------
