@@ -1,0 +1,16 @@
+{
+  "saude": "vermelho",
+  "resumo": "A org é dominada por seis pacotes gerenciados (Marketing Cloud Connect/et4ae5, integração de WhatsApp/ChatIntegration, sfcma, CHANNEL_ORDERS, KPIapp, sfLma) — o cliente não tem praticamente nenhum objeto custom próprio, e a automação nativa que existe (16 Flows ativos, todos sem namespace) já tem pontos reais de concorrência: três Flows disputam o mesmo evento em Task, e dois brigam pela mesma atualização em Contact. Segurança está com quase um perfil customizado por usuário ativo (11 perfis distintos para 16 usuários) e sharing aberto (Account/Lead/Case em leitura-escrita ampla), e todo o parque Apex (custom e de pacote) aparece como IsValid=false na Tooling API — precisa ser confirmado antes de qualquer deploy. Nada aqui impede começar demandas, mas a primeira demanda de automação em Task, Contact ou Lead precisa mapear os Flows existentes antes de somar mais um.",
+  "recomendacoes": [
+    { "titulo": "Consolidar os 3 Flows ativos que disputam o mesmo evento (Create/Update) em Task", "severidade": "alta", "area": "automação" },
+    { "titulo": "Fundir os 2 Flows ativos que disparam na mesma atualização de Contact", "severidade": "média", "area": "automação" },
+    { "titulo": "Mapear os 2 Flows + 1 trigger de pacote que disparam na criação de Lead antes de somar automação nova", "severidade": "média", "area": "automação" },
+    { "titulo": "Migrar diferenciação de acesso hoje capturada em perfil individual para permission sets", "severidade": "média", "area": "segurança" },
+    { "titulo": "Confirmar se IsValid=false em 950 ApexClass/33 ApexTrigger é cache de compilação ou erro real antes do primeiro deploy", "severidade": "média", "area": "dívida técnica" },
+    { "titulo": "Documentar retroativamente os 72 campos customizados sem descrição em Lead/Contact/Opportunity/Account/Case", "severidade": "média", "area": "modelo de dados" },
+    { "titulo": "Rodar suíte de teste Apex e confirmar cobertura real das 10 classes customizadas (aggregate mostra 0%)", "severidade": "média", "area": "código" },
+    { "titulo": "Revisar o que os 5 perfis Guest enxergam hoje via Org-Wide Defaults abertos (Account/Case/Lead)", "severidade": "baixa", "area": "segurança" },
+    { "titulo": "Subir API version das 20 classes e ~12 Flows customizados que estão em v56-57 (org está em v67)", "severidade": "baixa", "area": "código" },
+    { "titulo": "Revisar as 22 Validation Rules inativas (35% do total) e arquivar ou documentar o motivo", "severidade": "baixa", "area": "qualidade de config" }
+  ]
+}
