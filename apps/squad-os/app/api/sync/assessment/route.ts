@@ -11,6 +11,16 @@ const SAUDES = new Set(["verde", "amarelo", "vermelho"]);
 const SEVERIDADES = new Set(["alta", "media", "média", "baixa"]);
 const MAX_RECOMENDACOES = 10;
 const RESUMO_MAX = 4000;
+const ERRO_MAX = 2000;
+
+// A URL do run vira link clicável no perfil do cliente. Quem chama aqui já
+// passou pelo bearer token, mas um link é justamente o tipo de campo em que
+// "veio de fonte confiável" não basta: aceitar só o prefixo do próprio GitHub
+// custa uma linha e fecha `javascript:` de vez.
+function urlDeRunValida(bruto: unknown): string {
+  const url = String(bruto ?? "").trim().slice(0, 500);
+  return url.startsWith("https://github.com/") ? url : "";
+}
 
 // A assinatura de índice existe pra satisfazer o tipo de entrada JSON do
 // Prisma sem cast — e é honesta: todo campo aqui é string.
@@ -50,17 +60,8 @@ export async function POST(request: NextRequest) {
   }
 
   const clientSlug = String(body.client ?? "");
-  const saude = String(body.saude ?? "");
-  const resumo = String(body.resumo ?? "").trim();
-
   if (!clientSlug) {
     return NextResponse.json({ error: "client é obrigatório" }, { status: 400 });
-  }
-  if (!SAUDES.has(saude)) {
-    return NextResponse.json({ error: `saude desconhecida: ${saude}` }, { status: 400 });
-  }
-  if (!resumo) {
-    return NextResponse.json({ error: "resumo vazio" }, { status: 400 });
   }
 
   const client = await prisma.client.findUnique({
@@ -71,6 +72,36 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: `cliente '${clientSlug}' não encontrado` }, { status: 404 });
   }
 
+  const runUrl = urlDeRunValida(body.runUrl);
+
+  // Um job que morreu antes de produzir o assessment também tem o que dizer, e
+  // precisa poder dizer. Enquanto esta rota só aceitava sucesso (o passo de
+  // sync era `if: success()`), a falha não chegava a lugar nenhum: o perfil
+  // seguia em "ainda não avaliada", indistinguível de nunca ter rodado, e quem
+  // esperava só descobria abrindo o GitHub Actions — que é exatamente o que
+  // esta esteira existe pra ninguém precisar fazer.
+  if (String(body.status ?? "") === "erro") {
+    await prisma.client.update({
+      where: { id: client.id },
+      data: {
+        assessmentStatus: "erro",
+        assessmentErro: String(body.erro ?? "o job falhou").trim().slice(0, ERRO_MAX),
+        assessmentRunUrl: runUrl,
+      },
+    });
+    return NextResponse.json({ ok: true, slug: clientSlug, status: "erro" });
+  }
+
+  const saude = String(body.saude ?? "");
+  const resumo = String(body.resumo ?? "").trim();
+
+  if (!SAUDES.has(saude)) {
+    return NextResponse.json({ error: `saude desconhecida: ${saude}` }, { status: 400 });
+  }
+  if (!resumo) {
+    return NextResponse.json({ error: "resumo vazio" }, { status: 400 });
+  }
+
   await prisma.client.update({
     where: { id: client.id },
     data: {
@@ -78,6 +109,9 @@ export async function POST(request: NextRequest) {
       assessmentSaude: saude,
       assessmentResumo: resumo.slice(0, RESUMO_MAX),
       assessmentRecomendacoes: normalizarRecomendacoes(body.recomendacoes),
+      assessmentStatus: "concluido",
+      assessmentErro: "",
+      assessmentRunUrl: runUrl,
     },
   });
 

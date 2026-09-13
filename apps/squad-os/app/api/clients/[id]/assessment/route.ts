@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
-import { triggerAssessment } from "@/lib/github";
+import { dispararAssessment } from "@/lib/assessment";
 
 // Refazer o assessment sob demanda. O primeiro roda sozinho quando a org de dev
 // conecta (ver /api/sync/conexao); este é pro caso de a org ter mudado muito
@@ -37,7 +37,7 @@ export async function POST(
   }
 
   try {
-    await triggerAssessment(client.slug);
+    await dispararAssessment(id, client.slug);
   } catch (err) {
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "falha ao disparar o assessment" },

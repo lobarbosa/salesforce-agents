@@ -61,8 +61,15 @@ def assessment_cmd(client: str, target_org: str | None, github_output: bool) -> 
     click.echo(f"Assessment de {client} contra {alias}...")
 
     from . import assessment as assessment_mod
+    from . import sessao
 
-    assessment_mod.run_sync(client, alias)
+    # A sessão já cobra o agente por artefato faltando antes de desistir (ver
+    # sessao.py). Quando ainda assim não vem, vira erro de CLI e não traceback:
+    # quem lê isso é o log de um job, não um dev com o stack na cabeça.
+    try:
+        assessment_mod.run_sync(client, alias)
+    except sessao.ArtefatoNaoProduzidoError as exc:
+        raise click.ClickException(str(exc))
 
     try:
         dados = assessment_mod.ler_resultado(client)

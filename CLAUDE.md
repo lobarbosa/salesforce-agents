@@ -65,6 +65,17 @@ automático é a borda: agente→humano (o gate aparece pra quem precisa ver) e 
 O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
 (`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.
 
+Antes de falhar, porém, ele **cobra**. Uma sessão de agente aqui é um tiro só: roda num job
+de CI e termina quando o modelo para de responder — não há turno seguinte nem ninguém
+lendo o chat. O modelo não sabe disso por padrão, e conversa admite "já volto". Achado real
+(Konecta, 2026-09-13): o primeiro assessment de uma org de verdade encerrou com o agente
+dizendo que seguia "rodando em background" e que avisaria quando terminasse. Não avisou —
+a sessão morreu na frase, `assessment.json` nunca existiu, e a tela seguiu mostrando "ainda
+não avaliada", igual a nunca ter tentado. `src/salesforce_agents/sessao.py` fecha isso:
+confere o disco com a sessão ainda aberta, recobra o agente dizendo que não existe depois
+(e que "não consegui medir X" é resposta válida, mas inventar não é), e só então desiste.
+Vale para o assessment e para as 7 etapas de demanda.
+
 ## Guardrails inegociáveis
 
 1. **Produção é proibida.** Nenhum agente executa deploy, DML ou anonymous Apex em org

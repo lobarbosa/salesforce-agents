@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
-import { triggerAssessment } from "@/lib/github";
+import { dispararAssessment } from "@/lib/assessment";
 import type { StatusConexao, TipoAmbiente } from "@/lib/generated/prisma/client";
 
 // Resultado do smoke test de JWT (test-connection.yml) voltando pro app.
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
   let assessmentDisparado = false;
   if (tipo === "dev" && status === "conectado" && !client.assessmentEm) {
     try {
-      await triggerAssessment(clientSlug);
+      await dispararAssessment(client.id, clientSlug);
       assessmentDisparado = true;
     } catch (err) {
       // Não derruba o sync: a conexão foi confirmada de verdade, e essa é a
