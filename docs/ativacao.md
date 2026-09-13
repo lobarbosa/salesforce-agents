@@ -77,6 +77,26 @@ ambiente, não um deploy.
 ⚠️ `SUPABASE_SERVICE_ROLE_KEY` **nunca** com prefixo `NEXT_PUBLIC_`: ela ignora
 RLS, e com o prefixo iria pro bundle do browser.
 
+### 2.1 GitHub — token pro próprio app chamar a API (achado real, 2026-09-13)
+
+Faltou aqui até um clique real em "Solicitar teste de conexão" expor: `lib/github.ts`
+chama a API do GitHub via Octokit — materializar demanda, disparar `test-connection.yml`,
+`run-demand.yml`, `run-assessment.yml`, `run-planejamento.yml` — e sem isto **toda** ação
+que escreve no git ou dispara workflow falha com `GITHUB_TOKEN não configurado`. Não é o
+mesmo token dos secrets do repositório na seção 3 abaixo: aquele autentica o workflow
+*rodando*, este autentica o *app* chamando a API do GitHub de fora.
+
+| Variável | Valor |
+|---|---|
+| `GITHUB_TOKEN` | Personal Access Token **fine-grained**, escopo só neste repositório, `Contents:write` + `Actions:write` |
+| `GITHUB_REPO_OWNER` | `lobarbosa` |
+| `GITHUB_REPO_NAME` | `salesforce-agents` |
+| `GITHUB_REPO_BRANCH` | `main` (opcional — já é o default) |
+
+Gerar em github.com → Settings → Developer settings → Personal access tokens →
+**Fine-grained tokens** → New token, restrito a este repositório. Marque Production e
+Preview, redeploy.
+
 ## 3. GitHub — secrets do repositório
 
 Settings → Secrets and variables → Actions → **Repository secrets**:
