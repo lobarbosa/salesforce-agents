@@ -82,18 +82,28 @@ def ler_resultado(client: str) -> dict:
     return dados
 
 
+def pendencias(client: str) -> list[str]:
+    """O que ainda falta para este assessment estar entregue, em texto de log.
+
+    Usado como critério de parada da sessão (`sessao.rodar`) e não só como
+    validação no fim: um `assessment.json` ausente — ou presente e inválido — é
+    cobrável enquanto o agente ainda está na linha, e é isso que evita a sessão
+    terminar em "vou avisar quando estiver pronto".
+    """
+    try:
+        ler_resultado(client)
+    except AssessmentError as exc:
+        return [str(exc)]
+    return []
+
+
 async def run(client: str, target_org: str) -> None:
     # Import tardio: o Claude Agent SDK só é necessário pra rodar o agente. As
     # funções de validação deste módulo são puras e precisam ser testáveis sem
     # ele — mesma disciplina do `orchestrator` na CLI.
-    from claude_agent_sdk import (
-        AssistantMessage,
-        ClaudeAgentOptions,
-        ClaudeSDKClient,
-        ResultMessage,
-        TextBlock,
-    )
+    from claude_agent_sdk import ClaudeAgentOptions
 
+    from . import sessao
     from .costs import log_usage
     from .tools import salesforce_tools_server
 
@@ -113,24 +123,25 @@ async def run(client: str, target_org: str) -> None:
 
     prompt = (
         f"Faça o assessment de saúde da org Salesforce do cliente {client}, acionando o "
-        f"subagente `org-assessment` via Task. O alias da org é `{target_org}` — é uma "
-        f"sandbox de desenvolvimento, e o assessment é read-only: nada na org pode ser "
-        f"alterado. Entregue `assessment.md` e `assessment.json` na raiz deste workspace, "
-        f"exatamente no formato descrito em .claude/agents/org-assessment.md. Nenhum dado "
-        f"pessoal ou de negócio do cliente pode entrar no relatório — só metadata e "
-        f"contagens agregadas."
+        f"subagente `org-assessment` via Task e **esperando ele terminar**. O alias da org "
+        f"é `{target_org}` — é uma sandbox de desenvolvimento, e o assessment é read-only: "
+        f"nada na org pode ser alterado. Entregue `assessment.md` e `assessment.json` na "
+        f"raiz deste workspace, exatamente no formato descrito em "
+        f".claude/agents/org-assessment.md. Nenhum dado pessoal ou de negócio do cliente "
+        f"pode entrar no relatório — só metadata e contagens agregadas.\n\n"
+        f"{sessao.CONTRATO_DA_SESSAO}"
     )
 
-    async with ClaudeSDKClient(options=options) as sdk:
-        await sdk.query(prompt)
-        async for message in sdk.receive_response():
-            if isinstance(message, AssistantMessage):
-                for block in message.content:
-                    if isinstance(block, TextBlock):
-                        print(block.text)
-            elif isinstance(message, ResultMessage):
-                print(f"\n--- assessment concluído (custo: ${message.total_cost_usd:.4f}) ---")
-                log_usage(client, DEMAND_ID_SENTINELA, ETAPA, message)
+    def registrar(message) -> None:
+        print(f"\n--- turno concluído (custo: ${message.total_cost_usd:.4f}) ---")
+        log_usage(client, DEMAND_ID_SENTINELA, ETAPA, message)
+
+    await sessao.rodar(
+        options,
+        prompt,
+        conferir=lambda: pendencias(client),
+        ao_terminar=registrar,
+    )
 
 
 def run_sync(client: str, target_org: str) -> None:

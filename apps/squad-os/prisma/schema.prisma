@@ -17,6 +17,18 @@ enum StatusConexao {
   erro
 }
 
+// Estado de uma execução de agente disparada pelo app — não o resultado dela.
+// `rodando` é dito pelo app no instante em que ele dispara o workflow;
+// `concluido` e `erro` chegam de volta pela rota de sync. Um `rodando` que não
+// evolui é informação, não bug: quer dizer que o job morreu sem conseguir
+// reportar, e a tela diz isso em vez de girar para sempre.
+enum StatusAtividade {
+  nunca
+  rodando
+  concluido
+  erro
+}
+
 enum TipoDemanda {
   projeto
   sustentacao
@@ -89,6 +101,20 @@ model Client {
   // [{ titulo, severidade, area }] — o suficiente pra listar e contar por
   // severidade no perfil sem reprocessar o markdown.
   assessmentRecomendacoes Json      @default("[]") @map("assessment_recomendacoes")
+
+  // O **resultado** está nos campos acima; estes quatro são a **execução**, que
+  // é outra pergunta. Sem eles o app não sabe que existe um run em voo: em
+  // 2026-09-13 o primeiro assessment real falhou e o card seguiu dizendo "ainda
+  // não avaliada", exatamente igual a nunca ter tentado — quem esperava não
+  // tinha como saber que já não havia o que esperar.
+  assessmentStatus        StatusAtividade @default(nunca) @map("assessment_status")
+  assessmentIniciadoEm    DateTime?       @map("assessment_iniciado_em")
+  // A mensagem da falha, como ela chegou do job. Vazia quando não houve.
+  assessmentErro          String          @default("") @map("assessment_erro")
+  // URL do run no Actions. Só o próprio workflow sabe dizer (a API de dispatch
+  // não devolve o id do run que ela criou), então chega junto com o resultado —
+  // que é justamente quando alguém vai querer abrir o log.
+  assessmentRunUrl        String          @default("") @map("assessment_run_url")
 
   ambientes AmbienteOrg[]
   contrato  Contrato?

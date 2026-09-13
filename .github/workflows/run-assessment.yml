@@ -115,19 +115,39 @@ jobs:
 
       # O resumo vai pro perfil do cliente no Squad OS. O relatório longo fica no
       # git; o app mostra o veredito e as recomendações que cabem num card.
+      #
+      # `if: always()` e não `if: success()`: até 2026-09-13 a falha não voltava
+      # pra lugar nenhum. O primeiro assessment de uma org real morreu sem
+      # produzir artefato e o perfil do cliente seguiu dizendo "ainda não
+      # avaliada" — o mesmo texto de quem nunca tentou. Job vermelho que o app
+      # não enxerga é job que só existe pra quem abre o Actions, e a esteira
+      # inteira existe pra ninguém precisar abrir o Actions.
       - name: Sincronizar o assessment com o Squad OS
-        if: success()
+        if: always()
         env:
           SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_ASSESSMENT_URL }}
           SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+          RESULTADO: ${{ job.status }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
-            echo "::warning::SQUAD_OS_SYNC_ASSESSMENT_URL/SQUAD_OS_SYNC_TOKEN não configurados — o assessment está no git, mas não aparece no perfil do cliente. Ver docs/conexoes-e-setup.md."
+            echo "::warning::SQUAD_OS_SYNC_ASSESSMENT_URL/SQUAD_OS_SYNC_TOKEN não configurados — o assessment não aparece no perfil do cliente. Ver docs/conexoes-e-setup.md."
             exit 0
           fi
-          sfagents cliente assessment-json --client "$CLIENT" \
-            | curl -fsS -X POST "$SYNC_URL" \
+
+          if [ "$RESULTADO" = "success" ]; then
+            # `assessment-json` já falhou antes daqui se o arquivo não presta,
+            # então neste ramo ele é confiável; só acrescenta de onde veio.
+            CORPO="$(sfagents cliente assessment-json --client "$CLIENT" \
+              | jq -c --arg u "$RUN_URL" '. + {runUrl: $u}')"
+          else
+            CORPO="$(jq -nc --arg c "$CLIENT" --arg u "$RUN_URL" \
+              '{client: $c, status: "erro", runUrl: $u,
+                erro: "o job do assessment falhou antes de produzir um resultado válido — o log do run diz em qual passo"}')"
+          fi
+
+          printf '%s' "$CORPO" | curl -fsS -X POST "$SYNC_URL" \
                 -H "Authorization: Bearer $SYNC_TOKEN" \
                 -H "Content-Type: application/json" \
                 --data-binary @- \
-            || echo "::warning::Falha ao sincronizar com o Squad OS — o assessment já está no git."
+            || echo "::warning::Falha ao reportar o resultado pro Squad OS."

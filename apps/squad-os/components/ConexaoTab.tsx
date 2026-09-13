@@ -1,8 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import type { AmbienteOrg, TipoAmbiente } from "@/lib/generated/prisma/client";
 import { SaveField } from "@/components/SaveField";
+import { execucaoTravada, LIMITE_DE_EXECUCAO_MIN } from "@/lib/execucao";
+import { useAutoRefresh } from "@/lib/auto-refresh";
 
 const CONEXAO_FIELDS = [
   { key: "orgAlias", label: "Alias do org", placeholder: "sbx-" },
@@ -75,12 +78,28 @@ function AmbienteCard({
   descricao: string;
   inicial: AmbienteOrg | null;
 }) {
-  const [ambiente, setAmbiente] = useState<AmbienteOrg | null>(inicial);
+  const router = useRouter();
   const [requesting, setRequesting] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
 
+  // Sem espelho local do ambiente: o servidor é a fonte, e toda mutação daqui
+  // termina em `router.refresh()`. Guardar uma cópia em `useState` parecia
+  // inofensivo até existir auto-refresh — aí a cópia congelada do primeiro
+  // render passa a esconder justamente o estado novo que se foi buscar.
+  // `SaveField` já mantém o rascunho do que está sendo digitado, então nada se
+  // perde no caminho.
+  const ambiente = inicial;
   const status = ambiente?.statusConexao ?? "nao_configurado";
   const base = `/api/clients/${clientId}/ambientes/${tipo}`;
+
+  // "Aguardando teste" é um estado que só sai daqui por fora: quem muda é o
+  // workflow, reportando em /api/sync/conexao. Sem auto-refresh, a aba aberta
+  // mostra "aguardando" para sempre mesmo depois de o banco já dizer
+  // "conectado" — aconteceu na Konecta em 2026-09-13, e o susto foi achar que
+  // a conexão tinha falhado quando ela tinha dado certo.
+  const travado = execucaoTravada(ambiente?.testeSolicitadoEm);
+  const esperandoResultado = status === "aguardando_teste" && !travado;
+  useAutoRefresh(esperandoResultado);
 
   async function save(key: string, value: string) {
     const res = await fetch(base, {
@@ -89,7 +108,7 @@ function AmbienteCard({
       body: JSON.stringify({ [key]: value }),
     });
     if (!res.ok) return false;
-    setAmbiente(await res.json());
+    router.refresh();
     return true;
   }
 
@@ -99,7 +118,7 @@ function AmbienteCard({
     const res = await fetch(`${base}/test-connection`, { method: "POST" });
     setRequesting(false);
     if (res.ok) {
-      setAmbiente(await res.json());
+      router.refresh();
       return;
     }
     const body = await res.json().catch(() => null);
@@ -143,6 +162,23 @@ function AmbienteCard({
           {requesting ? "Enviando..." : "Solicitar teste de conexão"}
         </button>
       </div>
+
+      {esperandoResultado && (
+        <p className="assessment-execucao" role="status">
+          <span className="pulso" aria-hidden="true" />
+          Teste em andamento — o workflow autentica na org e reporta de volta. Esta tela se
+          atualiza sozinha; não precisa recarregar.
+        </p>
+      )}
+
+      {status === "aguardando_teste" && travado && (
+        <div className="auth-note error" role="alert">
+          O teste foi solicitado há mais de {LIMITE_DE_EXECUCAO_MIN} minutos e não reportou
+          resultado. Ele leva cerca de um minuto — o mais provável é que o job tenha falhado
+          antes de conseguir responder (credencial faltando no GitHub Environment é a causa
+          mais comum). Solicite de novo; se repetir, o log do run diz o passo exato.
+        </div>
+      )}
 
       {erro && (
         <div className="auth-note error" role="alert">

@@ -8,15 +8,12 @@ em qual workspace de cliente.
 
 from __future__ import annotations
 
-import anyio
-from claude_agent_sdk import (
-    AssistantMessage,
-    ClaudeAgentOptions,
-    ClaudeSDKClient,
-    ResultMessage,
-    TextBlock,
-)
+from pathlib import Path
 
+import anyio
+from claude_agent_sdk import ClaudeAgentOptions
+
+from . import demands, sessao
 from .costs import log_usage
 from .tools import salesforce_tools_server
 
@@ -59,24 +56,34 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         permission_mode="acceptEdits",
     )
 
+    # Os artefatos que esta etapa deve deixar no disco são os mesmos que
+    # `demands.transition` vai exigir logo depois para deixar o status avançar.
+    # Ler da mesma fonte é o que impede a sessão cobrar uma coisa e a transição
+    # recusar por outra.
+    esperados = [
+        Path("clients") / client / "demandas" / demand_id / nome
+        for nome in demands.REQUIRED_ARTIFACTS.get(etapa, ())
+    ]
+
     prompt = (
         f"Continue o ciclo de delivery da demanda {demand_id} do cliente {client}. "
         f"A história está em demandas/{demand_id}/demanda.md e o estágio atual em "
         f"demandas/{demand_id}/status.yaml. Siga o fluxo canônico descrito em CLAUDE.md "
-        f"a partir do estágio atual, acionando o subagente correspondente via Task, e "
-        f"pare no próximo gate humano."
+        f"a partir do estágio atual, acionando o subagente correspondente via Task e "
+        f"**esperando ele terminar**, e pare no próximo gate humano.\n\n"
+        f"{sessao.CONTRATO_DA_SESSAO}"
     )
 
-    async with ClaudeSDKClient(options=options) as client_sdk:
-        await client_sdk.query(prompt)
-        async for message in client_sdk.receive_response():
-            if isinstance(message, AssistantMessage):
-                for block in message.content:
-                    if isinstance(block, TextBlock):
-                        print(block.text)
-            elif isinstance(message, ResultMessage):
-                print(f"\n--- concluído (custo: ${message.total_cost_usd:.4f}) ---")
-                log_usage(client, demand_id, etapa, message)
+    def registrar(message) -> None:
+        print(f"\n--- turno concluído (custo: ${message.total_cost_usd:.4f}) ---")
+        log_usage(client, demand_id, etapa, message)
+
+    await sessao.rodar(
+        options,
+        prompt,
+        conferir=lambda: sessao.faltantes(esperados),
+        ao_terminar=registrar,
+    )
 
 
 def run_sync(client: str, demand_id: str, etapa: str) -> None:
