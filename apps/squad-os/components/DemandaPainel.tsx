@@ -110,7 +110,7 @@ export function DemandaPainel({
       const res = await fetch(url, init);
       if (!res.ok) {
         const corpo = await res.json().catch(() => null);
-        setErro(corpo?.error ?? "não consegui salvar — tente de novo");
+        setErro(corpo?.error ?? `não consegui salvar (HTTP ${res.status}) — tente de novo`);
         return false;
       }
       aoSucesso(res.status === 204 ? (null as T) : ((await res.json()) as T));
