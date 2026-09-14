@@ -268,12 +268,18 @@ def status_json(client: str, demand_id: str) -> None:
     Existe pro workflow mandar o estado novo de volta pro Squad OS sem ter que
     parsear YAML em bash. status.yaml continua sendo a fonte de verdade
     (guardrail #5); o Postgres é espelho.
+
+    Em gate, leva junto o artefato que está sendo julgado e as pendências que
+    o agente deixou em aberto (`revisao.py`) — sem isso o card oferece um botão
+    de aprovar sem mostrar o que há para aprovar.
     """
+    from . import revisao
+
     try:
         d = demands.Demand.load(client, demand_id)
     except demands.DemandNotFoundError as exc:
         raise click.ClickException(str(exc))
-    click.echo(json.dumps(d.to_dict(), ensure_ascii=False))
+    click.echo(json.dumps(revisao.payload_de_sync(d), ensure_ascii=False))
 
 
 @demanda.command("ambiente")
