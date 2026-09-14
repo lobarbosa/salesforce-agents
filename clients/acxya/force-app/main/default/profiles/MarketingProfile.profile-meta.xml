@@ -7,6 +7,11 @@
         <field>Lead.Data_Aniversario__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Lead.Descobertas_da_Reuniao__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <userPermissions>
         <enabled>true</enabled>
         <name>AccessOrchestrationObjects</name>
