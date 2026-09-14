@@ -92,6 +92,17 @@ export function estaEmGate(status: string): boolean {
   return status.startsWith("aguardando_");
 }
 
+/** Há um agente trabalhando nesta demanda agora — ou seja, o estado vai mudar
+ *  sozinho e a tela precisa ficar olhando.
+ *
+ *  É o complemento de `estaEmGate` dentro da execução: etapa de execução que
+ *  não é gate é etapa rodando. Triagem e `entregue` ficam de fora porque ali
+ *  nada acontece sem alguém clicar — e um quadro que fica recarregando à toa
+ *  gasta conexão do pool sem trazer novidade nenhuma. */
+export function agenteRodando(status: string): boolean {
+  return (EXEC_STAGES as readonly string[]).includes(status) && !estaEmGate(status);
+}
+
 // --- A mesma esteira, dita para quem está do lado de fora ------------------
 //
 // `aguardando_gate_design` é vocabulário de quem opera a esteira. Para o

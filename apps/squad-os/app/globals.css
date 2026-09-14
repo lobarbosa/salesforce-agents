@@ -466,18 +466,28 @@ table.sla input {
   margin: 0; font-size: 0.78rem; color: var(--text);
   background: var(--accent-soft); border-radius: 8px; padding: 0.6rem 0.8rem;
 }
-.assessment-execucao .pulso {
+/* Vale em qualquer lugar que mostre "tem coisa acontecendo agora": o card de
+   assessment e o chip da demanda no quadro. */
+.pulso {
   width: 8px; height: 8px; border-radius: 50%; flex: none;
-  background: var(--accent); animation: pulso 1.6s ease-in-out infinite;
+  display: inline-block;
+  background: currentColor; animation: pulso 1.6s ease-in-out infinite;
 }
+.assessment-execucao .pulso { background: var(--accent); }
 @keyframes pulso {
   0%, 100% { opacity: 1; transform: scale(1); }
   50% { opacity: 0.35; transform: scale(0.8); }
 }
 /* O ponto que pulsa é decoração: quem desliga animação não pode perder
-   informação nenhuma com isso — o texto ao lado já diz tudo. */
+   informação nenhuma com isso — a palavra ao lado já diz tudo. */
 @media (prefers-reduced-motion: reduce) {
-  .assessment-execucao .pulso { animation: none; }
+  .pulso { animation: none; }
+}
+
+/* Demanda com sessão de agente rodando agora. */
+.badge.rodando {
+  background: var(--accent-soft); color: var(--accent); font-weight: 600;
+  display: inline-flex; align-items: center; gap: 0.3rem;
 }
 
 /* gate humano no card — a ação mais consequente do app: aciona agente contra a
