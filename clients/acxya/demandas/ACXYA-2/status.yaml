@@ -1,0 +1,11 @@
+id: ACXYA-2
+client: acxya
+titulo: Campo nova descoberta
+tipo: sustentacao
+status: backlog
+criado_em: '2026-09-13T21:29:07.426Z'
+historico:
+  - de: null
+    em: '2026-09-13T21:29:07.417Z'
+    para: backlog
+    autor: Leonardo
