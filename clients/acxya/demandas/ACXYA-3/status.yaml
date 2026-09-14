@@ -1,0 +1,11 @@
+id: ACXYA-3
+client: acxya
+titulo: quero uma nova tela dentro da oportunidade
+tipo: sustentacao
+status: backlog
+criado_em: '2026-09-14T18:30:28.433Z'
+historico:
+  - de: null
+    em: '2026-09-14T18:30:28.429Z'
+    para: backlog
+    autor: Leonardo
