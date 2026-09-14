@@ -2,7 +2,7 @@ id: ACXYA-2
 client: acxya
 titulo: Campo nova descoberta
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-09-13T21:29:07.426Z'
 historico:
 - de: null
@@ -33,3 +33,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-09-14T15:42:50.690210+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo
+  em: '2026-09-14T15:52:59.616739+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-09-14T15:59:45.040282+00:00'
