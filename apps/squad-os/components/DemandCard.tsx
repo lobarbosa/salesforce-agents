@@ -7,6 +7,7 @@ import {
   TRIAGE_LABEL,
   STAGE_LABEL,
   ESTADO_CLIENTE_LABEL,
+  agenteRodando,
   estaEmGate,
   estadoDoCliente,
   quemDestrava,
@@ -121,6 +122,17 @@ function StageChip({
     return (
       <span className={`badge gate${bloqueante ? " bloqueante" : ""}`}>
         {bloqueante ? `trava: ${quem}` : `aguarda ${quem}`}
+      </span>
+    );
+  }
+  // Agente trabalhando agora. Antes isto era invisível: dentro da coluna da
+  // fase o chip sumia, e um card com uma sessão de agente rodando ficava
+  // idêntico a um card parado. É a diferença entre esperar e ir investigar.
+  if (agenteRodando(status)) {
+    return (
+      <span className="badge rodando">
+        <span className="pulso" aria-hidden="true" />
+        {faseVisivel ? "rodando" : `${STAGE_LABEL[status] ?? status} · rodando`}
       </span>
     );
   }

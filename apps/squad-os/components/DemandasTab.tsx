@@ -8,10 +8,12 @@ import {
   FASES,
   ESTADOS_CLIENTE,
   ESTADO_CLIENTE_LABEL,
+  agenteRodando,
   estaEmGate,
   estadoDoCliente,
   quemDestrava,
 } from "@/lib/demandas";
+import { useAutoRefresh } from "@/lib/auto-refresh";
 import { DemandCard } from "@/components/DemandCard";
 import { DemandModal } from "@/components/DemandModal";
 import { NewDemandModal } from "@/components/NewDemandModal";
@@ -40,6 +42,13 @@ export function DemandasTab({
 
   const byId = new Map(demandas.map((d) => [d.id, d]));
   const open = openId ? byId.get(openId) : null;
+
+  // Enquanto um agente estiver rodando alguma etapa, o estado do quadro muda
+  // por fora — quem escreve é o workflow, via /api/sync/demanda. Sem isto a
+  // aba aberta congela no estágio em que estava quando carregou, e quem está
+  // esperando o gate aparecer fica dando F5 (ou, pior, conclui que travou).
+  // Parado em gate não recarrega: ali não vem nada, quem tem que agir é gente.
+  useAutoRefresh(demandas.some((d) => agenteRodando(d.status)));
 
   async function handleMove(id: string, status: string) {
     const res = await fetch(`/api/demandas/${id}`, {

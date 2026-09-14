@@ -229,6 +229,29 @@ export function DemandModal({
         </div>
       )}
 
+      {/* O que está sendo julgado. Antes disto o gate chegava como um botão sem
+          contexto: o artefato existia só no git, e aprovar sem ler era o
+          caminho mais curto da tela. Fica fora da visão do cliente de
+          propósito — é documento de delivery, com vocabulário de esteira. */}
+      {emGate && !visaoCliente && demanda.artefatoConteudo && (
+        <details className="artefato" open>
+          <summary>
+            <span className="badge stage">{demanda.artefatoNome}</span>
+            <span className="gate-texto">o que este gate põe na mesa</span>
+          </summary>
+          {/* Texto puro, não markdown renderizado: este conteúdo é escrito por
+              um agente, e passá-lo por um renderizador de HTML abriria injeção
+              na tela de quem decide. Legibilidade não vale esse preço. */}
+          <pre className="artefato-corpo">{demanda.artefatoConteudo}</pre>
+          {demanda.artefatoTruncado && (
+            <p className="gate-texto">
+              Cortado por tamanho — o <code className="mono">{demanda.artefatoNome}</code>{" "}
+              completo está no PR desta demanda.
+            </p>
+          )}
+        </details>
+      )}
+
       {jaAprovada ? (
         <div className="approval-banner aprovado">
           ✓ Aprovado por {aprovacao!.por} em {(aprovacao!.em || "").slice(0, 10)}

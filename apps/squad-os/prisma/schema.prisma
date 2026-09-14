@@ -226,6 +226,15 @@ model Demanda {
   ultimoResultado  String    @default("") @map("ultimo_resultado")
   ultimoRunUrl     String    @default("") @map("ultimo_run_url")
 
+  // O artefato que o gate atual põe na mesa (01-analise.md, 03-design.md...),
+  // espelhado do git pelo mesmo sync. Não é a fonte — o arquivo no PR é — mas
+  // sem ele o card oferece "aprovar" sem mostrar o que se está aprovando, e
+  // foi assim que o primeiro gate real chegou: um botão e nenhum contexto.
+  // Vazio fora de gate.
+  artefatoNome     String  @default("") @map("artefato_nome")
+  artefatoConteudo String  @default("") @map("artefato_conteudo")
+  artefatoTruncado Boolean @default(false) @map("artefato_truncado")
+
   comentarios Comentario[]
   subtarefas  Subtarefa[]
   checklist   ChecklistItem[]
