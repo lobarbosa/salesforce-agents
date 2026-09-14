@@ -118,9 +118,10 @@ metadata do describe (guardrail #2).
 
 ## 4. Pull Request
 
-**PR #<preencher>** `feature/ACXYA-2` → `main` — abrir manualmente se a criação automática via
-`gh` não constar como concluída nesta sessão (ver nota no fechamento do relatório da sessão).
-Nenhum merge foi realizado por este agente.
+**PR #18** `feature/ACXYA-2` → `main` — https://github.com/lobarbosa/salesforce-agents/pull/18
+(já existia, aberto, criado automaticamente na primeira etapa desta demanda por
+`run-demand.yml`; este build empurrou o commit `c8673b0` para a mesma branch). Nenhum merge
+foi realizado por este agente.
 
 ---
 
