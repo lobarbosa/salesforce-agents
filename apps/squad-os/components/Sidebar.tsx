@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { Client } from "@/lib/generated/prisma/client";
@@ -40,6 +40,69 @@ function Marca({ src, sub }: { src: string | null; sub: string }) {
   );
 }
 
+/** A sidebar no telefone: gaveta, com barra de topo pra abrir.
+ *
+ * Até aqui a sidebar era 250px fixos em qualquer largura. Num telefone de
+ * 375px ela comia 67% da tela e sobrava uma faixa de ~125px pro conteúdo —
+ * título cortado, botão cortado, quadro ilegível. Não era "apertado", era
+ * inutilizável, e quem aprova um gate no meio da rua está exatamente nessa
+ * largura.
+ *
+ * Fora do telefone nada muda: a barra some e a gaveta volta a ser coluna
+ * fixa (ver `@media (max-width: 860px)` no globals.css).
+ */
+function Casca({
+  aberta,
+  aoAlternar,
+  titulo,
+  children,
+}: {
+  aberta: boolean;
+  aoAlternar: (v: boolean) => void;
+  titulo: string;
+  children: ReactNode;
+}) {
+  // Esc fecha: a gaveta cobre a tela inteira no telefone, e sem saída pelo
+  // teclado quem abre sem querer fica preso no mouse.
+  useEffect(() => {
+    if (!aberta) return;
+    const aoTeclar = (e: KeyboardEvent) => {
+      if (e.key === "Escape") aoAlternar(false);
+    };
+    document.addEventListener("keydown", aoTeclar);
+    return () => document.removeEventListener("keydown", aoTeclar);
+  }, [aberta, aoAlternar]);
+
+  return (
+    <>
+      <div className="topbar">
+        <button
+          className="menu-btn"
+          type="button"
+          aria-expanded={aberta}
+          aria-controls="nav-lateral"
+          onClick={() => aoAlternar(!aberta)}
+        >
+          <span className="menu-icone" aria-hidden="true" />
+          {aberta ? "Fechar" : "Menu"}
+        </button>
+        <span className="topbar-titulo">{titulo}</span>
+      </div>
+      {aberta && (
+        <button
+          className="menu-fundo"
+          type="button"
+          aria-label="Fechar menu"
+          onClick={() => aoAlternar(false)}
+        />
+      )}
+      <aside id="nav-lateral" className={`sidebar${aberta ? " aberta" : ""}`}>
+        {children}
+      </aside>
+    </>
+  );
+}
+
 export function Sidebar({
   clients,
   usuario,
@@ -51,11 +114,17 @@ export function Sidebar({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const [menuAberto, setMenuAberto] = useState(false);
   const [query, setQuery] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [nome, setNome] = useState("");
   const [segmento, setSegmento] = useState("");
   const [saving, setSaving] = useState(false);
+
+  // Fecha no clique que navega, e não num efeito que observa o `pathname`:
+  // o efeito renderizaria, mudaria o estado e renderizaria de novo (render em
+  // cascata — o lint pega isso). Aqui a intenção já está no evento.
+  const fecharMenu = () => setMenuAberto(false);
 
   const podeGerenciarClientes = usuario.role !== "cliente";
   const filtered = clients.filter((c) => c.nome.toLowerCase().includes(query.toLowerCase()));
@@ -76,6 +145,7 @@ export function Sidebar({
       setNome("");
       setSegmento("");
       setFormOpen(false);
+      setMenuAberto(false);
       router.push(`/clients/${created.id}`);
       router.refresh();
     }
@@ -93,7 +163,11 @@ export function Sidebar({
   if (!podeGerenciarClientes) {
     const meuCliente = clients[0];
     return (
-      <aside className="sidebar">
+      <Casca
+        aberta={menuAberto}
+        aoAlternar={setMenuAberto}
+        titulo={meuCliente?.nome ?? "Squad OS"}
+      >
         <Marca src={marcaSrc} sub={meuCliente?.nome ?? "seu espaço"} />
         <div style={{ padding: "0.6rem 1.1rem", marginTop: "auto", borderTop: "1px solid var(--border)" }}>
           <div className="save-note" style={{ marginBottom: "0.35rem" }}>
@@ -108,20 +182,28 @@ export function Sidebar({
             Sair
           </button>
         </div>
-      </aside>
+      </Casca>
     );
   }
 
   return (
-    <aside className="sidebar">
+    <Casca aberta={menuAberto} aoAlternar={setMenuAberto} titulo="Squad OS">
       <Marca src={marcaSrc} sub="gestão de demandas Salesforce" />
 
-      <Link href="/" className={`nav-item${!activeClientId && pathname === "/" ? " active" : ""}`}>
+      <Link
+        href="/"
+        onClick={fecharMenu}
+        className={`nav-item${!activeClientId && pathname === "/" ? " active" : ""}`}
+      >
         <span className="icon" />
         Visão Geral
       </Link>
       {usuario.role === "admin" && (
-        <Link href="/admin/usuarios" className={`nav-item${pathname?.startsWith("/admin") ? " active" : ""}`}>
+        <Link
+          href="/admin/usuarios"
+          onClick={fecharMenu}
+          className={`nav-item${pathname?.startsWith("/admin") ? " active" : ""}`}
+        >
           <span className="icon" />
           Administração
         </Link>
@@ -144,6 +226,7 @@ export function Sidebar({
           <Link
             key={c.id}
             href={`/clients/${c.id}`}
+            onClick={fecharMenu}
             className={`client-item${c.id === activeClientId ? " active" : ""}`}
           >
             <span className="dot" style={{ background: `hsl(${hueFor(c.nome)}, 55%, 45%)` }} />
@@ -198,6 +281,6 @@ export function Sidebar({
           Sair
         </button>
       </div>
-    </aside>
+    </Casca>
   );
 }
