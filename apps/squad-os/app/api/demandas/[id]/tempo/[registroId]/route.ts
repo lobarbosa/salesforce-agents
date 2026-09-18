@@ -21,7 +21,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string; registroId: string }> }
 ) {
   const { id, registroId } = await params;
-  const acesso = await resolverDemanda(id);
+  const acesso = await resolverDemanda(id, { somenteDelivery: true });
   if (acesso.erro) return acesso.erro;
   const { usuario } = acesso;
 
@@ -66,7 +66,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string; registroId: string }> }
 ) {
   const { id, registroId } = await params;
-  const acesso = await resolverDemanda(id);
+  const acesso = await resolverDemanda(id, { somenteDelivery: true });
   if (acesso.erro) return acesso.erro;
   const { usuario } = acesso;
 

@@ -328,6 +328,7 @@ export function DemandModal({
         demandaId={demanda.id}
         usuarioEmail={usuarioEmail}
         isAdmin={isAdmin}
+        visaoCliente={visaoCliente}
         dados={{
           comentarios: demanda.comentarios,
           subtarefas: demanda.subtarefas,

@@ -17,7 +17,7 @@ export async function POST(
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
-  const acesso = await resolverDemanda(id);
+  const acesso = await resolverDemanda(id, { somenteDelivery: true });
   if (acesso.erro) return acesso.erro;
   const { usuario } = acesso;
 

@@ -83,6 +83,19 @@ export function DemandasTab({
 
     return (
       <>
+        {/* Pedir também é coisa do cliente, não só acompanhar: numa conta de
+            AMS quem sente o problema primeiro é quem usa a org. A API já
+            aceitava (POST /api/demandas só exige alcançar o próprio cliente) —
+            faltava a porta na tela. A demanda nasce em `backlog`, igual às
+            que o consultor registra, e continua sendo o time quem decide o
+            que entra na esteira. */}
+        <div className="board-toolbar">
+          <span className="save-note">suas demandas em {client.nome}</span>
+          <button className="btn-primary" type="button" onClick={() => setNewOpen(true)}>
+            + nova demanda
+          </button>
+        </div>
+
         {/* As colunas ficam na ordem cronológica, que é o que um quadro
             promete. Quem chama atenção para o que pede ação é este aviso —
             enterrar "precisa de você" na terceira coluna é o mesmo que não
@@ -131,6 +144,9 @@ export function DemandasTab({
             visaoCliente
             onClose={() => setOpenId(null)}
           />
+        )}
+        {newOpen && (
+          <NewDemandModal clientId={client.id} clientNome={client.nome} onClose={() => setNewOpen(false)} />
         )}
       </>
     );

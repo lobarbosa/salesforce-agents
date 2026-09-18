@@ -18,10 +18,12 @@ export function NewDemandModal({
   const [tipo, setTipo] = useState<"sustentacao" | "projeto">("sustentacao");
   const [texto, setTexto] = useState("");
   const [saving, setSaving] = useState(false);
+  const [erro, setErro] = useState("");
 
   async function handleSave() {
     if (!titulo.trim()) return;
     setSaving(true);
+    setErro("");
     const res = await fetch("/api/demandas", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,7 +33,13 @@ export function NewDemandModal({
     if (res.ok) {
       router.refresh();
       onClose();
+      return;
     }
+    // Sem isto o modal só não fechava, e quem clicou não tinha como saber se
+    // foi sessão expirada, permissão ou defeito nosso. Passou a importar mais
+    // agora que o próprio cliente registra demanda por aqui.
+    const corpo = await res.json().catch(() => ({}));
+    setErro((corpo as { error?: string }).error ?? `não consegui criar (HTTP ${res.status})`);
   }
 
   return (
@@ -55,6 +63,11 @@ export function NewDemandModal({
           onChange={(e) => setTexto(e.target.value)}
         />
       </div>
+      {erro && (
+        <div className="auth-note error" role="alert">
+          {erro}
+        </div>
+      )}
       <div className="modal-actions">
         <button className="btn-ghost" type="button" onClick={onClose}>
           Cancelar
