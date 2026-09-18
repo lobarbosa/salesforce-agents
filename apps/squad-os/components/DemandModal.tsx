@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
 import { Modal } from "@/components/Modal";
+import { Artefato } from "@/components/Artefato";
 import { DemandaPainel } from "@/components/DemandaPainel";
 import {
   asPerguntas,
@@ -256,10 +257,14 @@ export function DemandModal({
               {visaoCliente ? "o que foi testado nesta entrega" : "o que este gate põe na mesa"}
             </span>
           </summary>
-          {/* Texto puro, não markdown renderizado: este conteúdo é escrito por
-              um agente, e passá-lo por um renderizador de HTML abriria injeção
-              na tela de quem decide. Legibilidade não vale esse preço. */}
-          <pre className="artefato-corpo">{demanda.artefatoConteudo}</pre>
+          {/* Renderizado, e ainda assim sem HTML: `lib/markdown.ts` devolve
+              estrutura de dados e o Artefato monta elemento React, que escapa
+              texto por construção. O que continua valendo é a restrição —
+              conteúdo escrito por agente nunca passa por dangerouslySetInnerHTML
+              nem por biblioteca que devolva string de HTML pra sanitizar. */}
+          <div className="artefato-corpo">
+            <Artefato texto={demanda.artefatoConteudo} />
+          </div>
           {demanda.artefatoTruncado && (
             <p className="gate-texto">
               {visaoCliente ? (
