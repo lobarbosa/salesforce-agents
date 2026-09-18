@@ -18,12 +18,16 @@ export async function POST(request: NextRequest) {
   const email = String(body.email ?? "").toLowerCase().trim();
   const role = body.role as Role;
   const clientId = body.clientId ? String(body.clientId) : null;
+  const senha = typeof body.senha === "string" ? body.senha.trim() : "";
 
   if (!email || !ROLES.includes(role)) {
     return NextResponse.json({ error: "email e role válidos são obrigatórios" }, { status: 400 });
   }
   if (role === "cliente" && !clientId) {
     return NextResponse.json({ error: "role=cliente precisa de um cliente atribuído" }, { status: 400 });
+  }
+  if (senha && senha.length < 8) {
+    return NextResponse.json({ error: "senha precisa ter pelo menos 8 caracteres" }, { status: 400 });
   }
 
   const novo = await prisma.usuario.upsert({
@@ -38,17 +42,48 @@ export async function POST(request: NextRequest) {
     },
   });
 
-  // Conceder acesso passa a criar o usuário no Supabase Auth e mandar o
-  // convite. Antes isso não existia e o auto-cadastro tapava o buraco: a pessoa
-  // criava a própria conta e o admin liberava depois. Com o cadastro fechado,
-  // sem convite ninguém novo entraria — "esqueci minha senha" só funciona pra
-  // quem já tem linha em auth.users, e quem acabou de ser concedido não tem.
+  // Conceder acesso passa a criar o usuário no Supabase Auth. Antes isso não
+  // existia e o auto-cadastro tapava o buraco: a pessoa criava a própria
+  // conta e o admin liberava depois. Com o cadastro fechado, sem isto
+  // ninguém novo entraria — "esqueci minha senha" só funciona pra quem já
+  // tem linha em auth.users, e quem acabou de ser concedido não tem.
   //
-  // Falha no convite não desfaz a concessão: o acesso está dado e é verdade. O
-  // que volta é um aviso, pro admin saber que precisa reenviar.
+  // Falha aqui não desfaz a concessão: o acesso está dado e é verdade. O que
+  // volta é um aviso, pro admin saber que precisa agir (reenviar convite ou
+  // passar a senha de outro jeito).
   let convite: string | null = null;
   if (!serviceRoleConfigurado()) {
-    convite = "SUPABASE_SERVICE_ROLE_KEY não configurada — acesso concedido, mas o convite não foi enviado.";
+    convite = "SUPABASE_SERVICE_ROLE_KEY não configurada — acesso concedido, mas a conta não foi criada no Auth.";
+  } else if (senha) {
+    // Senha direta: o admin define e repassa por um canal que não seja
+    // e-mail (WhatsApp, telefone) — existe pra destravar acesso quando o
+    // e-mail transacional do Supabase está indisponível ou no limite (achado
+    // real, 2026-09-18: over_email_send_rate_limit no plano sem SMTP
+    // próprio). Não é o caminho padrão — convite por e-mail continua sendo o
+    // default quando a caixa está vazia, porque deixa rastro de quem definiu
+    // o quê e não exige o admin conhecer a senha de ninguém.
+    const admin = createServiceClient().auth.admin;
+    const { error: criarErro } = await admin.createUser({
+      email,
+      password: senha,
+      email_confirm: true,
+    });
+    if (criarErro) {
+      if (/already/i.test(criarErro.message)) {
+        // Conta já existe em auth.users (convite anterior, por exemplo) —
+        // trocar a senha em vez de tentar criar de novo.
+        const { data: lista, error: listaErro } = await admin.listUsers({ perPage: 1000 });
+        const existente = listaErro ? undefined : lista.users.find((u) => u.email?.toLowerCase() === email);
+        if (!existente) {
+          convite = "Acesso concedido, mas não encontrei a conta existente pra definir a senha.";
+        } else {
+          const { error: atualizarErro } = await admin.updateUserById(existente.id, { password: senha });
+          if (atualizarErro) convite = `Acesso concedido, mas a senha não foi definida: ${atualizarErro.message}`;
+        }
+      } else {
+        convite = `Acesso concedido, mas a senha não foi definida: ${criarErro.message}`;
+      }
+    }
   } else {
     const origin = new URL(request.url).origin;
     const { error } = await createServiceClient().auth.admin.inviteUserByEmail(email, {

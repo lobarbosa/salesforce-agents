@@ -20,28 +20,55 @@ export function UsuariosAdmin({
   const [nome, setNome] = useState("");
   const [role, setRole] = useState<Role>("consultor");
   const [clientId, setClientId] = useState("");
+  const [senha, setSenha] = useState("");
   const [saving, setSaving] = useState(false);
   const [erro, setErro] = useState("");
+  const [aviso, setAviso] = useState("");
+
+  function gerarSenha() {
+    // Legível o bastante pra ditar por telefone, sem os pares que confundem
+    // por telefone/WhatsApp (0/O, 1/I/l).
+    const alfabeto = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
+    const bytes = crypto.getRandomValues(new Uint32Array(12));
+    setSenha(Array.from(bytes, (b) => alfabeto[b % alfabeto.length]).join(""));
+  }
 
   async function handleGrant(e: FormEvent) {
     e.preventDefault();
     setErro("");
+    setAviso("");
     if (role === "cliente" && !clientId) {
       setErro("escolha o cliente pra esse acesso");
       return;
     }
+    const senhaEnviada = senha.trim();
     setSaving(true);
     const res = await fetch("/api/admin/usuarios", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: email.trim(), nome: nome.trim(), role, clientId: role === "cliente" ? clientId : null }),
+      body: JSON.stringify({
+        email: email.trim(),
+        nome: nome.trim(),
+        role,
+        clientId: role === "cliente" ? clientId : null,
+        senha: senhaEnviada || undefined,
+      }),
     });
     setSaving(false);
     if (res.ok) {
+      const corpo = await res.json().catch(() => ({}));
+      if (senhaEnviada && !corpo.avisoConvite) {
+        setAviso(
+          `Conta criada com a senha "${senhaEnviada}". Repasse pra pessoa por um canal que não seja e-mail (telefone, WhatsApp) — não fica salva em lugar nenhum depois desta tela.`
+        );
+      } else if (corpo.avisoConvite) {
+        setAviso(corpo.avisoConvite);
+      }
       setEmail("");
       setNome("");
       setRole("consultor");
       setClientId("");
+      setSenha("");
       router.refresh();
     } else {
       const body = await res.json().catch(() => ({}));
@@ -93,10 +120,34 @@ export function UsuariosAdmin({
               </select>
             </div>
           )}
+          <div className="field" style={{ flex: "1 1 220px" }}>
+            <label>Senha inicial (opcional)</label>
+            <div style={{ display: "flex", gap: "0.35rem" }}>
+              <input
+                type="text"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+                placeholder="em branco = convite por e-mail"
+              />
+              <button className="btn-ghost" type="button" onClick={gerarSenha}>
+                Gerar
+              </button>
+            </div>
+          </div>
           <button className="btn-primary" type="submit" disabled={saving}>
             {saving ? "Salvando..." : "Conceder acesso"}
           </button>
         </form>
+        <div className="save-note" style={{ marginTop: "0.3rem" }}>
+          Deixe a senha em branco pra mandar convite por e-mail (padrão). Preencha só se o e-mail
+          transacional estiver indisponível ou no limite — aí você repassa a senha por fora (telefone,
+          WhatsApp), nunca por e-mail.
+        </div>
+        {aviso && (
+          <div className="save-note" role="status" style={{ marginTop: "0.4rem" }}>
+            {aviso}
+          </div>
+        )}
         {erro && (
           <div className="save-note error" role="alert" style={{ marginTop: "0.4rem" }}>
             {erro}
