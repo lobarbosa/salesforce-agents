@@ -219,7 +219,11 @@ export function ContratoTab({
           <section className="painel-bloco">
             <div className="bloco-head">
               <h3>SLA</h3>
-              <span className="save-note">o prazo que o time consulta quando chega um chamado</span>
+              <span className="save-note">
+                {canManage
+                  ? "o prazo que o time consulta quando chega um chamado"
+                  : "o prazo contratado para cada severidade"}
+              </span>
             </div>
             <div className="tabela-wrap">
               <table className="sla">
@@ -325,7 +329,7 @@ export function ContratoTab({
             <div className="field">
               <label htmlFor="pesc">Escopo contratado</label>
               <textarea id="pesc" defaultValue={contrato.projetoEscopo} disabled={!canManage}
-                placeholder="o que foi vendido, em poucas linhas — é o que o planejador lê"
+                placeholder={canManage ? "o que foi vendido, em poucas linhas — é o que o planejador lê" : ""}
                 onBlur={(e) => salvarCampo("projetoEscopo", e.target.value)} />
             </div>
           </section>
@@ -333,12 +337,16 @@ export function ContratoTab({
           <section className="painel-bloco">
             <div className="bloco-head">
               <h3>Entregáveis contratados</h3>
-              <span className="save-note">marque quando o entregável fechar</span>
+              <span className="save-note">
+                {canManage ? "marque quando o entregável fechar" : "o que foi contratado, e o que já fechou"}
+              </span>
             </div>
 
             {entregaveis.length === 0 ? (
               <p className="painel-vazio">
-                Nenhum entregável ainda. É esta lista que o planejador lê para propor as demandas.
+                {canManage
+                  ? "Nenhum entregável ainda. É esta lista que o planejador lê para propor as demandas."
+                  : "Nenhum entregável cadastrado ainda pelo time da Acxya."}
               </p>
             ) : (
               <ul className="entregaveis">

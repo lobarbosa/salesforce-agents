@@ -35,24 +35,51 @@ export function ClientDetail({
   const podeGerenciarClientes = usuario.role !== "cliente";
   const [tab, setTab] = useState<Tab>(podeGerenciarClientes ? initialTab ?? (openDemandId ? "demandas" : "conhecimento") : "demandas");
 
-  // role=cliente só vê Demandas — Conhecimento/Conexão são dados internos de
-  // delivery (avaliação da conta, credenciais de org), não algo que o
-  // cliente final edita ou precisa ver.
+  // role=cliente vê Demandas e Contrato — Conhecimento/Conexão são dados
+  // internos de delivery (avaliação da conta, credenciais de org), não algo
+  // que o cliente final edita ou precisa ver.
+  //
+  // Contrato entra somente leitura (canManage={false} desabilita todo campo e
+  // esconde adicionar/remover/gerar). É o contrato *dele*: quanto do balde de
+  // horas já foi, qual o SLA prometido, quanto do escopo já saiu. Esconder
+  // isso de quem assinou era o avesso do que o painel existe pra responder.
   if (!podeGerenciarClientes) {
     return (
       <>
         <div className="client-header">
           <h1>{client.nome}</h1>
         </div>
-        <DemandasTab
-          client={client}
-          demandas={demandas}
-          openDemandId={openDemandId}
-          canManage={false}
-          usuarioEmail={usuario.email}
-          isAdmin={false}
-          visaoCliente
-        />
+
+        <div className="tabs">
+          <button className={`tab-btn${tab === "demandas" ? " active" : ""}`} onClick={() => setTab("demandas")} type="button">
+            Demandas
+          </button>
+          <button className={`tab-btn${tab === "contrato" ? " active" : ""}`} onClick={() => setTab("contrato")} type="button">
+            Contrato
+          </button>
+        </div>
+
+        {tab === "demandas" && (
+          <DemandasTab
+            client={client}
+            demandas={demandas}
+            openDemandId={openDemandId}
+            canManage={false}
+            usuarioEmail={usuario.email}
+            isAdmin={false}
+            visaoCliente
+          />
+        )}
+        {tab === "contrato" && (
+          <ContratoTab
+            clientId={client.id}
+            clientNome={client.nome}
+            contrato={client.contrato}
+            horas={horas}
+            demandasPorEntregavel={demandasPorEntregavel}
+            canManage={false}
+          />
+        )}
       </>
     );
   }

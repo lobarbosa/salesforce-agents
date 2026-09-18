@@ -13,7 +13,7 @@ export async function PATCH(
   { params }: { params: Promise<{ id: string; subtarefaId: string }> }
 ) {
   const { id, subtarefaId } = await params;
-  const acesso = await resolverDemanda(id);
+  const acesso = await resolverDemanda(id, { somenteDelivery: true });
   if (acesso.erro) return acesso.erro;
 
   const body = await request.json();
@@ -54,7 +54,7 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string; subtarefaId: string }> }
 ) {
   const { id, subtarefaId } = await params;
-  const acesso = await resolverDemanda(id);
+  const acesso = await resolverDemanda(id, { somenteDelivery: true });
   if (acesso.erro) return acesso.erro;
 
   const { count } = await prisma.subtarefa.deleteMany({

@@ -34,6 +34,14 @@ const ABAS: { id: Aba; label: string }[] = [
   { id: "anexos", label: "Anexos" },
 ];
 
+// O que o cliente vê do painel. Atividade e Anexos são conversa com ele —
+// ele comenta, manda o print do erro, baixa o que foi entregue. Tempo entra
+// porque o consumo é dele (casa com a aba Contrato), mas só o total: quem
+// lançou cada hora e em que trabalhou é condução interna do time.
+// Subtarefas e Checklist ficam de fora inteiras — são a quebra técnica e a
+// conferência antes de entregar, não a entrega.
+const ABAS_CLIENTE: Aba[] = ["atividade", "tempo", "anexos"];
+
 function Progresso({ feitos, total }: { feitos: number; total: number }) {
   const pct = total === 0 ? 0 : Math.round((feitos / total) * 100);
   return (
@@ -59,11 +67,14 @@ export function DemandaPainel({
   demandaId,
   usuarioEmail,
   isAdmin,
+  visaoCliente = false,
   dados,
 }: {
   demandaId: string;
   usuarioEmail: string;
   isAdmin: boolean;
+  /** Esconde o que é instrumento interno de delivery — ver ABAS_CLIENTE. */
+  visaoCliente?: boolean;
   dados: PainelDados;
 }) {
   const router = useRouter();
@@ -259,14 +270,18 @@ export function DemandaPainel({
     atividade: comentarios.length,
     subtarefas: subtarefas.length,
     checklist: checklist.length,
-    tempo: tempos.length,
+    // Pro cliente a aba mostra só o total de horas, então o número de
+    // lançamentos ao lado do rótulo prometeria uma lista que ele não vai ver.
+    tempo: visaoCliente ? 0 : tempos.length,
     anexos: anexos.length,
   };
+
+  const abas = visaoCliente ? ABAS.filter((a) => ABAS_CLIENTE.includes(a.id)) : ABAS;
 
   return (
     <section className="painel">
       <div className="painel-abas" role="tablist" aria-label="Detalhes da demanda">
-        {ABAS.map((a) => (
+        {abas.map((a) => (
           <button
             key={a.id}
             type="button"
@@ -454,7 +469,17 @@ export function DemandaPainel({
           </>
         )}
 
-        {aba === "tempo" && (
+        {aba === "tempo" && visaoCliente && (
+          <div className="tempo-total">
+            <strong>{formatarMinutos(totalMinutos)}</strong> nesta demanda
+            <p className="painel-vazio" style={{ marginTop: "0.4rem" }}>
+              Horas já fechadas que entram no consumo do contrato. O total por mês, contra o
+              contratado, fica na aba Contrato.
+            </p>
+          </div>
+        )}
+
+        {aba === "tempo" && !visaoCliente && (
           <>
             <div className="tempo-total">
               <strong>{formatarMinutos(totalMinutos)}</strong> lançados
