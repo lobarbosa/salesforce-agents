@@ -2,10 +2,42 @@ id: ACXYA-2
 client: acxya
 titulo: Campo nova descoberta
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_build
 criado_em: '2026-09-13T21:29:07.426Z'
 historico:
-  - de: null
-    em: '2026-09-13T21:29:07.417Z'
-    para: backlog
-    autor: Leonardo
+- de: null
+  em: '2026-09-13T21:29:07.417Z'
+  para: backlog
+  autor: Leonardo
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-09-14T12:39:22.195038+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: ba-discovery
+  em: '2026-09-14T12:41:14.188741+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-09-14T12:41:27.928539+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo
+  em: '2026-09-14T15:31:33.307882+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: arquiteto
+  em: '2026-09-14T15:42:33.803479+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-09-14T15:42:50.690210+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo
+  em: '2026-09-14T15:52:59.616739+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-09-14T15:59:45.040282+00:00'

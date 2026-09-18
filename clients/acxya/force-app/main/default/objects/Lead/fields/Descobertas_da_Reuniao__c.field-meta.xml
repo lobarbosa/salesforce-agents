@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Descobertas_da_Reuniao__c</fullName>
+    <description>ACXYA-2 — Descobertas e insights coletados em reunião com o potencial cliente.</description>
+    <externalId>false</externalId>
+    <label>Descobertas da Reunião</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>
