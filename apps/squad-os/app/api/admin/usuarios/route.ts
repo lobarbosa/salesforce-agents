@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import type { Role } from "@/lib/generated/prisma/client";
 import { createServiceClient, serviceRoleConfigurado } from "@/lib/supabase/storage";
+import { definirSenha } from "@/lib/supabase/senha";
 
 const ROLES: Role[] = ["admin", "consultor", "cliente"];
 
@@ -62,28 +63,8 @@ export async function POST(request: NextRequest) {
     // próprio). Não é o caminho padrão — convite por e-mail continua sendo o
     // default quando a caixa está vazia, porque deixa rastro de quem definiu
     // o quê e não exige o admin conhecer a senha de ninguém.
-    const admin = createServiceClient().auth.admin;
-    const { error: criarErro } = await admin.createUser({
-      email,
-      password: senha,
-      email_confirm: true,
-    });
-    if (criarErro) {
-      if (/already/i.test(criarErro.message)) {
-        // Conta já existe em auth.users (convite anterior, por exemplo) —
-        // trocar a senha em vez de tentar criar de novo.
-        const { data: lista, error: listaErro } = await admin.listUsers({ perPage: 1000 });
-        const existente = listaErro ? undefined : lista.users.find((u) => u.email?.toLowerCase() === email);
-        if (!existente) {
-          convite = "Acesso concedido, mas não encontrei a conta existente pra definir a senha.";
-        } else {
-          const { error: atualizarErro } = await admin.updateUserById(existente.id, { password: senha });
-          if (atualizarErro) convite = `Acesso concedido, mas a senha não foi definida: ${atualizarErro.message}`;
-        }
-      } else {
-        convite = `Acesso concedido, mas a senha não foi definida: ${criarErro.message}`;
-      }
-    }
+    const problema = await definirSenha(email, senha);
+    if (problema) convite = `Acesso concedido, mas ${problema}`;
   } else {
     const origin = new URL(request.url).origin;
     const { error } = await createServiceClient().auth.admin.inviteUserByEmail(email, {

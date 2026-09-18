@@ -4,6 +4,15 @@ import { useState, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { Client, Usuario, Role } from "@/lib/generated/prisma/client";
 
+// Legível o bastante pra ditar por telefone, sem os pares que confundem por
+// telefone/WhatsApp (0/O, 1/I/l). Usado tanto ao conceder acesso quanto ao
+// trocar a senha de quem já tem conta.
+function gerarSenha(): string {
+  const alfabeto = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
+  const bytes = crypto.getRandomValues(new Uint32Array(12));
+  return Array.from(bytes, (b) => alfabeto[b % alfabeto.length]).join("");
+}
+
 export function UsuariosAdmin({
   usuarios,
   clients,
@@ -24,14 +33,6 @@ export function UsuariosAdmin({
   const [saving, setSaving] = useState(false);
   const [erro, setErro] = useState("");
   const [aviso, setAviso] = useState("");
-
-  function gerarSenha() {
-    // Legível o bastante pra ditar por telefone, sem os pares que confundem
-    // por telefone/WhatsApp (0/O, 1/I/l).
-    const alfabeto = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789";
-    const bytes = crypto.getRandomValues(new Uint32Array(12));
-    setSenha(Array.from(bytes, (b) => alfabeto[b % alfabeto.length]).join(""));
-  }
 
   async function handleGrant(e: FormEvent) {
     e.preventDefault();
@@ -86,6 +87,10 @@ export function UsuariosAdmin({
     return res;
   }
 
+  // Mesma rota do PATCH, com `senha` no corpo — o backend reconhece esse
+  // caso e troca a senha no Supabase Auth em vez de mexer em role/cliente.
+  const setSenhaDoUsuario = (id: string, senha: string) => updateUsuario(id, { senha });
+
   return (
     <>
       <div className="brief-field full" style={{ maxWidth: 980, marginBottom: "1.4rem" }}>
@@ -129,7 +134,7 @@ export function UsuariosAdmin({
                 onChange={(e) => setSenha(e.target.value)}
                 placeholder="em branco = convite por e-mail"
               />
-              <button className="btn-ghost" type="button" onClick={gerarSenha}>
+              <button className="btn-ghost" type="button" onClick={() => setSenha(gerarSenha())}>
                 Gerar
               </button>
             </div>
@@ -164,6 +169,7 @@ export function UsuariosAdmin({
             clientNome={clientNome}
             isSelf={u.id === currentUsuarioId}
             onUpdate={(data) => updateUsuario(u.id, data)}
+            onSetSenha={(senha) => setSenhaDoUsuario(u.id, senha)}
             onRemoved={() => router.refresh()}
           />
         ))}
@@ -178,6 +184,7 @@ function UsuarioRow({
   clientNome,
   isSelf,
   onUpdate,
+  onSetSenha,
   onRemoved,
 }: {
   usuario: Usuario;
@@ -185,11 +192,38 @@ function UsuarioRow({
   clientNome: (id: string | null) => string;
   isSelf: boolean;
   onUpdate: (data: Record<string, unknown>) => Promise<Response>;
+  onSetSenha: (senha: string) => Promise<Response>;
   onRemoved: () => void;
 }) {
   const [confirmando, setConfirmando] = useState(false);
   const [removendo, setRemovendo] = useState(false);
   const [erro, setErro] = useState("");
+  const [trocandoSenha, setTrocandoSenha] = useState(false);
+  const [novaSenha, setNovaSenha] = useState("");
+  const [enviandoSenha, setEnviandoSenha] = useState(false);
+  const [avisoSenha, setAvisoSenha] = useState("");
+
+  async function handleSetSenha() {
+    const senha = novaSenha.trim();
+    if (senha.length < 8) {
+      setErro("senha precisa ter pelo menos 8 caracteres");
+      return;
+    }
+    setErro("");
+    setEnviandoSenha(true);
+    const res = await onSetSenha(senha);
+    setEnviandoSenha(false);
+    if (res.ok) {
+      setAvisoSenha(
+        `Nova senha: "${senha}". Repasse por um canal que não seja e-mail — não fica salva em lugar nenhum depois desta tela.`
+      );
+      setNovaSenha("");
+      setTrocandoSenha(false);
+    } else {
+      const body = await res.json().catch(() => ({}));
+      setErro(body.error || "falha ao definir senha");
+    }
+  }
 
   async function handleRoleChange(role: Role) {
     setErro("");
@@ -260,7 +294,34 @@ function UsuarioRow({
       {erro && <span className="save-note error">{erro}</span>}
 
       <div style={{ marginLeft: "auto", display: "flex", gap: "0.4rem" }}>
-        {confirmando ? (
+        {trocandoSenha ? (
+          <>
+            <input
+              type="text"
+              value={novaSenha}
+              onChange={(e) => setNovaSenha(e.target.value)}
+              placeholder="nova senha"
+              style={{ width: 140, padding: "0.3rem 0.5rem", borderRadius: 6, border: "1px solid var(--border)", fontSize: "0.8rem" }}
+            />
+            <button className="btn-ghost" type="button" onClick={() => setNovaSenha(gerarSenha())}>
+              Gerar
+            </button>
+            <button className="btn-ghost" type="button" onClick={handleSetSenha} disabled={enviandoSenha}>
+              {enviandoSenha ? "Definindo..." : "Definir"}
+            </button>
+            <button
+              className="btn-ghost"
+              type="button"
+              onClick={() => {
+                setTrocandoSenha(false);
+                setNovaSenha("");
+                setErro("");
+              }}
+            >
+              Cancelar
+            </button>
+          </>
+        ) : confirmando ? (
           <>
             <span className="save-note">{isSelf ? "remover seu próprio acesso?" : "remover?"}</span>
             <button className="btn-ghost" type="button" onClick={handleRemove} disabled={removendo}>
@@ -271,11 +332,22 @@ function UsuarioRow({
             </button>
           </>
         ) : (
-          <button className="btn-ghost" type="button" onClick={() => setConfirmando(true)}>
-            Remover
-          </button>
+          <>
+            <button className="btn-ghost" type="button" onClick={() => setTrocandoSenha(true)}>
+              Nova senha
+            </button>
+            <button className="btn-ghost" type="button" onClick={() => setConfirmando(true)}>
+              Remover
+            </button>
+          </>
         )}
       </div>
+
+      {avisoSenha && (
+        <div className="save-note" role="status" style={{ flexBasis: "100%", marginTop: "0.3rem" }}>
+          {avisoSenha}
+        </div>
+      )}
     </div>
   );
 }

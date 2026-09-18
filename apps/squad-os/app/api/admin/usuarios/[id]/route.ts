@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import type { Role } from "@/lib/generated/prisma/client";
+import { serviceRoleConfigurado } from "@/lib/supabase/storage";
+import { definirSenha } from "@/lib/supabase/senha";
 
 const ROLES: Role[] = ["admin", "consultor", "cliente"];
 
@@ -24,6 +26,29 @@ export async function PATCH(
 
   const { id } = await params;
   const body = await request.json();
+
+  // Nova senha pra quem já tem conta — mesma operação de "Conceder acesso",
+  // só que endereçada por id em vez de digitar o e-mail de novo. Tratado à
+  // parte de role/clientId/nome porque precisa do e-mail (não vem no body,
+  // vem do registro) e fala com o Supabase Auth, não só com o Postgres.
+  if (typeof body.senha === "string" && body.senha.trim()) {
+    const senha = body.senha.trim();
+    if (senha.length < 8) {
+      return NextResponse.json({ error: "senha precisa ter pelo menos 8 caracteres" }, { status: 400 });
+    }
+    const alvo = await prisma.usuario.findUnique({ where: { id } });
+    if (!alvo) return NextResponse.json({ error: "usuário não encontrado" }, { status: 404 });
+    if (!serviceRoleConfigurado()) {
+      return NextResponse.json(
+        { error: "SUPABASE_SERVICE_ROLE_KEY não configurada — não dá pra definir senha" },
+        { status: 500 }
+      );
+    }
+    const problema = await definirSenha(alvo.email, senha);
+    if (problema) return NextResponse.json({ error: problema }, { status: 500 });
+    return NextResponse.json({ ok: true });
+  }
+
   const data: { role?: Role; clientId?: string | null; nome?: string } = {};
 
   if ("role" in body) {
