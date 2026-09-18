@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { triggerRunDemand } from "@/lib/github";
+import { GATE_DO_CLIENTE } from "@/lib/demandas";
 
 // O gate humano deixa de ser "aprova aqui e alguém dispara o pipeline lá":
 // aprovar no card move a demanda e acende a próxima sessão de agente.
@@ -9,8 +10,9 @@ import { triggerRunDemand } from "@/lib/github";
 // Quem pode aprovar o quê segue a doutrina, não o papel genérico:
 // `aguardando_homologacao` é o cliente dizendo que aceita o que foi entregue —
 // é dele esse gate. Os outros (análise, design, PR) são internos de delivery e
-// não fazem sentido pra quem está do lado de fora.
-const GATE_DO_CLIENTE = "aguardando_homologacao";
+// não fazem sentido pra quem está do lado de fora. A constante mora em
+// lib/demandas.ts: a tela, esta rota e o PATCH de perguntas/aprovação
+// precisam responder isto pelo mesmo lugar.
 
 export async function POST(
   _request: NextRequest,

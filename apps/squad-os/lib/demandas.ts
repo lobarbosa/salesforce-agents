@@ -130,9 +130,27 @@ export const ESTADO_CLIENTE_LABEL: Record<EstadoCliente, string> = {
   entregue: "Entregue",
 };
 
-// O único gate da esteira que o papel `cliente` aprova — a mesma constante que
-// a rota /api/demandas/[id]/aprovar-gate usa pra decidir quem pode aprovar.
-const GATE_DO_CLIENTE = "aguardando_homologacao";
+// O único gate da esteira que o papel `cliente` aprova.
+export const GATE_DO_CLIENTE = "aguardando_homologacao";
+
+/** Quem aprova este gate — e, por consequência, o que ele enxerga dele.
+ *
+ * `aguardando_homologacao` é o cliente aceitando o que foi entregue: é dele
+ * esse gate. Os outros (análise, design, PR) são internos de delivery.
+ *
+ * Mora aqui, e não em lib/auth.ts, porque este módulo não importa Prisma e
+ * por isso atravessa Server e Client Component — a tela e a API precisam
+ * responder isto pelo mesmo lugar. Quando a resposta vivia solta em cada
+ * ponta, a tela escondia o artefato do gate de quem podia aprová-lo e a API
+ * deixava o cliente responder pergunta de gate que não é dele.
+ *
+ * Recebe o booleano de "pode gerenciar" em vez do papel para não arrastar
+ * lib/auth.ts (e o Prisma junto) para dentro do bundle do browser.
+ */
+export function podeAprovarGate(podeGerenciar: boolean, status: string): boolean {
+  if (!status.startsWith("aguardando_")) return false;
+  return podeGerenciar || status === GATE_DO_CLIENTE;
+}
 
 export function estadoDoCliente(status: string): EstadoCliente {
   if (status === GATE_DO_CLIENTE) return "voce";

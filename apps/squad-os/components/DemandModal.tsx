@@ -11,6 +11,7 @@ import {
   STAGE_LABEL,
   ESTADO_CLIENTE_LABEL,
   estadoDoCliente,
+  podeAprovarGate,
   progressoDaDemanda,
   timeAgo,
 } from "@/lib/demandas";
@@ -50,14 +51,19 @@ export function DemandModal({
   const [gateErro, setGateErro] = useState("");
 
   const emGate = demanda.status.startsWith("aguardando_");
-  // `aguardando_homologacao` é o cliente aceitando a entrega — é dele esse
-  // gate. Os outros são internos de delivery. A API repete essa checagem; aqui
-  // é só pra não mostrar um botão que vai devolver 403.
-  const podeAprovarEsteGate =
-    emGate && (canManage || demanda.status === "aguardando_homologacao");
+  // Mesma função que a API chama — ver podeAprovarGate em lib/demandas.ts.
+  // Decide o botão de aprovar, o artefato que aparece e as perguntas que
+  // podem ser respondidas: as três coisas são o mesmo gate.
+  const podeAprovarEsteGate = podeAprovarGate(canManage, demanda.status);
 
   const jaAprovada = !!aprovacao?.aprovado;
   const faltandoResposta = respostas.filter((p) => !p.resposta.trim()).length;
+  // As perguntas saem do mesmo artefato do gate, então seguem a mesma regra:
+  // pro cliente elas aparecem só no gate que é dele, junto do documento de
+  // onde vieram. Antes ele via pergunta de gate interno sem o documento — e a
+  // API deixava responder. Pra quem é do time, nada muda: continua podendo
+  // responder mesmo fora de gate (adiantar resposta enquanto o agente roda).
+  const mostrarPerguntas = respostas.length > 0 && (!visaoCliente || podeAprovarEsteGate);
 
   async function salvarResposta(id: string, valor: string) {
     const atualizadas = respostas.map((p) => (p.id === id ? { ...p, resposta: valor } : p));
@@ -231,13 +237,24 @@ export function DemandModal({
 
       {/* O que está sendo julgado. Antes disto o gate chegava como um botão sem
           contexto: o artefato existia só no git, e aprovar sem ler era o
-          caminho mais curto da tela. Fica fora da visão do cliente de
-          propósito — é documento de delivery, com vocabulário de esteira. */}
-      {emGate && !visaoCliente && demanda.artefatoConteudo && (
+          caminho mais curto da tela.
+
+          A condição é `podeAprovarEsteGate`, a mesma do botão, e não o papel:
+          quem aprova vê o que aprova. Na prática isso dá ao cliente o
+          `05-testes.md` no gate de homologação — que é a evidência da
+          pergunta que ele responde ali ("aceito esta entrega?") — e mantém
+          fechados os gates de análise, design e build, que são decisão
+          interna de método e que ele não aprova de qualquer forma (a API
+          restringe o papel `cliente` a `aguardando_homologacao`). O
+          invariante que fica: não existe botão de aprovar sem a coisa
+          aprovada do lado. */}
+      {podeAprovarEsteGate && demanda.artefatoConteudo && (
         <details className="artefato" open>
           <summary>
             <span className="badge stage">{demanda.artefatoNome}</span>
-            <span className="gate-texto">o que este gate põe na mesa</span>
+            <span className="gate-texto">
+              {visaoCliente ? "o que foi testado nesta entrega" : "o que este gate põe na mesa"}
+            </span>
           </summary>
           {/* Texto puro, não markdown renderizado: este conteúdo é escrito por
               um agente, e passá-lo por um renderizador de HTML abriria injeção
@@ -245,8 +262,17 @@ export function DemandModal({
           <pre className="artefato-corpo">{demanda.artefatoConteudo}</pre>
           {demanda.artefatoTruncado && (
             <p className="gate-texto">
-              Cortado por tamanho — o <code className="mono">{demanda.artefatoNome}</code>{" "}
-              completo está no PR desta demanda.
+              {visaoCliente ? (
+                <>
+                  Cortado por tamanho — peça o{" "}
+                  <code className="mono">{demanda.artefatoNome}</code> completo ao time da Acxya.
+                </>
+              ) : (
+                <>
+                  Cortado por tamanho — o <code className="mono">{demanda.artefatoNome}</code>{" "}
+                  completo está no PR desta demanda.
+                </>
+              )}
             </p>
           )}
         </details>
@@ -258,7 +284,7 @@ export function DemandModal({
           {aprovacao!.observacao ? ` — ${aprovacao!.observacao}` : ""}
         </div>
       ) : (
-        respostas.length > 0 && (
+        mostrarPerguntas && (
           <div className="approval-banner pendente">
             Responda as perguntas abaixo — cada resposta salva sozinha. Depois aprove pra liberar a
             próxima etapa, sem precisar acionar ninguém.
@@ -266,7 +292,7 @@ export function DemandModal({
         )
       )}
 
-      {respostas.length > 0 && (
+      {mostrarPerguntas && (
         <div className="pergunta-list">
           {respostas.map((p, i) => (
             <div className="pergunta-item" key={p.id}>
@@ -286,7 +312,7 @@ export function DemandModal({
         </div>
       )}
 
-      {respostas.length > 0 && !jaAprovada && (
+      {mostrarPerguntas && !jaAprovada && (
         <>
           <div className="field">
             <label>Seu nome (para registrar a aprovação)</label>
@@ -342,7 +368,7 @@ export function DemandModal({
         <button className="btn-ghost" type="button" onClick={onClose}>
           Fechar
         </button>
-        {respostas.length > 0 && !jaAprovada && (
+        {mostrarPerguntas && !jaAprovada && (
           <button className="btn-primary" type="button" onClick={aprovarEAvancar} disabled={aprovando}>
             {aprovarMsg || (aprovando ? "Aprovando..." : "Aprovar e avançar")}
           </button>
