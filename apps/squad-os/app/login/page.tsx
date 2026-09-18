@@ -72,6 +72,12 @@ function LoginForm() {
           shouldCreateUser: false,
         },
       });
+      // A tela mostra sempre a mesma mensagem genérica (não vazar se o e-mail
+      // tem conta ou não), mas o motivo real — e-mail sem acesso, rate limit,
+      // SMTP fora do ar — só existe aqui. Sem isto, diagnosticar exigia ler o
+      // banco direto (foi o que aconteceu em 2026-09-18: um teste em
+      // os.acxya.com pareceu bug de domínio e era e-mail sem acesso).
+      if (error) console.error("[login] signInWithOtp:", error);
       setStatus(error ? "idle" : "ok");
       setAviso(
         error
@@ -84,6 +90,7 @@ function LoginForm() {
     if (modo === "senha") {
       const { error } = await supabase.auth.signInWithPassword({ email: mail, password: senha });
       if (error) {
+        console.error("[login] signInWithPassword:", error);
         setStatus("idle");
         // Mensagem única pra e-mail inexistente e senha errada — dizer qual
         // dos dois falhou entregaria quem tem conta aqui.
@@ -99,6 +106,7 @@ function LoginForm() {
     const { error } = await supabase.auth.resetPasswordForEmail(mail, {
       redirectTo: callbackUrl("/auth/nova-senha"),
     });
+    if (error) console.error("[login] resetPasswordForEmail:", error);
     setStatus(error ? "idle" : "ok");
     setAviso(
       error
