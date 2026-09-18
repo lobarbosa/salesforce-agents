@@ -76,12 +76,20 @@ select:focus-visible, [tabindex]:focus-visible {
 }
 
 /* shell / sidebar */
-.shell { display: flex; min-height: 100vh; align-items: flex-start; }
+/* `dvh` e não `vh`: no telefone a barra de endereço entra e sai, e `100vh`
+   mede a altura SEM ela — a coluna fica mais alta que a tela e o rodapé da
+   sidebar (onde mora o "Sair") cai pra fora. */
+.shell { display: flex; min-height: 100dvh; align-items: flex-start; }
 .sidebar {
   width: 250px; flex: none; border-right: 1px solid var(--border);
-  position: sticky; top: 0; height: 100vh; display: flex; flex-direction: column;
+  position: sticky; top: 0; height: 100dvh; display: flex; flex-direction: column;
   background: var(--surface);
 }
+
+/* Barra de topo e fundo da gaveta: só existem no telefone (ver o bloco
+   `max-width: 860px` no fim deste arquivo). */
+.topbar { display: none; }
+.menu-fundo { display: none; }
 .sidebar .brand { padding: 1.1rem 1.1rem 1.1rem; position: relative; }
 .sidebar .brand .name { font-family: var(--display); font-weight: 600; font-size: 0.92rem; }
 /* Altura fixa e largura automática: o arquivo da marca pode chegar em qualquer
@@ -184,18 +192,30 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
   padding: 0.5rem 0.9rem; font-size: 0.82rem; cursor: pointer; font-weight: 500;
 }
 .btn-primary:disabled { opacity: 0.6; cursor: default; }
-.board { display: grid; grid-auto-flow: column; grid-auto-columns: 240px; gap: 0.8rem; overflow-x: auto; padding-bottom: 0.5rem; }
+/* Colunas que **cabem** em vez de rolar. Colunas de largura fixa obrigam
+   rolagem horizontal em quase toda tela, e "evitar rolagem horizontal" é
+   regra de severidade alta; com auto-fit elas se acomodam na largura
+   disponível e quebram para uma segunda linha quando não cabem, em vez de
+   sumir para fora da tela.
 
-/* Quadro por fase da esteira. Colunas que **cabem** em vez de rolar: seis
-   colunas de 240px fixos dão ~1500px e obrigam rolagem horizontal em quase
-   toda tela — e "evitar rolagem horizontal" é regra de severidade alta. Com
-   auto-fit elas se acomodam na largura disponível e quebram para uma segunda
-   linha quando não cabem, em vez de sumir para fora da tela. */
-.board-fases {
-  grid-auto-flow: row;
-  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-  overflow-x: visible;
+   Isto era exclusivo do quadro interno (`.board-fases`) e o quadro do cliente
+   ficou de fora — quatro colunas de 240px dão ~1000px, então num telefone a
+   coluna "Precisa da sua aprovação", que é a única com ação dele, nascia fora
+   da tela. Medido em 2026-09-18: transbordava em 360, 375, 414 e 768px. O
+   comportamento certo é o padrão dos dois quadros; `.board-fases` só ajusta
+   o que é mesmo específico dele. */
+.board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 0.8rem;
   align-items: start;
+  padding-bottom: 0.5rem;
+}
+
+/* Quadro por fase da esteira: seis colunas em vez de quatro, então cada uma
+   pode ser mais estreita pra caber mais por linha. */
+.board-fases {
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
 }
 /* Coluna com demanda parada esperando gente. A borda é reforço: quem carrega
    a informação é a linha "N esperando gente" abaixo do título (WCAG 1.4.1). */
@@ -697,3 +717,85 @@ table.sla input {
 .atividade-meta { display: flex; align-items: baseline; gap: 0.5rem; font-size: 0.76rem; margin-bottom: 0.2rem; }
 .atividade-meta .mono { color: var(--text-muted); font-size: 0.72rem; }
 .atividade-texto { margin: 0; font-size: 0.84rem; white-space: pre-wrap; }
+
+/* ==========================================================================
+   Telefone e tablet estreito
+   ==========================================================================
+   Até 2026-09-18 este arquivo tinha UMA media query de layout em 699 linhas
+   (o grid do briefing, em 760px). A sidebar era 250px fixos em qualquer
+   largura: num telefone de 375px ela ficava com 67% da tela e sobravam
+   ~125px pro conteúdo — título cortado, botão cortado, quadro ilegível.
+   Verificado renderizando o shell real em 375/768/1440.
+
+   Aqui a sidebar vira gaveta: sai do fluxo, entra por cima quando chamada
+   pela barra de topo, e o conteúdo passa a ocupar a largura inteira. */
+@media (max-width: 860px) {
+  .shell { flex-direction: column; }
+
+  .topbar {
+    display: flex; align-items: center; gap: 0.7rem;
+    position: sticky; top: 0; z-index: 30;
+    width: 100%; padding: 0.5rem 0.9rem;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+  }
+  .topbar-titulo {
+    font-family: var(--display); font-weight: 600; font-size: 0.95rem;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .menu-btn {
+    display: flex; align-items: center; gap: 0.5rem;
+    min-height: 44px; padding: 0 0.8rem;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface-alt); color: var(--text);
+    font-size: 0.85rem; font-weight: 500; cursor: pointer;
+  }
+  /* Três traços desenhados com sombra, pra não depender de fonte de ícone
+     nem de SVG externo. `currentColor` mantém o contraste do tema. */
+  .menu-icone {
+    width: 16px; height: 2px; background: currentColor; border-radius: 2px;
+    box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor;
+  }
+
+  .sidebar {
+    position: fixed; inset-block: 0; left: 0; z-index: 40;
+    height: 100dvh; width: min(280px, 85vw);
+    transform: translateX(-100%);
+    box-shadow: 0 0 24px rgb(0 0 0 / 0.25);
+  }
+  .sidebar.aberta { transform: none; }
+
+  .menu-fundo {
+    display: block; position: fixed; inset: 0; z-index: 35;
+    border: 0; padding: 0; background: rgb(0 0 0 / 0.45); cursor: pointer;
+  }
+
+  main { padding: 1.1rem 1rem 3rem; width: 100%; }
+  .client-header h1 { font-size: 1.2rem; }
+  /* As abas passam a rolar em vez de espremer quatro rótulos longos em
+     375px. A rolagem fica na tira, não na página. */
+  .tabs { overflow-x: auto; flex-wrap: nowrap; }
+  .tab-btn { white-space: nowrap; }
+}
+
+@media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
+  .sidebar { transition: transform 0.18s ease; }
+}
+
+/* Dedo, não mouse. A regra WCAG 2.2 AA pra web é 24x24 CSS px (que os botões
+   daqui já passavam); 44px é a recomendação nativa de iOS, e vale aplicar
+   onde o ponteiro é grosso — sem inflar a UI de quem está no mouse. */
+@media (pointer: coarse) {
+  .btn-primary, .btn-secondary, .btn-ghost, .tab-btn,
+  .client-item, .nav-item, .new-client-btn {
+    min-height: 44px;
+  }
+  .btn-remover { min-height: 40px; padding: 0 0.7rem; }
+  /* Campo de texto também é alvo de toque: o de busca da sidebar tinha 30px
+     de altura, medido com viewport de telefone emulado. Caixa de marcar fica
+     de fora — esticar um checkbox pra 44px deforma o alinhamento da lista, e
+     o rótulo ao lado já amplia a área clicável. */
+  input:not([type="checkbox"]):not([type="radio"]), select { min-height: 44px; }
+  /* iOS dá zoom no campo quando a fonte é menor que 16px, e depois não
+     desfaz — a página inteira fica deslocada depois de digitar uma busca. */
+  input, select, textarea { font-size: max(16px, 1em); }
+}
