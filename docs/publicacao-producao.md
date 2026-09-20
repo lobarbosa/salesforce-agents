@@ -7,6 +7,12 @@ Supabase `phvxhahignvsgnhozxrr` (`us-east-2`, Postgres 17.6).
 Não é uma lista de boas práticas genéricas: cada item aqui existe porque ou já
 quebrou nesta operação, ou está aberto agora.
 
+**Atualizado em 2026-09-20:** dos bloqueantes do §2, só o banco de Preview
+dedicado (§2.1) segue aberto — por decisão de custo, não por trabalho
+pendente. Os demais (§2.2, §2.3, §2.4) foram fechados e reconferidos direto
+contra o projeto real nesta data; os detalhes de cada um estão atualizados
+abaixo em vez de arquivados numa seção à parte.
+
 ---
 
 ## 0. Antes de escolher o domínio: uma decisão que é sua
@@ -47,9 +53,9 @@ vale nos dois casos**; só o passo 5 muda.
   exposição encontrada).
 - CI: `ci-python.yml`, `ci-squad-os.yml`, `ci-salesforce-validate.yml`.
 
-## 2. Pré-requisitos que **faltam** — bloqueiam o corte
+## 2. Pré-requisitos
 
-### 2.1 Banco próprio pro Preview  ⛔ bloqueante
+### 2.1 Banco próprio pro Preview  ⛔ bloqueante — o único que falta
 
 Hoje Preview e Production apontam pro mesmo `DATABASE_URL`. Consequência: o
 build de preview de um PR roda `prisma migrate deploy` **na produção**, antes do
@@ -61,28 +67,40 @@ mesmo banco"). Isso é contornável agora, mas com o app num domínio real e mai
 gente usando, a probabilidade de alguém esquecer o passo vira alta.
 
 **Fazer:** criar um segundo projeto Supabase (ou um branch de banco) e apontar
-só a env var `DATABASE_URL` de **Preview** pra ele. Custo: um projeto Supabase a
-mais. Depois disso um PR volta a poder carregar schema e código no mesmo merge.
+só a env var `DATABASE_URL` de **Preview** pra ele. Custo: confirmado em
+2026-09-20, **US$10/mês** (a org já está no plano Pro, que tira o projeto novo
+da faixa gratuita de 2 projetos). Decisão explícita de adiar — não é esquecimento:
+perguntado, a resposta foi "não quero ter custo com isso agora". Enquanto for um
+banco só, toda mudança destrutiva de schema segue tendo que ir em dois merges
+(ver `apps/squad-os/README.md`, "Preview e Production compartilham o mesmo
+banco"). Retomar quando o custo for aceitável — o resto do corte não depende
+disso.
 
-### 2.2 Proteção de senha vazada  ⛔ rápido
+### 2.2 Proteção de senha vazada  ✅ feito em 2026-09-20
 
-O linter de segurança do Supabase aponta `auth_leaked_password_protection`
-desligado. Com login por senha aberto num domínio público, ligar isso é o
-mínimo: **Authentication → Policies → Password strength → Leaked password
-protection**. Um clique.
+Estava desligado (`auth_leaked_password_protection` no linter de segurança).
+O caminho não é o que a primeira versão deste doc dizia — **Authentication →
+Policies** não existe mais nesse formato. O caminho real, confirmado contra o
+dashboard: **Authentication → Sign In / Providers → Email** (expandir a linha
+do provider Email) → "Prevent use of leaked passwords". Ligado e confirmado
+via linter (`get_advisors`): o achado sumiu.
 
-### 2.3 Bucket de anexos
+### 2.3 Bucket de anexos  ✅ feito
 
-`Storage → New bucket` → `anexos-demanda`, **Public desmarcado**, nenhuma
-policy. E `SUPABASE_SERVICE_ROLE_KEY` nas env vars da Vercel (Production e
-Preview). Sem isso a aba Anexos recusa upload com mensagem explícita — não
-quebra nada, mas fica pela metade.
+`anexos-demanda` existe (`storage.buckets`, `public = false`, criado em
+2026-09-13) — sem policy, como previsto. `SUPABASE_SERVICE_ROLE_KEY` está nas
+env vars da Vercel, Production e Preview (confirmado em 2026-09-20).
 
-### 2.4 Backup
+### 2.4 Backup  ✅ conferido — retenção diária no piso certo, PITR em aberto
 
-Confirmar em **Database → Backups** qual é a retenção do plano atual. Num banco
-que passa a ser fonte de verdade de demanda de 6 clientes, backup diário é o
-piso; PITR é o que você quer.
+**Database → Backups** confirmado em 2026-09-20: backup físico diário, 7 dias
+de retenção — é exatamente o que o plano Pro entrega (Free não teria nenhum;
+Team seria 14 dias, Enterprise 30). O piso do §2.4 original está garantido.
+
+**PITR não está ligado** — é um add-on pago à parte do Pro, não vem incluso.
+Mesma natureza de decisão do §2.1 (custo, não trabalho pendente): decidir
+quando fonte de verdade de 6 clientes justificar o gasto extra além do backup
+diário.
 
 ---
 
@@ -122,15 +140,20 @@ admin, consultor e um usuário `cliente` (esse último tem que cair direto em
 
 **5. Resolver o auto-cadastro** conforme a decisão do §0.
 
-**6. Esvaziar `ADMIN_BOOTSTRAP_EMAILS`.** Essa variável faz qualquer e-mail da
-lista virar admin no primeiro login. Ela existia pra destravar o primeiro admin
-— esse já existe como linha normal em `usuarios`. Deixá-la preenchida num
-domínio público é uma porta de admin que ninguém está olhando.
+**6. Esvaziar `ADMIN_BOOTSTRAP_EMAILS`.** ✅ feito em 2026-09-20. Essa variável
+fazia qualquer e-mail da lista virar admin no primeiro login. Ela existia pra
+destravar o primeiro admin — esse já existe como linha normal em `usuarios`.
+Deixá-la preenchida num domínio público seria uma porta de admin que ninguém
+está olhando. Variável apagada — **precisa de um redeploy** pra valer no
+deployment já publicado (env var não retroage sozinha).
 
-**7. Conferir a proteção dos previews.** Vercel → Settings → Deployment
-Protection → **Vercel Authentication ligada para Preview**. Preview deploy lê o
-mesmo banco de produção (até o §2.1 ser feito); preview público seria a
-produção pública por outra porta.
+**7. Conferir a proteção dos previews.** ✅ já vinha assim. Vercel → Settings
+→ Deployment Protection → o projeto está em **"Standard Protection"**, que é
+o nível padrão da Vercel: Preview exige login Vercel (só quem é do time
+acessa), Production fica pública no domínio. Confirmado em 2026-09-20 —
+não precisou mudar nada. Continua valendo a razão original: preview deploy lê
+o mesmo banco de produção até o §2.1 ser feito, e essa proteção é a barreira
+que evita preview público virar produção pública por outra porta.
 
 **8. Anunciar.** Só depois de 1–7.
 
@@ -138,18 +161,18 @@ produção pública por outra porta.
 
 ## 4. Checklist de corte
 
-Copie e marque:
+Estado em 2026-09-20:
 
-- [ ] Banco próprio pro Preview, `DATABASE_URL` de Preview reapontada (§2.1)
-- [ ] Leaked password protection ligada (§2.2)
-- [ ] Bucket `anexos-demanda` criado + `SUPABASE_SERVICE_ROLE_KEY` nas env vars (§2.3)
-- [ ] Retenção de backup confirmada (§2.4)
+- [ ] Banco próprio pro Preview, `DATABASE_URL` de Preview reapontada (§2.1) — **adiado por custo, decisão sua**
+- [x] Leaked password protection ligada (§2.2)
+- [x] Bucket `anexos-demanda` criado + `SUPABASE_SERVICE_ROLE_KEY` nas env vars (§2.3)
+- [x] Retenção de backup confirmada (§2.4) — diária, 7 dias (PITR não ligado, também custo)
 - [ ] Domínio adicionado na Vercel e "Valid Configuration"
 - [ ] Site URL e Redirect URLs do Supabase atualizadas
 - [ ] Login testado nos 3 papéis, no domínio novo
 - [ ] Decisão do auto-cadastro executada
-- [ ] `ADMIN_BOOTSTRAP_EMAILS` vazia
-- [ ] Vercel Authentication ligada nos previews
+- [x] `ADMIN_BOOTSTRAP_EMAILS` vazia — **falta o redeploy pra valer**
+- [x] Vercel Authentication ligada nos previews — já era o padrão do projeto
 - [ ] Anunciado para o time
 
 ## 5. Rollback
@@ -168,9 +191,20 @@ o que quebrou.
 
 ## Nota sobre o que não consegui verificar
 
-O token da Vercel disponível nesta sessão não enxerga o projeto do Squad OS
-(`list_projects` no time `acxya's Team` volta vazio). Os nomes de tela e os
-caminhos de menu da Vercel acima estão escritos de memória da documentação, não
-lidos do seu projeto — confira ao executar. O que foi verificado direto contra o
-sistema real: o estado do RLS de todas as tabelas, a exposição do PostgREST, o
-linter de segurança do Supabase, a região e a versão do Postgres.
+O token da Vercel disponível nas sessões de agente segue sem enxergar o
+projeto do Squad OS (`list_projects` no time `acxya's Team` volta vazio) — os
+passos do §3 que ainda não foram executados (domínio, redirect URLs, teste de
+login, auto-cadastro) continuam escritos de memória da documentação da Vercel,
+não lidos do projeto direto. Confira ao executar.
+
+O que passou a estar verificado direto contra o sistema real, e não mais de
+memória: o estado do RLS de todas as tabelas, a exposição do PostgREST, o
+linter de segurança do Supabase, a região e a versão do Postgres (isso já
+valia desde 2026-09-09) — e agora também, em 2026-09-20: o caminho real do
+toggle de leaked password protection (achado via busca na documentação viva
+do Supabase, porque o caminho antigo deste doc estava errado), o bucket
+`anexos-demanda` (via SQL em `storage.buckets`), a retenção de backup (via
+screenshot que você mandou de **Database → Backups**), e o nível de
+Deployment Protection do projeto (via screenshot de **Settings → Deployment
+Protection**). Os dois últimos foram confirmados por você mandar a tela, não
+por eu acessar — vale registrar a diferença.
