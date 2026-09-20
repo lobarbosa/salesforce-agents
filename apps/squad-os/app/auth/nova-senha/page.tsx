@@ -1,12 +1,15 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
-// Destino do link de redefinição: o /auth/callback já trocou o code por
-// sessão antes de mandar pra cá, então updateUser() abaixo age sobre um
-// usuário autenticado. Esta rota não está em PUBLIC_PATHS de propósito —
-// sem sessão válida o proxy manda pro /login.
+// Duas portas de entrada pra cá, mesmo mecanismo: o link de redefinição
+// (o /auth/callback já trocou o code por sessão antes de mandar pra cá) e o
+// "Alterar senha" da sidebar, pra quem já está logado e só quer trocar.
+// updateUser() age sobre o usuário autenticado nos dois casos — não pede a
+// senha atual porque a sessão já é a prova de identidade. Esta rota não está
+// em PUBLIC_PATHS de propósito — sem sessão válida o proxy manda pro /login.
 export default function NovaSenhaPage() {
   const [senha, setSenha] = useState("");
   const [confirmacao, setConfirmacao] = useState("");
@@ -93,6 +96,10 @@ export default function NovaSenhaPage() {
             </div>
           )}
         </form>
+
+        <div className="auth-links">
+          <Link href="/">Voltar sem alterar</Link>
+        </div>
       </div>
     </div>
   );
