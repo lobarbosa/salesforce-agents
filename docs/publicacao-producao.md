@@ -11,41 +11,46 @@ quebrou nesta operação, ou está aberto agora.
 dedicado (§2.1) segue aberto — por decisão de custo, não por trabalho
 pendente. Os demais (§2.2, §2.3, §2.4) foram fechados e reconferidos direto
 contra o projeto real nesta data; os detalhes de cada um estão atualizados
-abaixo em vez de arquivados numa seção à parte.
+abaixo em vez de arquivados numa seção à parte. O corte em si (§3) também
+avançou: domínio `os.acxya.com.br` já está no ar, DNS resolvido, cadastrado
+na Vercel — falta confirmar o passo 3 (Supabase Auth) e fechar o teste de
+login nos 3 papéis.
 
 ---
 
-## 0. Antes de escolher o domínio: uma decisão que é sua
+## 0. Auto-cadastro  ✅ fechado
 
-**Hoje qualquer pessoa na internet pode criar conta.** A tela de login tem a aba
-"Criar conta", que chama `supabase.auth.signUp` sem restrição de e-mail. Quem se
-cadastra não vê dado nenhum — o `proxy.ts` consulta a tabela `usuarios` e, sem
-linha lá, a pessoa recebe "Esse e-mail ainda não tem acesso ao Squad OS". O
-isolamento por papel e por cliente está de pé.
+**Decisão tomada: fechar.** Confirmado em 2026-09-20 ("vou seguir a sua
+recomendação"), mas o código já refletia essa decisão desde antes deste corte
+— `app/login/page.tsx` não tem aba "Criar conta" (só "Link por e-mail" e
+"Senha"), `signInWithOtp` vai com `shouldCreateUser: false`, e o comentário no
+próprio arquivo documenta o porquê. O caminho de entrada é: admin concede
+acesso em `/admin/usuarios`, a pessoa usa "Esqueci minha senha" pra definir a
+dela — nenhum passo a mais pra quem é do time, uma porta a menos aberta pra
+quem não é.
 
-O que ela consegue, mesmo assim: criar uma linha em `auth.users`, consumir a
-cota de e-mail do seu projeto Supabase e deixar a caixa de entrada de alguém
-recebendo e-mail de confirmação com a sua marca. Numa URL `vercel.app` que
-ninguém conhece isso é teórico. Num domínio da Acxya, indexável, deixa de ser.
+Fica registrado abaixo o raciocínio original, pra quem chegar depois querer
+saber por quê:
 
-| | Manter o auto-cadastro | Fechar o auto-cadastro |
+| | Manter o auto-cadastro | Fechar o auto-cadastro (o que está em produção) |
 |---|---|---|
 | Como a pessoa entra | Cria conta sozinha, espera o admin liberar | Admin cria em `/admin/usuarios`, pessoa define a senha por "Esqueci minha senha" |
 | Atrito pra quem é do time | Nenhum | Um passo do admin, uma vez por pessoa |
 | Superfície aberta | Cadastro público + envio de e-mail | Nenhuma — só login de quem já existe |
-| Trabalho pra implementar | Zero | Tirar a aba "Criar conta" de `app/login/page.tsx` (o resto do fluxo já existe) |
 
-**Recomendo fechar.** O auto-cadastro foi construído quando a plataforma ainda
-não tinha `/admin/usuarios` funcionando; agora tem, e o caminho "admin concede,
-pessoa recupera a senha" cobre o mesmo caso com uma porta a menos. Isso é uma
-decisão sua, não técnica — me diga qual e eu executo. **Todo o resto deste plano
-vale nos dois casos**; só o passo 5 muda.
+O motivo de ter existido essa decisão: sem restrição, qualquer pessoa na
+internet cria uma linha em `auth.users` e consome cota de e-mail do projeto —
+teórico numa URL `vercel.app` que ninguém conhece, real num domínio indexável
+da Acxya. O isolamento por papel e por cliente nunca dependeu disso (`proxy.ts`
+decide pela tabela `usuarios`, não por existir em `auth.users`), mas a
+superfície aberta não precisava existir.
 
 ---
 
 ## 1. Pré-requisitos que já estão fechados
 
-- Login por magic link, senha, cadastro e recuperação — funcionando.
+- Login por magic link, senha e recuperação — funcionando. (Cadastro público
+  fechado — ver §0.)
 - Papéis (`admin` / `consultor` / `cliente`) resolvidos no `proxy.ts` e
   aplicados nas rotas.
 - RLS ligado em todas as tabelas do schema `public` (corrigido em 2026-09-09 —
@@ -108,22 +113,26 @@ diário.
 
 A ordem importa: o passo 3 é o que já quebrou antes.
 
-**1. Escolher e adicionar o domínio.** Vercel → o projeto → Settings → Domains →
-Add. Sugestão: um subdomínio dedicado (`os.acxya.com.br`), não a raiz — mantém o
-site institucional livre e o certificado independente.
+**1. Escolher e adicionar o domínio.** ✅ feito. `os.acxya.com.br`,
+subdomínio dedicado (não a raiz — mantém o site institucional livre e o
+certificado independente), adicionado na Vercel.
 
-**2. Apontar o DNS.** A Vercel mostra o registro exato (`CNAME` para
-`cname.vercel-dns.com` no caso de subdomínio). Propagação: minutos a algumas
-horas. Espere o domínio ficar "Valid Configuration" antes do passo 3.
+**2. Apontar o DNS.** ✅ feito. DNS resolvido, domínio respondendo.
 
-**3. Reapontar o Supabase Auth.** ⚠️ **É aqui que quebra.** O link de login é
-gerado com o `emailRedirectTo` que o app manda, mas o Supabase só honra o
-destino se ele casar com a allow list — senão cai silenciosamente na Site URL e
-descarta o caminho. Foi assim que o link caiu em `localhost:3000` por horas.
+**3. Reapontar o Supabase Auth.** ⚠️ **confirmar — é aqui que quebra, e
+silenciosamente.** O link de login é gerado com o `emailRedirectTo` que o app
+manda, mas o Supabase só honra o destino se ele casar com a allow list — senão
+cai silenciosamente na Site URL e descarta o caminho, sem erro visível. Foi
+assim que o link caiu em `localhost:3000` por horas em 2026-09-09. Login por
+senha não passa por aqui (por isso pode já estar funcionando mesmo sem este
+passo feito) — quem depende disto é magic link e "esqueci minha senha", e são
+exatamente os dois caminhos que o auto-cadastro fechado (§0) tornou a única
+porta de entrada pra gente nova.
 
-Em **Authentication → URL Configuration**:
+Confira em **Authentication → URL Configuration** (confirmado contra a
+documentação viva do Supabase em 2026-09-20 — o caminho não mudou):
 - **Site URL:** `https://os.acxya.com.br` (o domínio novo, sem barra final)
-- **Redirect URLs:** mantenha as três linhas
+- **Redirect URLs:** as três linhas
   ```
   https://os.acxya.com.br/**
   https://<projeto>-*-<time>.vercel.app/**
@@ -134,11 +143,18 @@ Em **Authentication → URL Configuration**:
   cadastrada à mão. `*` casa um segmento, `**` casa qualquer coisa — os
   separadores são `.` e `/`.
 
+Não tenho como ler nem escrever essa config remotamente (não está no conjunto
+de ferramentas do MCP do Supabase desta sessão) — só quem confirma é você, no
+dashboard.
+
 **4. Testar o login no domínio novo** com os três papéis antes de anunciar:
 admin, consultor e um usuário `cliente` (esse último tem que cair direto em
-`/clients/<id>` e não conseguir sair de lá).
+`/clients/<id>` e não conseguir sair de lá). Em 2026-09-20: admin e cliente
+testados; **consultor ainda não** — e como o passo 3 muda o comportamento de
+magic link/recuperação, vale re-testar esses dois fluxos especificamente
+depois de confirmar o passo 3, não só o login por senha.
 
-**5. Resolver o auto-cadastro** conforme a decisão do §0.
+**5. Auto-cadastro.** ✅ já resolvido — ver §0.
 
 **6. Esvaziar `ADMIN_BOOTSTRAP_EMAILS`.** ✅ feito em 2026-09-20. Essa variável
 fazia qualquer e-mail da lista virar admin no primeiro login. Ela existia pra
@@ -155,7 +171,10 @@ não precisou mudar nada. Continua valendo a razão original: preview deploy lê
 o mesmo banco de produção até o §2.1 ser feito, e essa proteção é a barreira
 que evita preview público virar produção pública por outra porta.
 
-**8. Anunciar.** Só depois de 1–7.
+**8. Anunciar.** Só depois de 1–7. O time já sabe que a plataforma existe
+(segundo você, em 2026-09-20), mas "sabe que existe" não é o mesmo que "passo
+8 feito" — este passo é especificamente depois do login testado nos 3 papéis
+(passo 4), pra não anunciar um acesso que ainda vai quebrar pra alguém.
 
 ---
 
@@ -167,13 +186,13 @@ Estado em 2026-09-20:
 - [x] Leaked password protection ligada (§2.2)
 - [x] Bucket `anexos-demanda` criado + `SUPABASE_SERVICE_ROLE_KEY` nas env vars (§2.3)
 - [x] Retenção de backup confirmada (§2.4) — diária, 7 dias (PITR não ligado, também custo)
-- [ ] Domínio adicionado na Vercel e "Valid Configuration"
-- [ ] Site URL e Redirect URLs do Supabase atualizadas
-- [ ] Login testado nos 3 papéis, no domínio novo
-- [ ] Decisão do auto-cadastro executada
+- [x] Domínio adicionado na Vercel e "Valid Configuration" — `os.acxya.com.br`
+- [ ] Site URL e Redirect URLs do Supabase atualizadas — **confirmar, só você acessa essa tela**
+- [ ] Login testado nos 3 papéis, no domínio novo — admin e cliente ok, **falta consultor**
+- [x] Decisão do auto-cadastro executada — já estava fechado em código
 - [x] `ADMIN_BOOTSTRAP_EMAILS` vazia — **falta o redeploy pra valer**
 - [x] Vercel Authentication ligada nos previews — já era o padrão do projeto
-- [ ] Anunciado para o time
+- [ ] Anunciado para o time — time já sabe que existe, mas só formalizar depois do passo 4 fechado
 
 ## 5. Rollback
 
@@ -193,9 +212,11 @@ o que quebrou.
 
 O token da Vercel disponível nas sessões de agente segue sem enxergar o
 projeto do Squad OS (`list_projects` no time `acxya's Team` volta vazio) — os
-passos do §3 que ainda não foram executados (domínio, redirect URLs, teste de
-login, auto-cadastro) continuam escritos de memória da documentação da Vercel,
-não lidos do projeto direto. Confira ao executar.
+passos de domínio e DNS do §3 foram relatados como feitos por você, não
+verificados por mim direto no projeto. O que falta (Site URL/Redirect URLs do
+Supabase, teste de login do consultor) também não está nas ferramentas MCP
+desta sessão — configuração de Auth URL não tem tool de leitura nem escrita
+disponível aqui, e teste de login é ação humana por natureza.
 
 O que passou a estar verificado direto contra o sistema real, e não mais de
 memória: o estado do RLS de todas as tabelas, a exposição do PostgREST, o
