@@ -173,14 +173,24 @@ export function Sidebar({
           <div className="save-note" style={{ marginBottom: "0.35rem" }}>
             {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
           </div>
-          <button
-            className="btn-ghost"
-            type="button"
-            onClick={handleSignOut}
-            style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
-          >
-            Sair
-          </button>
+          <div style={{ display: "flex", gap: "0.5rem" }}>
+            <Link
+              href="/auth/nova-senha"
+              onClick={fecharMenu}
+              className="btn-ghost"
+              style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+            >
+              Alterar senha
+            </Link>
+            <button
+              className="btn-ghost"
+              type="button"
+              onClick={handleSignOut}
+              style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+            >
+              Sair
+            </button>
+          </div>
         </div>
       </Casca>
     );
@@ -272,14 +282,24 @@ export function Sidebar({
         <div className="save-note" style={{ marginBottom: "0.35rem" }}>
           {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
         </div>
-        <button
-          className="btn-ghost"
-          type="button"
-          onClick={handleSignOut}
-          style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
-        >
-          Sair
-        </button>
+        <div style={{ display: "flex", gap: "0.5rem" }}>
+          <Link
+            href="/auth/nova-senha"
+            onClick={fecharMenu}
+            className="btn-ghost"
+            style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+          >
+            Alterar senha
+          </Link>
+          <button
+            className="btn-ghost"
+            type="button"
+            onClick={handleSignOut}
+            style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+          >
+            Sair
+          </button>
+        </div>
       </div>
     </Casca>
   );
