@@ -1,0 +1,312 @@
+{
+  "cliente": "eplast",
+  "geradoEm": "2026-09-25",
+  "demandas": [
+    {
+      "entregavelId": "cmuh6d53z000104l6luzvu3zm",
+      "titulo": "Diagnosticar a qualidade dos dados comerciais na org",
+      "tipo": "projeto",
+      "texto": "A fase 1 prevê um diagnóstico de qualidade de dados antes de qualquer construção nas ondas seguintes. É preciso avaliar completude, duplicidade e consistência dos dados de contas, contatos, leads e oportunidades hoje na org, para que as automações e o scoring das ondas seguintes não herdem dados ruins.",
+      "criteriosAceite": [
+        "Existe um relatório com percentual de duplicidade em Conta, Lead e Contato.",
+        "Existe um relatório com percentual de preenchimento dos campos usados para segmentação e scoring nas ondas seguintes.",
+        "O cliente recebeu e validou as recomendações de correção priorizadas."
+      ],
+      "perguntas": [
+        "Quais objetos e campos são hoje considerados críticos para o negócio da Eplast (ex.: segmento, região, carteira do vendedor)?",
+        "Existe alguma rotina de deduplicação ou enriquecimento de dados já em uso na org?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6d53z000104l6luzvu3zm",
+      "titulo": "Estabelecer baseline dos indicadores comerciais do projeto",
+      "tipo": "projeto",
+      "texto": "Antes de iniciar as ondas de produtividade, gestão e marketing, é preciso registrar o valor atual dos indicadores que o projeto promete melhorar (ex.: tempo médio de resposta a lead, oportunidades paradas, taxa de conversão), para que o impacto das ondas seguintes possa ser medido de forma objetiva.",
+      "criteriosAceite": [
+        "Existe uma lista de indicadores comerciais com o valor atual de cada um, datado.",
+        "O cliente confirmou por escrito que esses são os indicadores usados para medir o sucesso do projeto."
+      ],
+      "perguntas": [
+        "Quais indicadores comerciais o cliente já acompanha hoje fora da Salesforce (planilha de metas, relatório do Protheus, outro) e podem servir de baseline?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6d53z000104l6luzvu3zm",
+      "titulo": "Definir arquitetura-alvo e roadmap priorizado das ondas 2 a 5",
+      "tipo": "projeto",
+      "texto": "Com o diagnóstico de qualidade de dados e a baseline em mãos, é preciso consolidar como as capacidades das ondas 2 a 5 vão se encaixar na org (arquitetura-alvo) e em que ordem cada entrega será atacada dentro do prazo do contrato, para alinhar expectativa com o cliente antes do build começar.",
+      "criteriosAceite": [
+        "Existe um documento de arquitetura-alvo aprovado pelo cliente descrevendo como as capacidades das ondas 2 a 5 se relacionam.",
+        "Existe um roadmap com sequenciamento e datas-alvo por onda, aprovado pelo cliente."
+      ],
+      "perguntas": [
+        "Há alguma dependência de outro projeto ou fornecedor (ex.: Protheus, agência de marketing) que deva condicionar a ordem das ondas?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6d53z000104l6luzvu3zm",
+      "titulo": "Colocar em produção o primeiro caso de uso de IA da fase 1",
+      "tipo": "projeto",
+      "texto": "O contrato prevê 2 casos de uso de IA em produção já na fase 1, dentro de 4 semanas. É preciso levar o primeiro caso do desenho ao uso real por usuários finais dentro desse prazo.",
+      "criteriosAceite": [
+        "O caso de uso de IA está ativo em produção e sendo usado por pelo menos um perfil de usuário definido.",
+        "O cliente validou o resultado gerado pela IA como útil para a decisão a que se propõe."
+      ],
+      "perguntas": [
+        "Qual é o primeiro caso de uso de IA contratado para esta fase? O contrato não especifica qual.",
+        "A org já tem alguma licença ou feature de IA (Einstein, Agentforce, Copilot) habilitada, ou isso precisa ser contratado à parte?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6d53z000104l6luzvu3zm",
+      "titulo": "Colocar em produção o segundo caso de uso de IA da fase 1",
+      "tipo": "projeto",
+      "texto": "Segundo caso de uso de IA previsto na fase 1, independente do primeiro, também dentro das 4 semanas contratadas.",
+      "criteriosAceite": [
+        "O segundo caso de uso de IA está ativo em produção e sendo usado por pelo menos um perfil de usuário definido.",
+        "O cliente validou o resultado gerado pela IA como útil para a decisão a que se propõe."
+      ],
+      "perguntas": [
+        "Qual é o segundo caso de uso de IA contratado para esta fase? O contrato não especifica qual."
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e034000204l6vdetxcc1",
+      "titulo": "Alertar o vendedor sobre oportunidades paradas",
+      "tipo": "projeto",
+      "texto": "Vendedores não têm hoje um sinal automático de que uma oportunidade está sem movimentação há tempo demais, o que atrasa a ação de recuperação. É preciso que o vendedor seja avisado quando uma oportunidade da sua carteira fica parada além de um limite aceitável.",
+      "criteriosAceite": [
+        "O vendedor responsável recebe um alerta quando uma oportunidade sua ultrapassa o tempo sem atividade definido como limite.",
+        "O alerta chega em um canal que o vendedor efetivamente usa no dia a dia."
+      ],
+      "perguntas": [
+        "Qual é o tempo sem atividade que caracteriza uma oportunidade parada para a Eplast?",
+        "Em que canal o vendedor deve receber o alerta (Salesforce, e-mail, WhatsApp)?",
+        "A org registra hoje algum campo de última atividade ou data do próximo passo na oportunidade que sirva de gatilho?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e034000204l6vdetxcc1",
+      "titulo": "Alertar o vendedor sobre clientes em risco",
+      "tipo": "projeto",
+      "texto": "Além de oportunidades paradas, o cliente quer identificar contas com sinais de risco (ex.: queda de recorrência de pedidos, ausência de contato) antes que o cliente saia. É preciso que o vendedor seja avisado quando uma conta da sua carteira apresenta esse padrão.",
+      "criteriosAceite": [
+        "O vendedor responsável recebe um alerta quando uma conta sua atende aos critérios de risco definidos.",
+        "O critério de risco usado no alerta foi validado com o time comercial do cliente."
+      ],
+      "perguntas": [
+        "Quais sinais definem cliente em risco para a Eplast (queda de pedidos, ausência de contato, cancelamento parcial)? Vêm do Protheus, da Salesforce, ou dos dois?",
+        "Existe hoje algum dado de histórico de pedidos disponível na org, ou isso depende da integração com o Protheus prevista na onda 5?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e034000204l6vdetxcc1",
+      "titulo": "Registrar automaticamente as interações do vendedor com o cliente",
+      "tipo": "projeto",
+      "texto": "O registro de interações (ligações, e-mails, reuniões) hoje depende do vendedor lançar manualmente, o que gera lacunas de histórico. É preciso que essas interações sejam capturadas e registradas na conta ou oportunidade correspondente sem depender de digitação manual completa.",
+      "criteriosAceite": [
+        "Uma interação realizada em um canal integrado aparece registrada na conta ou oportunidade correspondente sem o vendedor digitá-la à mão.",
+        "O histórico de interação mostra data, canal e vendedor responsável."
+      ],
+      "perguntas": [
+        "Quais canais de interação devem ser capturados (e-mail corporativo, telefonia, WhatsApp, agenda)? Algum já está integrado à org hoje?",
+        "Existe uma ferramenta de telefonia ou e-mail já usada pelo time comercial que precise ser conectada?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e034000204l6vdetxcc1",
+      "titulo": "Recomendar a próxima ação ao vendedor em cada oportunidade",
+      "tipo": "projeto",
+      "texto": "O vendedor não tem hoje uma indicação de qual é a ação mais eficaz a tomar em cada oportunidade ou conta no momento. É preciso apresentar ao vendedor uma recomendação de próxima ação baseada no contexto da oportunidade ou conta.",
+      "criteriosAceite": [
+        "Ao abrir uma oportunidade ou conta, o vendedor visualiza uma recomendação de próxima ação.",
+        "O time comercial validou que as recomendações fazem sentido para os cenários mais comuns da carteira."
+      ],
+      "perguntas": [
+        "Que tipos de ação a Eplast já reconhece como próximo passo (ligar, enviar proposta, agendar visita)? Existe uma lista hoje?",
+        "Essa recomendação depende do scoring previsto na onda 3 ou é independente dele?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e8ni000304l6fbscfwic",
+      "titulo": "Pontuar oportunidades e leads por probabilidade de conversão",
+      "tipo": "projeto",
+      "texto": "Hoje a priorização de oportunidades e leads é feita sem um critério objetivo e comum a todos os vendedores. É preciso apresentar uma pontuação que ajude a priorizar onde investir esforço comercial.",
+      "criteriosAceite": [
+        "Toda oportunidade e lead ativo exibe uma pontuação visível ao vendedor e ao gestor.",
+        "A régua de pontuação foi validada com o time comercial usando casos reais da carteira."
+      ],
+      "perguntas": [
+        "Quais critérios ou histórico a Eplast considera relevantes para essa pontuação (segmento, ticket médio, tempo de relacionamento, dados do Protheus)?",
+        "Há volume histórico suficiente na org para treinar um modelo, ou a régua será baseada em regras definidas pelo negócio?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e8ni000304l6fbscfwic",
+      "titulo": "Projetar o forecast de vendas por vendedor, time e período",
+      "tipo": "projeto",
+      "texto": "A gestão comercial precisa enxergar a projeção de fechamento de vendas de forma confiável, hoje dependente de planilha paralela. É preciso que o forecast seja calculado e visualizado a partir dos dados da org.",
+      "criteriosAceite": [
+        "O gestor visualiza o forecast projetado por vendedor e por time para o período corrente.",
+        "O forecast é recalculado quando as oportunidades mudam de estágio ou de valor."
+      ],
+      "perguntas": [
+        "Qual metodologia de forecast a Eplast já usa hoje (por estágio, por categoria de forecast, ponderado)?",
+        "O forecast precisa refletir dados de pedidos já faturados no Protheus, ou fica restrito ao pipeline de oportunidades da Salesforce?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e8ni000304l6fbscfwic",
+      "titulo": "Exibir painel de meta, carteira, pedidos e gap por vendedor e time",
+      "tipo": "projeto",
+      "texto": "A gestão não tem hoje uma visão única cruzando a meta comercial, a carteira de clientes, os pedidos realizados e o gap para bater a meta. É preciso consolidar essa visão para acompanhamento de gestão.",
+      "criteriosAceite": [
+        "O gestor visualiza, para cada vendedor ou time, a meta, a carteira, os pedidos realizados e o gap remanescente em um único painel.",
+        "O painel reflete dados atualizados dentro do intervalo acordado com o cliente."
+      ],
+      "perguntas": [
+        "Onde vive hoje a meta comercial de cada vendedor (planilha, Protheus, outro sistema)? Precisa ser importada ou cadastrada na Salesforce?",
+        "Os dados de pedidos vêm do Protheus? Essa integração já existe hoje ou depende da ampliação prevista na onda 5?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6e8ni000304l6fbscfwic",
+      "titulo": "Estabelecer governança sobre o uso de IA nas ferramentas comerciais",
+      "tipo": "projeto",
+      "texto": "Com scoring, forecast e next best action rodando sobre dados de cliente, é preciso ter regras claras de quem pode ver, ajustar e ser responsabilizado pelas saídas geradas por IA, para evitar decisão automática sem supervisão em pontos sensíveis.",
+      "criteriosAceite": [
+        "Existe um documento de governança definindo quem aprova mudanças nos critérios dos modelos ou regras de IA em uso.",
+        "Existe um processo definido para o vendedor ou gestor contestar ou corrigir uma saída de IA considerada errada."
+      ],
+      "perguntas": [
+        "A Eplast tem alguma política de uso de IA e dados já definida (comitê interno, requisito jurídico ou de LGPD) que este projeto precise seguir?",
+        "Quem, do lado do cliente, será responsável por aprovar mudanças nos critérios dos modelos de IA?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6ehda000404l6hbjhqjpa",
+      "titulo": "Segmentar a base de contatos e leads para ações de marketing",
+      "tipo": "projeto",
+      "texto": "As ações de marketing hoje não partem de uma segmentação consistente da base, o que reduz a relevância das comunicações. É preciso que a base possa ser segmentada por critérios de negócio para uso nas jornadas e no roteamento.",
+      "criteriosAceite": [
+        "É possível selecionar um grupo de contatos ou leads a partir de pelo menos um critério de negócio definido com o cliente (ex.: segmento, região, estágio do funil).",
+        "O time de marketing valida que a segmentação gerada corresponde ao público esperado em pelo menos um caso de teste."
+      ],
+      "perguntas": [
+        "Quais critérios de segmentação são prioritários para a Eplast (segmento de mercado, região, produto, histórico de compra)?",
+        "A base de contatos e leads está centralizada na Salesforce hoje ou parte dela vive em outra ferramenta de marketing?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6ehda000404l6hbjhqjpa",
+      "titulo": "Automatizar jornadas de comunicação com leads e clientes",
+      "tipo": "projeto",
+      "texto": "Hoje o acompanhamento de lead ou cliente ao longo do funil depende de ação manual do time, o que gera atraso e inconsistência na comunicação. É preciso que sequências de comunicação sejam disparadas a partir do estágio ou comportamento do lead ou cliente, sem intervenção manual.",
+      "criteriosAceite": [
+        "Um lead ou cliente que entra em um estágio definido recebe a sequência de comunicação correspondente sem intervenção manual.",
+        "O time de marketing consegue acompanhar em quantos leads ou clientes cada jornada está ativa."
+      ],
+      "perguntas": [
+        "Que ferramenta de disparo de e-mail ou comunicação a Eplast usa ou pretende usar (Marketing Cloud, Account Engagement, outra)? Isso está incluído no contrato ou é licença à parte?",
+        "Quais jornadas são prioritárias para o início (boas-vindas, nutrição, reativação)?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6ehda000404l6hbjhqjpa",
+      "titulo": "Rotear o lead automaticamente para o vendedor responsável",
+      "tipo": "projeto",
+      "texto": "A distribuição de leads novos para os vendedores hoje depende de triagem manual, o que atrasa o primeiro contato. É preciso que um lead novo seja direcionado ao vendedor certo assim que entra, sem intervenção manual.",
+      "criteriosAceite": [
+        "Um lead novo aparece atribuído ao vendedor correto dentro do tempo definido como aceitável pelo cliente, sem intervenção manual.",
+        "A regra de distribuição usada foi validada com o gestor comercial."
+      ],
+      "perguntas": [
+        "Qual é o critério de distribuição hoje (região, carteira, round robin, segmento de produto)?",
+        "Como a Eplast decide a capacidade ou disponibilidade do vendedor para receber um novo lead?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6etch000504l66u3u5gu6",
+      "titulo": "Habilitar o WhatsApp como canal de comunicação com o cliente",
+      "tipo": "projeto",
+      "texto": "A Eplast quer usar o WhatsApp como canal formal de comunicação comercial, hoje fora da Salesforce. É preciso que mensagens de WhatsApp com o cliente fiquem registradas e acessíveis a partir do contexto do cliente na org.",
+      "criteriosAceite": [
+        "O vendedor consegue enviar e receber mensagens de WhatsApp a partir do registro do cliente na org.",
+        "O histórico de conversa de WhatsApp fica associado à conta ou contato correspondente."
+      ],
+      "perguntas": [
+        "A Eplast já tem uma conta de WhatsApp Business API contratada, ou isso precisa ser providenciado antes?",
+        "Existe algum requisito de opt-in ou LGPD específico do setor para contato via WhatsApp que precise ser respeitado?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6etch000504l66u3u5gu6",
+      "titulo": "Padronizar a comunicação por e-mail com o cliente a partir da org",
+      "tipo": "projeto",
+      "texto": "A ampliação de canais da onda 5 inclui e-mail como canal governado, hoje disperso em caixas individuais dos vendedores. É preciso que o envio e o histórico de e-mail relevante fiquem centralizados no registro do cliente.",
+      "criteriosAceite": [
+        "O vendedor envia e-mail para o cliente a partir do registro do cliente na org e o e-mail fica registrado no histórico.",
+        "Templates de e-mail padronizados estão disponíveis para os cenários mais comuns definidos com o cliente."
+      ],
+      "perguntas": [
+        "O e-mail do vendedor hoje é corporativo integrável (ex.: Outlook, Gmail) ou cada um usa ferramenta própria?",
+        "Quais cenários de e-mail (proposta, cobrança, follow-up) são prioritários para padronizar primeiro?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6etch000504l66u3u5gu6",
+      "titulo": "Ampliar o fluxo de integração com o Protheus",
+      "tipo": "projeto",
+      "texto": "O contrato prevê ampliar um fluxo de integração com o Protheus já existente, para suportar as necessidades de dados das ondas anteriores (pedidos, carteira, metas). É preciso identificar o que hoje trafega entre Salesforce e Protheus e estender para cobrir o que falta.",
+      "criteriosAceite": [
+        "Está documentado o que hoje é trocado entre Salesforce e Protheus e o que passa a ser trocado depois da ampliação.",
+        "Os dados adicionais (ex.: pedidos, metas) chegam à org com a frequência acordada com o cliente."
+      ],
+      "perguntas": [
+        "Qual é a integração com o Protheus que já existe hoje (direção do fluxo, dados trafegados, frequência, tecnologia usada)? Não está descrita no briefing do cliente nem em assessment, que ainda não rodou.",
+        "Quais dados adicionais do Protheus são necessários para o painel de meta, carteira, pedidos e gap e para o forecast previstos na onda 3?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6etch000504l66u3u5gu6",
+      "titulo": "Capacitar o time da Eplast no uso das novas funcionalidades",
+      "tipo": "projeto",
+      "texto": "As ondas 2 a 5 entregam funcionalidades novas para vendedores, gestores e marketing. É preciso garantir que cada perfil impactado saiba operar o que foi entregue antes do hypercare terminar.",
+      "criteriosAceite": [
+        "Cada perfil impactado (vendedor, gestor, marketing) participou de pelo menos uma sessão de capacitação sobre as funcionalidades que usa.",
+        "O cliente confirma, ao final da capacitação, que o time consegue operar as funcionalidades sem depender do consultor."
+      ],
+      "perguntas": [
+        "Quem, do lado do cliente, é o ponto focal para agendar e validar as capacitações por perfil?",
+        "A capacitação deve ser presencial, remota ao vivo ou gravada para consulta posterior?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6etch000504l66u3u5gu6",
+      "titulo": "Documentar a solução entregue para uso e manutenção futura",
+      "tipo": "projeto",
+      "texto": "Ao final do projeto, o cliente precisa de material de referência sobre o que foi construído, para operar e evoluir a solução sem depender exclusivamente do squad que entregou.",
+      "criteriosAceite": [
+        "Existe documentação cobrindo cada capacidade entregue nas ondas 2 a 5, em linguagem acessível ao time do cliente.",
+        "O cliente confirma ter recebido e revisado a documentação antes do encerramento do hypercare."
+      ],
+      "perguntas": [
+        "Em que formato ou local o cliente prefere manter essa documentação (Squad OS, wiki interno, PDF)?"
+      ]
+    },
+    {
+      "entregavelId": "cmuh6etch000504l66u3u5gu6",
+      "titulo": "Acompanhar o cliente no período de hypercare pós-entrega",
+      "tipo": "projeto",
+      "texto": "Depois do go-live das ondas, é preciso um período de suporte reforçado para captar e corrigir rapidamente problemas de uso real antes de encerrar o projeto.",
+      "criteriosAceite": [
+        "Existe um canal e um prazo de hypercare definidos e comunicados ao cliente.",
+        "Todo problema reportado pelo cliente durante o hypercare tem registro de resposta dentro do prazo combinado."
+      ],
+      "perguntas": [
+        "Qual é a duração de hypercare esperada pelo cliente após o go-live de cada onda? O contrato não especifica.",
+        "Que canal o cliente deve usar para reportar problemas durante o hypercare?"
+      ]
+    }
+  ]
+}
