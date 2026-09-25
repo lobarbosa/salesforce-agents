@@ -393,6 +393,11 @@ export function ContratoTab({
 
             {canManage && (
               <>
+                {erro && (
+                  <div className="auth-note error" role="alert" style={{ marginBottom: "0.6rem" }}>
+                    {erro}
+                  </div>
+                )}
                 <div className="linha-nova">
                   <label className="sr-only" htmlFor="novo-entregavel">Novo entregável</label>
                   <input
@@ -414,6 +419,11 @@ export function ContratoTab({
                     disabled={gerando || entregaveis.length === 0}>
                     {gerando ? "Disparando..." : "Gerar demandas dos entregáveis"}
                   </button>
+                  {entregaveis.length === 0 && (
+                    <p className="save-note">
+                      Desabilitado até existir ao menos 1 entregável na lista acima.
+                    </p>
+                  )}
                   <p className="save-note">
                     O agente planejador quebra cada entregável nas demandas que ele vira e põe no
                     quadro, em <code className="mono">backlog</code>. Nada é materializado nem
