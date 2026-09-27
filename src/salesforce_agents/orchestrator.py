@@ -24,6 +24,11 @@ ALLOWED_TOOLS = [
     "mcp__salesforce-tools__sf_retrieve",
     "mcp__salesforce-tools__sf_query",
     "mcp__salesforce-tools__sf_org_list",
+    "mcp__salesforce-tools__qa_browser_open",
+    "mcp__salesforce-tools__qa_browser_click",
+    "mcp__salesforce-tools__qa_browser_fill",
+    "mcp__salesforce-tools__qa_browser_screenshot",
+    "mcp__salesforce-tools__qa_browser_close",
 ]
 
 # Note on permissions in headless runs: this grants whole tools (Bash included) at

@@ -102,6 +102,15 @@ Vale para o assessment e para as 7 etapas de demanda.
    produção autenticada como `sbx-acxya-dev` passava limpo pelas duas pontas. Não
    substitua nenhuma das três pelas outras: um denylist responde "esse nome parece
    produção?", e a pergunta certa sempre foi "essa org é sandbox?".
+
+   O agente `qa` testa a UI Lightning de verdade com um navegador (`qa_browser_*` em
+   `tools.py`), não com o servidor MCP oficial do Playwright. Motivo: `--allowed-origins`
+   daquele servidor é documentado como "não é um limite de segurança e não afeta
+   redirect" — não segurava o guardrail #1 sozinho. `qa_browser_open` é o único ponto
+   que decide pra onde o navegador vai, e só chega lá depois de `guarda.url_de_login`
+   fazer as mesmas perguntas 1 e 2 de cima; as ferramentas seguintes (click/fill/
+   screenshot) operam dentro da sessão já aberta e não aceitam URL. Vale o guardrail #2
+   aqui também: nunca screenshotar um registro real de cliente.
 2. **Dados reais não entram no contexto.** Nunca rodar SOQL que retorne dados de cliente
    (CPF, e-mail, telefone, valores). Só metadata e contagens agregadas. LGPD.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,

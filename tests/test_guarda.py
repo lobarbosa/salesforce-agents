@@ -105,3 +105,66 @@ def test_cache_e_por_alias():
     assert guarda.recusa_de_escrita("sbx-acxya-dev", executor=lambda _a: resposta(True)) is None
     recusa = guarda.recusa_de_escrita("sbx-acxya-qa", executor=lambda _a: resposta(False))
     assert recusa, "confirmar dev não pode liberar qa"
+
+
+def _org_open(url: str) -> FakeProc:
+    return FakeProc(stdout=json.dumps({"result": {"url": url}}))
+
+
+class _Sequencia:
+    """Um executor que devolve respostas diferentes por chamada, na ordem —
+    `url_de_login` faz duas chamadas (IsSandbox, depois `sf org open`) e os
+    dois passos precisam de respostas diferentes pra serem testados juntos."""
+
+    def __init__(self, *respostas):
+        self._restantes = list(respostas)
+
+    def __call__(self, _args):
+        return self._restantes.pop(0)
+
+
+def test_url_de_login_recusa_alias_fora_da_esteira_sem_perguntar_nada():
+    def explode(_args):
+        raise AssertionError("não deveria chamar a org com alias recusado")
+
+    url, erro = guarda.url_de_login("acxya-main", executor=explode)
+    assert url is None
+    assert erro
+
+
+def test_url_de_login_recusa_org_de_producao_sem_pedir_link():
+    chamadas = []
+
+    def rastrear(args):
+        chamadas.append(args)
+        return resposta(False)
+
+    url, erro = guarda.url_de_login("sbx-acxya-qa", executor=rastrear)
+    assert url is None
+    assert erro and "IsSandbox=false" in erro
+    assert len(chamadas) == 1, "org recusada não deve nem tentar gerar o link de login"
+
+
+def test_url_de_login_libera_e_devolve_o_link():
+    executor = _Sequencia(resposta(True), _org_open("https://acxya--sbxqa.my.salesforce.com/secur/frontdoor.jsp?sid=abc"))
+    url, erro = guarda.url_de_login("sbx-acxya-qa", executor=executor)
+    assert erro is None
+    assert url == "https://acxya--sbxqa.my.salesforce.com/secur/frontdoor.jsp?sid=abc"
+
+
+def test_url_de_login_resposta_ilegivel_do_org_open_recusa():
+    executor = _Sequencia(resposta(True), FakeProc(stdout="não é json"))
+    url, erro = guarda.url_de_login("sbx-acxya-qa", executor=executor)
+    assert url is None
+    assert erro and "sf org open" in erro
+
+
+def test_url_de_login_sem_cli_recusa():
+    def sem_cli(_args):
+        raise guarda.CliAusenteError
+
+    # IsSandbox já cacheado (positivo) pra isolar o teste no segundo passo.
+    guarda.recusa_de_escrita("sbx-acxya-qa", executor=lambda _a: resposta(True))
+    url, erro = guarda.url_de_login("sbx-acxya-qa", executor=sem_cli)
+    assert url is None
+    assert erro and "não encontrada no PATH" in erro
