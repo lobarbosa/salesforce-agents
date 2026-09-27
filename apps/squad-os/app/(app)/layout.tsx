@@ -22,10 +22,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   // role=cliente não precisa (e não deve) ver a lista dos outros clientes —
   // só o próprio, pra exibir o nome na sidebar.
+  // O financeiro não navega por clientes (ver lib/permissoes.ts).
   const clients =
     usuario.role === "cliente"
       ? await getClientById(usuario.clientId ?? "").then((c) => (c ? [c] : []))
-      : await getClients();
+      : usuario.role === "financeiro"
+        ? []
+        : await getClients();
 
   return (
     <div className="shell">

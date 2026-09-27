@@ -9,6 +9,11 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 // (Storage → New bucket → "anexos-demanda", Public desmarcado).
 export const BUCKET_ANEXOS = "anexos-demanda";
 
+// Documentos do financeiro (NF/boleto de contas a pagar e o que a contabilidade
+// envia por competência). Bucket **privado** `financeiro`, criado uma vez no
+// painel como o de anexos. Quem autoriza é a área `financeiro` (lib/area.ts).
+export const BUCKET_FINANCEIRO = "financeiro";
+
 export function serviceRoleConfigurado(): boolean {
   return Boolean(
     process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY

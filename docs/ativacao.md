@@ -9,7 +9,7 @@ Ordem importa: cada bloco depende do anterior.
 
 ---
 
-## 1. Supabase — 4 cliques e uma chave
+## 1. Supabase — alguns cliques e uma chave
 
 | # | O quê | Onde | Por quê |
 |---|---|---|---|
@@ -17,6 +17,9 @@ Ordem importa: cada bloco depende do anterior.
 | 1.2 | Copiar a **service role key** | Project Settings → API Keys | Necessária agora pra **duas** coisas: anexos e o convite de usuário novo |
 | 1.3 | Ligar **Leaked password protection** | Authentication → Policies → Password strength | Login por senha num domínio público sem isso é aceitar senha vazada conhecida |
 | 1.4 | Conferir a retenção de backup | Database → Backups | O banco virou fonte de verdade de demanda de 6 clientes |
+| 1.5 | Criar bucket `financeiro`, **Public desmarcado**, sem policy | Storage → New bucket | Documentos fiscais das contas a pagar e documentos da contabilidade. Download só por URL assinada de 60 s, depois do gate do papel financeiro/admin |
+| 1.6 | Definir `ALCADA_FINANCEIRO_ATE` na Vercel (em reais; vazio = só admin aprova) | Vercel → Environment Variables | Até quanto o papel **financeiro** aprova sozinho. Quem lança uma conta nunca aprova a própria |
+| 1.7 | Colocar `ops` em **Exposed schemas** | Project Settings → Data API | Os agentes da VM gravam execuções, KPIs e divergências no schema `ops` pelo PostgREST; os GRANTs só liberam para a service role. As telas Painel financeiro, Divergências e Saúde dos agentes leem daí e mostram "banco dos agentes não ligado" até lá |
 
 ## 2. Vercel — variáveis de ambiente
 

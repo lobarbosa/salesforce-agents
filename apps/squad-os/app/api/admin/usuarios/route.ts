@@ -5,7 +5,7 @@ import type { Role } from "@/lib/generated/prisma/client";
 import { createServiceClient, serviceRoleConfigurado } from "@/lib/supabase/storage";
 import { definirSenha } from "@/lib/supabase/senha";
 
-const ROLES: Role[] = ["admin", "consultor", "cliente"];
+const ROLES: Role[] = ["admin", "consultor", "financeiro", "cliente"];
 
 // proxy.ts já bloqueia /api/admin/** pra quem não é admin — a checagem
 // abaixo é defesa em profundidade, não o gate principal.
