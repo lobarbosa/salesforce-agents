@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import type { Client } from "@/lib/generated/prisma/client";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { createClient as createSupabaseClient } from "@/lib/supabase/client";
+import { podeVer, ROTULO_PAPEL } from "@/lib/permissoes";
 
 function hueFor(name: string) {
   let h = 0;
@@ -13,11 +14,87 @@ function hueFor(name: string) {
   return h;
 }
 
-const ROLE_LABEL: Record<CurrentUsuario["role"], string> = {
-  admin: "admin",
-  consultor: "consultor",
-  cliente: "cliente",
-};
+const ROLE_LABEL = ROTULO_PAPEL;
+
+// Telas do OS por área (lib/permissoes.ts). Só aparece o que o papel pode abrir;
+// o servidor recusa o resto mesmo que alguém digite a URL.
+const ITENS_FINANCEIRO = [
+  { href: "/financeiro", rotulo: "Painel financeiro", exato: true },
+  { href: "/financeiro/contas", rotulo: "Contas a pagar" },
+  { href: "/financeiro/aprovacoes", rotulo: "Aprovações" },
+  { href: "/financeiro/contabilidade", rotulo: "Contabilidade" },
+  { href: "/financeiro/divergencias", rotulo: "Divergências" },
+  { href: "/financeiro/horas", rotulo: "Horas por cliente" },
+] as const;
+
+function NavArea({
+  titulo,
+  itens,
+  pathname,
+  aoNavegar,
+}: {
+  titulo: string;
+  itens: readonly { href: string; rotulo: string; exato?: boolean }[];
+  pathname: string | null;
+  aoNavegar: () => void;
+}) {
+  return (
+    <nav className="nav-area" aria-label={titulo}>
+      <div className="nav-secao">{titulo}</div>
+      {itens.map((i) => {
+        const ativo = i.exato ? pathname === i.href : !!pathname?.startsWith(i.href);
+        return (
+          <Link
+            key={i.href}
+            href={i.href}
+            onClick={aoNavegar}
+            className={`nav-item${ativo ? " active" : ""}`}
+            aria-current={ativo ? "page" : undefined}
+          >
+            <span className="icon" />
+            {i.rotulo}
+          </Link>
+        );
+      })}
+    </nav>
+  );
+}
+
+function Rodape({
+  usuario,
+  aoNavegar,
+  aoSair,
+}: {
+  usuario: CurrentUsuario;
+  aoNavegar: () => void;
+  aoSair: () => void;
+}) {
+  return (
+    <div style={{ padding: "0.6rem 1.1rem", marginTop: "auto", borderTop: "1px solid var(--border)" }}>
+      <div className="save-note" style={{ marginBottom: "0.35rem" }}>
+        {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
+      </div>
+      <div style={{ display: "flex", gap: "0.5rem" }}>
+        <Link
+          href="/auth/nova-senha"
+          onClick={aoNavegar}
+          className="btn-ghost"
+          style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+        >
+          Alterar senha
+        </Link>
+        <button
+          className="btn-ghost"
+          type="button"
+          onClick={aoSair}
+          style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
+        >
+          Sair
+        </button>
+      </div>
+    </div>
+  );
+}
 
 // A marca escrita não é placeholder: é a alternativa quando `public/marca.svg`
 // não existe (ver lib/marca.ts e public/README.md). Quando o arquivo existe, o
@@ -126,7 +203,7 @@ export function Sidebar({
   // cascata — o lint pega isso). Aqui a intenção já está no evento.
   const fecharMenu = () => setMenuAberto(false);
 
-  const podeGerenciarClientes = usuario.role !== "cliente";
+  const podeGerenciarClientes = podeVer(usuario.role, "delivery");
   const filtered = clients.filter((c) => c.nome.toLowerCase().includes(query.toLowerCase()));
   const activeClientId = pathname?.startsWith("/clients/") ? pathname.split("/")[2] : null;
 
@@ -156,6 +233,17 @@ export function Sidebar({
     await supabase.auth.signOut();
     router.push("/login");
     router.refresh();
+  }
+
+  // Financeiro: só as telas da área dele, sem clientes nem demandas.
+  if (usuario.role === "financeiro") {
+    return (
+      <Casca aberta={menuAberto} aoAlternar={setMenuAberto} titulo="Squad OS">
+        <Marca src={marcaSrc} sub="financeiro" />
+        <NavArea titulo="Financeiro" itens={ITENS_FINANCEIRO} pathname={pathname} aoNavegar={fecharMenu} />
+        <Rodape usuario={usuario} aoNavegar={fecharMenu} aoSair={handleSignOut} />
+      </Casca>
+    );
   }
 
   // role=cliente: sidebar mínima — sem lista de outros clientes, sem busca,
@@ -217,6 +305,17 @@ export function Sidebar({
         <span className="icon" />
         Minhas horas
       </Link>
+      {podeVer(usuario.role, "financeiro") && (
+        <NavArea titulo="Financeiro" itens={ITENS_FINANCEIRO} pathname={pathname} aoNavegar={fecharMenu} />
+      )}
+      {podeVer(usuario.role, "operacao") && (
+        <NavArea
+          titulo="Operação"
+          itens={[{ href: "/operacao/agentes", rotulo: "Saúde dos agentes" }]}
+          pathname={pathname}
+          aoNavegar={fecharMenu}
+        />
+      )}
       {usuario.role === "admin" && (
         <Link
           href="/admin/usuarios"
@@ -287,29 +386,7 @@ export function Sidebar({
         )}
       </div>
 
-      <div style={{ padding: "0.6rem 1.1rem", borderTop: "1px solid var(--border)" }}>
-        <div className="save-note" style={{ marginBottom: "0.35rem" }}>
-          {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
-        </div>
-        <div style={{ display: "flex", gap: "0.5rem" }}>
-          <Link
-            href="/auth/nova-senha"
-            onClick={fecharMenu}
-            className="btn-ghost"
-            style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
-          >
-            Alterar senha
-          </Link>
-          <button
-            className="btn-ghost"
-            type="button"
-            onClick={handleSignOut}
-            style={{ fontSize: "0.75rem", padding: "0.35rem 0.6rem" }}
-          >
-            Sair
-          </button>
-        </div>
-      </div>
+      <Rodape usuario={usuario} aoNavegar={fecharMenu} aoSair={handleSignOut} />
     </Casca>
   );
 }

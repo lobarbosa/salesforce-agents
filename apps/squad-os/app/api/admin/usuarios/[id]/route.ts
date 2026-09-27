@@ -5,7 +5,7 @@ import type { Role } from "@/lib/generated/prisma/client";
 import { serviceRoleConfigurado } from "@/lib/supabase/storage";
 import { definirSenha } from "@/lib/supabase/senha";
 
-const ROLES: Role[] = ["admin", "consultor", "cliente"];
+const ROLES: Role[] = ["admin", "consultor", "financeiro", "cliente"];
 
 async function wouldRemoveLastAdmin(targetId: string, novoRole: Role | null): Promise<boolean> {
   const target = await prisma.usuario.findUnique({ where: { id: targetId } });

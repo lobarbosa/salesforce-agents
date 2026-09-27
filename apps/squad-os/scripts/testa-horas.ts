@@ -10,6 +10,8 @@ import {
   intervaloDaSemana,
   lerDuracao,
   parcelaDaGrade,
+  cicloDoMes,
+  situacaoConsumo,
 } from "@/lib/horas";
 
 let falhas = 0;
@@ -80,6 +82,23 @@ caso("grade nao desce abaixo do que o cronometro ja lancou", () => {
   assert.equal(parcelaDaGrade(120, 45), 75);
   assert.equal(parcelaDaGrade(45, 45), 0);
   assert.ok(parcelaDaGrade(30, 45) < 0);
+});
+
+caso("ciclo mensal e trimestral do contrato", () => {
+  const m = cicloDoMes("2026-09", "mensal");
+  assert.equal(m.desde.toISOString(), "2026-09-01T03:00:00.000Z");
+  assert.equal(m.ate.toISOString(), "2026-10-01T03:00:00.000Z");
+  const t = cicloDoMes("2026-11", "trimestral");
+  assert.equal(t.desde.toISOString(), "2026-10-01T03:00:00.000Z");
+  assert.equal(t.ate.toISOString(), "2027-01-01T03:00:00.000Z");
+  assert.equal(t.rotulo, "4º tri/2026");
+});
+
+caso("situacao do consumo segue a regua de 80%", () => {
+  assert.equal(situacaoConsumo(60 * 10, 0), "sem_teto");
+  assert.equal(situacaoConsumo(60 * 31, 40), "dentro");
+  assert.equal(situacaoConsumo(60 * 32, 40), "atencao");
+  assert.equal(situacaoConsumo(60 * 41, 40), "estourado");
 });
 
 console.log(falhas === 0 ? "\ntodos ok" : `\n${falhas} falha(s)`);

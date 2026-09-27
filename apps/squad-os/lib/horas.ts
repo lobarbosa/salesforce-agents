@@ -120,3 +120,37 @@ export function parcelaDaGrade(alvo: number, outrosLancamentos: number): number 
 export function rotuloDia(dia: string): string {
   return `${dia.slice(8, 10)}/${dia.slice(5, 7)}`;
 }
+
+// ── Horas por cliente (relatório do financeiro) ─────────────────────────────
+
+/** "YYYY-MM" válido. */
+export function ehChaveMes(s: string): boolean {
+  return /^\d{4}-(0[1-9]|1[0-2])$/.test(s);
+}
+
+/** Início e fim (exclusivo) do ciclo do contrato que contém o mês, em instantes de SP. */
+export function cicloDoMes(mes: string, ciclo: string): { desde: Date; ate: Date; rotulo: string } {
+  const [ano, m] = mes.split("-").map(Number);
+  const trimestral = ciclo.trim().toLowerCase() === "trimestral";
+  const mesInicio = trimestral ? Math.floor((m - 1) / 3) * 3 + 1 : m;
+  const meses = trimestral ? 3 : 1;
+  const fimAno = mesInicio + meses > 12 ? ano + 1 : ano;
+  const fimMes = ((mesInicio + meses - 1) % 12) + 1;
+  const p = (n: number) => String(n).padStart(2, "0");
+  return {
+    desde: new Date(`${ano}-${p(mesInicio)}-01T00:00:00${FUSO}`),
+    ate: new Date(`${fimAno}-${p(fimMes)}-01T00:00:00${FUSO}`),
+    rotulo: trimestral ? `${Math.floor((m - 1) / 3) + 1}º tri/${ano}` : `${p(m)}/${ano}`,
+  };
+}
+
+export type SituacaoConsumo = "sem_teto" | "dentro" | "atencao" | "estourado";
+
+/** Mesma régua do alerta de orçamento dos agentes: 80% acende atenção. */
+export function situacaoConsumo(minutosConsumidos: number, horasContratadas: number): SituacaoConsumo {
+  if (!horasContratadas) return "sem_teto";
+  const pct = minutosConsumidos / 60 / horasContratadas;
+  if (pct > 1) return "estourado";
+  if (pct >= 0.8) return "atencao";
+  return "dentro";
+}

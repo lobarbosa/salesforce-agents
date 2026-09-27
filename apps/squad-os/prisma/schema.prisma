@@ -47,6 +47,9 @@ enum TipoContrato {
 enum Role {
   admin
   consultor
+  // Time financeiro: contas a pagar, aprovações, contabilidade e painéis
+  // financeiros; não vê briefing, conexão nem demandas de cliente.
+  financeiro
   cliente
 }
 
@@ -418,4 +421,85 @@ model Entregavel {
 
   @@index([contratoId])
   @@map("entregaveis")
+}
+
+// ── Financeiro ──────────────────────────────────────────────────────────────
+// Contas a pagar saíram do ClickUp (27/09/2026). Os agentes da Acxya
+// (konecta-agents: payables_checker, DRE, fluxo de caixa, conciliação) leem
+// esta tabela pelo PostgREST com a service key — os nomes de coluna são
+// contrato com integrations/contas_pagar.py de lá.
+
+enum StatusConta {
+  aguardando_aprovacao
+  aprovada
+  recusada
+  paga
+  cancelada
+}
+
+model ContaPagar {
+  id         String      @id @default(cuid())
+  fornecedor String
+  descricao  String      @default("")
+  categoria  String      @default("")
+  valor      Decimal     @db.Decimal(14, 2)
+  vencimento DateTime    @db.Date
+  status     StatusConta @default(aguardando_aprovacao)
+
+  // Documento fiscal (NF/boleto) no bucket privado `financeiro`. Vazio = sem documento.
+  documentoCaminho String @default("") @map("documento_caminho")
+  documentoNome    String @default("") @map("documento_nome")
+
+  lancadoPorEmail  String    @map("lancado_por_email")
+  lancadoEm        DateTime  @default(now()) @map("lancado_em")
+  decididoPorEmail String?   @map("decidido_por_email")
+  decididoEm       DateTime? @map("decidido_em")
+  pagoPorEmail     String?   @map("pago_por_email")
+  pagoEm           DateTime? @map("pago_em")
+
+  atualizadoEm DateTime @updatedAt @map("atualizado_em")
+
+  eventos EventoConta[]
+
+  @@index([status, vencimento])
+  @@map("contas_pagar")
+}
+
+// Trilha de auditoria: uma linha por ação (lançada, aprovada, recusada, paga,
+// cancelada, documento). Só inserção — um trigger no banco recusa UPDATE e
+// DELETE (ver a migração), porque trilha de aprovação editável não é trilha.
+model EventoConta {
+  id         String     @id @default(cuid())
+  contaId    String     @map("conta_id")
+  conta      ContaPagar @relation(fields: [contaId], references: [id], onDelete: Restrict)
+  acao       String
+  porEmail   String     @map("por_email")
+  comentario String     @default("")
+  em         DateTime   @default(now())
+
+  @@index([contaId, em])
+  @@map("contas_pagar_eventos")
+}
+
+// Documentos que a contabilidade manda todo mês (balancete, DRE, guias de
+// impostos, relação de notas). Substitui a task "Contabilidade MM/AAAA" do
+// ClickUp: o accounting_reconciliation_agent (konecta-agents) lê esta tabela e
+// baixa o arquivo do bucket privado `financeiro`. Remover é lógico
+// (removido_em): o agente para de considerar o arquivo, a trilha fica.
+// Contrato de colunas combinado com o agente — não renomear sem mudar lá.
+model DocumentoContabil {
+  id               String    @id @default(cuid())
+  competencia      String // "YYYY-MM"
+  tipo             String // balancete | dre | guia_imposto | relacao_notas | outro
+  nome             String
+  caminho          String
+  mime             String    @default("")
+  tamanho          Int       @default(0)
+  enviadoPorEmail  String    @map("enviado_por_email")
+  enviadoEm        DateTime  @default(now()) @map("enviado_em")
+  removidoEm       DateTime? @map("removido_em")
+  removidoPorEmail String?   @map("removido_por_email")
+
+  @@index([competencia])
+  @@map("documentos_contabeis")
 }

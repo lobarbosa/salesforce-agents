@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { getCurrentUsuario } from "@/lib/current-user";
-import { canManageClientData } from "@/lib/auth";
+import { usuarioDaArea } from "@/lib/area";
 import { minhaSemana } from "@/lib/horas-data";
 import {
   chaveDia,
@@ -22,9 +20,8 @@ export default async function MinhasHorasPage({
 }: {
   searchParams: Promise<{ semana?: string }>;
 }) {
-  const usuario = await getCurrentUsuario();
-  // proxy.ts já barra o papel `cliente` aqui; isto é defesa em profundidade.
-  if (!usuario || !canManageClientData(usuario.role)) notFound();
+  // proxy.ts já barra quem não é do time de entrega; isto é o gate de verdade.
+  const usuario = await usuarioDaArea("delivery");
 
   const hoje = chaveDia(new Date());
   const pedido = (await searchParams).semana ?? "";

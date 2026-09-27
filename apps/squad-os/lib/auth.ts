@@ -35,5 +35,8 @@ export function canManageClientData(role: Role): boolean {
 
 export function canAccessClient(role: Role, usuarioClientId: string | null, clientId: string): boolean {
   if (role === "cliente") return usuarioClientId === clientId;
+  // O financeiro trabalha nas telas de /financeiro; briefing, conexão e
+  // demandas de cliente não são dele (ver lib/permissoes.ts).
+  if (role === "financeiro") return false;
   return true;
 }

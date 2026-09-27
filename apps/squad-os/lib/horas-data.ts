@@ -2,6 +2,9 @@ import { prisma } from "@/lib/prisma";
 import {
   ancoraDoDia,
   chaveDia,
+  cicloDoMes,
+  situacaoConsumo,
+  type SituacaoConsumo,
   diasDaSemana,
   FUSO,
   intervaloDaSemana,
@@ -170,4 +173,92 @@ export async function gravarCelula(p: {
     }
     return { total: p.minutos };
   });
+}
+
+// ── Horas por cliente ───────────────────────────────────────────────────────
+
+
+export interface HorasDoCliente {
+  clientId: string;
+  clientNome: string;
+  tipo: "ams" | "projeto" | null;
+  horasContratadas: number;
+  ciclo: string;
+  rotuloCiclo: string;
+  /** Minutos no ciclo do contrato (AMS) ou no mês (projeto / sem contrato). */
+  minutos: number;
+  situacao: SituacaoConsumo;
+  porPessoa: { autor: string; minutos: number }[];
+  porDemanda: { code: string; titulo: string; minutos: number }[];
+}
+
+/**
+ * Consumido × contratado por cliente, no mês escolhido — o relatório "Summary"
+ * do Clockify, agrupado por cliente e aberto por pessoa e por demanda.
+ * AMS usa o ciclo do contrato (mensal ou trimestral que contém o mês); projeto
+ * e cliente sem contrato mostram as horas do mês, sem teto (projeto se mede
+ * por entregável, na aba Contrato).
+ */
+export async function horasPorCliente(mes: string): Promise<HorasDoCliente[]> {
+  const clientes = await prisma.client.findMany({
+    select: {
+      id: true,
+      nome: true,
+      contrato: { select: { tipo: true, horasContratadas: true, cicloHoras: true } },
+    },
+    orderBy: { nome: "asc" },
+  });
+
+  const resultado: HorasDoCliente[] = [];
+  for (const c of clientes) {
+    const ams = c.contrato?.tipo === "ams";
+    const ciclo = ams ? c.contrato!.cicloHoras : "mensal";
+    const janela = cicloDoMes(mes, ciclo);
+    const registros = await prisma.registroTempo.findMany({
+      where: {
+        demanda: { clientId: c.id },
+        fimEm: { not: null },
+        inicioEm: { gte: janela.desde, lt: janela.ate },
+      },
+      select: { autor: true, minutos: true, demanda: { select: { code: true, titulo: true } } },
+    });
+
+    const pessoas = new Map<string, number>();
+    const demandas = new Map<string, { code: string; titulo: string; minutos: number }>();
+    let total = 0;
+    for (const r of registros) {
+      const m = r.minutos ?? 0;
+      total += m;
+      pessoas.set(r.autor, (pessoas.get(r.autor) ?? 0) + m);
+      const d = demandas.get(r.demanda.code) ?? { ...r.demanda, minutos: 0 };
+      d.minutos += m;
+      demandas.set(r.demanda.code, d);
+    }
+    const contratadas = ams ? c.contrato!.horasContratadas : 0;
+    resultado.push({
+      clientId: c.id,
+      clientNome: c.nome,
+      tipo: c.contrato?.tipo ?? null,
+      horasContratadas: contratadas,
+      ciclo,
+      rotuloCiclo: janela.rotulo,
+      minutos: total,
+      situacao: situacaoConsumo(total, contratadas),
+      porPessoa: [...pessoas.entries()].map(([autor, minutos]) => ({ autor, minutos })).sort((a, b) => b.minutos - a.minutos),
+      porDemanda: [...demandas.values()].sort((a, b) => b.minutos - a.minutos),
+    });
+  }
+  // Quem pede atenção primeiro: estourado, atenção, dentro, sem teto; depois por horas.
+  const ordem: Record<SituacaoConsumo, number> = { estourado: 0, atencao: 1, dentro: 2, sem_teto: 3 };
+  return resultado.sort((a, b) => ordem[a.situacao] - ordem[b.situacao] || b.minutos - a.minutos);
+}
+
+/** Minutos lançados pela pessoa na semana corrente (para o Início). */
+export async function minutosDaSemana(email: string, segunda: string): Promise<number> {
+  const { desde, ate } = intervaloDaSemana(segunda);
+  const r = await prisma.registroTempo.aggregate({
+    where: { autorEmail: email, fimEm: { not: null }, inicioEm: { gte: desde, lt: ate } },
+    _sum: { minutos: true },
+  });
+  return r._sum.minutos ?? 0;
 }

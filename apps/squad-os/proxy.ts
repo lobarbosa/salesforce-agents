@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { resolveUsuario } from "@/lib/auth";
+import { areaDaRota, inicioDo, podeVer } from "@/lib/permissoes";
 import { mensagemDeConfiguracao, variaveisFaltando } from "@/lib/env";
 
 // Next.js 16 renomeou middleware.ts -> proxy.ts (mesma função, novo nome —
@@ -21,6 +22,11 @@ const PUBLIC_PATHS = ["/login", "/auth/callback", "/api/sync"];
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
+  // Identidade só vem do proxy: header x-squad-os-* enviado pelo browser é
+  // descartado em toda rota (inclusive as públicas, que não o reescrevem).
+  for (const nome of [...request.headers.keys()]) {
+    if (nome.toLowerCase().startsWith("x-squad-os-")) request.headers.delete(nome);
+  }
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
 
   // Antes de qualquer outra coisa: um proxy que lança derruba **toda** rota,
@@ -120,32 +126,29 @@ export async function proxy(request: NextRequest) {
     return redirectTo("/login", { error: "not_allowed" });
   }
 
-  const homeFor = (id: string | null) => (usuario.role === "cliente" ? `/clients/${id}` : "/");
+  const inicio = inicioDo(usuario.role, usuario.clientId);
 
   if (isPublic) {
-    return redirectTo(homeFor(usuario.clientId));
+    return redirectTo(inicio);
   }
 
-  // /admin é só do admin.
-  const isAdminRoute =
-    pathname === "/admin" || pathname.startsWith("/admin/") || pathname.startsWith("/api/admin");
-  if (isAdminRoute && usuario.role !== "admin") {
-    return redirectTo(homeFor(usuario.clientId));
+  // Áreas por papel (lib/permissoes.ts): /financeiro, /operacao, /admin, /horas.
+  // Isto é navegação; páginas e APIs checam de novo (o gate de verdade).
+  const area = areaDaRota(pathname);
+  if (area && !podeVer(usuario.role, area)) {
+    if (ehApi) return NextResponse.json({ error: "sem permissão" }, { status: 403 });
+    return redirectTo(inicio);
   }
 
-  // role=cliente só enxerga o próprio cliente — sem Visão Geral cross-cliente,
-  // sem navegar pra outro /clients/<id>.
-  if (usuario.role === "cliente") {
+  // Visão Geral e clientes são do time de entrega: o cliente só vê o próprio
+  // cliente; o financeiro não vê briefing nem demandas.
+  if (usuario.role === "cliente" || usuario.role === "financeiro") {
     if (pathname === "/") {
-      return redirectTo(`/clients/${usuario.clientId}`);
-    }
-    // Timesheet é instrumento interno do time (a API também recusa: somenteDelivery).
-    if (pathname === "/horas" || pathname.startsWith("/horas/")) {
-      return redirectTo(`/clients/${usuario.clientId}`);
+      return redirectTo(inicio);
     }
     const clientMatch = pathname.match(/^\/clients\/([^/]+)/);
-    if (clientMatch && clientMatch[1] !== usuario.clientId) {
-      return redirectTo(`/clients/${usuario.clientId}`);
+    if (clientMatch && (usuario.role === "financeiro" || clientMatch[1] !== usuario.clientId)) {
+      return redirectTo(inicio);
     }
   }
 

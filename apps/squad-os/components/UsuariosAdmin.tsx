@@ -109,6 +109,7 @@ export function UsuariosAdmin({
             <select value={role} onChange={(e) => setRole(e.target.value as Role)}>
               <option value="admin">admin</option>
               <option value="consultor">consultor</option>
+              <option value="financeiro">financeiro</option>
               <option value="cliente">cliente</option>
             </select>
           </div>
@@ -270,6 +271,7 @@ function UsuarioRow({
       >
         <option value="admin">admin</option>
         <option value="consultor">consultor</option>
+        <option value="financeiro">financeiro</option>
         <option value="cliente">cliente</option>
       </select>
 
