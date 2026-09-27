@@ -115,3 +115,45 @@ def recusa_de_escrita(target_org: str, *, executor=None) -> str | None:
 
     _SANDBOX_CONFIRMADA.add(alias)
     return None
+
+
+def url_de_login(target_org: str, *, executor=None) -> tuple[str | None, str | None]:
+    """Perguntas 1 e 2 (via `recusa_de_escrita`), e só então um link de login de
+    uso único pra essa org.
+
+    Existe pra dar a quem abre um navegador (QA testando Lightning) um destino
+    que já nasceu confirmado como sandbox, em vez de expor `sf org open` — ou
+    pior, uma URL crua — como ferramenta de agente. Nada que use este link
+    escolhe pra onde vai; só o que a guarda já aprovou chega a virar link.
+
+    Devolve `(url, None)` quando libera, `(None, motivo)` quando recusa —
+    mesmo formato de retorno duplo que o resto do módulo evita porque
+    normalmente basta saber "recusado ou não"; aqui quem chama também precisa
+    do valor, então os dois lados vêm explícitos em vez de um None ambíguo.
+    """
+    recusa = recusa_de_escrita(target_org, executor=executor)
+    if recusa:
+        return None, recusa
+
+    alias = target_org.strip()
+    run = executor or sf
+    try:
+        proc = run(["org", "open", "--target-org", alias, "--url-only", "--json"])
+    except CliAusenteError:
+        return None, (
+            "Salesforce CLI ('sf') não encontrada no PATH — não dá pra gerar o link de login."
+        )
+
+    try:
+        url = json.loads(proc.stdout or "{}")["result"]["url"]
+    except (json.JSONDecodeError, KeyError, TypeError):
+        erro = (proc.stderr or proc.stdout or "").strip()[:400]
+        return None, (
+            f"Não consegui gerar o link de login pra {alias} (sf org open não respondeu o "
+            f"esperado). Saída: {erro or 'vazia'}"
+        )
+
+    if not url:
+        return None, f"sf org open respondeu sem URL pra {alias}."
+
+    return url, None

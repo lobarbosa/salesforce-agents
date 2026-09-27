@@ -133,6 +133,14 @@ jobs:
       - name: Instalar dependências Python
         run: pip install -e .
 
+      # Só a etapa qa usa navegador (agente qa, ferramentas qa_browser_*, ver
+      # tools.py) — instalar Chromium nas outras etapas só deixaria o job mais
+      # lento à toa. `--with-deps` traz as libs de sistema que faltam num
+      # runner limpo do Actions.
+      - name: Instalar Chromium (etapa qa)
+        if: env.AMBIENTE == 'qa'
+        run: playwright install --with-deps chromium
+
       - name: Autenticar Salesforce via JWT
         run: |
           if [ -z "${{ secrets.SF_CLIENT_ID }}" ]; then

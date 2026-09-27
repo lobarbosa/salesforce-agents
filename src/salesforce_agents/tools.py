@@ -1,20 +1,33 @@
 """Ferramentas custom (MCP in-process) usadas pelos agentes especialistas Salesforce.
 
-Duas famílias de ferramentas:
+Três famílias de ferramentas:
   - spec_read: leitura de anexos de uma demanda (md, pdf, docx) em texto plano. A
     própria demanda (demandas/<ID>/demanda.md) é lida com a ferramenta Read padrão;
     isso serve para documentos complementares referenciados na demanda.
   - sf_*: wrapper fino sobre a Salesforce CLI (`sf`) para orgs autenticados por alias
     (um alias por cliente, ver clients/<nome>/README.md).
+  - qa_browser_*: navegador (Playwright) pra testar a UI Lightning de verdade, usado
+    pelo agente `qa`. Só `qa_browser_open` decide pra onde o navegador vai, e só
+    depois de passar por `guarda.url_de_login` — as mesmas perguntas 1 e 2 de
+    `sf_deploy` (alias tem a forma da esteira? a org confirma ser sandbox?). As
+    ferramentas seguintes (click/fill/screenshot/close) operam só dentro da sessão já
+    aberta: nenhuma delas aceita URL. Isso importa porque `--allowed-origins` do
+    Playwright MCP oficial é documentado como "não é um limite de segurança e não
+    afeta redirect" — não dava pra confiar nisso sozinho pra manter o guardrail #1,
+    por isso este pacote não usa o servidor externo e embrulha o Playwright do
+    mesmo jeito que embrulha o `sf`.
 """
 
 from __future__ import annotations
 
+import base64
+import uuid
 from pathlib import Path
+from urllib.parse import quote
 
 from claude_agent_sdk import create_sdk_mcp_server, tool
 
-from .guarda import CliAusenteError, recusa_de_alias, recusa_de_escrita, sf
+from .guarda import CliAusenteError, recusa_de_alias, recusa_de_escrita, sf, url_de_login
 
 
 def _text_result(text: str) -> dict:
@@ -134,8 +147,169 @@ async def sf_org_list(_args: dict) -> dict:
     return _run_sf(["org", "list", "--json"])
 
 
+# Sessões de navegador abertas por qa_browser_open, vivas pelo tempo do processo do
+# job — que é a vida inteira de um job de CI, então não precisa sobreviver a mais
+# que isso. Chave é o session_id devolvido ao agente; valor é o trio que precisa ser
+# fechado (Playwright, Browser, Page).
+_SESSOES: dict[str, tuple] = {}
+
+# Salesforce Lightning mantém conexão (long-polling/websocket) praticamente sempre
+# aberta — esperar "networkidle" nela tende a estourar timeout à toa. "load" (DOM +
+# recursos da própria navegação carregados) é o que um teste de UI aqui realmente
+# precisa.
+_LIMITE_TEXTO = 8_000
+
+
+async def _texto_visivel(page) -> str:
+    try:
+        texto = (await page.inner_text("body")).strip()
+    except Exception:  # noqa: BLE001 — extrair texto nunca deve derrubar a ferramenta
+        return "(não consegui extrair o texto da página)"
+    if len(texto) > _LIMITE_TEXTO:
+        return texto[:_LIMITE_TEXTO] + f"\n... (cortado — {len(texto)} caracteres no total)"
+    return texto
+
+
+@tool(
+    "qa_browser_open",
+    "Abre uma sessão de navegador autenticada na sandbox do cliente pra testar a UI "
+    "Lightning de verdade. Recusa se o alias não passar no guardrail de sandbox — a mesma "
+    "checagem de sf_deploy (forma do alias + a org confirmar IsSandbox). 'path' é a rota "
+    "Lightning relativa (ex.: '/lightning/o/Account/list') pra onde o login termina; sem "
+    "isso, cai na Home. Devolve um session_id pra usar em qa_browser_click/qa_browser_fill/"
+    "qa_browser_screenshot/qa_browser_close, e o texto visível da página inicial. Feche a "
+    "sessão com qa_browser_close ao terminar — não deixe navegador aberto.",
+    {"target_org": str, "path": str},
+)
+async def qa_browser_open(args: dict) -> dict:
+    url, erro = url_de_login(args["target_org"])
+    if erro:
+        return _text_result(erro)
+
+    caminho = args.get("path") or "/"
+    if not caminho.startswith("/"):
+        caminho = f"/{caminho}"
+    separador = "&" if "?" in url else "?"
+    destino = f"{url}{separador}retURL={quote(caminho, safe='')}"
+
+    try:
+        from playwright.async_api import async_playwright
+    except ImportError:
+        return _text_result(
+            "Pacote 'playwright' não instalado neste ambiente. Instale com "
+            "'pip install playwright' e 'playwright install --with-deps chromium' antes de "
+            "testar a UI — ou, se a sandbox de QA ainda não conecta, use o roteiro escrito "
+            "pra humano executar em vez desta ferramenta."
+        )
+
+    pw = await async_playwright().start()
+    try:
+        browser = await pw.chromium.launch(headless=True)
+        page = await browser.new_page()
+        await page.goto(destino, wait_until="load", timeout=30_000)
+    except Exception as exc:  # noqa: BLE001 — reporta e fecha, nunca deixa processo pendurado
+        await pw.stop()
+        return _text_result(f"Não consegui abrir a sessão em {args['target_org']}: {exc}")
+
+    session_id = uuid.uuid4().hex[:12]
+    _SESSOES[session_id] = (pw, browser, page)
+    titulo = await page.title()
+    texto = await _texto_visivel(page)
+    return _text_result(
+        f"[OK] sessão {session_id} aberta em {page.url}\ntítulo: {titulo}\n\n{texto}"
+    )
+
+
+@tool(
+    "qa_browser_click",
+    "Clica no primeiro elemento com este texto visível, na sessão aberta por "
+    "qa_browser_open. Devolve o texto da página depois do clique.",
+    {"session_id": str, "texto": str},
+)
+async def qa_browser_click(args: dict) -> dict:
+    sessao = _SESSOES.get(args["session_id"])
+    if not sessao:
+        return _text_result(f"Sessão {args['session_id']!r} não existe ou já foi fechada.")
+    _, _, page = sessao
+    try:
+        await page.get_by_text(args["texto"], exact=False).first.click(timeout=10_000)
+        await page.wait_for_load_state("load", timeout=10_000)
+    except Exception as exc:  # noqa: BLE001
+        return _text_result(f"Não consegui clicar em {args['texto']!r}: {exc}")
+    return _text_result(await _texto_visivel(page))
+
+
+@tool(
+    "qa_browser_fill",
+    "Preenche o campo cujo rótulo (label) bate com este texto, na sessão aberta por "
+    "qa_browser_open.",
+    {"session_id": str, "rotulo": str, "valor": str},
+)
+async def qa_browser_fill(args: dict) -> dict:
+    sessao = _SESSOES.get(args["session_id"])
+    if not sessao:
+        return _text_result(f"Sessão {args['session_id']!r} não existe ou já foi fechada.")
+    _, _, page = sessao
+    try:
+        campo = page.get_by_label(args["rotulo"], exact=False).first
+        await campo.fill(args["valor"], timeout=10_000)
+    except Exception as exc:  # noqa: BLE001
+        return _text_result(f"Não consegui preencher {args['rotulo']!r}: {exc}")
+    return _text_result(f"[OK] {args['rotulo']!r} preenchido com {args['valor']!r}.")
+
+
+@tool(
+    "qa_browser_screenshot",
+    "Tira um screenshot da sessão aberta por qa_browser_open — evidência pra 05-testes.md. "
+    "Nunca screenshote uma tela com dado real de cliente (guardrail #2 do CLAUDE.md): use só "
+    "registros de teste que você mesmo criou, nunca abra um Contact/Account real pra olhar.",
+    {"session_id": str},
+)
+async def qa_browser_screenshot(args: dict) -> dict:
+    sessao = _SESSOES.get(args["session_id"])
+    if not sessao:
+        return _text_result(f"Sessão {args['session_id']!r} não existe ou já foi fechada.")
+    _, _, page = sessao
+    try:
+        png = await page.screenshot(type="png")
+    except Exception as exc:  # noqa: BLE001
+        return _text_result(f"Não consegui capturar o screenshot: {exc}")
+    return {
+        "content": [
+            {"type": "image", "data": base64.b64encode(png).decode("ascii"), "mimeType": "image/png"}
+        ]
+    }
+
+
+@tool(
+    "qa_browser_close",
+    "Fecha a sessão de navegador aberta por qa_browser_open e libera os recursos. Sempre "
+    "chame ao terminar de testar — mesmo depois de um erro.",
+    {"session_id": str},
+)
+async def qa_browser_close(args: dict) -> dict:
+    sessao = _SESSOES.pop(args["session_id"], None)
+    if not sessao:
+        return _text_result(f"Sessão {args['session_id']!r} não existe ou já estava fechada.")
+    pw, browser, _ = sessao
+    await browser.close()
+    await pw.stop()
+    return _text_result(f"[OK] sessão {args['session_id']} fechada.")
+
+
 salesforce_tools_server = create_sdk_mcp_server(
     name="salesforce-tools",
     version="0.1.0",
-    tools=[spec_read, sf_deploy, sf_retrieve, sf_query, sf_org_list],
+    tools=[
+        spec_read,
+        sf_deploy,
+        sf_retrieve,
+        sf_query,
+        sf_org_list,
+        qa_browser_open,
+        qa_browser_click,
+        qa_browser_fill,
+        qa_browser_screenshot,
+        qa_browser_close,
+    ],
 )
