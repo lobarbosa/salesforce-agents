@@ -47,6 +47,7 @@ export async function POST(
         inicioEm: new Date(agora.getTime() - minutos * 60_000),
         fimEm: agora,
         minutos,
+        origem: "manual",
       },
     });
     return NextResponse.json(registro, { status: 201 });
@@ -72,6 +73,7 @@ export async function POST(
       autorEmail: usuario.email,
       descricao,
       inicioEm: agora,
+      origem: "cronometro",
     },
   });
   return NextResponse.json(registro, { status: 201 });

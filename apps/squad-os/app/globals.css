@@ -805,3 +805,64 @@ table.sla input {
      desfaz — a página inteira fica deslocada depois de digitar uma busca. */
   input, select, textarea { font-size: max(16px, 1em); }
 }
+
+/* ── Minhas horas (timesheet semanal) ─────────────────────────────────────
+   Padrão Clockify/Tempo: linhas = demandas, colunas = dias. A tabela rola
+   dentro do próprio cartão (a página nunca rola na horizontal) e a coluna da
+   demanda fica presa à esquerda, para o telefone não perder o contexto.
+   "Hoje" e fim de semana vão por texto/estrutura além da cor. */
+.semana-nav { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.semana-nav .desabilitado { opacity: 0.5; cursor: default; }
+.grade-horas-wrap {
+  /* position: relative prende os textos .sr-only (absolute) dentro da área que
+     rola; sem isso eles escapam e alargam a página inteira no telefone. */
+  position: relative; overflow-x: auto; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; margin-bottom: 1rem;
+}
+.grade-horas { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 0.85rem; }
+.grade-horas th, .grade-horas td { border-bottom: 1px solid var(--border); padding: 0.35rem 0.4rem; text-align: center; }
+.grade-horas thead th { font-weight: 600; color: var(--text-muted); font-size: 0.75rem; }
+.grade-horas .gh-data { display: block; font-weight: 400; font-family: var(--mono); }
+.grade-horas .gh-demanda {
+  text-align: left; position: sticky; left: 0; z-index: 1; background: var(--surface);
+  min-width: 220px; max-width: 280px; font-weight: 400;
+}
+.grade-horas thead .gh-demanda, .grade-horas tfoot .gh-demanda { font-weight: 600; }
+.grade-horas .gh-link { color: var(--text); text-decoration: none; display: block; }
+.grade-horas .gh-link:hover { color: var(--accent); text-decoration: underline; }
+.grade-horas .gh-cliente { display: block; font-size: 0.72rem; color: var(--text-muted); }
+.grade-horas .fds { background: var(--surface-alt); }
+.grade-horas th.hoje { color: var(--accent); }
+.grade-horas td.hoje { background: color-mix(in srgb, var(--accent-soft) 45%, transparent); }
+.grade-horas .num, .grade-horas input { font-variant-numeric: tabular-nums; font-family: var(--mono); }
+.grade-horas .gh-total { font-weight: 600; white-space: nowrap; }
+.grade-horas .gh-semana { color: var(--accent); }
+.grade-horas tfoot td, .grade-horas tfoot th { border-bottom: none; background: var(--surface-alt); }
+.grade-horas .gh-celula { position: relative; min-width: 72px; }
+.grade-horas .gh-celula input {
+  width: 100%; min-height: 40px; text-align: center; border: 1px solid transparent;
+  border-radius: 6px; background: transparent; color: var(--text); font-size: 0.85rem;
+}
+.grade-horas .gh-celula input:hover:not(:disabled) { border-color: var(--border-strong); }
+.grade-horas .gh-celula input:focus-visible { border-color: var(--accent); background: var(--surface); }
+.grade-horas .gh-celula input:disabled { color: var(--text-muted); cursor: not-allowed; }
+.grade-horas .gh-celula.salvando input { opacity: 0.6; }
+.grade-horas .gh-celula.erro input { border-color: var(--danger); background: var(--danger-soft); }
+.grade-horas .gh-ok { position: absolute; top: 2px; right: 4px; color: var(--success); font-size: 0.7rem; }
+.grade-horas .gh-erro {
+  display: block; margin-top: 0.2rem; color: var(--danger); font-size: 0.68rem;
+  text-align: left; max-width: 180px; white-space: normal;
+}
+.grade-horas .gh-vazio { color: var(--text-muted); padding: 1.5rem; }
+.grade-horas-add { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.grade-horas-add label { font-size: 0.82rem; color: var(--text-muted); }
+.grade-horas-add select {
+  min-height: 40px; min-width: 260px; max-width: 100%; border: 1px solid var(--border);
+  border-radius: 7px; background: var(--surface); color: var(--text); padding: 0 0.5rem;
+}
+@media (max-width: 860px) {
+  .grade-horas .gh-demanda { min-width: 160px; max-width: 180px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .grade-horas .gh-celula input { transition: border-color 150ms ease, background 150ms ease; }
+}

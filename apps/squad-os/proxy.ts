@@ -139,6 +139,10 @@ export async function proxy(request: NextRequest) {
     if (pathname === "/") {
       return redirectTo(`/clients/${usuario.clientId}`);
     }
+    // Timesheet é instrumento interno do time (a API também recusa: somenteDelivery).
+    if (pathname === "/horas" || pathname.startsWith("/horas/")) {
+      return redirectTo(`/clients/${usuario.clientId}`);
+    }
     const clientMatch = pathname.match(/^\/clients\/([^/]+)/);
     if (clientMatch && clientMatch[1] !== usuario.clientId) {
       return redirectTo(`/clients/${usuario.clientId}`);

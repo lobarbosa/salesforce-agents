@@ -324,9 +324,17 @@ model RegistroTempo {
   fimEm    DateTime? @map("fim_em")
   minutos  Int?
 
+  // De onde veio: "cronometro", "manual" (no card da demanda) ou "grade" (tela
+  // Minhas horas). A grade guarda UMA linha por pessoa+demanda+dia e só edita
+  // essa linha — nunca apaga cronômetro ou lançamento manual de ninguém.
+  // Linhas anteriores a esta coluna ficam "manual", que é o comportamento
+  // correto para elas: a grade não as toca.
+  origem String @default("manual")
+
   criadoEm DateTime @default(now()) @map("criado_em")
 
   @@index([demandaId])
+  @@index([autorEmail, inicioEm])
   @@map("registros_tempo")
 }
 

@@ -208,6 +208,15 @@ export function Sidebar({
         <span className="icon" />
         Visão Geral
       </Link>
+      <Link
+        href="/horas"
+        onClick={fecharMenu}
+        className={`nav-item${pathname?.startsWith("/horas") ? " active" : ""}`}
+        aria-current={pathname?.startsWith("/horas") ? "page" : undefined}
+      >
+        <span className="icon" />
+        Minhas horas
+      </Link>
       {usuario.role === "admin" && (
         <Link
           href="/admin/usuarios"
