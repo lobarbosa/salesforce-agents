@@ -113,6 +113,18 @@ Vale para o assessment e para as 7 etapas de demanda.
    aqui também: nunca screenshotar um registro real de cliente.
 2. **Dados reais não entram no contexto.** Nunca rodar SOQL que retorne dados de cliente
    (CPF, e-mail, telefone, valores). Só metadata e contagens agregadas. LGPD.
+
+   O copiloto do cliente (`apps/squad-os/app/api/copilot/chat`, `lib/copilot/`) segue este
+   guardrail por construção, não por instrução: ele não tem nenhuma ferramenta que fale com
+   Salesforce — só lê do mesmo Postgres que a aba do cliente já expõe (demandas no
+   vocabulário `ESTADOS_CLIENTE`, contrato somente leitura), nas mesmas funções de
+   `lib/data.ts`/`lib/contrato.ts` que a UI usa. `criar_demanda` é a única ferramenta de
+   escrita, e chama a mesma `criarDemanda()` que a API — sempre em `backlog`, nunca aprova
+   gate nem materializa. Toda ferramenta é fechada por closure sobre o `clientId` da sessão
+   (nunca um argumento que o modelo escolhe); mesmo que a pessoa injete instrução via
+   conversa, não existe caminho pra pedir dado de outro cliente — a pergunta nunca chega a
+   existir pra ele. Aprovação de gate continua exigindo o fluxo de dois passos na tela; o
+   copiloto explicitamente recusa "aprovar" pelo chat.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
    confirme via `sf` CLI contra a org. Se não confirmou, declare a incerteza.
 4. **Git é obrigatório.** Todo build acontece em branch `feature/<DEMAND-ID>`. Nada é

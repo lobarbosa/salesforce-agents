@@ -9,6 +9,7 @@ import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
 import { ContratoTab } from "@/components/ContratoTab";
 import { DemandasTab } from "@/components/DemandasTab";
+import { Copiloto } from "@/components/Copiloto";
 
 type Tab = "conhecimento" | "contrato" | "conexao" | "demandas";
 
@@ -80,6 +81,10 @@ export function ClientDetail({
             canManage={false}
           />
         )}
+
+        {/* Ícone flutuante, não aba — fica alcançável em Demandas ou
+            Contrato sem trocar de lugar (ver Copiloto.tsx). */}
+        <Copiloto clientNome={client.nome} />
       </>
     );
   }

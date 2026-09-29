@@ -1,8 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { prisma } from "@/lib/prisma";
-import { generateDemandCode } from "@/lib/slug";
 import { getCurrentUsuario } from "@/lib/current-user";
-import { canAccessClient } from "@/lib/auth";
+import { criarDemanda } from "@/lib/demandas-server";
 
 export async function POST(request: NextRequest) {
   const usuario = await getCurrentUsuario();
@@ -11,39 +9,16 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const clientId = String(body.clientId ?? "");
-  const titulo = String(body.titulo ?? "").trim();
-  if (!clientId || !titulo) {
-    return NextResponse.json({ error: "clientId e titulo são obrigatórios" }, { status: 400 });
-  }
-  if (!canAccessClient(usuario.role, usuario.clientId, clientId)) {
-    return NextResponse.json({ error: "sem permissão" }, { status: 403 });
-  }
-
-  const client = await prisma.client.findUnique({ where: { id: clientId } });
-  if (!client) {
-    return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
-  }
-
-  // Autor sai da sessão, não do corpo: além de poupar o preenchimento manual,
-  // impede que quem chama a API registre a demanda em nome de outra pessoa.
-  // `nome` é opcional em `usuarios` (default ""), daí o fallback pro e-mail.
-  const autor = usuario.nome.trim() || usuario.email;
-  const tipo = body.tipo === "projeto" ? "projeto" : "sustentacao";
-  const code = await generateDemandCode(clientId, client.slug);
-
-  const demanda = await prisma.demanda.create({
-    data: {
-      clientId,
-      code,
-      titulo,
-      tipo,
-      texto: String(body.texto ?? "").trim(),
-      autor,
-      status: "backlog",
-      historico: [{ de: null, para: "backlog", autor, em: new Date().toISOString() }],
-    },
+  const resultado = await criarDemanda({
+    usuario,
+    clientId: String(body.clientId ?? ""),
+    titulo: String(body.titulo ?? ""),
+    texto: String(body.texto ?? ""),
+    tipo: body.tipo,
   });
+  if (!resultado.ok) {
+    return NextResponse.json({ error: resultado.error }, { status: resultado.status });
+  }
 
-  return NextResponse.json(demanda, { status: 201 });
+  return NextResponse.json(resultado.demanda, { status: 201 });
 }
