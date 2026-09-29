@@ -9,8 +9,9 @@ import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
 import { ContratoTab } from "@/components/ContratoTab";
 import { DemandasTab } from "@/components/DemandasTab";
+import { Copiloto } from "@/components/Copiloto";
 
-type Tab = "conhecimento" | "contrato" | "conexao" | "demandas";
+type Tab = "conhecimento" | "contrato" | "conexao" | "demandas" | "copiloto";
 
 export function ClientDetail({
   client,
@@ -57,6 +58,9 @@ export function ClientDetail({
           <button className={`tab-btn${tab === "contrato" ? " active" : ""}`} onClick={() => setTab("contrato")} type="button">
             Contrato
           </button>
+          <button className={`tab-btn${tab === "copiloto" ? " active" : ""}`} onClick={() => setTab("copiloto")} type="button">
+            Copiloto
+          </button>
         </div>
 
         {tab === "demandas" && (
@@ -80,6 +84,7 @@ export function ClientDetail({
             canManage={false}
           />
         )}
+        {tab === "copiloto" && <Copiloto clientNome={client.nome} />}
       </>
     );
   }

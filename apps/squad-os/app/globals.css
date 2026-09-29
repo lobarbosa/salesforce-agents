@@ -306,6 +306,32 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .scope-note { max-width: 980px; background: var(--accent-soft); border: 1px solid var(--accent); color: var(--text); border-radius: 9px; padding: 0.7rem 0.9rem; font-size: 0.78rem; margin-bottom: 1.2rem; }
 .scope-note strong { color: var(--accent); }
 
+/* Copiloto do cliente (Copiloto.tsx) */
+.copiloto { display: flex; flex-direction: column; gap: 0.7rem; max-width: 640px; }
+.copiloto-intro { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+.copiloto-lista {
+  display: flex; flex-direction: column; gap: 0.6rem; min-height: 16rem; max-height: 28rem;
+  overflow-y: auto; border: 1px solid var(--border); border-radius: 10px;
+  background: var(--surface-alt); padding: 0.8rem;
+}
+.copiloto-vazio { color: var(--text-muted); font-size: 0.82rem; margin: auto; }
+.copiloto-msg { display: flex; flex-direction: column; gap: 0.15rem; max-width: 85%; }
+.copiloto-msg.user { align-self: flex-end; align-items: flex-end; }
+.copiloto-msg.assistant { align-self: flex-start; }
+.copiloto-autor { font-size: 0.65rem; color: var(--text-muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.03em; }
+.copiloto-msg p {
+  margin: 0; padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.88rem; white-space: pre-wrap;
+  background: var(--surface); border: 1px solid var(--border);
+}
+.copiloto-msg.user p { background: var(--accent-soft); border-color: var(--accent); }
+.copiloto-msg .copiloto-acao { background: var(--success-soft); border-color: var(--success); color: var(--success); font-weight: 500; }
+.copiloto-input { display: flex; gap: 0.5rem; align-items: flex-end; }
+.copiloto-input textarea {
+  flex: 1; min-height: 2.6rem; resize: vertical; padding: 0.5rem 0.7rem; border: 1px solid var(--border);
+  border-radius: 8px; background: var(--surface-alt); font-size: 0.88rem;
+}
+.copiloto-input .btn-primary { flex: none; }
+
 .conn-warning { max-width: 980px; background: var(--gate-soft); border: 1px solid var(--gate); color: var(--text); border-radius: 9px; padding: 0.7rem 0.9rem; font-size: 0.78rem; margin-bottom: 1.2rem; }
 .conn-warning strong { color: var(--gate-strong); }
 
