@@ -27,36 +27,93 @@ const ITENS_FINANCEIRO = [
   { href: "/financeiro/horas", rotulo: "Horas por cliente" },
 ] as const;
 
+// Seções que colapsam (Financeiro, Operação) lembram a escolha por navegador —
+// chave curta e estável, nunca o rótulo (que pode mudar sem quebrar o que já
+// foi salvo no localStorage de quem já usa o app).
+const SECOES_ABERTAS_KEY = "squad-os:sidebar:secoes-abertas";
+
+function lerSecoesAbertas(): Record<string, boolean> {
+  try {
+    const bruto = window.localStorage.getItem(SECOES_ABERTAS_KEY);
+    return bruto ? JSON.parse(bruto) : {};
+  } catch {
+    // Aba anônima, storage bloqueado, JSON corrompido: sem preferência
+    // salva não é erro, é só "usa o padrão" — nunca deve quebrar a sidebar.
+    return {};
+  }
+}
+
+function salvarSecoesAbertas(mapa: Record<string, boolean>) {
+  try {
+    window.localStorage.setItem(SECOES_ABERTAS_KEY, JSON.stringify(mapa));
+  } catch {
+    // Preferência não salva não pode impedir o clique de funcionar nesta
+    // sessão — só não sobrevive ao próximo carregamento.
+  }
+}
+
 function NavArea({
+  chave,
   titulo,
   itens,
+  basePath,
   pathname,
+  preferencia,
+  aoAlternar,
   aoNavegar,
 }: {
+  chave: string;
   titulo: string;
   itens: readonly { href: string; rotulo: string; exato?: boolean }[];
+  /** Prefixo de rota da área (ex.: "/financeiro") — decide o padrão antes de
+   *  qualquer preferência salva: começa aberta se é onde a pessoa já está. */
+  basePath: string;
   pathname: string | null;
+  /** undefined = sem preferência salva ainda, usa o padrão por rota. */
+  preferencia: boolean | undefined;
+  aoAlternar: (chave: string) => void;
   aoNavegar: () => void;
 }) {
+  const aberta = preferencia ?? !!pathname?.startsWith(basePath);
+  const domId = `nav-area-${chave}`;
   return (
-    <nav className="nav-area" aria-label={titulo}>
-      <div className="nav-secao">{titulo}</div>
-      {itens.map((i) => {
-        const ativo = i.exato ? pathname === i.href : !!pathname?.startsWith(i.href);
-        return (
-          <Link
-            key={i.href}
-            href={i.href}
-            onClick={aoNavegar}
-            className={`nav-item${ativo ? " active" : ""}`}
-            aria-current={ativo ? "page" : undefined}
-          >
-            <span className="icon" />
-            {i.rotulo}
-          </Link>
-        );
-      })}
-    </nav>
+    <div className="nav-area">
+      <button
+        type="button"
+        className="nav-secao-toggle"
+        aria-expanded={aberta}
+        aria-controls={domId}
+        onClick={() => aoAlternar(chave)}
+      >
+        <span className="nav-secao">{titulo}</span>
+        <span className={`nav-secao-chevron${aberta ? " aberta" : ""}`} aria-hidden="true" />
+      </button>
+      <div id={domId} className={`nav-area-corpo${aberta ? " aberta" : ""}`}>
+        <nav className="nav-area-corpo-interno" aria-label={titulo}>
+          {itens.map((i) => {
+            const ativo = i.exato ? pathname === i.href : !!pathname?.startsWith(i.href);
+            return (
+              <Link
+                key={i.href}
+                href={i.href}
+                onClick={aoNavegar}
+                // Fechada: fora da ordem de tab e invisível pra leitor de tela —
+                // a seção continua no DOM (pra animar), mas não pode ser
+                // alcançada por quem não a vê. `hidden` sozinho impediria a
+                // transição de altura, por isso os dois atributos em vez dele.
+                tabIndex={aberta ? undefined : -1}
+                aria-hidden={aberta ? undefined : true}
+                className={`nav-item${ativo ? " active" : ""}`}
+                aria-current={ativo ? "page" : undefined}
+              >
+                <span className="icon" />
+                {i.rotulo}
+              </Link>
+            );
+          })}
+        </nav>
+      </div>
+    </div>
   );
 }
 
@@ -197,6 +254,29 @@ export function Sidebar({
   const [nome, setNome] = useState("");
   const [segmento, setSegmento] = useState("");
   const [saving, setSaving] = useState(false);
+  // {} até o efeito rodar no cliente (SSR não tem localStorage): cada NavArea
+  // cai no próprio padrão por rota enquanto isso, sem piscar — o padrão e a
+  // preferência salva raramente divergem no primeiro quadro.
+  const [secoesAbertas, setSecoesAbertas] = useState<Record<string, boolean>>({});
+
+  useEffect(() => {
+    // Não dá pra virar inicializador preguiçoso do useState: ele rodaria de
+    // novo na hidratação do cliente (window já existe ali) com um valor
+    // diferente do que o servidor renderizou (sem window, sempre {}) — troca
+    // um lint por um mismatch de hidratação de verdade. Ler depois de montado
+    // é o jeito correto de puxar algo só-do-navegador sem esse descompasso.
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setSecoesAbertas(lerSecoesAbertas());
+  }, []);
+
+  function alternarSecao(chave: string) {
+    setSecoesAbertas((atual) => {
+      const estavaAberta = chave in atual ? atual[chave] : !!pathname?.startsWith(`/${chave}`);
+      const novo = { ...atual, [chave]: !estavaAberta };
+      salvarSecoesAbertas(novo);
+      return novo;
+    });
+  }
 
   // Fecha no clique que navega, e não num efeito que observa o `pathname`:
   // o efeito renderizaria, mudaria o estado e renderizaria de novo (render em
@@ -240,7 +320,16 @@ export function Sidebar({
     return (
       <Casca aberta={menuAberto} aoAlternar={setMenuAberto} titulo="Squad OS">
         <Marca src={marcaSrc} sub="financeiro" />
-        <NavArea titulo="Financeiro" itens={ITENS_FINANCEIRO} pathname={pathname} aoNavegar={fecharMenu} />
+        <NavArea
+          chave="financeiro"
+          titulo="Financeiro"
+          itens={ITENS_FINANCEIRO}
+          basePath="/financeiro"
+          pathname={pathname}
+          preferencia={secoesAbertas.financeiro}
+          aoAlternar={alternarSecao}
+          aoNavegar={fecharMenu}
+        />
         <Rodape usuario={usuario} aoNavegar={fecharMenu} aoSair={handleSignOut} />
       </Casca>
     );
@@ -306,13 +395,26 @@ export function Sidebar({
         Minhas horas
       </Link>
       {podeVer(usuario.role, "financeiro") && (
-        <NavArea titulo="Financeiro" itens={ITENS_FINANCEIRO} pathname={pathname} aoNavegar={fecharMenu} />
+        <NavArea
+          chave="financeiro"
+          titulo="Financeiro"
+          itens={ITENS_FINANCEIRO}
+          basePath="/financeiro"
+          pathname={pathname}
+          preferencia={secoesAbertas.financeiro}
+          aoAlternar={alternarSecao}
+          aoNavegar={fecharMenu}
+        />
       )}
       {podeVer(usuario.role, "operacao") && (
         <NavArea
+          chave="operacao"
           titulo="Operação"
           itens={[{ href: "/operacao/agentes", rotulo: "Saúde dos agentes" }]}
+          basePath="/operacao"
           pathname={pathname}
+          preferencia={secoesAbertas.operacao}
+          aoAlternar={alternarSecao}
           aoNavegar={fecharMenu}
         />
       )}
