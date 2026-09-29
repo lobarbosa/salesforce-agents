@@ -13,6 +13,7 @@ export function SaveField({
   placeholder,
   full,
   onSave,
+  readOnly,
 }: {
   label: string;
   value: string;
@@ -20,6 +21,8 @@ export function SaveField({
   placeholder?: string;
   full?: boolean;
   onSave: (value: string) => Promise<boolean>;
+  /** Visão do cliente: mostra o valor como texto, sem campo editável. */
+  readOnly?: boolean;
 }) {
   const [value, setValue] = useState(initialValue);
   const [note, setNote] = useState<"" | "salvo" | "erro ao salvar">("");
@@ -31,6 +34,15 @@ export function SaveField({
     setNote(ok ? "salvo" : "erro ao salvar");
     if (timer.current) clearTimeout(timer.current);
     if (ok) timer.current = setTimeout(() => setNote(""), 1600);
+  }
+
+  if (readOnly) {
+    return (
+      <div className={`brief-field somente-leitura${full ? " full" : ""}`}>
+        <span className="brief-rotulo">{label}</span>
+        <p className="brief-valor">{initialValue || <span className="sub">não informado</span>}</p>
+      </div>
+    );
   }
 
   return (

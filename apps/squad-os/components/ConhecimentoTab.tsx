@@ -34,6 +34,7 @@ export function ConhecimentoTab({ client, canManage }: { client: Client; canMana
           multiline={f.multiline}
           full={"full" in f && f.full}
           onSave={(value) => save(f.key, value)}
+          readOnly={!canManage}
         />
         ))}
       </div>

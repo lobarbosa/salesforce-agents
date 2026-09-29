@@ -34,19 +34,24 @@ export function ConexaoTab({
   clientId,
   clientSlug,
   ambientes,
+  canManage = true,
 }: {
   clientId: string;
   clientSlug: string;
   ambientes: AmbienteOrg[];
+  /** Visão do cliente: situação das conexões, sem editar nem pedir teste. */
+  canManage?: boolean;
 }) {
   return (
     <>
+      {canManage && (
       <div className="conn-warning">
         <strong>Nunca cole aqui:</strong> chave privada (.key), Consumer Secret, senha ou qualquer
         token de acesso. Esses ficam só no GitHub Environment do ambiente — ver{" "}
         <code className="mono">docs/conexoes-e-setup.md</code>. Este card guarda só o que
         identifica a conexão, não o que autentica sozinho.
       </div>
+      )}
 
       {AMBIENTES.map((a) => (
         <AmbienteCard
@@ -57,6 +62,7 @@ export function ConexaoTab({
           titulo={a.titulo}
           descricao={a.descricao}
           inicial={ambientes.find((x) => x.tipo === a.tipo) ?? null}
+          canManage={canManage}
         />
       ))}
     </>
@@ -70,6 +76,7 @@ function AmbienteCard({
   titulo,
   descricao,
   inicial,
+  canManage,
 }: {
   clientId: string;
   clientSlug: string;
@@ -77,6 +84,7 @@ function AmbienteCard({
   titulo: string;
   descricao: string;
   inicial: AmbienteOrg | null;
+  canManage: boolean;
 }) {
   const router = useRouter();
   const [requesting, setRequesting] = useState(false);
@@ -152,15 +160,17 @@ function AmbienteCard({
               : "nenhum teste solicitado ainda"}
           </div>
         </div>
-        <button
-          className="btn-secondary"
-          type="button"
-          onClick={handleTestRequest}
-          disabled={requesting}
-          style={{ marginLeft: "auto" }}
-        >
-          {requesting ? "Enviando..." : "Solicitar teste de conexão"}
-        </button>
+        {canManage && (
+          <button
+            className="btn-secondary"
+            type="button"
+            onClick={handleTestRequest}
+            disabled={requesting}
+            style={{ marginLeft: "auto" }}
+          >
+            {requesting ? "Enviando..." : "Solicitar teste de conexão"}
+          </button>
+        )}
       </div>
 
       {esperandoResultado && (
@@ -171,7 +181,7 @@ function AmbienteCard({
         </p>
       )}
 
-      {status === "aguardando_teste" && travado && (
+      {canManage && status === "aguardando_teste" && travado && (
         <div className="auth-note error" role="alert">
           O teste foi solicitado há mais de {LIMITE_DE_EXECUCAO_MIN} minutos e não reportou
           resultado. Ele leva cerca de um minuto — o mais provável é que o job tenha falhado
@@ -194,6 +204,7 @@ function AmbienteCard({
             value={(ambiente?.[f.key] as string | null) ?? ""}
             placeholder={f.key === "orgAlias" ? `sbx-${clientSlug}-${tipo}` : f.placeholder}
             onSave={(value) => save(f.key, value)}
+            readOnly={!canManage}
           />
         ))}
       </div>
