@@ -188,6 +188,12 @@ jobs:
         id: fluxo
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Lido por rag.py (ferramenta rag_consultar) DENTRO da sessão do
+          # agente — diferente de SQUAD_OS_SYNC_URL, que só entra depois que o
+          # job termina. Sem estas duas, a ferramenta degrada com aviso
+          # (RAG não configurado nesta sessão) em vez de falhar a sessão.
+          SQUAD_OS_RAG_QUERY_URL: ${{ secrets.SQUAD_OS_RAG_QUERY_URL }}
+          SQUAD_OS_SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
         run: |
           if [ -n "${{ inputs.aprovar_gate }}" ]; then
             sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" \
@@ -206,6 +212,29 @@ jobs:
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$DEMAND_ID: ${{ steps.fluxo.outputs.etapas_rodadas || 'sessão' }} via CI ($AMBIENTE)" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
+
+      # Reingestão do RAG interno deste cliente (nunca o copiloto do cliente
+      # em Squad OS — CLAUDE.md guardrail #2). Roda depois do commit, com o
+      # que acabou de ir pro git — não fatal: os artefatos já estão
+      # empurrados de qualquer jeito, e a próxima sessão que precisar de
+      # contexto histórico só vê um aviso de "RAG não configurado" em vez de
+      # travar (rag.py).
+      - name: Reingestão do RAG interno
+        if: always()
+        env:
+          RAG_URL: ${{ secrets.SQUAD_OS_SYNC_RAG_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$RAG_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::SQUAD_OS_SYNC_RAG_URL/SQUAD_OS_SYNC_TOKEN não configurados — o RAG interno deste cliente não foi atualizado. Ver docs/conexoes-e-setup.md."
+            exit 0
+          fi
+          sfagents cliente rag-payload --client "$CLIENT" \
+            | curl -fsS -X POST "$RAG_URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @- \
+            || echo "::warning::Falha ao reingerir o RAG — os artefatos já estão no git, só a base de conhecimento ficou desatualizada."
 
       # Não fatal: o que importa (artefatos da demanda) já está empurrado pra
       # $DEMAND_BRANCH no passo anterior. Se o GITHUB_TOKEN não tiver permissão

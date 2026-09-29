@@ -78,6 +78,8 @@ quadro do app para de refletir a realidade, que é o mesmo que não ter automaç
 | `SQUAD_OS_SYNC_URL` | `https://<domínio>/api/sync/demanda` — estágio da demanda voltando |
 | `SQUAD_OS_SYNC_ASSESSMENT_URL` | `https://<domínio>/api/sync/assessment` — saúde da org voltando |
 | `SQUAD_OS_SYNC_CONEXAO_URL` | `https://<domínio>/api/sync/conexao` — resultado do teste de JWT voltando, e o gatilho do assessment de onboarding |
+| `SQUAD_OS_SYNC_RAG_URL` | `https://<domínio>/api/sync/rag` — reingestão do RAG interno de um cliente (`run-demand.yml`, depois do commit) |
+| `SQUAD_OS_RAG_QUERY_URL` | `https://<domínio>/api/sync/rag-query` — consulta ao RAG interno **durante** a sessão do agente (ferramenta `rag_consultar`, `src/salesforce_agents/rag.py`). Diferente dos demais: este lido pelo processo Python, não só pelo `curl` do workflow — nunca o copiloto do cliente em Squad OS, ver CLAUDE.md guardrail #2 |
 
 `ANTHROPIC_API_KEY` fica em **Settings → Secrets → Actions** do repositório (não dentro de
 um Environment) — é a mesma conta Anthropic do squad para todos os clientes, não algo que
