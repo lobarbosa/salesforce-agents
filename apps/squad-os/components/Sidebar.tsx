@@ -71,7 +71,7 @@ function NavArea({
   pathname: string | null;
   /** undefined = sem preferência salva ainda, usa o padrão por rota. */
   preferencia: boolean | undefined;
-  aoAlternar: (chave: string) => void;
+  aoAlternar: (chave: string, estavaAberta: boolean) => void;
   aoNavegar: () => void;
 }) {
   const aberta = preferencia ?? !!pathname?.startsWith(basePath);
@@ -83,7 +83,7 @@ function NavArea({
         className="nav-secao-toggle"
         aria-expanded={aberta}
         aria-controls={domId}
-        onClick={() => aoAlternar(chave)}
+        onClick={() => aoAlternar(chave, aberta)}
       >
         <span className="nav-secao">{titulo}</span>
         <span className={`nav-secao-chevron${aberta ? " aberta" : ""}`} aria-hidden="true" />
@@ -269,9 +269,12 @@ export function Sidebar({
     setSecoesAbertas(lerSecoesAbertas());
   }, []);
 
-  function alternarSecao(chave: string) {
+  // Recebe o estado atual em vez de recalcular um padrão aqui dentro: cada
+  // seção já decide o próprio padrão (por rota, ou sempre aberta) no lugar
+  // onde ela renderiza — repetir a heurística aqui divergiria da seção
+  // "Clientes", que abre por padrão sem depender de rota nenhuma.
+  function alternarSecao(chave: string, estavaAberta: boolean) {
     setSecoesAbertas((atual) => {
-      const estavaAberta = chave in atual ? atual[chave] : !!pathname?.startsWith(`/${chave}`);
       const novo = { ...atual, [chave]: !estavaAberta };
       salvarSecoesAbertas(novo);
       return novo;
@@ -286,6 +289,10 @@ export function Sidebar({
   const podeGerenciarClientes = podeVer(usuario.role, "delivery");
   const filtered = clients.filter((c) => c.nome.toLowerCase().includes(query.toLowerCase()));
   const activeClientId = pathname?.startsWith("/clients/") ? pathname.split("/")[2] : null;
+  // Sem prefixo de rota pra ancorar um padrão (fica aberta em qualquer rota
+  // interna) — diferente de Financeiro/Operação, começa aberta: é a área que
+  // mais se usa na sidebar, e só fecha se a pessoa fechar de propósito.
+  const clientesAberta = secoesAbertas.clientes ?? true;
 
   async function handleCreate(e: FormEvent) {
     e.preventDefault();
@@ -430,62 +437,76 @@ export function Sidebar({
       )}
       <hr />
 
-      <div className="search">
-        <input
-          type="text"
-          placeholder="Buscar cliente..."
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          aria-label="Buscar cliente"
-        />
-      </div>
-
-      <div className="client-list">
-        {filtered.length === 0 && <div className="empty-col">nenhum cliente encontrado</div>}
-        {filtered.map((c) => (
-          <Link
-            key={c.id}
-            href={`/clients/${c.id}`}
-            onClick={fecharMenu}
-            className={`client-item${c.id === activeClientId ? " active" : ""}`}
-          >
-            <span className="dot" style={{ background: `hsl(${hueFor(c.nome)}, 55%, 45%)` }} />
-            <span className="cname">{c.nome}</span>
-          </Link>
-        ))}
-      </div>
-
-      <div className="new-client">
-        {formOpen ? (
-          <form className="new-client-form" onSubmit={handleCreate}>
+      <div className="nav-area nav-area--clientes">
+        <button
+          type="button"
+          className="nav-secao-toggle"
+          aria-expanded={clientesAberta}
+          aria-controls="nav-area-clientes"
+          onClick={() => alternarSecao("clientes", clientesAberta)}
+        >
+          <span className="nav-secao">Clientes</span>
+          <span className={`nav-secao-chevron${clientesAberta ? " aberta" : ""}`} aria-hidden="true" />
+        </button>
+        <div id="nav-area-clientes" className={`nav-area-clientes-corpo${clientesAberta ? " aberta" : ""}`}>
+          <div className="search">
             <input
               type="text"
-              placeholder="Nome do cliente"
-              required
-              value={nome}
-              onChange={(e) => setNome(e.target.value)}
-              autoFocus
+              placeholder="Buscar cliente..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              aria-label="Buscar cliente"
             />
-            <input
-              type="text"
-              placeholder="Segmento (ex.: indústria)"
-              value={segmento}
-              onChange={(e) => setSegmento(e.target.value)}
-            />
-            <div className="row">
-              <button type="submit" disabled={saving}>
-                {saving ? "Criando..." : "Criar"}
+          </div>
+
+          <div className="client-list">
+            {filtered.length === 0 && <div className="empty-col">nenhum cliente encontrado</div>}
+            {filtered.map((c) => (
+              <Link
+                key={c.id}
+                href={`/clients/${c.id}`}
+                onClick={fecharMenu}
+                className={`client-item${c.id === activeClientId ? " active" : ""}`}
+              >
+                <span className="dot" style={{ background: `hsl(${hueFor(c.nome)}, 55%, 45%)` }} />
+                <span className="cname">{c.nome}</span>
+              </Link>
+            ))}
+          </div>
+
+          <div className="new-client">
+            {formOpen ? (
+              <form className="new-client-form" onSubmit={handleCreate}>
+                <input
+                  type="text"
+                  placeholder="Nome do cliente"
+                  required
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                  autoFocus
+                />
+                <input
+                  type="text"
+                  placeholder="Segmento (ex.: indústria)"
+                  value={segmento}
+                  onChange={(e) => setSegmento(e.target.value)}
+                />
+                <div className="row">
+                  <button type="submit" disabled={saving}>
+                    {saving ? "Criando..." : "Criar"}
+                  </button>
+                  <button type="button" className="cancel" onClick={() => setFormOpen(false)}>
+                    Cancelar
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <button className="new-client-btn" type="button" onClick={() => setFormOpen(true)}>
+                + novo cliente
               </button>
-              <button type="button" className="cancel" onClick={() => setFormOpen(false)}>
-                Cancelar
-              </button>
-            </div>
-          </form>
-        ) : (
-          <button className="new-client-btn" type="button" onClick={() => setFormOpen(true)}>
-            + novo cliente
-          </button>
-        )}
+            )}
+          </div>
+        </div>
       </div>
 
       <Rodape usuario={usuario} aoNavegar={fecharMenu} aoSair={handleSignOut} />
