@@ -867,12 +867,34 @@ table.sla input {
   .grade-horas .gh-celula input { transition: border-color 150ms ease, background 150ms ease; }
 }
 
-/* Seções da navegação por área (Financeiro, Operação). */
+/* Seções da navegação por área (Financeiro, Operação) — colapsáveis: o
+   cabeçalho é um botão (acessível por teclado, aria-expanded), o corpo anima
+   por grid-template-rows (0fr↔1fr) em vez de max-height medido em JS. */
 .nav-area { display: flex; flex-direction: column; margin-top: 0.4rem; }
+.nav-secao-toggle {
+  display: flex; align-items: center; justify-content: space-between; gap: 0.5rem;
+  width: 100%; min-height: 2rem; padding: 0.4rem 1.1rem 0.2rem; margin: 0;
+  border: none; background: none; cursor: pointer; font: inherit; text-align: left;
+}
+.nav-secao-toggle:hover .nav-secao { color: var(--text); }
 .nav-secao {
-  padding: 0.5rem 1.1rem 0.2rem; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.04em;
   text-transform: uppercase; color: var(--text-muted);
 }
+.nav-secao-chevron {
+  width: 6px; height: 6px; flex: none; border-right: 1.5px solid var(--text-muted);
+  border-bottom: 1.5px solid var(--text-muted); transform: rotate(-45deg);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .nav-secao-chevron { transition: transform 160ms ease; }
+}
+.nav-secao-chevron.aberta { transform: rotate(45deg); }
+.nav-area-corpo { display: grid; grid-template-rows: 0fr; }
+.nav-area-corpo.aberta { grid-template-rows: 1fr; }
+@media (prefers-reduced-motion: no-preference) {
+  .nav-area-corpo { transition: grid-template-rows 180ms ease; }
+}
+.nav-area-corpo-interno { display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
 
 /* ── Telas do OS: cartões de número, tabelas e situação ──────────────────── */
 .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
