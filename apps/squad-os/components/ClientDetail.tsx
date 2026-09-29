@@ -11,7 +11,7 @@ import { ContratoTab } from "@/components/ContratoTab";
 import { DemandasTab } from "@/components/DemandasTab";
 import { Copiloto } from "@/components/Copiloto";
 
-type Tab = "conhecimento" | "contrato" | "conexao" | "demandas" | "copiloto";
+type Tab = "conhecimento" | "contrato" | "conexao" | "demandas";
 
 export function ClientDetail({
   client,
@@ -58,9 +58,6 @@ export function ClientDetail({
           <button className={`tab-btn${tab === "contrato" ? " active" : ""}`} onClick={() => setTab("contrato")} type="button">
             Contrato
           </button>
-          <button className={`tab-btn${tab === "copiloto" ? " active" : ""}`} onClick={() => setTab("copiloto")} type="button">
-            Copiloto
-          </button>
         </div>
 
         {tab === "demandas" && (
@@ -84,7 +81,10 @@ export function ClientDetail({
             canManage={false}
           />
         )}
-        {tab === "copiloto" && <Copiloto clientNome={client.nome} />}
+
+        {/* Ícone flutuante, não aba — fica alcançável em Demandas ou
+            Contrato sem trocar de lugar (ver Copiloto.tsx). */}
+        <Copiloto clientNome={client.nome} />
       </>
     );
   }

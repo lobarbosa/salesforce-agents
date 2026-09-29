@@ -306,13 +306,45 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .scope-note { max-width: 980px; background: var(--accent-soft); border: 1px solid var(--accent); color: var(--text); border-radius: 9px; padding: 0.7rem 0.9rem; font-size: 0.78rem; margin-bottom: 1.2rem; }
 .scope-note strong { color: var(--accent); }
 
-/* Copiloto do cliente (Copiloto.tsx) */
-.copiloto { display: flex; flex-direction: column; gap: 0.7rem; max-width: 640px; }
-.copiloto-intro { color: var(--text-muted); font-size: 0.85rem; margin: 0; }
+/* Copiloto do cliente (Copiloto.tsx) — ícone flutuante + painel, não aba.
+   z-index 45: acima do conteúdo normal e da gaveta da sidebar no telefone
+   (que usa 40), abaixo de `.modal-backdrop` (50) — um gate de verdade
+   (DemandModal) sempre pode cobrir o copiloto, nunca o contrário. */
+.copiloto-fab {
+  position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 45;
+  display: flex; align-items: center; gap: 0.45rem; min-height: 44px;
+  padding: 0.6rem 1rem; border: none; border-radius: 999px; cursor: pointer;
+  background: var(--accent); color: var(--accent-contrast); font-size: 0.85rem; font-weight: 500;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 0.2);
+}
+/* Balão de chat desenhado em CSS — mesmo princípio do `.menu-icone` da
+   sidebar (box-shadow em vez de fonte de ícone ou SVG externo). */
+.copiloto-fab-icone {
+  position: relative; width: 15px; height: 12px; flex: none;
+  background: currentColor; border-radius: 3px;
+}
+.copiloto-fab-icone::after {
+  content: ""; position: absolute; left: 3px; bottom: -4px;
+  width: 0; height: 0; border: 4px solid transparent; border-top-color: currentColor; border-bottom: 0;
+}
+.copiloto-painel {
+  position: fixed; right: 1.2rem; bottom: 4.6rem; z-index: 45;
+  width: min(380px, calc(100vw - 2.4rem)); max-height: min(32rem, calc(100vh - 7rem));
+  display: flex; flex-direction: column; gap: 0.6rem;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.22); padding: 0.9rem;
+}
+.copiloto-cabecalho { display: flex; align-items: center; justify-content: space-between; font-weight: 600; font-size: 0.9rem; }
+.copiloto-fechar {
+  background: none; border: none; cursor: pointer; color: var(--text-muted); font-size: 1.3rem;
+  line-height: 1; min-width: 32px; min-height: 32px; border-radius: 6px;
+}
+.copiloto-fechar:hover { color: var(--text); }
+.copiloto-intro { color: var(--text-muted); font-size: 0.8rem; margin: 0; }
 .copiloto-lista {
-  display: flex; flex-direction: column; gap: 0.6rem; min-height: 16rem; max-height: 28rem;
+  display: flex; flex-direction: column; gap: 0.6rem; flex: 1; min-height: 10rem;
   overflow-y: auto; border: 1px solid var(--border); border-radius: 10px;
-  background: var(--surface-alt); padding: 0.8rem;
+  background: var(--surface-alt); padding: 0.7rem;
 }
 .copiloto-vazio { color: var(--text-muted); font-size: 0.82rem; margin: auto; }
 .copiloto-msg { display: flex; flex-direction: column; gap: 0.15rem; max-width: 85%; }
@@ -320,7 +352,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .copiloto-msg.assistant { align-self: flex-start; }
 .copiloto-autor { font-size: 0.65rem; color: var(--text-muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.03em; }
 .copiloto-msg p {
-  margin: 0; padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.88rem; white-space: pre-wrap;
+  margin: 0; padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.85rem; white-space: pre-wrap;
   background: var(--surface); border: 1px solid var(--border);
 }
 .copiloto-msg.user p { background: var(--accent-soft); border-color: var(--accent); }
@@ -328,9 +360,17 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .copiloto-input { display: flex; gap: 0.5rem; align-items: flex-end; }
 .copiloto-input textarea {
   flex: 1; min-height: 2.6rem; resize: vertical; padding: 0.5rem 0.7rem; border: 1px solid var(--border);
-  border-radius: 8px; background: var(--surface-alt); font-size: 0.88rem;
+  border-radius: 8px; background: var(--surface-alt); font-size: 0.85rem;
 }
 .copiloto-input .btn-primary { flex: none; }
+
+@media (max-width: 420px) {
+  /* Painel encostado nas duas bordas no telefone bem estreito — `min()`
+     acima já limita a largura, mas 1.2rem de margem lateral some perto de
+     360px de viewport. */
+  .copiloto-fab { right: 0.8rem; bottom: 0.8rem; }
+  .copiloto-painel { right: 0.6rem; left: 0.6rem; width: auto; bottom: 4.4rem; }
+}
 
 .conn-warning { max-width: 980px; background: var(--gate-soft); border: 1px solid var(--gate); color: var(--text); border-radius: 9px; padding: 0.7rem 0.9rem; font-size: 0.78rem; margin-bottom: 1.2rem; }
 .conn-warning strong { color: var(--gate-strong); }
