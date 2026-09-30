@@ -157,6 +157,30 @@ def assessment_json(client: str) -> None:
     click.echo(json.dumps(dados, ensure_ascii=False))
 
 
+@cliente.command("rag-payload")
+@click.option("--client", required=True)
+def rag_payload(client: str) -> None:
+    """Imprime o corpo pra POST em /api/sync/rag — reingestão do RAG interno.
+
+    Todo `.md` sob clients/<client>/ (CLAUDE.md, demanda.md, os artefatos das
+    7 etapas, gates.md, assessment.md quando existir) vira um documento. Não
+    inclui manifest/*.xml nem force-app/ — metadata Salesforce não é prosa
+    pra embedding, e "tudo que trafegar" (CLAUDE.md, decisão do council que
+    trouxe este comando) foi lido como "todo conhecimento em texto", não
+    "todo byte". `path` sai relativo a clients/<client>/, pra bater com o que
+    a ferramenta rag_consultar mostra como fonte.
+    """
+    base = Path("clients") / client
+    if not base.is_dir():
+        raise click.ClickException(f"clients/{client}/ não existe.")
+
+    documentos = [
+        {"path": str(p.relative_to(base)), "content": p.read_text(encoding="utf-8")}
+        for p in sorted(base.rglob("*.md"))
+    ]
+    click.echo(json.dumps({"clientSlug": client, "documents": documentos}, ensure_ascii=False))
+
+
 @main.group()
 def demanda() -> None:
     """Gerencia demandas (substitui o fluxo de estórias do Jira)."""

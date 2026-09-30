@@ -125,6 +125,25 @@ Vale para o assessment e para as 7 etapas de demanda.
    conversa, não existe caminho pra pedir dado de outro cliente — a pergunta nunca chega a
    existir pra ele. Aprovação de gate continua exigindo o fluxo de dois passos na tela; o
    copiloto explicitamente recusa "aprovar" pelo chat.
+
+   RAG interno por cliente (`src/salesforce_agents/rag.py`, `apps/squad-os/lib/rag.ts`,
+   `/api/sync/rag*`) — decisão explícita (2026-09-29): **só o pipeline de agentes Python
+   consulta**, nunca o copiloto do cliente acima. O corpus é todo `.md` de
+   `clients/<cliente>/` (CLAUDE.md de conta, demanda.md, os artefatos das 7 etapas,
+   gates.md, assessment.md) — dado interno de delivery, já sujeito ao guardrail #2 desde
+   que foi escrito (nenhum desses arquivos deveria ter CPF/e-mail/telefone/valor de
+   cliente; a ingestão não filtra isso de novo, herda a disciplina de quem escreveu). O que
+   é novo aqui: os trechos saem daqui pra um provedor de embeddings de terceiro (AI
+   Gateway) antes de voltar pro Postgres — um processador a mais que não existia antes
+   desta feature, vale saber que existe. `rag_consultar` é fechada por closure sobre o
+   `client` que o orchestrator já resolveu pra sessão (nunca um argumento que o agente
+   escolhe, mesmo padrão do copiloto) — não tem como pedir dado de outro cliente
+   (guardrail #7). A tabela `rag_chunks` tem RLS ligado sem policy, como toda tabela nova
+   deste banco (achado de 2026-09-09: sem isso o Supabase publica a linha inteira —
+   `conteudo` incluído — via PostgREST pra qualquer um com a anon key).
+
+   Curadoria desse corpus por Obsidian (local, opcional, pra gente — nunca pro pipeline
+   de agentes) é `.mcp.json` + `docs/obsidian.md`.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
    confirme via `sf` CLI contra a org. Se não confirmou, declare a incerteza.
 4. **Git é obrigatório.** Todo build acontece em branch `feature/<DEMAND-ID>`. Nada é

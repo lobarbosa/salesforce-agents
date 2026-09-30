@@ -15,6 +15,7 @@ from claude_agent_sdk import ClaudeAgentOptions
 
 from . import demands, sessao
 from .costs import log_usage
+from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
 
 ALLOWED_TOOLS = [
@@ -29,6 +30,7 @@ ALLOWED_TOOLS = [
     "mcp__salesforce-tools__qa_browser_fill",
     "mcp__salesforce-tools__qa_browser_screenshot",
     "mcp__salesforce-tools__qa_browser_close",
+    "mcp__rag__rag_consultar",
 ]
 
 # Note on permissions in headless runs: this grants whole tools (Bash included) at
@@ -56,7 +58,15 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         # distintas. Os subagentes seguem o frontmatter e não são afetados.
         model="claude-sonnet-5",
         setting_sources=["project"],
-        mcp_servers={"salesforce-tools": salesforce_tools_server},
+        # O servidor de RAG nasce aqui, por sessão, fechado sobre `client` — ao
+        # contrário de salesforce_tools_server (singleton de módulo, sem
+        # noção de cliente nenhuma). É de propósito: rag_consultar não tem
+        # como um agente pedir dado de outro cliente, porque `client` nunca
+        # foi argumento de ferramenta nenhuma (ver rag.py).
+        mcp_servers={
+            "salesforce-tools": salesforce_tools_server,
+            "rag": criar_rag_tools_server(client),
+        },
         allowed_tools=ALLOWED_TOOLS,
         permission_mode="acceptEdits",
     )
