@@ -8,6 +8,12 @@ build/
 .env
 .DS_Store
 
+# apps/squad-os/ já ignora o seu próprio node_modules — mas é workspace npm
+# (ver package.json na raiz), e `npm install`/`npm ci` rodado de dentro dele
+# ainda hoisteia um node_modules aqui na raiz. Sem isto, toda sessão que
+# instala dependências do Squad OS localmente vê "untracked files" na raiz.
+node_modules/
+
 # Per-client Salesforce DX projects are real deliverables; only ignore local auth/log noise
 clients/*/.sfdx/
 clients/*/.sf/
