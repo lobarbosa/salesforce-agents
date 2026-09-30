@@ -1,0 +1,16 @@
+{
+  "saude": "vermelho",
+  "resumo": "A org tem automação empilhada em camadas sucessivas sem nunca ter sido limpa: Opportunity sozinho reúne 7 mecanismos de automação ativos (1 trigger, 2 Workflow Rules, 4 Flows) e 2 Process Builders — tecnologia fim de vida — continuam ativos. Quase metade das classes Apex de produção (47 de 101) não tem classe de teste dedicada e há código Apex parado em API version 36, dez anos atrás da v67 atual da org. Nenhuma demanda nova deveria ser desenhada em Account, Opportunity, Order ou OpportunityLineItem sem antes mapear o que já dispara ali.",
+  "recomendacoes": [
+    { "titulo": "Consolidar os 7 mecanismos de automação de Opportunity (1 trigger, 2 Workflow Rules, 4 Flows) e revisar Account/OpportunityLineItem pelo mesmo problema", "severidade": "alta", "area": "automação" },
+    { "titulo": "Migrar os 2 Process Builders ainda ativos (\"Automação de Queue\", \"Produto Cod\") para Flow antes do fim de suporte", "severidade": "alta", "area": "automação" },
+    { "titulo": "Criar classe de teste dedicada para as 47 classes Apex de produção sem `<Classe>Test` e medir cobertura real com `sf apex run test`", "severidade": "alta", "area": "código" },
+    { "titulo": "Atualizar triggers/classes Apex presos em API version 36-47 (até 31 versões atrás da v67 atual)", "severidade": "média", "area": "dívida técnica" },
+    { "titulo": "Corrigir ou excluir as 14 versões de Flow em estado InvalidDraft", "severidade": "média", "area": "dívida técnica" },
+    { "titulo": "Documentar os campos customizados sem descrição em Account/Opportunity/Order/Product2 (90-96% sem descrição)", "severidade": "média", "area": "modelo de dados" },
+    { "titulo": "Auditar uso de campos em Account (381 campos) antes de criar campo novo", "severidade": "média", "area": "modelo de dados" },
+    { "titulo": "Migrar permissões hoje concedidas via perfil (57,6% dos ObjectPermissions) para permission sets e revisar os 57 perfis custom", "severidade": "média", "area": "segurança" },
+    { "titulo": "Fazer faxina nas 61 Validation Rules inativas (30% do total)", "severidade": "baixa", "area": "config" },
+    { "titulo": "Confirmar com o cliente o uso real de licença Salesforce em produção (sandbox espelha 30/32 = 93,75%)", "severidade": "baixa", "area": "limites" }
+  ]
+}
