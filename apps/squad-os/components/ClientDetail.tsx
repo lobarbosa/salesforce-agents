@@ -34,16 +34,13 @@ export function ClientDetail({
   openDemandId?: string;
 }) {
   const podeGerenciarClientes = usuario.role !== "cliente";
-  const [tab, setTab] = useState<Tab>(podeGerenciarClientes ? initialTab ?? (openDemandId ? "demandas" : "conhecimento") : "demandas");
+  const [tab, setTab] = useState<Tab>(initialTab ?? (openDemandId || !podeGerenciarClientes ? "demandas" : "conhecimento"));
 
-  // role=cliente vê Demandas e Contrato — Conhecimento/Conexão são dados
-  // internos de delivery (avaliação da conta, credenciais de org), não algo
-  // que o cliente final edita ou precisa ver.
-  //
-  // Contrato entra somente leitura (canManage={false} desabilita todo campo e
-  // esconde adicionar/remover/gerar). É o contrato *dele*: quanto do balde de
-  // horas já foi, qual o SLA prometido, quanto do escopo já saiu. Esconder
-  // isso de quem assinou era o avesso do que o painel existe pra responder.
+  // role=cliente vê tudo o que é do cliente dele, somente leitura: demandas,
+  // contrato (quanto do balde de horas já foi, SLA, escopo entregue),
+  // conhecimento com o assessment da org e a situação das conexões. As APIs
+  // de escrita recusam o papel cliente (canManageClientData); aqui só não
+  // mostramos controle que ele não pode usar.
   if (!podeGerenciarClientes) {
     return (
       <>
@@ -57,6 +54,12 @@ export function ClientDetail({
           </button>
           <button className={`tab-btn${tab === "contrato" ? " active" : ""}`} onClick={() => setTab("contrato")} type="button">
             Contrato
+          </button>
+          <button className={`tab-btn${tab === "conhecimento" ? " active" : ""}`} onClick={() => setTab("conhecimento")} type="button">
+            Assessment e conhecimento
+          </button>
+          <button className={`tab-btn${tab === "conexao" ? " active" : ""}`} onClick={() => setTab("conexao")} type="button">
+            Conexão Salesforce
           </button>
         </div>
 
@@ -81,9 +84,13 @@ export function ClientDetail({
             canManage={false}
           />
         )}
+        {tab === "conhecimento" && <ConhecimentoTab client={client} canManage={false} />}
+        {tab === "conexao" && (
+          <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} canManage={false} />
+        )}
 
-        {/* Ícone flutuante, não aba — fica alcançável em Demandas ou
-            Contrato sem trocar de lugar (ver Copiloto.tsx). */}
+        {/* Ícone flutuante, não aba — fica alcançável em qualquer aba sem
+            trocar de lugar (ver Copiloto.tsx). */}
         <Copiloto clientNome={client.nome} />
       </>
     );

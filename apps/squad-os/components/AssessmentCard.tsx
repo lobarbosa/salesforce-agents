@@ -138,17 +138,21 @@ export function AssessmentCard({ client, canManage }: { client: Client; canManag
             </ol>
           )}
           <p className="assessment-nota">
-            Avaliado em {new Date(client.assessmentEm).toLocaleDateString("pt-BR")}. O relatório
-            completo, com evidência de cada achado, está em{" "}
-            <code className="mono">clients/{client.slug}/assessment.md</code>.
+            Avaliado em {new Date(client.assessmentEm).toLocaleDateString("pt-BR")}.
+            {canManage && (
+              <>
+                {" "}O relatório completo, com evidência de cada achado, está em{" "}
+                <code className="mono">clients/{client.slug}/assessment.md</code>.
+              </>
+            )}
           </p>
         </>
       ) : (
         client.assessmentStatus === "nunca" && (
           <p className="assessment-nota">
-            O assessment roda sozinho quando a org de dev conecta pela primeira vez — é a
-            primeira atividade de um cliente novo. Se a conexão já foi testada e nada apareceu
-            aqui, dá pra rodar na mão.
+            {canManage
+              ? "O assessment roda sozinho quando a org de dev conecta pela primeira vez — é a primeira atividade de um cliente novo. Se a conexão já foi testada e nada apareceu aqui, dá pra rodar na mão."
+              : "O assessment da sua org aparece aqui assim que a conexão com a sandbox de desenvolvimento for confirmada."}
           </p>
         )
       )}
