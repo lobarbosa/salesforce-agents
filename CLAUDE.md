@@ -141,6 +141,9 @@ Vale para o assessment e para as 7 etapas de demanda.
    (guardrail #7). A tabela `rag_chunks` tem RLS ligado sem policy, como toda tabela nova
    deste banco (achado de 2026-09-09: sem isso o Supabase publica a linha inteira —
    `conteudo` incluído — via PostgREST pra qualquer um com a anon key).
+
+   Curadoria desse corpus por Obsidian (local, opcional, pra gente — nunca pro pipeline
+   de agentes) é `.mcp.json` + `docs/obsidian.md`.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
    confirme via `sf` CLI contra a org. Se não confirmou, declare a incerteza.
 4. **Git é obrigatório.** Todo build acontece em branch `feature/<DEMAND-ID>`. Nada é
