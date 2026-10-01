@@ -1,24 +1,45 @@
 "use client";
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
+import { usePathname } from "next/navigation";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import type { CopilotUIMessage } from "@/lib/copilot/tipos";
+import type { Role } from "@/lib/generated/prisma/client";
 
 // Ícone flutuante no canto da tela — não uma aba: fica alcançável em
-// Demandas ou Contrato sem trocar de lugar. Guardrails de conteúdo (o que o
-// copiloto pode e não pode fazer) vivem no system prompt do servidor
-// (app/api/copilot/chat/route.ts); aqui é só a superfície: abrir/fechar,
-// mandar mensagem, mostrar o que voltou, avisar erro perto de onde ele
-// aconteceu (achado da própria auditoria de UX deste app: falha muda em
-// formulário já causou confusão em outro lugar do Squad OS — não repetir
-// aqui).
+// Demandas, Contrato ou qualquer tela geral sem trocar de lugar. Guardrails
+// de conteúdo (o que o copiloto pode e não pode fazer, por papel) vivem no
+// system prompt do servidor (app/api/copilot/chat/route.ts); aqui é só a
+// superfície: abrir/fechar, mandar mensagem, mostrar o que voltou, avisar
+// erro perto de onde ele aconteceu (achado da própria auditoria de UX deste
+// app: falha muda em formulário já causou confusão em outro lugar do Squad
+// OS — não repetir aqui).
+//
+// Dois jeitos de montar:
+// - Dentro da página de um cliente (`ClientDetail.tsx`): passa `clientId` e
+//   `clientNome` — todo papel (cliente, consultor, admin) só conversa sobre
+//   ESTE cliente enquanto está aqui.
+// - Em qualquer outra tela (`app/(app)/layout.tsx`, montado uma vez pra todo
+//   papel): sem `clientId`. Se o caminho for `/clients/...`, esta instância
+//   se anula (`null`) — a de dentro da página, que já tem o nome do
+//   cliente à mão, é quem aparece ali. Evita dois ícones flutuantes ao
+//   mesmo tempo sem precisar de estado compartilhado entre as duas árvores.
 //
 // Não é um modal (`role="dialog"`): o resto da tela continua clicável por
 // trás, igual todo chat flutuante — mas fecha com Escape do mesmo jeito que
 // Modal.tsx, e devolve o foco pro botão que abriu, que é o essencial do
 // padrão pra quem navega só por teclado.
-export function Copiloto({ clientNome }: { clientNome: string }) {
+export function Copiloto({
+  papel,
+  clientId,
+  clientNome,
+}: {
+  papel: Role;
+  clientId?: string;
+  clientNome?: string;
+}) {
+  const pathname = usePathname();
   const [aberto, setAberto] = useState(false);
   const [texto, setTexto] = useState("");
   const painelId = useId();
@@ -27,7 +48,7 @@ export function Copiloto({ clientNome }: { clientNome: string }) {
   const fimDaLista = useRef<HTMLDivElement>(null);
 
   const { messages, sendMessage, status, error, clearError } = useChat<CopilotUIMessage>({
-    transport: new DefaultChatTransport({ api: "/api/copilot/chat" }),
+    transport: new DefaultChatTransport({ api: "/api/copilot/chat", body: { clientId } }),
   });
 
   const carregando = status === "submitted" || status === "streaming";
@@ -64,6 +85,20 @@ export function Copiloto({ clientNome }: { clientNome: string }) {
     }
   }
 
+  // Instância "geral" (sem clientId) numa página de cliente: a de dentro de
+  // ClientDetail.tsx já cobre esta tela, com o nome do cliente à mão — dois
+  // ícones flutuantes ao mesmo tempo só confundiria sobre qual conversa é
+  // sobre o quê.
+  if (!clientId && pathname?.startsWith("/clients/")) return null;
+
+  const introducao = clientNome
+    ? `Pergunte sobre o andamento das demandas ou do contrato de ${clientNome}, ou descreva um pedido novo para eu ajudar a registrar.`
+    : papel === "financeiro"
+      ? "Pergunte sobre contas a pagar, divergências abertas, horas por cliente ou o painel financeiro."
+      : papel === "admin"
+        ? "Pergunte sobre o financeiro, ou abra a página de um cliente para eu ajudar com demandas e contrato dele."
+        : "Abra a página de um cliente para eu ajudar com demandas e contrato dele.";
+
   return (
     <>
       <button
@@ -95,10 +130,7 @@ export function Copiloto({ clientNome }: { clientNome: string }) {
             </button>
           </div>
 
-          <p className="copiloto-intro">
-            Pergunte sobre o andamento das demandas ou do contrato de {clientNome}, ou descreva
-            um pedido novo para eu ajudar a registrar.
-          </p>
+          <p className="copiloto-intro">{introducao}</p>
 
           <div className="copiloto-lista" role="log" aria-label="Conversa com o copiloto">
             {messages.length === 0 && !carregando && (

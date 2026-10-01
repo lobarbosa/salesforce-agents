@@ -1,6 +1,7 @@
 import { getClients, getClientById } from "@/lib/data";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { Sidebar } from "@/components/Sidebar";
+import { Copiloto } from "@/components/Copiloto";
 import { marcaUrl } from "@/lib/marca";
 
 // Toda página aqui lê direto do Postgres (sem fetch(), então o Next não
@@ -34,6 +35,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <div className="shell">
       <Sidebar marcaSrc={marcaUrl()} clients={clients} usuario={usuario} />
       <main>{children}</main>
+      {/* Montada uma vez pra todo papel; em páginas de cliente ela se anula
+          sozinha (ver Copiloto.tsx) porque ClientDetail.tsx já monta a
+          própria instância, com o clientId e o nome do cliente à mão. */}
+      <Copiloto papel={usuario.role} />
     </div>
   );
 }

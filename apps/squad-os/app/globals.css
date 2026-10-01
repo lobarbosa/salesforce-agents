@@ -306,7 +306,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .scope-note { max-width: 980px; background: var(--accent-soft); border: 1px solid var(--accent); color: var(--text); border-radius: 9px; padding: 0.7rem 0.9rem; font-size: 0.78rem; margin-bottom: 1.2rem; }
 .scope-note strong { color: var(--accent); }
 
-/* Copiloto do cliente (Copiloto.tsx) — ícone flutuante + painel, não aba.
+/* Copiloto (Copiloto.tsx) — ícone flutuante + painel, não aba, todo papel.
    z-index 45: acima do conteúdo normal e da gaveta da sidebar no telefone
    (que usa 40), abaixo de `.modal-backdrop` (50) — um gate de verdade
    (DemandModal) sempre pode cobrir o copiloto, nunca o contrário. */

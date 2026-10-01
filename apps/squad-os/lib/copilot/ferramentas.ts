@@ -7,26 +7,32 @@ import { criarDemanda } from "@/lib/demandas-server";
 import type { CurrentUsuario } from "@/lib/current-user";
 
 /**
- * Ferramentas do copiloto do cliente — sempre fechadas sobre um `clientId` e
- * um `usuario` já resolvidos no servidor (ver app/api/copilot/chat/route.ts).
- * Nenhum schema de entrada aqui aceita `clientId`: o modelo não tem como pedir
- * dado de outro cliente porque a pergunta nunca chega a existir pra ele.
+ * Ferramentas do copiloto sobre um cliente — sempre fechadas sobre um
+ * `clientId` e um `usuario` já resolvidos no servidor (ver
+ * app/api/copilot/chat/route.ts). Nenhum schema de entrada aqui aceita
+ * `clientId`: o modelo não tem como pedir dado de outro cliente porque a
+ * pergunta nunca chega a existir pra ele. Usadas para o papel `cliente`
+ * (sempre o próprio) e para `admin`/`consultor` quando a conversa está
+ * acontecendo dentro da página de um cliente (o `clientId` vem da página
+ * aberta, nunca escolhido pelo modelo — ver a rota).
  *
  * Escopo deliberado (guardrails da construção, ver CLAUDE.md):
  * - Zero acesso a Salesforce/org do cliente. O copiloto só fala com o mesmo
- *   Postgres que a UI já usa pro papel `cliente` — nada de SOQL, nada de `sf`,
- *   nada de PII de org (guardrail #2, LGPD já é moot aqui: nunca chega perto).
+ *   Postgres que a UI já usa — nada de SOQL, nada de `sf`, nada de PII de org
+ *   (guardrail #2, LGPD já é moot aqui: nunca chega perto).
  * - Vocabulário sempre `ESTADOS_CLIENTE` (recebida/andamento/você/entregue) —
  *   nunca o jargão interno de estágio/gate que `STAGE_LABEL` usa pro time.
+ *   Para admin/consultor isso também vale: o copiloto não é a ferramenta de
+ *   trabalho interno, é a mesma conversa que o cliente teria.
  * - `criar_demanda` só cria em `backlog`, chamando a mesma `criarDemanda()`
  *   que a API usa — nunca aprova gate, nunca materializa, nunca muda status
  *   de demanda existente. Aprovar gate continua exigindo o fluxo de dois
  *   passos na tela (DemandModal) — ação irreversível não é coisa de "sim" no
- *   chat.
+ *   chat, nem pro cliente nem pro time.
  * - Não expõe Conhecimento/Conexão nem conteúdo de artefato de gate — a
  *   mesma restrição de aba que `ClientDetail.tsx` já aplica ao papel cliente.
  */
-export function criarFerramentasCopiloto({
+export function criarFerramentasCliente({
   usuario,
   clientId,
 }: {
