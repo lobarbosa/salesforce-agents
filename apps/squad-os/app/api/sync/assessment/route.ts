@@ -12,6 +12,7 @@ const SEVERIDADES = new Set(["alta", "media", "média", "baixa"]);
 const MAX_RECOMENDACOES = 10;
 const RESUMO_MAX = 4000;
 const ERRO_MAX = 2000;
+const BRIEFING_MAX = 1000;
 
 // A URL do run vira link clicável no perfil do cliente. Quem chama aqui já
 // passou pelo bearer token, mas um link é justamente o tipo de campo em que
@@ -66,7 +67,7 @@ export async function POST(request: NextRequest) {
 
   const client = await prisma.client.findUnique({
     where: { slug: clientSlug },
-    select: { id: true },
+    select: { id: true, ambienteSalesforce: true, integracoes: true },
   });
   if (!client) {
     return NextResponse.json({ error: `cliente '${clientSlug}' não encontrado` }, { status: 404 });
@@ -102,6 +103,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "resumo vazio" }, { status: 400 });
   }
 
+  // Ambiente Salesforce e Integrações: o agente manda o que confirmou na org,
+  // mas só pré-preenche o perfil quando o campo ainda está vazio. Se alguém já
+  // escreveu ali — à mão, ou de uma rodada anterior do assessment —, o
+  // assessment novo nunca sobrescreve; `undefined` no Prisma é "não mexe neste
+  // campo", não "apaga".
+  const ambienteSalesforce = String(body.ambienteSalesforce ?? "").trim().slice(0, BRIEFING_MAX);
+  const integracoes = String(body.integracoes ?? "").trim().slice(0, BRIEFING_MAX);
+
   await prisma.client.update({
     where: { id: client.id },
     data: {
@@ -112,6 +121,8 @@ export async function POST(request: NextRequest) {
       assessmentStatus: "concluido",
       assessmentErro: "",
       assessmentRunUrl: runUrl,
+      ambienteSalesforce: !client.ambienteSalesforce && ambienteSalesforce ? ambienteSalesforce : undefined,
+      integracoes: !client.integracoes && integracoes ? integracoes : undefined,
     },
   });
 
