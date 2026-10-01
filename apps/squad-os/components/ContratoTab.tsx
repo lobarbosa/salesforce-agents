@@ -177,33 +177,40 @@ export function ContratoTab({
               <h3>Horas contratadas</h3>
               <span className="save-note">por ciclo {contrato.cicloHoras}</span>
             </div>
-            <div className="campos-linha">
-              <div className="field">
-                <label htmlFor="horas">Horas do ciclo</label>
-                <input
-                  id="horas"
-                  type="number"
-                  min={0}
-                  max={10000}
-                  inputMode="numeric"
-                  defaultValue={contrato.horasContratadas}
-                  disabled={!canManage}
-                  onBlur={(e) => salvarCampo("horasContratadas", Number(e.target.value))}
-                />
+            {canManage ? (
+              <div className="campos-linha">
+                <div className="field">
+                  <label htmlFor="horas">Horas do ciclo</label>
+                  <input
+                    id="horas"
+                    type="number"
+                    min={0}
+                    max={10000}
+                    inputMode="numeric"
+                    defaultValue={contrato.horasContratadas}
+                    onBlur={(e) => salvarCampo("horasContratadas", Number(e.target.value))}
+                  />
+                </div>
+                <div className="field">
+                  <label htmlFor="ciclo">Ciclo</label>
+                  <select
+                    id="ciclo"
+                    defaultValue={contrato.cicloHoras}
+                    onChange={(e) => salvarCampo("cicloHoras", e.target.value)}
+                  >
+                    <option value="mensal">mensal</option>
+                    <option value="trimestral">trimestral</option>
+                  </select>
+                </div>
               </div>
-              <div className="field">
-                <label htmlFor="ciclo">Ciclo</label>
-                <select
-                  id="ciclo"
-                  defaultValue={contrato.cicloHoras}
-                  disabled={!canManage}
-                  onChange={(e) => salvarCampo("cicloHoras", e.target.value)}
-                >
-                  <option value="mensal">mensal</option>
-                  <option value="trimestral">trimestral</option>
-                </select>
+            ) : (
+              <div className="brief-field somente-leitura">
+                <span className="brief-rotulo">Horas do ciclo</span>
+                <p className="brief-valor">
+                  {contrato.horasContratadas}h por ciclo {contrato.cicloHoras}
+                </p>
               </div>
-            </div>
+            )}
           </section>
 
           <section className="painel-bloco">
@@ -238,43 +245,49 @@ export function ContratoTab({
                   {sla.length === 0 ? (
                     <tr><td colSpan={3} className="save-note">Nenhuma severidade definida.</td></tr>
                   ) : (
-                    sla.map((linha, i) => (
-                      <tr key={`${linha.severidade}-${i}`}>
-                        <td>{linha.severidade}</td>
-                        <td className="mono">
-                          <input
-                            type="number"
-                            min={0}
-                            aria-label={`Primeira resposta para severidade ${linha.severidade}, em horas`}
-                            defaultValue={linha.primeiraRespostaHoras}
-                            disabled={!canManage}
-                            onBlur={(e) => {
-                              const copia = sla.map((l, j) =>
-                                j === i ? { ...l, primeiraRespostaHoras: Number(e.target.value) } : l
-                              );
-                              salvarSla(copia);
-                            }}
-                          />
-                          h
-                        </td>
-                        <td className="mono">
-                          <input
-                            type="number"
-                            min={0}
-                            aria-label={`Resolução para severidade ${linha.severidade}, em horas`}
-                            defaultValue={linha.resolucaoHoras}
-                            disabled={!canManage}
-                            onBlur={(e) => {
-                              const copia = sla.map((l, j) =>
-                                j === i ? { ...l, resolucaoHoras: Number(e.target.value) } : l
-                              );
-                              salvarSla(copia);
-                            }}
-                          />
-                          h
-                        </td>
-                      </tr>
-                    ))
+                    sla.map((linha, i) =>
+                      canManage ? (
+                        <tr key={`${linha.severidade}-${i}`}>
+                          <td>{linha.severidade}</td>
+                          <td className="mono">
+                            <input
+                              type="number"
+                              min={0}
+                              aria-label={`Primeira resposta para severidade ${linha.severidade}, em horas`}
+                              defaultValue={linha.primeiraRespostaHoras}
+                              onBlur={(e) => {
+                                const copia = sla.map((l, j) =>
+                                  j === i ? { ...l, primeiraRespostaHoras: Number(e.target.value) } : l
+                                );
+                                salvarSla(copia);
+                              }}
+                            />
+                            h
+                          </td>
+                          <td className="mono">
+                            <input
+                              type="number"
+                              min={0}
+                              aria-label={`Resolução para severidade ${linha.severidade}, em horas`}
+                              defaultValue={linha.resolucaoHoras}
+                              onBlur={(e) => {
+                                const copia = sla.map((l, j) =>
+                                  j === i ? { ...l, resolucaoHoras: Number(e.target.value) } : l
+                                );
+                                salvarSla(copia);
+                              }}
+                            />
+                            h
+                          </td>
+                        </tr>
+                      ) : (
+                        <tr key={`${linha.severidade}-${i}`}>
+                          <td>{linha.severidade}</td>
+                          <td className="mono">{linha.primeiraRespostaHoras}h</td>
+                          <td className="mono">{linha.resolucaoHoras}h</td>
+                        </tr>
+                      )
+                    )
                   )}
                 </tbody>
               </table>
@@ -307,31 +320,62 @@ export function ContratoTab({
 
           <section className="painel-bloco">
             <div className="bloco-head"><h3>Cadastro do projeto</h3></div>
-            <div className="campos-linha">
-              <div className="field grow">
-                <label htmlFor="pnome">Nome do projeto</label>
-                <input id="pnome" type="text" defaultValue={contrato.projetoNome} disabled={!canManage}
-                  onBlur={(e) => salvarCampo("projetoNome", e.target.value)} />
+            {canManage ? (
+              <>
+                <div className="campos-linha">
+                  <div className="field grow">
+                    <label htmlFor="pnome">Nome do projeto</label>
+                    <input id="pnome" type="text" defaultValue={contrato.projetoNome}
+                      onBlur={(e) => salvarCampo("projetoNome", e.target.value)} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="pini">Início</label>
+                    <input id="pini" type="date"
+                      defaultValue={contrato.inicioEm ? new Date(contrato.inicioEm).toISOString().slice(0, 10) : ""}
+                      onBlur={(e) => salvarCampo("inicioEm", e.target.value || null)} />
+                  </div>
+                  <div className="field">
+                    <label htmlFor="pfim">Fim previsto</label>
+                    <input id="pfim" type="date"
+                      defaultValue={contrato.fimPrevistoEm ? new Date(contrato.fimPrevistoEm).toISOString().slice(0, 10) : ""}
+                      onBlur={(e) => salvarCampo("fimPrevistoEm", e.target.value || null)} />
+                  </div>
+                </div>
+                <div className="field">
+                  <label htmlFor="pesc">Escopo contratado</label>
+                  <textarea id="pesc" defaultValue={contrato.projetoEscopo}
+                    placeholder="o que foi vendido, em poucas linhas — é o que o planejador lê"
+                    onBlur={(e) => salvarCampo("projetoEscopo", e.target.value)} />
+                </div>
+              </>
+            ) : (
+              <div className="brief-grid">
+                <div className="brief-field somente-leitura">
+                  <span className="brief-rotulo">Nome do projeto</span>
+                  <p className="brief-valor">{contrato.projetoNome || <span className="sub">não informado</span>}</p>
+                </div>
+                <div className="brief-field somente-leitura">
+                  <span className="brief-rotulo">Início</span>
+                  <p className="brief-valor">
+                    {contrato.inicioEm
+                      ? new Date(contrato.inicioEm).toLocaleDateString("pt-BR")
+                      : <span className="sub">não informado</span>}
+                  </p>
+                </div>
+                <div className="brief-field somente-leitura">
+                  <span className="brief-rotulo">Fim previsto</span>
+                  <p className="brief-valor">
+                    {contrato.fimPrevistoEm
+                      ? new Date(contrato.fimPrevistoEm).toLocaleDateString("pt-BR")
+                      : <span className="sub">não informado</span>}
+                  </p>
+                </div>
+                <div className="brief-field somente-leitura full">
+                  <span className="brief-rotulo">Escopo contratado</span>
+                  <p className="brief-valor">{contrato.projetoEscopo || <span className="sub">não informado</span>}</p>
+                </div>
               </div>
-              <div className="field">
-                <label htmlFor="pini">Início</label>
-                <input id="pini" type="date" disabled={!canManage}
-                  defaultValue={contrato.inicioEm ? new Date(contrato.inicioEm).toISOString().slice(0, 10) : ""}
-                  onBlur={(e) => salvarCampo("inicioEm", e.target.value || null)} />
-              </div>
-              <div className="field">
-                <label htmlFor="pfim">Fim previsto</label>
-                <input id="pfim" type="date" disabled={!canManage}
-                  defaultValue={contrato.fimPrevistoEm ? new Date(contrato.fimPrevistoEm).toISOString().slice(0, 10) : ""}
-                  onBlur={(e) => salvarCampo("fimPrevistoEm", e.target.value || null)} />
-              </div>
-            </div>
-            <div className="field">
-              <label htmlFor="pesc">Escopo contratado</label>
-              <textarea id="pesc" defaultValue={contrato.projetoEscopo} disabled={!canManage}
-                placeholder={canManage ? "o que foi vendido, em poucas linhas — é o que o planejador lê" : ""}
-                onBlur={(e) => salvarCampo("projetoEscopo", e.target.value)} />
-            </div>
+            )}
           </section>
 
           <section className="painel-bloco">
@@ -354,20 +398,28 @@ export function ContratoTab({
                   const d = demandasPorEntregavel[e.id] ?? { total: 0, entregues: 0 };
                   return (
                     <li key={e.id} className={e.concluido ? "feito" : undefined}>
-                      <label>
-                        <input
-                          type="checkbox"
-                          checked={e.concluido}
-                          disabled={!canManage || salvando}
-                          onChange={() =>
-                            chamar(
-                              `/api/clients/${clientId}/contrato/entregaveis/${e.id}`,
-                              json("PATCH", { concluido: !e.concluido })
-                            )
-                          }
-                        />
-                        <span className="ent-titulo">{e.titulo}</span>
-                      </label>
+                      {canManage ? (
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={e.concluido}
+                            disabled={salvando}
+                            onChange={() =>
+                              chamar(
+                                `/api/clients/${clientId}/contrato/entregaveis/${e.id}`,
+                                json("PATCH", { concluido: !e.concluido })
+                              )
+                            }
+                          />
+                          <span className="ent-titulo">{e.titulo}</span>
+                        </label>
+                      ) : (
+                        <span className="ent-titulo">
+                          <span aria-hidden="true">{e.concluido ? "✓" : "○"}</span>{" "}
+                          <span className="sr-only">{e.concluido ? "Concluído: " : "Pendente: "}</span>
+                          {e.titulo}
+                        </span>
+                      )}
                       <span className="ent-meta mono">
                         peso {e.peso}
                         {d.total > 0 && ` · ${d.entregues}/${d.total} demandas`}

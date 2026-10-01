@@ -320,8 +320,9 @@ export function DemandModal({
       {mostrarPerguntas && !jaAprovada && (
         <>
           <div className="field">
-            <label>Seu nome (para registrar a aprovação)</label>
+            <label htmlFor="aprovacao-nome">Seu nome (para registrar a aprovação)</label>
             <input
+              id="aprovacao-nome"
               type="text"
               placeholder="quem está aprovando"
               value={aprovador}
@@ -329,8 +330,9 @@ export function DemandModal({
             />
           </div>
           <div className="field">
-            <label>Observação (opcional)</label>
+            <label htmlFor="aprovacao-observacao">Observação (opcional)</label>
             <textarea
+              id="aprovacao-observacao"
               placeholder="alguma ressalva ou contexto..."
               value={observacao}
               onChange={(e) => setObservacao(e.target.value)}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useId, useRef, useState } from "react";
 
 // Campo com autosave ao perder foco — mesmo padrão usado em Conhecimento do
 // Cliente, Conexão Salesforce e nas perguntas do gate. `role="status"` no
@@ -27,6 +27,7 @@ export function SaveField({
   const [value, setValue] = useState(initialValue);
   const [note, setNote] = useState<"" | "salvo" | "erro ao salvar">("");
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fieldId = useId();
 
   async function handleBlur() {
     if (value === initialValue) return;
@@ -47,16 +48,16 @@ export function SaveField({
 
   return (
     <div className={`brief-field${full ? " full" : ""}`}>
-      <label>
+      <label htmlFor={fieldId}>
         {label}
         <span className={`save-note${note === "salvo" ? " saved" : note === "erro ao salvar" ? " error" : ""}`} role="status">
           {note}
         </span>
       </label>
       {multiline ? (
-        <textarea value={value} placeholder={placeholder} onChange={(e) => setValue(e.target.value)} onBlur={handleBlur} />
+        <textarea id={fieldId} value={value} placeholder={placeholder} onChange={(e) => setValue(e.target.value)} onBlur={handleBlur} />
       ) : (
-        <input value={value} placeholder={placeholder} onChange={(e) => setValue(e.target.value)} onBlur={handleBlur} />
+        <input id={fieldId} value={value} placeholder={placeholder} onChange={(e) => setValue(e.target.value)} onBlur={handleBlur} />
       )}
     </div>
   );
