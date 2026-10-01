@@ -48,45 +48,87 @@ export function ClientDetail({
           <h1>{client.nome}</h1>
         </div>
 
-        <div className="tabs">
-          <button className={`tab-btn${tab === "demandas" ? " active" : ""}`} onClick={() => setTab("demandas")} type="button">
+        <div className="tabs" role="tablist" aria-label={`Seções de ${client.nome}`}>
+          <button
+            className={`tab-btn${tab === "demandas" ? " active" : ""}`}
+            onClick={() => setTab("demandas")}
+            type="button"
+            role="tab"
+            id="tab-demandas"
+            aria-selected={tab === "demandas"}
+            aria-controls="painel-demandas"
+          >
             Demandas
           </button>
-          <button className={`tab-btn${tab === "contrato" ? " active" : ""}`} onClick={() => setTab("contrato")} type="button">
+          <button
+            className={`tab-btn${tab === "contrato" ? " active" : ""}`}
+            onClick={() => setTab("contrato")}
+            type="button"
+            role="tab"
+            id="tab-contrato"
+            aria-selected={tab === "contrato"}
+            aria-controls="painel-contrato"
+          >
             Contrato
           </button>
-          <button className={`tab-btn${tab === "conhecimento" ? " active" : ""}`} onClick={() => setTab("conhecimento")} type="button">
+          <button
+            className={`tab-btn${tab === "conhecimento" ? " active" : ""}`}
+            onClick={() => setTab("conhecimento")}
+            type="button"
+            role="tab"
+            id="tab-conhecimento"
+            aria-selected={tab === "conhecimento"}
+            aria-controls="painel-conhecimento"
+          >
             Assessment e conhecimento
           </button>
-          <button className={`tab-btn${tab === "conexao" ? " active" : ""}`} onClick={() => setTab("conexao")} type="button">
+          <button
+            className={`tab-btn${tab === "conexao" ? " active" : ""}`}
+            onClick={() => setTab("conexao")}
+            type="button"
+            role="tab"
+            id="tab-conexao"
+            aria-selected={tab === "conexao"}
+            aria-controls="painel-conexao"
+          >
             Conexão Salesforce
           </button>
         </div>
 
         {tab === "demandas" && (
-          <DemandasTab
-            client={client}
-            demandas={demandas}
-            openDemandId={openDemandId}
-            canManage={false}
-            usuarioEmail={usuario.email}
-            isAdmin={false}
-            visaoCliente
-          />
+          <div role="tabpanel" id="painel-demandas" aria-labelledby="tab-demandas">
+            <DemandasTab
+              client={client}
+              demandas={demandas}
+              openDemandId={openDemandId}
+              canManage={false}
+              usuarioEmail={usuario.email}
+              isAdmin={false}
+              visaoCliente
+            />
+          </div>
         )}
         {tab === "contrato" && (
-          <ContratoTab
-            clientId={client.id}
-            clientNome={client.nome}
-            contrato={client.contrato}
-            horas={horas}
-            demandasPorEntregavel={demandasPorEntregavel}
-            canManage={false}
-          />
+          <div role="tabpanel" id="painel-contrato" aria-labelledby="tab-contrato">
+            <ContratoTab
+              clientId={client.id}
+              clientNome={client.nome}
+              contrato={client.contrato}
+              horas={horas}
+              demandasPorEntregavel={demandasPorEntregavel}
+              canManage={false}
+            />
+          </div>
         )}
-        {tab === "conhecimento" && <ConhecimentoTab client={client} canManage={false} />}
+        {tab === "conhecimento" && (
+          <div role="tabpanel" id="painel-conhecimento" aria-labelledby="tab-conhecimento">
+            <ConhecimentoTab client={client} canManage={false} />
+          </div>
+        )}
         {tab === "conexao" && (
-          <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} canManage={false} />
+          <div role="tabpanel" id="painel-conexao" aria-labelledby="tab-conexao">
+            <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} canManage={false} />
+          </div>
         )}
 
         {/* Ícone flutuante, não aba — fica alcançável em qualquer aba sem
@@ -112,44 +154,86 @@ export function ClientDetail({
         </h1>
       </div>
 
-      <div className="tabs">
-        <button className={`tab-btn${tab === "conhecimento" ? " active" : ""}`} onClick={() => setTab("conhecimento")} type="button">
+      <div className="tabs" role="tablist" aria-label={`Seções de ${client.nome}`}>
+        <button
+          className={`tab-btn${tab === "conhecimento" ? " active" : ""}`}
+          onClick={() => setTab("conhecimento")}
+          type="button"
+          role="tab"
+          id="tab-conhecimento"
+          aria-selected={tab === "conhecimento"}
+          aria-controls="painel-conhecimento"
+        >
           Conhecimento do Cliente
         </button>
-        <button className={`tab-btn${tab === "contrato" ? " active" : ""}`} onClick={() => setTab("contrato")} type="button">
+        <button
+          className={`tab-btn${tab === "contrato" ? " active" : ""}`}
+          onClick={() => setTab("contrato")}
+          type="button"
+          role="tab"
+          id="tab-contrato"
+          aria-selected={tab === "contrato"}
+          aria-controls="painel-contrato"
+        >
           Contrato
         </button>
-        <button className={`tab-btn${tab === "conexao" ? " active" : ""}`} onClick={() => setTab("conexao")} type="button">
+        <button
+          className={`tab-btn${tab === "conexao" ? " active" : ""}`}
+          onClick={() => setTab("conexao")}
+          type="button"
+          role="tab"
+          id="tab-conexao"
+          aria-selected={tab === "conexao"}
+          aria-controls="painel-conexao"
+        >
           Conexão Salesforce
         </button>
-        <button className={`tab-btn${tab === "demandas" ? " active" : ""}`} onClick={() => setTab("demandas")} type="button">
+        <button
+          className={`tab-btn${tab === "demandas" ? " active" : ""}`}
+          onClick={() => setTab("demandas")}
+          type="button"
+          role="tab"
+          id="tab-demandas"
+          aria-selected={tab === "demandas"}
+          aria-controls="painel-demandas"
+        >
           Demandas
         </button>
       </div>
 
-      {tab === "conhecimento" && <ConhecimentoTab client={client} canManage={podeGerenciarClientes} />}
+      {tab === "conhecimento" && (
+        <div role="tabpanel" id="painel-conhecimento" aria-labelledby="tab-conhecimento">
+          <ConhecimentoTab client={client} canManage={podeGerenciarClientes} />
+        </div>
+      )}
       {tab === "contrato" && (
-        <ContratoTab
-          clientId={client.id}
-          clientNome={client.nome}
-          contrato={client.contrato}
-          horas={horas}
-          demandasPorEntregavel={demandasPorEntregavel}
-          canManage={podeGerenciarClientes}
-        />
+        <div role="tabpanel" id="painel-contrato" aria-labelledby="tab-contrato">
+          <ContratoTab
+            clientId={client.id}
+            clientNome={client.nome}
+            contrato={client.contrato}
+            horas={horas}
+            demandasPorEntregavel={demandasPorEntregavel}
+            canManage={podeGerenciarClientes}
+          />
+        </div>
       )}
       {tab === "conexao" && (
-        <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} />
+        <div role="tabpanel" id="painel-conexao" aria-labelledby="tab-conexao">
+          <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} />
+        </div>
       )}
       {tab === "demandas" && (
-        <DemandasTab
-          client={client}
-          demandas={demandas}
-          openDemandId={openDemandId}
-          canManage
-          usuarioEmail={usuario.email}
-          isAdmin={usuario.role === "admin"}
-        />
+        <div role="tabpanel" id="painel-demandas" aria-labelledby="tab-demandas">
+          <DemandasTab
+            client={client}
+            demandas={demandas}
+            openDemandId={openDemandId}
+            canManage
+            usuarioEmail={usuario.email}
+            isAdmin={usuario.role === "admin"}
+          />
+        </div>
       )}
     </>
   );

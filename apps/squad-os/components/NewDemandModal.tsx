@@ -45,19 +45,31 @@ export function NewDemandModal({
   return (
     <Modal title={`Nova demanda — ${clientNome}`} onClose={onClose}>
       <div className="field">
-        <label>Título</label>
-        <input type="text" required value={titulo} onChange={(e) => setTitulo(e.target.value)} autoFocus />
+        <label htmlFor="nova-demanda-titulo">Título</label>
+        <input
+          id="nova-demanda-titulo"
+          type="text"
+          required
+          value={titulo}
+          onChange={(e) => setTitulo(e.target.value)}
+          autoFocus
+        />
       </div>
       <div className="field">
-        <label>Tipo</label>
-        <select value={tipo} onChange={(e) => setTipo(e.target.value as "sustentacao" | "projeto")}>
+        <label htmlFor="nova-demanda-tipo">Tipo</label>
+        <select
+          id="nova-demanda-tipo"
+          value={tipo}
+          onChange={(e) => setTipo(e.target.value as "sustentacao" | "projeto")}
+        >
           <option value="sustentacao">Sustentação</option>
           <option value="projeto">Projeto</option>
         </select>
       </div>
       <div className="field">
-        <label>Descrição (a história)</label>
+        <label htmlFor="nova-demanda-texto">Descrição (a história)</label>
         <textarea
+          id="nova-demanda-texto"
           placeholder="Contexto, objetivo, o que precisa acontecer..."
           value={texto}
           onChange={(e) => setTexto(e.target.value)}

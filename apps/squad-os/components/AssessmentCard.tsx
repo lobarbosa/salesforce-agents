@@ -107,8 +107,10 @@ export function AssessmentCard({ client, canManage }: { client: Client; canManag
       {client.assessmentStatus === "erro" && (
         <div className="auth-note error" role="alert">
           <strong>O último assessment falhou.</strong>{" "}
-          {client.assessmentErro || "o job não disse o motivo."}{" "}
-          {client.assessmentRunUrl && (
+          {canManage
+            ? client.assessmentErro || "o job não disse o motivo."
+            : "o time da Acxya já foi avisado."}{" "}
+          {canManage && client.assessmentRunUrl && (
             <a href={client.assessmentRunUrl} target="_blank" rel="noopener noreferrer">
               Ver o log do run
             </a>
