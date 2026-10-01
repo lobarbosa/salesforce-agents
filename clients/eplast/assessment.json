@@ -1,0 +1,56 @@
+{
+  "saude": "vermelho",
+  "resumo": "A org de dev roda em cima do Salesforce CPQ (SBQQ), Marketing Cloud Connect e outros pacotes geridos, mas a automação própria do cliente em Account, Opportunity e Order concorre com a automação do CPQ no mesmo evento, e a cobertura de teste Apex real do org é de 10%, bem abaixo do mínimo de deploy da Salesforce (75%) e do padrão do squad (85%). Nenhum dado de negócio foi lido - a sandbox de dev está vazia de registros. Antes de aceitar qualquer demanda nova em Account/Opportunity/Order, mapeie a ordem de execução entre trigger custom, trigger do CPQ e Flows.",
+  "recomendacoes": [
+    {
+      "titulo": "Mapear e consolidar a automação concorrente de Account/Opportunity/Order (trigger custom + trigger CPQ + Flows no mesmo evento)",
+      "severidade": "alta",
+      "area": "automação"
+    },
+    {
+      "titulo": "Elevar cobertura de teste Apex de 10% para pelo menos 85%, priorizando as classes de integração com o ERP Protheus",
+      "severidade": "alta",
+      "area": "código"
+    },
+    {
+      "titulo": "Revisar as 23 validation rules de Order: migrar 8 regras de campo obrigatório para required no campo e decidir sobre as 6 regras inativas de máquina de estados",
+      "severidade": "média",
+      "area": "config"
+    },
+    {
+      "titulo": "Preencher a descrição dos 153 campos custom sem descrição em Account/Order/Opportunity/OrderItem",
+      "severidade": "média",
+      "area": "modelo de dados"
+    },
+    {
+      "titulo": "Padronizar nomes de classe de teste para o sufixo <Classe>Test e criar testes para classes de produção sem cobertura nominal",
+      "severidade": "média",
+      "area": "código"
+    },
+    {
+      "titulo": "Confirmar se a sandbox de sbx-eplast-dev é de fato distinta de qa (usuário e instância se identificam como 'eplast2.qa')",
+      "severidade": "média",
+      "area": "dívida"
+    },
+    {
+      "titulo": "Migrar o perfil custom Financeiro (1 usuário) para permission set sobre perfil-base",
+      "severidade": "baixa",
+      "area": "segurança"
+    },
+    {
+      "titulo": "Consolidar os perfis comerciais duplicados/inconsistentes (Comercial, Comercial - Analista, Comercial - Analistas, Comercial Padrão)",
+      "severidade": "baixa",
+      "area": "segurança"
+    },
+    {
+      "titulo": "Atualizar API version das classes custom (a maioria em v58/v59, org em v67) ao tocar em cada classe",
+      "severidade": "baixa",
+      "area": "código"
+    },
+    {
+      "titulo": "Renomear o trigger custom 'OrderTrigger' para evitar colisão de nome com o trigger homônimo do pacote CPQ (SBQQ)",
+      "severidade": "baixa",
+      "area": "dívida"
+    }
+  ]
+}
