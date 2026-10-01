@@ -84,12 +84,23 @@ Squad OS lê pra mostrar no perfil do cliente:
   "resumo": "<o veredito em três linhas, texto puro>",
   "recomendacoes": [
     { "titulo": "Consolidar os 3 Flows de Opportunity num só", "severidade": "alta", "area": "automação" }
-  ]
+  ],
+  "ambienteSalesforce": "Enterprise Edition, sandbox, instância BRA8S",
+  "integracoes": "CPQ (SBQQ), Marketing Cloud Connect, Salesforce Maps"
 }
 ```
 
 Ordene `recomendacoes` por severidade, alta primeiro. No máximo 10 — se você achou mais,
 as 10 que importam. O `assessment.md` guarda a lista completa.
+
+`ambienteSalesforce` e `integracoes` são **opcionais** e **curtos** (uma linha cada, não o
+parágrafo do Inventário) — o Squad OS usa pra pré-preencher os campos de mesmo nome no
+perfil do cliente, e só quando esses campos ainda estiverem vazios (nunca sobrescreve o
+que um humano já escreveu — essa decisão é do Squad OS, não sua). Mesma regra de "não
+invente" do resto do assessment: `ambienteSalesforce` sai só do que `sf org display`
+confirmou (edition, se é sandbox, instância); `integracoes` sai só dos pacotes
+gerenciados instalados que você já listou no Inventário — nunca repita o texto do
+`resumo`, e se não deu pra confirmar nenhum dos dois, omita a chave em vez de chutar.
 
 ## Encerramento
 
