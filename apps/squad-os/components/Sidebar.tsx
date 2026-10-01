@@ -477,7 +477,9 @@ export function Sidebar({
           <div className="new-client">
             {formOpen ? (
               <form className="new-client-form" onSubmit={handleCreate}>
+                <label className="sr-only" htmlFor="novo-cliente-nome">Nome do cliente</label>
                 <input
+                  id="novo-cliente-nome"
                   type="text"
                   placeholder="Nome do cliente"
                   required
@@ -485,7 +487,9 @@ export function Sidebar({
                   onChange={(e) => setNome(e.target.value)}
                   autoFocus
                 />
+                <label className="sr-only" htmlFor="novo-cliente-segmento">Segmento</label>
                 <input
+                  id="novo-cliente-segmento"
                   type="text"
                   placeholder="Segmento (ex.: indústria)"
                   value={segmento}
