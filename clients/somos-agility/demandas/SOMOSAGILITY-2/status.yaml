@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-2
+client: somos-agility
+titulo: Solicitacao de User de Integracao
+tipo: sustentacao
+status: backlog
+criado_em: '2026-09-29T12:48:59.614Z'
+historico:
+  - de: null
+    em: '2026-09-29T12:48:59.604Z'
+    para: backlog
+    autor: Everton Lima
