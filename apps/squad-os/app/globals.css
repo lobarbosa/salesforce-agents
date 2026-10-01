@@ -962,6 +962,19 @@ table.sla input {
 }
 .nav-area-corpo-interno { display: flex; flex-direction: column; overflow: hidden; min-height: 0; }
 
+/* Seção "Clientes" (busca + lista + criar): mesmo cabeçalho clicável das
+   seções acima, mas o corpo não anima por grid-template-rows como Financeiro/
+   Operação — aquele truque assume uma lista curta de altura previsível, e
+   este é o bloco que precisa ocupar o espaço restante da sidebar inteira e
+   rolar por dentro (`.client-list` já tinha `flex:1; overflow-y:auto` antes
+   de existir colapso nenhum). `display:none` no fechado entrega de graça o
+   que Financeiro/Operação fazem à mão com tabIndex/aria-hidden (sair da
+   ordem de tab e do leitor de tela), então não precisa repetir aquilo aqui.
+   Fica aberta por padrão — é a área mais usada da sidebar. */
+.nav-area--clientes { flex: 1; min-height: 0; }
+.nav-area-clientes-corpo { display: none; flex: 1; flex-direction: column; min-height: 0; }
+.nav-area-clientes-corpo.aberta { display: flex; }
+
 /* ── Telas do OS: cartões de número, tabelas e situação ──────────────────── */
 .kpis { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 0.8rem; margin-bottom: 1.2rem; }
 .kpi {
