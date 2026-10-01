@@ -1,0 +1,15 @@
+{
+  "saude": "vermelho",
+  "resumo": "A automação está concentrada de um jeito que qualquer mudança em Oportunidade vira uma aposta: 31 automações ativas competem no mesmo objeto, 24 delas disparando no mesmo evento (RecordAfterSave/create-update), sem ninguém conseguir prever a ordem de execução. A cobertura de teste Apex da org inteira está em 40% — metade do mínimo de produção da Salesforce (75%) e menos da metade do padrão deste squad (85%). Security segue o padrão \"perfil por pessoa\" (20 de 26 perfis em uso têm exatamente 1 usuário ativo), o que é o oposto de permission set. Nenhuma dessas três coisas trava a operação hoje, mas qualquer demanda nova nesta org herda esse risco antes mesmo de o consultor escrever a primeira linha.",
+  "recomendacoes": [
+    { "titulo": "Consolidar as 31 automações de Oportunidade, priorizando as 24 do mesmo evento", "severidade": "alta", "area": "automação" },
+    { "titulo": "Migrar os 59 Process Builders ativos para Flow antes do retirement", "severidade": "alta", "area": "automação" },
+    { "titulo": "Elevar cobertura de teste Apex de 40% para o mínimo de produção (75%+)", "severidade": "alta", "area": "código" },
+    { "titulo": "Criar classes de teste dedicadas para as 30 classes/handlers sem <Classe>Test", "severidade": "média", "area": "código" },
+    { "titulo": "Atualizar API version das 27 classes Apex custom pré-v33", "severidade": "média", "area": "código" },
+    { "titulo": "Migrar os 20 perfis com 1 usuário para perfil-base + permission set", "severidade": "média", "area": "segurança" },
+    { "titulo": "Confirmar consumo real de licença Salesforce em produção antes de novo projeto", "severidade": "média", "area": "limites" },
+    { "titulo": "Consolidar Rollup Helper e DLRS num único motor de rollup", "severidade": "baixa", "area": "config" },
+    { "titulo": "Limpar 261 validation rules e 91 flows desativados e não removidos", "severidade": "baixa", "area": "config" }
+  ]
+}
