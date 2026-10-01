@@ -4,9 +4,15 @@ import type { Client } from "@/lib/generated/prisma/client";
 import { SaveField } from "@/components/SaveField";
 import { AssessmentCard } from "@/components/AssessmentCard";
 
+// Segmento e Contatos saíram daqui: em uso real, nenhum dos 5 clientes jamais
+// preencheu nenhum dos dois, e não há como o assessment inferir nenhum a
+// partir da org. Ambiente Salesforce e Integrações vêm primeiro de propósito
+// — são os dois campos que o assessment pré-preenche sozinho (ver
+// /api/sync/assessment), então chegam aqui com conteúdo com mais frequência
+// que um campo 100% manual. Regras fica: tem conteúdo real de cliente (ex.:
+// convenção de nomenclatura que sobrepõe o padrão), só não tem como vir do
+// assessment.
 const BRIEF_FIELDS = [
-  { key: "segmento", label: "Segmento / indústria", multiline: false },
-  { key: "contatos", label: "Contatos principais", multiline: true },
   { key: "ambienteSalesforce", label: "Ambiente Salesforce (clouds, orgs, convenções)", multiline: true, full: true },
   { key: "integracoes", label: "Integrações existentes", multiline: true },
   { key: "regras", label: "Regras específicas desta conta", multiline: true, full: true },
