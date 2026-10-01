@@ -114,21 +114,32 @@ Vale para o assessment e para as 7 etapas de demanda.
 2. **Dados reais não entram no contexto.** Nunca rodar SOQL que retorne dados de cliente
    (CPF, e-mail, telefone, valores). Só metadata e contagens agregadas. LGPD.
 
-   O copiloto do cliente (`apps/squad-os/app/api/copilot/chat`, `lib/copilot/`) segue este
-   guardrail por construção, não por instrução: ele não tem nenhuma ferramenta que fale com
-   Salesforce — só lê do mesmo Postgres que a aba do cliente já expõe (demandas no
-   vocabulário `ESTADOS_CLIENTE`, contrato somente leitura), nas mesmas funções de
-   `lib/data.ts`/`lib/contrato.ts` que a UI usa. `criar_demanda` é a única ferramenta de
-   escrita, e chama a mesma `criarDemanda()` que a API — sempre em `backlog`, nunca aprova
-   gate nem materializa. Toda ferramenta é fechada por closure sobre o `clientId` da sessão
-   (nunca um argumento que o modelo escolhe); mesmo que a pessoa injete instrução via
-   conversa, não existe caminho pra pedir dado de outro cliente — a pergunta nunca chega a
-   existir pra ele. Aprovação de gate continua exigindo o fluxo de dois passos na tela; o
-   copiloto explicitamente recusa "aprovar" pelo chat.
+   O copiloto (`apps/squad-os/app/api/copilot/chat`, `lib/copilot/`) segue este guardrail por
+   construção, não por instrução: ele não tem nenhuma ferramenta que fale com Salesforce —
+   só lê do mesmo Postgres que a tela já expõe (demandas no vocabulário `ESTADOS_CLIENTE`,
+   contrato somente leitura, financeiro só leitura), nas mesmas funções de
+   `lib/data.ts`/`lib/contrato.ts`/`lib/contas-data.ts`/`lib/ops.ts` que a UI usa.
+   `criar_demanda` é a única ferramenta de escrita de todas (cliente, consultor e admin), e
+   chama a mesma `criarDemanda()` que a API — sempre em `backlog`, nunca aprova gate nem
+   materializa; as financeiras (`consultar_painel_financeiro`, `consultar_contas_a_pagar`,
+   `consultar_divergencias`, `consultar_horas_por_cliente`) não escrevem nada. Existe pra
+   todo papel, mas o conjunto de ferramentas muda por quem está perguntando e por onde
+   (`app/api/copilot/chat/route.ts` monta o conjunto a cada request, nunca o modelo): cliente
+   só vê o próprio cliente; consultor só vê o cliente cuja página está aberta (sem
+   ferramenta nenhuma fora de uma página de cliente); admin soma isso com o financeiro,
+   sempre; financeiro só vê o financeiro, nunca demanda ou cliente. O `clientId` em escopo
+   nunca é um argumento que o modelo escolhe — pro cliente vem sempre da sessão; pra
+   consultor/admin vem da página de cliente aberta no navegador (`ClientDetail.tsx` passa o
+   id pro componente, que manda no corpo da requisição) e a rota ainda confere
+   `canAccessClient` antes de aceitar. Mesmo que a pessoa injete instrução via conversa, não
+   existe caminho pra pedir dado de outro cliente — a pergunta nunca chega a existir pra ele.
+   Aprovação de gate, pagamento de conta e decisão de divergência continuam exigindo o fluxo
+   de confirmação na tela; o copiloto explicitamente recusa qualquer uma das três pelo chat,
+   pra qualquer papel.
 
    RAG interno por cliente (`src/salesforce_agents/rag.py`, `apps/squad-os/lib/rag.ts`,
    `/api/sync/rag*`) — decisão explícita (2026-09-29): **só o pipeline de agentes Python
-   consulta**, nunca o copiloto do cliente acima. O corpus é todo `.md` de
+   consulta**, nunca o copiloto acima, de nenhum papel. O corpus é todo `.md` de
    `clients/<cliente>/` (CLAUDE.md de conta, demanda.md, os artefatos das 7 etapas,
    gates.md, assessment.md) — dado interno de delivery, já sujeito ao guardrail #2 desde
    que foi escrito (nenhum desses arquivos deveria ter CPF/e-mail/telefone/valor de

@@ -133,7 +133,7 @@ export function ClientDetail({
 
         {/* Ícone flutuante, não aba — fica alcançável em qualquer aba sem
             trocar de lugar (ver Copiloto.tsx). */}
-        <Copiloto clientNome={client.nome} />
+        <Copiloto papel={usuario.role} clientId={client.id} clientNome={client.nome} />
       </>
     );
   }
@@ -235,6 +235,11 @@ export function ClientDetail({
           />
         </div>
       )}
+
+      {/* Admin/consultor também ganham o copiloto aqui — mesmo ícone do
+          papel cliente, escopo nas demandas/contrato DESTE cliente (ver
+          Copiloto.tsx). Admin ainda tem acesso ao financeiro dentro dele. */}
+      <Copiloto papel={usuario.role} clientId={client.id} clientNome={client.nome} />
     </>
   );
 }
