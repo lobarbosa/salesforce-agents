@@ -97,16 +97,16 @@ export function UsuariosAdmin({
         <label>Conceder acesso</label>
         <form onSubmit={handleGrant} style={{ display: "flex", gap: "0.6rem", flexWrap: "wrap", alignItems: "flex-end", marginTop: "0.4rem" }}>
           <div className="field" style={{ flex: "1 1 220px" }}>
-            <label>E-mail</label>
-            <input type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="pessoa@empresa.com" />
+            <label htmlFor="novo-usuario-email">E-mail</label>
+            <input id="novo-usuario-email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} placeholder="pessoa@empresa.com" />
           </div>
           <div className="field" style={{ flex: "1 1 160px" }}>
-            <label>Nome</label>
-            <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="opcional" />
+            <label htmlFor="novo-usuario-nome">Nome</label>
+            <input id="novo-usuario-nome" type="text" value={nome} onChange={(e) => setNome(e.target.value)} placeholder="opcional" />
           </div>
           <div className="field" style={{ flex: "0 0 140px" }}>
-            <label>Papel</label>
-            <select value={role} onChange={(e) => setRole(e.target.value as Role)}>
+            <label htmlFor="novo-usuario-papel">Papel</label>
+            <select id="novo-usuario-papel" value={role} onChange={(e) => setRole(e.target.value as Role)}>
               <option value="admin">admin</option>
               <option value="consultor">consultor</option>
               <option value="financeiro">financeiro</option>
@@ -115,8 +115,8 @@ export function UsuariosAdmin({
           </div>
           {role === "cliente" && (
             <div className="field" style={{ flex: "1 1 180px" }}>
-              <label>Cliente</label>
-              <select value={clientId} onChange={(e) => setClientId(e.target.value)} required>
+              <label htmlFor="novo-usuario-cliente">Cliente</label>
+              <select id="novo-usuario-cliente" value={clientId} onChange={(e) => setClientId(e.target.value)} required>
                 <option value="">selecione...</option>
                 {clients.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -127,9 +127,10 @@ export function UsuariosAdmin({
             </div>
           )}
           <div className="field" style={{ flex: "1 1 220px" }}>
-            <label>Senha inicial (opcional)</label>
+            <label htmlFor="novo-usuario-senha">Senha inicial (opcional)</label>
             <div style={{ display: "flex", gap: "0.35rem" }}>
               <input
+                id="novo-usuario-senha"
                 type="text"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
@@ -298,7 +299,11 @@ function UsuarioRow({
       <div style={{ marginLeft: "auto", display: "flex", gap: "0.4rem" }}>
         {trocandoSenha ? (
           <>
+            <label className="sr-only" htmlFor={`nova-senha-${usuario.id}`}>
+              Nova senha de {usuario.email}
+            </label>
             <input
+              id={`nova-senha-${usuario.id}`}
               type="text"
               value={novaSenha}
               onChange={(e) => setNovaSenha(e.target.value)}
