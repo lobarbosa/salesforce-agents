@@ -85,6 +85,14 @@ export function formatarReais(v: number): string {
   return v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 }
 
+/** "R$ 12,3 mil" em vez de "R$ 12.345,67" — rótulo de gráfico, não extrato. */
+export function formatarReaisCompacto(v: number): string {
+  const sinal = v < 0 ? "-" : "";
+  const abs = Math.abs(v);
+  if (abs >= 1000) return `${sinal}R$ ${(abs / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mil`;
+  return `${sinal}R$ ${abs.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`;
+}
+
 /** "vence hoje", "vence em 3 dias", "vencida há 2 dias" — situação por texto, não só cor. */
 export function prazo(vencimento: string, hoje: string): { texto: string; vencida: boolean; urgente: boolean } {
   const dias = Math.round((Date.parse(`${vencimento}T00:00:00Z`) - Date.parse(`${hoje}T00:00:00Z`)) / 86_400_000);

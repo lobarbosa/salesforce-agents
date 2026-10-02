@@ -505,6 +505,12 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .chart-legenda .ponto.erro { background: var(--danger); }
 .chart-legenda .ponto.cancelada { background: var(--border-strong); }
 
+/* gráfico de conciliação — duas fontes nomeadas (contábil × gerencial), hue fixo cada uma */
+.chart .barra-contabil { fill: var(--accent); }
+.chart .barra-gerencial { fill: var(--accent2); }
+.chart-legenda .ponto.contabil { background: var(--accent); }
+.chart-legenda .ponto.gerencial { background: var(--accent2); }
+
 /* SLA */
 table.sla { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
 table.sla th, table.sla td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); }

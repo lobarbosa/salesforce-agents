@@ -2,19 +2,13 @@
 
 import { useId } from "react";
 import type { ResultadoMes } from "@/lib/ops";
+import { formatarReaisCompacto } from "@/lib/contas";
 
 const MESES = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
 
 function rotuloMes(chave: string): string {
   const [, mes] = chave.split("-").map(Number);
   return MESES[mes - 1] ?? chave;
-}
-
-function formatarReaisCompacto(v: number): string {
-  const sinal = v < 0 ? "-" : "";
-  const abs = Math.abs(v);
-  if (abs >= 1000) return `${sinal}R$ ${(abs / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mil`;
-  return `${sinal}R$ ${abs.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`;
 }
 
 /**
