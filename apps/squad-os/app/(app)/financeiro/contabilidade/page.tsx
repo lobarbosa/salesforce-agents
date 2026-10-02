@@ -6,6 +6,7 @@ import { checklist, competenciaPadrao, rotuloMes } from "@/lib/contabilidade";
 import { formatarReais } from "@/lib/contas";
 import { chaveDia, ehChaveMes } from "@/lib/horas";
 import { DocumentosContabeis } from "@/components/DocumentosContabeis";
+import { ConciliacaoChart } from "@/components/ConciliacaoChart";
 
 // Documentos da contabilidade por competência + resultado da conciliação que o
 // accounting_reconciliation_agent grava em ops.conciliacoes (17:00).
@@ -104,6 +105,9 @@ export default async function ContabilidadePage({ searchParams }: { searchParams
           </p>
         ) : (
           <>
+            {conc.resultadoContabil !== null && conc.resultadoGerencial !== null && (
+              <ConciliacaoChart contabil={conc.resultadoContabil} gerencial={conc.resultadoGerencial} />
+            )}
             <div className="kpis">
               <div className="kpi">
                 <span className="kpi-rotulo">Resultado contábil</span>

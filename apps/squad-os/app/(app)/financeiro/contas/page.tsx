@@ -4,6 +4,7 @@ import { listarContas, type ContaVista } from "@/lib/contas-data";
 import { formatarReais } from "@/lib/contas";
 import { chaveDia } from "@/lib/horas";
 import { ContasPagar } from "@/components/ContasPagar";
+import { ContasSituacaoChart } from "@/components/ContasSituacaoChart";
 
 // Contas a pagar: substitui a lista do ClickUp (task = conta, due date =
 // vencimento, campo "Valor", anexo = documento fiscal). Filtro no link, para
@@ -47,6 +48,13 @@ export default async function ContasPage({
       <span className="kpi-nota num">{soma(l)}</span>
     </Link>
   );
+  const somaValor = (l: ContaVista[]) => l.reduce((s, c) => s + c.valor, 0);
+  const situacoes = [
+    { rotulo: "aguardando", valor: somaValor(aguardando) },
+    { rotulo: "a pagar", valor: somaValor(aPagar) },
+    { rotulo: "vencidas", valor: somaValor(vencidas), alerta: true },
+    { rotulo: "pagas no mês", valor: somaValor(pagasMes) },
+  ].filter((s) => s.valor > 0);
 
   return (
     <>
@@ -61,6 +69,8 @@ export default async function ContasPage({
         {kpi("/financeiro/contas?ver=abertas", "Vencidas e não pagas", vencidas, true)}
         {kpi("/financeiro/contas?ver=pagas", `Pagas em ${mes.slice(5)}/${mes.slice(0, 4)}`, pagasMes)}
       </div>
+
+      {situacoes.length > 1 && <ContasSituacaoChart dados={situacoes} />}
 
       <nav className="tabs" aria-label="Filtrar contas">
         {(Object.keys(FILTROS) as Filtro[]).map((f) => (

@@ -1,13 +1,7 @@
 "use client";
 
 import { useId } from "react";
-
-function formatarReaisCompacto(v: number): string {
-  const sinal = v < 0 ? "-" : "";
-  const abs = Math.abs(v);
-  if (abs >= 1000) return `${sinal}R$ ${(abs / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })} mil`;
-  return `${sinal}R$ ${abs.toLocaleString("pt-BR", { maximumFractionDigits: 0 })}`;
-}
+import { formatarReaisCompacto } from "@/lib/contas";
 
 /**
  * Caixa projetado por horizonte (30/60/90 dias) — magnitude, não tempo: o
