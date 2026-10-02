@@ -52,15 +52,16 @@ function normalizarRecomendacoes(bruto: unknown): Recomendacao[] {
 }
 
 export async function POST(request: NextRequest) {
-  const naoAutorizado = autorizarSync(request);
-  if (naoAutorizado) return naoAutorizado;
-
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
   }
 
   const clientSlug = String(body.client ?? "");
+
+  const naoAutorizado = autorizarSync(request, clientSlug);
+  if (naoAutorizado) return naoAutorizado;
+
   if (!clientSlug) {
     return NextResponse.json({ error: "client é obrigatório" }, { status: 400 });
   }

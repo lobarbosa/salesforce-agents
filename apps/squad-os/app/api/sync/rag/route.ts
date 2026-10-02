@@ -29,9 +29,6 @@ function normalizarDocumentos(bruto: unknown): DocumentoBruto[] {
 }
 
 export async function POST(request: NextRequest) {
-  const naoAutorizado = autorizarSync(request);
-  if (naoAutorizado) return naoAutorizado;
-
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
@@ -39,6 +36,10 @@ export async function POST(request: NextRequest) {
   const registro = body as Record<string, unknown>;
 
   const clientSlug = String(registro.clientSlug ?? "").trim();
+
+  const naoAutorizado = autorizarSync(request, clientSlug);
+  if (naoAutorizado) return naoAutorizado;
+
   const documentos = normalizarDocumentos(registro.documents);
   if (!clientSlug || documentos.length === 0) {
     return NextResponse.json({ error: "clientSlug e documents são obrigatórios" }, { status: 400 });

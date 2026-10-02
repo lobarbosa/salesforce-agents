@@ -57,9 +57,6 @@ function comRespostasPreservadas(novas: unknown, atuais: unknown): PerguntaSync[
 }
 
 export async function POST(request: NextRequest) {
-  const naoAutorizado = autorizarSync(request);
-  if (naoAutorizado) return naoAutorizado;
-
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
@@ -68,6 +65,13 @@ export async function POST(request: NextRequest) {
   // O payload é o próprio status.yaml em JSON (`sfagents demanda status-json`)
   // mais dois campos que só o Actions sabe.
   const clientSlug = String(body.client ?? "");
+
+  // clientSlug lido do corpo antes de autorizar — não vaza nada confiar no
+  // valor que a requisição afirma: se o token por cliente não bater, 401 do
+  // mesmo jeito (token por cliente + fallback global, ver sync-auth.ts).
+  const naoAutorizado = autorizarSync(request, clientSlug);
+  if (naoAutorizado) return naoAutorizado;
+
   const code = String(body.id ?? "");
   const status = String(body.status ?? "");
 

@@ -57,6 +57,17 @@ roda a etapa atual, avança até o próximo gate e devolve o controle; o sync de
 (`/api/sync/demanda`) faz o quadro do Squad OS mostrar o gate esperando; quando alguém
 aprova no card, a próxima etapa dispara sozinha. Detalhes em `docs/ativacao.md`.
 
+Toda rota `/api/sync/*` autentica por bearer token (`lib/sync-auth.ts`), comparado em tempo
+constante — e, desde o achado do council de 2026-10-01, por **cliente**: um token único e
+global (`SQUAD_OS_SYNC_TOKEN`) comprometia os 6 clientes ao mesmo tempo se vazasse (igual
+aprovar qualquer gate de qualquer cliente remotamente, sem passar por nenhum dos guardrails
+de produção, que pressupõem aprovação humana legítima antes de chegar neles). Um cliente
+migrado pra `SQUAD_OS_SYNC_TOKEN_<CLIENTE>` deixa de aceitar o token global pra ele —
+migração real, não mais uma chave que também abre a porta (passo a passo em
+`docs/conexoes-e-setup.md`). `run-planejamento.yml` ainda fica de fora dessa segmentação —
+é o único workflow de propósito sem GitHub Environment (não toca em org), e Environment é
+o mecanismo que torna o token por cliente possível do lado do Actions.
+
 Isso **não afrouxa a regra de ouro**: toda etapa de agente continua sendo seguida por um
 gate humano bloqueante — essa invariante tem teste (`tests/test_fluxo.py`). O que ficou
 automático é a borda: agente→humano (o gate aparece pra quem precisa ver) e humano→agente

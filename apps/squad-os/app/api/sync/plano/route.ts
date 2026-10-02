@@ -44,15 +44,16 @@ function comoTexto(d: DemandaProposta): string {
 }
 
 export async function POST(request: NextRequest) {
-  const naoAutorizado = autorizarSync(request);
-  if (naoAutorizado) return naoAutorizado;
-
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
   }
 
   const clientSlug = String(body.cliente ?? "");
+
+  const naoAutorizado = autorizarSync(request, clientSlug);
+  if (naoAutorizado) return naoAutorizado;
+
   const propostas: DemandaProposta[] = Array.isArray(body.demandas) ? body.demandas : [];
 
   if (!clientSlug) {
