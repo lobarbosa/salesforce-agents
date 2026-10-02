@@ -9,6 +9,9 @@ import { checklist, competenciaPadrao, rotuloMes } from "@/lib/contabilidade";
 import { horasPorCliente } from "@/lib/horas-data";
 import { chaveDia } from "@/lib/horas";
 import { prisma } from "@/lib/prisma";
+import { resultadoPorMes } from "@/lib/ops";
+import { ResultadoChart } from "@/components/ResultadoChart";
+import { CaixaChart } from "@/components/CaixaChart";
 
 // Painel financeiro: a porta de entrada do papel financeiro. Primeiro o que
 // precisa de alguém (cada linha leva à tela onde se resolve); depois os números
@@ -30,12 +33,13 @@ export default async function PainelFinanceiroPage() {
   const mesAtual = hoje.slice(0, 7);
   const compContabil = competenciaPadrao(mesAtual);
 
-  const [contas, divergencias, kpis, docsContabeis, horas] = await Promise.all([
+  const [contas, divergencias, kpis, docsContabeis, horas, resultadoMensal] = await Promise.all([
     listarContas(),
     contarDivergenciasAbertas(),
     kpisAtuais(),
     prisma.documentoContabil.findMany({ where: { competencia: compContabil, removidoEm: null }, select: { tipo: true } }),
     horasPorCliente(mesAtual),
+    resultadoPorMes(6),
   ]);
 
   const quem = { role: usuario.role, email: usuario.email };
@@ -78,6 +82,10 @@ export default async function PainelFinanceiroPage() {
   };
   const caixa = grupo("caixa").slice(0, 6);
   const resultado = grupo("resultado");
+  const projecaoCaixa = caixa
+    .filter((k) => /^caixa_\d+d$/.test(k.metrica))
+    .map((k) => ({ dias: Number(k.metrica.match(/\d+/)![0]), valor: k.valor }))
+    .sort((a, b) => a.dias - b.dias);
 
   return (
     <>
@@ -113,7 +121,10 @@ export default async function PainelFinanceiroPage() {
         ) : caixa.length === 0 ? (
           <div className="overview-empty">O cashflow_monitor ainda não gravou a projeção de caixa.</div>
         ) : (
-          <div className="kpis">{caixa.map(cartao)}</div>
+          <>
+            {projecaoCaixa.length > 1 && <CaixaChart dados={projecaoCaixa} />}
+            <div className="kpis">{caixa.map(cartao)}</div>
+          </>
         )}
       </div>
 
@@ -123,7 +134,10 @@ export default async function PainelFinanceiroPage() {
           {resultado.length === 0 ? (
             <div className="overview-empty">O finance_report_agent grava a DRE no dia 5 de cada mês.</div>
           ) : (
-            <div className="kpis">{resultado.map(cartao)}</div>
+            <>
+              {resultadoMensal && resultadoMensal.length > 1 && <ResultadoChart dados={resultadoMensal} />}
+              <div className="kpis">{resultado.map(cartao)}</div>
+            </>
           )}
         </div>
       )}

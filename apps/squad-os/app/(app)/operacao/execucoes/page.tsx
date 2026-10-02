@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { usuarioDaArea } from "@/lib/area";
 import { getClients } from "@/lib/data";
-import { listarExecucoes } from "@/lib/execucoes-data";
+import { execucoesPorDia, listarExecucoes } from "@/lib/execucoes-data";
+import { ExecucoesChart } from "@/components/ExecucoesChart";
 
 // Observabilidade de todas as execuções da plataforma (council de
 // 2026-10-01): admin via GitHub Actions é "ninguém deveria precisar abrir
@@ -35,11 +36,14 @@ export default async function ExecucoesPage({
   const resultadoFiltro = RESULTADOS.includes(sp.resultado as (typeof RESULTADOS)[number]) ? sp.resultado : undefined;
   const origemFiltro = ORIGENS.includes(sp.origem as (typeof ORIGENS)[number]) ? sp.origem : undefined;
 
-  const execucoes = await listarExecucoes({
-    clientId: clienteFiltro?.id,
-    resultado: resultadoFiltro,
-    origem: origemFiltro,
-  });
+  const [execucoes, porDia] = await Promise.all([
+    listarExecucoes({
+      clientId: clienteFiltro?.id,
+      resultado: resultadoFiltro,
+      origem: origemFiltro,
+    }),
+    execucoesPorDia({ clientId: clienteFiltro?.id, origem: origemFiltro }),
+  ]);
 
   const link = (p: { cliente?: string | null; resultado?: string | null; origem?: string | null }) => {
     const q = new URLSearchParams();
@@ -92,6 +96,8 @@ export default async function ExecucoesPage({
           </Link>
         ))}
       </div>
+
+      <ExecucoesChart dados={porDia} />
 
       {execucoes.length === 0 ? (
         <div className="overview-empty">Nenhuma execução neste recorte ainda.</div>
