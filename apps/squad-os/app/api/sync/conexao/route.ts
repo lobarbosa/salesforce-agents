@@ -16,15 +16,16 @@ const STATUS: StatusConexao[] = ["nao_configurado", "aguardando_teste", "conecta
 const TIPOS: TipoAmbiente[] = ["dev", "qa"];
 
 export async function POST(request: NextRequest) {
-  const naoAutorizado = autorizarSync(request);
-  if (naoAutorizado) return naoAutorizado;
-
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
   }
 
   const clientSlug = String(body.client ?? "");
+
+  const naoAutorizado = autorizarSync(request, clientSlug);
+  if (naoAutorizado) return naoAutorizado;
+
   const tipo = String(body.ambiente ?? "") as TipoAmbiente;
   const status = String(body.status ?? "") as StatusConexao;
 

@@ -74,7 +74,7 @@ quadro do app para de refletir a realidade, que é o mesmo que não ter automaç
 
 | Secret | Pra quê |
 |---|---|
-| `SQUAD_OS_SYNC_TOKEN` | Autentica os três endpoints de sync. Mesma string cadastrada como env var na Vercel |
+| `SQUAD_OS_SYNC_TOKEN` | Autentica todos os endpoints de sync. Mesma string cadastrada como env var na Vercel. Fallback: usado quando o cliente não tem token próprio (ver abaixo) |
 | `SQUAD_OS_SYNC_URL` | `https://<domínio>/api/sync/demanda` — estágio da demanda voltando |
 | `SQUAD_OS_SYNC_ASSESSMENT_URL` | `https://<domínio>/api/sync/assessment` — saúde da org voltando |
 | `SQUAD_OS_SYNC_CONEXAO_URL` | `https://<domínio>/api/sync/conexao` — resultado do teste de JWT voltando, e o gatilho do assessment de onboarding |
@@ -84,6 +84,38 @@ quadro do app para de refletir a realidade, que é o mesmo que não ter automaç
 `ANTHROPIC_API_KEY` fica em **Settings → Secrets → Actions** do repositório (não dentro de
 um Environment) — é a mesma conta Anthropic do squad para todos os clientes, não algo que
 se isola por conta.
+
+#### Migrando um cliente pro token de sync próprio
+
+Achado do council de 2026-10-01: `SQUAD_OS_SYNC_TOKEN` é um único secret usado pelos 6
+clientes — vazar uma vez compromete a capacidade de aprovar qualquer gate de qualquer
+cliente remotamente, nos 6 ao mesmo tempo. `lib/sync-auth.ts` agora aceita um token **por
+cliente** do lado do Squad OS, sem quebrar quem ainda não migrou. O lado do GitHub Actions
+é mais restrito do que parece — **`secrets.*` não aceita nome dinâmico** (não dá pra fazer
+`secrets["SQUAD_OS_SYNC_TOKEN_" + client]` num workflow; é limite de segurança do próprio
+Actions). Quem resolve isso são os **secrets de Environment**, que têm uma regra exata pra
+este caso: um secret de Environment com o **mesmo nome** de um secret de repositório
+sobrepõe o de repositório pra jobs que abrem aquele Environment — sem mudar nada no YAML.
+
+1. Gere um token novo (ex.: `openssl rand -hex 32`) só pra este cliente.
+2. Cadastre a mesma string como env var `SQUAD_OS_SYNC_TOKEN_<CLIENTE>` na Vercel (cliente
+   em caixa alta, hífen virando `_` — ex.: `somos-agility` → `..._SOMOS_AGILITY`). Esse é o
+   lado que `sync-auth.ts` lê.
+3. Cadastre a **mesma string**, com o **mesmo nome do secret global** (`SQUAD_OS_SYNC_TOKEN`,
+   sem sufixo), dentro de cada GitHub Environment deste cliente que hoje dispara sync —
+   `Settings → Environments → <cliente>-dev` e `<cliente>-qa` → secret `SQUAD_OS_SYNC_TOKEN`.
+   Cobre `run-demand.yml` (job `rodar`), `run-assessment.yml` e `test-connection.yml` — os
+   três já abrem Environment por cliente/ambiente.
+4. **`run-planejamento.yml` fica de fora desta migração.** Ele não abre Environment
+   nenhum — de propósito (não toca em org, não tem credencial Salesforce pra isolar) — e
+   sem Environment não existe like-nomeado pra sobrepor. Enquanto isso não for revisitado,
+   `/api/sync/plano` continua autenticando só pelo token global pra todo cliente, mesmo os
+   já migrados nos outros quatro endpoints. Dar Environment a esse workflow só pra ganhar
+   escopo de secret é possível, mas muda comportamento (Environment pode ter regra de
+   aprovação configurada) — decisão deliberada, não consequência automática desta migração.
+5. A partir do passo 3, **o token global para de autenticar os quatro endpoints migrados
+   deste cliente** — não é mais uma chave a mais que também abre a porta, é segmentação de
+   verdade. Os outros clientes continuam no token global até migrarem também.
 
 ### Ambiente local / CI onde `sfagents` roda
 ```

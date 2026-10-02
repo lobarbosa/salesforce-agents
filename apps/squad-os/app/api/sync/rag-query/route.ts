@@ -14,9 +14,6 @@ const K_MAXIMO = 20;
 const PERGUNTA_MAX = 2000;
 
 export async function POST(request: NextRequest) {
-  const naoAutorizado = autorizarSync(request);
-  if (naoAutorizado) return naoAutorizado;
-
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
@@ -24,6 +21,10 @@ export async function POST(request: NextRequest) {
   const registro = body as Record<string, unknown>;
 
   const clientSlug = String(registro.clientSlug ?? "").trim();
+
+  const naoAutorizado = autorizarSync(request, clientSlug);
+  if (naoAutorizado) return naoAutorizado;
+
   const pergunta = String(registro.pergunta ?? "").trim().slice(0, PERGUNTA_MAX);
   const kPedido = Number(registro.k);
   const k = Math.min(Math.max(Number.isFinite(kPedido) && kPedido > 0 ? kPedido : K_PADRAO, 1), K_MAXIMO);
