@@ -222,17 +222,28 @@ Segundo council de otimização de custo (2026-09-07): a variável que domina o 
 pipeline não é qual modelo cada agente usa — é o reprocessamento de `CLAUDE.md`/skills sem
 cache em 7 etapas × 6 clientes × ciclo indefinido. Antes de mexer em cache, model routing ou
 Batch API, é preciso medir. `src/salesforce_agents/orchestrator.py` agora loga cada sessão
-de agente (`src/salesforce_agents/costs.py`) em `logs/custos_agentes.csv` — modelo, tokens
+de agente (`src/salesforce_agents/costs.py`) em `logs/custos_agentes/` — modelo, tokens
 de input/output/cache, custo em USD, etapa, cliente, demanda. Só metadata e contagens, nunca
 conteúdo da demanda (guardrail #2). Esse log é o pré-requisito pra qualquer decisão futura de
 caching ou de revisão da tabela de modelo acima — sem ele, qualquer ajuste continua sendo
 achismo.
 
-`logs/custos_agentes.csv` **é versionado** (commitado pelo workflow `run-demand.yml`, mesmo
+`logs/custos_agentes/` **é versionado** (commitado pelo workflow `run-demand.yml`, mesmo
 passo que commita os artefatos da demanda) — precisa sobreviver entre execuções de CI, que
 rodam em runner efêmero. Achado real (ACXYA-1, 2026-09-07): a primeira sessão real de agente
 gerou o log dentro do runner, mas como o arquivo estava no `.gitignore` e o commit só incluía
 `clients/$CLIENT`, o dado se perdeu — corrigido depois desse incidente.
+
+**Um arquivo por sessão, não um CSV único crescendo** (mudou em 2026-10-02, achado do
+council daquele dia): o formato original era `logs/custos_agentes.csv`, um arquivo só que
+toda sessão appendava. Cada demanda vive na própria branch `feature/<DEMAND-ID>` (guardrail
+#4) — duas demandas de clientes diferentes, cada uma appendando no fim do mesmo arquivo,
+geram PRs que conflitam entre si quando os dois tentam mesclar na mesma região do arquivo.
+Aconteceu de verdade (somos-agility × eplast). `logs/custos_agentes.csv` (singular) continua
+existindo só como arquivo **legado**, com o que foi gravado antes da mudança — nunca mais
+escrito, só lido. Quem precisa do agregado usa
+`salesforce_agents.costs.ler_todas_as_linhas()`, que junta os dois (ver skill
+`revisar-custos`).
 
 ## Estrutura de artefatos por demanda
 

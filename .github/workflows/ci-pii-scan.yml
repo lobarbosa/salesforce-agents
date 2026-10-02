@@ -1,0 +1,48 @@
+name: CI — verificação de PII em clients/
+
+# demanda.md e os artefatos das 7 etapas são texto livre, sem filtro humano
+# nenhum hoje — só a disciplina de quem escreveu impede CPF/e-mail/telefone de
+# virar corpus do RAG (achado do council de 2026-10-01, CLAUDE.md guardrail
+# #2). Este scanner (scripts/verificar_pii.py) é a rede técnica que faltava:
+# roda sobre todo .md novo ou alterado em clients/<cliente>/ e falha o PR
+# antes do merge.
+
+on:
+  pull_request:
+    paths:
+      - "clients/**/*.md"
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Listar .md alterados em clients/
+        id: arquivos
+        run: |
+          ARQUIVOS=$(git diff --name-only --diff-filter=ACMR \
+            "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" \
+            -- 'clients/**/*.md')
+          echo "lista<<EOF" >> "$GITHUB_OUTPUT"
+          echo "$ARQUIVOS" >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Verificar PII
+        env:
+          ARQUIVOS: ${{ steps.arquivos.outputs.lista }}
+        run: |
+          if [ -z "$ARQUIVOS" ]; then
+            echo "nenhum .md alterado em clients/ neste PR."
+            exit 0
+          fi
+          python3 scripts/verificar_pii.py $ARQUIVOS
