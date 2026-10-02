@@ -79,14 +79,20 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # Guardrail #4: nada é commitado direto numa branch protegida. O
-      # assessment é substituído a cada rodada, então a branch é reusada.
+      # assessment é substituído a cada rodada — por isso a branch nasce
+      # SEMPRE do checkout fresco de `main` acima (HEAD), nunca do próprio tip
+      # remoto antigo. `checkout -B` sem start-point reseta pro HEAD atual.
+      #
+      # Achado real (2026-10-02): a versão anterior fazia
+      # `checkout -B "$ASSESSMENT_BRANCH" "origin/$ASSESSMENT_BRANCH"` quando a
+      # branch já existia — isso descartava o checkout de `main` e voltava pra
+      # foto antiga de quando a branch nasceu. `assessment/mais-polimeros`
+      # partiu e commitou em cima de um `main` de antes de SOMOSAGILITY-2
+      # existir; o PR resultante **deletava** a demanda de outro cliente —
+      # guardrail #7 violado sem ninguém escrever uma linha de código ruim,
+      # só porque a branch "reusada" não começava de onde devia.
       - name: Preparar branch do assessment
-        run: |
-          if git fetch origin "$ASSESSMENT_BRANCH" 2>/dev/null; then
-            git checkout -B "$ASSESSMENT_BRANCH" "origin/$ASSESSMENT_BRANCH"
-          else
-            git checkout -b "$ASSESSMENT_BRANCH"
-          fi
+        run: git checkout -B "$ASSESSMENT_BRANCH"
 
       # Se o agente não produzir assessment.json válido, o comando falha e o job
       # fica vermelho — é o mesmo princípio do ArtifactAusenteError nas demandas:
@@ -97,12 +103,18 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: sfagents cliente assessment --client "$CLIENT" --target-org "$TARGET_ORG" --github-output
 
+      # --force-with-lease porque a branch agora SEMPRE reparte de `main`
+      # fresco (passo acima): se já existia um assessment anterior nela, o
+      # histórico diverge do que está no remoto de propósito — é a mesma
+      # branch sendo substituída, não uma reescrita de trabalho alheio.
+      # `assessment/<cliente>` nunca recebe commit humano por cima: só este
+      # job escreve nela, então não há o que perder com o force.
       - name: Commit e push
         run: |
           git add "clients/$CLIENT"
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$CLIENT: assessment da org (saúde ${{ steps.assess.outputs.saude }})" --allow-empty -q
-          git push origin "HEAD:$ASSESSMENT_BRANCH"
+          git push --force-with-lease origin "HEAD:$ASSESSMENT_BRANCH"
 
       - name: Abrir PR do assessment (se ainda não existir)
         env:

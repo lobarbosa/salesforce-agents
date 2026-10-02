@@ -38,7 +38,7 @@ export function AgentesChart({ agentes }: { agentes: SaudeAgente[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Execuções nas últimas 24 horas por agente, ok contra erro, {ordenados.length} agentes.
+          {`Execuções nas últimas 24 horas por agente, ok contra erro, ${ordenados.length} agentes.`}
         </title>
         {ordenados.map((a, i) => {
           const y = T + i * linhaH;

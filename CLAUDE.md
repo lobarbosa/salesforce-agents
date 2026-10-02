@@ -181,6 +181,23 @@ Vale para o assessment e para as 7 etapas de demanda.
    environment, `rodar` no `<cliente>-<ambiente>` que o primeiro apontou) porque um job
    do Actions declara um `environment:` só e a esteira atravessa dois.
 
+   **`feature/<DEMAND-ID>` acumula commit a cada etapa — `assessment/<cliente>`,
+   `plano/<cliente>` e `baseline/<cliente>` fazem o oposto: são substituídas inteiras a
+   cada rodada.** As duas semânticas usam o mesmo "cria a branch se não existir, reusa se
+   existir", e é fácil confundir uma com a outra na hora de reusar. Achado real
+   (2026-10-02): as três branches de "substituir" reusavam resetando pro **tip remoto
+   antigo da própria branch** (`git checkout -B $BRANCH origin/$BRANCH`) em vez de pro
+   `main` que acabara de ser clonado no mesmo job — então uma rodada nova partia da foto
+   de quando a branch nasceu, não da atual. `assessment/mais-polimeros` herdou assim um
+   `main` de antes de `SOMOSAGILITY-2` existir e o PR resultante **deletava** a demanda
+   de outro cliente — guardrail #7 quebrado sem ninguém escrever uma linha ruim, só
+   porque "reusar" apontou pro lugar errado. Corrigido nos três workflows: a branch
+   sempre reparte do checkout fresco (`git checkout -B $BRANCH`, sem start-point) e o
+   push vira `--force-with-lease` — seguro aqui porque só o próprio job escreve nessas
+   branches, nunca um commit humano por cima pra perder. `feature/<DEMAND-ID>` continua
+   como estava: ali reusar o tip remoto é o comportamento certo, é isso que faz a
+   demanda acumular etapa sobre etapa.
+
    - `ci-python.yml` — testes do orquestrador (`src/salesforce_agents/`)
    - `ci-squad-os.yml` — lint + build do Squad OS (`apps/squad-os/`)
    - `ci-salesforce-validate.yml` — `sf project deploy validate` (check-only, nunca
