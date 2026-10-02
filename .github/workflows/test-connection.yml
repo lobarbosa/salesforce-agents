@@ -34,6 +34,10 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.client }}-${{ inputs.ambiente }}
     steps:
+      - name: Marcar início (observabilidade)
+        id: inicio
+        run: echo "em=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v4
 
       - name: Instalar Salesforce CLI
@@ -86,3 +90,27 @@ jobs:
                 -H "Content-Type: application/json" \
                 --data-binary @- \
             || echo "::warning::Falha ao reportar o resultado pro Squad OS."
+
+      # Observabilidade (council de 2026-10-01) — espelho histórico, nunca
+      # decide nada sobre o status da conexão.
+      - name: Registrar execução (observabilidade)
+        if: always()
+        env:
+          EXEC_URL: ${{ secrets.SQUAD_OS_SYNC_EXECUCAO_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+          RESULTADO: ${{ job.status }}
+        run: |
+          if [ -z "$EXEC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            exit 0
+          fi
+          jq -nc \
+            --arg c "${{ inputs.client }}" --arg a "${{ inputs.ambiente }}" --arg r "$RESULTADO" \
+            --arg inicio "${{ steps.inicio.outputs.em }}" \
+            --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            '{client: $c, origem: "conexao", etapa: ("test-connection-" + $a),
+              resultado: $r, iniciadoEm: $inicio, runUrl: $run}' \
+            | curl -fsS -X POST "$EXEC_URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @- \
+            || echo "::warning::Falha ao registrar a execução pra observabilidade."

@@ -401,6 +401,15 @@ export function Sidebar({
         <span className="icon" />
         Minhas horas
       </Link>
+      <Link
+        href="/falhas"
+        onClick={fecharMenu}
+        className={`nav-item${pathname?.startsWith("/falhas") ? " active" : ""}`}
+        aria-current={pathname?.startsWith("/falhas") ? "page" : undefined}
+      >
+        <span className="icon" />
+        Falhas
+      </Link>
       {podeVer(usuario.role, "financeiro") && (
         <NavArea
           chave="financeiro"
@@ -417,7 +426,10 @@ export function Sidebar({
         <NavArea
           chave="operacao"
           titulo="Operação"
-          itens={[{ href: "/operacao/agentes", rotulo: "Saúde dos agentes" }]}
+          itens={[
+            { href: "/operacao/agentes", rotulo: "Saúde dos agentes" },
+            { href: "/operacao/execucoes", rotulo: "Execuções da plataforma" },
+          ]}
           basePath="/operacao"
           pathname={pathname}
           preferencia={secoesAbertas.operacao}

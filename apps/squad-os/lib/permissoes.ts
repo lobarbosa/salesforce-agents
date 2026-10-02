@@ -4,7 +4,7 @@ import type { Role } from "@/lib/generated/prisma/client";
 // (o gate de verdade) e sidebar (o que aparece) leem daqui — um papel novo
 // não pode depender de alguém lembrar de mais um `if` espalhado.
 //
-// - delivery:   clientes, demandas, Visão Geral e "Minhas horas" (o time que entrega)
+// - delivery:   clientes, demandas, Visão Geral, "Minhas horas" e "Falhas" (o time que entrega)
 // - financeiro: contas a pagar, aprovações, documentos da contabilidade,
 //               painel financeiro, divergências e horas por cliente
 // - operacao:   saúde dos agentes (quem responde pela plataforma)
@@ -29,6 +29,7 @@ export function areaDaRota(pathname: string): Area | null {
   if (comeca("/operacao") || comeca("/api/operacao")) return "operacao";
   if (comeca("/admin") || comeca("/api/admin")) return "admin";
   if (comeca("/horas") || comeca("/api/horas")) return "delivery";
+  if (comeca("/falhas")) return "delivery";
   return null;
 }
 
