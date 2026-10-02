@@ -5,17 +5,34 @@ Batch API — sem isso, "otimizar custo" é achismo com planilha (council de
 2026-09-07, ver `CLAUDE.md` § Seleção de modelo por agente). Só grava
 metadata e contagens de token, nunca conteúdo da demanda: mesmo guardrail de
 LGPD que vale pro resto do projeto (`CLAUDE.md` guardrail #2).
+
+Um arquivo por sessão, nunca um CSV único crescendo (`logs/custos_agentes/`,
+não `logs/custos_agentes.csv`) — achado real do council de 2026-10-01: dois
+`run-demand.yml` de clientes diferentes, cada um na própria branch
+`feature/<DEMAND-ID>`, appendando no fim do mesmo arquivo único, gera
+conflito de merge quando os PRs batem na mesma região do arquivo (aconteceu
+de verdade entre os PRs de somos-agility e eplast). Arquivo por sessão quebra
+isso na raiz: cada branch só ADICIONA um arquivo novo e exclusivo, nunca edita
+um que outra branch também toca — merge de qualquer quantidade de PRs, em
+qualquer ordem, nunca conflita aqui. `ler_todas_as_linhas()` concatena tudo
+pra quem precisa do agregado (skill `revisar-custos`).
 """
 
 from __future__ import annotations
 
 import csv
+import re
 from collections.abc import Iterator
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-LOG_PATH = Path("logs/custos_agentes.csv")
+LOG_DIR = Path("logs/custos_agentes")
+
+# Arquivo único antigo, de antes desta mudança — só lido (histórico), nunca
+# mais escrito. Sem isso a telemetria já gravada em produção desapareceria da
+# agregação no dia em que este código for atualizado.
+LOG_PATH_LEGADO = Path("logs/custos_agentes.csv")
 
 FIELDS = [
     "timestamp",
@@ -34,6 +51,12 @@ FIELDS = [
     "is_error",
 ]
 
+_SANITIZAR = re.compile(r"[^A-Za-z0-9_.-]+")
+
+
+def _slug(valor: str) -> str:
+    return _SANITIZAR.sub("_", valor).strip("_") or "x"
+
 
 def log_usage(client: str, demand_id: str, etapa: str, result: Any) -> None:
     """Registra o custo/uso de uma sessão de agente.
@@ -43,11 +66,12 @@ def log_usage(client: str, demand_id: str, etapa: str, result: Any) -> None:
     `is_error`, `model_usage`, `usage`, `total_cost_usd`). Uma linha por
     modelo usado na sessão — uma demanda que passar por um único sub-agente
     gera uma linha; se o orquestrador e o sub-agente usarem modelos
-    diferentes, gera uma linha por modelo.
+    diferentes, gera uma linha por modelo. Todas as linhas de uma mesma
+    sessão vão pro mesmo arquivo (uma sessão não se divide entre arquivos).
     """
     rows = list(_rows_from_result(client, demand_id, etapa, result))
     if rows:
-        _append_rows(rows)
+        _write_session_file(client, demand_id, etapa, getattr(result, "session_id", ""), rows)
 
 
 def _rows_from_result(
@@ -92,11 +116,29 @@ def _rows_from_result(
     }
 
 
-def _append_rows(rows: list[dict[str, Any]]) -> None:
-    LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
-    is_new = not LOG_PATH.exists()
-    with LOG_PATH.open("a", newline="", encoding="utf-8") as f:
+def _write_session_file(
+    client: str, demand_id: str, etapa: str, session_id: str, rows: list[dict[str, Any]]
+) -> None:
+    LOG_DIR.mkdir(parents=True, exist_ok=True)
+    nome = "__".join(_slug(p) for p in (client, demand_id, etapa, session_id or "sem-sessao"))
+    caminho = LOG_DIR / f"{nome}.csv"
+    with caminho.open("w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDS)
-        if is_new:
-            writer.writeheader()
+        writer.writeheader()
         writer.writerows(rows)
+
+
+def ler_todas_as_linhas() -> Iterator[dict[str, str]]:
+    """Todas as linhas de telemetria já gravadas — arquivo legado + um por sessão.
+
+    Usado por quem precisa do agregado (skill `revisar-custos`) sem se
+    importar com o layout em disco.
+    """
+    if LOG_PATH_LEGADO.exists():
+        with LOG_PATH_LEGADO.open(encoding="utf-8") as f:
+            yield from csv.DictReader(f)
+
+    if LOG_DIR.exists():
+        for caminho in sorted(LOG_DIR.glob("*.csv")):
+            with caminho.open(encoding="utf-8") as f:
+                yield from csv.DictReader(f)

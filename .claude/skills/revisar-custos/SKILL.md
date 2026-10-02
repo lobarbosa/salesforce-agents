@@ -11,41 +11,51 @@ ajustada "com a heurística sozinha". Esta skill é o processo pra virar isso em
 
 ## Onde está o dado
 
-`logs/custos_agentes.csv` — uma linha por sessão de agente, versionado no git. Colunas:
+`logs/custos_agentes/*.csv` — **um arquivo por sessão de agente**, versionado no git (até
+2026-10-02 era um único `logs/custos_agentes.csv` crescendo; mudou pra arquivo-por-sessão
+depois de um conflito de merge real entre duas demandas de clientes diferentes appendando no
+fim do mesmo arquivo — ver CLAUDE.md § Telemetria de custo). `logs/custos_agentes.csv`
+(singular, sem o diretório) pode continuar existindo como arquivo **legado**, com dado de
+antes da mudança — some para quem só lê os arquivos novos, por isso use sempre
+`salesforce_agents.costs.ler_todas_as_linhas()` (Python) em vez de abrir um arquivo só, ou,
+na mão, leia o legado **e** o diretório. Cada arquivo tem as colunas:
 
 ```
 timestamp,client,demand_id,etapa,session_id,model,input_tokens,output_tokens,
 cache_read_tokens,cache_creation_tokens,cost_usd,duration_ms,num_turns,is_error
 ```
 
-Repare que **uma sessão pode gerar várias linhas** (uma por modelo que ela efetivamente
-usou dentro do turno — o CSV já tem exemplos de uma etapa `design` com linhas separadas para
-haiku, opus e sonnet na mesma sessão). Agrupe por `session_id` quando quiser custo total de
-uma etapa, e por `model` quando quiser saber quem pesa no total.
+Repare que **uma sessão pode gerar várias linhas** no mesmo arquivo (uma por modelo que ela
+efetivamente usou dentro do turno — já teve sessão de `design` com linhas separadas para
+haiku, opus e sonnet). Agrupe por `session_id` quando quiser custo total de uma etapa, e por
+`model` quando quiser saber quem pesa no total.
 
 ## Como agregar
 
-Sem precisar de nenhuma dependência nova — `csvkit`, `pandas` ou até `awk` resolvem.
-Exemplo em Python (biblioteca padrão, sem pandas):
+Sem precisar de nenhuma dependência nova. Via Python, use o helper que já existe (cobre
+legado + arquivos novos sem você precisar saber do layout):
 
 ```python
-import csv
 from collections import defaultdict
+from salesforce_agents.costs import ler_todas_as_linhas
 
 totais = defaultdict(lambda: {"custo": 0.0, "sessoes": set(), "erros": 0})
-with open("logs/custos_agentes.csv") as f:
-    for linha in csv.DictReader(f):
-        chave = (linha["client"], linha["etapa"], linha["model"])
-        totais[chave]["custo"] += float(linha["cost_usd"])
-        totais[chave]["sessoes"].add(linha["session_id"])
-        if linha["is_error"] == "True":
-            totais[chave]["erros"] += 1
+for linha in ler_todas_as_linhas():
+    chave = (linha["client"], linha["etapa"], linha["model"])
+    totais[chave]["custo"] += float(linha["cost_usd"] or 0)
+    totais[chave]["sessoes"].add(linha["session_id"])
+    if linha["is_error"] == "True":
+        totais[chave]["erros"] += 1
 
 for (cliente, etapa, modelo), dados in sorted(totais.items()):
     print(f"{cliente:12} {etapa:10} {modelo:28} "
           f"${dados['custo']:.4f}  {len(dados['sessoes'])} sessão(ões)  "
           f"{dados['erros']} erro(s)")
 ```
+
+Sem Python (`csvkit`, `awk`), concatene antes de agregar: `cat logs/custos_agentes.csv
+logs/custos_agentes/*.csv 2>/dev/null` (o primeiro pode não existir em instalação nova — o
+`2>/dev/null` cobre isso) e descarte linhas de cabeçalho repetidas.
 
 ## O que perguntar aos números
 

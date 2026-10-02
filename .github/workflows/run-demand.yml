@@ -101,6 +101,16 @@ jobs:
     needs: decidir
     runs-on: ubuntu-latest
     environment: ${{ needs.decidir.outputs.github_environment }}
+    # Guardrail #6 do CLAUDE.md ("uma demanda por vez por cliente") não tinha
+    # trava técnica — só a frase. Isso permitia dois disparos deste workflow
+    # pro MESMO cliente avançarem em paralelo na mesma sandbox (dois builders
+    # escrevendo na mesma org de dev ao mesmo tempo). `cancel-in-progress:
+    # false` é de propósito: a segunda execução espera na fila em vez de
+    # cancelar a primeira — cancelar no meio de uma etapa deixaria
+    # status.yaml/gates.md num estado que ninguém decidiu.
+    concurrency:
+      group: demanda-${{ inputs.client }}
+      cancel-in-progress: false
     env:
       CLIENT: ${{ inputs.client }}
       DEMAND_ID: ${{ inputs.demand_id }}
@@ -205,10 +215,11 @@ jobs:
       - name: Commit e push dos artefatos gerados
         run: |
           git add "clients/$CLIENT"
-          # logs/custos_agentes.csv (telemetria de custo, src/salesforce_agents/costs.py)
-          # — só existe se pelo menos uma sessão de agente terminou (ResultMessage
-          # recebido); sem o "if", git add falha em runner limpo e derruba o commit
-          # dos artefatos junto.
+          # logs/custos_agentes/ (telemetria de custo, src/salesforce_agents/costs.py)
+          # — um arquivo por sessão, nunca editando um arquivo que outra branch
+          # também appenda (ver CLAUDE.md § Telemetria de custo) — só existe se
+          # pelo menos uma sessão de agente terminou (ResultMessage recebido);
+          # sem o "if", git add falha em runner limpo e derruba o commit junto.
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$DEMAND_ID: ${{ steps.fluxo.outputs.etapas_rodadas || 'sessão' }} via CI ($AMBIENTE)" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
