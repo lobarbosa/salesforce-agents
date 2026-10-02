@@ -1,5 +1,6 @@
 import { usuarioDaArea } from "@/lib/area";
 import { saudeDosAgentes, ultimosDeploys } from "@/lib/ops";
+import { AgentesChart } from "@/components/AgentesChart";
 
 // Saúde dos agentes (runner da VM) a partir de ops.agent_runs e ops.deploys.
 // Só leitura: rodar agente e reiniciar runner continuam na VM (acxya-ops).
@@ -73,6 +74,8 @@ export default async function SaudeAgentesPage() {
           </span>
         </div>
       </div>
+
+      {agentes.some((a) => a.execucoes24h > 0) && <AgentesChart agentes={agentes} />}
 
       <div className="tabela-wrap">
         <table className="tabela">

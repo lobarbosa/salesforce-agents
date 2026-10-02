@@ -486,6 +486,25 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
   padding: 0.1em 0.4em; font-family: var(--mono); font-size: 0.68rem;
 }
 
+/* gráfico de resultado — divergente em torno de zero, não baseline + limite */
+.chart .barra-resultado.positivo { fill: var(--success); }
+.chart .barra-resultado.negativo { fill: var(--danger); }
+.pill-prejuizo {
+  background: var(--danger-soft); color: var(--danger); border-radius: 5px;
+  padding: 0.1em 0.4em; font-family: var(--mono); font-size: 0.68rem;
+}
+
+/* gráfico de execuções/agentes — barras empilhadas por status (ok/erro/pulado) */
+.chart .seg-ok { fill: var(--success); }
+.chart .seg-erro { fill: var(--danger); }
+.chart .seg-pulado { fill: var(--border-strong); }
+.chart .rot-y { fill: var(--text-muted); font-size: 10px; font-family: var(--mono); text-anchor: end; }
+.chart-legenda { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.76rem; color: var(--text-muted); }
+.chart-legenda .ponto { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 0.35em; }
+.chart-legenda .ponto.ok { background: var(--success); }
+.chart-legenda .ponto.erro { background: var(--danger); }
+.chart-legenda .ponto.cancelada { background: var(--border-strong); }
+
 /* SLA */
 table.sla { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
 table.sla th, table.sla td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); }

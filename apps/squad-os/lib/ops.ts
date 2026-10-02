@@ -162,6 +162,36 @@ export function kpisAtuais(): Promise<Kpi[] | null> {
   });
 }
 
+export interface ResultadoMes {
+  mes: string; // YYYY-MM
+  valor: number;
+}
+
+/**
+ * "Resultado do mês" (receita - despesas) dos últimos `meses` meses fechados,
+ * para o gráfico de tendência — kpisAtuais só traz o atual e o anterior, essa
+ * é a série completa. finance_report_agent grava uma linha por mês fechado;
+ * quando grava mais de uma no mesmo mês (reprocessamento), fica a mais
+ * recente por `created_at`.
+ */
+export function resultadoPorMes(meses = 6): Promise<ResultadoMes[] | null> {
+  return ler(async () => {
+    const r = await prisma.$queryRaw<{ mes: string; valor: unknown }[]>`
+      select mes, valor from (
+        select to_char(referencia, 'YYYY-MM') as mes, valor, created_at,
+               row_number() over (
+                 partition by to_char(referencia, 'YYYY-MM')
+                 order by referencia desc, created_at desc
+               ) as rn
+        from ops.kpi_snapshots
+        where metrica = 'resultado') k
+      where rn = 1
+      order by mes desc
+      limit ${meses}`;
+    return r.map((x) => ({ mes: x.mes, valor: Number(x.valor) })).reverse();
+  });
+}
+
 // ── Saúde dos agentes ──────────────────────────────────────────────────────
 
 export interface SaudeAgente {
