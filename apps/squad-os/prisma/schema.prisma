@@ -124,6 +124,7 @@ model Client {
   demandas  Demanda[]
   usuarios  Usuario[]
   ragChunks RagChunk[]
+  execucoes ExecucaoAgente[]
 
   @@map("clients")
 }
@@ -195,6 +196,45 @@ model AmbienteOrg {
   @@unique([clientId, tipo])
   @@index([clientId])
   @@map("ambientes_org")
+}
+
+// Uma linha por execução de agente que reporta de volta pro Squad OS — o
+// rastro que faltava pra responder "o que rodou, com que resultado, quando"
+// sem abrir o GitHub Actions (council de 2026-10-01: admin pedia visão de
+// todas as execuções da plataforma; consultor, uma tela do que falhou, pra
+// não ficar no escuro). Nunca é fonte de verdade — o git continua sendo
+// (guardrail #5) — é o espelho de observabilidade, histórico (todas as
+// execuções, não só a última como `Demanda.ultimoResultado`), cobrindo as
+// 4 origens que já reportam pra algum lugar hoje (demanda, assessment,
+// planejamento, conexão).
+model ExecucaoAgente {
+  id       String @id @default(cuid())
+  clientId String @map("client_id")
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  // Nula pra assessment/planejamento/conexão — só demanda tem demandaId.
+  demandaId String?  @map("demanda_id")
+  demanda   Demanda? @relation(fields: [demandaId], references: [id], onDelete: SetNull)
+
+  // demanda | assessment | planejamento | conexao — qual workflow reportou.
+  origem String
+
+  // Etapa do fluxo (ex.: "arquiteto", "org-assessment", "planejador",
+  // "test-connection") ou onde a demanda parou. Vazio quando não se aplica.
+  etapa  String
+  motivo String @default("")
+
+  // success | failure | cancelled — o `job.status` do Actions, como veio
+  // (mesma convenção de `Demanda.ultimoResultado`, nunca um enum: é o valor
+  // do GitHub passando direto, não um vocabulário nosso).
+  resultado   String
+  iniciadoEm  DateTime? @map("iniciado_em")
+  concluidoEm DateTime  @default(now()) @map("concluido_em")
+  runUrl      String    @default("") @map("run_url")
+
+  @@index([clientId, concluidoEm])
+  @@index([resultado, concluidoEm])
+  @@map("execucoes_agente")
 }
 
 // Quem pode entrar no Squad OS e com que escopo — substitui a allowlist por
@@ -277,6 +317,7 @@ model Demanda {
   checklist   ChecklistItem[]
   tempos      RegistroTempo[]
   anexos      Anexo[]
+  execucoes   ExecucaoAgente[]
 
   @@unique([clientId, code])
   @@index([clientId])

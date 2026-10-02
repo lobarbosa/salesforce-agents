@@ -118,6 +118,10 @@ jobs:
       AMBIENTE: ${{ needs.decidir.outputs.ambiente }}
       DEMAND_BRANCH: feature/${{ inputs.demand_id }}
     steps:
+      - name: Marcar início (observabilidade)
+        id: inicio
+        run: echo "em=$(date -u +'%Y-%m-%dT%H:%M:%SZ')" >> "$GITHUB_OUTPUT"
+
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.ref_name }}
@@ -290,6 +294,35 @@ jobs:
                 -H "Content-Type: application/json" \
                 --data-binary @- \
             || echo "::warning::Falha ao sincronizar com o Squad OS — os artefatos já estão no git, só o quadro ficou desatualizado."
+
+      # Observabilidade (council de 2026-10-01): admin vê todas as execuções
+      # da plataforma, consultor vê o que falhou. Nunca decide nada — é só o
+      # espelho histórico, separado do sync de status acima (que é o que o
+      # quadro usa de verdade). `if: always()` pelo mesmo motivo de sempre.
+      - name: Registrar execução (observabilidade)
+        if: always()
+        env:
+          EXEC_URL: ${{ secrets.SQUAD_OS_SYNC_EXECUCAO_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+          RESULTADO: ${{ job.status }}
+        run: |
+          if [ -z "$EXEC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            exit 0
+          fi
+          jq -nc \
+            --arg c "$CLIENT" --arg d "$DEMAND_ID" \
+            --arg etapa "${{ steps.fluxo.outputs.etapa || 'desconhecida' }}" \
+            --arg motivo "${{ steps.fluxo.outputs.motivo }}" \
+            --arg r "$RESULTADO" \
+            --arg inicio "${{ steps.inicio.outputs.em }}" \
+            --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            '{client: $c, origem: "demanda", demandaId: $d, etapa: $etapa, motivo: $motivo,
+              resultado: $r, iniciadoEm: $inicio, runUrl: $run}' \
+            | curl -fsS -X POST "$EXEC_URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @- \
+            || echo "::warning::Falha ao registrar a execução pra observabilidade — não afeta o quadro nem os artefatos."
 
       # Um comentário por gate, no PR onde a demanda vive. Não substitui o
       # quadro (é lá que a pessoa aprova), mas é o aviso que chega a quem já
