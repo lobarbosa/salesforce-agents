@@ -50,7 +50,7 @@ export function ConciliacaoChart({
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Resultado contábil {formatarReaisCompacto(contabil)} contra resultado gerencial {formatarReaisCompacto(gerencial)}.
+          {`Resultado contábil ${formatarReaisCompacto(contabil)} contra resultado gerencial ${formatarReaisCompacto(gerencial)}.`}
         </title>
 
         <line x1="0" y1={base} x2={larg} y2={base} className="eixo" />

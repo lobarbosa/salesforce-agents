@@ -38,7 +38,7 @@ export function CaixaChart({ dados }: { dados: { dias: number; valor: number }[]
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Caixa projetado em {dados.map((d) => `${d.dias} dias`).join(", ")}.
+          {`Caixa projetado em ${dados.map((d) => `${d.dias} dias`).join(", ")}.`}
         </title>
 
         <line x1={L} y1={base} x2={L + plotW} y2={base} className="eixo" />
