@@ -57,13 +57,14 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
+      # O plano é regerado do zero a cada rodada (relê os entregáveis e
+      # propõe de novo) — por isso a branch sempre reparte do checkout fresco
+      # de `main`, nunca do próprio tip remoto antigo. Mesma correção e mesmo
+      # motivo do achado em run-assessment.yml (2026-10-02): resetar pro tip
+      # antigo gera PR que deleta conteúdo de outro cliente se `main` andou
+      # desde que a branch nasceu.
       - name: Preparar branch do plano
-        run: |
-          if git fetch origin "$PLANO_BRANCH" 2>/dev/null; then
-            git checkout -B "$PLANO_BRANCH" "origin/$PLANO_BRANCH"
-          else
-            git checkout -b "$PLANO_BRANCH"
-          fi
+        run: git checkout -B "$PLANO_BRANCH"
 
       # Falha vermelho se o plano não for válido — id de entregável inventado,
       # demanda sem título, lista vazia. Mesmo princípio do assessment: melhor
@@ -74,12 +75,16 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: sfagents cliente planejar --client "$CLIENT" --github-output
 
+      # --force-with-lease: a branch reparte de `main` fresco a cada rodada
+      # (passo acima), então diverge de propósito do que já estava no remoto.
+      # Só este job escreve em `plano/<cliente>` — nunca há commit humano por
+      # cima pra perder.
       - name: Commit e push
         run: |
           git add "clients/$CLIENT"
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$CLIENT: plano de demandas (${{ steps.plano.outputs.n_demandas }} propostas)" --allow-empty -q
-          git push origin "HEAD:$PLANO_BRANCH"
+          git push --force-with-lease origin "HEAD:$PLANO_BRANCH"
 
       - name: Abrir PR do plano (se ainda não existir)
         env:

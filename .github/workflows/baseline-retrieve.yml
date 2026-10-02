@@ -67,13 +67,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       # CLAUDE.md guardrail #4: nada é commitado direto numa branch protegida.
+      # Baseline é um retrieve do zero a cada rodada — a branch sempre reparte
+      # do checkout fresco de `main` acima, nunca do próprio tip remoto antigo
+      # (mesma correção de run-assessment.yml, 2026-10-02: resetar pro tip
+      # antigo gera PR que deleta conteúdo de outro cliente se `main` andou).
       - name: Preparar branch do baseline
-        run: |
-          if git fetch origin "$BASELINE_BRANCH" 2>/dev/null; then
-            git checkout -B "$BASELINE_BRANCH" "origin/$BASELINE_BRANCH"
-          else
-            git checkout -b "$BASELINE_BRANCH"
-          fi
+        run: git checkout -B "$BASELINE_BRANCH"
 
       - name: "Fase 1 — núcleo (dados e código)"
         run: |
@@ -108,8 +107,11 @@ jobs:
             echo "$t: ${n:-0}"
           done
 
+      # --force-with-lease: a branch reparte de `main` fresco a cada rodada,
+      # então diverge de propósito do que já estava no remoto. Só este job
+      # escreve em `baseline/<cliente>` — nunca há commit humano por cima.
       - name: Push
-        run: git push origin "HEAD:$BASELINE_BRANCH"
+        run: git push --force-with-lease origin "HEAD:$BASELINE_BRANCH"
 
       # Não fatal — ver mesmo comentário em run-demand.yml.
       - name: Abrir PR do baseline (se ainda não existir)
