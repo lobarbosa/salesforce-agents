@@ -139,5 +139,18 @@ export async function POST(request: NextRequest) {
     maxOutputTokens: 1024,
   });
 
-  return createAgentUIStreamResponse({ agent, uiMessages: messages });
+  return createAgentUIStreamResponse({
+    agent,
+    uiMessages: messages,
+    // Sem isso, o default do SDK (`() => 'An error occurred.'`) engole
+    // qualquer erro de stream — chave do Gateway inválida, modelo
+    // desconhecido, timeout — sem deixar rastro nenhum no log do servidor;
+    // só a mensagem genérica chega no cliente (ver Copiloto.tsx). Achado
+    // real: o copiloto "não funcionava" e não havia como saber por quê,
+    // porque o próprio erro nunca era logado em lugar nenhum.
+    onError(error) {
+      console.error("copiloto: erro no stream", { papel: usuario.role, erro: error });
+      return "Não consegui falar com o copiloto agora. Tente de novo em instantes.";
+    },
+  });
 }
