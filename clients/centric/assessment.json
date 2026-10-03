@@ -1,0 +1,15 @@
+{
+  "saude": "vermelho",
+  "resumo": "A sandbox de dev é Enterprise Edition de verdade (IsSandbox=true), sem dado de cliente dentro (Account/Opportunity/Contact zerados) — o ambiente certo pra construir. Mas a conexão atual não consegue usar a Metadata API (SOAP) por um descompasso entre o Connected App (emite token JWT) e a versão da org, o que bloqueia retrieve/deploy e teria que ser resolvido antes da primeira demanda de build. Dentro do que deu pra medir por API REST/Tooling: Opportunity concentra 17 Flows ativos e 13 validation rules, e a cobertura de teste Apex registrada nesta sandbox está em 0%.",
+  "recomendacoes": [
+    { "titulo": "Corrigir configuração JWT do Connected App que bloqueia a Metadata API (SOAP) nesta conexão", "severidade": "alta", "area": "dívida técnica" },
+    { "titulo": "Mapear e consolidar os 20 Flows ativos + 13 validation rules concentrados em Opportunity", "severidade": "alta", "area": "automação" },
+    { "titulo": "Rodar a suíte de teste Apex e levar a cobertura registrada (0%) a pelo menos 75% antes de deploy em produção", "severidade": "alta", "area": "código" },
+    { "titulo": "Preencher a descrição dos campos custom sem documentação (87% da org, 100% em Opportunity)", "severidade": "média", "area": "modelo de dados" },
+    { "titulo": "Migrar a integração com Omie de Remote Site Settings para Named Credential", "severidade": "média", "area": "segurança" },
+    { "titulo": "Consolidar o padrão de 4 validation rules de endereço obrigatório duplicado entre Lead e Account", "severidade": "baixa", "area": "config" },
+    { "titulo": "Investigar o perfil órfão \"CPQ Integration User\" sem pacote CPQ instalado", "severidade": "baixa", "area": "dívida técnica" }
+  ],
+  "ambienteSalesforce": "Enterprise Edition, sandbox, instância BRA8S, API v67.0",
+  "integracoes": "Omie (ERP, Apex próprio), DocuSign/SpringCM (CLM, pacote dfsle), Einstein Sales Insights (OIQ)"
+}
