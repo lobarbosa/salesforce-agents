@@ -22,8 +22,11 @@ digitado no campo `orgAlias` da UI.
 
 1. **Salesforce**: crie (ou confirme) uma Connected App com JWT Bearer Flow habilitado na
    sandbox certa — dev ou qa, nunca a mesma Connected App reaproveitada entre ambientes de
-   propósito diferente sem confirmar que o cliente permite. Gere o par de chaves e faça
-   upload do certificado na Connected App.
+   propósito diferente sem confirmar que o cliente permite. Gere o par de chaves com
+   `sfagents cliente conectar-preparar --client <cliente> --ambiente <dev|qa>` — ele cria o
+   `.key`/`.crt` só em disco local (`clients/<cliente>/.credenciais-local/<ambiente>/`, fora
+   do git) e imprime o checklist dos passos 2–5 abaixo. Faça o upload do `.crt` impresso na
+   Connected App.
 2. **GitHub**: em Settings → Environments, crie (ou confirme que existe) o Environment
    `<cliente>-<ambiente>`. Ele também se cria sozinho na primeira vez que algum workflow o
    referencia via `workflow_dispatch` — mesmo que a execução falhe depois por falta de
@@ -31,8 +34,11 @@ digitado no campo `orgAlias` da UI.
 3. Adicione os 3 secrets nesse Environment:
    - `SF_CLIENT_ID` — Consumer Key da Connected App
    - `SF_USERNAME` — o usuário de integração da sandbox
-   - `SF_JWT_KEY` — o **conteúdo do arquivo da chave privada** (nunca o Consumer Secret —
-     é um erro fácil de cometer e o JWT Bearer Flow não usa Consumer Secret)
+   - `SF_JWT_KEY` — o **conteúdo do arquivo da chave privada** gerado no passo 1 (nunca o
+     Consumer Secret — é um erro fácil de cometer e o JWT Bearer Flow não usa Consumer
+     Secret). Abra o arquivo local e cole o conteúdo direto no campo do GitHub — nunca peça
+     pro agente "colar a chave aqui" ou mande o conteúdo por chat/mensagem. Ver "Nunca"
+     abaixo.
 4. No Squad OS, preencha os campos informativos da aba do cliente (orgAlias, login URL,
    username, consumer key) — não autenticam nada, mas são a referência que qualquer pessoa
    do time consulta antes de mexer na org.
@@ -58,6 +64,13 @@ contra os de outro cliente já conectado. Se dois clientes mostram exatamente o 
 
 ## Nunca
 
+- **Nunca cole o conteúdo de uma chave privada numa conversa de agente** (nem peça pro
+  agente "trazer a chave aqui de novo"). Achado real (Centric, 2026-10-03): pra reusar o
+  texto de uma vez anterior, a chave JWT foi colada direto no chat duas vezes. Um secret do
+  GitHub dá pra rotacionar se vazar; uma chave que já apareceu num transcript de modelo não
+  dá — fica em log de sessão e em qualquer export/backup da conversa. É exatamente o
+  problema que `sfagents cliente conectar-preparar` existe pra evitar: a chave nasce em
+  arquivo, você mesmo abre o arquivo pra colar no GitHub, o agente nunca vê o conteúdo.
 - Nunca aceite ou peça a **Consumer Secret** para os 3 secrets do GitHub — JWT Bearer Flow
   usa a chave privada, não o secret da Connected App.
 - Nunca marque um ambiente como conectado só porque a UI do Squad OS está preenchida — só o

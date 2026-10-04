@@ -181,6 +181,55 @@ def rag_payload(client: str) -> None:
     click.echo(json.dumps({"clientSlug": client, "documents": documentos}, ensure_ascii=False))
 
 
+@cliente.command("conectar-preparar")
+@click.option("--client", required=True, help="Nome do cliente (= clients/<client>/).")
+@click.option(
+    "--ambiente",
+    required=True,
+    type=click.Choice(ambientes.AMBIENTES),
+    help="Qual sandbox: dev ou qa (nunca produção — guardrail #1).",
+)
+@click.option(
+    "--forcar",
+    is_flag=True,
+    help="Sobrescreve um par já gerado. Só depois de já ter o plano de resubir o .crt novo na Connected App.",
+)
+def conectar_preparar(client: str, ambiente: str, forcar: bool) -> None:
+    """Gera o certificado + chave privada JWT de uma sandbox, só em arquivo local.
+
+    Não cadastra nada no GitHub nem no Squad OS — isso continua manual, ver a
+    skill `conectar-ambiente`. O que este comando evita é a chave privada
+    passar por qualquer lugar que não seja o próprio disco: nunca a imprima,
+    cole num chat de agente ou mande por mensagem — um secret do GitHub dá
+    pra rotacionar se vazar, uma chave que já apareceu num transcript de
+    modelo não dá.
+    """
+    workspace = Path("clients") / client
+    if not workspace.exists():
+        raise click.ClickException(f"'{workspace}' não existe. Crie o workspace do cliente primeiro.")
+
+    from . import conexao
+
+    try:
+        cred = conexao.gerar_par_de_chaves(client, ambiente, forcar=forcar)
+    except (conexao.CredencialJaExisteError, conexao.OpensslAusenteError, RuntimeError) as exc:
+        raise click.ClickException(str(exc))
+
+    click.echo(f"Gerado para {cred.alias}:")
+    click.echo(f"  certificado: {cred.cert_path}")
+    click.echo(f"  chave privada: {cred.key_path}  (não copie o conteúdo pra fora do disco)")
+    click.echo("")
+    click.echo("Próximos passos manuais (skill conectar-ambiente tem o detalhe de cada um):")
+    click.echo(f"  1. Suba {cred.cert_path.name} na Connected App da sandbox {cred.alias}.")
+    click.echo("     Permitted Users: Admin approved users are pre-authorized + Permission Set.")
+    click.echo(f"  2. Crie/confirme o GitHub Environment '{cred.github_environment}'.")
+    click.echo(f"  3. Cadastre nele os 3 secrets (abrindo o arquivo, nunca colando em chat):")
+    click.echo("     SF_CLIENT_ID    = Consumer Key da Connected App")
+    click.echo("     SF_USERNAME     = usuário de integração da sandbox")
+    click.echo(f"     SF_JWT_KEY      = conteúdo de {cred.key_path}")
+    click.echo(f"  4. Dispare 'testar conexão' no Squad OS pro cliente {client}, ambiente {ambiente}.")
+
+
 @main.group()
 def demanda() -> None:
     """Gerencia demandas (substitui o fluxo de estórias do Jira)."""
