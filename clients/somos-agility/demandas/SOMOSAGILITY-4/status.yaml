@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-4
+client: somos-agility
+titulo: Criacao de Acesso
+tipo: sustentacao
+status: backlog
+criado_em: '2026-10-05T14:23:34.356Z'
+historico:
+  - de: null
+    em: '2026-10-05T14:23:34.344Z'
+    para: backlog
+    autor: Everton Lima
