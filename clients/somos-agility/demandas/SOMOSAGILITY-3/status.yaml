@@ -2,10 +2,18 @@ id: SOMOSAGILITY-3
 client: somos-agility
 titulo: Alteracao de Status de Oportunidade para Aberta (Urgente)
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-09-29T13:51:50.257Z'
 historico:
-  - de: null
-    em: '2026-09-29T13:51:50.257Z'
-    para: backlog
-    autor: Everton Lima
+- de: null
+  em: '2026-09-29T13:51:50.257Z'
+  para: backlog
+  autor: Everton Lima
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-05T20:02:16.287485+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-05T20:04:22.973455+00:00'
