@@ -3,7 +3,7 @@ client: eplast
 titulo: 'Agentforce: Resumo inteligente de cliente: contatos, negociações, pedidos
   e ocorrências consolidados sob demanda'
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-06T11:17:37.043Z'
 historico:
 - de: null
@@ -38,3 +38,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-10-06T20:52:13.550173+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Carlos Sordi
+  em: '2026-10-06T20:53:02.362176+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-06T20:57:31.994765+00:00'
