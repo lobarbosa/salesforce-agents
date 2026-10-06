@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>CustomerSummaryService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>EPLAST-23. So acesso a Apex class CustomerSummaryService (Action ResumirCliente). Sem acesso a objeto/campo. Falta Flow de busca + licenca do agente. Classe e scaffold bloqueado por D2-D6 (03-design.md sec.7, 04-plano-build.md).</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PS Comercial Resumo Cliente Agente</label>
+</PermissionSet>
