@@ -20,11 +20,11 @@ em arquivo (`clients/<cliente>/demandas/<ID>/`).
 
 ## 2. Credenciais a provisionar
 
-### Salesforce (repetir por ambiente: INT, UAT, PROD)
+### Salesforce (repetir por ambiente: dev, qa)
 | Item | Como obter |
 |---|---|
-| Certificado x509 + chave privada | `openssl req -x509 -sha256 -nodes -days 730 -newkey rsa:2048 -keyout server.key -out server.crt` |
-| Connected App | Setup → App Manager → New Connected App → Enable OAuth + **Use digital signatures** (sobe o `.crt`) |
+| Certificado x509 + chave privada | `sfagents cliente conectar-preparar --client <cliente> --ambiente <dev\|qa>` — gera os dois arquivos só em disco local (`clients/<cliente>/.credenciais-local/<ambiente>/`, fora do git) e nunca imprime o conteúdo da chave. **Nunca gere com `openssl` numa sessão de agente e peça pra colar o resultado** — é exatamente o caminho que expôs uma chave da Centric em chat (2026-10-03, ver skill `conectar-ambiente` § Nunca) |
+| Connected App | Setup → App Manager → New Connected App → Enable OAuth + **Use digital signatures** (sobe o `.crt` impresso pelo comando acima) |
 | Consumer Key | Da Connected App criada |
 | Usuário de integração | Usuário dedicado, licença própria, **nunca** usuário nominal de pessoa |
 | Pré-autorização | Manage → Permitted Users: *Admin approved users*, com Permission Set atribuído |

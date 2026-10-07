@@ -19,5 +19,9 @@ clients/*/.sfdx/
 clients/*/.sf/
 clients/*/logs/
 
+# Par de chaves JWT gerado por `sfagents cliente conectar-preparar` — vive só
+# no disco de quem gerou, nunca no git (é a credencial de verdade da sandbox).
+clients/*/.credenciais-local/
+
 # Local-machine permission overrides (not shared doctrine, that's .claude/settings.json)
 .claude/settings.local.json
