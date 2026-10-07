@@ -110,8 +110,15 @@ jobs:
       # --force-with-lease: a branch reparte de `main` fresco a cada rodada,
       # então diverge de propósito do que já estava no remoto. Só este job
       # escreve em `baseline/<cliente>` — nunca há commit humano por cima.
+      #
+      # O `fetch` antes do push dá ao lease o ref remoto que ele compara — sem
+      # ele o git recusa com "stale info" quando a branch já existe (ver o
+      # mesmo comentário em run-assessment.yml). Falha ignorada se a branch
+      # ainda não existe no remoto.
       - name: Push
-        run: git push --force-with-lease origin "HEAD:$BASELINE_BRANCH"
+        run: |
+          git fetch origin "+refs/heads/$BASELINE_BRANCH:refs/remotes/origin/$BASELINE_BRANCH" 2>/dev/null || true
+          git push --force-with-lease origin "HEAD:$BASELINE_BRANCH"
 
       # Não fatal — ver mesmo comentário em run-demand.yml.
       - name: Abrir PR do baseline (se ainda não existir)

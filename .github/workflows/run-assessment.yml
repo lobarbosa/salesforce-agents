@@ -109,11 +109,21 @@ jobs:
       # branch sendo substituída, não uma reescrita de trabalho alheio.
       # `assessment/<cliente>` nunca recebe commit humano por cima: só este
       # job escreve nela, então não há o que perder com o force.
+      #
+      # O `fetch` antes do push não é opcional: `--force-with-lease` sem valor
+      # esperado compara com o ref remoto que o git local CONHECE, e esta branch
+      # nasceu de `checkout -B` sobre `main` — o job nunca buscou
+      # `origin/$ASSESSMENT_BRANCH`. Sem esse ref, o lease não tem o que
+      # comparar e o git recusa com "stale info" sempre que a branch já existe
+      # no remoto (achado real, 2026-10-07, primeira rodada depois do fix da
+      # PR #57). Se a branch ainda não existe no remoto, o fetch falha e é
+      # ignorado — o push cria a branch normalmente.
       - name: Commit e push
         run: |
           git add "clients/$CLIENT"
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$CLIENT: assessment da org (saúde ${{ steps.assess.outputs.saude }})" --allow-empty -q
+          git fetch origin "+refs/heads/$ASSESSMENT_BRANCH:refs/remotes/origin/$ASSESSMENT_BRANCH" 2>/dev/null || true
           git push --force-with-lease origin "HEAD:$ASSESSMENT_BRANCH"
 
       - name: Abrir PR do assessment (se ainda não existir)

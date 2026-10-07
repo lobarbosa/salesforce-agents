@@ -79,11 +79,17 @@ jobs:
       # (passo acima), então diverge de propósito do que já estava no remoto.
       # Só este job escreve em `plano/<cliente>` — nunca há commit humano por
       # cima pra perder.
+      #
+      # O `fetch` antes do push dá ao lease o ref remoto que ele compara — sem
+      # ele o git recusa com "stale info" quando a branch já existe (ver o
+      # mesmo comentário em run-assessment.yml). Falha ignorada se a branch
+      # ainda não existe no remoto.
       - name: Commit e push
         run: |
           git add "clients/$CLIENT"
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$CLIENT: plano de demandas (${{ steps.plano.outputs.n_demandas }} propostas)" --allow-empty -q
+          git fetch origin "+refs/heads/$PLANO_BRANCH:refs/remotes/origin/$PLANO_BRANCH" 2>/dev/null || true
           git push --force-with-lease origin "HEAD:$PLANO_BRANCH"
 
       - name: Abrir PR do plano (se ainda não existir)
