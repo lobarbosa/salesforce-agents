@@ -2,10 +2,22 @@ id: SOMOSAGILITY-2
 client: somos-agility
 titulo: Solicitacao de User de Integracao
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-09-29T12:48:59.614Z'
 historico:
-  - de: null
-    em: '2026-09-29T12:48:59.604Z'
-    para: backlog
-    autor: Everton Lima
+- de: null
+  em: '2026-09-29T12:48:59.604Z'
+  para: backlog
+  autor: Everton Lima
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-09-30T20:59:53.455035+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-09-30T21:01:34.929554+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-09-30T21:01:46.453887+00:00'
