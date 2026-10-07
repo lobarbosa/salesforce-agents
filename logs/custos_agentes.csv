@@ -18,5 +18,3 @@ timestamp,client,demand_id,etapa,session_id,model,input_tokens,output_tokens,cac
 2026-09-30T20:22:32.429000+00:00,somos-agility,-assessment-,assessment,ed620d5a-f118-4836-81e2-7a45e8230a10,claude-sonnet-5,110,32200,2572972,179878,1.2865093999999997,518601,10,False
 2026-09-30T20:41:28.421090+00:00,eplast,-assessment-,assessment,366f48da-eaab-467f-a400-eb7add763517,claude-haiku-4-5-20251001,1189,16,0,0,0.001269,540157,9,False
 2026-09-30T20:41:28.421090+00:00,eplast,-assessment-,assessment,366f48da-eaab-467f-a400-eb7add763517,claude-sonnet-5,86,44508,2333623,189334,1.3853115999999996,540157,9,False
-2026-09-30T21:01:45.977499+00:00,somos-agility,SOMOSAGILITY-2,analise,36a82069-ba2f-4267-8e0c-805e251329e0,claude-haiku-4-5-20251001,1191,3430,43108,18296,0.0455218,111806,17,False
-2026-09-30T21:01:45.977499+00:00,somos-agility,SOMOSAGILITY-2,analise,36a82069-ba2f-4267-8e0c-805e251329e0,claude-sonnet-5,26,5308,549815,36827,0.2551625,111806,17,False
