@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-1
+client: somos-agility
+titulo: Criação painel de gerente de contas - GCs
+tipo: sustentacao
+status: backlog
+criado_em: '2026-09-23T21:11:57.949Z'
+historico:
+  - de: null
+    em: '2026-09-23T21:11:57.938Z'
+    para: backlog
+    autor: Everton Lima
