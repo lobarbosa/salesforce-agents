@@ -5,21 +5,13 @@ import { useRouter } from "next/navigation";
 import type { Client } from "@/lib/generated/prisma/client";
 import { execucaoTravada, LIMITE_DE_EXECUCAO_MIN } from "@/lib/execucao";
 import { useAutoRefresh } from "@/lib/auto-refresh";
+import { SAUDE } from "@/lib/saude";
 
 interface Recomendacao {
   titulo: string;
   severidade: string;
   area: string;
 }
-
-// A saúde é verde/amarelo/vermelho, ou seja, informação que nasce como cor. Cor
-// sozinha não comunica — daí cada estado carregar também uma palavra e um
-// símbolo. Quem não distingue as cores lê "Atenção"; quem lê rápido vê o tom.
-const SAUDE: Record<string, { rotulo: string; simbolo: string; classe: string }> = {
-  verde: { rotulo: "Saudável", simbolo: "●", classe: "ok" },
-  amarelo: { rotulo: "Atenção", simbolo: "▲", classe: "alerta" },
-  vermelho: { rotulo: "Crítica", simbolo: "■", classe: "critico" },
-};
 
 const SEVERIDADE_ORDEM: Record<string, number> = { alta: 0, media: 1, baixa: 2 };
 const SEVERIDADE_ROTULO: Record<string, string> = {

@@ -122,6 +122,13 @@ select:focus-visible, [tabindex]:focus-visible {
 .client-item:hover { background: var(--surface-alt); }
 .client-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
 .client-item .dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+/* Mesma semântica de cor do badge `.saude.*` em AssessmentCard — ponto cheio
+   em vez de pílula com texto porque aqui o espaço é de lista, não de card;
+   o rótulo continua existindo, só que como sr-only (ver Sidebar.tsx). */
+.client-item .dot.saude-ok { background: var(--success); }
+.client-item .dot.saude-alerta { background: var(--gate-strong); }
+.client-item .dot.saude-critico { background: var(--danger); }
+.client-item .dot.saude-pendente { background: var(--text-muted); }
 .client-item .cname { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .new-client { margin: 0.6rem; }
 .new-client-btn {

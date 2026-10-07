@@ -7,12 +7,7 @@ import type { Client } from "@/lib/generated/prisma/client";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { createClient as createSupabaseClient } from "@/lib/supabase/client";
 import { podeVer, ROTULO_PAPEL } from "@/lib/permissoes";
-
-function hueFor(name: string) {
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) % 360;
-  return h;
-}
+import { SAUDE } from "@/lib/saude";
 
 const ROLE_LABEL = ROTULO_PAPEL;
 
@@ -473,17 +468,29 @@ export function Sidebar({
 
           <div className="client-list">
             {filtered.length === 0 && <div className="empty-col">nenhum cliente encontrado</div>}
-            {filtered.map((c) => (
-              <Link
-                key={c.id}
-                href={`/clients/${c.id}`}
-                onClick={fecharMenu}
-                className={`client-item${c.id === activeClientId ? " active" : ""}`}
-              >
-                <span className="dot" style={{ background: `hsl(${hueFor(c.nome)}, 55%, 45%)` }} />
-                <span className="cname">{c.nome}</span>
-              </Link>
-            ))}
+            {filtered.map((c) => {
+              // O ponto é a saúde da org (mesmo vocabulário de AssessmentCard),
+              // não uma cor de identidade por cliente. Tinha sido um hash do
+              // nome — bonito, mas ao lado de uma cor que já significa algo
+              // neste app (verde/amarelo/vermelho), qualquer cor sem significado
+              // lê como se tivesse um. Pendente (nunca avaliado) cai no cinza
+              // neutro de `.saude.pendente`, não arrasta uma 4ª cor nova.
+              const info = SAUDE[c.assessmentSaude];
+              const classe = info ? `saude-${info.classe}` : "saude-pendente";
+              const rotulo = info ? info.rotulo : "ainda não avaliada";
+              return (
+                <Link
+                  key={c.id}
+                  href={`/clients/${c.id}`}
+                  onClick={fecharMenu}
+                  className={`client-item${c.id === activeClientId ? " active" : ""}`}
+                >
+                  <span className={`dot ${classe}`} aria-hidden="true" />
+                  <span className="cname">{c.nome}</span>
+                  <span className="sr-only">{` — saúde da org: ${rotulo}`}</span>
+                </Link>
+              );
+            })}
           </div>
 
           <div className="new-client">
