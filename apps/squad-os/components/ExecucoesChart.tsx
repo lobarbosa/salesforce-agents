@@ -45,7 +45,7 @@ export function ExecucoesChart({ dados }: { dados: DiaExecucoes[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Execuções por dia nos últimos {dados.length} dias, sucesso, falha e cancelada.
+          {`Execuções por dia nos últimos ${dados.length} dias, sucesso, falha e cancelada.`}
         </title>
 
         <line x1={L} y1={T + plotH} x2={L + plotW} y2={T + plotH} className="eixo" />

@@ -49,7 +49,7 @@ export function ResultadoChart({ dados }: { dados: ResultadoMes[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Resultado (receita menos despesas) por mês, nos últimos {dados.length} meses fechados.
+          {`Resultado (receita menos despesas) por mês, nos últimos ${dados.length} meses fechados.`}
         </title>
 
         {/* Zero é o eixo que importa aqui — não "o menor valor" como no HorasChart. */}

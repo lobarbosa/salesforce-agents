@@ -43,7 +43,7 @@ export function ContasSituacaoChart({
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Valor em reais por situação: {dados.map((d) => `${d.rotulo} ${formatarReaisCompacto(d.valor)}`).join(", ")}.
+          {`Valor em reais por situação: ${dados.map((d) => `${d.rotulo} ${formatarReaisCompacto(d.valor)}`).join(", ")}.`}
         </title>
 
         <line x1="0" y1={T + plotH} x2={larg} y2={T + plotH} className="eixo" />
