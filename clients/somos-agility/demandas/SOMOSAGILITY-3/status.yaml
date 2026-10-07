@@ -2,7 +2,7 @@ id: SOMOSAGILITY-3
 client: somos-agility
 titulo: Alteracao de Status de Oportunidade para Aberta (Urgente)
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-09-29T13:51:50.257Z'
 historico:
 - de: null
@@ -25,3 +25,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-10-07T13:03:09.417920+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-10-07T13:04:03.451293+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-07T13:07:25.560856+00:00'
