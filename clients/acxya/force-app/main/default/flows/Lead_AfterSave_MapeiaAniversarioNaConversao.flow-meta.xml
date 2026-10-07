@@ -28,8 +28,8 @@
     <recordUpdates>
         <name>Atualiza_Aniversario_no_Contato</name>
         <label>Atualiza Aniversário no Contato</label>
-        <locationX>176</locationX>
-        <locationY>240</locationY>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -47,7 +47,7 @@
         <object>Contact</object>
     </recordUpdates>
     <start>
-        <locationX>50</locationX>
+        <locationX>0</locationX>
         <locationY>0</locationY>
         <connector>
             <targetReference>Atualiza_Aniversario_no_Contato</targetReference>
