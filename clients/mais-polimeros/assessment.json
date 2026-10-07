@@ -1,0 +1,18 @@
+{
+  "saude": "vermelho",
+  "resumo": "A org de dev da Mais Polímeros tem automação acumulada sem curadoria: os objetos Pedido e Produto de Cotação chegam a ter 4 Flows ativos disparando no mesmo evento, dois Process Builders (fim de vida) ainda rodam, e a cobertura de teste Apex está em 20% — bem abaixo do mínimo de 85% do squad e do piso de 75% que a própria Salesforce exige pra deploy em produção. O modelo de dados cresceu no mesmo ritmo: Account já tem 381 campos, e 96,5% dos campos custom não têm descrição, então hoje ninguém sabe pra que metade deles serve. Antes de desenhar qualquer demanda nova em Pedido, Conta ou Oportunidade, vale consolidar essa automação — do contrário a próxima mudança vira só mais uma camada em cima da bagunça.",
+  "recomendacoes": [
+    { "titulo": "Consolidar os Flows duplicados de Pedido e Produto de Cotação (4 ativos no mesmo evento cada)", "severidade": "alta", "area": "automação" },
+    { "titulo": "Elevar cobertura de teste Apex de 20% para o mínimo de 85%", "severidade": "alta", "area": "código" },
+    { "titulo": "Documentar os campos custom de Account (96,5% sem descrição)", "severidade": "alta", "area": "modelo de dados" },
+    { "titulo": "Consolidar os dois perfis de Admin ('Mais Polimeros Admin' e '... - sMFA') num só", "severidade": "média", "area": "segurança" },
+    { "titulo": "Resolver as validation rules quase duplicadas em Opportunity (DataDeFechamento / data_de_fechamento)", "severidade": "média", "area": "config" },
+    { "titulo": "Criar classes de teste para as 47 classes Apex sem <Classe>Test, priorizando trigger handlers", "severidade": "média", "area": "código" },
+    { "titulo": "Atualizar classes Apex presas em API version antiga (v36/v45) para perto da v67 atual", "severidade": "média", "area": "dívida" },
+    { "titulo": "Auditar uso real dos 381 campos de Account antes de criar campo novo", "severidade": "média", "area": "modelo de dados" },
+    { "titulo": "Migrar os 2 Process Builders ainda ativos (AutomacaoQueue, Produto_Cod) para Flow", "severidade": "média", "area": "automação" },
+    { "titulo": "Confirmar headroom de licença Salesforce full em produção (sandbox mostra 93,8% em uso)", "severidade": "média", "area": "limites" }
+  ],
+  "ambienteSalesforce": "Unlimited Edition, sandbox, instância BRA4S",
+  "integracoes": "DevOps Center, DLRS, Custom Quote Sync (quotesync), WhatsApp (ChatIntegration), beeCnpj, ChatGPT LWC, Power BI Dashboard, Salesforce Data Cloud - Flow Integration"
+}
