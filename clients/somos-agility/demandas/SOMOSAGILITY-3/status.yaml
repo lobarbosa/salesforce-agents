@@ -33,3 +33,7 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-10-07T13:07:25.560856+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-07T13:07:53.547451+00:00'
