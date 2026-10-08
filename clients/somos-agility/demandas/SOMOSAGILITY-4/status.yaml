@@ -2,10 +2,22 @@ id: SOMOSAGILITY-4
 client: somos-agility
 titulo: Criacao de Acesso
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-05T14:23:34.356Z'
 historico:
-  - de: null
-    em: '2026-10-05T14:23:34.344Z'
-    para: backlog
-    autor: Everton Lima
+- de: null
+  em: '2026-10-05T14:23:34.344Z'
+  para: backlog
+  autor: Everton Lima
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-08T01:11:28.399223+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-08T01:12:48.818417+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-08T01:12:58.088678+00:00'
