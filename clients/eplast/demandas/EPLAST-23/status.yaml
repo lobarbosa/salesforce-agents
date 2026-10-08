@@ -3,7 +3,7 @@ client: eplast
 titulo: 'Agentforce: Resumo inteligente de cliente: contatos, negociações, pedidos
   e ocorrências consolidados sob demanda'
 tipo: projeto
-status: entregue
+status: aguardando_gate_design
 criado_em: '2026-10-06T11:17:37.043Z'
 historico:
 - de: null
@@ -54,3 +54,8 @@ historico:
   para: entregue
   autor: pipeline
   em: '2026-10-06T21:04:37.130969+00:00'
+- de: entregue
+  para: aguardando_gate_design
+  autor: 'Leonardo (via Claude) - correcao para tras: QA 5/5 casos BLOQUEADOS, D2-D6
+    sem resposta; design nao poderia ter sido aprovado'
+  em: '2026-10-08T00:01:17.032250+00:00'
