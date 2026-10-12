@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { triggerRunDemand } from "@/lib/github";
 import { GATE_DO_CLIENTE } from "@/lib/demandas";
+import { travar } from "@/lib/trava";
 
 // O gate humano deixa de ser "aprova aqui e alguém dispara o pipeline lá":
 // aprovar no card move a demanda e acende a próxima sessão de agente.
@@ -67,7 +68,7 @@ export async function POST(
   // execução nova — inclusive uma que falhou — reabre o gate pra nova
   // tentativa). O workflow ainda confere `gate_esperado` do lado dele.
   const claim = await prisma.$transaction(async (tx) => {
-    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"aprovar-gate:" + demanda.id}))`;
+    await travar(tx, `aprovar-gate:${demanda.id}`);
     const atual = await tx.demanda.findUnique({
       where: { id: demanda.id },
       select: { status: true, ultimaExecucaoEm: true, materializadoEm: true },

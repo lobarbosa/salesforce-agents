@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { travar } from "@/lib/trava";
 import {
   ancoraDoDia,
   chaveDia,
@@ -120,6 +121,11 @@ export async function minhaSemana(email: string, segunda: string): Promise<Seman
   };
 }
 
+/** Chave do lock de lançamento de tempo: uma pessoa numa demanda. */
+export function chaveTempo(demandaId: string, autorEmail: string): string {
+  return `tempo:${demandaId}:${autorEmail.toLowerCase()}`;
+}
+
 /**
  * Grava uma célula da grade: o total do dia passa a ser `minutos`. Só mexe na
  * linha `origem = "grade"` daquela pessoa+demanda+dia; cronômetro e lançamento
@@ -137,6 +143,10 @@ export async function gravarCelula(p: {
   const fim = new Date(inicio.getTime() + 24 * 60 * 60_000);
 
   return prisma.$transaction(async (tx) => {
+    // Duas gravações da mesma pessoa na mesma demanda (duas abas, ou a grade
+    // e o cronômetro) liam o mesmo "antes" e as duas criavam a linha da
+    // grade — o dia ficava contado em dobro. O lock serializa.
+    await travar(tx, chaveTempo(p.demandaId, p.autorEmail));
     const doDia = await tx.registroTempo.findMany({
       where: {
         demandaId: p.demandaId,
@@ -209,19 +219,41 @@ export async function horasPorCliente(mes: string): Promise<HorasDoCliente[]> {
     orderBy: { nome: "asc" },
   });
 
+  // Uma consulta só para todos os clientes (antes era uma por cliente): busca
+  // a janela que cobre todos os ciclos e filtra por cliente em memória — o
+  // ciclo de cada um (mensal ou trimestral) é sempre um subconjunto dela.
+  const janelas = new Map(
+    clientes.map((c) => {
+      const ams = c.contrato?.tipo === "ams";
+      const ciclo = ams ? c.contrato!.cicloHoras : "mensal";
+      return [c.id, { ams, ciclo, janela: cicloDoMes(mes, ciclo) }] as const;
+    })
+  );
+  const todas = [...janelas.values()].map((j) => j.janela);
+  const desde = new Date(Math.min(...todas.map((j) => j.desde.getTime()), cicloDoMes(mes, "mensal").desde.getTime()));
+  const ate = new Date(Math.max(...todas.map((j) => j.ate.getTime()), cicloDoMes(mes, "mensal").ate.getTime()));
+  const todosRegistros = await prisma.registroTempo.findMany({
+    where: { fimEm: { not: null }, inicioEm: { gte: desde, lt: ate } },
+    select: {
+      autor: true,
+      minutos: true,
+      inicioEm: true,
+      demanda: { select: { code: true, titulo: true, clientId: true } },
+    },
+  });
+  const porCliente = new Map<string, typeof todosRegistros>();
+  for (const r of todosRegistros) {
+    const lista = porCliente.get(r.demanda.clientId) ?? [];
+    lista.push(r);
+    porCliente.set(r.demanda.clientId, lista);
+  }
+
   const resultado: HorasDoCliente[] = [];
   for (const c of clientes) {
-    const ams = c.contrato?.tipo === "ams";
-    const ciclo = ams ? c.contrato!.cicloHoras : "mensal";
-    const janela = cicloDoMes(mes, ciclo);
-    const registros = await prisma.registroTempo.findMany({
-      where: {
-        demanda: { clientId: c.id },
-        fimEm: { not: null },
-        inicioEm: { gte: janela.desde, lt: janela.ate },
-      },
-      select: { autor: true, minutos: true, demanda: { select: { code: true, titulo: true } } },
-    });
+    const { ams, ciclo, janela } = janelas.get(c.id)!;
+    const registros = (porCliente.get(c.id) ?? []).filter(
+      (r) => r.inicioEm >= janela.desde && r.inicioEm < janela.ate
+    );
 
     const pessoas = new Map<string, number>();
     const demandas = new Map<string, { code: string; titulo: string; minutos: number }>();
@@ -230,7 +262,7 @@ export async function horasPorCliente(mes: string): Promise<HorasDoCliente[]> {
       const m = r.minutos ?? 0;
       total += m;
       pessoas.set(r.autor, (pessoas.get(r.autor) ?? 0) + m);
-      const d = demandas.get(r.demanda.code) ?? { ...r.demanda, minutos: 0 };
+      const d = demandas.get(r.demanda.code) ?? { code: r.demanda.code, titulo: r.demanda.titulo, minutos: 0 };
       d.minutos += m;
       demandas.set(r.demanda.code, d);
     }

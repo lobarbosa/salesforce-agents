@@ -57,7 +57,19 @@ export async function PATCH(
     return NextResponse.json({ error: "nada pra atualizar" }, { status: 400 });
   }
 
-  const atualizado = await prisma.registroTempo.update({ where: { id: registroId }, data });
+  // Parar é compare-and-set: só o primeiro "parar" acha `fimEm` nulo. Dois
+  // cliques gravavam duas vezes, o segundo com um `fimEm` e `minutos` maiores
+  // que o primeiro já tinha devolvido pra tela.
+  const { count } = await prisma.registroTempo.updateMany({
+    where: body.parar ? { id: registroId, fimEm: null } : { id: registroId },
+    data,
+  });
+  if (count === 0) {
+    return body.parar
+      ? NextResponse.json({ error: "esse registro já está parado" }, { status: 409 })
+      : NextResponse.json({ error: "registro não encontrado" }, { status: 404 });
+  }
+  const atualizado = await prisma.registroTempo.findUnique({ where: { id: registroId } });
   return NextResponse.json(atualizado);
 }
 

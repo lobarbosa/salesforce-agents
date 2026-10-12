@@ -1,6 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
+import { travar } from "@/lib/trava";
+import { chaveTempo } from "@/lib/horas-data";
 
 // Um lançamento manual cobre no máximo um dia. Não é limite técnico: é o
 // ponto em que um número digitado errado (2400 em vez de 240) deixa de ser
@@ -55,26 +57,32 @@ export async function POST(
 
   // Um cronômetro por pessoa por demanda. Sem essa checagem, um segundo
   // clique no botão abre um registro paralelo e o total passa a contar o
-  // mesmo intervalo duas vezes.
-  const rodando = await prisma.registroTempo.findFirst({
-    where: { demandaId: id, autorEmail: usuario.email, fimEm: null },
+  // mesmo intervalo duas vezes. Conferir e criar dentro da mesma transação,
+  // sob lock por pessoa+demanda: dois cliques simultâneos liam "nenhum
+  // rodando" ao mesmo tempo e os dois criavam.
+  const registro = await prisma.$transaction(async (tx) => {
+    await travar(tx, chaveTempo(id, usuario.email));
+    const rodando = await tx.registroTempo.findFirst({
+      where: { demandaId: id, autorEmail: usuario.email, fimEm: null },
+      select: { id: true },
+    });
+    if (rodando) return null;
+    return tx.registroTempo.create({
+      data: {
+        demandaId: id,
+        autor,
+        autorEmail: usuario.email,
+        descricao,
+        inicioEm: agora,
+        origem: "cronometro",
+      },
+    });
   });
-  if (rodando) {
+  if (!registro) {
     return NextResponse.json(
       { error: "você já tem um cronômetro rodando nesta demanda" },
       { status: 409 }
     );
   }
-
-  const registro = await prisma.registroTempo.create({
-    data: {
-      demandaId: id,
-      autor,
-      autorEmail: usuario.email,
-      descricao,
-      inicioEm: agora,
-      origem: "cronometro",
-    },
-  });
   return NextResponse.json(registro, { status: 201 });
 }
