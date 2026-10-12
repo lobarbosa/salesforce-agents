@@ -5,6 +5,7 @@ import { prisma } from "@/lib/prisma";
 import { canAccessClient } from "@/lib/auth";
 import { criarFerramentasCliente } from "@/lib/copilot/ferramentas";
 import { criarFerramentasFinanceiro } from "@/lib/copilot/ferramentas-financeiro";
+import { dentroDoLimiteDeRequisicoes, validarMensagens } from "@/lib/copilot/limites";
 
 // Modelo via AI Gateway (padrão da skill vercel:ai-sdk — string "provider/modelo",
 // sem pacote de provider dedicado). Sonnet: mesma faixa de custo/julgamento que
@@ -101,7 +102,22 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "sem permissão" }, { status: 403 });
   }
 
-  const { messages, clientId } = await request.json();
+  if (!dentroDoLimiteDeRequisicoes(usuario.id)) {
+    return NextResponse.json({ error: "muitas mensagens em pouco tempo — espere um minuto" }, { status: 429 });
+  }
+
+  const corpo = await request.json().catch(() => null);
+  if (!corpo || typeof corpo !== "object") {
+    return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
+  }
+  const { clientId } = corpo as { clientId?: unknown };
+  // O histórico vem do navegador: só passa user/assistant com texto, dentro
+  // dos limites (ver lib/copilot/limites.ts). "system" é recusado.
+  const validacao = validarMensagens((corpo as { messages?: unknown }).messages);
+  if (!validacao.ok) {
+    return NextResponse.json({ error: validacao.erro }, { status: 400 });
+  }
+  const messages = validacao.mensagens;
   const clienteEmEscopo = await resolverClienteEmEscopo(usuario, clientId);
   const temFinanceiro = usuario.role === "admin" || usuario.role === "financeiro";
 
@@ -111,6 +127,11 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
   }
 
+  // O conjunto de ferramentas é decidido aqui, pelo papel da sessão — nunca
+  // pelo que a conversa pede. Cliente: só as do próprio cliente (clientId da
+  // sessão). Financeiro: só as financeiras. Admin/consultor: as do cliente da
+  // página aberta (conferido por canAccessClient) e, para admin, as
+  // financeiras. Nenhum caminho dá ferramenta financeira ao papel cliente.
   const tools = {
     ...(clienteEmEscopo ? criarFerramentasCliente({ usuario, clientId: clienteEmEscopo.id }) : {}),
     ...(temFinanceiro ? criarFerramentasFinanceiro({ quem: usuario }) : {}),
@@ -133,8 +154,8 @@ export async function POST(request: NextRequest) {
     tools,
     // Teto curto: cada volta é uma chamada de ferramenta + resposta. 6 cobre
     // "consulta duas ferramentas e comenta" com folga sem deixar um loop
-    // silenciosamente caro. Rate limit por usuário/sessão fica de fora desta
-    // primeira versão — TODO explícito, não esquecido: ver revisar-custos.
+    // silenciosamente caro. Limites de tamanho/frequência da conversa e de
+    // demandas criadas: lib/copilot/limites.ts.
     stopWhen: stepCountIs(6),
     maxOutputTokens: 1024,
   });

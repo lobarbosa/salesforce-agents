@@ -5,6 +5,8 @@ import { estadoDoCliente, ESTADO_CLIENTE_LABEL, progressoDaDemanda, timeAgo } fr
 import { progressoDoProjeto } from "@/lib/contrato";
 import { criarDemanda } from "@/lib/demandas-server";
 import type { CurrentUsuario } from "@/lib/current-user";
+import { prisma } from "@/lib/prisma";
+import { MAX_DEMANDAS_POR_HORA, MAX_DEMANDAS_POR_REQUISICAO } from "@/lib/copilot/limites";
 
 /**
  * Ferramentas do copiloto sobre um cliente — sempre fechadas sobre um
@@ -39,6 +41,11 @@ export function criarFerramentasCliente({
   usuario: CurrentUsuario;
   clientId: string;
 }) {
+  // Teto de escrita: uma conversa manipulada ("crie 50 demandas") não pode
+  // virar enxurrada no backlog. Por requisição conta aqui (closure — uma
+  // requisição = uma instância destas ferramentas); por hora conta no banco,
+  // que é a única coisa que o navegador não consegue reescrever.
+  let criadasNestaRequisicao = 0;
   return {
     consultar_demandas: tool({
       description:
@@ -103,6 +110,23 @@ export function criarFerramentasCliente({
         texto: z.string().max(4000).optional().describe("Descrição do pedido, com o contexto que o cliente deu na conversa"),
       }),
       execute: async ({ titulo, texto }) => {
+        if (criadasNestaRequisicao >= MAX_DEMANDAS_POR_REQUISICAO) {
+          return {
+            criada: false as const,
+            erro: `limite de ${MAX_DEMANDAS_POR_REQUISICAO} demanda por mensagem — peça a próxima em outra mensagem`,
+          };
+        }
+        const autor = usuario.nome.trim() || usuario.email;
+        const naUltimaHora = await prisma.demanda.count({
+          where: { clientId, autor, criadoEm: { gte: new Date(Date.now() - 60 * 60_000) } },
+        });
+        if (naUltimaHora >= MAX_DEMANDAS_POR_HORA) {
+          return {
+            criada: false as const,
+            erro: `limite de ${MAX_DEMANDAS_POR_HORA} demandas por hora atingido — use o botão "+ nova demanda" ou tente mais tarde`,
+          };
+        }
+        criadasNestaRequisicao += 1;
         const resultado = await criarDemanda({ usuario, clientId, titulo, texto });
         if (!resultado.ok) return { criada: false as const, erro: resultado.error };
         return { criada: true as const, code: resultado.demanda.code, titulo: resultado.demanda.titulo };
