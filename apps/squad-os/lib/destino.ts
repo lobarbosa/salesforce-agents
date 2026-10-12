@@ -9,7 +9,6 @@ export function destinoSeguro(next: string | null | undefined): string {
   if (typeof next !== "string" || next.length === 0 || next.length > 2048) return "/";
   if (!/^\/(?!\/)/.test(next)) return "/";
   if (next.includes("\\")) return "/";
-  // eslint-disable-next-line no-control-regex
   if (/[\u0000-\u001f\u007f]/.test(next)) return "/";
   return next;
 }
