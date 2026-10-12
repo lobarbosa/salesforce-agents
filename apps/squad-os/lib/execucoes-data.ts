@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { chaveDia, FUSO } from "@/lib/horas";
 
 // Observabilidade de execução (council de 2026-10-01) — leitura do espelho
 // histórico que /api/sync/execucao grava. Nunca decide nada sobre estado de
@@ -88,24 +89,27 @@ export async function execucoesPorDia(
   filtro: { clientId?: string; origem?: string } = {},
   dias = 14
 ): Promise<DiaExecucoes[]> {
-  const desde = new Date();
-  desde.setUTCHours(0, 0, 0, 0);
-  desde.setUTCDate(desde.getUTCDate() - (dias - 1));
+  // Dia de São Paulo, como no resto do app (lib/horas.ts): no dia UTC, o que
+  // falhou às 22h aparecia no dia seguinte do gráfico.
+  const hoje = chaveDia(new Date());
+  const chaves: string[] = [];
+  for (let i = dias - 1; i >= 0; i--) {
+    const d = new Date(`${hoje}T12:00:00Z`);
+    d.setUTCDate(d.getUTCDate() - i);
+    chaves.push(d.toISOString().slice(0, 10));
+  }
+  const desde = new Date(`${chaves[0]}T00:00:00${FUSO}`);
 
   const execucoes = await prisma.execucaoAgente.findMany({
     where: { clientId: filtro.clientId, origem: filtro.origem, concluidoEm: { gte: desde } },
     select: { concluidoEm: true, resultado: true },
   });
 
-  const porDia = new Map<string, DiaExecucoes>();
-  for (let i = 0; i < dias; i++) {
-    const d = new Date(desde);
-    d.setUTCDate(d.getUTCDate() + i);
-    const chave = d.toISOString().slice(0, 10);
-    porDia.set(chave, { dia: chave, success: 0, failure: 0, cancelled: 0 });
-  }
+  const porDia = new Map<string, DiaExecucoes>(
+    chaves.map((chave) => [chave, { dia: chave, success: 0, failure: 0, cancelled: 0 }])
+  );
   for (const e of execucoes) {
-    const bucket = porDia.get(e.concluidoEm.toISOString().slice(0, 10));
+    const bucket = porDia.get(chaveDia(e.concluidoEm));
     const r = chaveResultado(e.resultado);
     if (bucket && r) bucket[r]++;
   }

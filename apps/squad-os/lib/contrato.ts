@@ -1,4 +1,5 @@
 import type { Contrato, Entregavel, TipoContrato } from "@/lib/generated/prisma/client";
+import { chaveDia, cicloDoMes } from "@/lib/horas";
 
 // Puro de propósito: sem Prisma, importável de Server e Client Components —
 // mesma convenção de lib/demandas.ts. `ContratoTab` é client component, e uma
@@ -40,10 +41,64 @@ export function asSla(valor: unknown): LinhaSla[] {
 }
 
 export interface MesDeHoras {
-  /** AAAA-MM — chave estável, ordenável como texto. */
+  /** AAAA-MM (mês de São Paulo) — chave estável, ordenável como texto. */
   mes: string;
+  /** Horas fechadas lançadas neste mês. */
   horasGastas: number;
+  /** Horas acumuladas no ciclo do contrato até o fim deste mês (= horasGastas no ciclo mensal). */
+  horasNoCiclo: number;
+  /** Teto do ciclo (o contrato fala em horas por ciclo, não por mês). */
   horasContratadas: number;
+}
+
+/** "AAAA-MM" de `chave` deslocado `passos` meses para trás. */
+export function mesAnterior(chave: string, passos: number): string {
+  const [ano, mes] = chave.split("-").map(Number);
+  const d = new Date(Date.UTC(ano, mes - 1 - passos, 1));
+  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
+}
+
+/**
+ * Monta a série mês a mês a partir dos registros fechados. Puro (testado em
+ * scripts/testa-contrato.ts).
+ *
+ * - Mês é o de São Paulo (`chaveDia`), como em toda a parte de horas — antes
+ *   era o mês UTC, e o trabalho das 21h do último dia caía no mês seguinte.
+ * - Contrato trimestral: o teto é do ciclo, então cada mês carrega também o
+ *   acumulado do ciclo até ele. Comparar o mês isolado com o teto do
+ *   trimestre escondia o estouro (cada mês podia gastar o trimestre inteiro).
+ *   `registros` precisa cobrir desde o início do ciclo do primeiro mês.
+ */
+export function montarHorasPorMes(
+  registros: { inicioEm: Date; minutos: number | null }[],
+  contratadas: number,
+  ciclo: string,
+  agora: Date,
+  meses: number
+): MesDeHoras[] {
+  const porMes = new Map<string, number>();
+  for (const r of registros) {
+    const k = chaveDia(r.inicioEm).slice(0, 7);
+    porMes.set(k, (porMes.get(k) ?? 0) + (r.minutos ?? 0));
+  }
+  const mesAtual = chaveDia(agora).slice(0, 7);
+  const umaCasa = (min: number) => Math.round((min / 60) * 10) / 10;
+
+  const saida: MesDeHoras[] = [];
+  for (let i = meses - 1; i >= 0; i--) {
+    const k = mesAnterior(mesAtual, i);
+    const inicioCiclo = chaveDia(cicloDoMes(k, ciclo).desde).slice(0, 7);
+    let noCiclo = 0;
+    for (let m = inicioCiclo; m <= k; m = mesAnterior(m, -1)) noCiclo += porMes.get(m) ?? 0;
+    saida.push({
+      mes: k,
+      // Uma casa decimal: o gráfico é de acompanhamento, não de faturamento.
+      horasGastas: umaCasa(porMes.get(k) ?? 0),
+      horasNoCiclo: umaCasa(noCiclo),
+      horasContratadas: contratadas,
+    });
+  }
+  return saida;
 }
 
 // --- Montagem do contrato a partir de um PUT parcial ----------------------
