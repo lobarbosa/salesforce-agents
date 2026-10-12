@@ -59,10 +59,40 @@ export interface DemandaParaMaterializar {
   historico: unknown;
 }
 
+/** Já existe outra demanda com este código no repositório (criada pela CLI). */
+export class CodigoOcupadoNoGitError extends Error {}
+
+/** Conteúdo de um arquivo no branch configurado, ou null se não existe. */
+async function lerArquivo(path: string): Promise<string | null> {
+  const gh = octokit();
+  const { owner, repo, branch } = repoConfig();
+  try {
+    const r = await gh.repos.getContent({ owner, repo, path, ref: branch });
+    if (Array.isArray(r.data) || r.data.type !== "file") return "";
+    return Buffer.from(r.data.content ?? "", "base64").toString("utf-8");
+  } catch (err) {
+    if ((err as { status?: number }).status === 404) return null;
+    throw err;
+  }
+}
+
 export async function materializeDemanda(d: DemandaParaMaterializar) {
   const base = `clients/${d.clientSlug}/demandas/${d.code}`;
 
   const demandaMd = `# ${d.titulo}\n\n${d.texto}\n`;
+
+  // O código desta demanda foi gerado pelo banco, que não enxerga demanda
+  // criada direto no git (`sfagents demanda nova`). Se já existe um
+  // demanda.md diferente neste caminho, é OUTRA demanda com o mesmo número —
+  // sobrescrever apagaria o pedido dela e misturaria as duas esteiras. Igual
+  // ao que escreveríamos = tentativa anterior nossa que parou no meio: segue.
+  const existente = await lerArquivo(`${base}/demanda.md`);
+  if (existente !== null && existente !== demandaMd) {
+    throw new CodigoOcupadoNoGitError(
+      `já existe ${base}/demanda.md no repositório com outro conteúdo (demanda criada fora do Squad OS?) — ` +
+        `materializar sobrescreveria aquela demanda. Renumere uma das duas antes.`
+    );
+  }
   await putFile(`${base}/demanda.md`, demandaMd, `${d.code}: registrar demanda via Squad OS`);
 
   const statusYaml = dumpYaml(

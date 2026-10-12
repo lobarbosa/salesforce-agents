@@ -2,6 +2,7 @@
 // pós-login, allowlist de upload e limites do copiloto.
 import assert from "node:assert/strict";
 import { destinoSeguro } from "@/lib/destino";
+import { proximoSufixo } from "@/lib/codigo-demanda";
 import { conferirTipo } from "@/lib/upload-regras";
 import { conteudoBate } from "@/lib/arquivo";
 import { bloqueioDocumento } from "@/lib/contas";
@@ -130,6 +131,12 @@ caso("conta: documento só muda antes da aprovação (ou primeiro anexo na aprov
   assert.equal(bloqueioDocumento("aprovada", false), null);
   assert.notEqual(bloqueioDocumento("aprovada", true), null);
   for (const s of ["paga", "recusada", "cancelada"] as const) assert.notEqual(bloqueioDocumento(s, false), null);
+});
+
+caso("código de demanda: maior sufixo + 1, não contagem + 1", () => {
+  assert.equal(proximoSufixo("ACXYA", []), 1);
+  assert.equal(proximoSufixo("ACXYA", ["ACXYA-1", "ACXYA-7", "ACXYA-3"]), 8);
+  assert.equal(proximoSufixo("ACXYA", ["ACXYA-2", "ACXYAX-99", "ACXYA-10b", "OUTRO-50"]), 3);
 });
 
 // FIM-CASOS
