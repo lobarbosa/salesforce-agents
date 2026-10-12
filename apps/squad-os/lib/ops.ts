@@ -46,8 +46,9 @@ export interface Conciliacao {
 export function conciliacaoDo(mes: string): Promise<Conciliacao | null | undefined> {
   return ler(async () => {
     const r = await prisma.$queryRaw<Record<string, unknown>[]>`
-      select competencia, resultado_contabil, resultado_gerencial, diferenca_pct, extraido, created_at
-      from ops.conciliacoes where competencia = ${`${mes}-01`}::date`;
+      select competencia, resultado_contabil, resultado_gerencial, diferenca_pct, extraido, created_at,
+             to_jsonb(c) ->> 'updated_at' as updated_at
+      from ops.conciliacoes c where competencia = ${`${mes}-01`}::date`;
     if (!r[0]) return undefined; // ops existe, mas o mês ainda não foi conciliado
     const x = r[0];
     const extraido = (x.extraido ?? {}) as { ok?: string[]; divergencias?: string[] };
@@ -58,9 +59,20 @@ export function conciliacaoDo(mes: string): Promise<Conciliacao | null | undefin
       diferencaPct: num(x.diferenca_pct),
       ok: extraido.ok ?? [],
       divergencias: extraido.divergencias ?? [],
-      em: iso(x.created_at) ?? "",
+      // A conciliação é um upsert por competência e `created_at` fica com a
+      // data da PRIMEIRA rodada — a tela dizia "conciliado em" uma data velha
+      // depois de reprocessar. `updated_at` ainda não existe em
+      // ops.conciliacoes (o schema é do konecta-agents); `to_jsonb(c)` lê a
+      // coluna se ela existir e devolve null se não, sem quebrar a query.
+      em: maisRecente(iso(x.created_at), iso(x.updated_at)) ?? "",
     };
   });
+}
+
+function maisRecente(...isos: (string | null | undefined)[]): string | null {
+  const validos = isos.filter((v): v is string => !!v && !Number.isNaN(Date.parse(v)));
+  if (!validos.length) return null;
+  return validos.reduce((a, b) => (Date.parse(b) > Date.parse(a) ? b : a));
 }
 
 // ── Divergências ───────────────────────────────────────────────────────────
