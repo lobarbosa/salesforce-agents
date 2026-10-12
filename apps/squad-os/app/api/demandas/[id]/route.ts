@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma, StatusDemanda } from "@/lib/generated/prisma/client";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canAccessClient, canManageClientData } from "@/lib/auth";
-import { GATE_DO_CLIENTE } from "@/lib/demandas";
+import { GATE_DO_CLIENTE, mesclarRespostas, montarAprovacao } from "@/lib/demandas";
 
 // Status de triagem que o próprio card pode mover (dropdown no board) —
 // os estágios de execução só avançam via `sfagents demanda avancar`, o card
@@ -11,6 +11,12 @@ import { GATE_DO_CLIENTE } from "@/lib/demandas";
 // triagem é coisa de admin/consultor; role=cliente só mexe nas perguntas e na
 // aprovação do gate que é dele (ver GATE_DO_CLIENTE abaixo).
 const TRIAGE_STATUSES: StatusDemanda[] = ["backlog", "planejada", "recorrente", "standby"];
+
+// Campos que cada papel pode mandar neste PATCH. Qualquer outro é recusado —
+// o corpo é do navegador, e campo desconhecido "ignorado em silêncio" é como
+// uma porta acaba aberta depois, quando alguém acrescenta um `if`.
+const CAMPOS_DELIVERY = new Set(["status", "perguntas", "aprovacao"]);
+const CAMPOS_CLIENTE = new Set(["perguntas", "aprovacao"]);
 
 export async function PATCH(
   request: NextRequest,
@@ -22,7 +28,10 @@ export async function PATCH(
   }
 
   const { id } = await params;
-  const body = await request.json();
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== "object" || Array.isArray(body)) {
+    return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
+  }
 
   const demanda = await prisma.demanda.findUnique({ where: { id } });
   if (!demanda) {
@@ -32,12 +41,16 @@ export async function PATCH(
     return NextResponse.json({ error: "sem permissão" }, { status: 403 });
   }
 
+  const permitidos = canManageClientData(usuario.role) ? CAMPOS_DELIVERY : CAMPOS_CLIENTE;
+  const proibidos = Object.keys(body).filter((k) => !permitidos.has(k));
+  if (proibidos.length > 0) {
+    return NextResponse.json({ error: `campo não editável: ${proibidos.join(", ")}` }, { status: 403 });
+  }
+
   const data: Prisma.DemandaUpdateInput = {};
+  const autor = usuario.nome.trim() || usuario.email;
 
   if ("status" in body) {
-    if (!canManageClientData(usuario.role)) {
-      return NextResponse.json({ error: "sem permissão pra mover triagem" }, { status: 403 });
-    }
     const status = String(body.status) as StatusDemanda;
     if (!TRIAGE_STATUSES.includes(status)) {
       return NextResponse.json(
@@ -48,7 +61,8 @@ export async function PATCH(
     data.status = status;
     data.historico = [
       ...(Array.isArray(demanda.historico) ? demanda.historico : []),
-      { de: demanda.status, para: status, autor: String(body.autor ?? usuario.nome ?? "os"), em: new Date().toISOString() },
+      // Autor sempre da sessão — nunca um nome que o corpo afirma.
+      { de: demanda.status, para: status, autor, em: new Date().toISOString() },
     ];
   }
 
@@ -68,17 +82,37 @@ export async function PATCH(
   }
 
   if ("perguntas" in body) {
-    data.perguntas = body.perguntas;
+    // Só respostas às perguntas que já existem — ver mesclarRespostas.
+    const perguntas = mesclarRespostas(demanda.perguntas, body.perguntas);
+    if (!perguntas) return NextResponse.json({ error: "perguntas em formato inválido" }, { status: 400 });
+    data.perguntas = perguntas as unknown as Prisma.InputJsonValue;
   }
 
   if ("aprovacao" in body) {
-    data.aprovacao = body.aprovacao;
+    const aprovacao = montarAprovacao(body.aprovacao, usuario);
+    if (!aprovacao) return NextResponse.json({ error: "aprovação em formato inválido" }, { status: 400 });
+    data.aprovacao = aprovacao as unknown as Prisma.InputJsonValue;
   }
 
   if (Object.keys(data).length === 0) {
     return NextResponse.json({ error: "nenhum campo editável enviado" }, { status: 400 });
   }
 
-  const updated = await prisma.demanda.update({ where: { id }, data });
+  // Compare-and-set: a leitura acima e esta escrita não são atômicas, e o
+  // sync do pipeline pode ter movido a demanda pra execução no meio. Mover
+  // triagem só vale se ela AINDA está em triagem; responder/aprovar só vale
+  // se ela ainda está no mesmo status lido (o gate não mudou por baixo).
+  const where: Prisma.DemandaWhereInput =
+    "status" in body
+      ? { id, status: { in: TRIAGE_STATUSES } }
+      : { id, status: demanda.status };
+  const { count } = await prisma.demanda.updateMany({ where, data: data as Prisma.DemandaUpdateManyMutationInput });
+  if (count === 0) {
+    return NextResponse.json(
+      { error: "a demanda mudou de etapa enquanto você editava — recarregue a página" },
+      { status: 409 }
+    );
+  }
+  const updated = await prisma.demanda.findUnique({ where: { id } });
   return NextResponse.json(updated);
 }

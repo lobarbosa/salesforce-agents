@@ -208,6 +208,50 @@ export function asAprovacao(value: unknown): Aprovacao | null {
   return value as Aprovacao;
 }
 
+/**
+ * As perguntas do gate vêm do agente (sync de volta, `/api/sync/demanda`); o
+ * card só responde. Por isso o PATCH nunca aceita a lista do navegador como
+ * está: parte das perguntas atuais e copia só a `resposta` de cada id que já
+ * existe. Pergunta nova, texto trocado ou id inventado são ignorados.
+ */
+export const RESPOSTA_MAX = 4000;
+export function mesclarRespostas(atuais: unknown, enviadas: unknown): Pergunta[] | null {
+  if (!Array.isArray(enviadas)) return null;
+  const respostas = new Map<string, string>();
+  for (const p of enviadas) {
+    if (!p || typeof p !== "object") continue;
+    const { id, resposta } = p as Record<string, unknown>;
+    if (typeof id === "string" && typeof resposta === "string") respostas.set(id, resposta.slice(0, RESPOSTA_MAX));
+  }
+  return asPerguntas(atuais)
+    .filter((p) => p && typeof p.id === "string")
+    .map((p) => (respostas.has(p.id) ? { ...p, resposta: respostas.get(p.id)! } : p));
+}
+
+/**
+ * A aprovação registrada no card é montada no servidor: `aprovado` é sempre
+ * true (não existe "desaprovar" por aqui), a data é a do servidor e o e-mail
+ * de quem aprovou vem da sessão. Do navegador só entram o nome digitado e a
+ * observação, com tamanho limitado.
+ */
+export function montarAprovacao(
+  enviada: unknown,
+  quem: { nome: string; email: string },
+  agora = new Date()
+): (Aprovacao & { porEmail: string }) | null {
+  if (!enviada || typeof enviada !== "object") return null;
+  const a = enviada as Record<string, unknown>;
+  if (a.aprovado !== true) return null;
+  const digitado = typeof a.por === "string" ? a.por.trim().slice(0, 120) : "";
+  return {
+    aprovado: true,
+    por: digitado || quem.nome.trim() || quem.email,
+    porEmail: quem.email,
+    em: agora.toISOString(),
+    observacao: typeof a.observacao === "string" ? a.observacao.trim().slice(0, 1000) : "",
+  };
+}
+
 export function perguntasPendentes(perguntas: unknown): number {
   return asPerguntas(perguntas).filter((p) => !p.resposta?.trim()).length;
 }

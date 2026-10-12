@@ -2,6 +2,7 @@
 // pós-login, allowlist de upload e limites do copiloto.
 import assert from "node:assert/strict";
 import { destinoSeguro } from "@/lib/destino";
+import { mesclarRespostas, montarAprovacao } from "@/lib/demandas";
 import { validarMensagens, MAX_MENSAGENS, MAX_CHARS_MENSAGEM, dentroDoLimiteDeRequisicoes, MAX_REQUISICOES_POR_MINUTO } from "@/lib/copilot/limites";
 
 let falhas = 0;
@@ -77,6 +78,26 @@ caso("copiloto: freio de requisições por minuto", () => {
   for (let i = 0; i < MAX_REQUISICOES_POR_MINUTO; i++) assert.equal(dentroDoLimiteDeRequisicoes("u1", t + i), true);
   assert.equal(dentroDoLimiteDeRequisicoes("u1", t + 100), false);
   assert.equal(dentroDoLimiteDeRequisicoes("u1", t + 61_000), true);
+});
+
+caso("demanda: PATCH de perguntas só copia resposta de pergunta que já existe", () => {
+  const atuais = [{ id: "a", texto: "Pode?", resposta: "" }];
+  const r = mesclarRespostas(atuais, [
+    { id: "a", texto: "texto trocado", resposta: "sim" },
+    { id: "inventada", texto: "nova", resposta: "x" },
+  ]);
+  assert.deepEqual(r, [{ id: "a", texto: "Pode?", resposta: "sim" }]);
+  assert.equal(mesclarRespostas(atuais, "lixo"), null);
+});
+
+caso("demanda: aprovação é montada no servidor (data e e-mail da sessão)", () => {
+  const agora = new Date("2026-10-12T12:00:00Z");
+  const a = montarAprovacao({ aprovado: true, por: "Fulano", em: "2020-01-01", porEmail: "x@y" }, { nome: "N", email: "c@cli.com" }, agora);
+  assert.equal(a?.em, agora.toISOString());
+  assert.equal(a?.porEmail, "c@cli.com");
+  assert.equal(a?.por, "Fulano");
+  assert.equal(montarAprovacao({ aprovado: false }, { nome: "N", email: "e" }), null);
+  assert.equal(montarAprovacao("sim", { nome: "N", email: "e" }), null);
 });
 
 // FIM-CASOS
