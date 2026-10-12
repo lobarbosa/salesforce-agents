@@ -41,6 +41,13 @@ export async function POST(
     );
   }
 
+  // "Aprovou o gate ..." é o rastro (e a trava contra aprovação dupla) que a
+  // rota aprovar-gate escreve — um comentário digitado com esse começo
+  // fingiria uma aprovação e travaria o gate de verdade.
+  if (texto.startsWith("Aprovou o gate")) {
+    return NextResponse.json({ error: "esse texto é reservado ao registro de aprovação de gate" }, { status: 400 });
+  }
+
   // Autor da sessão, mesmo padrão do POST /api/demandas — o rastro só serve
   // se não puder ser informado por quem chama.
   const comentario = await prisma.comentario.create({

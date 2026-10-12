@@ -53,31 +53,67 @@ export async function POST(
   }
 
   const autor = usuario.nome.trim() || usuario.email;
+  const gate = demanda.status;
+  const marcador = `Aprovou o gate "${gate}".`;
 
-  // Dispara ANTES de mexer no Postgres. Se o dispatch falhar, o estado local
-  // continua dizendo "esperando gate", que é a verdade — o inverso deixaria o
-  // quadro dizendo que avançou sem nada ter rodado. Quem escreve o status real
-  // é o workflow, em status.yaml, e ele volta pelo /api/sync/demanda.
+  // Reivindica a aprovação ANTES de disparar (compare-and-set). Achado da
+  // revisão de 2026-10-12: dois cliques (ou duas pessoas) disparavam o
+  // workflow duas vezes; a segunda execução esperava na fila do concurrency
+  // group e, quando rodava, a demanda já estava no gate SEGUINTE — e aprovava
+  // esse também, sem ninguém ter olhado. O schema não tem um campo "gate
+  // liberado em", então a reivindicação é o próprio comentário de rastro,
+  // criado sob um lock transacional por demanda: só passa quem não encontra
+  // um "Aprovou o gate X" posterior à última execução sincronizada (uma
+  // execução nova — inclusive uma que falhou — reabre o gate pra nova
+  // tentativa). O workflow ainda confere `gate_esperado` do lado dele.
+  const claim = await prisma.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${"aprovar-gate:" + demanda.id}))`;
+    const atual = await tx.demanda.findUnique({
+      where: { id: demanda.id },
+      select: { status: true, ultimaExecucaoEm: true, materializadoEm: true },
+    });
+    if (!atual || atual.status !== gate) return { conflito: "a demanda saiu deste gate enquanto você decidia — recarregue" };
+    const desde = atual.ultimaExecucaoEm ?? atual.materializadoEm ?? new Date(0);
+    const jaAprovado = await tx.comentario.findFirst({
+      where: { demandaId: demanda.id, texto: { startsWith: marcador }, criadoEm: { gt: desde } },
+      select: { autor: true },
+    });
+    if (jaAprovado) {
+      return { conflito: `este gate já foi liberado por ${jaAprovado.autor} — a próxima etapa está rodando` };
+    }
+    // Registro local de quem liberou, pra a conversa do card ter o rastro sem
+    // depender de abrir o git. O `gates.md` da demanda continua sendo o log
+    // oficial — o agente escreve lá na etapa seguinte.
+    const comentario = await tx.comentario.create({
+      data: {
+        demandaId: demanda.id,
+        autor,
+        autorEmail: usuario.email,
+        texto: `${marcador} A próxima etapa foi disparada.`,
+      },
+      select: { id: true },
+    });
+    return { comentarioId: comentario.id };
+  });
+  if ("conflito" in claim) {
+    return NextResponse.json({ error: claim.conflito }, { status: 409 });
+  }
+
+  // Quem escreve o status real é o workflow, em status.yaml, e ele volta pelo
+  // /api/sync/demanda — o Postgres não avança a etapa aqui. Se o dispatch
+  // falhar, a reivindicação é desfeita e o gate continua esperando, que é a
+  // verdade.
   try {
-    await triggerRunDemand(demanda.client.slug, demanda.code, { aprovarGate: autor });
+    await triggerRunDemand(demanda.client.slug, demanda.code, { aprovarGate: autor, gateEsperado: gate });
   } catch (err) {
+    await prisma.comentario.delete({ where: { id: claim.comentarioId } }).catch((e) => {
+      console.error("aprovar-gate: falha ao desfazer a reivindicação", e);
+    });
     return NextResponse.json(
       { error: err instanceof Error ? err.message : "falha ao disparar o pipeline" },
       { status: 502 }
     );
   }
 
-  // Registro local de quem liberou, pra a conversa do card ter o rastro sem
-  // depender de abrir o git. O `gates.md` da demanda continua sendo o log
-  // oficial — o agente escreve lá na etapa seguinte.
-  await prisma.comentario.create({
-    data: {
-      demandaId: demanda.id,
-      autor,
-      autorEmail: usuario.email,
-      texto: `Aprovou o gate "${demanda.status}". A próxima etapa foi disparada.`,
-    },
-  });
-
-  return NextResponse.json({ ok: true, gate: demanda.status, por: autor });
+  return NextResponse.json({ ok: true, gate, por: autor });
 }

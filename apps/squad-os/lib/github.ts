@@ -87,7 +87,7 @@ export async function materializeDemanda(d: DemandaParaMaterializar) {
 export async function triggerRunDemand(
   clientSlug: string,
   demandCode: string,
-  opts: { aprovarGate?: string } = {}
+  opts: { aprovarGate?: string; gateEsperado?: string } = {}
 ) {
   const gh = octokit();
   const { owner, repo, branch } = repoConfig();
@@ -102,6 +102,10 @@ export async function triggerRunDemand(
       // Sempre presente (string vazia quando não é aprovação de gate): o
       // Actions rejeita input não declarado, mas aceita declarado e vazio.
       aprovar_gate: opts.aprovarGate ?? "",
+      // O gate que a pessoa viu e aprovou. O workflow recusa aprovar se o
+      // status.yaml já estiver em outro (ver run-demand.yml): é o que impede
+      // um disparo duplicado na fila de aprovar o gate seguinte.
+      gate_esperado: opts.aprovarGate ? (opts.gateEsperado ?? "") : "",
     },
   });
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
 import { Modal } from "@/components/Modal";
@@ -50,6 +50,10 @@ export function DemandModal({
   const [confirmandoGate, setConfirmandoGate] = useState(false);
   const [aprovandoGate, setAprovandoGate] = useState(false);
   const [gateErro, setGateErro] = useState("");
+  // Trava síncrona contra clique duplo: o `disabled` só vale depois do
+  // próximo render, e dois cliques no mesmo tick disparavam dois POSTs (a
+  // rota também recusa o segundo com 409, ver aprovar-gate/route.ts).
+  const emVoo = useRef(false);
 
   const emGate = demanda.status.startsWith("aguardando_");
   // Mesma função que a API chama — ver podeAprovarGate em lib/demandas.ts.
@@ -85,7 +89,8 @@ export function DemandModal({
       setTimeout(() => setAprovarMsg(""), 2000);
       return;
     }
-    if (!aprovador.trim()) return;
+    if (!aprovador.trim() || emVoo.current) return;
+    emVoo.current = true;
     setAprovando(true);
     const res = await fetch(`/api/demandas/${demanda.id}`, {
       method: "PATCH",
@@ -99,37 +104,46 @@ export function DemandModal({
           observacao: observacao.trim() || "",
         },
       }),
-    });
+    }).catch(() => null);
     setAprovando(false);
-    if (res.ok) {
+    emVoo.current = false;
+    if (res?.ok) {
       router.refresh();
       onClose();
     }
   }
 
   async function aprovarGate() {
+    if (emVoo.current) return;
+    emVoo.current = true;
     setGateErro("");
     setAprovandoGate(true);
-    const res = await fetch(`/api/demandas/${demanda.id}/aprovar-gate`, { method: "POST" });
-    setAprovandoGate(false);
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
+    const res = await fetch(`/api/demandas/${demanda.id}/aprovar-gate`, { method: "POST" }).catch(() => null);
+    if (!res || !res.ok) {
+      const body = res ? await res.json().catch(() => ({})) : {};
       setGateErro(body.error || "não consegui liberar o gate");
+      setAprovandoGate(false);
+      emVoo.current = false;
+      if (res?.status === 409) router.refresh();
       return;
     }
+    // Sucesso: o botão fica desabilitado até o modal fechar.
     setConfirmandoGate(false);
     router.refresh();
     onClose();
   }
 
   async function materializar() {
+    if (emVoo.current) return;
+    emVoo.current = true;
     setMaterializeErro("");
     setMaterializando(true);
-    const res = await fetch(`/api/demandas/${demanda.id}/materialize`, { method: "POST" });
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
+    const res = await fetch(`/api/demandas/${demanda.id}/materialize`, { method: "POST" }).catch(() => null);
+    if (!res || !res.ok) {
+      const body = res ? await res.json().catch(() => ({})) : {};
       setMaterializeErro(body.error || "falha ao materializar");
       setMaterializando(false);
+      emVoo.current = false;
       return;
     }
     router.refresh();
