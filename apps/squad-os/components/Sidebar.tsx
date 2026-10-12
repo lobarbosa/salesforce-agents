@@ -3,7 +3,7 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import type { Client } from "@/lib/generated/prisma/client";
+import type { ClienteDaSidebar } from "@/lib/visao-cliente";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { createClient as createSupabaseClient } from "@/lib/supabase/client";
 import { podeVer, ROTULO_PAPEL } from "@/lib/permissoes";
@@ -237,7 +237,7 @@ export function Sidebar({
   usuario,
   marcaSrc,
 }: {
-  clients: Client[];
+  clients: ClienteDaSidebar[];
   usuario: CurrentUsuario;
   marcaSrc: string | null;
 }) {
