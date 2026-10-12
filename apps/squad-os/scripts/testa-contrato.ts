@@ -3,6 +3,7 @@
 import assert from "node:assert/strict";
 import {
   montarDadosDoContrato,
+  montarHorasPorMes,
   ContratoInvalidoError,
   type ContratoGuardado,
 } from "@/lib/contrato";
@@ -96,6 +97,27 @@ caso("data invalida vira null em vez de quebrar", () => {
 caso("ciclo vazio cai no padrao", () => {
   const d = montarDadosDoContrato({ tipo: "ams", cicloHoras: "   " }, guardado());
   assert.equal(d.cicloHoras, "mensal");
+});
+
+caso("horas por mês usam o mês de São Paulo, não o UTC", () => {
+  // 31/10 às 22h em SP = 01/11 01:00 UTC: trabalho de outubro.
+  const r = montarHorasPorMes(
+    [{ inicioEm: new Date("2026-11-01T01:00:00Z"), minutos: 60 }],
+    40, "mensal", new Date("2026-11-15T12:00:00Z"), 2
+  );
+  assert.deepEqual(r.map((m) => [m.mes, m.horasGastas]), [["2026-10", 1], ["2026-11", 0]]);
+});
+
+caso("trimestral: o mês carrega o acumulado do ciclo contra o teto do ciclo", () => {
+  const h = (iso: string, min: number) => ({ inicioEm: new Date(iso), minutos: min });
+  const r = montarHorasPorMes(
+    [h("2026-07-10T12:00:00Z", 50 * 60), h("2026-08-10T12:00:00Z", 50 * 60), h("2026-09-10T12:00:00Z", 50 * 60), h("2026-10-05T12:00:00Z", 10 * 60)],
+    120, "trimestral", new Date("2026-10-20T12:00:00Z"), 3
+  );
+  assert.deepEqual(
+    r.map((m) => [m.mes, m.horasGastas, m.horasNoCiclo, m.horasContratadas]),
+    [["2026-08", 50, 100, 120], ["2026-09", 50, 150, 120], ["2026-10", 10, 10, 120]]
+  );
 });
 
 console.log(falhas === 0 ? "\ntodos ok" : `\n${falhas} falha(s)`);

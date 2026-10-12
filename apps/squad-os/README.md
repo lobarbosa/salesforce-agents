@@ -144,17 +144,25 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
 Aponte o projeto Vercel pra `apps/squad-os/` (root directory) e configure as
 mesmas env vars de `.env.example` como Environment Variables do projeto
 (Production **e** Preview, se for usar preview deploys). `package.json` já
-tem um script `vercel-build` (`prisma migrate deploy && next build`) —
-Vercel roda esse script no lugar de `build` automaticamente quando ele existe,
-então toda migração pendente é aplicada antes de cada build, sem passo manual.
-`prisma migrate deploy` é idempotente (só aplica o que ainda não rodou), então
-não há problema em rodar em todo deploy, incluindo previews.
+tem um script `vercel-build` — Vercel roda esse script no lugar de `build`
+automaticamente quando ele existe. Ele roda `prisma migrate deploy` **só quando
+`VERCEL_ENV=production`** e depois `next build`: toda migração pendente é
+aplicada no deploy de produção, sem passo manual; o build de preview não toca no
+schema (revisão de 2026-10-12 — até ali o preview de um PR aplicava a migration
+na produção antes do merge, ver abaixo). Consequência: um preview cujo código
+depende de uma migration nova ainda não aplicada vai falhar nas telas que leem
+o campo novo, até o merge. É o preço certo — preview quebrado em vez de
+produção alterada por um PR aberto.
 
 #### Preview e Production compartilham o mesmo banco
 
 Hoje as duas Environments da Vercel apontam pro mesmo `DATABASE_URL`. A
 consequência não é óbvia e custou caro em 2026-09-09: **o build de preview de
-um PR aplica a migração em produção**, antes do merge. Enquanto a migração for
+um PR aplicava a migração em produção**, antes do merge. Desde 2026-10-12 o
+`vercel-build` só migra com `VERCEL_ENV=production`, o que fecha esse caminho;
+o resto desta seção continua valendo para o deploy de produção (a migration de
+um merge é aplicada antes do código novo subir) e para qualquer `migrate
+deploy` manual. Enquanto a migração for
 aditiva (criar tabela, criar coluna) isso é inofensivo — o código antigo
 simplesmente ignora o que não conhece. Deixa de ser inofensivo no instante em
 que a migração remove ou renomeia algo que o código de `main` ainda lê.
@@ -176,8 +184,9 @@ burocracia — são a única coisa separando um PR aberto de uma produção fora
 `clients.marcas` e `clients.concorrentes` saíram do briefing a pedido, em dois
 merges separados — e a separação não era zelo, era necessidade.
 
-Preview e Production compartilham o mesmo `DATABASE_URL`, então o build de
-preview de um PR roda `prisma migrate deploy` **na produção, antes do merge**.
+Preview e Production compartilham o mesmo `DATABASE_URL`, então (até
+2026-10-12, quando o `vercel-build` passou a migrar só em production) o build de
+preview de um PR rodava `prisma migrate deploy` **na produção, antes do merge**.
 Uma migration que remove coluna que a `main` ainda lê derruba a produção no
 instante em que o PR abre, e continua derrubada até o merge. Por isso:
 

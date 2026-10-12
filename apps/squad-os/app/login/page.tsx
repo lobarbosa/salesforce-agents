@@ -3,6 +3,7 @@
 import { Suspense, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { destinoSeguro } from "@/lib/destino";
 
 const ERROR_MESSAGES: Record<string, string> = {
   not_allowed:
@@ -36,7 +37,8 @@ export default function LoginPage() {
 function LoginForm() {
   const searchParams = useSearchParams();
   const errorParam = searchParams.get("error");
-  const next = searchParams.get("next") ?? "/";
+  // Validado antes de qualquer uso — ver lib/destino.ts (XSS/open redirect).
+  const next = destinoSeguro(searchParams.get("next"));
 
   const [modo, setModo] = useState<Modo>("link");
   const [email, setEmail] = useState("");

@@ -39,6 +39,10 @@ on:
         description: 'Nome de quem aprovou o gate humano (deixe vazio pra só continuar de onde está)'
         required: false
         default: ''
+      gate_esperado:
+        description: 'Gate que a pessoa aprovou (ex.: aguardando_gate_design). Se o status.yaml já estiver em outro, a aprovação é recusada. Vazio = não confere.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -208,10 +212,25 @@ jobs:
           # (RAG não configurado nesta sessão) em vez de falhar a sessão.
           SQUAD_OS_RAG_QUERY_URL: ${{ secrets.SQUAD_OS_RAG_QUERY_URL }}
           SQUAD_OS_SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+          # Por env, não interpolados no script: o nome de quem aprovou é texto
+          # que vem do app.
+          APROVAR_GATE: ${{ inputs.aprovar_gate }}
+          GATE_ESPERADO: ${{ inputs.gate_esperado }}
         run: |
-          if [ -n "${{ inputs.aprovar_gate }}" ]; then
+          if [ -n "$APROVAR_GATE" ]; then
+            # Disparo duplicado (dois cliques) espera na fila do concurrency
+            # group; quando roda, a primeira execução já levou a demanda ao
+            # gate SEGUINTE — e sem esta conferência ele seria aprovado sem
+            # ninguém ter olhado. O Squad OS manda o gate que a pessoa viu.
+            if [ -n "$GATE_ESPERADO" ]; then
+              ATUAL=$(python3 -c 'import os; from salesforce_agents import demands; print(demands.Demand.load(os.environ["CLIENT"], os.environ["DEMAND_ID"]).status)')
+              if [ "$ATUAL" != "$GATE_ESPERADO" ]; then
+                echo "::error::Aprovação recusada: o Squad OS aprovou '$GATE_ESPERADO', mas a demanda está em '$ATUAL' (provável disparo duplicado). Nada foi aprovado; aprove de novo no card se for o caso."
+                exit 1
+              fi
+            fi
             sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" \
-              --aprovar-gate "${{ inputs.aprovar_gate }}" --github-output
+              --aprovar-gate "$APROVAR_GATE" --github-output
           else
             sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" --github-output
           fi

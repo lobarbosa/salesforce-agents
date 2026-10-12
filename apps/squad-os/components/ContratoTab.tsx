@@ -354,11 +354,13 @@ export function ContratoTab({
                   <span className="brief-rotulo">Nome do projeto</span>
                   <p className="brief-valor">{contrato.projetoNome || <span className="sub">não informado</span>}</p>
                 </div>
+                {/* Datas de contrato são dia de calendário gravado à meia-noite
+                    UTC: formatar no fuso do navegador (SP) mostrava o dia anterior. */}
                 <div className="brief-field somente-leitura">
                   <span className="brief-rotulo">Início</span>
                   <p className="brief-valor">
                     {contrato.inicioEm
-                      ? new Date(contrato.inicioEm).toLocaleDateString("pt-BR")
+                      ? new Date(contrato.inicioEm).toLocaleDateString("pt-BR", { timeZone: "UTC" })
                       : <span className="sub">não informado</span>}
                   </p>
                 </div>
@@ -366,7 +368,7 @@ export function ContratoTab({
                   <span className="brief-rotulo">Fim previsto</span>
                   <p className="brief-valor">
                     {contrato.fimPrevistoEm
-                      ? new Date(contrato.fimPrevistoEm).toLocaleDateString("pt-BR")
+                      ? new Date(contrato.fimPrevistoEm).toLocaleDateString("pt-BR", { timeZone: "UTC" })
                       : <span className="sub">não informado</span>}
                   </p>
                 </div>

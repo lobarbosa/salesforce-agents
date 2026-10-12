@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
-import { generateDemandCode } from "@/lib/slug";
+import { criarComCodigoUnico } from "@/lib/slug";
 
 // As demandas propostas pelo planejador entrando no quadro, em `backlog`.
 //
@@ -95,24 +95,25 @@ export async function POST(request: NextRequest) {
   for (const d of propostas) {
     const titulo = String(d.titulo ?? "").trim().slice(0, 300);
     if (!titulo) continue;
-    const code = await generateDemandCode(client.id, client.slug);
-    const demanda = await prisma.demanda.create({
-      data: {
-        clientId: client.id,
-        code,
-        titulo,
-        tipo: "projeto",
-        texto: comoTexto(d),
-        autor: AUTOR,
-        status: "backlog",
-        entregavelId: String(d.entregavelId),
-        perguntas: comoPerguntas(d.perguntas),
-        historico: [
-          { de: null, para: "backlog", autor: AUTOR, em: new Date().toISOString() },
-        ],
-      },
-      select: { code: true, titulo: true },
-    });
+    const demanda = await criarComCodigoUnico(client.id, client.slug, (code) =>
+      prisma.demanda.create({
+        data: {
+          clientId: client.id,
+          code,
+          titulo,
+          tipo: "projeto",
+          texto: comoTexto(d),
+          autor: AUTOR,
+          status: "backlog",
+          entregavelId: String(d.entregavelId),
+          perguntas: comoPerguntas(d.perguntas),
+          historico: [
+            { de: null, para: "backlog", autor: AUTOR, em: new Date().toISOString() },
+          ],
+        },
+        select: { code: true, titulo: true },
+      })
+    );
     criadas.push(demanda);
   }
 

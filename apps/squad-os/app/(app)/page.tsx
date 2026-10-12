@@ -1,8 +1,9 @@
 import Link from "next/link";
+import { notFound, redirect } from "next/navigation";
 import { getClients, getAllDemandas } from "@/lib/data";
 import { perguntasPendentes, asAprovacao } from "@/lib/demandas";
 import { getCurrentUsuario } from "@/lib/current-user";
-import { podeVer } from "@/lib/permissoes";
+import { inicioDo, podeVer } from "@/lib/permissoes";
 import { minutosDaSemana } from "@/lib/horas-data";
 import { chaveDia, duracaoPorExtenso, formatarDuracao, inicioDaSemana } from "@/lib/horas";
 import { listarContas } from "@/lib/contas-data";
@@ -18,6 +19,11 @@ const CONN_STATUS_LABEL: Record<string, string> = {
 
 export default async function OverviewPage() {
   const usuario = await getCurrentUsuario();
+  // A Visão Geral lista todos os clientes e demandas — é do time de entrega.
+  // O proxy já desvia cliente e financeiro daqui; a página confere de novo
+  // em vez de depender só da navegação.
+  if (!usuario) notFound();
+  if (!podeVer(usuario.role, "delivery")) redirect(inicioDo(usuario.role, usuario.clientId));
   const hoje = chaveDia(new Date());
   const admin = usuario ? podeVer(usuario.role, "financeiro") && podeVer(usuario.role, "operacao") : false;
   const [clients, demandas, minutos, contas, divergencias, agentes] = await Promise.all([

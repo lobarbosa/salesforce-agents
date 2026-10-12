@@ -48,6 +48,21 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
   // Enter salva e move o foco — o que também dispara blur na mesma célula.
   // Sem esta trava a mesma célula iria duas vezes para o servidor.
   const emVoo = useRef(new Set<string>());
+  // Segunda edição da mesma célula enquanto a primeira ainda está no servidor:
+  // antes ela era descartada (a trava acima devolvia cedo e, na volta, o
+  // rascunho novo era apagado junto com o antigo). Agora fica marcada aqui e
+  // é salva assim que a primeira termina, se o valor for outro.
+  const pendente = useRef(new Set<string>());
+  // Espelhos síncronos do rascunho e do último valor salvo: `salvar` roda de
+  // closures antigas (blur/Enter) e precisa do valor de agora, não do render
+  // em que foi criada.
+  const rascunhoRef = useRef<Record<string, string>>({});
+  const salvos = useRef<Record<string, number>>({});
+
+  function mudarRascunho(f: (r: Record<string, string>) => Record<string, string>) {
+    rascunhoRef.current = f(rascunhoRef.current);
+    setRascunho(rascunhoRef.current);
+  }
 
   const idsNaGrade = useMemo(() => new Set(linhas.map((l) => l.demanda.id)), [linhas]);
   const disponiveis = opcoes.filter((o) => !idsNaGrade.has(o.id));
@@ -74,14 +89,18 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
   }
 
   function descartar(k: string) {
-    setRascunho((o) => sem(o, k));
+    mudarRascunho((o) => sem(o, k));
   }
 
   async function salvar(l: LinhaDaGrade, dia: string) {
     const k = chave(l.demanda.id, dia);
-    if (!(k in rascunho)) return;
-    const digitado = rascunho[k];
-    const atual = l.minutos[dia] ?? 0;
+    if (!(k in rascunhoRef.current)) return;
+    if (emVoo.current.has(k)) {
+      pendente.current.add(k);
+      return;
+    }
+    const digitado = rascunhoRef.current[k];
+    const atual = k in salvos.current ? salvos.current[k] : (l.minutos[dia] ?? 0);
     const minutos = lerDuracao(digitado);
 
     if (minutos === null) {
@@ -95,7 +114,6 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
       return;
     }
 
-    if (emVoo.current.has(k)) return;
     emVoo.current.add(k);
     setEstado((e) => ({ ...e, [k]: "salvando" }));
     setErroCelula((o) => sem(o, k));
@@ -107,6 +125,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
     emVoo.current.delete(k);
 
     if (!res || !res.ok) {
+      pendente.current.delete(k);
       const corpo = res ? await res.json().catch(() => ({})) : {};
       const msg = corpo.error ?? "Não foi possível salvar — verifique a conexão e tente de novo.";
       setEstado((e) => ({ ...e, [k]: "erro" }));
@@ -115,13 +134,17 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
       return;
     }
 
+    salvos.current[k] = minutos;
     setLinhas((ls) =>
       ls.map((x) => (x.demanda.id === l.demanda.id ? { ...x, minutos: { ...x.minutos, [dia]: minutos } } : x))
     );
-    descartar(k);
+    // Só apaga o rascunho se ninguém digitou outra coisa enquanto salvava.
+    if (rascunhoRef.current[k] === digitado) descartar(k);
     setEstado((e) => ({ ...e, [k]: "salvo" }));
     setAviso(`Salvo: ${duracaoPorExtenso(minutos)} em ${l.demanda.code}, ${rotuloDia(dia)}.`);
     setTimeout(() => setEstado((o) => sem(o, k)), 1800);
+
+    if (pendente.current.delete(k)) void salvar(l, dia);
   }
 
   function aoTeclar(e: KeyboardEvent<HTMLInputElement>, l: LinhaDaGrade, dia: string, li: number, di: number) {
@@ -223,7 +246,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
                               : undefined
                         }
                         onFocus={(e) => e.currentTarget.select()}
-                        onChange={(e) => setRascunho((r) => ({ ...r, [k]: e.target.value }))}
+                        onChange={(e) => mudarRascunho((r) => ({ ...r, [k]: e.target.value }))}
                         onBlur={() => void salvar(l, dia)}
                         onKeyDown={(e) => aoTeclar(e, l, dia, li, di)}
                       />

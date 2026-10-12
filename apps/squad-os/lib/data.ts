@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import type { MesDeHoras } from "@/lib/contrato";
+import { mesAnterior, montarHorasPorMes, type MesDeHoras } from "@/lib/contrato";
+import { chaveDia, cicloDoMes } from "@/lib/horas";
 
 // `ambientes` vem junto em ambas: a Visão Geral precisa dele pra listar
 // conexão pendente, e a aba Conexões renderiza um card por ambiente.
@@ -63,16 +64,6 @@ export function getAllDemandas() {
 // compilação em vez de silenciosamente deixar um campo faltando na UI.
 export type DemandaCompleta = Awaited<ReturnType<typeof getDemandasByClient>>[number];
 
-function chaveMes(d: Date): string {
-  return `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, "0")}`;
-}
-
-function mesAnterior(chave: string, passos: number): string {
-  const [ano, mes] = chave.split("-").map(Number);
-  const d = new Date(Date.UTC(ano, mes - 1 - passos, 1));
-  return chaveMes(d);
-}
-
 /**
  * Horas lançadas por mês nas demandas do cliente, contra as contratadas.
  *
@@ -88,14 +79,14 @@ function mesAnterior(chave: string, passos: number): string {
 export async function horasPorMes(clientId: string, meses = 6): Promise<MesDeHoras[]> {
   const contrato = await prisma.contrato.findUnique({
     where: { clientId },
-    select: { horasContratadas: true },
+    select: { horasContratadas: true, cicloHoras: true },
   });
-  const contratadas = contrato?.horasContratadas ?? 0;
-
+  const ciclo = contrato?.cicloHoras ?? "mensal";
   const agora = new Date();
-  const primeiroMes = mesAnterior(chaveMes(agora), meses - 1);
-  const [ano, mes] = primeiroMes.split("-").map(Number);
-  const desde = new Date(Date.UTC(ano, mes - 1, 1));
+  // Desde o início do CICLO do primeiro mês mostrado (no trimestral, até dois
+  // meses antes): o acumulado do ciclo precisa dos meses anteriores dele.
+  const primeiroMes = mesAnterior(chaveDia(agora).slice(0, 7), meses - 1);
+  const desde = cicloDoMes(primeiroMes, ciclo).desde;
 
   const registros = await prisma.registroTempo.findMany({
     where: {
@@ -106,21 +97,5 @@ export async function horasPorMes(clientId: string, meses = 6): Promise<MesDeHor
     select: { inicioEm: true, minutos: true },
   });
 
-  const porMes = new Map<string, number>();
-  for (const r of registros) {
-    const k = chaveMes(r.inicioEm);
-    porMes.set(k, (porMes.get(k) ?? 0) + (r.minutos ?? 0));
-  }
-
-  const saida: MesDeHoras[] = [];
-  for (let i = meses - 1; i >= 0; i--) {
-    const k = mesAnterior(chaveMes(agora), i);
-    saida.push({
-      mes: k,
-      // Uma casa decimal: o gráfico é de acompanhamento, não de faturamento.
-      horasGastas: Math.round(((porMes.get(k) ?? 0) / 60) * 10) / 10,
-      horasContratadas: contratadas,
-    });
-  }
-  return saida;
+  return montarHorasPorMes(registros, contrato?.horasContratadas ?? 0, ciclo, agora, meses);
 }

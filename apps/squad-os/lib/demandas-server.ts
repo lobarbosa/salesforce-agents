@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { generateDemandCode } from "@/lib/slug";
+import { criarComCodigoUnico } from "@/lib/slug";
 import { canAccessClient } from "@/lib/auth";
 import type { CurrentUsuario } from "@/lib/current-user";
 
@@ -38,20 +38,20 @@ export async function criarDemanda({
 
   const autor = usuario.nome.trim() || usuario.email;
   const tipoFinal = tipo === "projeto" ? "projeto" : "sustentacao";
-  const code = await generateDemandCode(clientId, client.slug);
-
-  const demanda = await prisma.demanda.create({
-    data: {
-      clientId,
-      code,
-      titulo: tituloLimpo,
-      tipo: tipoFinal,
-      texto: (texto ?? "").trim(),
-      autor,
-      status: "backlog",
-      historico: [{ de: null, para: "backlog", autor, em: new Date().toISOString() }],
-    },
-  });
+  const demanda = await criarComCodigoUnico(clientId, client.slug, (code) =>
+    prisma.demanda.create({
+      data: {
+        clientId,
+        code,
+        titulo: tituloLimpo,
+        tipo: tipoFinal,
+        texto: (texto ?? "").trim(),
+        autor,
+        status: "backlog",
+        historico: [{ de: null, para: "backlog", autor, em: new Date().toISOString() }],
+      },
+    })
+  );
 
   return { ok: true as const, demanda };
 }

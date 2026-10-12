@@ -6,9 +6,11 @@ import { BUCKET_FINANCEIRO } from "@/lib/supabase/storage";
 import { ehTipoDoc } from "@/lib/contabilidade";
 import { chaveDia, ehChaveMes } from "@/lib/horas";
 
-// Envio de documentos do mês: vários arquivos de uma vez, cada um com o seu
-// tipo (form: competencia, arquivo[], tipo[] na mesma ordem). Ou sobe tudo ou
-// nada: se um arquivo falha, os que já subiram saem do bucket.
+// Envio de documentos do mês: aceita vários arquivos, cada um com o seu tipo
+// (form: competencia, arquivo[], tipo[] na mesma ordem), mas a tela manda um
+// por requisição — a Vercel recusa corpo acima de 4,5 MB, e vários arquivos
+// numa requisição só estouravam isso. Ou sobe tudo ou nada: se um arquivo
+// (ou a gravação no banco) falha, os que já subiram saem do bucket.
 export async function POST(request: NextRequest) {
   const acesso = await acessoDaArea("financeiro");
   if (acesso.erro) return acesso.erro;
@@ -27,24 +29,30 @@ export async function POST(request: NextRequest) {
 
   const subidos: { caminho: string; nome: string; tipo: string; mime: string; tamanho: number }[] = [];
   for (const [i, arquivo] of arquivos.entries()) {
-    const r = await subirArquivo(BUCKET_FINANCEIRO, `contabilidade/${competencia}`, arquivo);
+    const r = await subirArquivo(BUCKET_FINANCEIRO, `contabilidade/${competencia}`, arquivo, "contabilidade");
     if ("erro" in r) {
       await Promise.all(subidos.map((s) => removerArquivo(BUCKET_FINANCEIRO, s.caminho)));
       return r.erro;
     }
-    subidos.push({ ...r, tipo: tipos[i], mime: arquivo.type, tamanho: arquivo.size });
+    subidos.push({ caminho: r.caminho, nome: r.nome, tipo: tipos[i], mime: r.mime, tamanho: arquivo.size });
   }
 
-  await prisma.documentoContabil.createMany({
-    data: subidos.map((s) => ({
-      competencia,
-      tipo: s.tipo,
-      nome: s.nome,
-      caminho: s.caminho,
-      mime: s.mime,
-      tamanho: s.tamanho,
-      enviadoPorEmail: acesso.usuario.email,
-    })),
-  });
+  try {
+    await prisma.documentoContabil.createMany({
+      data: subidos.map((s) => ({
+        competencia,
+        tipo: s.tipo,
+        nome: s.nome,
+        caminho: s.caminho,
+        mime: s.mime,
+        tamanho: s.tamanho,
+        enviadoPorEmail: acesso.usuario.email,
+      })),
+    });
+  } catch (e) {
+    // Sem a linha no banco os arquivos ficariam órfãos no bucket.
+    await Promise.all(subidos.map((s) => removerArquivo(BUCKET_FINANCEIRO, s.caminho)));
+    throw e;
+  }
   return NextResponse.json({ enviados: subidos.length }, { status: 201 });
 }

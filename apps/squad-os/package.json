@@ -5,12 +5,12 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "vercel-build": "prisma migrate deploy && next build",
+    "vercel-build": "if [ \"$VERCEL_ENV\" = \"production\" ]; then prisma migrate deploy; else echo \"vercel-build: VERCEL_ENV=$VERCEL_ENV — migrate deploy só roda em production\"; fi && next build",
     "start": "next start",
     "lint": "eslint",
     "postinstall": "prisma generate",
     "migrate:from-artifact": "tsx scripts/migrate-from-artifact.ts",
-    "test": "tsx scripts/testa-contrato.ts && tsx scripts/testa-markdown.ts && tsx scripts/testa-horas.ts && tsx scripts/testa-contas.ts && tsx scripts/testa-contabilidade.ts && tsx scripts/testa-painel.ts && tsx scripts/testa-sync-auth.ts"
+    "test": "tsx scripts/testa-contrato.ts && tsx scripts/testa-markdown.ts && tsx scripts/testa-horas.ts && tsx scripts/testa-contas.ts && tsx scripts/testa-contabilidade.ts && tsx scripts/testa-painel.ts && tsx scripts/testa-sync-auth.ts && tsx scripts/testa-seguranca.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.125",

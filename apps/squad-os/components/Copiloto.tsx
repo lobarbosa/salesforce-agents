@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import type { CopilotUIMessage } from "@/lib/copilot/tipos";
+import { MAX_CHARS_MENSAGEM } from "@/lib/copilot/limites";
 import type { Role } from "@/lib/generated/prisma/client";
 
 // Ícone flutuante no canto da tela — não uma aba: fica alcançável em
@@ -188,6 +189,7 @@ export function Copiloto({
               onChange={(e) => setTexto(e.target.value)}
               onKeyDown={aoTeclarInput}
               rows={2}
+              maxLength={MAX_CHARS_MENSAGEM}
             />
             <button
               className="btn-primary"

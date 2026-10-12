@@ -25,7 +25,7 @@ export async function POST(request: NextRequest) {
   const arquivo = form.get("documento");
   let documento: { caminho: string; nome: string } | null = null;
   if (arquivo instanceof File && arquivo.size > 0) {
-    const r = await subirArquivo(BUCKET_FINANCEIRO, "contas", arquivo);
+    const r = await subirArquivo(BUCKET_FINANCEIRO, "contas", arquivo, "conta");
     if ("erro" in r) return r.erro;
     documento = r;
   }

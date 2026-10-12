@@ -3,6 +3,7 @@ import { getCurrentUsuario } from "@/lib/current-user";
 import { Sidebar } from "@/components/Sidebar";
 import { Copiloto } from "@/components/Copiloto";
 import { marcaUrl } from "@/lib/marca";
+import { clienteDaSidebar } from "@/lib/visao-cliente";
 
 // Toda página aqui lê direto do Postgres (sem fetch(), então o Next não
 // detecta dinamismo sozinho) e depende da sessão do usuário logado — nunca
@@ -33,7 +34,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="shell">
-      <Sidebar marcaSrc={marcaUrl()} clients={clients} usuario={usuario} />
+      {/* Só id/nome/saúde de cada cliente: o objeto inteiro (ambientes,
+          briefing, assessment) ia no payload RSC pra qualquer papel. */}
+      <Sidebar marcaSrc={marcaUrl()} clients={clients.map(clienteDaSidebar)} usuario={usuario} />
       <main>{children}</main>
       {/* Montada uma vez pra todo papel; em páginas de cliente ela se anula
           sozinha (ver Copiloto.tsx) porque ClientDetail.tsx já monta a

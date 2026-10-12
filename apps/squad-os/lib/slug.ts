@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { proximoSufixo } from "@/lib/codigo-demanda";
 
 const COMBINING_MARKS = /[̀-ͯ]/g;
 
@@ -32,8 +33,42 @@ export function codePrefixFor(slug: string): string {
   return code || "CLI";
 }
 
+/**
+ * Próximo código livre do cliente: maior sufixo numérico já usado + 1.
+ *
+ * Antes era `count + 1`, que colide assim que um número fica de fora (demanda
+ * apagada, ou criada pela CLI com outro número) e quando duas criações correm
+ * juntas (as duas contam N). O maior sufixo resolve o primeiro; o segundo
+ * resolve `criarComCodigoUnico`, que tenta de novo no P2002 do
+ * @@unique([clientId, code]). Demanda que só existe no git (CLI) o banco não
+ * vê — essa colisão é barrada na materialização (lib/github.ts).
+ */
 export async function generateDemandCode(clientId: string, slug: string): Promise<string> {
   const prefix = codePrefixFor(slug);
-  const count = await prisma.demanda.count({ where: { clientId } });
-  return `${prefix}-${count + 1}`;
+  const existentes = await prisma.demanda.findMany({
+    where: { clientId, code: { startsWith: `${prefix}-` } },
+    select: { code: true },
+  });
+  return `${prefix}-${proximoSufixo(prefix, existentes.map((d) => d.code))}`;
+}
+
+function ehColisaoDeCodigo(e: unknown): boolean {
+  return !!e && typeof e === "object" && (e as { code?: unknown }).code === "P2002";
+}
+
+/** Gera o código e cria; se outra criação pegou o mesmo número no meio, tenta o próximo. */
+export async function criarComCodigoUnico<T>(
+  clientId: string,
+  slug: string,
+  criar: (code: string) => Promise<T>,
+  tentativas = 5
+): Promise<T> {
+  for (let i = 1; ; i++) {
+    const code = await generateDemandCode(clientId, slug);
+    try {
+      return await criar(code);
+    } catch (e) {
+      if (!ehColisaoDeCodigo(e) || i >= tentativas) throw e;
+    }
+  }
 }

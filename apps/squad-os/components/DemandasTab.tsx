@@ -56,7 +56,13 @@ export function DemandasTab({
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     });
-    if (res.ok) router.refresh();
+    // 409 = a demanda saiu da triagem por baixo (o pipeline moveu): o
+    // refresh mostra onde ela está de verdade.
+    if (!res.ok) {
+      const corpo = await res.json().catch(() => ({}));
+      window.alert(corpo.error || "não consegui mover a demanda");
+    }
+    router.refresh();
   }
 
   // O que a esteira está esperando de gente, agora. É a única pergunta que o

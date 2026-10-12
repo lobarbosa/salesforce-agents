@@ -21,11 +21,16 @@ function rotuloMes(chave: string): string {
  *
  * Mês que passa do limite muda de cor **e** ganha a palavra "excedeu": cor de
  * status nunca carrega o significado sozinha.
+ *
+ * A barra é o acumulado do ciclo até aquele mês (`horasNoCiclo`): o teto é por
+ * ciclo, e no contrato trimestral comparar o mês sozinho com o teto do
+ * trimestre deixava cada mês gastar o trimestre inteiro sem acender nada. No
+ * ciclo mensal acumulado e mês são o mesmo número.
  */
 export function HorasChart({ dados }: { dados: MesDeHoras[] }) {
   const uid = useId();
   const contratadas = dados[0]?.horasContratadas ?? 0;
-  const maxGasto = Math.max(...dados.map((d) => d.horasGastas), 0);
+  const maxGasto = Math.max(...dados.map((d) => d.horasNoCiclo), 0);
   // O topo acomoda o maior valor E a linha de limite, senão a linha sai do
   // desenho justamente quando o mês estoura — que é quando ela importa.
   const topo = Math.max(maxGasto, contratadas) * 1.15 || 1;
@@ -50,8 +55,8 @@ export function HorasChart({ dados }: { dados: MesDeHoras[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Horas gastas por mês nos últimos {dados.length} meses, contra {contratadas} horas
-          contratadas por ciclo.
+          Horas consumidas do ciclo, mês a mês, nos últimos {dados.length} meses, contra{" "}
+          {contratadas} horas contratadas por ciclo.
         </title>
 
         {/* Grade recessiva: só o zero e o limite. Mais linhas competiriam com as barras. */}
@@ -68,9 +73,9 @@ export function HorasChart({ dados }: { dados: MesDeHoras[] }) {
 
         {dados.map((d, i) => {
           const x = L + i * passo + (passo - barraW) / 2;
-          const topoBarra = y(d.horasGastas);
+          const topoBarra = y(d.horasNoCiclo);
           const h = Math.max(0, T + plotH - topoBarra);
-          const excedeu = contratadas > 0 && d.horasGastas > contratadas;
+          const excedeu = contratadas > 0 && d.horasNoCiclo > contratadas;
           const ultimo = i === dados.length - 1;
           return (
             <g key={d.mes}>
@@ -82,13 +87,17 @@ export function HorasChart({ dados }: { dados: MesDeHoras[] }) {
                 rx="4"
                 className={excedeu ? "barra excedeu" : "barra"}
               >
-                <title>{`${rotuloMes(d.mes)}: ${d.horasGastas}h de ${contratadas}h`}</title>
+                <title>
+                  {d.horasNoCiclo === d.horasGastas
+                    ? `${rotuloMes(d.mes)}: ${d.horasGastas}h de ${contratadas}h`
+                    : `${rotuloMes(d.mes)}: ${d.horasGastas}h no mês, ${d.horasNoCiclo}h no ciclo de ${contratadas}h`}
+                </title>
               </rect>
               {/* Rótulo só onde diz algo: no mês corrente e nos que estouraram.
                   Número em toda barra vira ruído e deixa de ser lido. */}
               {(excedeu || ultimo) && h > 0 && (
                 <text x={x + barraW / 2} y={topoBarra - 5} textAnchor="middle" className="valor">
-                  {d.horasGastas}h
+                  {d.horasNoCiclo}h
                 </text>
               )}
               <text x={x + barraW / 2} y={alt - 10} textAnchor="middle" className="rot-x">
@@ -105,22 +114,23 @@ export function HorasChart({ dados }: { dados: MesDeHoras[] }) {
       <table className="sr-only">
         <caption>Horas por mês</caption>
         <thead>
-          <tr><th scope="col">Mês</th><th scope="col">Gastas</th><th scope="col">Contratadas</th></tr>
+          <tr><th scope="col">Mês</th><th scope="col">Gastas no mês</th><th scope="col">Acumuladas no ciclo</th><th scope="col">Contratadas no ciclo</th></tr>
         </thead>
         <tbody>
           {dados.map((d) => (
             <tr key={d.mes}>
               <th scope="row">{d.mes}</th>
               <td>{d.horasGastas}h</td>
+              <td>{d.horasNoCiclo}h</td>
               <td>{d.horasContratadas}h</td>
             </tr>
           ))}
         </tbody>
       </table>
 
-      {dados.some((d) => contratadas > 0 && d.horasGastas > contratadas) && (
+      {dados.some((d) => contratadas > 0 && d.horasNoCiclo > contratadas) && (
         <figcaption className="chart-nota">
-          <span className="pill-excedeu">excedeu</span> mês acima das horas contratadas.
+          <span className="pill-excedeu">excedeu</span> ciclo acima das horas contratadas.
         </figcaption>
       )}
     </figure>
