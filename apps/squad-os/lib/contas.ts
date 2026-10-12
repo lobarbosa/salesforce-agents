@@ -55,6 +55,19 @@ export function bloqueio(acao: Acao, conta: ContaParaRegra, quem: QuemAge, alcad
   return "ação desconhecida";
 }
 
+/**
+ * Documento fiscal: anexa ou troca só enquanto a conta espera aprovação. Na
+ * conta já aprovada, só o primeiro anexo (estava "sem documento") — trocar o
+ * documento depois que alguém aprovou com base nele trocaria o que foi
+ * aprovado. Paga, recusada e cancelada não mudam mais. Null = pode.
+ */
+export function bloqueioDocumento(status: StatusConta, temDocumento: boolean): string | null {
+  if (status === "aguardando_aprovacao") return null;
+  if (status === "aprovada" && !temDocumento) return null;
+  if (status === "aprovada") return "conta já aprovada: o documento que foi aprovado não pode ser trocado";
+  return "conta paga, recusada ou cancelada não recebe documento novo";
+}
+
 export const PROXIMO_STATUS: Record<Acao, StatusConta> = {
   aprovar: "aprovada",
   recusar: "recusada",

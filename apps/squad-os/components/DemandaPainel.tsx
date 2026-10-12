@@ -10,6 +10,7 @@ import type {
   Subtarefa,
 } from "@/lib/generated/prisma/client";
 import { formatarMinutos, formatarTamanho, timeAgo } from "@/lib/demandas";
+import { acceptDo, TAMANHO_MAX_ARQUIVO, TAMANHO_MAX_MB } from "@/lib/upload-regras";
 
 type Aba = "atividade" | "subtarefas" | "checklist" | "tempo" | "anexos";
 
@@ -120,8 +121,13 @@ export function DemandaPainel({
     try {
       const res = await fetch(url, init);
       if (!res.ok) {
-        const corpo = await res.json().catch(() => null);
-        setErro(corpo?.error ?? `não consegui salvar (HTTP ${res.status}) — tente de novo`);
+        // 413 vem da Vercel antes da rota, sem JSON.
+        const corpo = res.status === 413 ? null : await res.json().catch(() => null);
+        setErro(
+          res.status === 413
+            ? `arquivo grande demais — o limite é ${TAMANHO_MAX_MB} MB`
+            : corpo?.error ?? `não consegui salvar (HTTP ${res.status}) — tente de novo`
+        );
         return false;
       }
       aoSucesso(res.status === 204 ? (null as T) : ((await res.json()) as T));
@@ -245,6 +251,11 @@ export function DemandaPainel({
   }
 
   async function enviarArquivo(file: File) {
+    if (file.size > TAMANHO_MAX_ARQUIVO) {
+      setErro(`arquivo grande demais — o limite é ${TAMANHO_MAX_MB} MB`);
+      if (arquivoRef.current) arquivoRef.current.value = "";
+      return;
+    }
     const form = new FormData();
     form.append("arquivo", file);
     const ok = await chamar<Anexo>(
@@ -587,7 +598,7 @@ export function DemandaPainel({
         {aba === "anexos" && (
           <>
             {anexos.length === 0 ? (
-              <p className="painel-vazio">Nenhum anexo. Até 10 MB por arquivo.</p>
+              <p className="painel-vazio">Nenhum anexo. Até {TAMANHO_MAX_MB} MB por arquivo (PDF, imagem, planilha, documento ou texto).</p>
             ) : (
               <ul className="anexo-lista">
                 {anexos.map((a) => (
@@ -619,6 +630,7 @@ export function DemandaPainel({
                 id="novo-anexo"
                 ref={arquivoRef}
                 type="file"
+                accept={acceptDo("anexo")}
                 disabled={ocupado}
                 onChange={(e) => {
                   const file = e.target.files?.[0];

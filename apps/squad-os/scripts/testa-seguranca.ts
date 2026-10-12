@@ -2,6 +2,9 @@
 // pós-login, allowlist de upload e limites do copiloto.
 import assert from "node:assert/strict";
 import { destinoSeguro } from "@/lib/destino";
+import { conferirTipo } from "@/lib/upload-regras";
+import { conteudoBate } from "@/lib/arquivo";
+import { bloqueioDocumento } from "@/lib/contas";
 import { mesclarRespostas, montarAprovacao } from "@/lib/demandas";
 import { validarMensagens, MAX_MENSAGENS, MAX_CHARS_MENSAGEM, dentroDoLimiteDeRequisicoes, MAX_REQUISICOES_POR_MINUTO } from "@/lib/copilot/limites";
 
@@ -98,6 +101,35 @@ caso("demanda: aprovação é montada no servidor (data e e-mail da sessão)", (
   assert.equal(a?.por, "Fulano");
   assert.equal(montarAprovacao({ aprovado: false }, { nome: "N", email: "e" }), null);
   assert.equal(montarAprovacao("sim", { nome: "N", email: "e" }), null);
+});
+
+caso("upload: extensão fora do perfil é recusada (svg, html, exe)", () => {
+  for (const nome of ["x.svg", "x.html", "x.exe", "semextensao"]) assert.equal(conferirTipo("anexo", nome, "").ok, false, nome);
+  assert.equal(conferirTipo("conta", "nota.xlsx", "").ok, false);
+  assert.equal(conferirTipo("contabilidade", "balancete.xlsx", "").ok, true);
+});
+
+caso("upload: MIME declarado precisa bater com a extensão; o gravado é o canônico", () => {
+  assert.equal(conferirTipo("conta", "nota.pdf", "text/html").ok, false);
+  const r = conferirTipo("conta", "NOTA.PDF", "application/octet-stream");
+  assert.equal(r.ok && r.mime, "application/pdf");
+  const csv = conferirTipo("contabilidade", "notas.csv", "application/vnd.ms-excel");
+  assert.equal(csv.ok && csv.mime, "text/csv");
+});
+
+caso("upload: assinatura do conteúdo", () => {
+  assert.equal(conteudoBate("pdf", new TextEncoder().encode("%PDF-1.7")), true);
+  assert.equal(conteudoBate("pdf", new TextEncoder().encode("<html>")), false);
+  assert.equal(conteudoBate("xlsx", Uint8Array.from([0x50, 0x4b, 0x03, 0x04, 1])), true);
+  assert.equal(conteudoBate("csv", new TextEncoder().encode("a;b\n1;2")), true);
+  assert.equal(conteudoBate("csv", Uint8Array.from([0x41, 0x00])), false);
+});
+
+caso("conta: documento só muda antes da aprovação (ou primeiro anexo na aprovada)", () => {
+  assert.equal(bloqueioDocumento("aguardando_aprovacao", true), null);
+  assert.equal(bloqueioDocumento("aprovada", false), null);
+  assert.notEqual(bloqueioDocumento("aprovada", true), null);
+  for (const s of ["paga", "recusada", "cancelada"] as const) assert.notEqual(bloqueioDocumento(s, false), null);
 });
 
 // FIM-CASOS

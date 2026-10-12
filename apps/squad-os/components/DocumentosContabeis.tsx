@@ -3,6 +3,7 @@
 import { useRef, useState, type DragEvent } from "react";
 import { useRouter } from "next/navigation";
 import { ROTULO_TIPO, TIPOS_DOC, tipoPeloNome, type TipoDoc } from "@/lib/contabilidade";
+import { acceptDo, erroDeUpload, TAMANHO_MAX_ARQUIVO, TAMANHO_MAX_MB } from "@/lib/upload-regras";
 
 // Envio e lista dos documentos do mês (substitui os anexos da task
 // "Contabilidade MM/AAAA" no ClickUp). O tipo vem sugerido pelo nome do
@@ -19,7 +20,7 @@ export interface DocVista {
   removidoPorEmail: string | null;
 }
 
-const MAX_MB = 10;
+const MAX_MB = TAMANHO_MAX_MB;
 
 function quando(iso: string) {
   return new Date(iso).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" });
@@ -47,11 +48,11 @@ export function DocumentosContabeis({ competencia, documentos }: { competencia: 
   function adicionar(lista: FileList | null) {
     if (!lista) return;
     const novos = Array.from(lista);
-    const grandes = novos.filter((f) => f.size > MAX_MB * 1024 * 1024);
+    const grandes = novos.filter((f) => f.size > TAMANHO_MAX_ARQUIVO);
     setErro(grandes.length ? `Passa de ${MAX_MB} MB: ${grandes.map((f) => f.name).join(", ")}` : "");
     setFila((f) => [
       ...f,
-      ...novos.filter((a) => a.size <= MAX_MB * 1024 * 1024).map((arquivo) => ({ arquivo, tipo: tipoPeloNome(arquivo.name) })),
+      ...novos.filter((a) => a.size <= TAMANHO_MAX_ARQUIVO).map((arquivo) => ({ arquivo, tipo: tipoPeloNome(arquivo.name) })),
     ]);
     if (input.current) input.current.value = "";
   }
@@ -62,31 +63,50 @@ export function DocumentosContabeis({ competencia, documentos }: { competencia: 
     adicionar(e.dataTransfer.files);
   }
 
+  // Um arquivo por requisição: a Vercel recusa corpo acima de 4,5 MB, e o
+  // lote inteiro numa requisição só estourava isso com dois PDFs médios. Os
+  // que sobem saem da fila; o que falha fica nela, com o motivo, pra tentar de
+  // novo sem reenviar o que já foi.
   async function enviar() {
     setEnviando(true);
     setErro("");
-    const form = new FormData();
-    form.set("competencia", competencia);
-    for (const { arquivo, tipo } of fila) {
-      form.append("arquivo", arquivo);
-      form.append("tipo", tipo);
+    const falhas: { item: (typeof fila)[number]; motivo: string }[] = [];
+    let enviados = 0;
+    for (const item of fila) {
+      const form = new FormData();
+      form.set("competencia", competencia);
+      form.append("arquivo", item.arquivo);
+      form.append("tipo", item.tipo);
+      try {
+        const r = await fetch("/api/financeiro/contabilidade", { method: "POST", body: form });
+        if (r.ok) {
+          enviados++;
+        } else {
+          falhas.push({ item, motivo: await erroDeUpload(r, "erro ao enviar") });
+        }
+      } catch {
+        falhas.push({ item, motivo: "sem conexão com o servidor" });
+      }
     }
-    const r = await fetch("/api/financeiro/contabilidade", { method: "POST", body: form });
     setEnviando(false);
-    if (!r.ok) {
-      const j = await r.json().catch(() => ({}));
-      setErro(`Nada foi enviado: ${j.error ?? "erro ao enviar"}. Tente de novo.`);
-      return;
+    setFila(falhas.map((f) => f.item));
+    if (falhas.length) {
+      setErro(
+        `${falhas.length} arquivo${falhas.length > 1 ? "s não foram enviados" : " não foi enviado"}: ` +
+          falhas.map((f) => `${f.item.arquivo.name} (${f.motivo})`).join("; ") +
+          ". Eles continuam na lista pra tentar de novo."
+      );
     }
-    setAviso(`${fila.length} documento${fila.length > 1 ? "s enviados" : " enviado"}.`);
-    setFila([]);
-    router.refresh();
+    if (enviados) {
+      setAviso(`${enviados} documento${enviados > 1 ? "s enviados" : " enviado"}.`);
+      router.refresh();
+    }
   }
 
   async function remover(id: string) {
-    const r = await fetch(`/api/financeiro/contabilidade/${id}`, { method: "DELETE" });
+    const r = await fetch(`/api/financeiro/contabilidade/${id}`, { method: "DELETE" }).catch(() => null);
     setRemovendo(null);
-    if (!r.ok) {
+    if (!r || !r.ok) {
       setErro("Não foi possível remover o documento. Recarregue a página.");
       return;
     }
@@ -118,7 +138,7 @@ export function DocumentosContabeis({ competencia, documentos }: { competencia: 
                 type="file"
                 multiple
                 className="sr-only"
-                accept=".pdf,.xlsx,.xls,.csv,image/*"
+                accept={acceptDo("contabilidade")}
                 onChange={(e) => adicionar(e.target.files)}
               />
             </label>

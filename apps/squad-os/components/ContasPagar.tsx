@@ -5,7 +5,8 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Modal } from "@/components/Modal";
 import type { ContaVista, EventoVisto } from "@/lib/contas-data";
-import { formatarReais, lerReais, prazo, ROTULO_STATUS, type Acao } from "@/lib/contas";
+import { bloqueioDocumento, formatarReais, lerReais, prazo, ROTULO_STATUS, type Acao } from "@/lib/contas";
+import { acceptDo, erroDeUpload, TAMANHO_MAX_ARQUIVO, TAMANHO_MAX_MB } from "@/lib/upload-regras";
 
 // Contas a pagar e fila de aprovações (mesmo componente, dois modos).
 // Padrões: lista do ClickUp + fila de aprovação do Jira Service Management.
@@ -194,13 +195,21 @@ function NovaConta({
       return;
     }
     setErroValor("");
+    const doc = form.get("documento");
+    if (doc instanceof File && doc.size > TAMANHO_MAX_ARQUIVO) {
+      setErro(`O documento passa de ${TAMANHO_MAX_MB} MB.`);
+      return;
+    }
     setEnviando(true);
     setErro("");
     const res = await fetch("/api/financeiro/contas", { method: "POST", body: form }).catch(() => null);
     setEnviando(false);
     if (!res || !res.ok) {
-      const corpo = res ? await res.json().catch(() => ({})) : {};
-      setErro(corpo.error ?? "Não foi possível lançar — verifique a conexão e tente de novo.");
+      setErro(
+        res
+          ? await erroDeUpload(res, "Não foi possível lançar — tente de novo.")
+          : "Não foi possível lançar — verifique a conexão e tente de novo."
+      );
       return;
     }
     onCriada((await res.json()).id);
@@ -255,7 +264,7 @@ function NovaConta({
         </label>
         <label>
           Documento fiscal (NF, boleto)
-          <input name="documento" type="file" accept=".pdf,.xml,image/*" />
+          <input name="documento" type="file" accept={acceptDo("conta")} />
           <span className="sub">Pode anexar depois, mas a conta aparece como “sem documento”.</span>
         </label>
         <div className="form-acoes">
@@ -323,14 +332,17 @@ function DetalheConta({ id, onClose, onMudou }: { id: string; onClose: () => voi
   }
 
   async function anexar(arquivo: File) {
+    if (arquivo.size > TAMANHO_MAX_ARQUIVO) {
+      setErro(`O documento passa de ${TAMANHO_MAX_MB} MB.`);
+      return;
+    }
     const form = new FormData();
     form.set("documento", arquivo);
     setAgindo(true);
     const res = await fetch(`/api/financeiro/contas/${id}/documento`, { method: "POST", body: form }).catch(() => null);
     setAgindo(false);
     if (!res || !res.ok) {
-      const corpo = res ? await res.json().catch(() => ({})) : {};
-      setErro(corpo.error ?? "Não foi possível anexar o documento.");
+      setErro(res ? await erroDeUpload(res, "Não foi possível anexar o documento.") : "Não foi possível anexar o documento — verifique a conexão.");
       return;
     }
     setAviso("Documento anexado.");
@@ -378,12 +390,12 @@ function DetalheConta({ id, onClose, onMudou }: { id: string; onClose: () => voi
                 ) : (
                   <span className="aviso-texto">sem documento</span>
                 )}
-                {c.status !== "paga" && c.status !== "cancelada" && (
+                {bloqueioDocumento(c.status, c.temDocumento) === null && (
                   <label className="anexar">
                     {c.temDocumento ? "Trocar documento" : "Anexar documento"}
                     <input
                       type="file"
-                      accept=".pdf,.xml,image/*"
+                      accept={acceptDo("conta")}
                       disabled={agindo}
                       onChange={(e) => e.target.files?.[0] && anexar(e.target.files[0])}
                     />
