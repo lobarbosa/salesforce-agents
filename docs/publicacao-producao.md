@@ -63,8 +63,10 @@ superfície aberta não precisava existir.
 ### 2.1 Banco próprio pro Preview  ⛔ bloqueante — o único que falta
 
 Hoje Preview e Production apontam pro mesmo `DATABASE_URL`. Consequência: o
-build de preview de um PR roda `prisma migrate deploy` **na produção**, antes do
-merge. Já derrubou a produção uma vez (2026-09-09).
+build de preview de um PR rodava `prisma migrate deploy` **na produção**, antes do
+merge. Já derrubou a produção uma vez (2026-09-09). Mitigado em 2026-10-12: o
+`vercel-build` só roda `migrate deploy` com `VERCEL_ENV=production` — o preview
+não toca mais no schema, mas continua lendo e escrevendo os dados de produção.
 
 Enquanto for um banco só, toda mudança destrutiva de schema tem que ir em dois
 merges (ver `apps/squad-os/README.md`, "Preview e Production compartilham o
