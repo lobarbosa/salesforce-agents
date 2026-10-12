@@ -19,6 +19,7 @@ import { mensagemDeConfiguracao, variaveisFaltando } from "@/lib/env";
 // passar aqui não a torna aberta, só troca o mecanismo de autenticação. Ver
 // app/api/sync/demanda/route.ts.
 const PUBLIC_PATHS = ["/login", "/auth/callback", "/api/sync"];
+const ARQUIVO_PUBLICO = /^\/[^/]+\.(?:svg|png|jpg|jpeg|gif|webp|ico|txt)$/;
 
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -28,6 +29,16 @@ export async function proxy(request: NextRequest) {
     if (nome.toLowerCase().startsWith("x-squad-os-")) request.headers.delete(nome);
   }
   const isPublic = PUBLIC_PATHS.some((p) => pathname === p || pathname.startsWith(p + "/"));
+
+  // Arquivo estático de `public/` (só na raiz, nunca sob /api): segue sem
+  // sessão e sem identidade. Antes isso era feito excluindo `*.png|svg|...`
+  // do matcher — e aí o proxy nem rodava nesses caminhos, então o header
+  // x-squad-os-* forjado pelo browser chegava intacto a qualquer rota futura
+  // com nome de imagem. Agora o proxy roda em tudo, a limpeza acima sempre
+  // acontece, e quem cai aqui sai sem identidade (getCurrentUsuario → null).
+  if (ARQUIVO_PUBLICO.test(pathname)) {
+    return NextResponse.next({ request });
+  }
 
   // Antes de qualquer outra coisa: um proxy que lança derruba **toda** rota,
   // `/login` inclusive, e o Next devolve "Internal Server Error" em texto puro
@@ -163,6 +174,9 @@ export async function proxy(request: NextRequest) {
   return withRefreshedCookies(NextResponse.next({ request }));
 }
 
+// Só o que o próprio Next serve fica de fora. Excluir por extensão (como era)
+// deixava qualquer rota com nome terminado em .png/.svg sem proxy — e sem a
+// limpeza dos headers de identidade. Ver ARQUIVO_PUBLICO acima.
 export const config = {
-  matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"],
+  matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 };
