@@ -274,6 +274,29 @@ jobs:
             sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" --github-output
           fi
 
+      # Guardrail #2 antes do push, não depois. `ci-pii-scan.yml` roda no PR,
+      # mas PR aberto pelo bot da esteira fica em `action_required` (o GitHub
+      # pede aprovação manual pra rodar workflow nele) ou falha sem rodar job
+      # nenhum — achado real (2026-10-16): o scan nunca rodou de verdade nos PRs
+      # de SOMOSAGILITY-2/3/4/7/11/12/14, e #44/#61 foram mesclados assim. E
+      # mesmo quando roda, o dado já está no remoto: o scan do PR só impede o
+      # merge, não o push. Aqui ele roda no runner, sobre os .md que a sessão
+      # escreveu ou alterou, e falha o job antes do commit — o passo de falha
+      # abaixo descarta o não commitado, então nada com PII chega ao GitHub.
+      # Anexos (gitignored) ficam fora: `ls-files --exclude-standard` respeita
+      # o .gitignore.
+      - name: Verificar PII nos artefatos antes do push
+        run: |
+          ARQUIVOS=$(git ls-files -m -o --exclude-standard -- "clients/$CLIENT/demandas/$DEMAND_ID" | grep '\.md$' || true)
+          if [ -z "$ARQUIVOS" ]; then
+            echo "nenhum .md novo ou alterado nesta etapa."
+            exit 0
+          fi
+          if ! python3 scripts/verificar_pii.py $ARQUIVOS; then
+            echo "::error::Possível dado pessoal nos artefatos desta etapa (guardrail #2). Nada foi commitado nem enviado ao GitHub. Ajuste a demanda/anexo e rode a etapa de novo."
+            exit 1
+          fi
+
       - name: Commit e push dos artefatos gerados
         run: |
           git add "clients/$CLIENT"
