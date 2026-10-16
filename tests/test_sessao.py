@@ -253,3 +253,42 @@ def test_faltantes_lista_so_o_que_nao_existe(tmp_path):
     sumido = tmp_path / "nao-tem.json"
 
     assert sessao.faltantes([existe, sumido]) == [str(sumido)]
+
+
+def test_recusa_da_api_falha_na_hora_sem_cobrar_o_agente(sdk_dublado, tmp_path):
+    """Crédito acabou: cobrar o agente é cobrar quem nem chegou a rodar.
+
+    Achado real (SOMOSAGILITY-2, 2026-10-16): três turnos de "Credit balance
+    is too low" terminavam em "o agente não gravou" — e mandavam procurar
+    defeito no prompt.
+    """
+    alvo = tmp_path / "03-design.md"
+    sdk_dublado.roteiro = [lambda _t: "Credit balance is too low"]
+
+    with pytest.raises(sessao.ApiIndisponivelError) as exc:
+        _rodar(alvo)
+
+    assert sdk_dublado.turnos == 1
+    assert "Credit balance is too low" in str(exc.value)
+    assert str(alvo) in str(exc.value)
+    # Quem já trata a falha de artefato continua pegando esta.
+    assert isinstance(exc.value, sessao.ArtefatoNaoProduzidoError)
+
+
+def test_texto_parecido_com_erro_nao_derruba_quem_entregou(sdk_dublado, tmp_path):
+    """Só é recusa se o artefato faltar: o agente pode citar o erro e entregar."""
+    alvo = tmp_path / "01-analise.md"
+
+    def entrega(_t):
+        alvo.write_text("ok")
+        return "nota: em out/2026 vimos 'Credit balance is too low' na esteira"
+
+    sdk_dublado.roteiro = [entrega]
+    _rodar(alvo)
+    assert sdk_dublado.turnos == 1
+
+
+def test_erro_de_api_reconhece_so_recusas_conhecidas():
+    assert sessao.erro_de_api(["Invalid API key · Fix external API key"])
+    assert sessao.erro_de_api(["billing_error"])
+    assert sessao.erro_de_api(["vou criar o Flow agora", ""]) is None
