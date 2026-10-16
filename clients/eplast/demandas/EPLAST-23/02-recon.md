@@ -5,7 +5,7 @@
 **Confirmação de sandbox:** `SELECT IsSandbox, OrganizationType FROM Organization` retornou `true | Enterprise Edition` (instância BRA8S)
 **Natureza:** somente leitura. Nenhum deploy, nenhuma DML. Só metadata e contagens (`COUNT()`), sem nenhum dado de registro de cliente lido.
 
-> Atenção (herdada do assessment, achado 6): o alias `sbx-eplast-dev` aponta para uma sandbox cujo usuário e URL se identificam como **qa** (`projetos@konectabr.com.eplast2.qa`). Este recon vale para essa sandbox, seja ela qual for.
+> Atenção (herdada do assessment, achado 6): o alias `sbx-eplast-dev` aponta para uma sandbox cujo usuário e URL se identificam como **qa** (`<username de integração da sandbox QA — omitido>`). Este recon vale para essa sandbox, seja ela qual for.
 
 ---
 

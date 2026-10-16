@@ -13,7 +13,7 @@ qualquer dado — não a feature. Os casos abaixo derivam dos 5 cenários Gherki
 ## Org usada nesta sessão
 
 `sf org list` nesta sessão mostra **apenas uma org conectada**: `sbx-eplast-dev`
-(`projetos@konectabr.com.eplast2.qa`, Org Id `00DHa000006vfMLMAY`, status `Connected`).
+(`<username de integração da sandbox QA — omitido>`, Org Id `00DHa000006vfMLMAY`, status `Connected`).
 **`sbx-eplast-qa` não está disponível/conectada nesta sessão.** Pela doutrina, o estágio
 `qa` deveria rodar contra `sbx-eplast-qa` — não foi possível aqui, e registro isso em vez
 de presumir. Todos os testes executados abaixo (automatizáveis, Apex) rodaram em
@@ -119,7 +119,7 @@ Fail Rate            0%
 Skip Rate            0%
 Test Execution Time  1270 ms
 Org Id               00DHa000006vfMLMAY
-Username             projetos@konectabr.com.eplast2.qa
+Username             <username de integração da sandbox QA — omitido>
 Org Wide Coverage    11%
 ```
 
