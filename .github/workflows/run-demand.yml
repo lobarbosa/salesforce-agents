@@ -196,6 +196,45 @@ jobs:
             git checkout -b "$DEMAND_BRANCH"
           fi
 
+      # Anexos do card que alguém de delivery liberou pro agente (declarando que
+      # não têm dado pessoal — guardrail #2). Vão pra demandas/<ID>/anexos/ só
+      # no runner: a pasta está no .gitignore, então nunca viram commit, PR ou
+      # RAG. Anexo não liberado nem vem na resposta da rota. Não fatal: sem
+      # anexo a sessão roda só com o texto do card, como sempre rodou.
+      # A URL deriva de SQUAD_OS_SYNC_URL (…/api/sync/demanda → …/anexos)
+      # pra não exigir secret novo; SQUAD_OS_SYNC_ANEXOS_URL sobrepõe.
+      - name: Baixar anexos liberados para o agente
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          ANEXOS_URL: ${{ secrets.SQUAD_OS_SYNC_ANEXOS_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          URL="${ANEXOS_URL:-${SYNC_URL%/demanda}/anexos}"
+          if [ -z "$SYNC_URL$ANEXOS_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::Sync não configurado — a sessão roda sem os anexos do card."
+            exit 0
+          fi
+          DESTINO="clients/$CLIENT/demandas/$DEMAND_ID/anexos"
+          RESPOSTA=$(jq -nc --arg c "$CLIENT" --arg d "$DEMAND_ID" '{clientSlug: $c, demandaId: $d}' \
+            | curl -fsS -X POST "$URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @-) \
+            || { echo "::warning::Não consegui listar os anexos liberados — a sessão roda sem eles."; exit 0; }
+          N=$(echo "$RESPOSTA" | jq '.anexos | length')
+          if [ "$N" = "0" ]; then
+            echo "Nenhum anexo liberado para o agente nesta demanda."
+            exit 0
+          fi
+          mkdir -p "$DESTINO"
+          echo "$RESPOSTA" | jq -r '.anexos[] | [.arquivo, .url] | @tsv' \
+            | while IFS=$'\t' read -r ARQ LINK; do
+                case "$ARQ" in */*|.*) echo "::warning::nome de anexo recusado: $ARQ"; continue;; esac
+                curl -fsS -o "$DESTINO/$ARQ" "$LINK" \
+                  && echo "anexo baixado: $ARQ" \
+                  || echo "::warning::falha ao baixar o anexo $ARQ"
+              done
+
       # Aqui mora o auto-avanço: o comando lê status.yaml, roda a etapa atual,
       # avança até o próximo gate humano e escreve o motivo da parada no
       # $GITHUB_OUTPUT. Se o agente não produzir o artefato da etapa,

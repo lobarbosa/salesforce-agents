@@ -25,3 +25,7 @@ clients/*/.credenciais-local/
 
 # Local-machine permission overrides (not shared doctrine, that's .claude/settings.json)
 .claude/settings.local.json
+
+# Anexos de card liberados pro agente — baixados pelo run-demand.yml só durante o
+# job, nunca versionados (guardrail #2; ver src/salesforce_agents/anexos.py).
+clients/*/demandas/*/anexos/
