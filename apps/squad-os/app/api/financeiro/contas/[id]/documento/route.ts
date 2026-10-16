@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { acessoDaArea } from "@/lib/area";
-import { paraVista } from "@/lib/contas-data";
+import { INCLUDE_VISTA, paraVista } from "@/lib/contas-data";
 import { bloqueioDocumento } from "@/lib/contas";
 import { redirecionarDownload, removerArquivo, subirArquivo } from "@/lib/arquivo";
 import { BUCKET_FINANCEIRO } from "@/lib/supabase/storage";
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       await tx.eventoConta.create({
         data: { contaId: id, acao: "documento", porEmail: acesso.usuario.email, comentario },
       });
-      return tx.contaPagar.findUniqueOrThrow({ where: { id } });
+      return tx.contaPagar.findUniqueOrThrow({ where: { id }, include: INCLUDE_VISTA });
     });
   } catch (e) {
     await removerArquivo(BUCKET_FINANCEIRO, r.caminho);

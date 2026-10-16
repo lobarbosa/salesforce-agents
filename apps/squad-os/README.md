@@ -203,6 +203,17 @@ toda migration destrutiva precisa deste par de passos. A alternativa é dar ao
 Preview um banco próprio — segundo projeto Supabase no free, $0 — e aí a regra
 deixa de ser necessária.
 
+### Cron (Vercel)
+
+`vercel.json` declara um cron diário (`/api/cron/recorrencias`, 09:07 UTC =
+06:07 em São Paulo) que gera as contas a pagar das despesas recorrentes
+(`/financeiro/recorrentes`) com vencimento nos próximos 30 dias. A rota passa
+pelo `proxy.ts` sem sessão, mas exige `Authorization: Bearer $CRON_SECRET` —
+cabeçalho que a Vercel manda sozinha quando `CRON_SECRET` existe no projeto
+(`lib/cron-auth.ts`; sem a variável a rota responde 503). A geração é
+idempotente (unique `recorrencia_id + competencia` em `contas_pagar`) e também
+roda, com freio de 5 min, quando alguém abre as telas de contas e recorrentes.
+
 ### Migrando os dados do Artifact antigo
 
 ```bash

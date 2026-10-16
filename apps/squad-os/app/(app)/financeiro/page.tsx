@@ -14,6 +14,8 @@ import { SAUDE } from "@/lib/saude";
 import { dataBr as dataRel } from "@/lib/relatorio-financeiro";
 import { ResultadoChart } from "@/components/ResultadoChart";
 import { CaixaChart } from "@/components/CaixaChart";
+import { compromissoMensal } from "@/lib/recorrencias";
+import { listarModelos } from "@/lib/recorrencias-data";
 
 // Painel financeiro: a porta de entrada do papel financeiro. Primeiro o que
 // precisa de alguém (cada linha leva à tela onde se resolve); depois os números
@@ -35,7 +37,7 @@ export default async function PainelFinanceiroPage() {
   const mesAtual = hoje.slice(0, 7);
   const compContabil = competenciaPadrao(mesAtual);
 
-  const [contas, divergencias, kpis, docsContabeis, horas, resultadoMensal, relatorio] = await Promise.all([
+  const [contas, divergencias, kpis, docsContabeis, horas, resultadoMensal, relatorio, modelos] = await Promise.all([
     listarContas(),
     contarDivergenciasAbertas(),
     kpisAtuais(),
@@ -43,7 +45,9 @@ export default async function PainelFinanceiroPage() {
     horasPorCliente(mesAtual),
     resultadoPorMes(6),
     ultimoRelatorioFinanceiro(),
+    listarModelos(hoje),
   ]);
+  const compromisso = compromissoMensal(modelos, hoje);
   const saudeRel = relatorio ? (relatorio.saude ? SAUDE[relatorio.saude] : null) : null;
 
   const quem = { role: usuario.role, email: usuario.email };
@@ -141,6 +145,40 @@ export default async function PainelFinanceiroPage() {
                 <span aria-hidden="true">→</span>
               </Link>
             ))}
+          </div>
+        )}
+      </div>
+
+      <div className="overview-section">
+        <h2>Compromisso mensal recorrente</h2>
+        {compromisso.quantidade === 0 ? (
+          <Link className="overview-row" href="/financeiro/recorrentes">
+            <span className="oc-title">
+              Nenhuma despesa recorrente cadastrada
+              <span className="sub">cadastre assinaturas, salários e aluguel para ver o compromisso fixo do mês</span>
+            </span>
+            <span aria-hidden="true">→</span>
+          </Link>
+        ) : (
+          <div className="kpis">
+            <Link href="/financeiro/recorrentes" className="kpi kpi-link">
+              <span className="kpi-rotulo">Total por mês</span>
+              <span className="kpi-valor num">{formatarReais(compromisso.total)}</span>
+              <span className="kpi-nota">
+                {compromisso.quantidade} despesa{compromisso.quantidade === 1 ? "" : "s"} recorrente
+                {compromisso.quantidade === 1 ? "" : "s"} ativa{compromisso.quantidade === 1 ? "" : "s"}
+              </span>
+            </Link>
+            <Link href="/financeiro/contas?ver=todas&natureza=fixo" className="kpi kpi-link">
+              <span className="kpi-rotulo">Despesa fixa por mês</span>
+              <span className="kpi-valor num">{formatarReais(compromisso.fixo)}</span>
+              <span className="kpi-nota">operação</span>
+            </Link>
+            <Link href="/financeiro/contas?ver=todas&natureza=direto" className="kpi kpi-link">
+              <span className="kpi-rotulo">Custo direto por mês</span>
+              <span className="kpi-valor num">{formatarReais(compromisso.direto)}</span>
+              <span className="kpi-nota">serviço prestado a cliente</span>
+            </Link>
           </div>
         )}
       </div>

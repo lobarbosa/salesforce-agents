@@ -40,6 +40,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.next({ request });
   }
 
+  // `/api/cron/*` é chamado pelo Vercel Cron, sem cookie: segue sem sessão e
+  // sem identidade (os headers x-squad-os-* já foram limpos acima). Não fica
+  // aberta — a rota exige `Authorization: Bearer ${CRON_SECRET}`
+  // (lib/cron-auth.ts) e recusa tudo sem ele. Fica fora de PUBLIC_PATHS de
+  // propósito: lá, quem tem sessão é redirecionado para o início.
+  if (pathname === "/api/cron" || pathname.startsWith("/api/cron/")) {
+    return NextResponse.next({ request });
+  }
+
   // Antes de qualquer outra coisa: um proxy que lança derruba **toda** rota,
   // `/login` inclusive, e o Next devolve "Internal Server Error" em texto puro
   // sem dizer o motivo. Conferir aqui troca isso por uma resposta que nomeia a
