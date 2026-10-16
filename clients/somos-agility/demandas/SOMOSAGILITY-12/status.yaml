@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-12
+client: somos-agility
+titulo: JST - Preenchimento obrigatório Classificação gerencial e Denominação
+tipo: sustentacao
+status: backlog
+criado_em: '2026-10-14T22:49:19.298Z'
+historico:
+  - de: null
+    em: '2026-10-14T22:49:19.297Z'
+    para: backlog
+    autor: Juliana Mendes
