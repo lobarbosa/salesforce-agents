@@ -266,6 +266,32 @@ export function DemandaPainel({
     if (ok && arquivoRef.current) arquivoRef.current.value = "";
   }
 
+  // Liberar é declarar que o arquivo não tem dado pessoal de cliente — é o
+  // que permite ele entrar na sessão do agente (guardrail #2). O confirm é a
+  // declaração; a rota recusa liberar sem ela.
+  function alternarLiberacao(a: Anexo) {
+    const liberar = !a.liberadoEm;
+    if (
+      liberar &&
+      !window.confirm(
+        `Liberar "${a.nome}" para o agente?\n\n` +
+          "Confirmo que este arquivo não mostra nome, e-mail, CPF, telefone ou valores de cliente. " +
+          "Print de tela do Salesforce costuma mostrar — confira antes."
+      )
+    ) {
+      return;
+    }
+    chamar<Anexo>(
+      `/api/demandas/${demandaId}/anexos/${a.id}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ liberado: liberar, semDadoPessoal: liberar }),
+      },
+      (atualizado) => setAnexos((atuais) => atuais.map((x) => (x.id === a.id ? atualizado : x)))
+    );
+  }
+
   function removerAnexo(id: string) {
     chamar<null>(`/api/demandas/${demandaId}/anexos/${id}`, { method: "DELETE" }, () =>
       setAnexos((atuais) => atuais.filter((x) => x.id !== id))
@@ -608,7 +634,24 @@ export function DemandaPainel({
                     <a href={`/api/demandas/${demandaId}/anexos/${a.id}`}>{a.nome}</a>
                     <span className="anexo-meta mono">
                       {formatarTamanho(a.tamanho)} · {a.autor} · {timeAgo(a.criadoEm)}
+                      {a.liberadoEm && !visaoCliente && <> · visível ao agente</>}
                     </span>
+                    {!visaoCliente && (
+                      <button
+                        type="button"
+                        className="btn-remover"
+                        onClick={() => alternarLiberacao(a)}
+                        disabled={ocupado}
+                        aria-pressed={Boolean(a.liberadoEm)}
+                        title={
+                          a.liberadoEm
+                            ? `Liberado por ${a.liberadoPorEmail ?? "—"}. O agente lê este arquivo na próxima etapa.`
+                            : "Só gente vê este anexo. Libere para o agente ler na próxima etapa."
+                        }
+                      >
+                        {a.liberadoEm ? "revogar do agente" : "liberar p/ agente"}
+                      </button>
+                    )}
                     {(a.autorEmail === usuarioEmail || isAdmin) && (
                       <button
                         type="button"

@@ -164,6 +164,17 @@ Vale para o assessment e para as 7 etapas de demanda.
    deste banco (achado de 2026-09-09: sem isso o Supabase publica a linha inteira —
    `conteudo` incluído — via PostgREST pra qualquer um com a anon key).
 
+   Anexos de card (print, PDF, planilha) **não** entram na sessão por padrão — só os que
+   alguém de delivery **libera** no card, declarando que o arquivo não tem dado pessoal
+   (rota `PATCH /api/demandas/<id>/anexos/<anexoId>`, recusa sem a declaração; o papel
+   cliente anexa mas não libera). `run-demand.yml` baixa os liberados via
+   `/api/sync/anexos` para `demandas/<ID>/anexos/` só no runner: a pasta está no
+   `.gitignore`, então anexo nunca vira commit, PR ou RAG. `anexos.py` lista os arquivos no
+   prompt (imagem com Read, documento com `spec_read`) e manda descrever sem transcrever
+   dado pessoal se ainda assim aparecer. Achado que motivou (SOMOSAGILITY-14, 2026-10-16):
+   "segue anexo o print do erro" e o agente só via o texto. A liberação humana é a única
+   camada para imagem — `ci-pii-scan` lê texto, não pixel.
+
    Curadoria desse corpus por Obsidian (local, opcional, pra gente — nunca pro pipeline
    de agentes) é `.mcp.json` + `docs/obsidian.md`.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,

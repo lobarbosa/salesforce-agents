@@ -431,6 +431,13 @@ model Anexo {
   autor      String
   autorEmail String @map("autor_email")
 
+  // Liberação pro agente (2026-10-16): só anexo com isto preenchido é
+  // baixado pelo run-demand.yml pra sessão. Quem libera é delivery
+  // (consultor/admin), declarando que o arquivo não tem dado pessoal de
+  // cliente — guardrail #2. Nulo = só gente vê.
+  liberadoPorEmail String?   @map("liberado_por_email")
+  liberadoEm       DateTime? @map("liberado_em")
+
   criadoEm DateTime @default(now()) @map("criado_em")
 
   @@index([demandaId])
