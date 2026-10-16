@@ -2,7 +2,7 @@ id: SOMOSAGILITY-2
 client: somos-agility
 titulo: Solicitacao de User de Integracao
 tipo: sustentacao
-status: aguardando_gate_analise
+status: entregue
 criado_em: '2026-09-29T12:48:59.614Z'
 historico:
 - de: null
@@ -21,3 +21,8 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-09-30T21:01:46.453887+00:00'
+- de: aguardando_gate_analise
+  para: entregue
+  autor: 'Leonardo (via Claude) - correcao manual: demanda ja entregue manualmente
+    fora da esteira'
+  em: '2026-10-16T13:27:35.834633+00:00'
