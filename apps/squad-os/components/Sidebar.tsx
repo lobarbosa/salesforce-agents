@@ -15,6 +15,7 @@ const ROLE_LABEL = ROTULO_PAPEL;
 // o servidor recusa o resto mesmo que alguém digite a URL.
 const ITENS_FINANCEIRO = [
   { href: "/financeiro", rotulo: "Painel financeiro", exato: true },
+  { href: "/financeiro/saude", rotulo: "Saúde financeira" },
   { href: "/financeiro/contas", rotulo: "Contas a pagar" },
   { href: "/financeiro/aprovacoes", rotulo: "Aprovações" },
   { href: "/financeiro/contabilidade", rotulo: "Contabilidade" },

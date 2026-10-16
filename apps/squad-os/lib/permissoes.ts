@@ -6,7 +6,7 @@ import type { Role } from "@/lib/generated/prisma/client";
 //
 // - delivery:   clientes, demandas, Visão Geral, "Minhas horas" e "Falhas" (o time que entrega)
 // - financeiro: contas a pagar, aprovações, documentos da contabilidade,
-//               painel financeiro, divergências e horas por cliente
+//               painel financeiro, saúde financeira, divergências e horas por cliente
 // - operacao:   saúde dos agentes (quem responde pela plataforma)
 // - admin:      gestão de usuários
 export type Area = "delivery" | "financeiro" | "operacao" | "admin";
