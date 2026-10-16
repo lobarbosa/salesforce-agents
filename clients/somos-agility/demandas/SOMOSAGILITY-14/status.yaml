@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-14
+client: somos-agility
+titulo: Erro fluxo de reembolso - Usuario Simone
+tipo: sustentacao
+status: backlog
+criado_em: '2026-10-15T19:58:57.878Z'
+historico:
+  - de: null
+    em: '2026-10-15T19:58:57.865Z'
+    para: backlog
+    autor: Juliana Mendes
