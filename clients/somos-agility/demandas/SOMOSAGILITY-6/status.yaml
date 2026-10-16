@@ -2,10 +2,18 @@ id: SOMOSAGILITY-6
 client: somos-agility
 titulo: Alteração do aprovador FVP - Kelly para Sales Op.
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-14T19:52:35.822Z'
 historico:
-  - de: null
-    em: '2026-10-14T19:52:35.782Z'
-    para: backlog
-    autor: Juliana Mendes
+- de: null
+  em: '2026-10-14T19:52:35.782Z'
+  para: backlog
+  autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-16T20:09:35.982196+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-16T20:11:25.620284+00:00'
