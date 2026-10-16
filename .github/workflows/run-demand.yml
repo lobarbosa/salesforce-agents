@@ -247,6 +247,24 @@ jobs:
           git commit -m "$DEMAND_ID: ${{ steps.fluxo.outputs.etapas_rodadas || 'sessão' }} via CI ($AMBIENTE)" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
 
+      # Se o job falhou antes do commit acima, o disco do runner tem um estado
+      # que nunca foi pro git — tipicamente o gate aprovado em memória e a
+      # etapa seguinte que morreu no meio. Os passos `if: always()` abaixo
+      # (RAG, sync) leriam esse estado e o publicariam como verdade. Achado
+      # real (SOMOSAGILITY-2, 2026-10-16): crédito da API acabou logo depois
+      # da aprovação do gate de análise; o git ficou em
+      # `aguardando_gate_analise`, sem o registro em gates.md, e o quadro
+      # passou a mostrar `design` — uma etapa que não aconteceu, aprovada por
+      # um gate que não existe em lugar nenhum. O git é a fonte de verdade
+      # (guardrail #5): na falha, a pasta da demanda volta pro último commit.
+      - name: Descartar estado não commitado (falha)
+        if: failure()
+        run: |
+          git checkout HEAD -- "clients/$CLIENT/demandas/$DEMAND_ID" 2>/dev/null || true
+          git clean -fdq -- "clients/$CLIENT/demandas/$DEMAND_ID"
+          echo "Status em disco após descartar o não commitado:"
+          grep -m1 '^status:' "clients/$CLIENT/demandas/$DEMAND_ID/status.yaml" || true
+
       # Reingestão do RAG interno deste cliente (nunca o copiloto do cliente
       # em Squad OS — CLAUDE.md guardrail #2). Roda depois do commit, com o
       # que acabou de ir pro git — não fatal: os artefatos já estão
