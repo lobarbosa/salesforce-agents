@@ -9,7 +9,9 @@ import { checklist, competenciaPadrao, rotuloMes } from "@/lib/contabilidade";
 import { horasPorCliente } from "@/lib/horas-data";
 import { chaveDia } from "@/lib/horas";
 import { prisma } from "@/lib/prisma";
-import { resultadoPorMes } from "@/lib/ops";
+import { resultadoPorMes, ultimoRelatorioFinanceiro } from "@/lib/ops";
+import { SAUDE } from "@/lib/saude";
+import { dataBr as dataRel } from "@/lib/relatorio-financeiro";
 import { ResultadoChart } from "@/components/ResultadoChart";
 import { CaixaChart } from "@/components/CaixaChart";
 
@@ -33,14 +35,16 @@ export default async function PainelFinanceiroPage() {
   const mesAtual = hoje.slice(0, 7);
   const compContabil = competenciaPadrao(mesAtual);
 
-  const [contas, divergencias, kpis, docsContabeis, horas, resultadoMensal] = await Promise.all([
+  const [contas, divergencias, kpis, docsContabeis, horas, resultadoMensal, relatorio] = await Promise.all([
     listarContas(),
     contarDivergenciasAbertas(),
     kpisAtuais(),
     prisma.documentoContabil.findMany({ where: { competencia: compContabil, removidoEm: null }, select: { tipo: true } }),
     horasPorCliente(mesAtual),
     resultadoPorMes(6),
+    ultimoRelatorioFinanceiro(),
   ]);
+  const saudeRel = relatorio ? (relatorio.saude ? SAUDE[relatorio.saude] : null) : null;
 
   const quem = { role: usuario.role, email: usuario.email };
   const decidir = contas.filter((c) => c.status === "aguardando_aprovacao" && bloqueio("aprovar", c, quem) === null);
@@ -92,6 +96,33 @@ export default async function PainelFinanceiroPage() {
       <div className="overview-header">
         <h1>Painel financeiro</h1>
         <p>O que precisa de alguém hoje e os números que os agentes calcularam.</p>
+      </div>
+
+      <div className="overview-section">
+        <h2>Saúde financeira</h2>
+        <Link className="overview-row" href="/financeiro/saude">
+          {relatorio ? (
+            <>
+              {saudeRel ? (
+                <span className={`saude ${saudeRel.classe}`}>
+                  <span aria-hidden="true">{saudeRel.simbolo}</span> {saudeRel.rotulo}
+                </span>
+              ) : (
+                <span className="saude pendente">desconhecida</span>
+              )}
+              <span className="oc-title">
+                Relatório de {dataRel(relatorio.referencia)}
+                <span className="sub">{relatorio.motivos[0] ?? "ver indicadores, riscos e recomendações"}</span>
+              </span>
+            </>
+          ) : (
+            <span className="oc-title">
+              Relatório diário do agente CFO
+              <span className="sub">{relatorio === null ? "aparece quando o banco dos agentes estiver ligado" : "nenhum relatório gravado ainda"}</span>
+            </span>
+          )}
+          <span aria-hidden="true">→</span>
+        </Link>
       </div>
 
       <div className="overview-section">

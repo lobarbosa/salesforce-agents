@@ -1,4 +1,13 @@
 import { prisma } from "@/lib/prisma";
+import {
+  normalizarFontes,
+  normalizarIndicadores,
+  normalizarInsights,
+  numero,
+  saudeDe,
+  type RelatorioFinanceiro,
+  type RelatorioResumo,
+} from "@/lib/relatorio-financeiro";
 
 // Leitura do schema `ops` (banco operacional dos agentes, konecta-agents
 // supabase/migrations). O Squad OS só lê — exceto o status de divergência,
@@ -260,4 +269,73 @@ export function ultimosDeploys(n = 10): Promise<Deploy[] | null> {
       detalhe: x.detalhe ? String(x.detalhe) : "",
     }));
   });
+}
+
+// ── Saúde financeira (relatório diário do cfo_agent) ───────────────────────
+
+// Tabela mais nova que o resto do `ops`: o schema pode existir sem ela (banco
+// dos agentes ligado, migration de relatorios_financeiros ainda não aplicada).
+// `temOps()` olha só agent_runs, então aqui a checagem é da própria tabela —
+// sem ela a leitura devolve null e a tela mostra o estado vazio, sem logar erro.
+async function temRelatorios(): Promise<boolean> {
+  try {
+    const r = await prisma.$queryRaw<{ ok: boolean }[]>`select to_regclass('ops.relatorios_financeiros') is not null as ok`;
+    return Boolean(r[0]?.ok);
+  } catch {
+    return false;
+  }
+}
+
+async function lerRelatorios<T>(fn: () => Promise<T>): Promise<T | null> {
+  if (!(await temRelatorios())) return null;
+  try {
+    return await fn();
+  } catch (e) {
+    console.error("leitura de ops.relatorios_financeiros falhou:", e);
+    return null;
+  }
+}
+
+/** null = tabela ausente; undefined = tabela existe, mas o agente ainda não gravou nenhum relatório. */
+export function ultimoRelatorioFinanceiro(): Promise<RelatorioFinanceiro | null | undefined> {
+  return lerRelatorios(async () => {
+    const r = await prisma.$queryRaw<Record<string, unknown>[]>`
+      select referencia, saude, motivos, resumo, indicadores, insights, alertas, fontes, created_at, updated_at
+      from ops.relatorios_financeiros order by referencia desc limit 1`;
+    const x = r[0];
+    if (!x) return undefined;
+    return {
+      referencia: dia(x.referencia) ?? "",
+      saude: saudeDe(x.saude),
+      motivos: textosJson(x.motivos),
+      resumo: typeof x.resumo === "string" && x.resumo.trim() ? x.resumo : null,
+      indicadores: normalizarIndicadores(x.indicadores),
+      insights: normalizarInsights(x.insights),
+      alertas: textosJson(x.alertas),
+      fontes: normalizarFontes(x.fontes),
+      atualizadoEm: maisRecente(iso(x.created_at), iso(x.updated_at)) ?? "",
+    };
+  });
+}
+
+/** Últimos `n` relatórios, do mais recente ao mais antigo, só com o que o histórico mostra. */
+export function historicoRelatoriosFinanceiros(n = 30): Promise<RelatorioResumo[] | null> {
+  return lerRelatorios(async () => {
+    const r = await prisma.$queryRaw<Record<string, unknown>[]>`
+      select referencia, saude, motivos ->> 0 as primeiro_motivo,
+             indicadores #>> '{receitas,mrr}' as mrr,
+             indicadores #>> '{receitas,inadimplencia_total}' as inadimplencia_total
+      from ops.relatorios_financeiros order by referencia desc limit ${n}`;
+    return r.map((x) => ({
+      referencia: dia(x.referencia) ?? "",
+      saude: saudeDe(x.saude),
+      primeiroMotivo: typeof x.primeiro_motivo === "string" && x.primeiro_motivo ? x.primeiro_motivo : null,
+      mrr: numero(x.mrr),
+      inadimplenciaTotal: numero(x.inadimplencia_total),
+    }));
+  });
+}
+
+function textosJson(v: unknown): string[] {
+  return Array.isArray(v) ? v.filter((s): s is string => typeof s === "string" && s.trim() !== "") : [];
 }
