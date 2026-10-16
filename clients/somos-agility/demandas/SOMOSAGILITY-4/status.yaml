@@ -2,7 +2,7 @@ id: SOMOSAGILITY-4
 client: somos-agility
 titulo: Criacao de Acesso
 tipo: sustentacao
-status: aguardando_gate_analise
+status: entregue
 criado_em: '2026-10-05T14:23:34.356Z'
 historico:
 - de: null
@@ -21,3 +21,8 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-10-08T01:12:58.088678+00:00'
+- de: aguardando_gate_analise
+  para: entregue
+  autor: 'Leonardo (via Claude) - correcao manual: demanda ja entregue manualmente
+    fora da esteira'
+  em: '2026-10-16T13:27:40.752364+00:00'
