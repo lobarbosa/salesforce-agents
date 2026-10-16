@@ -2,10 +2,22 @@ id: SOMOSAGILITY-12
 client: somos-agility
 titulo: JST - Preenchimento obrigatório Classificação gerencial e Denominação
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-14T22:49:19.298Z'
 historico:
-  - de: null
-    em: '2026-10-14T22:49:19.297Z'
-    para: backlog
-    autor: Juliana Mendes
+- de: null
+  em: '2026-10-14T22:49:19.297Z'
+  para: backlog
+  autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-16T11:54:38.907946+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-16T11:55:50.215215+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-16T11:56:06.510696+00:00'
