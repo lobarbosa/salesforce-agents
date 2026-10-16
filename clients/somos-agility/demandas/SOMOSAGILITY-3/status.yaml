@@ -2,7 +2,7 @@ id: SOMOSAGILITY-3
 client: somos-agility
 titulo: Alteracao de Status de Oportunidade para Aberta (Urgente)
 tipo: sustentacao
-status: aguardando_gate_build
+status: entregue
 criado_em: '2026-09-29T13:51:50.257Z'
 historico:
 - de: null
@@ -37,3 +37,8 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-10-07T13:07:53.547451+00:00'
+- de: aguardando_gate_build
+  para: entregue
+  autor: 'Leonardo (via Claude) - correcao manual: demanda ja entregue manualmente
+    fora da esteira'
+  em: '2026-10-16T13:27:38.583777+00:00'
