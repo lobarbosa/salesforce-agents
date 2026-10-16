@@ -1,4 +1,7 @@
 name: Rodar demanda (agentes)
+# Cliente e demanda no título do run: é o que deixa `varrer-demandas.yml` (e
+# quem olha o Actions) saber o que já está na fila sem abrir log.
+run-name: "Rodar demanda ${{ inputs.client }} ${{ inputs.demand_id }}"
 
 # Aciona o orquestrador de verdade (Claude Agent SDK + .claude/agents) para uma
 # demanda de um cliente. Diferente do smoke test e do baseline retrieve (que só
