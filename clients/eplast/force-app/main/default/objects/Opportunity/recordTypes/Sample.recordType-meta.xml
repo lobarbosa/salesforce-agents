@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sample</fullName>
+    <active>true</active>
+    <businessProcess>Amostra</businessProcess>
+    <label>Amostra</label>
+    <picklistValues>
+        <picklist>ForecastCategoryName</picklist>
+        <values>
+            <fullName>Best Case</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Omitted</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pipeline</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Formas_de_Pagamento__c</picklist>
+        <values>
+            <fullName>AV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BOL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SPG</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LeadSource</picklist>
+        <values>
+            <fullName>Campanha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Evento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WhatsApp</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Loss_Reason__c</picklist>
+        <values>
+            <fullName>Alteração de pedido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente Estocado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Defeito no produto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Disponibilidade de Produto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta homologar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inadimplência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Informalidade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Limite de Crédito</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OTIF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Orçamento BPM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pedido Mínimo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prazo de Entrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prazo de pagamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Preço</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Produto Não Comercializado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sem resposta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>À Vista %28Sem Pagamento%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Compra Recorrente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reativação</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

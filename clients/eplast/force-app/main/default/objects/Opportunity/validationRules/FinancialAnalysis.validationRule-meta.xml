@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FinancialAnalysis</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    ISPICKVAL(StageName, &apos;Fechado/Ganho&apos;),
+    NOT(FinancialAnalysis__c),
+    OR(
+        ( RecordType.Name = &apos;Venda&apos;),
+        (RecordType.Name = &apos;Venda com remessa&apos;)
+    )
+)</errorConditionFormula>
+    <errorMessage>A Fase Análise Financeira precisa ser iniciada e concluída para continuidade do processo.</errorMessage>
+</ValidationRule>

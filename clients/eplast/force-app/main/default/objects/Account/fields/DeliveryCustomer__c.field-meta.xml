@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DeliveryCustomer__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Cliente de Entrega</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Cliente de Entrega</relationshipLabel>
+    <relationshipName>Contas1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>

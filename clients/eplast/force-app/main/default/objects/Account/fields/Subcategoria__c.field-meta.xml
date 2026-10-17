@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subcategoria__c</fullName>
+    <label>Subcategoria</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Preço</fullName>
+                <default>false</default>
+                <label>Preço</label>
+            </value>
+            <value>
+                <fullName>Crédito</fullName>
+                <default>false</default>
+                <label>Crédito</label>
+            </value>
+            <value>
+                <fullName>Prazo de Pagamento</fullName>
+                <default>false</default>
+                <label>Prazo de Pagamento</label>
+            </value>
+            <value>
+                <fullName>Falta de Produto</fullName>
+                <default>false</default>
+                <label>Falta de Produto</label>
+            </value>
+            <value>
+                <fullName>Entrega</fullName>
+                <default>false</default>
+                <label>Entrega</label>
+            </value>
+            <value>
+                <fullName>Produto acabado</fullName>
+                <default>false</default>
+                <label>Produto acabado</label>
+            </value>
+            <value>
+                <fullName>BPM</fullName>
+                <default>false</default>
+                <label>BPM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

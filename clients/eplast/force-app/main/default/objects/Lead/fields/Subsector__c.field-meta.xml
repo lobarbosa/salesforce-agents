@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Subsector__c</fullName>
+    <label>Subsetor</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cervejas</fullName>
+                <default>false</default>
+                <label>Cervejas</label>
+            </value>
+            <value>
+                <fullName>Destilados</fullName>
+                <default>false</default>
+                <label>Destilados</label>
+            </value>
+            <value>
+                <fullName>Refrigerante</fullName>
+                <default>false</default>
+                <label>Refrigerante</label>
+            </value>
+            <value>
+                <fullName>Água</fullName>
+                <default>false</default>
+                <label>Água</label>
+            </value>
+            <value>
+                <fullName>Suco</fullName>
+                <default>false</default>
+                <label>Suco</label>
+            </value>
+            <value>
+                <fullName>Bebidas Funcionais</fullName>
+                <default>false</default>
+                <label>Bebidas Funcionais</label>
+            </value>
+            <value>
+                <fullName>Energético</fullName>
+                <default>false</default>
+                <label>Energético</label>
+            </value>
+            <value>
+                <fullName>Vinho</fullName>
+                <default>false</default>
+                <label>Vinho</label>
+            </value>
+            <value>
+                <fullName>Molhos e Condimentos</fullName>
+                <default>false</default>
+                <label>Molhos e Condimentos</label>
+            </value>
+            <value>
+                <fullName>Lácteos</fullName>
+                <default>false</default>
+                <label>Lácteos</label>
+            </value>
+            <value>
+                <fullName>Pré-formas</fullName>
+                <default>false</default>
+                <label>Pré-formas</label>
+            </value>
+            <value>
+                <fullName>Filmes</fullName>
+                <default>false</default>
+                <label>Filmes</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+            <value>
+                <fullName>Cosméticos</fullName>
+                <default>false</default>
+                <label>Cosméticos</label>
+            </value>
+            <value>
+                <fullName>Cuidados com o Lar</fullName>
+                <default>false</default>
+                <label>Cuidados com o Lar</label>
+            </value>
+            <value>
+                <fullName>Higiene Pessoal</fullName>
+                <default>false</default>
+                <label>Higiene Pessoal</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

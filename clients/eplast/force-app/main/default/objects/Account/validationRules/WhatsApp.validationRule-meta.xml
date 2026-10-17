@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>WhatsApp</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    !ISBLANK(WhatsApp__c),
+    NOT(REGEX(WhatsApp__c , &quot;\\(\\d{2}\\)\\s?9?\\d{4}-?\\d{4}&quot;))
+)</errorConditionFormula>
+    <errorDisplayField>WhatsApp__c</errorDisplayField>
+    <errorMessage>O formato do campo WhatsApp deve ser: (xx)xxxxxxxx ou (xx)xxxxxxxxx</errorMessage>
+</ValidationRule>

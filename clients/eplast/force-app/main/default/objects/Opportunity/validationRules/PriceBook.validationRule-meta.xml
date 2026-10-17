@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PriceBook</fullName>
+    <active>true</active>
+    <errorConditionFormula>(ISNEW() &amp;&amp; RecordType.DeveloperName != &apos;Industria&apos; &amp;&amp; Pricebook2.Account__r.Id != Account.Id)
+	|| (NOT(ISBLANK(Pricebook2Id)) &amp;&amp; Pricebook2.Account__r.Id != Account.Id)</errorConditionFormula>
+    <errorMessage>Catálogo de preço selecionado inválido.</errorMessage>
+</ValidationRule>

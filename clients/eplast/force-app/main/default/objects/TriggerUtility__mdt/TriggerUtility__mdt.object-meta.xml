@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Este metadado é responsável por fazer bypass de triggers durante a execução de testes, caso o campo Bypass seja verdadeiro</description>
+    <label>Trigger Utility</label>
+    <pluralLabel>Trigger Utilities</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

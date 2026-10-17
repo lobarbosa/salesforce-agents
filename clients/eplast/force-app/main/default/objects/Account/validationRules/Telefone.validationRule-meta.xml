@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Telefone</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    !ISBLANK(Phone),
+    NOT(REGEX(Phone , &quot;\\(\\d{2}\\)\\s?9?\\d{4}-?\\d{4}&quot;))
+)</errorConditionFormula>
+    <errorDisplayField>Phone</errorDisplayField>
+    <errorMessage>O formato do campo Telefone deve ser: (xx)xxxxxxxx ou (xx)9xxxxxxxx</errorMessage>
+</ValidationRule>
