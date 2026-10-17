@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckHasAccount</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISBLANK(AccountId)</errorConditionFormula>
+    <errorMessage>Deve haver uma Conta atrelada à Oportunidade</errorMessage>
+</ValidationRule>

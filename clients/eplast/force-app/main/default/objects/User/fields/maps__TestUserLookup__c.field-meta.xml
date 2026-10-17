@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>maps__TestUserLookup__c</fullName>
+    <deprecated>false</deprecated>
+    <description>For blueline bug.</description>
+    <label>TestUserLookup</label>
+    <relationshipName>TestChildLookup</relationshipName>
+    <restrictedAdminField>false</restrictedAdminField>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Hierarchy</type>
+</CustomField>

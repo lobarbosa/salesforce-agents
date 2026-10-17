@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BypassTrigger__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Caso verdadeiro, este campo tem a funcionalidade de não executar as triggers em que ele está presente a fim de não criar problemas em testes</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Habilite este campo para não executar triggers onde o mesmo é referenciado</inlineHelpText>
+    <label>Pular execução de Triggers</label>
+    <type>Checkbox</type>
+</CustomField>

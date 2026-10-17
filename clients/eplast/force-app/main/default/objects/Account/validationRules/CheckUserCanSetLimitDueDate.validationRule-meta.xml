@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckUserCanSetLimitDueDate</fullName>
+    <active>true</active>
+    <description>Limita a edição do campo Vencimento do Limite de Crédito caso o usuário não seja administrador ou não não o perfil Financeiro.</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(LimitAmountDueDate__c),
+  $Profile.Name != &apos;Salesforce API Only System Integrations&apos;,
+  $Profile.Name != &apos;Administrador do sistema&apos;,
+  $Profile.Name != &apos;Financeiro&apos;
+)</errorConditionFormula>
+    <errorDisplayField>LimitAmountDueDate__c</errorDisplayField>
+    <errorMessage>Campo Vencimento do Limite de Crédito não pode ser alterado por este perfil</errorMessage>
+</ValidationRule>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Atribui_concatena_o_do_n_mero_externo_do_pedido_com_o_c_digo_da_filial</name>
+        <label>Atribui concatenação do número externo do pedido com o código da filial</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ExternalNumber_BranchCodeERP__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>forT_ExternalNumber_BranchCodeERP</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <environments>Default</environments>
+    <formulas>
+        <name>forT_ExternalNumber_BranchCodeERP</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.ExternalNumber__c} &amp; {!$Record.Opportunity.Branch__r.CodeERP__c}</expression>
+    </formulas>
+    <interviewLabel>Acionado por registro: Antes de atualizar Pedido - Atribui Id externo para update pela API {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Acionado por registro: Antes de atualizar Pedido - Atribui Id externo para update pela API</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Atribui_concatena_o_do_n_mero_externo_do_pedido_com_o_c_digo_da_filial</targetReference>
+        </connector>
+        <object>Order</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

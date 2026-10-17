@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Industria_Fase_Cotacao_Sem_Catalogo</fullName>
+    <active>true</active>
+    <errorConditionFormula>NomeTipoRegistro__c = &apos;Industria&apos; &amp;&amp; ISBLANK(Pricebook2Id) &amp;&amp; ISCHANGED(StageName) &amp;&amp; TEXT(StageName) = &apos;Cotação&apos;</errorConditionFormula>
+    <errorDisplayField>Pricebook2Id</errorDisplayField>
+    <errorMessage>Selecione um catálogo de preços para iniciar a cotação</errorMessage>
+</ValidationRule>

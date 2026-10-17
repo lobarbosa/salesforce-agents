@@ -1,0 +1,11 @@
+<template>
+    <lightning-modal-header label="Indique o motivo da perda"></lightning-modal-header>
+        <lightning-modal-body>
+            <lightning-record-edit-form record-id={opportunityId} object-api-name="Opportunity" onsubmit={handleSubmit} onsuccess={handleSuccess}>
+            <lightning-input-field field-name="Loss_Reason__c" required></lightning-input-field>
+            <lightning-input-field field-name="DescricaoPerda__c" required></lightning-input-field>
+            <button if:false={loading} class="slds-button slds-size--12-of-12 slds-button--brand slds-m-top_small" variant="brand" type="submit" name="update">Salvar</button>
+            <button if:true={loading} class="slds-button slds-size--12-of-12 slds-button--brand slds-m-top_small" variant="brand" type="button" name="update" disabled>Aguarde...</button>
+        </lightning-record-edit-form>
+    </lightning-modal-body>
+</template>

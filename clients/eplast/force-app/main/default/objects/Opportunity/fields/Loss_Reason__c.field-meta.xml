@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Loss_Reason__c</fullName>
+    <label>Motivo de perda</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>À Vista (Sem Pagamento)</fullName>
+                <default>false</default>
+                <label>À Vista (Sem Pagamento)</label>
+            </value>
+            <value>
+                <fullName>Cliente Estocado</fullName>
+                <default>false</default>
+                <label>Cliente Estocado</label>
+            </value>
+            <value>
+                <fullName>Disponibilidade de Produto</fullName>
+                <default>false</default>
+                <label>Disponibilidade de Produto</label>
+            </value>
+            <value>
+                <fullName>Falta homologar</fullName>
+                <default>false</default>
+                <label>Falta homologar</label>
+            </value>
+            <value>
+                <fullName>Inadimplência</fullName>
+                <default>false</default>
+                <label>Inadimplência</label>
+            </value>
+            <value>
+                <fullName>Informalidade</fullName>
+                <default>false</default>
+                <label>Informalidade</label>
+            </value>
+            <value>
+                <fullName>Limite de Crédito</fullName>
+                <default>false</default>
+                <label>Limite de Crédito</label>
+            </value>
+            <value>
+                <fullName>Orçamento BPM</fullName>
+                <default>false</default>
+                <label>Orçamento BPM</label>
+            </value>
+            <value>
+                <fullName>Pedido Mínimo</fullName>
+                <default>false</default>
+                <label>Pedido Mínimo</label>
+            </value>
+            <value>
+                <fullName>Prazo de Entrega</fullName>
+                <default>false</default>
+                <label>Prazo de Entrega</label>
+            </value>
+            <value>
+                <fullName>Preço</fullName>
+                <default>false</default>
+                <label>Preço</label>
+            </value>
+            <value>
+                <fullName>Produto Não Comercializado</fullName>
+                <default>false</default>
+                <label>Produto Não Comercializado</label>
+            </value>
+            <value>
+                <fullName>Transporte</fullName>
+                <default>false</default>
+                <label>Transporte</label>
+            </value>
+            <value>
+                <fullName>Alteração de pedido</fullName>
+                <default>false</default>
+                <label>Alteração de pedido</label>
+            </value>
+            <value>
+                <fullName>Prazo de pagamento</fullName>
+                <default>false</default>
+                <label>Prazo de pagamento</label>
+            </value>
+            <value>
+                <fullName>Sem resposta</fullName>
+                <default>false</default>
+                <label>Sem resposta</label>
+            </value>
+            <value>
+                <fullName>OTIF</fullName>
+                <default>false</default>
+                <label>OTIF</label>
+            </value>
+            <value>
+                <fullName>Defeito no produto</fullName>
+                <default>false</default>
+                <label>Defeito no produto</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

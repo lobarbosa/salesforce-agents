@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckOppHasBranch</fullName>
+    <active>true</active>
+    <description>Impede a Oportunidade de avançar de fase, caso o mesmo não tenha o campo Filial preenchido ou caso a Filial selecionada não possua o campo Código ERP preenchido</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(StageName, &apos;Fechado/Ganho&apos;),
+    OR(
+        ISBLANK(Branch__c),
+        ISBLANK(Branch__r.CodeERP__c)
+    )
+)</errorConditionFormula>
+    <errorDisplayField>Branch__c</errorDisplayField>
+    <errorMessage>Este campo precisa ser preenchido e a Filial precisa ter o campo Código ERP preenchido</errorMessage>
+</ValidationRule>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sector__c</fullName>
+    <label>Setor</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alimentos</fullName>
+                <default>false</default>
+                <label>Alimentos</label>
+            </value>
+            <value>
+                <fullName>Bebidas</fullName>
+                <default>false</default>
+                <label>Bebidas</label>
+            </value>
+            <value>
+                <fullName>Distribuidor &amp; Varejo</fullName>
+                <default>false</default>
+                <label>Distribuidor &amp; Varejo</label>
+            </value>
+            <value>
+                <fullName>Farmacêutico</fullName>
+                <default>false</default>
+                <label>Farmacêutico</label>
+            </value>
+            <value>
+                <fullName>Higiene &amp; Limpeza</fullName>
+                <default>false</default>
+                <label>Higiene &amp; Limpeza</label>
+            </value>
+            <value>
+                <fullName>Indústria de Sopro</fullName>
+                <default>false</default>
+                <label>Indústria de Sopro</label>
+            </value>
+            <value>
+                <fullName>Indústria de Transformação</fullName>
+                <default>false</default>
+                <label>Indústria de Transformação</label>
+            </value>
+            <value>
+                <fullName>Industrial</fullName>
+                <default>false</default>
+                <label>Industrial</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

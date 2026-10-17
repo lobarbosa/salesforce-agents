@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Formas_de_Pagamento__c</fullName>
+    <label>Formas de Pagamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AV</fullName>
+                <default>false</default>
+                <label>A VISTA</label>
+            </value>
+            <value>
+                <fullName>BOL</fullName>
+                <default>false</default>
+                <label>BOLETO BANCARIO</label>
+            </value>
+            <value>
+                <fullName>SPG</fullName>
+                <default>false</default>
+                <label>SEM PAGAMENTO</label>
+            </value>
+            <value>
+                <fullName>FA</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>A FATURAR</label>
+            </value>
+            <value>
+                <fullName>CH</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>CHEQUE</label>
+            </value>
+            <value>
+                <fullName>CI</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>CONSUMO INTERNO</label>
+            </value>
+            <value>
+                <fullName>CQ</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>CREDITO AO QUARTO</label>
+            </value>
+            <value>
+                <fullName>DB</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>DEPOSITO BANCARIO</label>
+            </value>
+            <value>
+                <fullName>R$</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>DINHEIRO</label>
+            </value>
+            <value>
+                <fullName>PD</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>PAGTO DIGITAL</label>
+            </value>
+            <value>
+                <fullName>RA</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>RECEBIMENTO ANTECIPADO</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

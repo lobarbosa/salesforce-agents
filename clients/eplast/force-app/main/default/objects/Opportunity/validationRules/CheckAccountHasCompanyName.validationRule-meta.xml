@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CheckAccountHasCompanyName</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISBLANK(Account.CompanyName__c)</errorConditionFormula>
+    <errorMessage>Por favor, preencha o campo Razão Social da Conta selecionada</errorMessage>
+</ValidationRule>

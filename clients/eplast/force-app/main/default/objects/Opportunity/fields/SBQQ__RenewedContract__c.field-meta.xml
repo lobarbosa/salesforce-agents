@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SBQQ__RenewedContract__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Contract being renewed by this renewal opportunity. In case opportunity rolls up several contracts this points at the master contract.</description>
+    <inlineHelpText>Contrato sendo renovado por essa oportunidade de renovação. Se vários contratos acumularem-se para essa oportunidade, isso apontará para o contrato mestre.</inlineHelpText>
+    <label>Renewed Contract</label>
+    <referenceTo>Contract</referenceTo>
+    <relationshipLabel>Renewal Opportunities</relationshipLabel>
+    <relationshipName>RenewalOpportunities</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Lookup</type>
+</CustomField>

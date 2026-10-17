@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>maps__PreferredTypeOfMeasurement__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Preferred Type of Measurement</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Miles</fullName>
+                <default>false</default>
+                <label>Miles</label>
+            </value>
+            <value>
+                <fullName>Km</fullName>
+                <default>false</default>
+                <label>Km</label>
+            </value>
+            <value>
+                <fullName>Meters</fullName>
+                <default>false</default>
+                <label>Meters</label>
+            </value>
+            <value>
+                <fullName>Yards</fullName>
+                <default>false</default>
+                <label>Yards</label>
+            </value>
+            <value>
+                <fullName>Feet</fullName>
+                <default>false</default>
+                <label>Feet</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>
