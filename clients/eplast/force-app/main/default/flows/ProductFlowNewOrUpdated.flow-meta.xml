@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>UpdatedField</name>
+        <label>Campo atualizado</label>
+        <locationX>314</locationX>
+        <locationY>323</locationY>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>MainUnitBalanceIsChanged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>MainUnitIsChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateSecondUnitBalance</targetReference>
+            </connector>
+            <label>Saldo Principal é alterado</label>
+        </rules>
+        <rules>
+            <name>SecondUnitBalanceIsChanged</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>SecondUnitIsChanged</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateMainUnitBalance</targetReference>
+            </connector>
+            <label>Saldo Secundário é alterado</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>ChangedMainUnitBalance</name>
+        <dataType>Number</dataType>
+        <expression>IF( {!$Record.QuantityConverter__c}&gt;0, {!$Record.SecondUnitBalance__c} * {!$Record.QuantityConverter__c}, 0 )</expression>
+        <scale>4</scale>
+    </formulas>
+    <formulas>
+        <name>ChangeSecondUnitBalance</name>
+        <dataType>Number</dataType>
+        <expression>IF( {!$Record.QuantityConverter__c}&gt;0, {!$Record.MainUnitBalance__c} /  {!$Record.QuantityConverter__c}, 0 )</expression>
+        <scale>4</scale>
+    </formulas>
+    <formulas>
+        <name>MainUnitIsChanged</name>
+        <dataType>Boolean</dataType>
+        <expression>OR( 
+ISCHANGED({!$Record.MainUnitBalance__c}), AND(ISNEW(), !ISNULL({!$Record.MainUnitBalance__c}))
+)</expression>
+    </formulas>
+    <formulas>
+        <name>SecondUnitIsChanged</name>
+        <dataType>Boolean</dataType>
+        <expression>OR(
+ISCHANGED({!$Record.SecondUnitBalance__c}), AND(ISNEW(), !ISNULL({!$Record.SecondUnitBalance__c}))
+)</expression>
+    </formulas>
+    <interviewLabel>Fluxo de Produto {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Fluxo de Produto (Criado ou Atualizado)</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>UpdateMainUnitBalance</name>
+        <label>Atualizar Saldo Principal</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>MainUnitBalance__c</field>
+            <value>
+                <elementReference>ChangedMainUnitBalance</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>UpdateSecondUnitBalance</name>
+        <label>Atualizar Saldo Secundário</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>SecondUnitBalance__c</field>
+            <value>
+                <elementReference>ChangeSecondUnitBalance</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>UpdatedField</targetReference>
+        </connector>
+        <object>Product2</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,598 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>CheckEconomicGroup</name>
+        <label>Verificar Grupo Econômico</label>
+        <locationX>182</locationX>
+        <locationY>1763</locationY>
+        <defaultConnector>
+            <targetReference>UpdateEconomicGroupToParentAccount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>NullEconomicGroup</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EconomicGroupId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NewEconomicGroupParentAccount</targetReference>
+            </connector>
+            <label>Grupo Econômico Nulo</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CheckEconomicGroupAccount</name>
+        <label>Verificar Grupo Econômico Conta</label>
+        <locationX>622</locationX>
+        <locationY>1763</locationY>
+        <defaultConnector>
+            <targetReference>UpdateEconomicGroupToParentAccount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>NullEconomicGroupAccount</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EconomicGroupId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>NewEconomicGroupAccount</targetReference>
+            </connector>
+            <label>Grupo Econômico Conta Nulo</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CheckParentAccount</name>
+        <label>Verificar Conta Pai</label>
+        <locationX>556</locationX>
+        <locationY>1547</locationY>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>HasParentAccountChanged</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>EconomicGroupParentAccount</targetReference>
+            </connector>
+            <label>Conta Pai existente</label>
+        </rules>
+        <rules>
+            <name>NotParentAccount</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.ParentId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.ParentId</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>EconomicGroupAccount</targetReference>
+            </connector>
+            <label>Sem Conta Pai</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CheckRecord</name>
+        <label>Verificar Registro</label>
+        <locationX>556</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>CheckParentAccount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>NewRecord</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetFinancialUserProfile</targetReference>
+            </connector>
+            <label>Novo registro</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>FinancialUserWasFound</name>
+        <label>Usuário de Financeiro encontrado?</label>
+        <locationX>402</locationX>
+        <locationY>647</locationY>
+        <defaultConnector>
+            <targetReference>GetUserProfilePricing</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não</defaultConnectorLabel>
+        <rules>
+            <name>YesFinancialUserWasFound</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetFinancialUser.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>FinancialTask</targetReference>
+            </connector>
+            <label>Sim, Usuário de Financeiro encontrado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>PricingUserWasFound</name>
+        <label>Usuário de Pricing encontrado?</label>
+        <locationX>402</locationX>
+        <locationY>1163</locationY>
+        <defaultConnector>
+            <targetReference>CheckParentAccount</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não</defaultConnectorLabel>
+        <rules>
+            <name>YesPricingUserWasFound</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetUserPricing.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>PricingTask</targetReference>
+            </connector>
+            <label>Sim, Usuário de Pricing encontrado</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>EconomicGroupAccoutName</name>
+        <dataType>String</dataType>
+        <expression>IF(LEN({!$Record.Name})&gt;80,LEFT({!$Record.Name}, 80),{!$Record.Name})</expression>
+    </formulas>
+    <formulas>
+        <name>EconomicGroupParentAccountName</name>
+        <dataType>String</dataType>
+        <expression>IF(LEN({!$Record.Parent.Name})&gt;80,LEFT({!$Record.Parent.Name}, 80),{!$Record.Parent.Name})</expression>
+    </formulas>
+    <formulas>
+        <name>IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <interviewLabel>Conta - Acionado por registro {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Conta - Acionado por registro</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>FinancialTask</name>
+        <label>Tarefa Financeiro</label>
+        <locationX>270</locationX>
+        <locationY>755</locationY>
+        <connector>
+            <targetReference>GetUserProfilePricing</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>FinancialDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>GetFinancialUser.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Conta Nova Cadastrada:  {!$Record.Name}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordCreates>
+        <name>NewEconomicGroupAccount</name>
+        <label>Novo Grupo Econômico Conta</label>
+        <locationX>490</locationX>
+        <locationY>1871</locationY>
+        <assignRecordIdToReference>EconomicGroupId</assignRecordIdToReference>
+        <connector>
+            <targetReference>UpdateEconomicGroupToParentAccount</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AccountCode__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>EconomicGroupAccoutName</elementReference>
+            </value>
+        </inputAssignments>
+        <object>EconomicGroup__c</object>
+    </recordCreates>
+    <recordCreates>
+        <name>NewEconomicGroupParentAccount</name>
+        <label>Novo Grupo Econômico Conta Pai</label>
+        <locationX>50</locationX>
+        <locationY>1871</locationY>
+        <assignRecordIdToReference>EconomicGroupId</assignRecordIdToReference>
+        <connector>
+            <targetReference>UpdateEconomicGroupToParentAccount</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>AccountCode__c</field>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>EconomicGroupParentAccountName</elementReference>
+            </value>
+        </inputAssignments>
+        <object>EconomicGroup__c</object>
+    </recordCreates>
+    <recordCreates>
+        <name>PricingTask</name>
+        <label>Tarefa Pricing</label>
+        <locationX>270</locationX>
+        <locationY>1271</locationY>
+        <connector>
+            <targetReference>CheckParentAccount</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ActivityDate</field>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Description</field>
+            <value>
+                <elementReference>PricingDescription</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>GetUserPricing.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <stringValue>Conta Nova Criada:  {!$Record.Name}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>WhatId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Task</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordLookups>
+        <name>EconomicGroupAccount</name>
+        <label>Grupo Econômico Conta</label>
+        <locationX>622</locationX>
+        <locationY>1655</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CheckEconomicGroupAccount</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountCode__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <object>EconomicGroup__c</object>
+        <outputAssignments>
+            <assignToReference>EconomicGroupId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <name>EconomicGroupParentAccount</name>
+        <label>Grupo Econômico Conta Pai</label>
+        <locationX>182</locationX>
+        <locationY>1655</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CheckEconomicGroup</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountCode__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.ParentId</elementReference>
+            </value>
+        </filters>
+        <object>EconomicGroup__c</object>
+        <outputAssignments>
+            <assignToReference>EconomicGroupId</assignToReference>
+            <field>Id</field>
+        </outputAssignments>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+    </recordLookups>
+    <recordLookups>
+        <name>GetFinancialUser</name>
+        <label>Obter Usuário Financeiro</label>
+        <locationX>402</locationX>
+        <locationY>539</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>FinancialUserWasFound</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ProfileId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetFinancialUserProfile.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetFinancialUserProfile</name>
+        <label>Obter Perfil do Usuário Financeiro</label>
+        <locationX>402</locationX>
+        <locationY>431</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetFinancialUser</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Financeiro</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Profile</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetUserPricing</name>
+        <label>Obter Usuário Pricing</label>
+        <locationX>402</locationX>
+        <locationY>1055</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>PricingUserWasFound</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ProfileId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>GetUserProfilePricing.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsActive</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>User</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetUserProfilePricing</name>
+        <label>Obter Perfil do Usuário Pricing</label>
+        <locationX>402</locationX>
+        <locationY>947</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetUserPricing</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Name</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pricing</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Profile</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>UpdateEconomicGroupToParentAccount</name>
+        <label>Atualizar Grupo Econômico para Conta Pai</label>
+        <locationX>556</locationX>
+        <locationY>2147</locationY>
+        <inputAssignments>
+            <field>EconomicGroup__c</field>
+            <value>
+                <elementReference>EconomicGroupId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>430</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>CheckRecord</targetReference>
+        </connector>
+        <object>Account</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>FinancialDescription</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>SOLICITAÇÃO DE ANÁLISE DE CRÉDITO CLIENTES
+TIPO DE SOLICITAÇÃO:
+( ) Novo Cliente – Solicitação de Limite de Crédito
+( ) Reavaliação de Limite de Crédito
+( ) Solicitação de Aumento de Prazo
+
+UNIDADE DE FATURAMENTO
+( ) Eplast Rio Preto
+( ) Eplast Atibaia
+( ) Eplast Serra
+
+LIMITE DE CRÉDITO ATUAL: R$
+TOTAL TOMADO: R$
+PRAZO:
+VALOR DO PEDIDO: R$
+PREVISÃO DE FAT:
+PRODUTOS/F:
+REFERÊNCIA COMERCIAL (Fornecedores/CNPJ/Telefone) -
+REFERÊNCIA BANCÁRIA (Banco / Nome de contato / Telefone)
+PARECER COMERCIAL (Houve crescimento no volume de vendas? Novos Produtos?):
+ANEXAR
+Sintegra, Contrato Social, Balanço, DRE, Faturamento Ult. 12 meses, Fotos da empresa do cliente (Fachada, Linha de Produção, Produtos etc.)</text>
+    </textTemplates>
+    <textTemplates>
+        <name>PricingDescription</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>SOLICITAÇÃO DE ANÁLISE DE CRÉDITO CLIENTES
+TIPO DE SOLICITAÇÃO:
+( ) Novo Cliente – Solicitação de Limite de Crédito
+( ) Reavaliação de Limite de Crédito
+( ) Solicitação de Aumento de Prazo
+UNIDADE DE FATURAMENTO
+( ) Eplast Rio Preto
+( ) Eplast Atibaia
+( ) Eplast Serra
+
+LIMITE DE CRÉDITO ATUAL: R$
+TOTAL TOMADO: R$
+PRAZO:
+VALOR DO PEDIDO: R$
+PREVISÃO DE FAT:
+PRODUTOS/F:
+REFERÊNCIA COMERCIAL (Fornecedores/CNPJ/Telefone) -
+REFERÊNCIA BANCÁRIA (Banco / Nome de contato / Telefone)
+PARECER COMERCIAL (Houve crescimento no volume de vendas? Novos Produtos?):
+ANEXAR
+Sintegra, Contrato Social, Balanço, DRE, Faturamento Ult. 12 meses, Fotos da empresa do cliente (Fachada, Linha de Produção, Produtos etc.)</text>
+    </textTemplates>
+    <variables>
+        <name>EconomicGroupId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>FinancialUser</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>User</objectType>
+    </variables>
+</Flow>
