@@ -14,6 +14,12 @@ export interface ContaParaRegra {
   status: StatusConta;
   valor: number;
   lancadoPorEmail: string;
+  /**
+   * Quem corrigiu o valor enquanto a conta esperava aprovação (conta de
+   * consumo gerada pela recorrência). Definir o valor equivale a lançar: essa
+   * pessoa também não aprova.
+   */
+  valorAlteradoPor?: string[];
 }
 
 export interface QuemAge {
@@ -35,6 +41,9 @@ export function bloqueio(acao: Acao, conta: ContaParaRegra, quem: QuemAge, alcad
     if (conta.status !== "aguardando_aprovacao") return "esta conta não está aguardando aprovação";
     if (quem.email.toLowerCase() === conta.lancadoPorEmail.toLowerCase()) {
       return "quem lançou a conta não pode decidir sobre ela — outra pessoa precisa aprovar";
+    }
+    if ((conta.valorAlteradoPor ?? []).some((e) => e.toLowerCase() === quem.email.toLowerCase())) {
+      return "quem corrigiu o valor não pode decidir sobre a conta — outra pessoa precisa aprovar";
     }
     if (quem.role === "financeiro" && conta.valor > alcada) {
       return alcada
@@ -66,6 +75,11 @@ export function bloqueioDocumento(status: StatusConta, temDocumento: boolean): s
   if (status === "aprovada" && !temDocumento) return null;
   if (status === "aprovada") return "conta já aprovada: o documento que foi aprovado não pode ser trocado";
   return "conta paga, recusada ou cancelada não recebe documento novo";
+}
+
+/** Valor só muda enquanto ninguém aprovou (é o que se aprova). Null = pode. */
+export function bloqueioValor(status: StatusConta): string | null {
+  return status === "aguardando_aprovacao" ? null : "o valor só pode ser corrigido enquanto a conta aguarda aprovação";
 }
 
 export const PROXIMO_STATUS: Record<Acao, StatusConta> = {
