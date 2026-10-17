@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { mesAnterior, montarHorasPorMes, type MesDeHoras } from "@/lib/contrato";
 import { chaveDia, cicloDoMes } from "@/lib/horas";
+import { calibracaoPara, type Calibracao, type EstimativaCalibrada } from "@/lib/estimativa";
 
 // `ambientes` vem junto em ambas: a Visão Geral precisa dele pra listar
 // conexão pendente, e a aba Conexões renderiza um card por ambiente.
@@ -62,7 +63,38 @@ export function getAllDemandas() {
 // O tipo que o modal (e tudo que passa a demanda pra ele) espera — definido
 // a partir da query, e não à mão, pra que mudar o `include` acima quebre a
 // compilação em vez de silenciosamente deixar um campo faltando na UI.
-export type DemandaCompleta = Awaited<ReturnType<typeof getDemandasByClient>>[number];
+export type DemandaCompleta = Awaited<ReturnType<typeof getDemandasByClient>>[number] & {
+  /** Calculada na página (consultor calibrado pelo timesheet + agente). */
+  estimativaCalibrada?: EstimativaCalibrada | null;
+};
+
+/**
+ * Fator de calibração das estimativas de horas, pelo timesheet das demandas
+ * já entregues que tinham estimativa (lib/estimativa.ts explica a regra).
+ * Lê todos os clientes de propósito — o fator geral é o fallback de quem
+ * ainda não tem histórico — mas devolve só um número, nada de outro cliente
+ * chega à tela (guardrail #7).
+ */
+export async function fatorDeCalibracao(clientId: string): Promise<Calibracao> {
+  const entregues = await prisma.demanda.findMany({
+    where: { status: "entregue", estimativaHorasMin: { not: null }, estimativaHorasMax: { not: null } },
+    select: {
+      clientId: true,
+      estimativaHorasMin: true,
+      estimativaHorasMax: true,
+      tempos: { where: { fimEm: { not: null } }, select: { minutos: true } },
+    },
+  });
+  return calibracaoPara(
+    clientId,
+    entregues.map((d) => ({
+      clientId: d.clientId,
+      estimativaMin: d.estimativaHorasMin!,
+      estimativaMax: d.estimativaHorasMax!,
+      lancadoMin: d.tempos.reduce((s, t) => s + (t.minutos ?? 0), 0),
+    }))
+  );
+}
 
 /**
  * Horas lançadas por mês nas demandas do cliente, contra as contratadas.

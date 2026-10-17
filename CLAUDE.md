@@ -284,6 +284,29 @@ escrito, só lido. Quem precisa do agregado usa
 `salesforce_agents.costs.ler_todas_as_linhas()`, que junta os dois (ver skill
 `revisar-custos`).
 
+### Estimativa por demanda
+
+Cada card mostra horas de consultor, horas de agente, o total das duas, e custo de agente — de fontes diferentes de propósito
+(`src/salesforce_agents/estimativa.py`, espelhadas pelo sync):
+
+- **Horas de esforço humano** — julgamento do agente: `ba-discovery` escreve
+  `**Estimativa de esforço:** <min>–<max> h` na análise e o `arquiteto` refina no design
+  (a do design vence). Sem a linha, não aparece — não se inventa número. A faixa crua é de
+  delivery; o cliente vê a calibrada (abaixo).
+- **Horas de agente** — conta: tempo de sessão já rodado (`duration_ms` da telemetria) mais
+  a mediana por etapa do que falta. O card soma com as de consultor e mostra o **total
+  estimado** da demanda (consultor + agente). Delivery vê; cliente não.
+- **Calibração pelo timesheet** — a faixa de consultor é multiplicada pela mediana de
+  "horas lançadas ÷ ponto médio estimado" das demandas já **entregues** que tinham
+  estimativa (`apps/squad-os/lib/estimativa.ts`): fator do próprio cliente com ≥3
+  amostras, senão o geral, senão 1; preso entre 0,5 e 3. O **cliente vê só a faixa total
+  calibrada** (consultor calibrado + agente), e só a partir do gate da análise — é quando
+  ele decide se segue, antes da construção. Delivery vê bruta e calibrada lado a lado.
+- **Custo de agente (USD)** — conta, não opinião: o gasto da demanda pela telemetria
+  acima, mais a mediana por etapa do que ainda falta (valor de partida declarado enquanto
+  não há 3 amostras). **Só admin vê**: a página recorta para os demais papéis
+  (`lib/visao-cliente.ts`) antes de virar prop.
+
 ## Estrutura de artefatos por demanda
 
 ```
