@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atividades_do_Caso</fullName>
+    <active>true</active>
+    <description>Cadastro das atividades realizadas na resolução dum caso</description>
+    <label>Atividades do Caso</label>
+    <picklistValues>
+        <picklist>Campanha_de_Marketing__c</picklist>
+        <values>
+            <fullName>Evento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospecção</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Categoria_de_Servico__c</picklist>
+        <values>
+            <fullName>Alteração%2F Mudança %28sem impacto para o cliente%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assesment %28Análise%2C Validação e Testes%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ativação de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atividade Preventiva</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Empréstimo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estudos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GMUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Incidente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Instalação%2C Configuração</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Interjornada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Laboratório</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problema</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RMA %28Substituição de Equipamento%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação de Informação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Treinamento e Workshop</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Direcionar_Lead__c</picklist>
+        <values>
+            <fullName>Ademar Godoy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alexandre Eugenio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lilian Melo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marisa Seabra</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ricardo Gonzalez</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wendell Bitencourt</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wlademir Andrade</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>High</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Low</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Normal</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status</picklist>
+        <values>
+            <fullName>Concluído</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em andamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não iniciado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_da_Atividade_de_Suporte__c</picklist>
+        <values>
+            <fullName>Em Andamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fechada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não Iniciada</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_do_Compromisso__c</picklist>
+        <values>
+            <fullName>Adiado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aguardando outra pessoa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concluído</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em andamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não iniciado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Subject</picklist>
+        <values>
+            <fullName>Faturamento Impedido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Formalização de venda em condição especial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pagamento Impedido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação de espelho de NF</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Atividades de Venda</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campanha de Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Confirmação de Evento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Elearning</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ligação</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Mapeamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Planejamento de Contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Planejamento de Território</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospecção</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reunião</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reunião com Clientes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reunião com Fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reunião com GP%C2%B4s</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reunião com Parceiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Visita</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Vertical_da_Campanha__c</picklist>
+        <values>
+            <fullName>ADN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GOV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SGA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIRT</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

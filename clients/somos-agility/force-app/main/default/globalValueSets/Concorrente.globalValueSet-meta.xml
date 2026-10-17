@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Concorrente 1</fullName>
+        <default>false</default>
+        <label>Concorrente 1</label>
+    </customValue>
+    <customValue>
+        <fullName>Concorrente 2</fullName>
+        <default>false</default>
+        <label>Concorrente 2</label>
+    </customValue>
+    <customValue>
+        <fullName>Concorrente 3</fullName>
+        <default>false</default>
+        <label>Concorrente 3</label>
+    </customValue>
+    <customValue>
+        <fullName>Concorrente 4</fullName>
+        <default>false</default>
+        <label>Concorrente 4</label>
+    </customValue>
+    <customValue>
+        <fullName>Concorrente 5</fullName>
+        <default>false</default>
+        <label>Concorrente 5</label>
+    </customValue>
+    <customValue>
+        <fullName>Concorrente 6</fullName>
+        <default>false</default>
+        <label>Concorrente 6</label>
+    </customValue>
+    <customValue>
+        <fullName>Concorrente 7</fullName>
+        <default>false</default>
+        <label>Concorrente 7</label>
+    </customValue>
+    <masterLabel>Concorrente</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

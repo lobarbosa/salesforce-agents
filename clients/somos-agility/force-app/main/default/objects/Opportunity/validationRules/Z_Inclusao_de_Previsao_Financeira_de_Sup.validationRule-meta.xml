@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Inclusao_de_Previsao_Financeira_de_Sup</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF((Valida_o_de_Produto__c &gt;0&amp;&amp;ISPICKVAL(Contrato_de_Suporte__c, &quot;Sim&quot;)), Validacao_de_Previsao_de_Suporte__c=0,
+IF((Valida_o_de_Produto__c =0&amp;&amp;ISPICKVAL(Contrato_de_Suporte__c, &quot;Sim&quot;)), Validacao_de_Previsao_de_Suporte__c&gt;0,Validacao_de_Previsao_de_Suporte__c=0))</errorConditionFormula>
+    <errorMessage>É obrigatório adicionar uma Previsão Financeira de Suporte</errorMessage>
+</ValidationRule>

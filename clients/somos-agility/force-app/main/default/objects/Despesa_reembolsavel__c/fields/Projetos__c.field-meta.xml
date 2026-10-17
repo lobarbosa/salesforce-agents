@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Projetos__c</fullName>
+    <description>AM191118: mestre detalhes para sumarizar as diepesas do projeto</description>
+    <label>Projetos</label>
+    <referenceTo>PPM_Project__c</referenceTo>
+    <relationshipLabel>Despesa reembolsável</relationshipLabel>
+    <relationshipName>Despesa_reembolsavel</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

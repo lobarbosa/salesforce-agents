@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Origem_da_Oportunidade__c</fullName>
+    <label>Origem da Oportunidade</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Base Assistec</fullName>
+                <default>false</default>
+                <label>Base Assistec</label>
+            </value>
+            <value>
+                <fullName>Campanha de Marketing</fullName>
+                <default>false</default>
+                <label>Campanha de Marketing</label>
+            </value>
+            <value>
+                <fullName>Evento Interno</fullName>
+                <default>false</default>
+                <label>Evento Interno</label>
+            </value>
+            <value>
+                <fullName>Indiação de Parceiro</fullName>
+                <default>false</default>
+                <label>Indiação de Parceiro</label>
+            </value>
+            <value>
+                <fullName>Indicação de Cliente</fullName>
+                <default>false</default>
+                <label>Indicação de Cliente</label>
+            </value>
+            <value>
+                <fullName>Indicação de Distribuidor</fullName>
+                <default>false</default>
+                <label>Indicação de Distribuidor</label>
+            </value>
+            <value>
+                <fullName>Indicação de Fabricante</fullName>
+                <default>false</default>
+                <label>Indicação de Fabricante</label>
+            </value>
+            <value>
+                <fullName>Indicação de Funcionário Assistec</fullName>
+                <default>false</default>
+                <label>Indicação de Funcionário Assistec</label>
+            </value>
+            <value>
+                <fullName>Indicação de Gerente de Contrato</fullName>
+                <default>false</default>
+                <label>Indicação de Gerente de Contrato</label>
+            </value>
+            <value>
+                <fullName>Novos Negócios</fullName>
+                <default>false</default>
+                <label>Novos Negócios</label>
+            </value>
+            <value>
+                <fullName>Prospecção - Gerente de Negócios</fullName>
+                <default>false</default>
+                <label>Prospecção - Gerente de Negócios</label>
+            </value>
+            <value>
+                <fullName>Receptivo Contato Base</fullName>
+                <default>false</default>
+                <label>Receptivo Contato Base</label>
+            </value>
+            <value>
+                <fullName>Site Assistec</fullName>
+                <default>false</default>
+                <label>Site Assistec</label>
+            </value>
+            <value>
+                <fullName>Web</fullName>
+                <default>false</default>
+                <label>Web</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

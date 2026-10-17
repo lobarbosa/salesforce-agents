@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X_Segundo_n_vel_de_aprova_o__c</fullName>
+    <label>X_Segundo nível de aprovação</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Suporte</fullName>
+                <default>false</default>
+                <label>Suporte</label>
+            </value>
+            <value>
+                <fullName>Premium Plus</fullName>
+                <default>false</default>
+                <label>Premium Plus</label>
+            </value>
+            <value>
+                <fullName>Projetos</fullName>
+                <default>false</default>
+                <label>Projetos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

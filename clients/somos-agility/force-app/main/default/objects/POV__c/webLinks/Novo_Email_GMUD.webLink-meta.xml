@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Novo_Email_GMUD</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Novo Email GMUD</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!POV__c.Contato_para_EntregaId__c}&amp;rtype=003&amp;retURL={!POV__c.Id}&amp;p26=0D250000000Gn5q:grupogmud@agilitynetworks.com.br:Suporte&amp;p3_lkid={!POV__c.Id}</url>
+</WebLink>

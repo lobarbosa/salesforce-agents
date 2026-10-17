@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requisitar_Acao_de_Produtos__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 21042018: relacionamento criado para adicionar a lista relacionada &quot;Casos&quot; no objeto &quot;Ação de Produtos&quot;</description>
+    <label>Requisitar Ação de Produtos</label>
+    <referenceTo>Requisitar_Acao_de_Produto_de_Prospeccao__c</referenceTo>
+    <relationshipLabel>Casos</relationshipLabel>
+    <relationshipName>Casos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

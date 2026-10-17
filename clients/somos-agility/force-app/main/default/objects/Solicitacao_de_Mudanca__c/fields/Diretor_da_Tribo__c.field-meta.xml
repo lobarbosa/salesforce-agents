@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Diretor_da_Tribo__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM171018</description>
+    <label>Diretor da Tribo</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipName>Nova_Solicita_o_de_Mudan_a3</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

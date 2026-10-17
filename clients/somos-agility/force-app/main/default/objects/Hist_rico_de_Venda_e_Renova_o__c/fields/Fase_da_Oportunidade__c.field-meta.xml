@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fase_da_Oportunidade__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;1 - Prospecção&quot;),
+&quot;1 - Prospecção&quot;,
+IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;2 - Qualificação&quot;),
+&quot;2 - Qualificação&quot;,
+IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;3 - Desenvolvimento&quot;),
+&quot;3 - Desenvolvimento&quot;,
+IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;4 - Patrocinador&quot;),
+&quot;4 - Patrocinador&quot;,
+IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;5 - Proposição&quot;),
+&quot;5 - Proposição&quot;,
+IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;6 - Fechado/Ganho&quot;),
+&quot;6 - Fechado/Ganho&quot;,
+IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;0 - Fechado/Perdido&quot;),
+&quot;0 - Fechado/Perdido&quot;,
+IF (ISPICKVAL(Oportunidade_cadastrada_de_Renova_o__r.StageName,&quot;7 - Processado ERP&quot;),
+&quot;7 - Processado ERP&quot;,&quot;&quot;)
+)
+)
+)
+)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Fase da Oportunidade</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

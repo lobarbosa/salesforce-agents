@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M22_Ha_Budget_disponivel_OEG</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / Para alterar a fase da oportunidade de CVS para OEG caso o campo Há budget disponível tenha a opção Não, preencher o campo É possível obter o budget em breve?</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+(ISPICKVAL(PRIORVALUE(StageName),&quot;CVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)) ,( ISPICKVAL( Ha_budget_disponivel__c ,&quot;Não&quot;)&amp;&amp; ISPICKVAL( Ha_chance_de_obte_lo__c,&quot;&quot; )))</errorConditionFormula>
+    <errorMessage>Para alterar de fase é obrigatório o preenchimento do campo &quot;É possível obter o budget em breve?&quot;  (Msg22)</errorMessage>
+</ValidationRule>

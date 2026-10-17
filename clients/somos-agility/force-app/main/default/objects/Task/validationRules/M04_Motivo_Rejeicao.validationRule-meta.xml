@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M04_Motivo_Rejeicao</fullName>
+    <active>true</active>
+    <description>AM 22062018: campo obrigatório quando o status for &quot;rejeitado&quot;</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(Status,&quot;Rejeitado&quot;), ISBLANK(Motivo_da_rejeicao_da_Tarefa__c))</errorConditionFormula>
+    <errorDisplayField>Motivo_da_rejeicao_da_Tarefa__c</errorDisplayField>
+    <errorMessage>Informe o motivo da rejeição (Msg04).</errorMessage>
+</ValidationRule>

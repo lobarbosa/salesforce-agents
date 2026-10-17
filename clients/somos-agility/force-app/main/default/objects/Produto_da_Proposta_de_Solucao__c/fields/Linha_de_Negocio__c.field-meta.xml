@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Linha_de_Negocio__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Linha de Negócio de Apoio</label>
+    <referenceTo>Linha_de_Negocios__c</referenceTo>
+    <relationshipLabel>Previsão Financeira da Venda</relationshipLabel>
+    <relationshipName>Produtos_da_Proposta_de_Solu_o</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

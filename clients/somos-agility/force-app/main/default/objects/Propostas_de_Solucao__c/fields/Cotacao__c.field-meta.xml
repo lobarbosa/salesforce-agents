@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cotacao__c</fullName>
+    <description>KB 15/01/20: Campo utilizado na fase Retorno de Proposta e utilizado para armazenar a Cotação aceita pelo cliente.</description>
+    <label>Cotação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

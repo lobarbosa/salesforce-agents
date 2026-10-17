@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Razao_p_adotar_visao_agility_CVS</fullName>
+    <active>false</active>
+    <description>***CAMPO DESATIVADO*** Para alterar a fase da oportunidade de CVS é obrigatório preencher o campo Razão para adotar visão Agility vs Inicial</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)) ,ISBLANK( Razao_p_adotar_visao_Agility_vs_inicial__c ))</errorConditionFormula>
+    <errorMessage>** Para alterar de fase é obrigatório o preenchimento do campo &quot;Razão p/ adotar visão Agility vs Inicial&quot; **</errorMessage>
+</ValidationRule>

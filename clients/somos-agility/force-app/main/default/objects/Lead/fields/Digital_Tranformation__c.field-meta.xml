@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Digital_Tranformation__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>JN21102018 Renomear o campo Multi Cloud para Digital transformation, de acordo com o pediod do CT em 16102018.</description>
+    <label>Digital Transformation</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Pagamento_Estacionamento_Mensal__c</fullName>
+    <formula>IF((DAY(Data_da_Despesa__c) &lt;= 17 &amp;&amp; DAY(  Data__c  ) &lt;= 17) &amp;&amp; (MONTH(Data_da_Despesa__c)=MONTH(Data__c))
+,DATE(YEAR(Data_da_Despesa__c),MONTH(Data_da_Despesa__c),20) ,DATE(YEAR(Data_da_Despesa__c),MONTH(Data_da_Despesa__c)+1,20))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Data de Pagamento - Estac. Mensal</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

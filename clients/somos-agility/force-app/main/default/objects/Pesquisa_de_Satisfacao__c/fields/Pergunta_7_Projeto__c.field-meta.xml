@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pergunta_7_Projeto__c</fullName>
+    <defaultValue>&quot;Para notas abaixo de 8, poderia nos informar o que faltou para atingir a nota 10. Para que possamos melhorar os nossos serviços.&quot;</defaultValue>
+    <label>Pergunta 7:</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

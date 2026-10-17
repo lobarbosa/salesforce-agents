@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rentabilidade_prevista__c</fullName>
+    <description>Campo utilizado para condensar os valores de rentabilidade PSL e rentabilidade CVS, exibindo o valor de rentabilidade conforme a fase da oportunidade.</description>
+    <formula>/*
+IF(
+	AND(
+		OR(
+			ISPICKVAL(StageName, &apos;CVS/RVS&apos;)
+	    	,ISPICKVAL(StageName, &apos;OEG&apos;)
+	    	,ISPICKVAL(StageName, &apos;PSL&apos;)
+	),
+		Rentabilidade_prevista_PSL__c = 0
+)
+	,Rentabilidade_prevista_CVS__c
+	,Rentabilidade_prevista_PSL__c
+)
+*/
+
+IF(
+    Rentabilidade_prevista_PSL__c = 0,
+    IF(
+        Rentabilidade_prevista_CVS__c = 0,
+        0,
+        Rentabilidade_prevista_CVS__c
+    ),
+    Rentabilidade_prevista_PSL__c
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Antigo: Rentabilidade prevista; Campo de apoio para o relatório.</inlineHelpText>
+    <label>One time previsto</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

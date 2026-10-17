@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DIA001_Obriga_Executivo</fullName>
+    <active>true</active>
+    <description>AM 08032018: alterei a função ISNULL por ISBLANK porque não estava funcionando.(FO: Obriga o Executivo reconhece a necessidade é obrigatorio quando o status do DIA é sucesso.)</description>
+    <errorConditionFormula>ISPICKVAL(Resultado_da_Acao_DIA__c, &quot;Sucesso&quot;)  &amp;&amp;   ISBLANK(Executivo_que_reconhece_a_necessidade__c)</errorConditionFormula>
+    <errorDisplayField>Executivo_que_reconhece_a_necessidade__c</errorDisplayField>
+    <errorMessage>O Executivo que reconhece a necessidade é obrigatório quando o Resultado da Ação DIA tem o status como sucesso.</errorMessage>
+</ValidationRule>

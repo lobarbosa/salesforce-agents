@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Importante__c</fullName>
+    <defaultValue>&quot;Informe Sim caso não tenha orçamento e Não caso já possua um orçamento. Caso seja informado Não, o SF não irá solicitar um novo orçamento.&quot;</defaultValue>
+    <externalId>false</externalId>
+    <label>Importante</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

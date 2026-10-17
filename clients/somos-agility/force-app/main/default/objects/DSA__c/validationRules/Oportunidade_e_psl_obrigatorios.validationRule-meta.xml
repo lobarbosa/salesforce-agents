@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade_e_psl_obrigatorios</fullName>
+    <active>true</active>
+    <description>Campos &quot;Oportunidade&quot; e &quot;Propostas de Solução&quot; obrigatórios dentro do Objeto DSA.</description>
+    <errorConditionFormula>AND(
+  ISBLANK(Oportunidade__c),
+  ISBLANK(Propostas_de_Solu_o__c) 
+)</errorConditionFormula>
+    <errorMessage>É necessário preencher os campos &quot;Oportunidade&quot; e &quot;Propostas de Solução&quot;.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_motivo_e_risco_suspensao</fullName>
+    <active>true</active>
+    <description>Realiza a checagem de preenchimento dos campos motivo e risco suspenso se o campo data de início suspensão estiver preenchido.</description>
+    <errorConditionFormula>AND(
+    TEXT(Data_de_inicio_suspensao__c) &lt;&gt; &apos;&apos;,
+    OR(
+        ISBLANK(Motivo_Status_Suspenso__c),
+        ISBLANK(Risco_Status_Suspenso__c)
+    )
+)</errorConditionFormula>
+    <errorDisplayField>Data_de_inicio_suspensao__c</errorDisplayField>
+    <errorMessage>Preencha os campos &quot;Motivo Status Suspenso&quot; e &quot;Risco Status Suspenso&quot; ao atribuir uma data de início para a suspensão.</errorMessage>
+</ValidationRule>

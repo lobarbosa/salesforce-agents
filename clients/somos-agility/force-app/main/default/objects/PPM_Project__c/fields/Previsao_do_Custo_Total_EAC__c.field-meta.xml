@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previsao_do_Custo_Total_EAC__c</fullName>
+    <externalId>false</externalId>
+    <formula>( Orcamento_Original__c - Seriam_Gastos__c )/+ Desempenho_de_Prazo__c *  Desempenho_de_Custo__c</formula>
+    <label>Previsão do Custo Total (EAC)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

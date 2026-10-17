@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Notifica_o_de_Rejei_o_T_cnica_do_DSA</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Notificação de Rejeição Técnica do DSA</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!Workflow_de_Valida_o_de_DSA__c.Id}&amp;p3_lkid={!Workflow_de_Valida_o_de_DSA__c.Id}&amp;rtype=003&amp;p2_lkid= dsa@agilitynetworks.com.br&amp;p24={!Workflow_de_Valida_o_de_DSA__c.e_mail_do_propriet_rio__c};dsa@agilitynetworks.com.br;amir.velho@agilitynetworks.com.br&amp;template_id=00X50000001PUcQ&amp;p5=&amp;save=1&apos;);</url>
+</WebLink>

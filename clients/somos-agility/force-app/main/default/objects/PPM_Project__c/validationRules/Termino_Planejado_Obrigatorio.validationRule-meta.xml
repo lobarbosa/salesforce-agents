@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Termino_Planejado_Obrigatorio</fullName>
+    <active>true</active>
+    <description>A data de término planejado é obrigatória quando o Status do Projeto está com o Status # de DSA em Análise / DSA Rejeitado / Não Iniciado / Em Planejamento</description>
+    <errorConditionFormula>AND((ISPICKVAL( Project_Status__c, &quot;Atrasado&quot;)|| 
+ISPICKVAL( Project_Status__c, &quot;Dentro do prazo&quot;)|| 
+ISPICKVAL(Project_Status__c, &quot;Encerrado&quot;)|| 
+ISPICKVAL(Project_Status__c, &quot;Suspenso&quot;)|| 
+ISPICKVAL(Project_Status__c,&quot;Finalizado&quot;)), 
+ISBLANK( Termino_planejado__c ))</errorConditionFormula>
+    <errorDisplayField>Termino_planejado__c</errorDisplayField>
+    <errorMessage>Favor informar o Término Planejado</errorMessage>
+</ValidationRule>

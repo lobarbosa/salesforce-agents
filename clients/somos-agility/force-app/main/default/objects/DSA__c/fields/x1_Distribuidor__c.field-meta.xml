@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>x1_Distribuidor__c</fullName>
+    <inlineHelpText>A opção Agility deverá ser utilizada apenas nos casos em que a compra for realizada diretamente com o fabricante.</inlineHelpText>
+    <label>1° Distribuidor</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Adistec</fullName>
+                <default>false</default>
+                <label>Adistec</label>
+            </value>
+            <value>
+                <fullName>Agility</fullName>
+                <default>false</default>
+                <label>Agility</label>
+            </value>
+            <value>
+                <fullName>Algar</fullName>
+                <default>false</default>
+                <label>Algar</label>
+            </value>
+            <value>
+                <fullName>America Net</fullName>
+                <default>false</default>
+                <label>America Net</label>
+            </value>
+            <value>
+                <fullName>AWS</fullName>
+                <default>false</default>
+                <label>AWS</label>
+            </value>
+            <value>
+                <fullName>CLM</fullName>
+                <default>false</default>
+                <label>CLM</label>
+            </value>
+            <value>
+                <fullName>Google</fullName>
+                <default>false</default>
+                <label>Google</label>
+            </value>
+            <value>
+                <fullName>Informações em notas e anexos</fullName>
+                <default>false</default>
+                <label>Informações em notas e anexos</label>
+            </value>
+            <value>
+                <fullName>Ingram – Latam</fullName>
+                <default>false</default>
+                <label>Ingram – Latam</label>
+            </value>
+            <value>
+                <fullName>Ingram – SP</fullName>
+                <default>false</default>
+                <label>Ingram – SP</label>
+            </value>
+            <value>
+                <fullName>M3 Corp</fullName>
+                <default>false</default>
+                <label>M3 Corp</label>
+            </value>
+            <value>
+                <fullName>N&amp;DC</fullName>
+                <default>false</default>
+                <label>N&amp;DC</label>
+            </value>
+            <value>
+                <fullName>TD Synnex – Colômbia</fullName>
+                <default>false</default>
+                <label>TD Synnex – Colômbia</label>
+            </value>
+            <value>
+                <fullName>TD Synnex – ES</fullName>
+                <default>false</default>
+                <label>TD Synnex – ES</label>
+            </value>
+            <value>
+                <fullName>TD Synnex – México</fullName>
+                <default>false</default>
+                <label>TD Synnex – México</label>
+            </value>
+            <value>
+                <fullName>TD Synnex – Miami</fullName>
+                <default>false</default>
+                <label>TD Synnex – Miami</label>
+            </value>
+            <value>
+                <fullName>TD Synnex – SP</fullName>
+                <default>false</default>
+                <label>TD Synnex – SP</label>
+            </value>
+            <value>
+                <fullName>WebSIA</fullName>
+                <default>false</default>
+                <label>WebSIA</label>
+            </value>
+            <value>
+                <fullName>Ingram</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Ingram</label>
+            </value>
+            <value>
+                <fullName>TD Synnex</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>TD Synnex</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_Estacionamento_Reembolsavel__c</fullName>
+    <label>Valor Total Estacionamento Reembolsavel</label>
+    <summarizedField>Lancamento_de_Despesas__c.Valor_da_Despesa__c</summarizedField>
+    <summaryFilterItems>
+        <field>Lancamento_de_Despesas__c.Tipo_da_Despesa__c</field>
+        <operation>equals</operation>
+        <value>Estacionamento Avulso</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Lancamento_de_Despesas__c.Classe__c</field>
+        <operation>equals</operation>
+        <value>Reembolsável</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

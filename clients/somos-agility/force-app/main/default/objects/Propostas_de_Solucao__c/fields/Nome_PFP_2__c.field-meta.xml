@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nome_PFP_2__c</fullName>
+    <description>jn05102018 criação de campo cfe pedido do CT&gt;</description>
+    <inlineHelpText>Descreva o escopo da PFP 2</inlineHelpText>
+    <label>*Descrição  PFP 2</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

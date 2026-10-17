@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Alerta_CVS_Fast_Track</name>
+        <label>Opportunity.Alerta_CVS_Fast_Track</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Opportunity.Alerta_CVS_Fast_Track</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Opportunity.Alerta_CVS_Fast_Track</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Notificação de CVS Fast Track
+Descrição da regra de fluxo de trabalho: AM 18092018:corrigida a fórmula para notificar somente quando novo ou alterado este campo /  AM 17062018: Notificação de CVS Fast Track&quot;</description>
+    <label>Notificação de CVS Fast Track</label>
+    <migratedFromWorkflowRuleName>Notificação de CVS Fast Track</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Alerta_CVS_Fast_Track</targetReference>
+        </connector>
+        <filterFormula>OR(
+ISCHANGED({!$Record.Validacao_CVS_Fast_Track__c})
+)</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

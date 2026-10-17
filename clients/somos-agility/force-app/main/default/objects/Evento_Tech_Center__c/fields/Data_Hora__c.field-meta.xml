@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Hora__c</fullName>
+    <inlineHelpText>Entenda que a agenda do TC é concorrida e que isso não é garantia de data. NÃO se comprometa com o cliente até que esse processo tenha sido confirmado.</inlineHelpText>
+    <label>Data/Hora</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

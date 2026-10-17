@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pagamento_Comissao_F</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF(ISPICKVAL( Faturamento__c  ,&quot;Nulo&quot;)||(ISPICKVAL( Faturamento__c  ,&quot;NFAP&quot;))||(ISPICKVAL( Faturamento__c  ,&quot;NFR&quot;))||(ISPICKVAL( Faturamento__c  ,&quot;FA&quot;))||(ISPICKVAL( Faturamento__c  ,&quot;FANR&quot;))||( Valor_da_Comiss_o__c &gt;0),(Pago__c =TRUE),FALSE)</errorConditionFormula>
+    <errorDisplayField>Pago__c</errorDisplayField>
+    <errorMessage>Não há Valor a ser Pago!</errorMessage>
+</ValidationRule>

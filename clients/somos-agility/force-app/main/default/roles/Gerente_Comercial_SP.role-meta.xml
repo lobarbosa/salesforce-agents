@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>Read</caseAccessLevel>
+    <contactAccessLevel>None</contactAccessLevel>
+    <description>Gerente Comercial SP</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>Gerente Comercial SP</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>Diretor_DC_C</parentRole>
+</Role>

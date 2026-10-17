@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Confirmacao_do_perfil_de_solucao_Agility__c</fullName>
+    <description>&quot;Transacional: é uma oportunidade em que não há serviço e/ou desenvolvimento de uma solução. Ex: renovação de subscrição.
+Básica: é uma oportunidade que possui serviço mas de baixa complexidade e sem caráter consultivo. Ex: refresh de equipamentos.
+Consultiva: oportunidade que precisa de serviços especializados para a construção da visão de solução e sua implementação. Ex: integração de ambientes, customizações voltadas para o cliente.&quot;</description>
+    <inlineHelpText>Transacional: é uma oportunidade em que não há serviço e/ou desenvolvimento de uma solução. Ex: renovação de subscrição.
+Básica: é uma oportunidade que possui serviço mas de baixa complexidade e sem caráter consultivo. Ex: refresh de equipamentos.</inlineHelpText>
+    <label>Confirmação do perfil de solução Agility</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Básica</fullName>
+                <default>false</default>
+                <label>Básica</label>
+            </value>
+            <value>
+                <fullName>Consultiva</fullName>
+                <default>false</default>
+                <label>Consultiva</label>
+            </value>
+            <value>
+                <fullName>Transacional</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Transacional</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

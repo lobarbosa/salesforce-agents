@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In_Net_previsto_PSL__c</fullName>
+    <description>JN18052018  Sales In sem sulfixo PSL -  a partir da fase PSL e as demais, não terão amis sulfixo no rotulo solicitado pelo Carlos.</description>
+    <inlineHelpText>Antigo: Sales In (Net) Previsto PSL</inlineHelpText>
+    <label>Recorrente ajustado (Net) Previsto PSL</label>
+    <summarizedField>Propostas_de_Solucao__c.Sales_In_Net_2__c</summarizedField>
+    <summaryFilterItems>
+        <field>Propostas_de_Solucao__c.Sincronizar__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Propostas_de_Solucao__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aviso_de_Oportunidade_Fechada__c</fullName>
+    <description>AM 26052018: campo de fórmula informativo do encerramento</description>
+    <externalId>false</externalId>
+    <formula>IMAGE(&apos;https://agilitynetworks--c.na32.content.force.com/servlet/servlet.ImageServer?id=01538000002AljU&amp;oid=00DHa0000070wxf&amp;lastMod=1527352685000&apos;,&apos;Aviso_Opp_Encerrada&apos;,94,858)
+
+/*
+&quot;*** Atenção: esta Oportunidade não encontra-se mais aberta, confira o status na seção Informações do Encerramento ***&quot;
+
+IMAGE(&apos;https://agilitynetworks--c.na32.content.force.com/servlet/servlet.FileDownload?file=015500000023cnw&apos;,&apos;Amarelo&apos;,30,150)
+
+IMAGE(https://agilitynetworks--c.na32.content.force.com/servlet/servlet.ImageServer?id=01538000002AljU&amp;oid=00DHa0000070wxf&amp;lastMod=1527352685000&apos;,&apos;Aviso_Opp_Encerrada&apos;,94,858)
+
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>ATENÇÃO!</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

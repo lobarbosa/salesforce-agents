@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Linha_de_Neg_cios_BDM__c</fullName>
+    <inlineHelpText>ENTREGA DE APLICAÇÃO:
+ADC (Geral)
+WAAR
+
+DATA CENTER &amp; CLOUD:
+VOG
+AI
+DC SRV, Networks, Outros.
+AUTOM e IPAM
+
+SEGURANÇA:
+NGF
+DCF, ASM, APM, BYOD
+WEB SECURITY
+NGEN NAC</inlineHelpText>
+    <label>Linha de Negócios BDM</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ENTREGA DE APLICAÇÃO</fullName>
+                <default>false</default>
+                <label>ENTREGA DE APLICAÇÃO</label>
+            </value>
+            <value>
+                <fullName>DATA CENTER &amp; CLOUD</fullName>
+                <default>false</default>
+                <label>DATA CENTER &amp; CLOUD</label>
+            </value>
+            <value>
+                <fullName>SEGURANÇA</fullName>
+                <default>false</default>
+                <label>SEGURANÇA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

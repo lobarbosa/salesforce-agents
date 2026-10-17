@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Alerta_mapeamento_5_dias</name>
+        <label>Alerta mapeamento 5 dias</label>
+        <locationX>877</locationX>
+        <locationY>414</locationY>
+        <actionName>Historico_do_Mapeamento__c.Mapeamento_Vencendo_em_5_Dias</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Historico_do_Mapeamento__c.Mapeamento_Vencendo_em_5_Dias</nameSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Alerta_mapemaneto_15_dias</name>
+        <label>Alerta mapemaneto 15 dias</label>
+        <locationX>502</locationX>
+        <locationY>706</locationY>
+        <actionName>Mapeamento__c.Mapeamento_Vencendo_em_15_Dias</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Mapeamento__c.Mapeamento_Vencendo_em_15_Dias</nameSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>alerta_mapemanto_30_duas</name>
+        <label>alerta mapemanto 30 duas</label>
+        <locationX>223</locationX>
+        <locationY>415</locationY>
+        <actionName>Mapeamento__c.Mapeamento_Vencendo_em_30_Dias</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Mapeamento__c.Mapeamento_Vencendo_em_30_Dias</nameSegment>
+    </actionCalls>
+    <apiVersion>52.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Alerta_de_email</name>
+        <label>Alerta de email</label>
+        <locationX>496</locationX>
+        <locationY>510</locationY>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>X30_dias</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Dias_para_vencimento__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>30.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>alerta_mapemanto_30_duas</targetReference>
+            </connector>
+            <label>30 dias</label>
+        </rules>
+        <rules>
+            <name>X15_dias</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Dias_para_vencimento__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>15.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Alerta_mapemaneto_15_dias</targetReference>
+            </connector>
+            <label>15 dias</label>
+        </rules>
+        <rules>
+            <name>X5_dias</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Dias_para_vencimento__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>5.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Alerta_mapeamento_5_dias</targetReference>
+            </connector>
+            <label>5 dias</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>caso a oportunidade deste mapeamento estiver fechada, não é necessário o envio de alerta de email</description>
+        <name>mapeamento_oportunidade_fechada</name>
+        <label>mapeamento oportunidade fechada</label>
+        <locationX>496</locationX>
+        <locationY>301</locationY>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>oportunidade_fechada</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Oportunidade__r.StageName</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>fechada win ou fechada lost</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Alerta_de_email</targetReference>
+            </connector>
+            <label>oportunidade fechada</label>
+        </rules>
+    </decisions>
+    <description>Alerta de vencimento de mapeamento 30,15 e 5 dias</description>
+    <interviewLabel>Alerta de vencimento de mapemaneto {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>vencimento do mapeamento Alerta</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>378</locationX>
+        <locationY>34</locationY>
+        <connector>
+            <targetReference>mapeamento_oportunidade_fechada</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Dias_para_vencimento__c</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <numberValue>30.0</numberValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Dias_para_vencimento__c</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <numberValue>15.0</numberValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Dias_para_vencimento__c</field>
+            <operator>LessThanOrEqualTo</operator>
+            <value>
+                <numberValue>5.0</numberValue>
+            </value>
+        </filters>
+        <object>Mapeamento__c</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2021-06-26</startDate>
+            <startTime>00:15:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

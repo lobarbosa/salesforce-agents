@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M32_Qualificacao_de_fase_PSL_para_PFC</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / AM/CN: para avançar para a fase PFC é necessário que o campo do objeto Blueprint “Status do Blueprint” tem que estar com o valor &quot;Validado pelo Cliente&quot; selecionado.</description>
+    <errorConditionFormula>AND ( 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Service Manager&quot;,
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;PSL&quot;), 
+PSL_Validado__c = 0 
+     )
+
+/*
+AND ( 
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;PSL&quot;), 
+PSL_Validado__c = 0 
+     )
+*/</errorConditionFormula>
+    <errorMessage>Para avançar a fase, a PSL deverá ser validada pelo cliente e será necessário que ao menos uma delas esteja sincronizada. Caso o cliente descarte a PSL, a Oportunidade deve ser encerrada (abandonada) (Msg32)</errorMessage>
+</ValidationRule>

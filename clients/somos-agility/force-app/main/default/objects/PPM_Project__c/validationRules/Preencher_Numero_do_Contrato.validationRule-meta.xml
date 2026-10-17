@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preencher_Numero_do_Contrato</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISNULL(Data_de_Faturamento_Ativacao__c)),ISBLANK( Numero_do_Contrato__c ))</errorConditionFormula>
+    <errorMessage>Favor Informar o Número do Contrato</errorMessage>
+</ValidationRule>

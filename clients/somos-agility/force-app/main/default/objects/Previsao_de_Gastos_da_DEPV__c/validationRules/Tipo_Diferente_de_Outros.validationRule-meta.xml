@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_Diferente_de_Outros</fullName>
+    <active>false</active>
+    <description>Se Tipo &lt;&gt; Outros, não será obrigatório preencher o campo especificar</description>
+    <errorConditionFormula>AND (TEXT(Tipo__c) &lt;&gt; &quot;Outros (Especificar)&quot;,NOT(ISBLANK( Especifique__c )))</errorConditionFormula>
+    <errorDisplayField>Especifique__c</errorDisplayField>
+    <errorMessage>Não é necessário preencher este campo para este Tipo de Previsão de Gastos</errorMessage>
+</ValidationRule>

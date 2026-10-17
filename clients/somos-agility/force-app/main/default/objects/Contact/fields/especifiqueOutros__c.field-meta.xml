@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>especifiqueOutros__c</fullName>
+    <inlineHelpText>Caso o campo Área de Atuação esteja marcado como &quot;Outros&quot;, será obrigatório descrever qual área do contato dentro da empresa vinculada a ele.</inlineHelpText>
+    <label>Especifique Outros</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>TextArea</type>
+</CustomField>

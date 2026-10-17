@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Somente_o_Dono_pode_Alteraro_o_Status</fullName>
+    <active>true</active>
+    <description>Somente o Proprietário do Registro pode alterar o Status.</description>
+    <errorConditionFormula>AND(ISCHANGED( Status_do_Registro__c ), $User.Id &lt;&gt; Owner:User.Id )</errorConditionFormula>
+    <errorMessage>Somente o Proprietário do Registro pode alterar o Status.</errorMessage>
+</ValidationRule>

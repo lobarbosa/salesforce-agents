@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Previsto</fullName>
+    <active>false</active>
+    <description>jn17092018 desativação da regra de validação do valor previsto, conforme solicitação de chamado 2018011034 solicitado por tatiane Sousa (PMO)</description>
+    <errorConditionFormula>AND( ISPICKVAL( Marcos__r.Classe__c,&quot;Financeiro&quot;),
+ ISBLANK(  Valor_Previsto_Reais__c  ))</errorConditionFormula>
+    <errorMessage>Favor informar o Valor Previsto (Reais)</errorMessage>
+</ValidationRule>

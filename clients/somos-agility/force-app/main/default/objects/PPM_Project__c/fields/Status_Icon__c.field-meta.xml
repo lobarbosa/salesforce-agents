@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Icon__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISPICKVAL(Project_Phase__c, &apos;Draft - Phase Zero&apos;),
+ IF( Percent_Complete_Hours__c &lt; 0.05,
+  IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOT&amp;oid=00D80000000ZNOz&apos;, &apos;Green&apos;),
+   IF( Percent_Complete_Hours__c &lt; 0.15,
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOd&amp;oid=00D80000000ZNOz&apos;, &apos;Yellow&apos;),
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOY&amp;oid=00D80000000ZNOz&apos;, &apos;Red&apos;)
+   )
+ ),
+
+IF( ISPICKVAL(Project_Phase__c, &apos;Design&apos;),
+ IF( Percent_Complete_Hours__c &lt; 0.25,
+  IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOT&amp;oid=00D80000000ZNOz&apos;, &apos;Green&apos;),
+   IF( Percent_Complete_Hours__c &lt; 0.35,
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOd&amp;oid=00D80000000ZNOz&apos;, &apos;Yellow&apos;),
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOY&amp;oid=00D80000000ZNOz&apos;, &apos;Red&apos;)
+   )
+ ),
+IF( ISPICKVAL(Project_Phase__c, &apos;Proof of Concept&apos;),
+ IF( Percent_Complete_Hours__c &lt; 0.5,
+  IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOT&amp;oid=00D80000000ZNOz&apos;, &apos;Green&apos;),   
+   IF( Percent_Complete_Hours__c &lt; 0.60,
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOd&amp;oid=00D80000000ZNOz&apos;, &apos;Yellow&apos;),
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOY&amp;oid=00D80000000ZNOz&apos;, &apos;Red&apos;)
+   )
+ ),
+IF( ISPICKVAL(Project_Phase__c, &apos;Build&apos;),
+ IF( Percent_Complete_Hours__c &lt; 0.75,
+  IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOT&amp;oid=00D80000000ZNOz&apos;, &apos;Green&apos;),   
+   IF( Percent_Complete_Hours__c &lt; 0.85,
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOd&amp;oid=00D80000000ZNOz&apos;, &apos;Yellow&apos;),
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOY&amp;oid=00D80000000ZNOz&apos;, &apos;Red&apos;)
+   )
+ ),
+IF( ISPICKVAL(Project_Phase__c, &apos;Implementation&apos;),
+ IF( Percent_Complete_Hours__c &lt; 1,
+  IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOT&amp;oid=00D80000000ZNOz&apos;, &apos;Green&apos;),   
+   IF( Percent_Complete_Hours__c &lt; 1.1,
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOd&amp;oid=00D80000000ZNOz&apos;, &apos;Yellow&apos;),
+    IMAGE(&apos;https://na6.salesforce.com/servlet/servlet.ImageServer?id=01580000000eXOY&amp;oid=00D80000000ZNOz&apos;, &apos;Red&apos;)
+   )
+ ),
+&apos;&apos;)))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>This is an example of a conditional, custom formula field that evaluates the Project Phase and the Percent Complete (hours).  Default Value for &quot;Draft - Phase Zero&quot; (Green 0 - .05%, Yellow .06 - .15, Red .16 and above).  For more definition, go into setup</inlineHelpText>
+    <label>Status Icon</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

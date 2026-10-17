@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lembrete__c</fullName>
+    <defaultValue>&quot; Antes de Selecionar a Opção - Reserva Anexa, verifique se os campos Localizador estão preenchidos de acordo com o tipo de solicitação escolhida. Se o campo não estiver marcado não será possível enviar a solicitação para aprovação. Não deixe de anexar a Reserva. &quot;</defaultValue>
+    <label>*Lembrete</label>
+    <length>500</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

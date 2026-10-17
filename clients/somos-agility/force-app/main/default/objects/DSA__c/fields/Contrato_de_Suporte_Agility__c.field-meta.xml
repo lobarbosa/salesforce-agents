@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contrato_de_Suporte_Agility__c</fullName>
+    <label>Contrato de Suporte Agility</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Com Contrato de Suporte</fullName>
+                <default>false</default>
+                <label>Com Contrato de Suporte</label>
+            </value>
+            <value>
+                <fullName>Sem Contrato de Suporte</fullName>
+                <default>false</default>
+                <label>Sem Contrato de Suporte</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

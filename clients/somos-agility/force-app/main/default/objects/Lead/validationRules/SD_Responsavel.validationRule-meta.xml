@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SD_Responsavel</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND ( ISPICKVAL(  LeadSource , &quot;Indicação Service Delivery&quot;), ISBLANK( SD_Responsavel_pela_Indicacao__c ) )</errorConditionFormula>
+    <errorMessage>SD, informe o SD Responsável.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Descricao_Tipo_de_Faturamento__c</fullName>
+    <description>Campo destinado a ser informado a descrição do faturamento quando ser informado o tipo de faturamento como sendo outros.</description>
+    <label>Descrição Tipo de Faturamento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

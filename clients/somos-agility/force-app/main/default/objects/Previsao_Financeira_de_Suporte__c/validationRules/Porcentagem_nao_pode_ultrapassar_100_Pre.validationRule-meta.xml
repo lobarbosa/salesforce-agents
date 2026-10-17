@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Porcentagem_nao_pode_ultrapassar_100_Pre</fullName>
+    <active>true</active>
+    <description>A Soma das Porcentagem Previstas das LN&apos;s não pode ser maior ou menor que 100%.</description>
+    <errorConditionFormula>(Reconhecimento_Previsto_em_EA__c +   Reconhecimento_Previsto_em_C_A__c  +   Reconhecimento_Previsto_em_SEG__c    ) &gt; 1.0 ||(  Reconhecimento_Previsto_em_EA__c +  Reconhecimento_Previsto_em_C_A__c +  Reconhecimento_Previsto_em_SEG__c  ) &lt; 1.0</errorConditionFormula>
+    <errorMessage>A Soma das Porcentagem Previstas das LN&apos;s não pode ser maior ou menor que 100%.</errorMessage>
+</ValidationRule>

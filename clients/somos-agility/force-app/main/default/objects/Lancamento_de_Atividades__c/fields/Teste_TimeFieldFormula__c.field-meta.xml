@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Teste_TimeFieldFormula__c</fullName>
+    <externalId>false</externalId>
+    <formula>VALUE( MID( TEXT( Inicio_da_atividade__c - 2/24), 12, 2 ) )
+
+
+/*
+
+VALUE( MID( TEXT( Inicio_da_atividade__c - 2/24), 12, 2 ) )
+
+(FLOOR((Completed_Date__c -  Created_Date2__c)*24))+
+(((((Completed_Date__c -  Created_Date2__c)*24)-floor((Completed_Date__c -  Created_Date2__c)*24))*60)/100)
+
+
+VALUE( MID( TEXT( Inicio_da_atividade__c - 2/24), 12, 2 ) )
+
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Teste TimeFieldFormula</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

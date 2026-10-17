@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_encerramento__c</fullName>
+    <description>JN 29032018
+Obrigatório o preenchimento de opções do campo Tipo de Encerramento&quot; para avanço de fase da oportunidade NEC para FPR.</description>
+    <inlineHelpText>Obrigatório o preenchimento de opções do campo &quot;Tipo de Encerramento&quot; para avanço de fase da oportunidade NEC para FPR.</inlineHelpText>
+    <label>Tipo de encerramento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Win</fullName>
+                <default>false</default>
+                <label>Win</label>
+            </value>
+            <value>
+                <fullName>Loss</fullName>
+                <default>false</default>
+                <label>Loss</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

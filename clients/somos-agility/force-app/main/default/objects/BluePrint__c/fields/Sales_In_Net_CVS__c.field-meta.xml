@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In_Net_CVS__c</fullName>
+    <inlineHelpText>Antigo: Sales In (Net) CVS Previsto</inlineHelpText>
+    <label>Recorrente ajustado (Net) CVS Previsto</label>
+    <summarizedField>Previsao_Financeira_de_Vendas_CVS__c.recorrenteAjustadoSUM__c</summarizedField>
+    <summaryForeignKey>Previsao_Financeira_de_Vendas_CVS__c.BluePrint__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

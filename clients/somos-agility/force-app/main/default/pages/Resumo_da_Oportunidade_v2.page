@@ -1,0 +1,270 @@
+<apex:page standardController="Opportunity" lightningStyleSheets="true">
+    <apex:includeScript value="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"/>
+ <style>
+  .separator {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color:#ed1d25;
+  font-size:200%;
+}
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #ed1d25;
+}
+.separator::before {
+  margin-right: .25em;
+}
+.separator::after {
+  margin-left: .25em;
+}
+</style>
+    
+    <input type="hidden" name="URLSec" id="URLSec" value=""/>
+    <br/>
+    <html>
+        <br/>
+        <center><img src="https://agilitynetworks--c.na32.content.force.com/servlet/servlet.ImageServer?id=01538000002LUmw&oid=00D500000006rAF&lastMod=1486472324000"
+                     alt="LogoAgility" width="220" height="50"/></center> 
+    </html>
+    <br/> 
+    <apex:pageBlock id="DetailOpp">
+        <br/>
+         <div aling="center" style="font-size:100%; color:black">Fase atual da oportunidade:<strong> 
+             {!opportunity.StageName}</strong> </div>
+        <br/>
+        <div align="center" style="font-size:100%; color:black"> <strong> {!$User.FirstName} {!$User.LastName}</strong>, 
+            veja abaixo os detalhes da oportunidade: </div>
+        
+       
+        <br/>
+        <div class="separator">Oportunidade Qualificada (OQF)</div>
+        <!-- Fase Oportunidade qualificada-->
+       <!-- <div align="center" style="font-size:200%; color:#d80000"> OQF </div>-->
+        <br/>
+        <apex:pageblockSection title="Exploração SPIN" columns="2" id="exploracaospin">
+            <apex:outputField value="{!opportunity.Defina_a_situacao_do_Cliente__c}"/>
+            <apex:outputField value="{!opportunity.Defina_os_problemas_do_cliente__c}" />
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageBlockSection title="Defina os Impactos e a Cadeia de Dor no Cliente" columns="2" id="definacadeia">
+            <apex:outputField value="{!opportunity.Contato_do_Cliente_Afetado__c}"/>
+            <apex:outputField value="{!opportunity.Impacto_Cargo_1__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_Contato_1__c}"/>
+            <br/>  <br/>
+            <apex:outputField value="{!opportunity.BDR_Responsavel__c}"/>
+            <apex:outputField value="{!opportunity.Impacto_Cargo_2__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_Contato_2__c}"/>
+            <br/>  <br/>
+            <apex:outputField value="{!opportunity.Contato_3__c}"/>
+            <apex:outputField value="{!opportunity.Impacto_Cargo_3__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_Contato_3__c}"/>
+        </apex:pageBlockSection>
+        <br/> 
+        <apex:pageBlockSection title="Ações do Cliente" columns="2" id="acoescliente">
+            <apex:outputField value="{!opportunity.Principal_executivo_interessado__c}"/>
+            <apex:outputField value="{!opportunity.Informar_a_urgencia_da_necessidade__c}"/>
+            <apex:outputField value="{!opportunity.Resp_Cliente_por_essas_informacoes__c}"/>  
+            <apex:outputField value="{!opportunity.Porque_a_solucao_e_importante__c}"/>
+        </apex:pageBlockSection>
+        <br/>
+        <apex:pageBlockSection title="Ação do Arquiteto de Soluções" columns="2" id="acaoarquiteto">
+            <apex:outputField value="{!opportunity.Pre_classificacao_do_perfil_da_solucao__c}"/>
+            <apex:outputField value="{!opportunity.Data_do_Preenchimento_Pre_classificacao__c}"/>      
+        </apex:pageBlockSection>
+        <br/>
+        <br/>
+        
+  
+        <div class="separator">Criar visão da solução / Reengenharia da visão (CVS/RVS)</div>
+ 
+       
+        <!-- Fase Criar visão da solucao-->
+        <!--<div align="center" style="font-size:200%; color:#d80000"> CVS/RVS </div>-->
+        <br/>
+        <apex:pageblockSection title="Visão da Solução" columns="2" id="visaosolucao">
+            <apex:outputField value="{!opportunity.Cliente_ja_possui_visao_estabelecida__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Ações do Arquiteto de Soluções" columns="2" id="acoesarquiteto2">
+            <apex:outputField value="{!opportunity.Confirmacao_do_perfil_de_solucao_Agility__c}"/>
+            <apex:outputField value="{!opportunity.Data_Hora_do_Preenchimento_Confirmacao__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Ações do Cliente - Efetividade" columns="2" id="acoesclienteefetividade">
+            <apex:outputField value="{!opportunity.Confirmada_Efetividade_pelo_Cliente__c}"/>
+            <apex:outputField value="{!opportunity.Comente_a_efetividade_da_solucao__c}"/>
+            <apex:outputField value="{!opportunity.Contato_do_cliente_que_confirmou_efetivi__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Ações do Cliente - Primazia" columns="2" id="acoesclienteprimazia">
+            <apex:outputField value="{!opportunity.Confirmada_primazia_pelo_Cliente__c}"/>
+            <apex:outputField value="{!opportunity.Comentarios_sobre_a_primazia_da_solucao__c}"/>
+            <apex:outputField value="{!opportunity.Contato_do_cliente_que_confirmou_primaz__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Ações do Cliente - Orçamento" columns="2" id="acoesclienteorcamento">
+            <apex:outputField value="{!opportunity.Ha_budget_disponivel__c}"/>
+            <apex:outputField value="{!opportunity.Comentarios_sobre_o_budget__c}"/>
+            <apex:outputField value="{!opportunity.Ha_chance_de_obte_lo__c}"/>
+            <br/>
+            <apex:outputField value="{!opportunity.Contato_do_cliente_que_confirmou_orcamen__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Reengenharia da Visão" columns="2" id="reengenhariadavisao">
+            <apex:outputField value="{!opportunity.Nova_visao_estabelecida_com_sucesso__c}"/>
+            <apex:outputField value="{!opportunity.Comentarios_sobre_a_visao_estabelecida__c}"/>
+            <apex:outputField value="{!opportunity.Visao_de_solucao_estabelecida_por__c}"/>
+            <apex:outputField value="{!opportunity.Informante_sobre_a_visao_estabelecida__c}"/>
+            <br/>
+            <apex:outputField value="{!opportunity.Razao_p_adotar_visao_Agility_vs_inicial__c}"/> 
+        </apex:pageblockSection>
+        <br/>
+        <br/>
+        
+         <div class="separator">Oportunidade Engajada (OEG)</div>
+        <!-- Fase Oportunidade Engajada-->
+        <!--<div align="center" style="font-size:200%; color:#d80000"> OEG </div>-->        
+        <div align="left">
+            <strong>
+                Status da Qualificação da Fase OQF: &nbsp;
+                <apex:outputtext style="color:{!IF(Opportunity.Status_Qualificacao_OEG__c=="Aprovado",'green',IF(Opportunity.Status_Qualificacao_OEG__c=="Pendente"||Opportunity.Status_Qualificacao_OEG__c=="Rascunho",'orange','red'))};font-size:18px;" value="{!IF(Opportunity.Status_Qualificacao_OEG__c=="Aprovado", Opportunity.Status_Qualificacao_OEG__c, Opportunity.Status_Qualificacao_OEG__c)}"/>
+            </strong> 
+        </div>
+        <br/>
+        <apex:pageblockSection title="Confirmação de Informações - Exploração SPIN" columns="2" id="confinfospin">
+            <apex:outputField value="{!opportunity.Defina_a_situacao_do_Cliente__c}"/>
+            <apex:outputField value="{!opportunity.Defina_os_problemas_do_cliente__c}" />
+            <apex:outputField value="{!opportunity.Contato_1_OEG__c}"/>
+            <apex:outputField value="{!opportunity.Impacto_Cargo_1_OEG__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_Contato_1__c}"/>
+            <br/>  <br/>
+            <apex:outputField value="{!opportunity.Contato_2_OEG__c}"/>
+            <apex:outputField value="{!opportunity.Impacto_Cargo_2_OEG__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_Contato_2__c}"/>
+            <br/>  <br/>
+            <apex:outputField value="{!opportunity.Contato_3_OEG__c}"/>
+            <apex:outputField value="{!opportunity.Impacto_Cargo_3_OEG__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_Contato_3__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Confirmação de Informações - Ações do Cliente" columns="2" id="confinfoacoescliente">
+            <apex:outputField value="{!opportunity.Principal_executivo_interessado__c}"/>
+            <apex:outputField value="{!opportunity.Informar_a_urgencia_da_necessidade__c}"/>
+            <apex:outputField value="{!opportunity.Resp_Cliente_por_essas_informacoes__c}"/>  
+            <apex:outputField value="{!opportunity.Porque_a_solucao_e_importante__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Ações do Arquiteto de Soluções" columns="2" id="acoesarquiteto3">
+            <apex:outputField value="{!opportunity.Existem_riscos_ou_restricoes_tecnicas__c}"/>
+            <apex:outputField value="{!opportunity.Data_Hora_do_Preenchimento_Existem_risco__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Quem são os Key-stakeholders deste projeto?" columns="2" id="keystakeholders">
+            <apex:outputField value="{!opportunity.Key_stakeholder_1__c}"/>
+            <apex:outputField value="{!opportunity.Temos_acesso_ao_Stakeholder_1__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_key_stakeholder_1__c}"/>
+            <apex:outputField value="{!opportunity.Qual_o_papel_deste_Stakeholder_1__c}"/>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:outputField value="{!opportunity.Key_stakeholder_2__c}"/>
+            <apex:outputField value="{!opportunity.Temos_acesso_ao_Stakeholder_2__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_key_stakeholder_2__c}"/>
+            <apex:outputField value="{!opportunity.Qual_o_papel_deste_Stakeholder_2__c}"/>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:outputField value="{!opportunity.Indicado_pelo_BDR__c}"/>
+            <apex:outputField value="{!opportunity.Temos_acesso_ao_Stakeholder_3__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_key_steakholder_3__c}"/>
+            <apex:outputField value="{!opportunity.Qual_o_papel_deste_Stakeholder_3__c}"/>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem>
+            <apex:pageBlockSectionItem ></apex:pageBlockSectionItem> 
+
+            <apex:outputField value="{!opportunity.Temos_acesso_ao_Stakeholder_4__c}"/>
+            <apex:outputField value="{!opportunity.Cargo_Key_stakeholder_4__c}"/>
+            <apex:outputField value="{!opportunity.Qual_o_papel_deste_Stakeholder_4__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Orçamento" columns="2" id="orcamento">
+            <apex:outputField value="{!opportunity.Ha_budget_disponivel__c}"/>
+            <apex:outputField value="{!opportunity.Ha_chance_de_obte_lo__c}"/>
+            <apex:outputField value="{!opportunity.Contato_do_cliente_que_confirmou_orcamen__c}"/>
+            <apex:outputField value="{!opportunity.Comentarios_sobre_o_budget__c}"/>         
+            <apex:outputField value="{!opportunity.Cargo_resp_budget__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Informações da Oportunidade Engajada" columns="2" id="infooppeng">
+            <apex:outputField value="{!opportunity.Agility_a_definidora_da_solucao__c}"/>
+            <apex:outputField value="{!opportunity.Como_e_quando_compras_envolvida__c}"/>
+            <apex:outputField value="{!opportunity.Cliente_que_confirmou_a_Agility__c}"/>
+            <apex:outputField value="{!opportunity.Comentarios_restricoes_tecnicas__c}"/>
+        </apex:pageblockSection>
+        <br/>
+        <apex:pageblockSection title="Justificativa de desvios" columns="2" id="justdesvios">
+            <apex:outputField value="{!opportunity.Por_que_seguir_sem_confirmacao_de_Budget__c}"/>
+            <apex:outputField value="{!opportunity.Por_que_seguir_s_sermos_definidores__c}"/>    
+            
+        </apex:pageblockSection>
+        <br/>
+
+         <div class="separator">Proposta de Solução (PSL)</div>
+        
+        <!--<div align="center" style="font-size:200%; color:#d80000"> PSL </div>-->
+        <br/>   
+        
+        <apex:pageBlock title="Propostas da Solução">
+            <apex:pageBlockTable value="{!Opportunity.Propostas_de_Solucao__r}" var="o">
+                <apex:column headervalue="ID">
+                    <apex:outputLink value="/{!o.id}" >{!o.Name}</apex:outputLink>
+                </apex:column>
+                <apex:column headervalue="Categoria" value="{!o.Categoria__c}"> 
+                </apex:column>
+                <apex:column headervalue="Criado por" value="{!o.CreatedById}"> 
+                </apex:column>
+                <apex:column headervalue="Nome da Versão" value="{!o.Nome_da_versao__c}"> 
+                </apex:column>
+                <apex:column headervalue="Proposta Atual" value="{!o.Proposta_Fechada_pelo_Cliente__c}"> 
+                </apex:column>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        <br/>
+        
+          <div class="separator">Ações do Pré Fechamento (PFC)</div>
+       <!-- <div align="center" style="font-size:200%; color:#d80000"> PFC </div>-->
+        <br/>
+        <apex:pageblockSection title="Mapeamento da concorrência " columns="2" id="mapconcorrencia">
+            <apex:outputField value="{!opportunity.Concorrente_1__c}"/>
+            <apex:outputField value="{!opportunity.Concorrente_2__c}"/>
+            <apex:outputField value="{!opportunity.Concorrente_3__c}"/>
+        </apex:pageblockSection>
+        <br/>
+         <apex:pageblockSection title="Resultado plano de teste " columns="2" id="resplanoteste">
+            <apex:outputField value="{!opportunity.Criterios_de_sucesso_foram_alcancados__c}"/>
+            <apex:outputField value="{!opportunity.Cliente_reconhece_criterios_alcancados__c}"/>
+            <apex:outputField value="{!opportunity.Comentarios_criterios_sucesso_pfc__c}"/>
+            <apex:outputField value="{!opportunity.Comentarios_cliente_reconhece_pfc__c}"/>
+            <apex:outputField value="{!opportunity.Duvidas_e_resistencias_quanto_a_solucao__c}"/>
+        </apex:pageblockSection>
+        
+        
+        <apex:pageBlockButtons >
+            <apex:form >
+                <apex:commandButton value="Fechar" rerender="in,out" action="{!cancel}" id="cancelButton" />
+            </apex:form>
+        </apex:pageBlockButtons> 
+        
+    </apex:pageBlock>
+    <br/>
+    <html>
+        <center><img src="https://agilitynetworks--c.na32.content.force.com/servlet/servlet.ImageServer?id=01538000002LUmw&oid=00D500000006rAF&lastMod=1486472324000"
+                     alt="LogoAgility" width="220" height="50"/></center> 
+        <h6 align="right">
+            Informações confidenciais - Não distribuir - Agility Networks® 2017 - v1.0
+        </h6>
+    </html>
+    
+    <br/> 
+    
+</apex:page>

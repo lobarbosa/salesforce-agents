@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Avaliacao_Interna_Etapa_Finalizado</fullName>
+    <active>true</active>
+    <description>Quando a Etapa estiver igual a Finalizada, Obriga o Preenchimento do campo Avaliação Interna</description>
+    <errorConditionFormula>AND(ISPICKVAL( Etapa_de_Andamento_do_POC__c ,&quot;Executado com Sucesso&quot;),ISBLANK( Avaliacao_Interna_Sobre_o_POC__c ))</errorConditionFormula>
+    <errorDisplayField>Avaliacao_Interna_Sobre_o_POC__c</errorDisplayField>
+    <errorMessage>Informe a Avaliação Final Interna sobre o POV</errorMessage>
+</ValidationRule>

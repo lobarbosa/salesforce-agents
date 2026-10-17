@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Situa_o_do_Mapeamento__c</fullName>
+    <label>Situação do Mapeamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Solu_o__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Não Solicitado</fullName>
+                <default>false</default>
+                <label>Não Solicitado</label>
+            </value>
+            <value>
+                <fullName>Negado</fullName>
+                <default>false</default>
+                <label>Negado</label>
+            </value>
+            <value>
+                <fullName>Pendente (Em Análise)</fullName>
+                <default>true</default>
+                <label>Pendente (Em Análise)</label>
+            </value>
+            <value>
+                <fullName>Não se aplica</fullName>
+                <default>false</default>
+                <label>Não se aplica</label>
+            </value>
+            <value>
+                <fullName>Adiado</fullName>
+                <default>false</default>
+                <label>Adiado</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Dynatrace</controllingFieldValue>
+            <controllingFieldValue>Meraki</controllingFieldValue>
+            <controllingFieldValue>AlgoSec</controllingFieldValue>
+            <controllingFieldValue>HP</controllingFieldValue>
+            <controllingFieldValue>Open Stack</controllingFieldValue>
+            <controllingFieldValue>Aqua</controllingFieldValue>
+            <controllingFieldValue>SolarWinds</controllingFieldValue>
+            <controllingFieldValue>Blue Sky - Westcon</controllingFieldValue>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <controllingFieldValue>Elite Core</controllingFieldValue>
+            <controllingFieldValue>Arista</controllingFieldValue>
+            <controllingFieldValue>Wyse</controllingFieldValue>
+            <controllingFieldValue>Radware</controllingFieldValue>
+            <controllingFieldValue>Thale e-Security</controllingFieldValue>
+            <controllingFieldValue>Nuage</controllingFieldValue>
+            <controllingFieldValue>White Hat</controllingFieldValue>
+            <controllingFieldValue>Quantum</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <controllingFieldValue>Imperva</controllingFieldValue>
+            <controllingFieldValue>Infoblox</controllingFieldValue>
+            <controllingFieldValue>Microsoft</controllingFieldValue>
+            <controllingFieldValue>Outros</controllingFieldValue>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <controllingFieldValue>Qualys</controllingFieldValue>
+            <controllingFieldValue>McAfee</controllingFieldValue>
+            <controllingFieldValue>AppViewX</controllingFieldValue>
+            <valueName>Pendente (Em Análise)</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

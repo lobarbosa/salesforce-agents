@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dietary_Restrictions__c</fullName>
+    <label>Dietary Restrictions</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Vegetarian</fullName>
+                <default>false</default>
+                <label>Vegetarian</label>
+            </value>
+            <value>
+                <fullName>Vegan</fullName>
+                <default>false</default>
+                <label>Vegan</label>
+            </value>
+            <value>
+                <fullName>Kosher</fullName>
+                <default>false</default>
+                <label>Kosher</label>
+            </value>
+            <value>
+                <fullName>Diabetic</fullName>
+                <default>false</default>
+                <label>Diabetic</label>
+            </value>
+            <value>
+                <fullName>Gluten Free</fullName>
+                <default>false</default>
+                <label>Gluten Free</label>
+            </value>
+            <value>
+                <fullName>No Peanuts</fullName>
+                <default>false</default>
+                <label>No Peanuts</label>
+            </value>
+            <value>
+                <fullName>No Shellfish</fullName>
+                <default>false</default>
+                <label>No Shellfish</label>
+            </value>
+            <value>
+                <fullName>Allergy (specify in special needs)</fullName>
+                <default>false</default>
+                <label>Allergy (specify in special needs)</label>
+            </value>
+            <value>
+                <fullName>Pescatarian</fullName>
+                <default>false</default>
+                <label>Pescatarian</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>3</visibleLines>
+</CustomField>

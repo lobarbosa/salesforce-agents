@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Solicitante__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM050828: atual responsável pela conta alvo da solicitação</description>
+    <label>Solicitante</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Contact.Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operation>equals</operation>
+            <value>Sim</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Account.Name</field>
+            <operation>equals</operation>
+            <value>Agility Networks Tecnologia SP</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipName>Condicao_Especial</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

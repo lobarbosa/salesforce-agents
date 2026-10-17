@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M05_Cliente_ja_possui_visao_estabel_CVS</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Cliente já possui visão estabelecida?</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+ISPICKVAL( Cliente_ja_possui_visao_estabelecida__c ,&quot;Sim&quot;),ISBLANK( TEXT( Visao_de_solucao_estabelecida_por__c  )))
+
+
+/*
+AND((ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)) ,ISBLANK(TEXT(   Cliente_ja_possui_visao_estabelecida__c )))
+*/</errorConditionFormula>
+    <errorDisplayField>Visao_de_solucao_estabelecida_por__c</errorDisplayField>
+    <errorMessage>Campo de preenchimento obrigatório se a opção &quot;Sim&quot; do campo &quot;*Cliente já possui visão estabelecida?&quot; for selecionado  (Msg05)</errorMessage>
+</ValidationRule>

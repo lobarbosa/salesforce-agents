@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aprovação final PMO</fullName>
+                <default>false</default>
+                <label>Aprovação final PMO</label>
+            </value>
+            <value>
+                <fullName>Aprovada</fullName>
+                <default>false</default>
+                <label>Aprovada</label>
+            </value>
+            <value>
+                <fullName>Aprovado Dir Com</fullName>
+                <default>false</default>
+                <label>Aprovado Dir Com</label>
+            </value>
+            <value>
+                <fullName>Aprovado Dir Tribo</fullName>
+                <default>false</default>
+                <label>Aprovado Dir Tribo</label>
+            </value>
+            <value>
+                <fullName>Aprovado Fin</fullName>
+                <default>false</default>
+                <label>Aprovado Fin</label>
+            </value>
+            <value>
+                <fullName>Aprovado GC</fullName>
+                <default>false</default>
+                <label>Aprovado GC</label>
+            </value>
+            <value>
+                <fullName>Pendente</fullName>
+                <default>false</default>
+                <label>Pendente</label>
+            </value>
+            <value>
+                <fullName>Pendente Dir Com</fullName>
+                <default>false</default>
+                <label>Pendente Dir Com</label>
+            </value>
+            <value>
+                <fullName>Pendente Dir Tribo</fullName>
+                <default>false</default>
+                <label>Pendente Dir Tribo</label>
+            </value>
+            <value>
+                <fullName>Pendente Fin</fullName>
+                <default>false</default>
+                <label>Pendente Fin</label>
+            </value>
+            <value>
+                <fullName>Pendente GC</fullName>
+                <default>false</default>
+                <label>Pendente GC</label>
+            </value>
+            <value>
+                <fullName>Pendente OPE</fullName>
+                <default>false</default>
+                <label>Pendente OPE</label>
+            </value>
+            <value>
+                <fullName>Pendente PMO</fullName>
+                <default>false</default>
+                <label>Pendente PMO</label>
+            </value>
+            <value>
+                <fullName>Rejeitada</fullName>
+                <default>false</default>
+                <label>Rejeitada</label>
+            </value>
+            <value>
+                <fullName>Rascunho</fullName>
+                <default>false</default>
+                <label>Rascunho</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

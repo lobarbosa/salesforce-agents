@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__centro_custo__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Identifica o centro de custo padrão do fornecedor ou cliente</description>
+    <inlineHelpText>Identifica o centro de custo padrão do fornecedor ou cliente</inlineHelpText>
+    <label>Centro de Custo</label>
+    <referenceTo>snap_finan__centro_custo__c</referenceTo>
+    <relationshipLabel>Contas</relationshipLabel>
+    <relationshipName>Empresas</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

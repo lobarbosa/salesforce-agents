@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>especifiqueOutrosAreaAtuacao</fullName>
+    <active>true</active>
+    <description>Regra de validação utilizada para especificar outras áreas de atuação caso o campo utilizado no layout do Comercial esteja selecionado como Outros.</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(areaAtuacao__c,&apos;Outros&apos;),
+ISBLANK(especifiqueOutros__c)
+)</errorConditionFormula>
+    <errorMessage>Caso o campo &quot;Área de Atuação&quot; esteja selecionado o valor &quot;Outros&quot;, será obrigatório preencher o campo &quot;Especifique Outros&quot;.</errorMessage>
+</ValidationRule>

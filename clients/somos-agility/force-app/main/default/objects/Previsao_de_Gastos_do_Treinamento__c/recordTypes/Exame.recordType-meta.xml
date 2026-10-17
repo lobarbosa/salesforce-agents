@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Exame</fullName>
+    <active>true</active>
+    <label>Exame</label>
+    <picklistValues>
+        <picklist>Condicao_de_Pagamento_do_Testing_Center__c</picklist>
+        <values>
+            <fullName>Parcelado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>À Prazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>À Vista</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Condicao_de_Pagamento_do_Treinamento__c</picklist>
+        <values>
+            <fullName>À Prazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>À Vista</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Forma_de_Pagamento_do_Patrocinio__c</picklist>
+        <values>
+            <fullName>Pagamento Direto ao Fornecedor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reembolso à Agility %28Desconto Financeiro em Compra%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reembolso à Agility %28Nota Débito%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reembolso à Agility %28Nota Fiscal%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reembolso à Agility %28Remessa Internacional%29</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Moeda__c</picklist>
+        <values>
+            <fullName>Dólar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Euro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reais</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Parceiro_Patrocinador__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_de_Gastos__c</picklist>
+        <values>
+            <fullName>Aberto</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Fechado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_do_Patrocinio__c</picklist>
+        <values>
+            <fullName>Aberto</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Fechado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

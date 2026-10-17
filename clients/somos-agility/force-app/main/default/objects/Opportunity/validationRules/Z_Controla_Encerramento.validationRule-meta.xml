@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Controla_Encerramento</fullName>
+    <active>false</active>
+    <description>FO 29/03: Controla encerramento oportunidade</description>
+    <errorConditionFormula>Controla_Encerramento__c = TRUE</errorConditionFormula>
+    <errorMessage>Esse registro foi Encerrado ou Desengajado e não é permitido demais modificações.</errorMessage>
+</ValidationRule>

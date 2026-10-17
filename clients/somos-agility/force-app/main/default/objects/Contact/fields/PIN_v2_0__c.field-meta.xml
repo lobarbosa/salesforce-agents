@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PIN_v2_0__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>PIN v2.0 - Corresponde ao token de acesso dos usuários de conta compartilhada. É atualizado 2x ao dia, sendo formado por uma combinação aleatória de caracteres alfanuméricos. Pode ser obtido através da função MFA do Bot Agilix.</inlineHelpText>
+    <label>PIN v2.0</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>E_mail_Corporativo__c</fullName>
+    <description>Campo de preenchimento de e-mail para candidato a parceiro 30/06/21</description>
+    <externalId>false</externalId>
+    <label>E-mail Corporativo</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Email</type>
+    <unique>false</unique>
+</CustomField>

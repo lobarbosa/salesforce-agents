@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Gerente_do_Projeto__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Gerente do Projeto</label>
+    <lookupFilter>
+        <active>true</active>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <errorMessage>O valor não existe ou não é compatível com os critérios do filtro - Verificar campo: Gerente_do_Projeto. O erro indica que Gerente de projeto não trabalha atualmente na empresa.</errorMessage>
+        <filterItems>
+            <field>Contact.Account.Name</field>
+            <operation>equals</operation>
+            <value>Agility Networks Tecnologia SP</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Title</field>
+            <operation>contains</operation>
+            <value>Gerente de Projetos,Coordenador de Projetos,Analista de Projetos,Analista de Governança Pl.,Gerente Técnicos de Entregas, Analista de Governanca Pl., Analista de Sistemas Pl.</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operation>equals</operation>
+            <value>Sim</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Projetos Agility (Gerente do Projeto)</relationshipLabel>
+    <relationshipName>ProjetosVArR</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

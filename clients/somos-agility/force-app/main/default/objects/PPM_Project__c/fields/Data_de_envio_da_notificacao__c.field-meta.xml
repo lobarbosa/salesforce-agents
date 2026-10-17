@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_envio_da_notificacao__c</fullName>
+    <description>Captura a data de envio da notificação de novo projeto.</description>
+    <inlineHelpText>Data de envio da notificação referente ao início do projeto.</inlineHelpText>
+    <label>Data de envio da notificação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

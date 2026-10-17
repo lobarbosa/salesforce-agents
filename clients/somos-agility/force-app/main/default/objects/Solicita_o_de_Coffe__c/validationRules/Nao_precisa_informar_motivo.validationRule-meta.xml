@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_precisa_informar_motivo</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( Cancelar__c = false,NOT(ISBLANK( Motivo_do_Cancelamento__c) ))</errorConditionFormula>
+    <errorDisplayField>Motivo_do_Cancelamento__c</errorDisplayField>
+    <errorMessage>Não é necessário informar o motivo pois a opção no campo Cancelar está falsa.</errorMessage>
+</ValidationRule>

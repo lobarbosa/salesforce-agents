@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>63.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza o campo rich text das PGDEPV {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Atualiza o campo rich text das PGDEPV</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_o_campo_com_rich_text</name>
+        <label>Atualiza o campo com rich text</label>
+        <locationX>647</locationX>
+        <locationY>416</locationY>
+        <inputAssignments>
+            <field>Proposta_v1_1__c</field>
+            <value>
+                <stringValue>&lt;span style=&quot;color:#B22222; font-weight:bold;&quot;&gt;Lembre-se de anexar a Proposta/PFP após salvar este registro.&lt;/span&gt;</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>520</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Atualiza_o_campo_com_rich_text</targetReference>
+        </connector>
+        <object>Previsao_de_Gastos_da_DEPV__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Blueprint_status_descartado_pelo_cliente</fullName>
+    <active>true</active>
+    <description>AM 24042018: quando o &quot;Status do Blueprint&quot; for selecionado &quot;Descartado pelo cliente&quot; é obrigatório o preenchimento do campo &quot;data/hora da validação&quot;.</description>
+    <errorConditionFormula>AND(ISPICKVAL(Status_do_Blueprint__c ,&quot;Descartado pelo Cliente&quot;),
+ISBLANK( Data_Hora_da_Validacao_Descarte__c ))</errorConditionFormula>
+    <errorDisplayField>Data_Hora_da_Validacao_Descarte__c</errorDisplayField>
+    <errorMessage>É necessário o preenchimento do campo &quot;Data/Hora da Validação/Descarte&quot;.</errorMessage>
+</ValidationRule>

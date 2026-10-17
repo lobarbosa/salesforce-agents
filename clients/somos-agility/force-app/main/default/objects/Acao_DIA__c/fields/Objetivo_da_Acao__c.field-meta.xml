@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Objetivo_da_Acao__c</fullName>
+    <defaultValue>&quot;O Objetivo desta fase é identificar um ou mais problemas lantentes de um cliente para estimulá-lo a agir, reconhecendo que o problema é grave e pode ser solucionado.O vendedor deverá executar um planejamento prévio, estudando o cliente e seus possíveis desafios,  executando uma estratégia para ganhar sua atenção. Para tal, precisará valer-se do conhecimento da situação do cliente e das capacidades da Agility, de nossos casos de sucesso em clientes com desafios semelhantes ao cliente que será estimulado. Ao mesmo tempo, terá que falar com o nível de decisão correto, com linguagem de negócio e não de produtos. Poderá solicitar à Agility engajamentos de investigação consultiva, apresentações ou demos customizadas, desde que a ação de D.I.A. esteje devidamente qualificada e aprovada por seu gestor. Exemplos: Posicionar a Agility como um parceiro preferencial de Segurança. Demonstrar os  impactos, ou benefícios e nossas soluções de Cloud/Digital Performance, como resposta aos desafios das áreas de desenvolvimento.&quot;</defaultValue>
+    <label>Objetivo da Ação</label>
+    <length>4000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>10</visibleLines>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ativacao_do_Contrato</fullName>
+    <active>false</active>
+    <description>Só é possível ativar o contrato caso já houver um histórico financeiro criado</description>
+    <errorConditionFormula>Contrato__r.Quantidade_de_Hist_ricos__c  &lt;=0</errorConditionFormula>
+    <errorMessage>Só é possível ativar o contrato caso já exista pelo menos 1 histórico financeiro criado. Favor validar com o time de Operações/Financeiro</errorMessage>
+</ValidationRule>

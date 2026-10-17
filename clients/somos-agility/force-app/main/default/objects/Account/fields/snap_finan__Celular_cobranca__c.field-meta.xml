@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Celular_cobranca__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Número de celular para cobrança.</description>
+    <inlineHelpText>Número de celular para cobrança.</inlineHelpText>
+    <label>Celular para cobrança</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Phone</type>
+</CustomField>

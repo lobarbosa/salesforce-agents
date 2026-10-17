@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_da_Despesa__c</fullName>
+    <label>Tipo da Despesa</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Classe__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alimentação</fullName>
+                <default>false</default>
+                <label>Alimentação</label>
+            </value>
+            <value>
+                <fullName>Estacionamento Avulso</fullName>
+                <default>false</default>
+                <label>Estacionamento Avulso</label>
+            </value>
+            <value>
+                <fullName>Estacionamento Mensal</fullName>
+                <default>false</default>
+                <label>Estacionamento Mensal</label>
+            </value>
+            <value>
+                <fullName>Hospedagem</fullName>
+                <default>false</default>
+                <label>Hospedagem</label>
+            </value>
+            <value>
+                <fullName>Kilometragem (Gestores)</fullName>
+                <default>false</default>
+                <label>Kilometragem (Gestores)</label>
+            </value>
+            <value>
+                <fullName>Kilometragem (Analistas)</fullName>
+                <default>false</default>
+                <label>Kilometragem (Analistas)</label>
+            </value>
+            <value>
+                <fullName>Kilometragem (GC&apos;s)</fullName>
+                <default>false</default>
+                <label>Kilometragem (GC&apos;s)</label>
+            </value>
+            <value>
+                <fullName>Outros (Especificar)</fullName>
+                <default>false</default>
+                <label>Outros (Especificar)</label>
+            </value>
+            <value>
+                <fullName>Passagem Aérea</fullName>
+                <default>false</default>
+                <label>Passagem Aérea</label>
+            </value>
+            <value>
+                <fullName>Pedágio</fullName>
+                <default>false</default>
+                <label>Pedágio</label>
+            </value>
+            <value>
+                <fullName>Táxi</fullName>
+                <default>false</default>
+                <label>Táxi</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Alimentação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Estacionamento Avulso</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Hospedagem</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Kilometragem (Analistas)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Kilometragem (GC&apos;s)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Outros (Especificar)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Pedágio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Informativa</controllingFieldValue>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Táxi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Estacionamento Mensal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Reembolsável</controllingFieldValue>
+            <valueName>Kilometragem (Gestores)</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

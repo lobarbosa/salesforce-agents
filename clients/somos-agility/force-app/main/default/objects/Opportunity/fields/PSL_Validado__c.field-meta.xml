@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PSL_Validado__c</fullName>
+    <description>Contador de PSL sincronizado e com “Status da PSL” = Validado pelo Cliente</description>
+    <label>PSL Validado</label>
+    <summaryFilterItems>
+        <field>Propostas_de_Solucao__c.Sincronizar__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Propostas_de_Solucao__c.StatusPsl__c</field>
+        <operation>equals</operation>
+        <value>Retorno do cliente</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Propostas_de_Solucao__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

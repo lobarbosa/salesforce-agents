@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PendenteAprovacao</fullName>
+    <columns>Status__c</columns>
+    <columns>NAME</columns>
+    <columns>Gerente_de_Projetos_Contato__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Recall,Aguardando Aprovação</value>
+    </filters>
+    <filters>
+        <field>Gerente_de_Projetos_Contato__c</field>
+        <operation>contains</operation>
+        <value>Cibe</value>
+    </filters>
+    <label>Pendente Aprovação</label>
+</ListView>

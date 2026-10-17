@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_Iniciado_somente_de_Em_Planejamento</fullName>
+    <active>false</active>
+    <description>Somente é possível colocar o Status como Não Iniciado a partir do Em Planejamento</description>
+    <errorConditionFormula>ISCHANGED( Project_Status__c )&amp;&amp; 
+TEXT(Project_Status__c) = &quot;Em Planejamento&quot; 
+&amp;&amp; 
+(NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Não Iniciado&quot;)))</errorConditionFormula>
+    <errorDisplayField>Project_Status__c</errorDisplayField>
+    <errorMessage>GP, somente pode ser alterado o Status para &quot;Em Planejamento&quot; desde o Status &quot;Não Iniciado&quot;</errorMessage>
+</ValidationRule>

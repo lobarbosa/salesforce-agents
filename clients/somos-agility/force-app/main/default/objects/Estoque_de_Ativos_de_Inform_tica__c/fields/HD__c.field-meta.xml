@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HD__c</fullName>
+    <label>HD</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sem HD</fullName>
+                <default>false</default>
+                <label>Sem HD</label>
+            </value>
+            <value>
+                <fullName>120GB</fullName>
+                <default>false</default>
+                <label>120GB</label>
+            </value>
+            <value>
+                <fullName>250GB</fullName>
+                <default>false</default>
+                <label>250GB</label>
+            </value>
+            <value>
+                <fullName>320GB</fullName>
+                <default>false</default>
+                <label>320GB</label>
+            </value>
+            <value>
+                <fullName>500GB</fullName>
+                <default>false</default>
+                <label>500GB</label>
+            </value>
+            <value>
+                <fullName>750GB</fullName>
+                <default>false</default>
+                <label>750GB</label>
+            </value>
+            <value>
+                <fullName>1TB</fullName>
+                <default>false</default>
+                <label>1TB</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

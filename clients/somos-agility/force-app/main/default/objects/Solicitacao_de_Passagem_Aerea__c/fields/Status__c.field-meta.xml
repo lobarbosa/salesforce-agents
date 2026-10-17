@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cotação/Reserva Solicitada</fullName>
+                <default>true</default>
+                <label>Cotação/Reserva Solicitada</label>
+            </value>
+            <value>
+                <fullName>Pendente Gestor</fullName>
+                <default>false</default>
+                <label>Pendente Gestor</label>
+            </value>
+            <value>
+                <fullName>Pendente Financeiro</fullName>
+                <default>false</default>
+                <label>Pendente Financeiro</label>
+            </value>
+            <value>
+                <fullName>Aprovada</fullName>
+                <default>false</default>
+                <label>Aprovada</label>
+            </value>
+            <value>
+                <fullName>Rejeitada</fullName>
+                <default>false</default>
+                <label>Rejeitada</label>
+            </value>
+            <value>
+                <fullName>Devolvida</fullName>
+                <default>false</default>
+                <label>Devolvida</label>
+            </value>
+            <value>
+                <fullName>Cancelada</fullName>
+                <default>false</default>
+                <label>Cancelada</label>
+            </value>
+            <value>
+                <fullName>Emissão Efetuada e Pendente Financeiro</fullName>
+                <default>false</default>
+                <label>Emissão Efetuada e Pendente Financeiro</label>
+            </value>
+            <value>
+                <fullName>Reserva Efetuada e Pendente Gestor</fullName>
+                <default>false</default>
+                <label>Reserva Efetuada e Pendente Gestor</label>
+            </value>
+            <value>
+                <fullName>Crédito / Aprovada</fullName>
+                <default>false</default>
+                <label>Crédito / Aprovada</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

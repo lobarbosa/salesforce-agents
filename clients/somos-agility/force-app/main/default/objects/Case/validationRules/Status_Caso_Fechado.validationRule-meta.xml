@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Caso_Fechado</fullName>
+    <active>true</active>
+    <description>Não permite que os colaboradores dos Departamentos(Analistas de Suporte) EA ou DC&amp;C ou SEC selecionem a opção Fechado no campo Status. Somente Resolvido</description>
+    <errorConditionFormula>IF(ISPICKVAL( Status  , &apos;Fechado&apos;), 
+(  $User.Department   = &apos;EA&apos; ||  $User.Department  = &apos;DC&amp;C&apos;|| $User.Department  = &apos;SEC&apos; || $User.Department  = &apos;MS&apos;),FALSE)</errorConditionFormula>
+    <errorMessage>Caro Colaborador, favor selecionar o Status Resolvido.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Kate</fullName>
+    <columns>NAME</columns>
+    <columns>Status__c</columns>
+    <columns>Status_Imagem__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Solicitante__c</field>
+        <operation>contains</operation>
+        <value>Kate</value>
+    </filters>
+    <label>Kate</label>
+    <sharedTo>
+        <role>Recursos_Humanos</role>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Classe_de_renovacao__c</fullName>
+    <label>Classe de renovação</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Subscrição Renovável</fullName>
+                <default>false</default>
+                <label>Subscrição Renovável</label>
+            </value>
+            <value>
+                <fullName>Tech Refresh</fullName>
+                <default>false</default>
+                <label>Tech Refresh</label>
+            </value>
+            <value>
+                <fullName>Renovação global</fullName>
+                <default>false</default>
+                <label>Renovação global</label>
+            </value>
+            <value>
+                <fullName>Perda conhecida</fullName>
+                <default>false</default>
+                <label>Perda conhecida</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

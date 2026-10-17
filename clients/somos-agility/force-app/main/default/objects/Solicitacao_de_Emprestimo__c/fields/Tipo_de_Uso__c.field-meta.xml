@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Uso__c</fullName>
+    <label>Tipo de Uso</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Comodato</fullName>
+                <default>false</default>
+                <label>Comodato</label>
+            </value>
+            <value>
+                <fullName>Descontinuado</fullName>
+                <default>false</default>
+                <label>Descontinuado</label>
+            </value>
+            <value>
+                <fullName>Emprestado</fullName>
+                <default>false</default>
+                <label>Emprestado</label>
+            </value>
+            <value>
+                <fullName>Estoque</fullName>
+                <default>false</default>
+                <label>Estoque</label>
+            </value>
+            <value>
+                <fullName>Locação</fullName>
+                <default>false</default>
+                <label>Locação</label>
+            </value>
+            <value>
+                <fullName>Laboratório</fullName>
+                <default>false</default>
+                <label>Laboratório</label>
+            </value>
+            <value>
+                <fullName>Produção</fullName>
+                <default>false</default>
+                <label>Produção</label>
+            </value>
+            <value>
+                <fullName>Tech Center</fullName>
+                <default>false</default>
+                <label>Tech Center</label>
+            </value>
+            <value>
+                <fullName>Revenda</fullName>
+                <default>false</default>
+                <label>Revenda</label>
+            </value>
+            <value>
+                <fullName>Terceiros</fullName>
+                <default>false</default>
+                <label>Terceiros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

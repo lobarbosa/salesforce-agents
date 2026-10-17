@@ -1,0 +1,610 @@
+<apex:page StandardController="Contrato_Suporte__c" showHeader="false"
+    tabStyle="Contrato_Suporte__c"
+    extensions="clsCadContratoSuportexPedido" id="CadContratoSuportexPedido">
+    <!--Bibliotecas Jquery-->
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.JqueryUI, '/ui/jquery-ui.js')}" />
+    <!--Bibliotecas PrimeUI-->
+    <apex:includeScript value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.js')}" />
+    <!---------------------->
+     <!--Bibliotecas de Formatações-->
+    <apex:includeScript value="{!URLFOR($Resource.JqueryFormat, 'JqueryFormat.js')}" />
+    <!---------------------->
+    <!--CSS do PrimeUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.css')}" />
+    <!--CSS do JqueryUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryUI, '/themes/base/jquery-ui.css')}" />
+    <!---------------------->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/themes/overcast/theme.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/css/tabview/tabview.css')}" />
+    <!---------------------->
+    <script type="text/javascript">
+          $(document).ready(function(){        
+           $('#default').puitabview(); 
+           
+           $('#img_help_prazo_dur').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa apenas com número, escolhendo a opção Todos os Campos'});
+            
+             $('#img_help_tp_fat').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa com *mensal*, escolhendo a opção Todos os Campos'}); 
+            
+           }); 
+    </script>
+    <style>
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+    {
+    border: 0px solid #d3d3d3;
+    background: #CDE8F0 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #555555;
+}
+
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited
+    {
+    color: #555555;
+    text-decoration: none;
+}
+
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus
+    {
+    border: 1px solid #999999;
+    background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-hover a,.ui-state-hover a:hover {
+    color: #212121;
+    text-decoration: none;
+}
+
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active
+    {
+    border: 1px solid #aaaaaa;
+    background: #006854 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.ui-widget :active {
+    outline: none;
+}
+
+.ui-widget-content {
+    border: 1px solid #aaaaaa;
+    background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50%
+        repeat-x;
+    color: #222222;
+}
+
+.ui-widget-content a {
+    color: #222222;
+}
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    background: #CDE8F0 url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
+        50% 50% repeat-x;
+    color: black;
+    font-weight: bold;
+}
+
+.ui-widget-header a {
+    color: #CDE8F0;
+    font-weight: bold;
+}
+</style>
+
+    <div id="default" style="display: none">
+        <ul>
+            <li><a href="#tab1">Novo Contrato de Suporte</a></li>
+        </ul>
+        <div>
+            <div id="tab1">
+
+                <apex:pageBlock id="pgMaster">
+                    <hr />
+                    <table width="100%">
+                        <tr>
+                            <td>
+                                <div id="dv_informacao" style="display: block;">
+                                    <apex:form id="frmPost">
+                                        <input type="hidden" value="{!idContrato}" name="idContrato"
+                                            id="idContrato" />
+                                        <input type="hidden" value="{!idProduto}" name="idProduto"
+                                            id="idProduto" />
+                                        <input type="hidden" value="{!idRecurso}" name="idRecurso"
+                                            id="idRecurso" />
+                                        <input type="hidden" value="{!idNegociacao}"
+                                            name="idNegociacao" id="idNegociacao" />
+                                        <input type="hidden" value="{!idOportunidade}"
+                                            name="idOportunidade" id="idOportunidade" />
+                                        <input type="hidden" value="{!Redict}" name="Redict"
+                                            id="Redict" />
+                                            <input type="hidden" value="{!ReadOnly}" name="ReadOnly" id="ReadOnly"/>
+                                            <input type="hidden" value="{!DisabledField}" name="DisabledField" id="DisabledField"/>
+                                            <input type="hidden" value="{!mBotao}" name="mBotao" id="mBotao"/>
+                                            <input type="hidden" value="{!idContaFatCont}" name="idConfigfirst" id="idConfigfirst"/>
+                                            
+                                            <input type="hidden" value="{!SeguraCampo}" name="SeguraCampo" id="SeguraCampo" />
+                                            
+                                        <table width="100%">
+                                            <!--Aqui começa as Informações--->
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações <apex:inputField id="txtNegociacaoComercial"
+                                                        value="{!Contrato_Suporte__c.Negociacao_Comercial__c}"
+                                                        style="display:none;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                            <td>CNPJ de Destino</td>
+                                                <td><apex:inputfield id="txtCnpjDestino"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.CNPJ_de_Destino__c}" 
+                                                        onchange="RetornaDescDest(document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtCnpjDestino_lkid').value);" />
+
+                                                    <br /> <label id="txtCNPJDest"></label></td>
+                                            <td>
+                                                    Origem de Faturamento
+                                                </td>
+                                                <td>
+                                                    <apex:selectList id="ddlOrigemFat" value="{!Contrato_Suporte__c.CNPJ_de_Faturamento__c}" size="1">
+                                                        <apex:selectOptions value="{!OrigemFat}"></apex:selectOptions>
+                                                    </apex:selectList>
+                                                    
+                                                
+                                                
+                                                    <!--<apex:inputfield id="txtCnpjFat"
+                                                        required="false"
+                                                        value="{!Contrato_Suporte__c.CNPJ_de_Faturamento__c}" />-->
+                                                </td>
+                                            
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>Célula de Serviços</td>
+                                                <td><apex:inputfield id="txtCelulaServivo"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Celula_de_Servicos__c}" /></td>
+                                                <td>Nível do Suporte</td>
+                                                <td colspan="4"><apex:inputfield id="txtNivelSuporte"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Nivel_do_Suporte__c}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Disponibilidade</td>
+                                                <td><apex:inputfield id="txtDisponibilidade"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Disponibilidade__c}" /></td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                Prazo de Duração
+                                                
+                                                <img   class="helpOrb" id="img_help_prazo_dur" title="" src="/s.gif" ></img>
+                                                </td>
+                                                <td><apex:inputfield id="txtPrazo" required="true"
+                                                        value="{!Contrato_Suporte__c.Prazo_do_contrato__c}" onchange="HabilitarDescPrazo(this.value)"/></td>
+                                                <td>
+                                                    <label id="descPrazo" style="display:block">Descrição do Prazo</label>
+                                                </td>
+                                                <td>
+                                                    <apex:inputfield id="txtDescPrazo" required="false"
+                                                        value="{!Contrato_Suporte__c.Descricao_Prazo_de_Duracao__c}"  style="width:350px;height:30px;display:block" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                
+                                                Tipo de Faturamento
+                                                <img   class="helpOrb" id="img_help_tp_fat" title="" src="/s.gif" ></img>
+                                                </td>
+                                                <td><apex:inputfield id="txtTipoFaturamento" required="true"
+                                                        value="{!Contrato_Suporte__c.Tipo_de_Faturamento__c}" onchange="HabilitarDescTipo(this.value)"/></td>
+                                                <td>
+                                                    <label id="descTipoFat" style="display:block">Descrição do Tipo de Faturamento</label>
+                                                </td>
+                                                <td>
+                                                    <apex:inputfield id="txtDescTipoFat" required="false"
+                                                        value="{!Contrato_Suporte__c.Descricao_Tipo_de_Faturamento__c}"  style="width:350px;height:30px;display:block" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Custo direto do Contrato Recurso</td>
+                                                <td><apex:inputfield id="txtCustoDirRecurso"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Custo_direto_do_Contrato_Recurso__c}" />
+                                                </td>
+                                                <td>Custo direto do Contrato Produto</td>
+                                                <td><apex:inputfield id="txtCustoDirProduto"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Custo_direto_do_Contrato_Produto__c}" />
+                                                </td>
+
+                                            </tr>
+                                        </table>
+                                        <!--Aqui termina as Informações--->
+                                        <center>
+                                            <apex:commandButton action="{!SalvarContratoSuportexPedido}"
+                                                id="btnSalvar" value="Salvar Informações" style="display:{!mBotao}"/>
+                                        </center>
+                                    </apex:form>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="dv_produto" style="display: {!mostrarAdendo};">
+                                <apex:pageBlockSection title="Produto"  id="pgProduto" columns="1" >
+                                    <apex:form id="frmProduto">
+                                        <table width="100%">
+                                            <!--Aqui começa o produto--->
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp; <apex:inputField id="txtNegociacaoComercialProd"
+                                                        value="{!Contrato_Suporte__c.Negociacao_Comercial__c}"
+                                                        style="display:none;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Produto</td>
+                                                <td colspan="4"><apex:inputfield id="txtProduto" required="true"
+                                                        value="{!Contrato_Suporte__c.Produto_1__c}" onchange="RetornaDesc(document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtProduto_lkid').value);"/></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Detalhes</td>
+                                                <td colspan="4"><apex:inputfield id="txtDescricaoProduto" required="false"
+                                                        value="{!Contrato_Suporte__c.Descricao_1_Produto__c}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Moeda</td>
+                                                <td>
+                                                
+                                                <apex:selectList id="txtMoedaProduto"
+                                                        value="{!Contrato_Suporte__c.Moeda_1_Produto__c}"
+                                                        size="1" onchange="inativaCambio(this.value,'Produto')">
+                                                        <apex:selectOptions value="{!MoedaCont}"></apex:selectOptions>
+                                                    </apex:selectList>
+                                                
+                                                
+                                                <!--<apex:inputfield id="txtMoedaProduto"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Moeda_1_Produto__c}" onchange="inativaCambio(this.value,'Produto')"/>-->
+                                                
+                                                </td>
+                                                <td>Cambio</td>
+                                                <td colspan="4"><apex:inputfield id="txtCotacaoProduto"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Cotacao_do_Dolar_1_Produto__c}" onkeypress="mascara(this,moeda2Casas)"/>
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>Valor</td>
+                                                <td><apex:inputfield id="txtValorProduto"
+                                                        required="false"
+                                                        value="{!Contrato_Suporte__c.Valor_1_Produto__c}" onkeypress="mascara(this,moeda2Casas)"/></td>
+                                                <td>Inclui RMA de Hardware</td>
+                                                <td colspan="4"><apex:inputfield id="txtRMA"
+                                                        required="false"
+                                                        value="{!Contrato_Suporte__c.Inclui_RMA_de_Hardware__c}" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ativos Cobertos</td>
+                                                <td colspan="4"><apex:inputfield id="txtAtivos"
+                                                        required="false"
+                                                        value="{!Contrato_Suporte__c.Ativos_Cobertos__c}" style="width:350px;height:100px;"  /></td>
+                                            </tr>
+                                            <!--Aqui termina o Produto--->
+                                        </table>
+                                        <center>
+                                        <br/>
+                                        <apex:outputText id="lblMensagem" >{!msgRetorno}</apex:outputText>
+                                            <apex:commandButton action="{!SalvarContratoSuporteProduto}"
+                                                id="btnSalvarProd" value="Salvar Produto" style="display:{!mBotao}"/>
+                                        </center>
+                                    </apex:form>
+                                    </apex:pageBlockSection>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="dv_recurso" style="display: {!mostrarAdendo};">
+                                <apex:pageBlockSection title="Recurso"  id="pgRecurso" columns="1" >
+                                    <apex:form id="frmRecurso">
+                                        <table width="100%">
+                                            <!--Aqui começa  o Recurso--->
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;<apex:inputField id="txtNegociacaoComercialRec"
+                                                        value="{!Contrato_Suporte__c.Negociacao_Comercial__c}"
+                                                        style="display:none;" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Recurso</td>
+                                                <td><apex:inputfield id="txtMaodeObra" required="true"
+                                                        value="{!Contrato_Suporte__c.Produto_2__c}" /></td>
+                                                <td>Descrição</td>
+                                                <td colspan="4"><apex:inputfield id="txtDescricaoMaodeObra" required="false"
+                                                        value="{!Contrato_Suporte__c.Descricao_1_Mao_de_Obra__c}"
+                                                        style="width:350px;height:50px;" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Moeda</td>
+                                                <td>
+                                                
+                                                <apex:selectList id="txtMoeMaodeObra"
+                                                        value="{!Contrato_Suporte__c.Moeda_1_Mao_de_Obra__c}"
+                                                        size="1" onchange="inativaCambio(this.value,'Mao')">
+                                                        <apex:selectOptions value="{!MoedaCont}"></apex:selectOptions>
+                                                    </apex:selectList>
+                                                
+                                                <!--<apex:inputfield id="txtMoeMaodeObra"
+                                                        required="true"
+                                                        value="{!Contrato_Suporte__c.Moeda_1_Mao_de_Obra__c}" onchange="inativaCambio(this.value,'Mao')"/>-->
+                                                </td>
+                                                <td>Cambio</td>
+                                                <td colspan="4"><apex:inputfield id="txtCotacaoMaodeObra1" required="true"
+                                                        value="{!Contrato_Suporte__c.Cotacao_do_Dolar_1_Mao_de_Obra__c}" onkeypress="mascara(this,moeda2Casas)"/>
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr>
+                                            <td>Valor</td>
+                                                <td colspan="4"><apex:inputfield id="txtValorMaodeObra"
+                                                        required="false"
+                                                        value="{!Contrato_Suporte__c.Valor_1_Mao_de_Obra__c}" onkeypress="mascara(this,moeda2Casas)" /></td>
+                                                
+                                            </tr>
+                                            <!--Aqui termina o recurso--->
+                                        </table>
+                                        <br/>
+                                        <center>
+                                        <apex:outputText id="lblMensagemRec" >{!msgRetorno}</apex:outputText>
+                                            <apex:commandButton action="{!SalvarContratoSuporteRecurso}"
+                                                id="btnSalvarRec" value="Salvar Recurso" style="display:{!mBotao}"/>
+                                        </center>
+                                    </apex:form>
+                                    </apex:pageBlockSection>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr />
+                </apex:pageBlock>
+                <apex:form id="frmAcoes">
+                <!-- Releated List Produtos -->
+                    <apex:pageBlock title="Produtos Cadastrados" id="ListProdutosCadastrados">
+                        <apex:pageBlockTable value="{!Contrato_Suporte__c.Produtos_x_Contrato_Suporte_ContSup__r}"
+                            var="child"  >
+                            <apex:column headervalue="Ação">
+                            <apex:commandButton action="{!Excluir}"
+                                id="btnRemover" value="Excluir" reRender="none" style="display:{!mBotao}">
+                                <apex:param name="id" value="{!idContrato + child.Contrato_Suporte__c}" />
+                                <apex:param name="Tipo" value="{!Tipo + 'Prod'}" />                                
+                                <apex:param name="Idex" value="{!Idex + child.id}" />
+                                </apex:commandButton>
+                               <!--<apex:outputLink value="/apex/CadContratoSuportexPedido?id={!child.Negociacao_Comercial__c}&idProduto={!child.id}&Excluir=1">Excluir</apex:outputLink>-->
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <apex:outputLink style="text-decoration:none" value="/apex/CadContratoSuportexPedido?id={!child.Contrato_Suporte__c}&idProduto={!child.id}&Editar=1&Redict=0&idNegociacao={!idNegociacao}" target="_self">
+                               <input type="button" id="btnEditar" value="Editar" class="btn" style="display:{!mBotao}"/>
+                               </apex:outputLink>
+                            </apex:column>
+                            <apex:column headervalue="Nome Produto">
+                                {!child.Produto_NewAge__r.Name}
+                            </apex:column>
+                            <apex:column value="{!child.Valor_do_produto__c}" />
+                            <apex:column value="{!child.Moeda__c}" />
+                            <apex:column value="{!child.Cambio__c}" />
+                        </apex:pageBlockTable>
+                        <!--Resumo total dos produtos-->
+                                <apex:pageBlockTable value="{!Contrato_Suporte__c}"
+                                    var="child">
+                                    <apex:column headervalue="Total Prod." value="{!child.Valor_Total_Dos_Produtos__c}" />
+                                </apex:pageBlockTable>  
+                         </apex:pageBlock>
+                <!-- Releated List Recursos-->
+                <apex:pageBlock title="Recursos Cadastrados" id="ListRecursoCadastrado">
+                        <apex:pageBlockTable value="{!Contrato_Suporte__c.Recurso_x_Contrato_Suporte_ContSup__r}"
+                            var="child"  >
+                            <apex:column headervalue="Ação">
+                            <apex:commandButton action="{!Excluir}"
+                                id="btnRemover" value="Excluir" reRender="none" style="display:{!mBotao}">
+                                <apex:param name="id" value="{!idContrato + child.Contrato_Suporte__c}" />
+                                <apex:param name="Tipo" value="{!Tipo + 'Rec'}" />                                
+                                <apex:param name="Idex" value="{!Idex + child.id}" />
+                                </apex:commandButton>
+                               <!--<apex:outputLink value="/apex/CadContratoSuportexPedido?id={!child.Negociacao_Comercial__c}&idProduto={!child.id}&Excluir=1">Excluir</apex:outputLink>-->
+                               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                               <apex:outputLink value="/apex/CadContratoSuportexPedido?id={!child.Contrato_Suporte__c}&idRecurso={!child.id}&Editar=1&Redict=0&idNegociacao={!idNegociacao}" target="_self">
+                               <input type="button" id="btnEditar" value="Editar" class="btn" style="display:{!mBotao}"/>
+                               </apex:outputLink>
+                            </apex:column>
+                            <apex:column headervalue="Nome Recurso">
+                                {!child.Produto__r.Name}
+                            </apex:column>
+                            <apex:column value="{!child.Valor_do_recurso__c}" />
+                            <apex:column value="{!child.Moeda__c}" />
+                            <apex:column value="{!child.Cambio__c}" />
+                        </apex:pageBlockTable>  
+                        <!--Resumo total dos Recursos-->
+                                <apex:pageBlockTable value="{!Contrato_Suporte__c}"
+                                    var="child">
+                                    <apex:column headervalue="Total Rec." value="{!child.Valor_Total_dos_Recursos__c}" />
+                                </apex:pageBlockTable>  
+                         </apex:pageBlock>
+                </apex:form>
+
+            </div>
+        </div>
+    </div>
+    <script tyle="text/javascript">
+    
+    
+     if(document.getElementById('idConfigfirst').value==''){
+            document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:ddlOrigemFat').value='0015000000uacjU';
+        }
+        else{
+            document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:ddlOrigemFat').value=document.getElementById('idConfigfirst').value;
+        }
+    
+    function inativaCambio(vlr,tipo){
+            if(tipo=='Produto'){
+                if(vlr=='Real'){
+                    document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtCotacaoProduto').value=0;
+                    document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtCotacaoProduto').readOnly=true;
+                }
+                else{
+                    if(document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtCotacaoProduto').value==0){
+                        document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtCotacaoProduto').value='';
+                    }
+                    document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtCotacaoProduto').readOnly=false;
+                }
+            }
+            else if(tipo=='Mao') {
+                if(vlr=='Real'){
+                    document.getElementById('CadContratoSuportexPedido:pgMaster:pgRecurso:frmRecurso:txtCotacaoMaodeObra1').value=0;
+                    document.getElementById('CadContratoSuportexPedido:pgMaster:pgRecurso:frmRecurso:txtCotacaoMaodeObra1').readOnly=true;
+                }
+                else{
+                    //document.getElementById('CadContratoSuportexPedido:pgMaster:pgRecurso:frmRecurso:txtCotacaoMaodeObra1').value=0;
+                     if(document.getElementById('CadContratoSuportexPedido:pgMaster:pgRecurso:frmRecurso:txtCotacaoMaodeObra1').value==0){
+                        document.getElementById('CadContratoSuportexPedido:pgMaster:pgRecurso:frmRecurso:txtCotacaoMaodeObra1').value='';
+                    }
+                    document.getElementById('CadContratoSuportexPedido:pgMaster:pgRecurso:frmRecurso:txtCotacaoMaodeObra1').readOnly=false;
+                }
+            }
+        
+    }
+    inativaCambio(document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtMoedaProduto').value,'Produto');
+    inativaCambio(document.getElementById('CadContratoSuportexPedido:pgMaster:pgRecurso:frmRecurso:txtMoeMaodeObra').value,'Mao');  
+    if(document.getElementById('ReadOnly').value=='true'){
+        //Irá bloquear todos os campos para edição
+        itens = document.getElementsByTagName('input');
+        for (i=0; i<itens.length; i++){ 
+            itens[i].setAttribute('disabled','true');
+        }
+        itensList=document.getElementsByTagName('select');
+        for (i=0; i<itensList.length; i++){ 
+            itensList[i].setAttribute('disabled','true');
+        }
+    }
+    var Habilitar=1;
+    if(document.getElementById('idContrato').value!='' && document.getElementById('Redict').value=='1'){
+            window.open('https://na3.salesforce.com/apex/cadNegociacaoComercial?id=' + document.getElementById('idNegociacao').value +
+            '&idContrato=' + document.getElementById('idContrato').value + '&Redict=1','_top');
+            Habilitar=0;
+        }
+    
+    if(Habilitar==1){
+            document.getElementById('default').style.display='block';
+        }
+     function HabilitarDescPrazo(vlrOP){
+        if(vlrOP=='Outros'){
+            document.getElementById('descPrazo').style.display='block';
+            document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtDescPrazo').style.display='block';
+            
+        }
+        else{
+            document.getElementById('descPrazo').style.display='none';
+            document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtDescPrazo').style.display='none';
+        }
+     }
+     function HabilitarDescTipo(vlrOP){
+        if(vlrOP=='Outros'){
+            document.getElementById('descTipoFat').style.display='block';
+            document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtDescTipoFat').style.display='block';
+            
+        }
+        else{
+            document.getElementById('descTipoFat').style.display='none';
+            document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtDescTipoFat').style.display='none';
+        }
+     }
+     HabilitarDescTipo(document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtTipoFaturamento').value);
+     HabilitarDescPrazo(document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtPrazo').value);
+     //Funções de preenchimento automatico:
+      function RetornaDesc(idProd){
+            //alert(idProd);
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.clsCadContratoSuportexPedido.RetornaDescricao}',
+                                                        idProd,
+            function(result,event)
+            {
+                if (event.status)
+                {
+                    if(result!=''){
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        result=result.replace("{B}","<br/>");
+                        //alert('Gravação realizada com sucesso');
+                        //window.location.reload(true);
+                        //alert(result);
+                        document.getElementById("CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtDescricaoProduto").innerHTML=result;
+                    }
+                    
+                }
+            });
+        }
+        //Funções de preenchimento automatico:
+        function RetornaDescDest(idCNPJ) {
+            //alert(idProd);
+            Visualforce.remoting.Manager
+                    .invokeAction(
+                            '{!$RemoteAction.clsCadContratoSuportexPedido.RetornaCNPJDest}',
+                            idCNPJ,
+                            function(result, event) {
+                                if (event.status) {
+                                    if (result != '') {
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        //alert('Gravação realizada com sucesso');
+                                        //window.location.reload(true);
+                                        //alert(result);
+
+                                        document.getElementById("txtCNPJDest").innerHTML = result;
+                                    }
+
+                                }
+                            });
+        }
+        RetornaDesc(document.getElementById('CadContratoSuportexPedido:pgMaster:pgProduto:frmProduto:txtProduto_lkid').value);
+        document.getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtCnpjFat').focus();
+        RetornaDescDest(document
+                .getElementById('CadContratoSuportexPedido:pgMaster:frmPost:txtCnpjDestino_lkid').value);
+    </script>
+</apex:page>

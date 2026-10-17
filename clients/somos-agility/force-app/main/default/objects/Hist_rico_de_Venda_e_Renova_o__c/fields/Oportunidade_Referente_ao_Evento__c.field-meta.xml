@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade_Referente_ao_Evento__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Este campo deverá ser preenchido com a oportunidade fechada/renovação/vendida.</inlineHelpText>
+    <label>Oportunidade Referente ao Evento</label>
+    <lookupFilter>
+        <active>false</active>
+        <errorMessage>A oportunidade deve estar com status &quot;Aberto&quot; e atrelada à mesma conta deste histórico.</errorMessage>
+        <filterItems>
+            <field>Opportunity.Account.Id</field>
+            <operation>equals</operation>
+            <valueField>$Source.Account_ID__c</valueField>
+        </filterItems>
+        <filterItems>
+            <field>Opportunity.Status__c</field>
+            <operation>equals</operation>
+            <value>Encerrado Win, Encerrado Win - Processada Financeiro</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>Oportunidade Ref. ao Evento</relationshipLabel>
+    <relationshipName>Historicos_de_Vendas_e_Renova_es</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

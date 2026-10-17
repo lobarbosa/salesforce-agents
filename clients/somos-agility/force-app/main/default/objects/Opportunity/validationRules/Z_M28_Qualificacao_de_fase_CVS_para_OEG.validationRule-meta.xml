@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_M28_Qualificacao_de_fase_CVS_para_OEG</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / AM/CN: para avançar para a fase OEG é necessário que o campo do objeto Blueprint “Status do Blueprint” tem que estar com o valor &quot;Validado pelo Cliente&quot; selecionado.</description>
+    <errorConditionFormula>AND (
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Service Manager&quot;, 
+ ISCHANGED(StageName), 
+ ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;),
+ Blueprint_validado__c = 0 
+  )</errorConditionFormula>
+    <errorMessage>Para avançar de fase, pelo menos 1 Blueprint deverá estar simultaneamente sincronizado e validado pelo cliente. Atenção: somente o SA poderá criar um Blueprint. Entre em contato com ele através de Tarefas dentro de seu Planejador (Msg28)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Delivery</fullName>
+    <active>false</active>
+    <errorConditionFormula>00N380000033s9e.FirstName =  &quot;&quot;
+&lt;&gt;ISPICKVAL(Nome_da_Conta__r.Service_Delivery_Manager__c,&quot;&quot;)</errorConditionFormula>
+    <errorMessage>Esta Cliente não possui SD. Favor deixar este campo em branco</errorMessage>
+</ValidationRule>

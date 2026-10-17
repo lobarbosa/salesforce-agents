@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_dos_Lancamentos__c</fullName>
+    <label>Valor Total dos Lançamentos</label>
+    <summarizedField>Lancamento_de_Material_de_Escritorio__c.Valor_Unitario__c</summarizedField>
+    <summaryForeignKey>Lancamento_de_Material_de_Escritorio__c.Material_de_Escritorio__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

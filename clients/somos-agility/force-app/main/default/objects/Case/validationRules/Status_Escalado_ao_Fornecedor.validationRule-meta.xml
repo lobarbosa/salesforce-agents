@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Escalado_ao_Fornecedor</fullName>
+    <active>true</active>
+    <description>Só pode ser alterado o Status para Escalado ao Fornecedor desde o Status Em Andamento</description>
+    <errorConditionFormula>ISCHANGED(Status)&amp;&amp;
+TEXT(Status) = &quot;Escalado ao Fornecedor&quot;
+&amp;&amp;
+NOT( ISPICKVAL( PRIORVALUE(Status),&quot;Em Andamento&quot;))</errorConditionFormula>
+    <errorMessage>Só pode ser alterado o Status para &quot;Escalado ao Fornecedor&quot; desde o Status &quot;Em Andamento&quot;.</errorMessage>
+</ValidationRule>

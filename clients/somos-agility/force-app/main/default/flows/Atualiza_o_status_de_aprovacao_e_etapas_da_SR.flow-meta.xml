@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Pendente_GP_ou_Gestor</name>
+        <label>Pendente GP ou Gestor?</label>
+        <locationX>994</locationX>
+        <locationY>162</locationY>
+        <defaultConnector>
+            <targetReference>Atualiza_o_status_de_aprovacao_e_etapas_da_SR_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Gestor</defaultConnectorLabel>
+        <rules>
+            <name>Gerente_de_projeto</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.TotalDespesaProjeto__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_o_status_de_aprovacao_e_etapas_da_SR</targetReference>
+            </connector>
+            <label>Gerente de projeto</label>
+        </rules>
+    </decisions>
+    <description>Atualiza o status de aprovação e etapas da SR - Verifica se o primeiro aprovador será o GP ou o gestor - v1.0 (atualizado em 28/05/2026).</description>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza o status de aprovação e etapas da SR {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Atualiza o status de aprovação e etapas da SR</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_o_status_de_aprovacao_e_etapas_da_SR</name>
+        <label>Atualiza o status de aprovação e etapas da SR</label>
+        <locationX>1254</locationX>
+        <locationY>228</locationY>
+        <inputAssignments>
+            <field>Status_de_Aprovacao_e_Etapas__c</field>
+            <value>
+                <stringValue>Pendente - Gerente de Projetos</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_o_status_de_aprovacao_e_etapas_da_SR_0</name>
+        <label>Atualiza o status de aprovação e etapas da SR</label>
+        <locationX>1253</locationX>
+        <locationY>71</locationY>
+        <inputAssignments>
+            <field>Status_de_Aprovacao_e_Etapas__c</field>
+            <value>
+                <stringValue>Pendente - Gestor</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>523</locationX>
+        <locationY>58</locationY>
+        <connector>
+            <targetReference>Pendente_GP_ou_Gestor</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendente</stringValue>
+            </value>
+        </filters>
+        <object>Solicitacao_de_Reembolso__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

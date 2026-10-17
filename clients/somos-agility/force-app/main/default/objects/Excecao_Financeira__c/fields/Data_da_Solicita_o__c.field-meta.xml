@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_da_Solicita_o__c</fullName>
+    <description>jn18092018 - Campo solcitado pelo CT de acordo com a sprint 4 de 17092018</description>
+    <inlineHelpText>Favor informar a &quot;Data da Solicitação&quot; da Exceção Financeira.</inlineHelpText>
+    <label>Data da Solicitação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

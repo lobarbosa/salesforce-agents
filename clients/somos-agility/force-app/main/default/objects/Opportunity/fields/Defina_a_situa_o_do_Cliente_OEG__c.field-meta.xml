@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Defina_a_situa_o_do_Cliente_OEG__c</fullName>
+    <description>AM 10032018: campo que traz a informação pré preenchido com os mesmos dados do campo com o mesmo nome n fase OQF.</description>
+    <inlineHelpText>Confirme a situação operacional (desafios diários e operacionais) e estratégica (mercado, concorrência, lucratividade,etc).</inlineHelpText>
+    <label>Defina a situação do Cliente OEG</label>
+    <length>4000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

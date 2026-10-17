@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NecessarioPlanoTestes__c</fullName>
+    <label>Necessário plano de testes</label>
+    <summaryFilterItems>
+        <field>Acoes_Pre_Fechamento__c.Necess_rio_Plano_de_Testes__c</field>
+        <operation>equals</operation>
+        <value>Sim</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Acoes_Pre_Fechamento__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

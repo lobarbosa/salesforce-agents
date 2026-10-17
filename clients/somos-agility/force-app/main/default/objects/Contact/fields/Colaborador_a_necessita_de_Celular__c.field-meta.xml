@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Colaborador_a_necessita_de_Celular__c</fullName>
+    <label>Colaborador(a) necessita de Celular?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Modalidade_de_contrata_o__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sim</fullName>
+                <default>false</default>
+                <label>Sim</label>
+            </value>
+            <value>
+                <fullName>Não</fullName>
+                <default>false</default>
+                <label>Não</label>
+            </value>
+            <value>
+                <fullName>Não se aplica</fullName>
+                <default>false</default>
+                <label>Não se aplica</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Presencial</controllingFieldValue>
+            <controllingFieldValue>Teletrabalho</controllingFieldValue>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <valueName>Sim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Presencial</controllingFieldValue>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <valueName>Não</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Presencial</controllingFieldValue>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <valueName>Não se aplica</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

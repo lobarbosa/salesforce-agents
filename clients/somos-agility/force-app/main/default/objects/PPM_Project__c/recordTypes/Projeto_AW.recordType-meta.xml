@@ -1,0 +1,1195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Projeto_AW</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>Projetos</compactLayoutAssignment>
+    <description>AM261018</description>
+    <label>Projeto AW</label>
+    <picklistValues>
+        <picklist>Business_Unit_Sponsor__c</picklist>
+        <values>
+            <fullName>Accounting</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Operations</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>R%26D</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Support</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Canvas_Realizado_Validado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Compet_ncias_Envolvidas__c</picklist>
+        <values>
+            <fullName>CDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GPD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integração Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Multi-cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Plus AD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Plus dedicado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Red team %2F PAM</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Delivered_Business_Asset__c</picklist>
+        <values>
+            <fullName>Application</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Human Capital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Information</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infrastructure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Operations%2FServices</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Estouro_de_despesas__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Estouro_de_horas__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Finalizacao_de_projeto_concluida__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Gerente_do_Projeto_old__c</picklist>
+        <values>
+            <fullName>Alex Rhoades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bruno Santos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>César Kubo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Daniela Oliveira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Elisangela Sousa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Leandro Cestaro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marcelo Ribeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Paula Papis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vivian Morais</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Inicio_de_Faturamento__c</picklist>
+        <values>
+            <fullName>Na Entrega dos Equipamentos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Na Produção Parcial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No Término do Projeto</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Investment_Nature__c</picklist>
+        <values>
+            <fullName>Core</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Discretionary</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Growth</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Non-Discretionary</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venture</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Kickoff_interno_finalizado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Licoes_Aprendidas_finalizado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Lista_De_Atividades_Realizado_Validado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Modelo_de_contrata_o__c</picklist>
+        <values>
+            <fullName>T%26M</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TK</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PM__c</picklist>
+        <values>
+            <fullName>Ailton Augusto da Silva</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Eduardo Pasquotto Orsolini</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Everton Bezerra Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gustavo Fernandes Eduardo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hugo Andre Tadeu Novo Saadi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Julio Claudio Augusto de Toledo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plinio Eduardo Corregio</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>PO__c</picklist>
+        <values>
+            <fullName>Amir Neves Ferreira Velho</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mateus Belinaso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rodrigo EV</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Papel_1__c</picklist>
+        <values>
+            <fullName>Financeiro %2F Fiscal %2F Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Projetos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patrocinador Executivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usuário Chave</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Papel_2__c</picklist>
+        <values>
+            <fullName>Financeiro %2F Fiscal %2F Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Projetos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patrocinador Executivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usuário Chave</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Papel_3__c</picklist>
+        <values>
+            <fullName>Financeiro %2F Fiscal %2F Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Projetos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patrocinador Executivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usuário Chave</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Papel_4__c</picklist>
+        <values>
+            <fullName>Financeiro %2F Fiscal %2F Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Projetos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patrocinador Executivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usuário Chave</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Papel_5__c</picklist>
+        <values>
+            <fullName>Financeiro %2F Fiscal %2F Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Projetos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Patrocinador Executivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Responsável Técnico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Usuário Chave</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Passagem_de_suporte_finalizada__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Pesquisa_Respondida__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Pesquisa_de_Satisfacao_Enviada__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Plano_de_implementacao_finalizado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Possui_Contrato_de_Suporte_Agility__c</picklist>
+        <values>
+            <fullName>Existente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Novo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_Fabricante__c</picklist>
+        <values>
+            <fullName>AGILITY-AUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AGILITY-SEG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIOps NGFW</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARMIS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS Fargate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS Trasit Gateway</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advanced Threat Prevention</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advanced URL Filtering</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon CloudFront</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Block Store %28EBS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Cloud Compute %28EC2%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Container Service %28ECS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Kubernetes Service %28EKS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Route 53</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Simple Storage Service %28S3%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Virtual Private Cloud %28VPC%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Access Policy Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Advanced Firewall Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Advanced WAF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP DNS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Local Traffic Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Policy Enforcement Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP SSL Orchestrator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP VIPRION Chassis and Blades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Virtual Edition</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP iSeries Appliances</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BLACKBERRY CYLANCE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BloxOne %28SaaS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNA - Cloud Network Automation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYMULATE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud Privilege Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cortex</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cyberark</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cylance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DHCP%2C DNS and IPAM %28DDI%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DNS Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DNS Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DYANATRACE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Distributed Cloud Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EC2 AWS Auto Scaling</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Elastic Load Balancing %28ELB%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Endpoint Privilege Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Enterprise Data loss Prevention %28DLP%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extrahop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5 rSeries</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIREMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FORESCOUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIGAMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HASHCORP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INETCO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indentity Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infoblox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IoT Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Contêiner CN-Series</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Hardware</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Virtual VM-Series</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGINX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NONAME</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OTHER</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer APEX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Analyzer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer GigaStor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Gigaflow</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Management Server %28OMS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Taps</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ObserverONE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PENTEST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Panorama</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prisma CLOUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prisma SASE %28Access%2C SD-WAN %26 ADEM%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PrivacyTools</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Privileged Access</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QOMPLX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QUALYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rainforest</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riverbed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SALT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SECURITY%2EAI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Secret Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shape Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VELOS Chassis and Blades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VERACODE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WildFire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Workforce %26 Custumer Access</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>f5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>iRules</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_OneTime__c</picklist>
+        <values>
+            <fullName>AGILITY-AUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AGILITY-SEG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARMIS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYBERARK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYMULATE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extrahop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIREMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIGAMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INETCO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INFOBLOX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NONAME</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OTHER</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PrivacyTools</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QUALYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RAINFOREST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RIVERBED</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VERACODE</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Project_Goal__c</picklist>
+        <values>
+            <fullName>Customer Satisfaction</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Grow Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Run Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transformation</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Project_Phase__c</picklist>
+        <values>
+            <fullName>01 - DNP</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>02 - Kick-Off cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03 - Desenho de arquitetura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04 - Construção</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05 - Validação e teste</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06 - Disponibilização</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07 - Acompanhamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08 - Documentação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09 - Questionário de avaliação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10 - Termo de aceite</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Project_Status__c</picklist>
+        <values>
+            <fullName>Atrasado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Auditoria Final</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancelado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DSA Rejeitado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DSA em Análise</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Dentro do prazo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Planejamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Encerrado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Finalizado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Freezing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não iniciado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suspenso</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Projeto_Cont_m_Produtos__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Projeto_cont_m_equipamentos__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Projeto_contem_licencas__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Region__c</picklist>
+        <values>
+            <fullName>APAC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EMEA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LACA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>USA</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ResponsavelAtraso__c</picklist>
+        <values>
+            <fullName>Agility</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>StatusAlteracaoDataAtivacao__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Necessita Aprovação</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_de_Altera_o_de_Status__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_de_Qualifica_o_Projeto_Freezing__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_de_Qualificacao_Projeto_Suspenso__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Termo_de_aceite_finalizado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

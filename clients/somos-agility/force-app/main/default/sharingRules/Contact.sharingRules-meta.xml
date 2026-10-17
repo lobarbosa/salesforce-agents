@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>excecaoMkt</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Regra de compartilhamento configurada a fins de dar permissão de edição ao papel Gerente de Marketing.</description>
+        <label>Exceção MKT</label>
+        <sharedTo>
+            <role>Gerente_de_Marketing</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>OwnerId</field>
+            <operation>notEqual</operation>
+            <value>&quot; &quot;</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>RH</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>RH</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>CEO</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <role>Recursos_Humanos</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

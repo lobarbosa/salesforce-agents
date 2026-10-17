@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_Jobs</fullName>
+    <columns>NAME</columns>
+    <columns>OWNER.FIRST_NAME</columns>
+    <columns>Nome_do_Evento__c</columns>
+    <columns>Tipo_do_Evento__c</columns>
+    <columns>Centro_de_Custo__c</columns>
+    <columns>Data__c</columns>
+    <columns>Justificativa__c</columns>
+    <columns>Valor_Total_de_Gastos_Previstos__c</columns>
+    <columns>Valor_Total_de_Gastos_Realizados__c</columns>
+    <columns>Valor_Total_de_Patroc_nio_Realizado__c</columns>
+    <columns>Valor_Total_do_Patroc_nio_Previsto__c</columns>
+    <columns>Varia_o_Prev_x_Real__c</columns>
+    <columns>Status_da_Qualificaco__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>My Jobs</label>
+</ListView>

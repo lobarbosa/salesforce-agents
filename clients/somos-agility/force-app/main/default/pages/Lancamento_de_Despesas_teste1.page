@@ -1,0 +1,24 @@
+<apex:page StandardController="Lancamento_de_Despesas__c" >
+   <apex:form >
+     <apex:sectionHeader title="Lançamento de Despesas" subtitle="Novo Lançamento de Despesas" Description="{!$User.FirstName} {!$User.LastName}, Lance abaixo suas despesas"/>
+     <apex:pageBlock >
+     <apex:pageBlockButtons >
+    <apex:commandButton action="{!quicksave}" rerender="out,in" value="Salvar"/>
+     <apex:commandButton value="Cancelar" rerender="out,in" action="{!cancel}" id="cancelButton" />
+     </apex:pageBlockButtons>
+     <apex:pageblockSection title="Lançar Despesas" columns="4">
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Tipo_da_Despesa__c}"/>
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_a_Oportunidade__c}"/> 
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_ao_Caso__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Data_da_Despesa__c}" required="true"/> 
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Kilometros_Percorridos_Ida__c}"/>
+     <apex:inputField value="{!Lancamento_de_Despesas__c.Kilometros_Percorridos_Volta__c}"/>    
+      <apex:inputField value="{!Lancamento_de_Despesas__c.Valor_da_Despesa__c}" Label="Valor da Despesa R$"/>
+     <apex:inputField value="{!Lancamento_de_Despesas__c.Valor_da_Kilometragem__c}" Label="Valor da Despesa KM"/>
+     <apex:outputField value="{!Lancamento_de_Despesas__c.Valor_do_KM_Rodado__c}"/>
+     </apex:pageBlockSection>
+     </apex:pageBlock>
+ <apex:detail />
+   </apex:form>
+</apex:page>

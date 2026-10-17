@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Notificar_Cliente_Sobre_Risco_de_N_o_Contratacao_de_Suporte_T_cnico</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Notificar Cliente Sobre Risco de Não Contratação de Suporte Técnico</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!PPM_Project__c.Id}&amp;p3_lkid={!PPM_Project__c.Id}&amp;rtype=003&amp;p4={!PPM_Project__c.Email_GC__c};nelson.rosamilha@agilitynetworks.com.br&amp;template_id=00X38000001gDmx&amp;new_template=true&apos;);</url>
+</WebLink>

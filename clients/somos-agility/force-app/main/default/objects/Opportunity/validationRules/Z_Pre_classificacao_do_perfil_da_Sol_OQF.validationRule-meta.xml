@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Pre_classificacao_do_perfil_da_Sol_OQF</fullName>
+    <active>false</active>
+    <description>Para alterar a fase da oportunidade de OQF para CVS é obrigatório preencher o campo Pré Classificação do Perfil da Solução?</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;OQF&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;CVS/RVS&quot;)) ,ISBLANK(   TEXT(Pre_classificacao_do_perfil_da_solucao__c )))</errorConditionFormula>
+    <errorMessage>Para alterar de fase é obrigatório que o SA/SE preencha o campo &quot;Pré Classificação do Perfil da Solução?&quot;</errorMessage>
+</ValidationRule>

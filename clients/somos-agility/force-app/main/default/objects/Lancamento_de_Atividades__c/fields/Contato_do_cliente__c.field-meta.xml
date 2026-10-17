@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_do_cliente__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM271018: contato no cliente</description>
+    <label>Contato do cliente</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Lançamento de Atividades (Contato do cliente)</relationshipLabel>
+    <relationshipName>Lancamento_de_Atividades1</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

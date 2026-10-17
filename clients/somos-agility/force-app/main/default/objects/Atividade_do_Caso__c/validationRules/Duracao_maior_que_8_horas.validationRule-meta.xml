@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Duracao_maior_que_8_horas</fullName>
+    <active>true</active>
+    <description>AM 05052018: a duração da atividade não pode ultrapassar 8 horas consecutivas</description>
+    <errorConditionFormula>AND ( 
+  Dura_o_da_Atividade__c  &gt; 8)</errorConditionFormula>
+    <errorDisplayField>Hora_Final_da_Atividade__c</errorDisplayField>
+    <errorMessage>A duração da atividade não pode ultrapassar 8 horas consecutivas. Caso isso ocorra, lance  uma nova atividade. Se o final da atividade ultrapassar ás 23:59 faça um lançamento complementar com início às 00:00 do próximo dia.</errorMessage>
+</ValidationRule>

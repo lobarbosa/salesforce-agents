@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Linha_de_Neg_cio__c</fullName>
+    <inlineHelpText>ADC(Geral)-(F5 Networks)
+WAAR-(Riverved)
+VOG -(Citrix, VMware)
+AI-(Netapp, Commvault)
+DC SRV, Networks, Outros.(Cisco, Outros)
+AUTOM e IPAM(Infoblox)
+NGF-(Palo Alto)
+DCF, ASM, APM, BYOD-(F5 Networks )
+WEB SECURITY(White Hat)
+NGEN NAC(Forescout)</inlineHelpText>
+    <label>Sub-Linha de Produtos</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ADC Geral ( Application Delivery Controllers)</fullName>
+                <default>false</default>
+                <label>ADC Geral ( Application Delivery Controllers)</label>
+            </value>
+            <value>
+                <fullName>WAAR (Aceleração WAN)</fullName>
+                <default>false</default>
+                <label>WAAR (Aceleração WAN)</label>
+            </value>
+            <value>
+                <fullName>AI (Armazenamento Inteligente)</fullName>
+                <default>false</default>
+                <label>AI (Armazenamento Inteligente)</label>
+            </value>
+            <value>
+                <fullName>VOG (Virtualização, Orquestração, Gerenciamento)</fullName>
+                <default>false</default>
+                <label>VOG (Virtualização, Orquestração, Gerenciamento)</label>
+            </value>
+            <value>
+                <fullName>DC SRV, NETWORKS, OUTROS</fullName>
+                <default>false</default>
+                <label>DC SRV, NETWORKS, OUTROS</label>
+            </value>
+            <value>
+                <fullName>AUTOM e IPAM</fullName>
+                <default>false</default>
+                <label>AUTOM e IPAM</label>
+            </value>
+            <value>
+                <fullName>NGF (Next Gen. Firewalls)</fullName>
+                <default>false</default>
+                <label>NGF (Next Gen. Firewalls)</label>
+            </value>
+            <value>
+                <fullName>DCF, ASM, APM, BYOD</fullName>
+                <default>false</default>
+                <label>DCF, ASM, APM, BYOD</label>
+            </value>
+            <value>
+                <fullName>WEB SECURITY</fullName>
+                <default>false</default>
+                <label>WEB SECURITY</label>
+            </value>
+            <value>
+                <fullName>NGEN NAC</fullName>
+                <default>false</default>
+                <label>NGEN NAC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

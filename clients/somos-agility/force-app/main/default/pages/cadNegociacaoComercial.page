@@ -1,0 +1,730 @@
+<apex:page extensions="clsCadNegociacaoComercial"
+    StandardController="Negociacao_Comercial__c" showHeader="true"
+    tabStyle="Negociacao_Comercial__c" sidebar="false">
+    <!--Bibliotecas Jquery-->
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.JqueryUI, '/ui/jquery-ui.js')}" />
+    <!--Bibliotecas PrimeUI-->
+    <apex:includeScript value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.js')}" />
+    <!---------------------->
+    <!--CSS do PrimeUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.css')}" />
+    <!--CSS do JqueryUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryUI, '/themes/base/jquery-ui.css')}" />
+    <!---------------------->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/themes/smoothness/theme.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/css/accordion/accordion.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/css/growl/growl.css')}" />
+    <!---------------------->
+    <script type="text/javascript">
+        var URLT = window.location + "";
+        var Pos=0;
+        if (URLT.indexOf('idProduto')>0){
+                Pos=1;
+            }
+        else if (URLT.indexOf('idServico')>0){
+                Pos=2;
+            }
+        else if (URLT.indexOf('idContrato')>0){
+                Pos=3;
+            }
+        else if (URLT.indexOf('idLocacao')>0){
+                Pos=4;
+            }
+            
+        
+
+          $(document).ready(function(){ 
+           $('#default').puitabview({
+            orientation: 'top',
+            activeIndex:(Pos)}  
+           ); }); 
+     
+    </script>
+    <script type="text/javascript">
+    
+        var sinc="{!Sinc}";
+        var Tipo='info';
+        if (sinc != 'OK' && sinc !='' ){
+            Tipo='error';
+        }
+    if(sinc!=''){
+        $(document).ready(function () { 
+         $('#informacao').puigrowl({initialize:90000,sticky:true});
+         $('#informacao').puigrowl('show', [{severity: Tipo, summary: 'Sincronização de Negociação Comercial', detail: '{!msgSincronia}'}]);
+        });
+     }
+    
+    
+    </script>
+    
+    
+    <script type="text/javascript">
+    $(document).ready(function () { $('body').hide().fadeIn(1500).delay(6000)});
+    </script>
+    
+    <style>
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+    {
+    border: 0px solid #d3d3d3;
+    background: #CDE8F0 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #555555;
+}
+
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited
+    {
+    color: #555555;
+    text-decoration: none;
+}
+
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus
+    {
+    border: 1px solid #999999;
+    background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-hover a,.ui-state-hover a:hover {
+    color: #212121;
+    text-decoration: none;
+}
+
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active
+    {
+    border: 1px solid #aaaaaa;
+    background: #e5c130 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.ui-widget :active {
+    outline: none;
+}
+
+.ui-widget-content {
+    border: 1px solid #aaaaaa;
+    background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50%
+        repeat-x;
+    color: #222222;
+}
+
+.ui-widget-content a {
+    color: #222222;
+}
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    background: #CDE8F0 url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
+        50% 50% repeat-x;
+    color: black;
+    font-weight: bold;
+}
+
+.ui-widget-header a {
+    color: #CDE8F0;
+    font-weight: bold;
+}
+
+
+#alert {
+  display: none; /* O alerta deve iniciar oculto */
+  width: 100%;
+  height: auto;
+  overflow: hidden;
+  position: fixed;
+  z-index: 999999;
+  padding: 10px 0;
+  color: #fff;
+}
+ 
+.alert-error {
+  background-color: #e74c3c;
+}
+ 
+.alert-success {
+  background-color: #2ecc71;
+}
+
+</style>
+    <apex:form id="frmPost">
+    
+        
+    
+        <apex:actionFunction name="doInit" action="{!CalculcarObjetos}"
+            rerender="allPanel,ListProdutosCadastrados" />
+        <input type="hidden" value="{!idNegociacao}" name="idNegociacao"
+            id="idNegociacao" />
+        <input type="hidden" value="{!idProduto}" name="idProduto"
+            id="idProduto" />
+        <input type="hidden" value="{!idServico}" name="idServico"
+            id="idServico" />
+        <input type="hidden" value="{!idContrato}" name="idContrato"
+            id="idContrato" />
+        <input type="hidden" value="{!idLocacao}" name="idLocacao"
+            id="idLocacao" />
+        <input type="hidden" value="{!Redict}" name="Redict" id="Redict" />
+        <input type="hidden" value="{!myFlag}" name="myFlag" id="myFlag" />
+        <input type="hidden" value="{!Travar}" name="Travar" id="Travar" />
+        
+        <input type="hidden" value="{!idContaFatProd}" name="idContaFatProd" id="idContaFatProd" />
+        <input type="hidden" value="{!idContaFatServ}" name="idContaFatServ" id="idContaFatServ" />
+        <input type="hidden" value="{!idContaFatLoc}" name="idContaFatLoc" id="idContaFatLoc" />
+        <input type="hidden" value="{!idContaFatCont}" name="idContaFatCont" id="idContaFatCont" />
+        <input type="hidden" value="{!prodCambio}" name="Cambio" id="Cambio"/>
+        <input type="hidden" value="{!prodCambioVenda}" name="CambioVenda" id="CambioVenda"/>
+        
+        <input type="hidden" value="{!CambioGlobal}" name="CambioGlobal" id="CambioGlobal"/>
+        
+        
+        <div id="Dv_Informacaoes" style="font-size: medium;display:{!Mostrar};color: #555555;" >
+        <table width="100%">
+            <tr>
+                <td>
+        
+            <table>
+                <tr>
+                    <td Style="font-weight: bold;color: #555555;">Nº Neg. Comercial:</td>
+                    <td Style="font-style: italic;color: #555555;">
+                        {!Negociacao_Comercial__c.Name}</td>
+                    <td Style="font-weight: bold;color: #555555;">Versão:</td>
+                    <td Style="font-style: italic;color: #555555;">
+                        {!Negociacao_Comercial__c.Versao_da_Negociacao__c}</td>
+                </tr>
+                <tr>
+                    <td Style="font-weight: bold;color: #555555;">Status:</td>
+                    <td Style="font-style: italic;color: #555555;">
+                        {!Negociacao_Comercial__c.Status_Negociacao__c}</td>
+                    <td Style="font-weight: bold;color: #555555;">Nome da Oportunidade:</td>
+                    <td Style="font-style: italic;color: #555555;">
+                        {!Negociacao_Comercial__c.Oportunidade__r.Name}</td>
+                </tr>
+                <tr>
+                    <td Style="font-weight: bold;color: #555555;">Sincronizado:</td>
+                    <td Style="font-style: italic;color: #555555;" colspan="4">
+                        {!(if(Negociacao_Comercial__c.Sincronizado__c==true,'Sim','Não'))}</td>
+                </tr>
+                <tr>
+                    <td colspan="4" style="font-size: small;color: #555555;">
+                        <a href="/{!Negociacao_Comercial__c.Oportunidade__c}">Voltar para a Oportunidade</a>
+                    </td>
+                </tr>
+            </table>
+                    </td>
+                    <td>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                    </td>
+                    <td Style="font-style: italic;color: #555555;">
+                    <apex:commandButton action="{!SincronizarNegociacao}" id="btnSincronizar"
+                                            value="Sincronizar" reRender="none" image="/resource/1392644913000/Sincronizar" title="Sincronizar" style="display:{!mBotao}" onclick="ChamarServico()"/>
+                    </td>
+                    <td>
+                        <apex:commandButton action="/apex/Sdoc__SDCreate1?id={!Negociacao_Comercial__c.ID}&Object=negociacao_comercial__c" id="btnImprimir"
+                                            value="Emitir Documento" reRender="none" image="/resource/1400693456000/Print" title="Emitir Documento" style="display:{!mBotaoImprimir}"/>
+                    </td>
+                    <td>
+                    <apex:commandButton action="{!ConverterNegociacao}" id="btnConverter"
+                                            value="Converter" reRender="none" image="/resource/1392644834000/Converter" title="Converter" style="display:{!mBotao}"/>
+                    </td>
+                    
+            </tr>
+        
+        </table>
+        <div id="informacao"/>
+        </div>
+        <div id="default" style="width: 100%; display: none">
+            <ul>
+                <li><a href="#tab1" onclick="atualizar()">Resumo de Ítens</a></li>
+                <li><a href="#tab2">Produto</a></li>
+                <li><a href="#tab3">Serviço</a></li>
+                <li><a href="#tab4">Contrato de Suporte</a></li>
+                <li><a href="#tab5">Contrato de Locação</a></li>
+                <li><a href="#tab6" style="display:{!mPedido}">Pedidos</a></li>
+                <li><a href="#tab7">Anexos</a></li>
+            </ul>
+            <div>
+                <div id="tab1">
+                    <apex:inputfield id="txtOportunidade" required="true"
+                        value="{!Negociacao_Comercial__c.Oportunidade__c}"
+                        Style="display:none" />
+                    <!-- Blocos dos releated list -->
+                    <!-- Releated List Produtos -->
+                    <apex:outputPanel id="allPanel">
+                        <apex:outputPanel rendered="{!NOT(myFlag)}">
+                            <p align="center"
+                                style='font-family: "Arial", Helvetica, sans-serif; font-size: 20px;'>
+                                <apex:image value="/img/loading.gif" />
+                                &nbsp;Please wait
+                            </p>
+                            <script>
+                            /*$(document).ready(func1)
+                              body.onload=function()
+                               {
+                                 doInit();
+                               };*/
+                               
+                            $(document).ready(function(){ 
+                              doInit();
+                           }); 
+                         </script>
+                        </apex:outputPanel>
+                        <apex:outputPanel rendered="{!myFlag}">
+                            <apex:pageBlock title="Produtos Cadastrados">
+                                <apex:pageBlockTable value="{!Negociacao_Comercial__c.Produtos_x_Pedidos__r}"
+                                    var="child" id="ListProdutosCadastrados" rendered="{!myFlag}">
+                                    <apex:column headervalue="Ação">
+                                        <apex:commandButton action="{!RemoverItem}" id="btnRemover"
+                                            value="Remover" reRender="none" style="display:{!mBotao}">
+                                            <apex:param name="id"
+                                                value="{!idNegociacao + child.Negociacao_Comercial__c}" />
+                                            <apex:param name="Excluir" value="{!Excluir + '1'}" />
+                                            <apex:param name="Tipo" value="{!Tipo + 'Prod'}" />
+                                            <apex:param name="Idex" value="{!Idex + child.id}" />
+                                        </apex:commandButton>
+                                        <br />
+                                        <apex:outputText id="txtMensagem" value="" />
+                                    </apex:column>
+                                    <apex:column headervalue="Qtd" value="{!child.Quantidade__c}" />
+                                    <apex:column headervalue="Nome Produto">
+                                        <apex:outputLink value="/{!child.id}">{!child.Produto_NewAge__r.name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column headervalue="Custo Total"
+                                        value="{!child.Total_Custo_Dolar__c}" />
+                                    <apex:column headervalue="Custo Unit. Ajust."
+                                        value="{!child.Custo_Unitario_Ajustado_Dolar__c}" />
+                                    <apex:column headervalue="Markup" value="{!child.Markup__c}" />
+                                    <apex:column headervalue="Vlr Unit."
+                                        value="{!child.Venda_Unitaria_Dolar__c}" />
+                                    <apex:column headervalue="Vlr Total"
+                                        value="{!child.Venda_Total_Dolar__c}" />
+                                    <apex:column headervalue="Rentab U$"
+                                        value="{!child.Rentabilidade_Liquida_Dolar__c}" />
+                                        <apex:column headervalue="Rentab R$"
+                                        value="{!child.Rentabilidade_Liquida__c}" />
+                                    <apex:column headervalue="C PGTO"
+                                        value="{!child.Condicao_de_Pagamento_Compra__r.Descricao__c}" />
+                                <apex:column headervalue="Fat. Origem"
+                                        value="{!child.CNPJ_de_Faturamento__r.Name}" />
+                                        <apex:column headervalue="" style="display:{!VisuEspecial}">
+                                        <apex:outputLink value="/{!child.id}/e">
+                                        <img src="/resource/1402351026000/Edit_User"></img>
+                                        </apex:outputLink>
+                                    </apex:column>
+                                </apex:pageBlockTable>
+                                
+                                <!--Resumo total dos produtos-->
+                                <!--<apex:pageBlockTable value="{!Negociacao_Comercial__c}"
+                                    var="child">
+                                    <apex:column headervalue="Tot. Prod."
+                                        value="{!child.Total_dos_Produtos__c}" />
+                                    <apex:column headervalue="Tot. Rent. Bruta"
+                                        value="{!child.Total_Rentabilidade_Bruta_Produto__c}" />
+                                    <apex:column headervalue="Tot. Rent. Liq."
+                                        value="{!child.Total_Rentabilidade_Liquida_Produto__c}" />
+                                    <apex:column headervalue="Tot. Imp. Apur."
+                                        value="{!child.Impostos_Apurados_Produto__c}" />
+                                    <apex:column headervalue="Tot. Custo"
+                                        value="{!child.Total_Custo_Geral_Produto__c}" />
+                                    <apex:column headervalue="Tot. Rec. Geral"
+                                        value="{!child.Total_Receita_Geral_Produto__c}" />
+                                </apex:pageBlockTable>-->
+
+                            </apex:pageBlock>
+                            <br />
+                            <!-- Releated List Serviços -->
+                            <apex:pageBlock title="Serviços Cadastrados"
+                                id="ListServicosCadastrados">
+                                <apex:pageBlockTable value="{!Negociacao_Comercial__c.Servicos_x_PedidosPedidosCom__r}"
+                                    var="child">
+                                    <apex:column headervalue="Ação">
+                                        <apex:commandButton action="{!RemoverItem}" id="btnRemover"
+                                            value="Remover" reRender="none" style="display:{!mBotao}">
+                                            <apex:param name="id"
+                                                value="{!idNegociacao + child.Negociacao_Comercial__c}" />
+                                            <apex:param name="Excluir" value="{!Excluir + '1'}" />
+                                            <apex:param name="Tipo" value="{!Tipo + 'Serv'}" />
+                                            <apex:param name="Idex" value="{!Idex + child.id}" />
+                                        </apex:commandButton>
+                                        <br />
+                                    </apex:column>
+                                    <apex:column headervalue="Número">
+                                        <apex:outputLink value="/{!child.id}">{!child.Name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column headervalue="Competência"
+                                        value="{!child.Competencia__c}" />
+                                    <apex:column headervalue="Fase Aplic."
+                                        value="{!child.Fase_da_Metodologia__c}" />
+                                    <apex:column headervalue="Qtd. Analist."
+                                        value="{!child.Quantidade_Analistas__c}" />
+                                        
+                                    
+                                    <apex:column headervalue="Esforço em HC"
+                                        value="{!child.Qtd_Horas_Horario_Comercial__c}" />
+                                    
+                                    <apex:column headervalue="Esforço em HE"
+                                        value="{!child.Qtd_Horas_Extraordinario__c}" />
+                                    <apex:column headervalue="Valor"
+                                        value="{!child.Total_dos_Servicos__c}" />
+                                    <apex:column headervalue="Rentabilidade" value="{!child.Rentabilidade_liquida__c}"/>
+                                    <apex:column headervalue="C PGTO"
+                                        value="{!child.Condicao_de_Pagamento__r.Descricao__c}" />
+                                    
+                                    <apex:column headervalue="Fat.Origem"
+                                        value="{!child.CNPJ_de_Faturamento__r.Name}" />
+                                    
+                                    <apex:column headervalue="" style="display:{!VisuEspecial}">
+                                        <apex:outputLink value="/{!child.id}/e">
+                                        <img src="/resource/1402351026000/Edit_User"></img>
+                                        </apex:outputLink>
+                                    </apex:column>
+                                    
+                                </apex:pageBlockTable>
+                                <!--Resumo total dos Serviços-->
+                                <!--<apex:pageBlockTable value="{!Negociacao_Comercial__c}"
+                                    var="child">
+                                    <apex:column headervalue="Tot. Serv."
+                                        value="{!child.Total_dos_Servicos__c}"></apex:column>
+                                    <apex:column headervalue="Tot. Rent. Bruta"
+                                        value="{!child.Total_Rentabilidade_Bruta_Servico__c}" />
+                                    <apex:column headervalue="Tot. Rent. Liq."
+                                        value="{!child.Total_Rentabilidade_Liquida_Servico__c}" />
+                                    <apex:column headervalue="Tot. Custo Geral"
+                                        value="{!child.Total_Custo_Geral_Servico__c}" />
+                                    <apex:column headervalue="Tot. Rec. Geral Serv."
+                                        value="{!child.Total_Receita_Geral_Servico__c}" />
+                                </apex:pageBlockTable>-->
+                            </apex:pageBlock>
+                            <!------------------------------>
+                            <br />
+                            <!-- Releated List Contratos -->
+                            <apex:pageBlock title="Contratos de Suporte">
+                                <apex:pageBlockTable value="{!Negociacao_Comercial__c.Contratos_de_Suporte__r}"
+                                    var="child">
+                                    <apex:column headervalue="Ação">
+                                        <apex:commandButton action="{!RemoverItem}" id="btnRemover"
+                                            value="Remover" reRender="none" style="display:{!mBotao}">
+                                            <apex:param name="id"
+                                                value="{!idNegociacao + child.Negociacao_Comercial__c}" />
+                                            <apex:param name="Excluir" value="{!Excluir + '1'}" />
+                                            <apex:param name="Tipo" value="{!Tipo + 'Cont'}" />
+                                            <apex:param name="Idex" value="{!Idex + child.id}" />
+                                        </apex:commandButton>
+                                        <br />
+                                        <apex:outputText id="txtMensagem" value="" />
+                                    </apex:column>
+                                    <apex:column headervalue="Número">
+                                        <apex:outputLink value="/{!child.id}">{!child.Name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column headervalue="Competencia"
+                                        value="{!child.Celula_de_Servicos__c}" />
+                                    <apex:column headervalue="Nivel. Sup."
+                                        value="{!child.Nivel_do_Suporte__c}" />
+                                    <apex:column headervalue="Disp."
+                                        value="{!child.Disponibilidade__c}" />
+                                     <!--<apex:column headervalue="Vlr Prod."
+                                        value="{!child.Valor_Total_Dos_Produtos_Dolar__c}" />
+                                        <apex:column headervalue="Vlr Rec."
+                                        value="{!child.Valor_Total_dos_Recursos_Dolar__c}" />-->
+                                </apex:pageBlockTable>
+                                <!--Resumo total dos Contratos-->
+                                <!--<apex:pageBlockTable value="{!Negociacao_Comercial__c}"
+                                    var="child">
+                                    <apex:column headervalue="Tot. Produto"
+                                        value="{!child.Total_dos_Produtos_Contrato_Suporte__c}" />
+                                    <apex:column headervalue="Tot. Recurso"
+                                        value="{!child.Total_Mao_de_Obra_Contrato_Suporte__c}" />
+                                </apex:pageBlockTable>-->
+                            </apex:pageBlock>
+                            <br />
+                            <!-- Releated List Locações -->
+                        <apex:pageBlock title="Contratos de Locação">
+                                <apex:pageBlockTable value="{!Negociacao_Comercial__c.Locacoes_x_PedidoNegoCom__r}"
+                                    var="child">
+                                    <apex:column headervalue="Ação">
+                                        <apex:commandButton action="{!RemoverItem}" id="btnRemover"
+                                            value="Remover" reRender="none" style="display:{!mBotao}">
+                                            <apex:param name="id"
+                                                value="{!idNegociacao + child.Negociacao_Comercial__c}" />
+                                            <apex:param name="Excluir" value="{!Excluir + '1'}" />
+                                            <apex:param name="Tipo" value="{!Tipo + 'Loc'}" />
+                                            <apex:param name="Idex" value="{!Idex + child.id}" />
+                                        </apex:commandButton>
+                                        <br />
+                                        <apex:outputText id="txtMensagem" value="" />
+                                    </apex:column>
+                                    <apex:column headervalue="Número">
+                                        <apex:outputLink value="/{!child.id}">{!child.Name}</apex:outputLink>
+                                    </apex:column>
+                                    <apex:column headervalue="Vlr Total Prod"
+                                        value="{!child.Valor_Total_dos_Produtos__c}" />
+                                    <apex:column headervalue="Rent. Liq."
+                                        value="{!child.Rentabilidade_liquida__c}" />
+                                    <apex:column headervalue="Markup" value="{!child.Markup__c}" />
+                                    <apex:column headervalue="Margem Bruta" value="{!child.Margem_Bruta__c}" />
+                                    <apex:column headervalue="" style="display:{!VisuEspecial}">
+                                        <apex:outputLink value="/{!child.id}/e">
+                                        <img src="/resource/1402351026000/Edit_User"></img>
+                                        </apex:outputLink>
+                                    </apex:column>
+                                </apex:pageBlockTable>
+                                <!--Resumo total das Locações-->
+                                <!--<apex:pageBlockTable value="{!Negociacao_Comercial__c}"
+                                    var="child">
+                                    <apex:column headervalue="Tot. Locação"
+                                        value="{!child.Total_da_Locacao__c}" />
+                                    <apex:column headervalue="Tot. Rent. Bruta"
+                                        value="{!child.Total_Rentabilidade_Bruta_Locacao__c}" />
+                                    <apex:column headervalue="Tot. Rent. Liq."
+                                        value="{!child.Total_Rentabilidade_Liquida_Locacao__c}" />
+                                    <apex:column headervalue="Tot. Custo Geral"
+                                        value="{!child.Total_Custo_Geral_Locacao__c}" />
+                                    <apex:column headervalue="Tot. Rec. Geral Locação"
+                                        value="{!child.Total_Receita_Geral_Locacao__c}" />
+                                </apex:pageBlockTable>-->
+                            </apex:pageBlock>
+                            
+                            
+
+                            
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                </div>
+                <div id="tab2">
+
+                    <!---Seção do Produto-->
+                    <iframe src="" name="frmProduto" id="frmProduto"
+                        style="display: none; width: auto; height: auto; border: 0"
+                        Iframeborder="0"></iframe>
+                    <hr />
+                </div>
+                <div id="tab3">
+                    <!---Seção de Serviço-->
+                    <iframe src="" name="frmServico" id="frmServico"
+                        style="display: none; width: auto; height: auto; border: 0"
+                        Iframeborder="0"></iframe>
+                    <hr />
+
+                </div>
+                <div id="tab4">
+
+                    <iframe src="" name="frmContratoSuporte" id="frmContratoSuporte"
+                        style="display: none; width: auto; height: auto; border: 0"
+                        Iframeborder="0"></iframe>
+                    <hr />
+
+                </div>
+                <div id="tab5">
+                    <!---Seção da Locação-->
+                    <iframe src="" name="frmLocacao" id="frmLocacao"
+                        style="display: none; width: auto; height: auto; border: 0"
+                        Iframeborder="0"></iframe>
+                    <hr />
+
+                </div>
+                <div id="tab6">
+                    <!---Seção dos Pedidos-->
+                    <iframe src="" name="frmPedido" id="frmPedido"
+                        style="display: none; width: auto; height: auto; border: 0"
+                        Iframeborder="0"></iframe>
+                    <hr />
+
+                </div>
+                <div id="tab7">
+                 <apex:pageBlock title="Arquivos">
+                     <apex:pageBlockTable value="{!Negociacao_Comercial__c.Attachments}" var="child">
+                        <apex:column headervalue="Tipo"
+                                        value="{!child.ContentType}" />
+                        <apex:column headervalue="Título">
+                        <apex:outputLink value="/{!child.id}" >{!child.Name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column headervalue="Última modificação"
+                                        value="{!child.lastmodifieddate}" />
+                        <apex:column headervalue="Criado por"
+                                        value="{!child.CreatedBy.name}" />
+                        <apex:column headervalue="Modificado por"
+                                        value="{!child.LastModifiedBy.name}" />
+                        </apex:pageBlockTable>
+                    </apex:pageBlock>
+                </div>
+            </div>
+        </div>
+        <center><apex:outputText style="color:red;font-weight:bold;font-height:medium;" value="{!Mesagem}"></apex:outputText></center>
+        <div id="dv_Sinc" style="display:none">
+        <p align="center"
+                                style='font-family: "Arial", Helvetica, sans-serif; font-size: 20px;'>
+                                <apex:image value="/img/loading.gif" />
+                                &nbsp;Por favor aguarde, realizando comunicação com o NewAge
+                            </p>
+        </div>
+    </apex:form>
+    <script type="text/javascript">
+        
+    
+        var txt='';
+        if (document.getElementById('Travar').value=="1"){
+            document.getElementById('default').style.display='none';
+        }
+        else{
+            document.getElementById('default').style.display='block';
+        }
+        try{
+            var idOportunidade=document.getElementById("{!$Component.frmPost.txtOportunidade}_lkid").value;
+        }
+        catch(err){
+            /*txt="There was an error on this page.\n\n";
+            txt+="Error description: " + err.message + "\n\n";
+            txt+="Click OK to continue.\n\n";
+            alert(txt);*/
+        }
+        try{
+            var idNegociacao=document.getElementById("idNegociacao").value;
+            var idProduto = document.getElementById("idProduto").value;
+            var idServico = document.getElementById("idServico").value;
+            var idContrato = document.getElementById("idContrato").value;
+            var idLocacao = document.getElementById('idLocacao').value;
+            var redireciona = document.getElementById('Redict').value;
+            
+            
+            var idContaFatProd = document.getElementById('idContaFatProd').value;
+            var idContaFatServ = document.getElementById('idContaFatServ').value;
+            var idContaFatLoc = document.getElementById('idContaFatLoc').value;
+            var idContaFatCont = document.getElementById('idContaFatCont').value;
+            var Cambio = document.getElementById('Cambio').value;
+            var CambioVenda = document.getElementById('CambioVenda').value;
+            var HCambioGlobal = document.getElementById('CambioGlobal').value;
+            
+            //alert(redireciona);
+        }
+        catch(err){
+            /*txt="There was an error on this page.\n\n";
+            txt+="Error description: " + err.message + "\n\n";
+            txt+="Click OK to continue.\n\n";
+            alert(txt);*/
+        }
+        function atualizar(){
+            if (idNegociacao!=''){
+                document.getElementById('default').style.display='none';
+                document.getElementById("{!$Component.frmPost}").submit();
+                window.open('https://na3.salesforce.com/apex/cadNegociacaoComercial?id=' +idNegociacao,'_top');
+            }
+        }
+        function AbreNovoProduto(){
+            
+            if(document.getElementById('frmProduto').style.display=='none'){
+                var URL= '&CambioGlobal='+HCambioGlobal+'&prodCambioVenda='+CambioVenda+'&prodCambio='+Cambio+'&idContaFatProd='+idContaFatProd+'&idNegociacao='+idNegociacao +'&mbotao={!mbotao}&ReadOnly={!ReadOnly}&DisabledField={!DisabledField}';
+                if(idProduto!=''){
+                    URL=URL+'&id=' + idProduto + '&Redict='+redireciona;
+                }
+                document.getElementById('frmProduto').style.display='block';
+                document.getElementById('frmProduto').style.width='100%';
+                document.getElementById('frmProduto').style.height='690px';
+                document.getElementById('frmProduto').iframeborder='0';
+                window.open('https://na3.salesforce.com/apex/cadProdutoxPedido?idOportunidade=' +
+                            idOportunidade+URL ,'frmProduto');
+            }
+            else{
+                document.getElementById('frmProduto').style.display='none';
+            }
+        }
+        
+        function AbreNovoServico(){
+         var URL= '&CambioGlobal='+HCambioGlobal+'&idContaFatServ='+idContaFatServ+'&idNegociacao='+idNegociacao +'&mbotao={!mbotao}&ReadOnly={!ReadOnly}&DisabledField={!DisabledField}';
+                if(idServico!=''){
+                    URL=URL+'&id=' + idServico + '&Redict='+redireciona;
+                }
+            if(document.getElementById('frmServico').style.display=='none'){
+                document.getElementById('frmServico').style.display='block';
+                document.getElementById('frmServico').style.width='100%';
+                document.getElementById('frmServico').style.height='699px';
+                document.getElementById('frmServico').iframeborder='0';
+                window.open('https://na3.salesforce.com/apex/cadServicoxPedido?idOportunidade=' +idOportunidade+
+                URL,'frmServico');
+            }
+            else{
+                document.getElementById('frmServico').style.display='none';
+            }
+        }
+        
+        function AbreNovoContrato(){
+            if(document.getElementById('frmContratoSuporte').style.display=='none'){
+                var URL= '&CambioGlobal='+HCambioGlobal+'&idContaFatCont='+idContaFatCont+'&idNegociacao=' + idNegociacao+'&mbotao={!mbotao}&ReadOnly={!ReadOnly}&DisabledField={!DisabledField}';
+                    if(idContrato!=''){
+                        URL=URL+'&id=' + idContrato + '&Redict='+redireciona;
+                    }
+                document.getElementById('frmContratoSuporte').style.display='block';
+                document.getElementById('frmContratoSuporte').style.width='100%';
+                document.getElementById('frmContratoSuporte').style.height='1400px';
+                document.getElementById('frmContratoSuporte').iframeborder='0';
+                window.open('https://na3.salesforce.com/apex/cadContratoSuportexPedido?idOportunidade=' +idOportunidade + 
+                URL,'frmContratoSuporte');
+            }
+            else{
+                document.getElementById('frmContratoSuporte').style.display='none';
+            }
+        }
+        
+        function AbreNovaLocacao(){
+            if(document.getElementById('frmLocacao').style.display=='none'){
+            var URL= '&CambioGlobal='+HCambioGlobal+'&idContaFatLoc='+idContaFatLoc+'&idNegociacao=' + idNegociacao+'&mbotao={!mbotao}&ReadOnly={!ReadOnly}&DisabledField={!DisabledField}';
+                if(idLocacao!=''){
+                    URL=URL+'&id=' + idLocacao + '&Redict='+redireciona;
+                }
+                document.getElementById('frmLocacao').style.display='block';
+                document.getElementById('frmLocacao').style.width='100%';
+                document.getElementById('frmLocacao').style.height='1400px';
+                document.getElementById('frmLocacao').iframeborder='0';
+                window.open('https://na3.salesforce.com/apex/cadLocacaoxPedido?idOportunidade=' +idOportunidade+URL
+                ,'frmLocacao');
+            }
+            else{
+                document.getElementById('frmLocacao').style.display='none';
+            }
+        }
+        
+        function AbrePedido(){
+            
+            if(document.getElementById('frmPedido').style.display=='none'){
+                var URL= '&idNegociacao='+idNegociacao + '&ConvertidoOK=block';
+                document.getElementById('frmPedido').style.display='block';
+                document.getElementById('frmPedido').style.width='100%';
+                document.getElementById('frmPedido').style.height='690px';
+                document.getElementById('frmPedido').iframeborder='0';
+                window.open('https://na3.salesforce.com/apex/cadPedido?idOportunidade=' +
+                            idOportunidade+URL ,'frmPedido');
+            }
+            else{
+                document.getElementById('frmPedido').style.display='none';
+            }
+        }
+        function ChamarServico(){
+            document.getElementById('default').style.display='none';
+            document.getElementById('Dv_Informacaoes').style.display='none';
+            document.getElementById('dv_Sinc').style.display='block';
+        }
+        AbreNovoProduto();
+        AbreNovaLocacao();
+        AbreNovoServico();
+        AbreNovoContrato();
+        AbrePedido();
+        /*var Mesagem="{!Mesagem}";
+        if(Mesagem!=''){
+            alert(Mesagem);
+        }*/
+    </script>
+    <script type='text/javascript'>
+    
+        function showAlert(type,message) {
+            $('#alert').addClass('alert-' + type).html( message ).fadeIn();
+        }
+        
+    </script>
+</apex:page>

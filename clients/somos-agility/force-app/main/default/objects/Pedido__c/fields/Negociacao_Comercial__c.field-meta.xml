@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Negociacao_Comercial__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Campo destinado a amarrar o pedido com a negociação comercial de fato.</description>
+    <label>Negociação Comercial</label>
+    <referenceTo>Negociacao_Comercial__c</referenceTo>
+    <relationshipLabel>Pedidos</relationshipLabel>
+    <relationshipName>Pedidos</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo__c</fullName>
+    <label>Motivo</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aberto</fullName>
+                <default>false</default>
+                <label>Aberto</label>
+            </value>
+            <value>
+                <fullName>Aderência do Produto</fullName>
+                <default>false</default>
+                <label>Aderência do Produto</label>
+            </value>
+            <value>
+                <fullName>Duplicada</fullName>
+                <default>false</default>
+                <label>Duplicada</label>
+            </value>
+            <value>
+                <fullName>Fabricante Concorrente</fullName>
+                <default>false</default>
+                <label>Fabricante Concorrente</label>
+            </value>
+            <value>
+                <fullName>Falta de Orçamento</fullName>
+                <default>false</default>
+                <label>Falta de Orçamento</label>
+            </value>
+            <value>
+                <fullName>Melhor preço</fullName>
+                <default>false</default>
+                <label>Melhor preço</label>
+            </value>
+            <value>
+                <fullName>Relacionamento</fullName>
+                <default>false</default>
+                <label>Relacionamento</label>
+            </value>
+            <value>
+                <fullName>Target Não Atingido</fullName>
+                <default>false</default>
+                <label>Target Não Atingido</label>
+            </value>
+            <value>
+                <fullName>Refresh c/ Agility</fullName>
+                <default>false</default>
+                <label>Refresh c/ Agility</label>
+            </value>
+            <value>
+                <fullName>Refresh c/ outra Revenda</fullName>
+                <default>false</default>
+                <label>Refresh c/ outra Revenda</label>
+            </value>
+            <value>
+                <fullName>End of Support</fullName>
+                <default>false</default>
+                <label>End of Support</label>
+            </value>
+            <value>
+                <fullName>End of Sales</fullName>
+                <default>false</default>
+                <label>End of Sales</label>
+            </value>
+            <value>
+                <fullName>No decision</fullName>
+                <default>false</default>
+                <label>No decision</label>
+            </value>
+            <value>
+                <fullName>Desativação</fullName>
+                <default>false</default>
+                <label>Desativação</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Aberto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Aderência do Produto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Duplicada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Fabricante Concorrente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Falta de Orçamento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Melhor preço</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Relacionamento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Target Não Atingido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Refresh c/ Agility</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Refresh c/ outra Revenda</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>End of Support</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>End of Sales</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>No decision</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FPR</controllingFieldValue>
+            <controllingFieldValue>Ação DIA</controllingFieldValue>
+            <controllingFieldValue>Engajamento</controllingFieldValue>
+            <controllingFieldValue>Negociação e Proposta</controllingFieldValue>
+            <controllingFieldValue>0 - Fechado/Perdido</controllingFieldValue>
+            <controllingFieldValue>NEC</controllingFieldValue>
+            <controllingFieldValue>Fechamento</controllingFieldValue>
+            <controllingFieldValue>Fechado Ganho</controllingFieldValue>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <controllingFieldValue>Registro da Oportunidade</controllingFieldValue>
+            <controllingFieldValue>Proposta Comercial</controllingFieldValue>
+            <valueName>Desativação</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalHorasEntregaveisAdicionais__c</fullName>
+    <label>Total de Horas - Entregáveis Adicionais</label>
+    <summarizedField>horasCreditoSuporte__c.Hora__c</summarizedField>
+    <summaryFilterItems>
+        <field>horasCreditoSuporte__c.TipoSuporte__c</field>
+        <operation>equals</operation>
+        <value>Entregáveis Adicionais</value>
+    </summaryFilterItems>
+    <summaryForeignKey>horasCreditoSuporte__c.LancamentoCreditoSuporte__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

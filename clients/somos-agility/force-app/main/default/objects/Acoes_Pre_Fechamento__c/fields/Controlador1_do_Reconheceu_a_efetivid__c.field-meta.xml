@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Controlador1_do_Reconheceu_a_efetivid__c</fullName>
+    <description>AM 17032018: este campo define as combinações que ficarão disponíveis para seleção do picklist &quot;Reconheceu efetividade do teste&quot; onde o valor &quot;Não&quot; não deve aparecer quando os campos &quot;Dúvidas e resistências superadas&quot; = Sim e &quot;Necessário Plano de Testes&quot; = Sim.</description>
+    <externalId>false</externalId>
+    <formula>IF(
+AND(
+ISPICKVAL(D_vidas_e_resist_ncias_superadas__c, &quot;Sim&quot;), 
+ISPICKVAL(Necess_rio_Plano_de_Testes__c, &quot;Sim&quot;)
+),
+&quot;DuvidaSim/PlanoSim&quot;,
+IF(
+AND(
+ISPICKVAL(D_vidas_e_resist_ncias_superadas__c, &quot;Sim&quot;), 
+ISPICKVAL(Necess_rio_Plano_de_Testes__c, &quot;Não&quot;)
+),
+&quot;DuvidaSim/PlanoNão&quot;,
+IF(
+AND(
+ISPICKVAL(D_vidas_e_resist_ncias_superadas__c, &quot;Não&quot;), 
+ISPICKVAL(Necess_rio_Plano_de_Testes__c, &quot;Não&quot;)
+),
+&quot;DuvidaNão/PlanoNão&quot;,
+IF(
+AND(
+ISPICKVAL(D_vidas_e_resist_ncias_superadas__c, &quot;Não&quot;), 
+ISPICKVAL(Necess_rio_Plano_de_Testes__c, &quot;Sim&quot;)
+),
+&quot;DuvidaNão/PlanoSim&quot;,
+&quot;&quot;
+)
+)
+)
+)</formula>
+    <label>XXXControlador1 do Reconheceu a efeti</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

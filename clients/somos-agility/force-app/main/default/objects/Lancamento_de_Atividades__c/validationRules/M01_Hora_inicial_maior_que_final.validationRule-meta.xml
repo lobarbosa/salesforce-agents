@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M01_Hora_inicial_maior_que_final</fullName>
+    <active>false</active>
+    <description>AM281018: a hora inicial deve ser menor que a final</description>
+    <errorConditionFormula>Inicio_da_atividade__c&gt;Fim_da_atividade__c</errorConditionFormula>
+    <errorMessage>A data do final da atividade deve ser maior do que a data inicial (Msg01)</errorMessage>
+</ValidationRule>

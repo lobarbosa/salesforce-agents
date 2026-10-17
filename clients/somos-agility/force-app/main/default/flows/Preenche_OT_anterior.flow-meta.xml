@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Preenche OT anterior
+Descrição da regra de fluxo de trabalho: Preenchimento do campo &quot;Previsto OT (Valor Anterior)&quot; com o valor anterior do campo &quot;One time previsto&quot;&quot;</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>AtualizaPrevistoOTValorAnteriorFormula</name>
+        <dataType>Currency</dataType>
+        <expression>PRIORVALUE($Record.Rentabilidade_prevista__c)</expression>
+        <scale>0</scale>
+    </formulas>
+    <label>Preenche OT anterior</label>
+    <migratedFromWorkflowRuleName>Preenche OT anterior</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualização do campo &quot;PrevistoOTValorAnterior__c&quot; com o valor anterior do campo &quot;One time previsto&quot;.</description>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <inputAssignments>
+            <field>PrevistoOTValorAnterior__c</field>
+            <value>
+                <elementReference>AtualizaPrevistoOTValorAnteriorFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Rentabilidade_prevista__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Aberto</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

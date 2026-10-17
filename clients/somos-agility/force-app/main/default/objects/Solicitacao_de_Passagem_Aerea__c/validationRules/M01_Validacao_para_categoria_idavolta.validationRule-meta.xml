@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M01_Validacao_para_categoria_idavolta</fullName>
+    <active>true</active>
+    <description>AM090818: obriga o preenchimento do campo do retorno somente para viagens de ida e volta
+JN090818: upload para produção, aut pelo Mori.</description>
+    <errorConditionFormula>AND( 
+OR( 
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta Nacional&apos;),
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta Internacional&apos;),
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta com Hospedagem Nacional&apos;),
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta com Hospedagem Internacional&apos;),
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta com Hospedagem e Locação de Veículo Nacional&apos;),
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta com Hospedagem e Locação de Veículo Internacional&apos;),
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta com Locação de Veículo Nacional&apos;),
+ISPICKVAL ((Tipo_de_Solicitacao__c), &apos;Ida e Volta com Locação de Veículo Internacional&apos;)
+),
+
+OR( 
+ISBLANK(TEXT(De_Volta__c)), 
+ISBLANK(TEXT(Aeroporto_Origem_Volta__c)), 
+ISBLANK(TEXT(Data_Origem_Volta__c)), 
+ISBLANK(TEXT(Para_Volta__c)), 
+ISBLANK(TEXT(Aeroporto_Destino_Volta__c)), 
+ISBLANK(TEXT(Data_Destino_Volta__c))
+))</errorConditionFormula>
+    <errorMessage>Preencha todos os campos da seção &quot;Retorno (VOLTA) - De:(Origem) e Para:(Destino)&quot; Msg01</errorMessage>
+</ValidationRule>

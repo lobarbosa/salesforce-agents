@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreencherDescricaoMotivo</fullName>
+    <active>true</active>
+    <description>Caso o campo Motivo seja igual a Outros, será necessário preencher o campo Descrição do Motivo.</description>
+    <errorConditionFormula>AND( 
+ISPICKVAL(MotivoEncerramento__c,&apos;Outros&apos;) 
+,ISBLANK( DescricaoMotivo__c ) 
+,$Profile.Name = &apos;Gerente de Contas&apos; 
+)</errorConditionFormula>
+    <errorDisplayField>DescricaoMotivo__c</errorDisplayField>
+    <errorMessage>Caso o &quot;Motivo do Encerramento&quot; seja &quot;Outros&quot;, será necessário descrever o motivo no campo &quot;Descrição Motivo&quot;.</errorMessage>
+</ValidationRule>

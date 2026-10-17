@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Tributacao_Servico__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Tributação de Serviço</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Tributado em São Paulo</fullName>
+                <default>false</default>
+                <label>Tributado em São Paulo</label>
+            </value>
+            <value>
+                <fullName>Tributado fora de São Paulo</fullName>
+                <default>false</default>
+                <label>Tributado fora de São Paulo</label>
+            </value>
+            <value>
+                <fullName>Isento / Imune</fullName>
+                <default>false</default>
+                <label>Isento / Imune</label>
+            </value>
+            <value>
+                <fullName>Suspenso / Decisão Judicial</fullName>
+                <default>false</default>
+                <label>Suspenso / Decisão Judicial</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Submeter_e_Solicitar_Aprova_o_do_Evento_Tech_Center</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Submeter e Solicitar Aprovação do Evento</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!Formul_rio_Tech_Center_SE__c.Id}&amp;p3_lkid={!Formul_rio_Tech_Center_SE__c.Id}&amp;rtype=003&amp;p2_lkid=se@agilitynetworks.com.br&amp;p24={!Formul_rio_Tech_Center_SE__c.E_mail__c};andre.padua@agilitynetworks.com.br;se@agilitynetworks.com.br&amp;template_id=00X50000001PeBU&amp;p5=&amp;save=1&apos;);</url>
+</WebLink>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DsaHistorico__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>DSA do histórico</description>
+    <inlineHelpText>DSA do histórico</inlineHelpText>
+    <label>DSA Obrigatório</label>
+    <referenceTo>DSA__c</referenceTo>
+    <relationshipLabel>Historicos de Vendas e Renovações</relationshipLabel>
+    <relationshipName>Historicos_de_Vendas_e_Renova_es</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

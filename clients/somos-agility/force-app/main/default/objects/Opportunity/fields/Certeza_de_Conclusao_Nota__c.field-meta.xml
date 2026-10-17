@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Certeza_de_Conclusao_Nota__c</fullName>
+    <externalId>false</externalId>
+    <formula>0
+/*IF( A_Certeza_Conclusao_Numero__c +  B_Certeza_Conclusao_Numero__c  &lt;2,1,
+IF(A_Certeza_Conclusao_Numero__c +  B_Certeza_Conclusao_Numero__c  = 2 &amp;&amp; C_Certeza_Conclusao_Numero__c + D_Certeza_Conclusao_Numero__c &gt;=1,3,
+IF(A_Certeza_Conclusao_Numero__c +  B_Certeza_Conclusao_Numero__c  =2 &amp;&amp; C_Certeza_Conclusao_Numero__c + D_Certeza_Conclusao_Numero__c = 0,2,1)))*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Certeza de Conclusão - Nota</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

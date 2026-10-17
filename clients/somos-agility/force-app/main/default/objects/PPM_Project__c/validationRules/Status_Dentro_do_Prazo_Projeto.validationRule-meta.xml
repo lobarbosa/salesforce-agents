@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Dentro_do_Prazo_Projeto</fullName>
+    <active>false</active>
+    <description>Quando o Projeto está com Status Dentro do Prazo os campos abaixo são obrigatórios:</description>
+    <errorConditionFormula>AND(( RecordType.Id =&apos;012380000001uyD&apos; &amp;&amp; ISPICKVAL( Project_Status__c ,&quot;Dentro do Prazo&quot;)), 
+(ISBLANK( Lista_de_atividades_Previsto__c ) || ISBLANK( Canvas_Previsto__c ) || ISBLANK( Documentacao_Ambiente_Previsto__c )||ISBLANK( Termo_de_Aceite_Previsto__c )||ISBLANK( Licoes_Aprendidas_Previsto__c )))</errorConditionFormula>
+    <errorMessage>Favor informar as datas previstas da sessão Governança, exceto STM.</errorMessage>
+</ValidationRule>

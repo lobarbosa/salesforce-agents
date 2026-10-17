@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Alteracao_do_Owner_se_Renovacoes</fullName>
+    <active>true</active>
+    <description>Não altera o owner da oportunidade, caso o owner seja renovações e o checkbox Renovação base agility? esteja marcado.</description>
+    <errorConditionFormula>AND(
+    ISCHANGED(OwnerId), 
+    OwnerId=&apos;0050z00000791PmAAI&apos;,
+    Renova_o__c=true
+)</errorConditionFormula>
+    <errorMessage>Renovações deve-se manter como owner da oportunidade caso &quot;Renovação base Agility?&quot; esteja marcado como true.</errorMessage>
+</ValidationRule>

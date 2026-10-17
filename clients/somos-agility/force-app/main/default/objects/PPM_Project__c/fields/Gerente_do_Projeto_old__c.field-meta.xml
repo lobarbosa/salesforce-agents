@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Gerente_do_Projeto_old__c</fullName>
+    <label>Gerente do Projeto Old</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alex Rhoades</fullName>
+                <default>false</default>
+                <label>Alex Rhoades</label>
+            </value>
+            <value>
+                <fullName>Bruno Santos</fullName>
+                <default>false</default>
+                <label>Bruno Santos</label>
+            </value>
+            <value>
+                <fullName>César Kubo</fullName>
+                <default>false</default>
+                <label>César Kubo</label>
+            </value>
+            <value>
+                <fullName>Daniela Oliveira</fullName>
+                <default>false</default>
+                <label>Daniela Oliveira</label>
+            </value>
+            <value>
+                <fullName>Elisangela Sousa</fullName>
+                <default>false</default>
+                <label>Elisangela Sousa</label>
+            </value>
+            <value>
+                <fullName>Leandro Cestaro</fullName>
+                <default>false</default>
+                <label>Leandro Cestaro</label>
+            </value>
+            <value>
+                <fullName>Marcelo Ribeiro</fullName>
+                <default>false</default>
+                <label>Marcelo Ribeiro</label>
+            </value>
+            <value>
+                <fullName>Paula Papis</fullName>
+                <default>false</default>
+                <label>Paula Papis</label>
+            </value>
+            <value>
+                <fullName>Vivian Morais</fullName>
+                <default>false</default>
+                <label>Vivian Morais</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

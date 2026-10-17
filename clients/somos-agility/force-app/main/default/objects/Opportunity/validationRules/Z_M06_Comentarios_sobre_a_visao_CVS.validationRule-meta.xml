@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_M06_Comentarios_sobre_a_visao_CVS</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Quando o campo Cliente já possui visão estabelecida? possuir o valor Sim, os campos:
+* Comentários sobre a visão estabelecida</description>
+    <errorConditionFormula>AND(ISPICKVAL( Cliente_ja_possui_visao_estabelecida__c ,&quot;Sim&quot;),ISBLANK(  Comentarios_sobre_a_visao_estabelecida__c  ))</errorConditionFormula>
+    <errorDisplayField>Comentarios_sobre_a_visao_estabelecida__c</errorDisplayField>
+    <errorMessage>Campo de preenchimento obrigatório se a opção &quot;Sim&quot; do campo &quot;*Cliente já possui visão estabelecida?&quot; for selecionado  (Msg06)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_Win__c</fullName>
+    <label>Motivo Encerramento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sem alterações na base</fullName>
+                <default>false</default>
+                <label>Sem alterações na base</label>
+            </value>
+            <value>
+                <fullName>Aumento de escopo</fullName>
+                <default>false</default>
+                <label>Aumento de escopo</label>
+            </value>
+            <value>
+                <fullName>Redução de escopo</fullName>
+                <default>false</default>
+                <label>Redução de escopo</label>
+            </value>
+            <value>
+                <fullName>Redução devido concorrência</fullName>
+                <default>false</default>
+                <label>Redução devido concorrência</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

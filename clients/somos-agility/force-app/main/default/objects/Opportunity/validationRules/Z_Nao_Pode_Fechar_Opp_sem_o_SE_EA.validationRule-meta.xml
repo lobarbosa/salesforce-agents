@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Nao_Pode_Fechar_Opp_sem_o_SE_EA</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF((ISCHANGED( StageName )&amp;&amp;ISPICKVAL(StageName ,&quot;6 - Fechado/Ganho&quot;))&amp;&amp;(ISPICKVAL( Requisitar_SE_para_o_Projeto__c ,&quot;Sim&quot;)&amp;&amp; (ISPICKVAL(Status_Qualifica_o_SE_EA__c ,&quot;Aprovado&quot;)||ISPICKVAL(Status_Qualifica_o_SE_EA__c,&quot;Pendente&quot;))&amp;&amp;ISBLANK( SE_SA_Reponsavel__c )),True,False)</errorConditionFormula>
+    <errorMessage>GC, foi solicitado um SE de Entrega de Aplicação para esta oportunidade e até o momento o BDM não realizou a Atribuição, por este motivo não é permitido fechá-la como ganho.</errorMessage>
+</ValidationRule>

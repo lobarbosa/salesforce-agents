@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Projetos_Ativos</fullName>
+    <columns>NAME</columns>
+    <columns>Gerente_do_Projeto__c</columns>
+    <columns>Compet_ncias_Envolvidas__c</columns>
+    <columns>Conta__c</columns>
+    <columns>Termino_planejado__c</columns>
+    <columns>T_rmino_Realizado__c</columns>
+    <columns>Nome_do_Projeto__c</columns>
+    <columns>Project_Status__c</columns>
+    <columns>Contato_1__c</columns>
+    <columns>CTP1__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Project_Status__c</field>
+        <operation>notEqual</operation>
+        <value>Finalizado,Cancelado</value>
+    </filters>
+    <label>Projetos Ativos</label>
+</ListView>

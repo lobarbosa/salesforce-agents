@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Caso_e_Oportunidade_e_Conta</fullName>
+    <active>true</active>
+    <errorConditionFormula>ISBLANK( Relacionado_a_Oportunidade__c ) &amp;&amp;  ISBLANK( Relacionado_ao_Caso__c ) &amp;&amp; ISBLANK(  Relacionado_a_Conta__c )&amp;&amp;ISBLANK (Relacionado_ao_RO__c)</errorConditionFormula>
+    <errorMessage>Inserir a Oportunidade, Caso , Conta ou RO Relacionado(a) ao Lançamento da Despesa</errorMessage>
+</ValidationRule>

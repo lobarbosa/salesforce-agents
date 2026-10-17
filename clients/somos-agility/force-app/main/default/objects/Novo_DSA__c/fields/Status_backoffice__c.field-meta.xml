@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_backoffice__c</fullName>
+    <description>AM 23032018: lista de status</description>
+    <label>Status backoffice</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aguardando comercial</fullName>
+                <default>false</default>
+                <label>Aguardando comercial</label>
+            </value>
+            <value>
+                <fullName>Aguardando definição do GP</fullName>
+                <default>false</default>
+                <label>Aguardando definição do GP</label>
+            </value>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Compartilhado</fullName>
+                <default>false</default>
+                <label>Compartilhado</label>
+            </value>
+            <value>
+                <fullName>Pendente</fullName>
+                <default>false</default>
+                <label>Pendente</label>
+            </value>
+            <value>
+                <fullName>Pendente aprovação do CTP+GP</fullName>
+                <default>false</default>
+                <label>Pendente aprovação do CTP+GP</label>
+            </value>
+            <value>
+                <fullName>Recall</fullName>
+                <default>false</default>
+                <label>Recall</label>
+            </value>
+            <value>
+                <fullName>Rejeitado</fullName>
+                <default>false</default>
+                <label>Rejeitado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

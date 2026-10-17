@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreencheDescricaoMotivo</fullName>
+    <active>true</active>
+    <description>Obriga o preenchimento da descrição do motivo se a opção selecionada em Motivo for &quot;outro&quot;.</description>
+    <errorConditionFormula>AND(
+				ISPICKVAL(MotivoEncerramento__c, &apos;Outro&apos;),
+				ISBLANK(DescricaoMotivo__c)
+)</errorConditionFormula>
+    <errorMessage>Ao selecionar a opção &quot;Outro&quot; preencha a descrição do motivo.</errorMessage>
+</ValidationRule>

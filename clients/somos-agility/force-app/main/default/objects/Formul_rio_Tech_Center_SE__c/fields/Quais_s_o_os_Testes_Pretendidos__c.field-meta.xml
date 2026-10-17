@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quais_s_o_os_Testes_Pretendidos__c</fullName>
+    <label>Quais são os Testes Pretendidos?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Redundancia de Data Centers</fullName>
+                <default>false</default>
+                <label>Redundancia de Data Centers</label>
+            </value>
+            <value>
+                <fullName>Redundancia de Application Servers</fullName>
+                <default>false</default>
+                <label>Redundancia de Application Servers</label>
+            </value>
+            <value>
+                <fullName>UP de Capac. dos Web/Application Servers</fullName>
+                <default>false</default>
+                <label>UP de Capac. dos Web/Application Servers</label>
+            </value>
+            <value>
+                <fullName>Adição de um 2o ou 3o DataCenter</fullName>
+                <default>false</default>
+                <label>Adição de um 2o ou 3o DataCenter</label>
+            </value>
+            <value>
+                <fullName>Operar Site com Acesso Acima da Capac.</fullName>
+                <default>false</default>
+                <label>Operar Site com Acesso Acima da Capac.</label>
+            </value>
+            <value>
+                <fullName>Bring Your Own Device (BYOD) &amp; NAC</fullName>
+                <default>false</default>
+                <label>Bring Your Own Device (BYOD) &amp; NAC</label>
+            </value>
+            <value>
+                <fullName>Next Generation Firewall</fullName>
+                <default>false</default>
+                <label>Next Generation Firewall</label>
+            </value>
+            <value>
+                <fullName>Private Cloud Billing</fullName>
+                <default>false</default>
+                <label>Private Cloud Billing</label>
+            </value>
+            <value>
+                <fullName>Opere sua nuvem Privada com eficiência</fullName>
+                <default>false</default>
+                <label>Opere sua nuvem Privada com eficiência</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>8</visibleLines>
+</CustomField>

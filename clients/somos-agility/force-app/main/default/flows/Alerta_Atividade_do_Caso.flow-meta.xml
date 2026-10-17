@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Alerta_Atividade_do_Caso_Atribuir_SE</name>
+        <label>Atividade_do_Caso__c.Alerta_Atividade_do_Caso_Atribuir_SE</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Atividade_do_Caso__c.Alerta_Atividade_do_Caso_Atribuir_SE</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Atividade_do_Caso__c.Alerta_Atividade_do_Caso_Atribuir_SE</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alerta_Atividade_do_Caso
+Descrição da regra de fluxo de trabalho: AM 05052018: alerta de atividade no Caso&quot;</description>
+    <label>Alerta_Atividade_do_Caso</label>
+    <migratedFromWorkflowRuleName>Alerta_Atividade_do_Caso</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Alerta_Atividade_do_Caso_Atribuir_SE</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CreatedById</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>&quot;&apos;</stringValue>
+            </value>
+        </filters>
+        <object>Atividade_do_Caso__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

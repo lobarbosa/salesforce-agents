@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_Gasto_por_Terceiros__c</fullName>
+    <label>Valor Total Gasto por Terceiros</label>
+    <summarizedField>Previsao_de_Gastos_Job_Investimentos__c.Valor_Total_Gasto_por_Terceiros__c</summarizedField>
+    <summaryForeignKey>Previsao_de_Gastos_Job_Investimentos__c.JOB_de_Solicita_o_de_Investimento__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

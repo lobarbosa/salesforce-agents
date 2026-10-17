@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pr_xima_atualiza_o_de_Mapeamento__c</fullName>
+    <description>JN25102018 criação de campo a pedido da S&amp;Op Vanessa, para controle de follow up.</description>
+    <inlineHelpText>A S&amp;Op deverá informar a data do proximo follow au deste mapemaneto para controle junto ao fabricante.</inlineHelpText>
+    <label>Data próx. atualização de Mapeamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

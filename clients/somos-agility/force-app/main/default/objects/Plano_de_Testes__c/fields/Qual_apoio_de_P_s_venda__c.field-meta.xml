@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qual_apoio_de_P_s_venda__c</fullName>
+    <label>Qual apoio de Pós-venda?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Necessario_apoio_de_Pos_venda__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Application Delivery</fullName>
+                <default>false</default>
+                <label>Application Delivery</label>
+            </value>
+            <value>
+                <fullName>Security</fullName>
+                <default>false</default>
+                <label>Security</label>
+            </value>
+            <value>
+                <fullName>Digital Transformation</fullName>
+                <default>false</default>
+                <label>Digital Transformation</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Application Delivery</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Digital Transformation</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

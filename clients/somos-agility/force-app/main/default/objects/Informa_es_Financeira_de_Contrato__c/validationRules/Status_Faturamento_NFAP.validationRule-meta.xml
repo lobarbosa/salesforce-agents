@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Faturamento_NFAP</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISPICKVAL(Faturamento__c,&quot;NFAP&quot;),
+OR(
+(Valor_Faturado__c &lt;&gt;0),
+(Valor_Reconhecido__c &lt;&gt;0),
+ISNULL(Valor_Faturado__c),
+ISNULL(Valor_Reconhecido__c)
+)
+)</errorConditionFormula>
+    <errorMessage>Se o Status do Faturamento é NFAP o Valor de Faturamento (R$) e o Valor Reconhecido (R$) devem ser é igual a 0.</errorMessage>
+</ValidationRule>

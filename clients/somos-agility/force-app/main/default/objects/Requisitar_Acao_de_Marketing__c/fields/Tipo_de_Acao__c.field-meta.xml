@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Acao__c</fullName>
+    <label>Tipo de Ação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Evento Fabricante no exterior</fullName>
+                <default>false</default>
+                <label>Evento Fabricante no exterior</label>
+            </value>
+            <value>
+                <fullName>Evento externo</fullName>
+                <default>false</default>
+                <label>Evento externo</label>
+            </value>
+            <value>
+                <fullName>Evento interno</fullName>
+                <default>false</default>
+                <label>Evento interno</label>
+            </value>
+            <value>
+                <fullName>Evento no cliente</fullName>
+                <default>false</default>
+                <label>Evento no cliente</label>
+            </value>
+            <value>
+                <fullName>Feiras/Eventos Locais</fullName>
+                <default>false</default>
+                <label>Feiras/Eventos Locais</label>
+            </value>
+            <value>
+                <fullName>Materiais Impressos</fullName>
+                <default>false</default>
+                <label>Materiais Impressos</label>
+            </value>
+            <value>
+                <fullName>Brindes</fullName>
+                <default>false</default>
+                <label>Brindes</label>
+            </value>
+            <value>
+                <fullName>Apresentações Personalizadas</fullName>
+                <default>false</default>
+                <label>Apresentações Personalizadas</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

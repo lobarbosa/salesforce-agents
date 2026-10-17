@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_faturamento_cobranca__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Campo destinado a referenciar o contato financeiro dentro do cliente que está sendo realizada a venda.</description>
+    <label>Contato para Faturamento / Cobrança</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Pedidos (Contato para Faturamento / Cobrança)</relationshipLabel>
+    <relationshipName>PedidosContatoFat</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

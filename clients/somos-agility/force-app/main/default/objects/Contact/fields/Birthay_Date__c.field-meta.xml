@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Birthay_Date__c</fullName>
+    <formula>IF(MONTH(Data_de_Nascimento__c)&gt;MONTH(TODAY()),DATE(YEAR(TODAY()),MONTH(Data_de_Nascimento__c),DAY(Data_de_Nascimento__c)),
+IF(MONTH(Data_de_Nascimento__c)&lt;MONTH(TODAY()),DATE(YEAR(TODAY())+1,MONTH(Data_de_Nascimento__c),DAY(Data_de_Nascimento__c)),
+IF(DAY(Data_de_Nascimento__c) &gt;= (DAY(TODAY())),DATE(YEAR(TODAY()),MONTH(Data_de_Nascimento__c),DAY(Data_de_Nascimento__c)),
+DATE(YEAR(TODAY())+1,MONTH(Data_de_Nascimento__c),DAY(Data_de_Nascimento__c)))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Próximo Aniversário</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

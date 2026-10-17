@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nmr_do_Contrato_Obrigatorio_Se_Suporte</fullName>
+    <active>false</active>
+    <description>Torna o campo &quot;Número do Contrato&quot; obrigatório quando o campo &quot;Relacionado à entrega&quot; é igual a &quot;Suporte&quot;.</description>
+    <errorConditionFormula>AND(
+   ISPICKVAL(Relacionado_a_entrega__c, &quot;Suporte&quot;),
+   ISBLANK(Numero_do_Contrato__c)
+)</errorConditionFormula>
+    <errorMessage>Campo &quot;Número do Contrato&quot; deve ser preenchido quando &quot;Relacionado à entrega&quot; é igual a Suporte.</errorMessage>
+</ValidationRule>

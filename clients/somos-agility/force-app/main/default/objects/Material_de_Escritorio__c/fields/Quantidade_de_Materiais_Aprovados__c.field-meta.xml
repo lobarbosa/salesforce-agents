@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quantidade_de_Materiais_Aprovados__c</fullName>
+    <label>Quantidade de Materiais Aprovados/Gastos</label>
+    <summarizedField>Solicitacao_de_Material_de_Escritorio__c.Quantidade__c</summarizedField>
+    <summaryFilterItems>
+        <field>Solicitacao_de_Material_de_Escritorio__c.Status_da_Solicitacao__c</field>
+        <operation>equals</operation>
+        <value>Aprovado</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Solicitacao_de_Material_de_Escritorio__c.Material_de_Escritorio__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

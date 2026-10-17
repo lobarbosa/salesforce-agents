@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusAprovacoes__c</fullName>
+    <label>Status Aprovações</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pendente</fullName>
+                <default>true</default>
+                <label>Pendente</label>
+            </value>
+            <value>
+                <fullName>Aguardando Cotação</fullName>
+                <default>false</default>
+                <label>Aguardando Cotação</label>
+            </value>
+            <value>
+                <fullName>Cotação Aprovada</fullName>
+                <default>false</default>
+                <label>Cotação Aprovada</label>
+            </value>
+            <value>
+                <fullName>Cotação Reprovada</fullName>
+                <default>false</default>
+                <label>Cotação Reprovada</label>
+            </value>
+            <value>
+                <fullName>Aguardando Validação Fiscal</fullName>
+                <default>false</default>
+                <label>Aguardando Validação de Pricing - Sales Operations</label>
+            </value>
+            <value>
+                <fullName>Aguardando Validação de Pricing - Diretoria Comercial</fullName>
+                <default>false</default>
+                <label>Aguardando Validação de Pricing - Diretoria Comercial</label>
+            </value>
+            <value>
+                <fullName>Fluxo de Vendas Finalizado</fullName>
+                <default>false</default>
+                <label>Fluxo de Vendas Finalizado</label>
+            </value>
+            <value>
+                <fullName>Validação Fiscal Reprovada</fullName>
+                <default>false</default>
+                <label>Validação de Pricing Reprovada</label>
+            </value>
+            <value>
+                <fullName>Validação Fiscal Aprovada</fullName>
+                <default>false</default>
+                <label>Validação de Pricing Aprovada</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

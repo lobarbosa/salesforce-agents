@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Coment_Visao_d_solucao_foi_estabel_CVS</fullName>
+    <active>false</active>
+    <description>Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Visão de solução foi estabelecida por:</description>
+    <errorConditionFormula>AND(ISPICKVAL( Cliente_ja_possui_visao_estabelecida__c ,&quot;Sim&quot;),ISBLANK(  Comentarios_sobre_a_visao_estabelecida__c  ))
+
+
+
+/*
+AND((ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)&amp;&amp;ISPICKVAL(    Cliente_ja_possui_visao_estabelecida__c ,&quot;Sim&quot;)) ,ISBLANK(TEXT(Visao_de_solucao_estabelecida_por__c )))
+*/</errorConditionFormula>
+    <errorMessage>Campo de preenchimento obrigatório se a opção &quot;Sim&quot; do campo &quot;*Cliente já possui visão estabelecida?&quot; for selecionado.</errorMessage>
+</ValidationRule>

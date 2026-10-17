@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M35_Somente_pode_existir_um_SOW_atual</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem</description>
+    <errorConditionFormula>AND(
+     $Profile.Name &lt;&gt; &quot;Administração&quot;,
+     $Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+     $Profile.Name &lt;&gt; &quot;Renovações&quot;, 
+Qtde_Propostas_SOW__c &gt;=2
+)</errorConditionFormula>
+    <errorMessage>Já existe uma PSL atual marcada como &quot;Proposta Fechada pelo Cliente&quot;.  Retorne e revise a existente..
+Se esta PSL for a atual, será necessário desmarcar o campo &quot;Proposta Fechada pelo Cliente&quot; da PSL já  existente,  para validação desta nova PSL (Msg35).</errorMessage>
+</ValidationRule>

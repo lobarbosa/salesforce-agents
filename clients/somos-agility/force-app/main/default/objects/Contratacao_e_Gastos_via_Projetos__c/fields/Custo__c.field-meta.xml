@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Custo__c</fullName>
+    <label>Custo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Comercial - Rentabilidade da Oportunidade</fullName>
+                <default>false</default>
+                <label>Comercial - Rentabilidade da Oportunidade</label>
+            </value>
+            <value>
+                <fullName>Projetos - Custo do Projeto</fullName>
+                <default>false</default>
+                <label>Projetos - Custo do Projeto</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

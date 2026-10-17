@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categoria__c</fullName>
+    <description>Este campo personalizado atende aos relatórios gerenciais para análise de categorias de oportunidade. 
+jn11052018 o campo será obrigatório, para que o preenchimento do campo categoria, preencha o campo relacionado categoria na DSA.</description>
+    <inlineHelpText>Selecionar a categoria de acordo com a oportunidade.
+Não será necessário criar mais uma uma oportunidade de Suporte , caso o Projeto , Serviço Avulso ou Venda de Produto for fechado com Contrato de Suporte Agility.</inlineHelpText>
+    <label>Categoria</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Comissionamento</fullName>
+                <default>false</default>
+                <label>Comissionamento</label>
+            </value>
+            <value>
+                <fullName>Contrato de Locação (Renovação)</fullName>
+                <default>false</default>
+                <label>Contrato de Locação (Renovação)</label>
+            </value>
+            <value>
+                <fullName>Contrato de Suporte (Novo)</fullName>
+                <default>false</default>
+                <label>Contrato de Suporte (Novo)</label>
+            </value>
+            <value>
+                <fullName>Contrato de Suporte (Renovação)</fullName>
+                <default>false</default>
+                <label>Contrato de Suporte (Renovação)</label>
+            </value>
+            <value>
+                <fullName>Contrato de Suporte (Upgrade)</fullName>
+                <default>false</default>
+                <label>Contrato de Suporte (Upgrade)</label>
+            </value>
+            <value>
+                <fullName>Parcela Avulsa de Contrato de Suporte</fullName>
+                <default>false</default>
+                <label>Parcela Avulsa de Contrato de Suporte</label>
+            </value>
+            <value>
+                <fullName>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</fullName>
+                <default>false</default>
+                <label>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</label>
+            </value>
+            <value>
+                <fullName>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</fullName>
+                <default>false</default>
+                <label>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</label>
+            </value>
+            <value>
+                <fullName>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</fullName>
+                <default>false</default>
+                <label>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</label>
+            </value>
+            <value>
+                <fullName>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</fullName>
+                <default>false</default>
+                <label>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</label>
+            </value>
+            <value>
+                <fullName>Subscrição ou Renovação</fullName>
+                <default>false</default>
+                <label>Subscrição ou Renovação</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

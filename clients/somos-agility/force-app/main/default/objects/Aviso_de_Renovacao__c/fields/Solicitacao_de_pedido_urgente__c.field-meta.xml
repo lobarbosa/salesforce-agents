@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Solicitacao_de_pedido_urgente__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>AM 23032018: campo para indicar se o pedido é urgente</description>
+    <label>Solicitação de pedido urgente?</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

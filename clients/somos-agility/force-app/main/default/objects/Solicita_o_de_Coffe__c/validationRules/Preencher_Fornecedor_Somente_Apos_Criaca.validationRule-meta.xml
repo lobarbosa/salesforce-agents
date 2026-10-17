@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preencher_Fornecedor_Somente_Apos_Criaca</fullName>
+    <active>false</active>
+    <description>O Fornecedor só deve ser informado no momento da Aprovação</description>
+    <errorConditionFormula>AND(ISNEW(),NOT(ISBLANK(TEXT(  Fornecedor__c ))))</errorConditionFormula>
+    <errorDisplayField>Fornecedor__c</errorDisplayField>
+    <errorMessage>Atenção! o Fornecedor deve ser somente informado no momento da qualificação. Não deve ser informado no momento da Solicitação Inicial</errorMessage>
+</ValidationRule>

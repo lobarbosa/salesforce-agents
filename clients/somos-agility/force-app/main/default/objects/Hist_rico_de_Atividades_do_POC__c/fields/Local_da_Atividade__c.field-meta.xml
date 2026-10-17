@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Local_da_Atividade__c</fullName>
+    <label>Local da Atividade</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Agility Networks</fullName>
+                <default>false</default>
+                <label>Agility Networks</label>
+            </value>
+            <value>
+                <fullName>Remoto</fullName>
+                <default>false</default>
+                <label>Remoto</label>
+            </value>
+            <value>
+                <fullName>Cliente</fullName>
+                <default>false</default>
+                <label>Cliente</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Finalizado_Realizado_Total</fullName>
+    <active>false</active>
+    <description>Ao finalizar o projeto é necessário informar as horas realizadas totais</description>
+    <errorConditionFormula>AND ( ISPICKVAL( Project_Status__c ,&quot;Finalizado&quot;) , ISBLANK( Z_Realizado_TOTAL__c ) )</errorConditionFormula>
+    <errorDisplayField>Z_Realizado_TOTAL__c</errorDisplayField>
+    <errorMessage>Favor informar o total de horas realizadas</errorMessage>
+</ValidationRule>

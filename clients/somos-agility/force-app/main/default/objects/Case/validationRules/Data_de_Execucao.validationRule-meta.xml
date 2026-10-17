@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Execucao</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL( Priority ,&apos;5 - Planejada&apos;)&amp;&amp; ISNULL( ClosedDate ), ISBLANK( Data_de_Execucao__c ))</errorConditionFormula>
+    <errorMessage>Prioridade Planejada - Favor Informar a Data de Execução.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Soma_Media_Pesquisa_SD_s__c</fullName>
+    <label>Soma Média Pesquisa SD&apos;s</label>
+    <summarizedField>Pesquisa_de_Satisfacao__c.Nota_Final__c</summarizedField>
+    <summaryFilterItems>
+        <field>Pesquisa_de_Satisfacao__c.RecordTypeId</field>
+        <operation>equals</operation>
+        <value>Service Delivery</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Pesquisa_de_Satisfacao__c.Nome_da_Conta__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

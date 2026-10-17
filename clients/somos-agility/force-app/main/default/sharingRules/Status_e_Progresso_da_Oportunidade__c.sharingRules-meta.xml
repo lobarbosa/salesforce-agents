@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Compartilha_PRP_criado_pelo_BDR_com_o_GC</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Compartilha PRP criado pelo BDR com o GC</label>
+        <sharedTo>
+            <group>Gerentes_de_conta_new</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>Criado_por__c</field>
+            <operation>equals</operation>
+            <value>BDR</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Se_criado_pela_Renata</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Se criado pela Renata</label>
+        <sharedTo>
+            <group>Gerentes_de_conta_new</group>
+        </sharedTo>
+        <criteriaItems>
+            <field>OwnerId</field>
+            <operation>equals</operation>
+            <value>0054z000008V8JZAA0</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>true</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>Compartilha_com_sales_operation</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Compartilha com sales operation os próximos passos criados por GCs.</description>
+        <label>Compartilha com sales operation</label>
+        <sharedTo>
+            <group>Sales_operations</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>Gerentes_de_conta_new</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Compartilha_com_sales_operation_1</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Compartilha com sales operation se criado por SE&apos;s.</description>
+        <label>Compartilha com sales operation</label>
+        <sharedTo>
+            <group>Sales_operations</group>
+        </sharedTo>
+        <sharedFrom>
+            <group>System_engineers</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Se_criado_por_GC_compartilha_com_BDR</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Se criado por GC compartilha com BDR</label>
+        <sharedTo>
+            <role>System_Engineer_BDR</role>
+        </sharedTo>
+        <sharedFrom>
+            <group>Gerentes_de_conta_new</group>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

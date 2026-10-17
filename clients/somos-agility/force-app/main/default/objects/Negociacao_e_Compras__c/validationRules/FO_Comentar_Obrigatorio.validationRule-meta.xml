@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FO_Comentar_Obrigatorio</fullName>
+    <active>true</active>
+    <description>FO 15/12/17: Obriga campo Comentar, quando Agility declarar a vencedora.</description>
+    <errorConditionFormula>ISBLANK(  Descreva_Agility_Vencedora__c   )  &amp;&amp; ISPICKVAL( Agility_declarada_vencedora__c , &quot;Sim&quot;)</errorConditionFormula>
+    <errorDisplayField>Descreva_Agility_Vencedora__c</errorDisplayField>
+    <errorMessage>Preencha o campo de comentário.</errorMessage>
+</ValidationRule>

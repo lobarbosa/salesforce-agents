@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreencheContatoTipoProposta</fullName>
+    <active>true</active>
+    <description>Regra de validação para obrigar o preenchimento do tipo de proposta e de algum campo de contato, caso o responsável pelo envio da proposta seja o Inside Sales.</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(ResponsavelEnvioProposta__c,&apos;Inside Sales&apos;),
+ISBLANK(TEXT(TipoProposta__c)),
+OR(
+ISNULL(Contato__c),
+ISNULL(Contato2__c),
+ISNULL(Contato3__c)
+)
+)</errorConditionFormula>
+    <errorMessage>Será necessário preencher o Tipo da Proposta ou um Contato para poder salvar a Proposta de Solução</errorMessage>
+</ValidationRule>

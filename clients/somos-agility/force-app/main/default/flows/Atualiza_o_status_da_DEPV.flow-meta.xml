@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Verifica_status_de_qualificacao</name>
+        <label>Verifica status de qualificação</label>
+        <locationX>987</locationX>
+        <locationY>229</locationY>
+        <defaultConnector>
+            <targetReference>Atualiza_DEPV_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Outros</defaultConnectorLabel>
+        <rules>
+            <name>Aprovado_ou_rejeitado</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status_da_Qualificacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Aprovado</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Status_da_Qualificacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Rejeitado</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_DEPV</targetReference>
+            </connector>
+            <label>Aprovado ou rejeitado</label>
+        </rules>
+    </decisions>
+    <description>Atualiza o status da DEPV baseado no status da qualificação.</description>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza o status da DEPV {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Atualiza o status da DEPV</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_DEPV</name>
+        <label>Atualiza DEPV</label>
+        <locationX>995</locationX>
+        <locationY>50</locationY>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Fechado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_DEPV_0</name>
+        <label>Atualiza DEPV</label>
+        <locationX>1189</locationX>
+        <locationY>227</locationY>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Aberto</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>520</locationX>
+        <locationY>127</locationY>
+        <connector>
+            <targetReference>Verifica_status_de_qualificacao</targetReference>
+        </connector>
+        <object>Despesa_Extraordinaria_para_Pre_Venda__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>7</activeVersionNumber>
+    <description>AM 18042018: adicionado o campo de preenchimento obrigatório Registros e Comentários</description>
+    <masterLabel>Desengajamento Oportunidade</masterLabel>
+</FlowDefinition>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Por_que_a_solu_o_importante_OEG__c</fullName>
+    <description>AM 15042018: pré preenchido com as informações da fase OQF e armazenado na fase OEG*</description>
+    <inlineHelpText>Confirme: de acordo com o Cliente porque resolver este desafio é importante?</inlineHelpText>
+    <label>Por que a solução é importante OEG</label>
+    <length>4000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

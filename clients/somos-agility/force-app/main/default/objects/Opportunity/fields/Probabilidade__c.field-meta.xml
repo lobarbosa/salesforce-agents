@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Probabilidade__c</fullName>
+    <label>Probabilidade</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Commit</fullName>
+                <default>false</default>
+                <label>Commit</label>
+            </value>
+            <value>
+                <fullName>Possível</fullName>
+                <default>false</default>
+                <label>Possível</label>
+            </value>
+            <value>
+                <fullName>Em Analise</fullName>
+                <default>false</default>
+                <label>Em Analise</label>
+            </value>
+            <value>
+                <fullName>Fechado</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Fechado Ganho</label>
+            </value>
+            <value>
+                <fullName>Fechado Perdido</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Fechado Perdido</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M21_Fase_Encerrada</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / Após alterar para a fase encerrada  não será possível editar novamente</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+ISPICKVAL(PRIORVALUE(StageName),&quot;Encerrada&quot;), (ISCHANGED(StageName)||ISCHANGED( CloseDate )||ISCHANGED( Name )||ISCHANGED( Motivo_encerramento__c )))
+
+
+/*
+
+AND( ISPICKVAL(PRIORVALUE(StageName),&quot;Encerrada&quot;), (ISCHANGED(StageName)||ISCHANGED( CloseDate )||ISCHANGED( Name )||ISCHANGED( Motivo_encerramento__c )))
+
+*/</errorConditionFormula>
+    <errorMessage>Não é possível alterar a oportunidade (Msg21)</errorMessage>
+</ValidationRule>

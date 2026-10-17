@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Budjet__c</fullName>
+    <inlineHelpText>O cliente já possui uma estimativa de valor a ser investido?
+Este é o custo total da solução, não apenas do produto (custos com pessoal, administrativos, físicos - DataCenter, Rack, Link, Hardware - Softwares etc.)</inlineHelpText>
+    <label>Budget</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Mapeado</fullName>
+                <default>false</default>
+                <label>Mapeado</label>
+            </value>
+            <value>
+                <fullName>Desconhecido</fullName>
+                <default>false</default>
+                <label>Desconhecido</label>
+            </value>
+            <value>
+                <fullName>Não tenho certeza</fullName>
+                <default>false</default>
+                <label>Não tenho certeza</label>
+            </value>
+            <value>
+                <fullName>Nenhum</fullName>
+                <default>false</default>
+                <label>Nenhum</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

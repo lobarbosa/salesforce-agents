@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tentativa__c</fullName>
+    <label>Tentativa</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Objetivo__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1a. Tentativa</fullName>
+                <default>true</default>
+                <label>1a. Tentativa</label>
+            </value>
+            <value>
+                <fullName>2a. Tentativa</fullName>
+                <default>false</default>
+                <label>2a. Tentativa</label>
+            </value>
+            <value>
+                <fullName>3a. Tentativa ou acima</fullName>
+                <default>false</default>
+                <label>3a. Tentativa ou acima</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Exame para Certificação</controllingFieldValue>
+            <valueName>1a. Tentativa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Exame para Certificação</controllingFieldValue>
+            <valueName>2a. Tentativa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Exame para Certificação</controllingFieldValue>
+            <valueName>3a. Tentativa ou acima</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

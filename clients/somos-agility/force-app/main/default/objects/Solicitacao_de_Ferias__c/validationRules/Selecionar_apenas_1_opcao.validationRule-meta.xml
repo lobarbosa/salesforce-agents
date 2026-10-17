@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Selecionar_apenas_1_opcao</fullName>
+    <active>false</active>
+    <errorConditionFormula>X5_dias__c =True &amp;&amp;  X10_dias__c=True ||
+X10_dias__c =True &amp;&amp;  X20_dias__c=True ||
+X20_dias__c =True &amp;&amp;  X30_dias__c=True ||
+X30_dias__c =True &amp;&amp;  X10_dias__c=True ||
+X5_dias__c =False &amp;&amp;  X10_dias__c =False &amp;&amp;  X20_dias__c=False &amp;&amp; X30_dias__c=False</errorConditionFormula>
+    <errorMessage>Informar somente se irá retirar ,5, 10, 20 ou 30 dias de Férias.</errorMessage>
+</ValidationRule>

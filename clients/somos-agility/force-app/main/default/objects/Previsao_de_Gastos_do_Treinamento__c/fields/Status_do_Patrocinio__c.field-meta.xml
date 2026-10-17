@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_do_Patrocinio__c</fullName>
+    <inlineHelpText>Apenas o Financeiro poderá indicar alterações neste campo!</inlineHelpText>
+    <label>Status do Patrocínio</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Parceiro_Patrocinador__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aberto</fullName>
+                <default>true</default>
+                <label>Aberto</label>
+            </value>
+            <value>
+                <fullName>Fechado</fullName>
+                <default>false</default>
+                <label>Fechado</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Aberto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <controllingFieldValue>Não</controllingFieldValue>
+            <valueName>Fechado</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

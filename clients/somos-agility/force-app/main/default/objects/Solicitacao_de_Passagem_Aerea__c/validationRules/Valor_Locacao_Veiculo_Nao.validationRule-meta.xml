@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Locacao_Veiculo_Nao</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(  Locacao_de_Veiculo__c  ,&quot;Não&quot;),
+NOT(ISBLANK(  Valor_Unitario_da_Locacao_de_Veiculo__c  )))</errorConditionFormula>
+    <errorDisplayField>Valor_Unitario_da_Locacao_de_Veiculo__c</errorDisplayField>
+    <errorMessage>Para este Tipo de Solicitação não é necessário informar este valor.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_o_Impacto_nas_Despesas</fullName>
+    <active>true</active>
+    <description>Checa se o campo Impacto_nas_despesas__c é igual a &quot;Sim&quot; e, neste caso, coloca como obrigatório o preenchimento do campo Desvio_de_despesa__c.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Impacto_nas_despesas__c, &quot;Sim&quot;),
+    ISBLANK(Desvio_de_despesa__c)
+)</errorConditionFormula>
+    <errorMessage>Ao preencher o campo Impacto nas Despesas com &quot;Sim&quot;, torna-se obrigatório o preenchimento do campo Desvio de Despesa.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notificacao_Plano_de_Teste_Sim</name>
+        <label>Acoes_Pre_Fechamento__c.Notificacao_Plano_de_Teste_Sim</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Acoes_Pre_Fechamento__c.Notificacao_Plano_de_Teste_Sim</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Acoes_Pre_Fechamento__c.Notificacao_Plano_de_Teste_Sim</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alerta de Plano de Teste = SIM
+Descrição da regra de fluxo de trabalho: jn19092018 Criar alerta para o campo na fase PFC, lista relacionada Ações Pre Fechamento: *Necessita de Plano de Teste ? = sim&quot;</description>
+    <label>Alerta de Plano de Teste = SIM</label>
+    <migratedFromWorkflowRuleName>Alerta de Plano de Teste = SIM</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notificacao_Plano_de_Teste_Sim</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Necess_rio_Plano_de_Testes__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Sim</stringValue>
+            </value>
+        </filters>
+        <object>Acoes_Pre_Fechamento__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

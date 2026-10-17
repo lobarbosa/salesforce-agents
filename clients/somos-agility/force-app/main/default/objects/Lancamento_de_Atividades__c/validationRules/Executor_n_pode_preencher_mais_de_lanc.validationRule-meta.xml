@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Executor_n_pode_preencher_mais_de_lanc</fullName>
+    <active>true</active>
+    <description>Executor não pode preencher mais de um lançamento de atividades.</description>
+    <errorConditionFormula>OR(
+    AND(
+        OR(
+            ISCHANGED(Inicio_da_atividade_1__c),
+            ISCHANGED(Fim_da_atividade_1__c)
+        ),
+        OR(
+            ISCHANGED(Inicio_da_atividade_2__c),
+            ISCHANGED(Fim_da_atividade_2__c),
+            ISCHANGED(Inicio_da_atividade_3__c),
+            ISCHANGED(Fim_da_atividade_3__c)
+        )
+    ),
+    AND(
+        OR(
+            ISCHANGED(Inicio_da_atividade_2__c),
+            ISCHANGED(Fim_da_atividade_2__c)
+        ),
+        OR(
+            ISCHANGED(Inicio_da_atividade_3__c),
+            ISCHANGED(Fim_da_atividade_3__c)
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>Cada analista deverá preencher apenas um lançamento de horas.</errorMessage>
+</ValidationRule>

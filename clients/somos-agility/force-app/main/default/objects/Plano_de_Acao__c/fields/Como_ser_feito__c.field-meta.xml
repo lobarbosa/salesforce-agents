@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Como_ser_feito__c</fullName>
+    <label>Como será feito?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Gmud</fullName>
+                <default>false</default>
+                <label>Gmud</label>
+            </value>
+            <value>
+                <fullName>Workshop</fullName>
+                <default>false</default>
+                <label>Workshop</label>
+            </value>
+            <value>
+                <fullName>Treinamento</fullName>
+                <default>false</default>
+                <label>Treinamento</label>
+            </value>
+            <value>
+                <fullName>Reunião</fullName>
+                <default>false</default>
+                <label>Reunião</label>
+            </value>
+            <value>
+                <fullName>Comunicação Interna</fullName>
+                <default>false</default>
+                <label>Comunicação Interna</label>
+            </value>
+            <value>
+                <fullName>Comunicação Externa</fullName>
+                <default>false</default>
+                <label>Comunicação Externa</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

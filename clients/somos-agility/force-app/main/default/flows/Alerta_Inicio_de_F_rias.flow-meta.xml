@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>sp1AlertaInicioFerias10</name>
+        <label>Solicitacao_de_Ferias__c.AlertaInicioFerias10</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Solicitacao_de_Ferias__c.AlertaInicioFerias10</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Solicitacao_de_Ferias__c.AlertaInicioFerias10</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alerta Inicio de Férias
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <label>Alerta Inicio de Férias</label>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status_da_Qualificao__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>3 - Aprovado</stringValue>
+            </value>
+        </filters>
+        <object>Solicitacao_de_Ferias__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>ScheduledPath1</name>
+            <connector>
+                <targetReference>sp1AlertaInicioFerias10</targetReference>
+            </connector>
+            <label>ScheduledPath1</label>
+            <offsetNumber>-10</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>Inicio__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

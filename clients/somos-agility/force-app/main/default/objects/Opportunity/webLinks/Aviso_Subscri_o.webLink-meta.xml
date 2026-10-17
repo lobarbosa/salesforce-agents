@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aviso_Subscri_o</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Aviso Subscrição</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!Opportunity.Id}&amp;p3_lkid={!Opportunity.Id}&amp;rtype=003&amp;p2_lkid= {! $User.Email}&amp;p24={! $User.Email};{! $User.Email}&amp;template_id=00X50000001P2ZT&amp;p5=&amp;save=1&apos;);</url>
+</WebLink>

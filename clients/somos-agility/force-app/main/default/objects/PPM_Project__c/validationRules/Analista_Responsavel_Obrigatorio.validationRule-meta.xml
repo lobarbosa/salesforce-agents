@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Analista_Responsavel_Obrigatorio</fullName>
+    <active>true</active>
+    <description>É obrigatório informar o nome do Analista 1 caso o status seja diferente de DSA Em Análise ou DSA Rejeitado ou Em Planejamento</description>
+    <errorConditionFormula>AND((TEXT( Project_Status__c)&lt;&gt; &quot;DSA em Análise&quot; &amp;&amp; TEXT( Project_Status__c)&lt;&gt; &quot;DSA Rejeitado&quot;&amp;&amp;TEXT( Project_Status__c)&lt;&gt; &quot;Em Planejamento&quot;),ISBLANK( Analista_Agility_1__c ))</errorConditionFormula>
+    <errorDisplayField>Analista_Agility_1__c</errorDisplayField>
+    <errorMessage>Informe o Nome do Analista</errorMessage>
+</ValidationRule>

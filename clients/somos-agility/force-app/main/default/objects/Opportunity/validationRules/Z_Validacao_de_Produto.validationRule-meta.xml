@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Validacao_de_Produto</fullName>
+    <active>false</active>
+    <errorConditionFormula>Valida_o_de_Produto__c  &gt;= 1</errorConditionFormula>
+    <errorMessage>Obrigatório adição de Sub-Linha de Produto na Oportunidade</errorMessage>
+</ValidationRule>

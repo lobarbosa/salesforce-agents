@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Orcamentista__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Favor informar o orçamentista responsável</inlineHelpText>
+    <label>System Engineer</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Contact.Account.Name</field>
+            <operation>contains</operation>
+            <value>Agility</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operation>equals</operation>
+            <value>Sim</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Propostas de Solução (Orçamentista)</relationshipLabel>
+    <relationshipName>Propostas_de_Solu_o1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

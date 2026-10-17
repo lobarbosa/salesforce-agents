@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Origem__c</fullName>
+    <description>AM161018: informa a origem da solicitação</description>
+    <label>Origem</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cliente</fullName>
+                <default>false</default>
+                <label>Cliente</label>
+            </value>
+            <value>
+                <fullName>Agility-Projetos</fullName>
+                <default>false</default>
+                <label>Agility-Projetos</label>
+            </value>
+            <value>
+                <fullName>Agility-Comercial</fullName>
+                <default>false</default>
+                <label>Agility-Comercial</label>
+            </value>
+            <value>
+                <fullName>Agility-Produtos</fullName>
+                <default>false</default>
+                <label>Agility-Produtos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

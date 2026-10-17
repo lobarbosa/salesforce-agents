@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VerificaClassificacao</fullName>
+    <active>false</active>
+    <description>Valida a alteração do proprietário do lead pós qualificação</description>
+    <errorConditionFormula>AND(
+   Owner:User.Profile.Name &lt;&gt; &apos;Marketing&apos;,
+   ISPICKVAL( Rating , &apos;Frio&apos;)
+)</errorConditionFormula>
+    <errorMessage>Para encaminhar o Lead a um Gestor de Contas, deve-se alterar a Classificação para Quente.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Valor_Mensal_de_Suporte</fullName>
+    <active>false</active>
+    <errorConditionFormula>Valor_Mensal_de_Suporte__c&lt;= 0</errorConditionFormula>
+    <errorMessage>o Valor Mensal de Suporte de ser maior que 0</errorMessage>
+</ValidationRule>

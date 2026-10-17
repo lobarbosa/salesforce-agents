@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_do_Blueprint__c</fullName>
+    <description>JN 24042018 subtituida a obrigatoriedade do camo pela regra de qualificação para proxima oportunidade inserindo um asterisco no rótulo.</description>
+    <label>*Status da Previsão de Investimento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Validado pelo Cliente</fullName>
+                <default>false</default>
+                <label>Validado pelo Cliente</label>
+            </value>
+            <value>
+                <fullName>Descartado pelo Cliente</fullName>
+                <default>false</default>
+                <label>Descartado pelo Cliente</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Respons_vel__c</fullName>
+    <description>Campo com o responsável pelo RO.</description>
+    <label>Responsável:</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CS</fullName>
+                <default>false</default>
+                <label>CS</label>
+            </value>
+            <value>
+                <fullName>Equipe de Pós</fullName>
+                <default>false</default>
+                <label>Equipe de Pós</label>
+            </value>
+            <value>
+                <fullName>GC</fullName>
+                <default>false</default>
+                <label>GC</label>
+            </value>
+            <value>
+                <fullName>GP</fullName>
+                <default>false</default>
+                <label>GP</label>
+            </value>
+            <value>
+                <fullName>Renovações</fullName>
+                <default>false</default>
+                <label>Renovações</label>
+            </value>
+            <value>
+                <fullName>SE</fullName>
+                <default>false</default>
+                <label>SE</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

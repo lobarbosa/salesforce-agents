@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProdutosPFP</fullName>
+    <active>true</active>
+    <label>Produtos na PFP</label>
+    <picklistValues>
+        <picklist>Respons_vel_pela_execu_o_desta_etapa2__c</picklist>
+        <values>
+            <fullName>Gerente de contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Orçamentista</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Respons_vel_pela_execu_o_desta_etapa3__c</picklist>
+        <values>
+            <fullName>Gerente de contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sales Operations</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>StatusAprovacoes__c</picklist>
+        <values>
+            <fullName>Aguardando Cotação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aguardando Validação Fiscal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cotação Aprovada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cotação Reprovada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fluxo de Vendas Finalizado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Validação Fiscal Reprovada</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Definir BOM</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Produtos na PFP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação de Preços</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validar Cotação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validação de Pricing</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

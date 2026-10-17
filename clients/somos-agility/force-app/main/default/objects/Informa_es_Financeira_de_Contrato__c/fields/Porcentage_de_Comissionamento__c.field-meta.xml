@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Porcentage_de_Comissionamento__c</fullName>
+    <description>AM 25052018: adicionado o perfil &quot;Herdado&quot; com escala de comissão 0</description>
+    <formula>/*
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;CLT – Novo Contrato&quot;),4/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;CLT - Renovação com Correção&quot;),3/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;CLT – Renovação sem Correção&quot;),175/10000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;PJ – Comissionamento Antigo&quot;),5/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;CLT – Comissionamento Antigo&quot;),3/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;CLT – Renovação com Desconto&quot;),15/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;CLT - Renovação + Aumento Real + Correção&quot;),4/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;PJ - Renovação + Aumento Real + Correção&quot;),5/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;PJ - Novo Contrato&quot;),5/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;PJ - Renovação com Correção&quot;),4/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;PJ – Renovação sem Correção&quot;),25/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;PJ - Renovação com Desconto&quot;),2/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;CLT - Renovação com Reajuste Parcial&quot;),2/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;PJ - Renovação com Desconto&quot;),2/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B&quot;),75/10000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Herdado&quot;),0,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A - 2019&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B - 2019&quot;),7/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C - 2019&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A - 2020&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B - 2020&quot;),7/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C - 2020&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A - 2021&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B - 2021&quot;),7/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C - 2021&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A - 2022&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B - 2022&quot;),7/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C - 2022&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A - 2023&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B - 2023&quot;),7/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C - 2023&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A - 2024&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B - 2024&quot;),7/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C - 2024&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil A - 2025&quot;),1/100,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil B - 2025&quot;),7/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Perfil C - 2025&quot;),5/1000,
+IF(ISPICKVAL(Escala_de_Comissionamento__c,&quot;Não Qualificado&quot;),0,0
+))))))))))))))))))))))))))))))))))))))))
+*/
+
+CASE(
+    Escala_de_Comissionamento__c,
+
+    &quot;Perfil A&quot;, 1/100,
+    &quot;Perfil B&quot;, 75/10000,
+    &quot;Perfil C&quot;, 5/1000,
+
+    &quot;Perfil A - 2024&quot;, 1/100,
+    &quot;Perfil B - 2024&quot;, 7/1000,
+    &quot;Perfil C - 2024&quot;, 5/1000,
+
+    &quot;Perfil A - 2025&quot;, 1/100,
+    &quot;Perfil B - 2025&quot;, 7/1000,
+    &quot;Perfil C - 2025&quot;, 5/1000,
+
+    &quot;Perfil A - 2026&quot;, 1/100,
+    &quot;Perfil B - 2026&quot;, 7/1000,
+    &quot;Perfil C - 2026&quot;, 5/1000,
+
+    0
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Porcentagem de Comissionamento</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

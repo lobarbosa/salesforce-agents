@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>campo_datapgmto_apenas_operacoes</fullName>
+    <active>true</active>
+    <errorConditionFormula>if ($Profile.Name != &apos;Compras Financeiro&apos;,
+if ( ISCHANGED( Data_do_Pagamento__c),true,false)
+,false)</errorConditionFormula>
+    <errorDisplayField>Data_do_Pagamento__c</errorDisplayField>
+    <errorMessage>Este campo não pode ser editado por este perfil.</errorMessage>
+</ValidationRule>

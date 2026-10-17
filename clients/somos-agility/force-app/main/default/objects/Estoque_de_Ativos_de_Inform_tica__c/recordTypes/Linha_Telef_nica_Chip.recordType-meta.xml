@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Linha_Telef_nica_Chip</fullName>
+    <active>true</active>
+    <label>Linha Telefônica (Chip)</label>
+    <picklistValues>
+        <picklist>DDD__c</picklist>
+        <values>
+            <fullName>11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>41</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>51</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>HD__c</picklist>
+        <values>
+            <fullName>1TB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>320GB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>500GB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>750GB</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Marca__c</picklist>
+        <values>
+            <fullName>Acer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Apple</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dell</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lenovo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Motorola</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Samsung</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Mem_ria_RAM__c</picklist>
+        <values>
+            <fullName>12GB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16GB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4GB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8GB</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Modelo__c</picklist>
+        <values>
+            <fullName>600B</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aspire ES1-572</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Galaxy J2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Galaxy J5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IdeaPad S145-15IWL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inspiron 14z</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inspiron N4050</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inspiron P35G</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Latitude 3470</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Latitude 3480</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Latitude E5420</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Macbook Air 11</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Moto G</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ThinkPad T430</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ThinkPad T430u</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vostro 3360</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vostro 3500</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vostro 3550</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vostro 3560</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vostro 3570</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vostro P19G</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Processador__c</picklist>
+        <values>
+            <fullName>Intel Core i3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Intel Core i5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Intel Core i7</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Propriedade__c</picklist>
+        <values>
+            <fullName>Agility Networks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Locação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Particular</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SSD__c</picklist>
+        <values>
+            <fullName>128GB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1TB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>256GB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>512GB</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Disponível</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Uso</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_da_Linha__c</picklist>
+        <values>
+            <fullName>Ativo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bloqueado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo__c</picklist>
+        <values>
+            <fullName>Chip</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

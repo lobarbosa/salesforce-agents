@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pergunta_7__c</fullName>
+    <defaultValue>&quot;Os objetivos dos serviços contratados foram atendidos?&quot;</defaultValue>
+    <label>Pergunta 7:</label>
+    <length>256</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

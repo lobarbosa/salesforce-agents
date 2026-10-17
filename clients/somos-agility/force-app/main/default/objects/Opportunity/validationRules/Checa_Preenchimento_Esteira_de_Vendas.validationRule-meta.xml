@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_Preenchimento_Esteira_de_Vendas</fullName>
+    <active>false</active>
+    <description>Regra de validação responsável por checar o preenchimento dos campos obrigatórios para esteira de vendas.</description>
+    <errorConditionFormula>AND(
+    AND(
+        $Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;,
+        $Profile.Name &lt;&gt; &quot;Alta Gestão&quot;,
+        $User.Username &lt;&gt; &quot;shirlei.bortoleto@somosagility.com.br&quot;
+    ),
+    OR(
+        ISBLANK(Principal_executivo_interessado__c),
+        ISBLANK(Defina_os_problemas_do_cliente__c),
+        ISBLANK(Defina_a_situacao_do_Cliente__c),
+        ISBLANK(Porque_a_solucao_e_importante__c),
+        ISBLANK(Informar_a_urgencia_da_necessidade__c),
+        ISBLANK(Resp_Cliente_por_essas_informacoes__c),
+        ISBLANK(Impacto_Cargo_1__c),
+        ISPICKVAL(E_refresh__c, &quot;&quot;)
+    ),
+    PRIORVALUE(Record_ID__c) = &quot;01238000000EAul&quot;,
+    Record_ID__c &lt;&gt; &quot;01238000000EAul&quot;
+)</errorConditionFormula>
+    <errorDisplayField>Principal_executivo_interessado__c</errorDisplayField>
+    <errorMessage>Para seguir adiante, preencha os campos: Principal executivo interessado / Defina os problemas do cliente / Defina a situação do cliente / Por que a solução é importante? / Informar a urgência da necessidade / Resp. cliente por essas informações.</errorMessage>
+</ValidationRule>

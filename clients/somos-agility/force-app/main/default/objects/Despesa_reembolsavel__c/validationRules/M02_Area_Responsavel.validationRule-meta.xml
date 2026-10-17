@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M02_Area_Responsavel</fullName>
+    <active>false</active>
+    <description>AM24072018: não permite a área de pós selecionar a opção &quot;Outros&quot;</description>
+    <errorConditionFormula>AND( 
+$Profile.Name = &quot;Gerente de Suporte DC&quot;||
+$Profile.Name = &quot;Professional Services&quot;||
+$Profile.Name = &quot;Premium Plus&quot;||
+$Profile.Name = &quot;Gerente de Suporte SEG&quot;||
+$Profile.Name = &quot;Diretor de Produtos e BDM DT&quot;||
+$Profile.Name = &quot;Gerente de Suporte EA&quot;||
+$Profile.Name = &quot;Diretor de Projetos&quot;||
+$Profile.Name = &quot;Gerente de Projetos&quot;||
+$Profile.Name = &quot;Gerente de Projetos Itau&quot;,
+TEXT( Area_responsavel_pela_despesa__c ) = &quot;Outros&quot;   
+)</errorConditionFormula>
+    <errorDisplayField>Area_responsavel_pela_despesa__c</errorDisplayField>
+    <errorMessage>Selecione a opção &quot;Projeto&quot; ou &quot;Suporte&quot; (Msg02)</errorMessage>
+</ValidationRule>

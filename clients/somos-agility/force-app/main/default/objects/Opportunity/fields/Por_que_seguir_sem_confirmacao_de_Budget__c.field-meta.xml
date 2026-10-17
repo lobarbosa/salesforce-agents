@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Por_que_seguir_sem_confirmacao_de_Budget__c</fullName>
+    <inlineHelpText>Por que devemos continuar em uma oportunidade que não há orçamento confirmado pelo cliente?</inlineHelpText>
+    <label>Desvio de budget</label>
+    <length>10000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

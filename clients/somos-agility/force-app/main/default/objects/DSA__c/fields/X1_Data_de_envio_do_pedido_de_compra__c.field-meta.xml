@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X1_Data_de_envio_do_pedido_de_compra__c</fullName>
+    <inlineHelpText>Data de envio do pedido de compra ao(s) fornecedor(es).</inlineHelpText>
+    <label>1° Data de envio do pedido de compra</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

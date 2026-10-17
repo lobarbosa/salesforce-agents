@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Hora_do_SLA_Solicitado__c</fullName>
+    <formula>IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;4 horas&quot;), CreatedDate +0.167,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;6 horas&quot;), CreatedDate +0.25,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;8 horas&quot;), CreatedDate +0.333,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;12 horas&quot;), CreatedDate +0.50,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;24 horas&quot;), CreatedDate +1,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;2 dias&quot;), CreatedDate +2,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;4 dias&quot;), CreatedDate +4,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;6 dias&quot;), CreatedDate +6,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;8 dias&quot;), CreatedDate +8,
+IF( ISPICKVAL(SLA_para_Qualificacao__c,&quot;10 dias&quot;), CreatedDate +10,CreatedDate+0))))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Data/Hora do SLA Solicitado</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

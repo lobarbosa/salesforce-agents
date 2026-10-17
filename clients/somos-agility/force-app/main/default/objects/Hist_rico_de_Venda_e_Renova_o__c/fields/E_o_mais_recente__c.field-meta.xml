@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>E_o_mais_recente__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>Verifica se o histórico de venda e renovação é o mais recente, baseado no número de série do ativo.</inlineHelpText>
+    <label>É o mais recente?</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

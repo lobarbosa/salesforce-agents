@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Turno__c</fullName>
+    <label>Turno</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Tipo__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Diurno</fullName>
+                <default>false</default>
+                <label>Diurno</label>
+            </value>
+            <value>
+                <fullName>Noturno</fullName>
+                <default>false</default>
+                <label>Noturno</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Dedicado</controllingFieldValue>
+            <valueName>Diurno</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dedicado</controllingFieldValue>
+            <valueName>Noturno</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

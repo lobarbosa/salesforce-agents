@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_da_Despesa_Reembolsavel__c</fullName>
+    <formula>IF((ISPICKVAL( Classe__c ,&quot;Reembolsável&quot;)&amp;&amp; (TEXT(Tipo_da_Despesa__c)&lt;&gt; &quot;Estacionamento Mensal&quot;)), (Valor_da_Kilometragem__c + Valor_da_Despesa__c),0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor da Despesa Reembolsável</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

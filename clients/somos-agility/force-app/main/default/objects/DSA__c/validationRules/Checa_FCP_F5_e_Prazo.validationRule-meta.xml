@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_FCP_F5_e_Prazo</fullName>
+    <active>true</active>
+    <description>Se o DSA for FCP F5, o prazo contratado deve ser de 2 anos ou mais.</description>
+    <errorConditionFormula>AND(
+    FCP_F5__c = TRUE,
+    OR(
+        ISPICKVAL(Prazo_contratado__c, &apos;&apos;),
+        ISPICKVAL(Prazo_contratado__c, &apos;1 ano&apos;)
+    )
+)</errorConditionFormula>
+    <errorMessage>Se o DSA for FCP F5, o prazo contratado deve ser de 2 anos ou mais.</errorMessage>
+</ValidationRule>

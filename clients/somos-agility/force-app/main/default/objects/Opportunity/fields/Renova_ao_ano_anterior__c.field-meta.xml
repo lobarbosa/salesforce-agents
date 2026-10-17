@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Renova_ao_ano_anterior__c</fullName>
+    <description>Informe se a renovação desta oportunidade foi realizada pela Agility ou se foi realizada por outra Revenda.</description>
+    <inlineHelpText>Informe se a renovação do ano anterior desta oportunidade foi realizada pela Agility Networks, realizada por outra Revenda ou se é a Primeira renovação.</inlineHelpText>
+    <label>Renovação Ano Anterior</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <controllingField>Categoria__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Renovado pela Agility Networks</fullName>
+                <default>false</default>
+                <label>Renovado pela Agility Networks</label>
+            </value>
+            <value>
+                <fullName>Renovado por outra Revenda</fullName>
+                <default>false</default>
+                <label>Renovado por outra Revenda</label>
+            </value>
+            <value>
+                <fullName>Primeira Renovação</fullName>
+                <default>false</default>
+                <label>Primeira Renovação</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Subscrição ou Renovação</controllingFieldValue>
+            <valueName>Renovado pela Agility Networks</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Subscrição ou Renovação</controllingFieldValue>
+            <valueName>Renovado por outra Revenda</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Subscrição ou Renovação</controllingFieldValue>
+            <valueName>Primeira Renovação</valueName>
+        </valueSettings>
+    </valueSet>
+    <visibleLines>3</visibleLines>
+</CustomField>

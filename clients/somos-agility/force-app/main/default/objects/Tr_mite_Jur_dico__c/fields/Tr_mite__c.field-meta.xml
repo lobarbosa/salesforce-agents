@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tr_mite__c</fullName>
+    <label>Trâmite</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Em Negociação de Cláusulas</fullName>
+                <default>false</default>
+                <label>Em Negociação de Cláusulas</label>
+            </value>
+            <value>
+                <fullName>Em Assinatura ( Agility )</fullName>
+                <default>false</default>
+                <label>Em Assinatura ( Agility )</label>
+            </value>
+            <value>
+                <fullName>Enviado ao Cliente</fullName>
+                <default>false</default>
+                <label>Enviado ao Cliente</label>
+            </value>
+            <value>
+                <fullName>Em Assinatura ( Cliente )</fullName>
+                <default>false</default>
+                <label>Em Assinatura ( Cliente )</label>
+            </value>
+            <value>
+                <fullName>Finalizado e Arquivado via Agility</fullName>
+                <default>false</default>
+                <label>Finalizado e Arquivado via Agility</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

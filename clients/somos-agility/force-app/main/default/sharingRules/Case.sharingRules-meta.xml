@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingCriteriaRules>
+        <fullName>Premium_Plus</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Premium Plus</label>
+        <sharedTo>
+            <role>Gerente_de_Projetos_Itau</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Reclamação Suporte</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>AccountId</field>
+            <operation>equals</operation>
+            <value>0015000000dhjqN,0015000000GFq28,0013800001E4xLT,0015000000GGW9h,0015000000Jsq0h,0015000000Iirtl</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Rodrigo_Queiroz</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Rodrigo Queiroz</label>
+        <sharedTo>
+            <role>Gerente_de_Operacoes</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Reclamação Suporte</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingCriteriaRules>
+        <fullName>Service_Delivery</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Service Delivery</label>
+        <sharedTo>
+            <role>Service_Delivery</role>
+        </sharedTo>
+        <criteriaItems>
+            <field>RecordTypeId</field>
+            <operation>equals</operation>
+            <value>Reclamação Suporte</value>
+        </criteriaItems>
+        <includeRecordsOwnedByAll>false</includeRecordsOwnedByAll>
+    </sharingCriteriaRules>
+    <sharingOwnerRules>
+        <fullName>CEO</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>CEO</label>
+        <sharedTo>
+            <role>Service_Desk</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>CEO</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Casos_Compartilhados_com_SD_s</fullName>
+        <accessLevel>Read</accessLevel>
+        <label>Casos Compartilhados com SD&apos;s</label>
+        <sharedTo>
+            <role>Service_Delivery</role>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinates>Gerente_de_Operacoes</roleAndSubordinates>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Casos_EA_compartilhados_com</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>AM 24052018: regra para compartilhar a edição de casos com os SE&apos;s</description>
+        <label>Casos EA compartilhados com</label>
+        <sharedTo>
+            <roleAndSubordinatesInternal>System_Engineer</roleAndSubordinatesInternal>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinatesInternal>BDM_EA</roleAndSubordinatesInternal>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Casos_compartilhados_com_SE</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>AM 27042018: regra para compartilhar a edição de casos com os SE&apos;s</description>
+        <label>Casos compartilhados com SE</label>
+        <sharedTo>
+            <roleAndSubordinates>System_Engineer</roleAndSubordinates>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinates>BDM_SEG</roleAndSubordinates>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Casos_para_SE_EA</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>AM 30052018: acesso SE a casos e atividades técnicas do caso</description>
+        <label>Casos para SE EA</label>
+        <sharedTo>
+            <role>System_Engineer</role>
+        </sharedTo>
+        <sharedFrom>
+            <role>BDM_EA</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Fila_DC_C</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Fila DC&amp;C</label>
+        <sharedTo>
+            <role>Service_Desk</role>
+        </sharedTo>
+        <sharedFrom>
+            <queue>DC_C</queue>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Fila_SEG</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Fila SEG</label>
+        <sharedTo>
+            <role>Service_Desk</role>
+        </sharedTo>
+        <sharedFrom>
+            <queue>SEC</queue>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Service_Desk</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Service Desk</label>
+        <sharedTo>
+            <role>Service_Desk</role>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinates>Governan_a</roleAndSubordinates>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Service_Desk_ALL</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Service Desk ALL</label>
+        <sharedTo>
+            <group>Service_Desk</group>
+        </sharedTo>
+        <sharedFrom>
+            <roleAndSubordinates>Gerente_de_Operacoes</roleAndSubordinates>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Service_Desk_EA</fullName>
+        <accessLevel>Edit</accessLevel>
+        <label>Service Desk EA</label>
+        <sharedTo>
+            <group>Service_Desk</group>
+        </sharedTo>
+        <sharedFrom>
+            <queue>EA</queue>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>

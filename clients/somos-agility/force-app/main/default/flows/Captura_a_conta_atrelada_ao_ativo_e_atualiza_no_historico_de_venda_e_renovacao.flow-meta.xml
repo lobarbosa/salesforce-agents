@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Atualizado em 25/07/2025.</description>
+    <environments>Default</environments>
+    <interviewLabel>Captura a conta atrelada ao ativo e atualiza no histórico de venda e renovação {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Captura a conta atrelada ao ativo e atualiza no histórico de venda e renovação</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_Account_ID</name>
+        <label>Atualiza Account ID</label>
+        <locationX>646</locationX>
+        <locationY>449</locationY>
+        <inputAssignments>
+            <field>Account_ID__c</field>
+            <value>
+                <elementReference>$Record.Patrim_nio__r.Account.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>520</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Atualiza_Account_ID</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Account_ID__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Hist_rico_de_Venda_e_Renova_o__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

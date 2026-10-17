@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requisitar_SE_SA_de_SEG_para_o_Projeto__c</fullName>
+    <label>Requisitar SE/SA de SEG para o Projeto?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Não</fullName>
+                <default>true</default>
+                <label>Não</label>
+            </value>
+            <value>
+                <fullName>Sim</fullName>
+                <default>false</default>
+                <label>Sim</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

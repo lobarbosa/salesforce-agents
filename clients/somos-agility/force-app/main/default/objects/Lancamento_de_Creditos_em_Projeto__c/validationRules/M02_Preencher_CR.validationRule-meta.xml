@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M02_Preencher_CR</fullName>
+    <active>false</active>
+    <description>AM241018: obrigatório somente o campo  &quot;CR relacionado&quot; , deixe os campos &quot;DSA relacionado&quot; e &quot;Part number relacionado&quot; em branco</description>
+    <errorConditionFormula>AND( 
+ISPICKVAL(Tipo_de_credito__c,&quot;SOW/CR&quot;), 
+ISBLANK(CR_relacionada__c)
+)
+
+
+/*
+ANTIGO
+
+AND( 
+ISPICKVAL(Tipo_de_credito__c,&quot;SOW/CR&quot;), 
+OR( 
+ISBLANK(CR_relacionado__c), 
+NOT(ISBLANK(Part_number_relacionado__c)), 
+NOT(ISBLANK(DSA_relacionado__c)) 
+) 
+)
+
+Preencha somente o campo  &quot;CR relacionado&quot;, deixe os campos
+ &quot;DSA relacionado&quot; e &quot;Part number relacionado&quot; em branco (Msg03)
+ 
+ */</errorConditionFormula>
+    <errorDisplayField>CR_relacionada__c</errorDisplayField>
+    <errorMessage>Preencha o campo  &quot;CR relacionado&quot; (Msg03)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Layout_AW__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>jn13112018 criar campo de pesquisa relacionada Oportunidade.</description>
+    <label>Oportunidade</label>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>Metas GC</relationshipLabel>
+    <relationshipName>Metas_GC</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

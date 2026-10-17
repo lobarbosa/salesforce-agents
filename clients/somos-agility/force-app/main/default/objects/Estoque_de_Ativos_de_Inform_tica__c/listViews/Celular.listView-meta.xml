@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Celular</fullName>
+    <columns>NAME</columns>
+    <columns>Patrim_nio__c</columns>
+    <columns>Tipo__c</columns>
+    <columns>Marca__c</columns>
+    <columns>Modelo__c</columns>
+    <columns>IMEI__c</columns>
+    <columns>Status__c</columns>
+    <columns>Data_de_Compra__c</columns>
+    <columns>Data_de_Expira_o_da_Garantia__c</columns>
+    <columns>Dias_de_Utiliza_o__c</columns>
+    <columns>Observa_o__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>Tipo__c</field>
+        <operation>equals</operation>
+        <value>Celular</value>
+    </filters>
+    <label>Celular</label>
+</ListView>

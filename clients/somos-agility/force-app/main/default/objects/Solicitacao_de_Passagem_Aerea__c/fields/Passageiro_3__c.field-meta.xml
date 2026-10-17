@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Passageiro_3__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Passageiro 3</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Solicitação de Passagem Aérea (Passageiro 3)</relationshipLabel>
+    <relationshipName>Solicita_o_de_Passagem_A_rea3</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

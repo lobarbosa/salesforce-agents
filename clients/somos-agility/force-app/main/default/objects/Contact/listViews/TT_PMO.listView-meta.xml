@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TT_PMO</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>Ofertas__c</columns>
+    <columns>Area_de_Neg_cio__c</columns>
+    <columns>Alocacao__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Area_de_Neg_cio__c</field>
+        <operation>equals</operation>
+        <value>PMO</value>
+    </filters>
+    <filters>
+        <field>Contato_Trabalha_Atualmente_na_Empresa__c</field>
+        <operation>equals</operation>
+        <value>Sim</value>
+    </filters>
+    <label>TT PMO</label>
+    <sharedTo>
+        <role>ADM</role>
+        <role>Back_Office</role>
+    </sharedTo>
+</ListView>

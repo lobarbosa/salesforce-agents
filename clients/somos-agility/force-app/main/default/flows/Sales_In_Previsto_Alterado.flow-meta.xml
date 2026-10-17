@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Sales In Previsto Alterado
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <formulas>
+        <name>Atualizar_Sales_In_PrevistoFormula</name>
+        <dataType>Currency</dataType>
+        <expression>PRIORVALUE( $Record.Valor_Mensal_Sales_In_Previsto__c )</expression>
+        <scale>0</scale>
+    </formulas>
+    <label>Sales In Previsto Alterado</label>
+    <migratedFromWorkflowRuleName>Sales In Previsto Alterado</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Valor_Sales_In_Previsto_Anterior__c</field>
+            <value>
+                <elementReference>Atualizar_Sales_In_PrevistoFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>ISCHANGED({!$Record.Valor_Mensal_Sales_In_Previsto__c})</filterFormula>
+        <object>Previsao_Financeira_de_Suporte__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

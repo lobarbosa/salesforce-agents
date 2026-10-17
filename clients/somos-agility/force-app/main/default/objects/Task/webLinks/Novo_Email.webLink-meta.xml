@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Novo_Email</fullName>
+    <availability>online</availability>
+    <description>Manda um mail com o remitente do suporte@agilitynetworks.com.br</description>
+    <displayType>massActionButton</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Novo Email</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <requireRowSelection>false</requireRowSelection>
+    <url>/_ui/core/email/author/EmailAuthor?p2_lkid={!Case.ContactId}&amp;rtype=003&amp;retURL={!Case.Id}&amp;p26=0D250000000Gn5q:suporte@agilitynetworks.com.br:Suporte&amp;p3_lkid={!Case.Id}</url>
+</WebLink>

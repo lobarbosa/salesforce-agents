@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Classificacao_diretoria__c</fullName>
+    <inlineHelpText>Deverá ser preenchido de acordo com a forma como o processamento irá ocorrer.</inlineHelpText>
+    <label>Classificação diretoria</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Compra completa</fullName>
+                <default>false</default>
+                <label>Compra completa</label>
+            </value>
+            <value>
+                <fullName>Compra parcial</fullName>
+                <default>false</default>
+                <label>Compra parcial</label>
+            </value>
+            <value>
+                <fullName>Compra sem reconhecimento da rentabilidade</fullName>
+                <default>false</default>
+                <label>Compra sem reconhecimento da rentabilidade</label>
+            </value>
+            <value>
+                <fullName>Rentabilidade sem compra</fullName>
+                <default>false</default>
+                <label>Rentabilidade sem compra</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

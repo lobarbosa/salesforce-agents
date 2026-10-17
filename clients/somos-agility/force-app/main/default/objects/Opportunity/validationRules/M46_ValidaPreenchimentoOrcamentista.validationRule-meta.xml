@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M46_ValidaPreenchimentoOrcamentista</fullName>
+    <active>false</active>
+    <description>Regra de validação para verificar qual usuário preencheu o campo &quot;Orçamentista&quot;.</description>
+    <errorConditionFormula>OR( 
+	AND( 
+		ISNEW(), 
+		Or_amentista__c &lt;&gt; &apos;&apos; 
+		), 
+		AND( 
+			ISCHANGED(Or_amentista__c), 
+			NOT(
+				OR( 
+					$Profile.Name &lt;&gt; &apos;Diretor SEG&apos;, 
+					$Profile.Name &lt;&gt; &apos;Diretor DT&apos;, 
+					$Profile.Name &lt;&gt; &apos;PO SEG&apos;, 
+					$Profile.Name &lt;&gt; &apos;PO EA&apos;, 
+					$Profile.Name &lt;&gt; &apos;PO DT&apos;, 
+					$Profile.Name &lt;&gt; &apos;Administração&apos;, 
+					$Profile.Name &lt;&gt; &apos;Administrador do sistema&apos;, 
+					$Profile.Name &lt;&gt; &apos;Sales Operations&apos;,
+					$Profile.Name &lt;&gt; &apos;Gerente Comercial Sul&apos;
+ 
+				)
+			)	
+		)	
+	)</errorConditionFormula>
+    <errorDisplayField>Or_amentista__c</errorDisplayField>
+    <errorMessage>M46: O preenchimento do campo &quot;Orçamentista&quot; é exclusivo para perfis de usuários específicos.</errorMessage>
+</ValidationRule>

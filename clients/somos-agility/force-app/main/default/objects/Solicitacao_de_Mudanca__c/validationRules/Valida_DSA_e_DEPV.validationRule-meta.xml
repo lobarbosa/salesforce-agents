@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_DSA_e_DEPV</fullName>
+    <active>false</active>
+    <description>Validação do campo DSA e DEPV</description>
+    <errorConditionFormula>AND(
+PRIORVALUE(Status__c) = &apos;Pendente GC&apos;,
+TEXT(Status__c) = &apos;Pendente Dir Com&apos;,
+OR(
+ISBLANK(DSA_relacionado__c),
+ISBLANK(DEPV_relacionado__c)
+)
+)
+
+
+
+
+
+/*
+
+AND(
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+(ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)&amp;&amp;ISPICKVAL(    Cliente_ja_possui_visao_estabelecida__c ,&quot;Sim&quot;)) ,
+ISBLANK( Comentarios_sobre_a_visao_estabelecida__c ))
+
+*/</errorConditionFormula>
+    <errorMessage>Favor preencher os campos DSA ou DEPV.</errorMessage>
+</ValidationRule>

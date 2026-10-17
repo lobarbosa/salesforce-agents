@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categoria_da_despesa__c</fullName>
+    <description>AM 13072018: novo reembolso</description>
+    <label>Categoria da despesa</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alimentação</fullName>
+                <default>false</default>
+                <label>Alimentação</label>
+            </value>
+            <value>
+                <fullName>Estacionamento avulso</fullName>
+                <default>false</default>
+                <label>Estacionamento avulso</label>
+            </value>
+            <value>
+                <fullName>Estacionamento mensal</fullName>
+                <default>false</default>
+                <label>Estacionamento mensal</label>
+            </value>
+            <value>
+                <fullName>Pedágio</fullName>
+                <default>false</default>
+                <label>Pedágio</label>
+            </value>
+            <value>
+                <fullName>Quilometragem</fullName>
+                <default>false</default>
+                <label>Quilometragem</label>
+            </value>
+            <value>
+                <fullName>Táxi</fullName>
+                <default>false</default>
+                <label>Táxi</label>
+            </value>
+            <value>
+                <fullName>Uber</fullName>
+                <default>false</default>
+                <label>Uber</label>
+            </value>
+            <value>
+                <fullName>Viagens</fullName>
+                <default>false</default>
+                <label>Viagens</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

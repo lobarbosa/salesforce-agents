@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Pagamento</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND ( ISPICKVAL(  Status_da_Previsao__c  , &quot;Pago&quot;), 
+ISBLANK( Data_de_Pagamento__c ))</errorConditionFormula>
+    <errorMessage>Favor informar a Data de Pagamento</errorMessage>
+</ValidationRule>

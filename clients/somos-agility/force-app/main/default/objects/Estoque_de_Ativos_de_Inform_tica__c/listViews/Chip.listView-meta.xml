@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Chip</fullName>
+    <columns>NAME</columns>
+    <columns>Tipo__c</columns>
+    <columns>DDD__c</columns>
+    <columns>Numero_da_Linha__c</columns>
+    <columns>N_mero_do_Chip__c</columns>
+    <columns>Status_da_Linha__c</columns>
+    <columns>Status__c</columns>
+    <columns>Data_de_Ativa_o__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>Tipo__c</field>
+        <operation>equals</operation>
+        <value>Chip</value>
+    </filters>
+    <label>Chip</label>
+</ListView>

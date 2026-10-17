@@ -1,0 +1,1322 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>DSA__c</baseObject>
+    <category>admin</category>
+    <deployed>true</deployed>
+    <description>Relatorio para acompanhamento dos processamento urgente</description>
+    <join>
+        <outerJoin>true</outerJoin>
+        <relationship>Pedidos_Urgentes__r</relationship>
+    </join>
+    <label>DSA + Processamento urgente</label>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DSA ID</displayNameOverride>
+            <field>Id</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>DSA</displayNameOverride>
+            <field>Name</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Tipo de registro</displayNameOverride>
+            <field>RecordType</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de criação</displayNameOverride>
+            <field>CreatedDate</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Criado por</displayNameOverride>
+            <field>CreatedBy</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data da última modificação</displayNameOverride>
+            <field>LastModifiedDate</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Modificado pela última vez por</displayNameOverride>
+            <field>LastModifiedBy</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data da última atividade</displayNameOverride>
+            <field>LastActivityDate</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Oportunidade</displayNameOverride>
+            <field>Oportunidade__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Número da Oportunidade</displayNameOverride>
+            <field>N_mero_da_Oportunidade__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Nome da conta</displayNameOverride>
+            <field>Nome_da_conta__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Linha de Negócios</displayNameOverride>
+            <field>Linha_de_Neg_cios__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Z_Categoria</displayNameOverride>
+            <field>Z_Categoria__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Nome da oportunidade</displayNameOverride>
+            <field>Nome_da_oportunidade__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contrato de Suporte Agility</displayNameOverride>
+            <field>Contrato_de_Suporte_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Validado pela Área de Serviços</displayNameOverride>
+            <field>Validado_pela_rea_de_Servi_os__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Validado pela Área Financeira</displayNameOverride>
+            <field>Validado_pela_rea_Financeira__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observações da Área de Serviços</displayNameOverride>
+            <field>Observa_es_da_rea_de_Servi_os__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observações da Área Financeira</displayNameOverride>
+            <field>Observa_es_da_rea_Financeira__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contrato</displayNameOverride>
+            <field>Contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Número do Contrato Renovado</displayNameOverride>
+            <field>N_mero__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração do Contrato</displayNameOverride>
+            <field>Elabora_o_do_Contrato_implementacao__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Requer Elaboração de Contrato</displayNameOverride>
+            <field>Requer_Elabora_o_de_Contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato para Faturamento / Cobrança</displayNameOverride>
+            <field>Contato_para_Faturamento_Cobran_a__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato para Entrega</displayNameOverride>
+            <field>Contato_para_Entrega__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>CNPJ de Faturamento</displayNameOverride>
+            <field>CNPJ__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Oportunidade Qualificada para Rewards?</displayNameOverride>
+            <field>Oportunidade_Qualificada_para_Rewards__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Valor Rewards USD</displayNameOverride>
+            <field>Valor_Rewards_USD__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Envolve Trade-in?</displayNameOverride>
+            <field>Envolve_Trade_in__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Descrever Produtos que serão enviados pe</displayNameOverride>
+            <field>Descrever_Produtos_que_ser_o_enviados_pe__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Descrever Produtos que serão devolvidos</displayNameOverride>
+            <field>Descrever_Produtos_que_ser_o_devolvidos__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Objetivo do Projeto</displayNameOverride>
+            <field>Sum_rio_Executivo_do_projeto__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Urgência do Projeto</displayNameOverride>
+            <field>Urg_ncia_do_Projeto__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data estimada de início dos Serviços</displayNameOverride>
+            <field>Data_estimada_de_in_cio_dos_Servi_os__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação</displayNameOverride>
+            <field>Observa_o_inicio__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Despesas Deslocamento, Viagem, Refeição</displayNameOverride>
+            <field>Despesas_Deslocamento_Viagem_Refei_o__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação</displayNameOverride>
+            <field>Observa_o_deslocamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato Técnico para o projeto</displayNameOverride>
+            <field>Contato_T_cnico_para_o_projeto__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Duração do Contrato (Meses)</displayNameOverride>
+            <field>Duracao_do_Contrato_Meses__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração para Fornecimento de Produtos</displayNameOverride>
+            <field>Elabora_o_para_Fornecimento_de_Produtos__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração para Serviço de Implementação</displayNameOverride>
+            <field>Elabora_o_para_Servi_o_de_Implementa_o__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração para Suporte Técnico</displayNameOverride>
+            <field>Elabora_o_para_Suporte_T_cnico__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração para Locação com Instalação</displayNameOverride>
+            <field>Elabora_o_para_Loca_o_com_Instala_o__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração de Contrato</displayNameOverride>
+            <field>Elabora_o_de_Contrato_produtos__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração de Contrato</displayNameOverride>
+            <field>Elabora_o_de_Contrato_suporte__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Elaboração de Contrato</displayNameOverride>
+            <field>Elabora_o_de_Contrato_locacao__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observações</displayNameOverride>
+            <field>Observa_oes__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Opção de Compra</displayNameOverride>
+            <field>Op_o_de_Compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Endereço para Entrega</displayNameOverride>
+            <field>Endere_o_para_Entrega__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Obs:(Pagamento - Faturamento - Cobrança)</displayNameOverride>
+            <field>Obs_Pagamento_Faturamento_Cobran_a__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Tipo de Contrato</displayNameOverride>
+            <field>Tipo_de_Contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Padrão de Minuta</displayNameOverride>
+            <field>Padr_o_de_Minuta__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DSA de Hardware</displayNameOverride>
+            <field>DSA_de_Hardware__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Ambiente que o HW / SW será Instalado</displayNameOverride>
+            <field>Ambiente_que_o_HW_SW_sera_Instalado__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cliente Contratou Serviços de Suporte?</displayNameOverride>
+            <field>Cliente_Contratou_Servi_os_de_Suporte__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Acordos Especiais Para o Contrato</displayNameOverride>
+            <field>Acordos_Especiais_Para_o_Contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Planilha de Formação de Preços</displayNameOverride>
+            <field>Planilha_de_Forma_ao_de_pre_os__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Proposta Final de Venda</displayNameOverride>
+            <field>Proposta_Final_de_Venda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Proposta de Compra</displayNameOverride>
+            <field>Proposta_de_Compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Aceite do Cliente</displayNameOverride>
+            <field>Aceite_do_Cliente__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Comissão de Terceiros</displayNameOverride>
+            <field>Comiss_o_de_Terceiros__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Valor R$</displayNameOverride>
+            <field>Valor_R__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contrato Possui Acordos Especiais?</displayNameOverride>
+            <field>Contrato_Possui_Acordos_Especiais__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Negociação Especial?</displayNameOverride>
+            <field>Negocia_o_Especial__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Especifique</displayNameOverride>
+            <field>Especifique__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>E-mail Contato Técnico</displayNameOverride>
+            <field>E_mail_Contato_T_cnico__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>SE Responsável</displayNameOverride>
+            <field>SE_Respons_vel__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cliente Contratou Serviços de Projeto?</displayNameOverride>
+            <field>Cliente_Contratou_Servicos_de_Projeto__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Termo de Aceite</displayNameOverride>
+            <field>Termo_de_Aceite_Formula__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Motivo</displayNameOverride>
+            <field>Motivo_Servicos_Projeto_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cliente Contratou Serviços de Suporte?</displayNameOverride>
+            <field>Cliente_Contratou_Servicos_de_Suporte__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Motivo</displayNameOverride>
+            <field>Motivo_Servicos_Suporte_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Serviços de Projeto Agility</displayNameOverride>
+            <field>Servicos_de_Projeto_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Serviços de Suporte Agility</displayNameOverride>
+            <field>Servicos_de_Suporte_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de Envio do Pedido de Compra</displayNameOverride>
+            <field>Data_de_Envio_do_Pedido_de_Compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação compra</displayNameOverride>
+            <field>Observacao_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsão de Entrega na Agility</displayNameOverride>
+            <field>Previsao_de_Entrega_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação</displayNameOverride>
+            <field>Observacao_entrega__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data Efetiva de Chegada na Agility</displayNameOverride>
+            <field>Data_Efetiva_de_Chegada_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação</displayNameOverride>
+            <field>Observacao_chegada__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status Logística</displayNameOverride>
+            <field>Status_Backoffice__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação Logística</displayNameOverride>
+            <field>Observacao_BackOffice__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Tipo de processamento</displayNameOverride>
+            <field>Tipo_de_processamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status DSA</displayNameOverride>
+            <field>Status_DSA__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>SE Responsável</displayNameOverride>
+            <field>SE_Responsavel__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DSA de Software</displayNameOverride>
+            <field>DSA_de_Software__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>N° do pedido ou OV</displayNameOverride>
+            <field>OV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Processamento Urgente?</displayNameOverride>
+            <field>Pedido_Urgente__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Motivo</displayNameOverride>
+            <field>Motivo_pedido_urgente__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Quantidade de Pedidos Urgentes</displayNameOverride>
+            <field>Quantidade_de_Pedidos_Urgentes__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Informações</displayNameOverride>
+            <field>Informacoes__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Email Contato Entrega</displayNameOverride>
+            <field>Email_Contato_Entrega__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Telefone Contato Entrega</displayNameOverride>
+            <field>Telefone_Contato_Entrega__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Email Contato Faturamento</displayNameOverride>
+            <field>Email_Contato_Faturamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Telefone Contato Faturamento</displayNameOverride>
+            <field>Telefone_Contato_Faturamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Motivo</displayNameOverride>
+            <field>Motivo__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Banco de Horas Contratadas Por Mês</displayNameOverride>
+            <field>Banco_de_Horas_Contratadas_Por_Mes__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Descrição do Contrato</displayNameOverride>
+            <field>Descricao_do_Contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Tipo de Renovação</displayNameOverride>
+            <field>Tipo_de_Renovacao__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Tipo do Contrato</displayNameOverride>
+            <field>Tipo_do_Contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Categoria</displayNameOverride>
+            <field>Categoria__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Duração do Contrato (Meses)</displayNameOverride>
+            <field>Dura_o_do_Contrato_Meses__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Índice</displayNameOverride>
+            <field>Indice__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Linha de Negócios de Apoio</displayNameOverride>
+            <field>Linha_de_Negocios__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Tipo de Contrato de Suporte</displayNameOverride>
+            <field>Tipo_de_Contrato_de_Suporte__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Instruções de Entrega</displayNameOverride>
+            <field>Instru_es_de_Entrega__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Toda documetação  disponível  na PSL ?</displayNameOverride>
+            <field>Toda_documeta_o_dispon_vel_na_PSL__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Propostas de Solução</displayNameOverride>
+            <field>Propostas_de_Solu_o__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Comissão</displayNameOverride>
+            <field>Comissao__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Número Contrato Renovado 1</displayNameOverride>
+            <field>Numero_Contrato_Renovado__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Número Contrato Renovado 2</displayNameOverride>
+            <field>Numero_Contrato_Renovado_2__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Número Contrato Renovado 3</displayNameOverride>
+            <field>Numero_Contrato_Renovado_3__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de Vencimento do Contrato 1</displayNameOverride>
+            <field>Data_de_Vencimento_do_Contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de Vencimento do Contrato 2</displayNameOverride>
+            <field>Data_de_Vencimento_do_Contrato_2__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de Vencimento do Contrato 3</displayNameOverride>
+            <field>Data_de_Vencimento_do_Contrato_3__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1ª Data de Vencimento da Subscrição</displayNameOverride>
+            <field>X1_Data_da_Vencimento_de_Subscri_o__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2ª Data de Vencimento da Subscrição</displayNameOverride>
+            <field>X2_Data_de_Vencimento_da_Subscri_o__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>% de Reajuste do Contrato 1</displayNameOverride>
+            <field>de_Reajuste_do_contrato__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>% de Reajuste do Contrato 2</displayNameOverride>
+            <field>de_Reajuste_do_Contrato_2__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>% de Reajuste do Contrato 3</displayNameOverride>
+            <field>de_Reajuste_do_Contrato_3__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Teste</displayNameOverride>
+            <field>Teste__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Valor CIF</displayNameOverride>
+            <field>Valor_CIF__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Valor FOB</displayNameOverride>
+            <field>Valor_FOB__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Valor CIF - Moeda</displayNameOverride>
+            <field>Valor_CIF_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Valor FOB - Moeda</displayNameOverride>
+            <field>Valor_FOB_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Picklist Notificação</displayNameOverride>
+            <field>Picklist_Notificacao__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Notificação Enviada</displayNameOverride>
+            <field>Notificacao_Enviada__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Gerente da Conta</displayNameOverride>
+            <field>Gerente_da_Conta__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>E-mail Governança</displayNameOverride>
+            <field>Email_Governanca__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>E-mail Contratos</displayNameOverride>
+            <field>Email_Contratos__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status de Aprovação e Etapas</displayNameOverride>
+            <field>Status_de_Aprovacao_e_Etapas__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de entrega do produto (cliente)</displayNameOverride>
+            <field>Entrega_Finalizada__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Distribuidor</displayNameOverride>
+            <field>x1_Distribuidor__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Fabricante</displayNameOverride>
+            <field>x1_Fabricante__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Moeda</displayNameOverride>
+            <field>x1_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Distribuidor</displayNameOverride>
+            <field>x2_Distribuidor__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Fabricante</displayNameOverride>
+            <field>x2_Fabricante__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Moeda</displayNameOverride>
+            <field>x2_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Distribuidor</displayNameOverride>
+            <field>x3_Distribuidor__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Fabricante</displayNameOverride>
+            <field>x3_Fabricante__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Moeda</displayNameOverride>
+            <field>x3_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data da entrega agendada</displayNameOverride>
+            <field>Data_da_entrega_agendada__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de envio da licença ao cliente</displayNameOverride>
+            <field>Data_de_envio_da_licenca_ao_cliente__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de recebimento da licença</displayNameOverride>
+            <field>Data_de_recebimento_da_licenca__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Valor de compra</displayNameOverride>
+            <field>x1_Valor_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Valor de compra</displayNameOverride>
+            <field>x2_Valor_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Valor de compra</displayNameOverride>
+            <field>x3_Valor_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Processamento da compra</displayNameOverride>
+            <field>Processamento_da_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Tipo de processamento</displayNameOverride>
+            <field>X1_Tipo_de_processamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Tipo de processamento</displayNameOverride>
+            <field>X2_Tipo_de_processamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Tipo de processamento</displayNameOverride>
+            <field>X3_Tipo_de_processamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Distribuidor / Revenda</displayNameOverride>
+            <field>X4_Distribuidor_Revenda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Fabricante</displayNameOverride>
+            <field>X4_Fabricante__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Moeda</displayNameOverride>
+            <field>X4_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Tipo de processamento</displayNameOverride>
+            <field>X4_Tipo_de_processamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Distribuidor / Revenda</displayNameOverride>
+            <field>X5_Distribuidor_Revenda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Fabricante</displayNameOverride>
+            <field>X5_Fabricante__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Moeda</displayNameOverride>
+            <field>X5_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Tipo de processamento</displayNameOverride>
+            <field>X5_Tipo_de_processamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Distribuidor / Revenda</displayNameOverride>
+            <field>X6_Distribuidor_Revenda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Fabricante</displayNameOverride>
+            <field>X6_Fabricante__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Moeda</displayNameOverride>
+            <field>X6_Moeda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Tipo de processamento</displayNameOverride>
+            <field>X6_Tipo_de_processamento__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Distribuidor / Revenda</displayNameOverride>
+            <field>x1_Distribuidor_Revenda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Distribuidor / Revenda</displayNameOverride>
+            <field>x2_Distribuidor_Revenda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Distribuidor / Revenda</displayNameOverride>
+            <field>x3_Distribuidor_Revenda__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Data de envio do pedido de compra</displayNameOverride>
+            <field>X1_Data_de_envio_do_pedido_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° N° do pedido, OV ou Invoice</displayNameOverride>
+            <field>X1_N_do_pedido_ou_OV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Observação compra</displayNameOverride>
+            <field>X1_Observacao_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Previsão de Entrega na Agility</displayNameOverride>
+            <field>X1_Previsao_de_Entrega_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>1° Processamento da compra</displayNameOverride>
+            <field>X1_Processamento_da_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Data de envio do pedido de compra</displayNameOverride>
+            <field>X2_Data_de_envio_do_pedido_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° N° do pedido, OV ou Invoice</displayNameOverride>
+            <field>X2_N_do_pedido_ou_OV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Observação compra</displayNameOverride>
+            <field>X2_Observacao_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Previsão de Entrega na Agility</displayNameOverride>
+            <field>X2_Previsao_de_Entrega_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>2° Processamento da compra</displayNameOverride>
+            <field>X2_Processamento_da_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Data de envio do pedido de compra</displayNameOverride>
+            <field>X3_Data_de_envio_do_pedido_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° N° do pedido, OV ou Invoice</displayNameOverride>
+            <field>X3_N_do_pedido_ou_OV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Observação compra</displayNameOverride>
+            <field>X3_Observacao_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Previsão de Entrega na Agility</displayNameOverride>
+            <field>X3_Previsao_de_Entrega_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>3° Processamento da compra</displayNameOverride>
+            <field>X3_Processamento_da_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Data de envio do pedido de compra</displayNameOverride>
+            <field>X4_Data_de_envio_do_pedido_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° N° do pedido, OV ou Invoice</displayNameOverride>
+            <field>X4_N_do_pedido_ou_OV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Observação compra</displayNameOverride>
+            <field>X4_Observacao_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Previsão de Entrega na Agility</displayNameOverride>
+            <field>X4_Previsao_de_Entrega_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Processamento da compra</displayNameOverride>
+            <field>X4_Processamento_da_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>4° Valor de compra</displayNameOverride>
+            <field>X4_Valor_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Data de envio do pedido de compra</displayNameOverride>
+            <field>X5_Data_de_envio_do_pedido_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° N° do pedido, OV ou Invoice</displayNameOverride>
+            <field>X5_N_do_pedido_ou_OV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Observação compra</displayNameOverride>
+            <field>X5_Observacao_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Previsão de Entrega na Agility</displayNameOverride>
+            <field>X5_Previsao_de_Entrega_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Processamento da compra</displayNameOverride>
+            <field>X5_Processamento_da_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>5° Valor de compra</displayNameOverride>
+            <field>X5_Valor_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Data de envio do pedido de compra</displayNameOverride>
+            <field>X6_Data_de_envio_do_pedido_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° N° do pedido, OV ou Invoice</displayNameOverride>
+            <field>X6_N_do_pedido_ou_OV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Observação compra</displayNameOverride>
+            <field>X6_Observacao_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Previsão de Entrega na Agility</displayNameOverride>
+            <field>X6_Previsao_de_Entrega_na_Agility__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Processamento da compra</displayNameOverride>
+            <field>X6_Processamento_da_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>6° Valor de compra</displayNameOverride>
+            <field>X6_Valor_de_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Multiano__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>FCP_F5__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Prazo_contratado__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>X1_Proxima_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>X2_Proxima_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>X3_Proxima_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>X4_Proxima_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>X5_Proxima_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>X6_Proxima_compra__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>DEPV__c</field>
+            <table>DSA__c</table>
+        </columns>
+        <masterLabel>DSAs</masterLabel>
+    </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Processamento Urgente ID</displayNameOverride>
+            <field>Id</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>ID do Pedidos Urgentes</displayNameOverride>
+            <field>Name</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de criação</displayNameOverride>
+            <field>CreatedDate</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Criado por</displayNameOverride>
+            <field>CreatedBy</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data da última modificação</displayNameOverride>
+            <field>LastModifiedDate</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Modificado pela última vez por</displayNameOverride>
+            <field>LastModifiedBy</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data da última atividade</displayNameOverride>
+            <field>LastActivityDate</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Justificativa</displayNameOverride>
+            <field>Justificativa__c</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>GC</displayNameOverride>
+            <field>GC__c</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status da Qualificação</displayNameOverride>
+            <field>Status_da_Qualifica_o__c</field>
+            <table>DSA__c.Pedidos_Urgentes__r</table>
+        </columns>
+        <masterLabel>Processamentos Urgentes</masterLabel>
+    </sections>
+</ReportType>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Colaborador_pertence_a_outra_Oferta</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF( Plano_de_Capacitacao__r.Colaborador__r.ReportsTo.FirstName &lt;&gt; &quot;Paula&quot; &amp;&amp; TEXT( Exame__r.Area_de_Negocio__c ) &lt;&gt;  TEXT( Plano_de_Capacitacao__r.Colaborador__r.Area_de_Neg_cio__c ),True,False)</errorConditionFormula>
+    <errorMessage>Este Colaborador não pode realizar esta Certificação pois não pertence a Área de Negócio</errorMessage>
+</ValidationRule>

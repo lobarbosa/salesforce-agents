@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M01_Campo_KM_Obrigatorio</fullName>
+    <active>true</active>
+    <description>AM18072018: campo obrigatório quando selecionada a tipo de despesa &quot;Quilometragem&quot;</description>
+    <errorConditionFormula>AND(
+ISPICKVAL( Categoria_da_despesa__c ,&quot;Quilometragem&quot;),
+ISBLANK( Kilometros_Percorridos_Ida__c )||
+ISBLANK( Kilometros_Percorridos_Volta__c )||
+ISBLANK( Link_da_Distancia__c ))</errorConditionFormula>
+    <errorMessage>Preencha todos os campos da seção &quot;Aplicável somente para a opção Quilometragem&quot; (Msg01)</errorMessage>
+</ValidationRule>

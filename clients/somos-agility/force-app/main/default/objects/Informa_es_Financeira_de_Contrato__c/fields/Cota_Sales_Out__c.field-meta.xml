@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cota_Sales_Out__c</fullName>
+    <formula>IF(TEXT(M_s__c)=&quot;Janeiro&quot;,1875000,
+IF(TEXT(M_s__c)=&quot;Fevereiro&quot;,1875000,
+IF(TEXT(M_s__c)=&quot;Marco&quot;,1995000,
+IF(TEXT(M_s__c)=&quot;Abril&quot;,1995000,
+IF(TEXT(M_s__c)=&quot;Maio&quot;,1995000,
+IF(TEXT(M_s__c)=&quot;Junho&quot;,2120000,
+IF(TEXT(M_s__c)=&quot;Julho&quot;,2120000,
+IF(TEXT(M_s__c)=&quot;Agosto&quot;,2120000,
+IF(TEXT(M_s__c)=&quot;Setembro&quot;,2305000,
+IF(TEXT(M_s__c)=&quot;Outubro&quot;,2305000,
+IF(TEXT(M_s__c)=&quot;Novembro&quot;,2305000,
+IF(TEXT(M_s__c)=&quot;Dezembro&quot;,2500000,0))))))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Cota Sales Out</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

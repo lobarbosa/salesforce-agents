@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mensagem_de_alerta_de_DSA</fullName>
+    <availability>online</availability>
+    <description>AM310718: notificação de DSA</description>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Mensagem de alerta de DSA</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid=&amp;p24=ilson.baltazar@somosagility.com.br;paula.papis@somosagility.com.br; jose.gouveia@somosagility.com.br; otoniel.ribeiro@somosagility.com.br; pmo@somosagility.com.br; governanca@somosagility.com.br; marcos.hara@somosagility.com.br ; grupooperacoes@agilitynetworks.com.br;&amp;p5=&amp;template_id=00X0z000005JGKK&amp;new_template=true&amp;save=1&apos;);
+
+/*location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid=&amp;p24=pmo@agilitynetworks.com.br;governanca@agilitynetworks.com.br;customersuccesssquad@agilitynetworks.com.br;jose.gouveia@agilitynetworks.com.br;sergio.stefano@agilitynetworks.com.br;otoniel.ribeiro@agilitynetworks.com.br;&amp;p5=&amp;template_id=00X0z000005JGKK&amp;new_template=true&amp;save=1&apos;);*/
+
+
+/*location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid=&amp;p24=wagner.vieira@agilitynetworks.com.br;paula.papis@agilitynetworks.com.br;jose.gouveia@agilitynetworks.com.br;otoniel.ribeiro@agilitynetworks.com.br;sergio.stefano@agilitynetworks.com.br; gustavo.eduardo@agilitynetworks.com.br; nelson.neto@agilitynetworks.com.br; julio.toledo@agilitynetworks.com.br;fabricio.almeida@agilitynetworks.com.br; simeia.petrini@agilitynetworks.com.br;tatiane.sousa@agilitynetworks.com.br;pmo@agilitynetworks.com.br;governanca@agilitynetworks.com.br;customersuccesssquad@agilitynetworks.com.br&amp;p5=&amp;template_id=00X0z000005JGKK&amp;new_template=true&amp;save=1&apos;);*/
+
+
+/*
+FUNCIONA
+location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid=&amp;p24=wagner.vieira@agilitynetworks.com.br;paula.papis@agilitynetworks.com.br;jose.gouveia@agilitynetworks.com.br;otoniel.ribeiro@agilitynetworks.com.br;sergio.stefano@agilitynetworks.com.br; gustavo.eduardo@agilitynetworks.com.br; nelson.neto@agilitynetworks.com.br; julio.toledo@agilitynetworks.com.br;fabricio.almeida@agilitynetworks.com.br; simeia.petrini@agilitynetworks.com.br;tatiane.sousa@agilitynetworks.com.br&amp;p5=&amp;template_id=00X0z000005JGKK&amp;new_template=true&amp;save=1&apos;);
+
+Deu bug
+location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid=&amp;p24=wagner.vieira@agilitynetworks.com.br;paula.papis@agilitynetworks.com.br;jose.gouveia@agilitynetworks.com.br;otoniel.ribeiro@agilitynetworks.com.br;sergio.stefano@agilitynetworks.com.br; gustavo.eduardo@agilitynetworks.com.br; nelson.neto@agilitynetworks.com.br; julio.toledo@agilitynetworks.com.br;fabricio.almeida@agilitynetworks.com.br; simeia.petrini@agilitynetworks.com.br;tatiane.sousa@agilitynetworks.com.br&amp;p5=&amp;template_id=00X1g000000QTpI&amp;new_template=true&amp;save=1&apos;);
+
+location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid=003500000223XIYAA2&amp;p24=andrea.deco@agilitynetworks.com.br;jose.gouveia@agilitynetworks.com.br;otoniel.ribeiro@agilitynetworks.com.br;sergio.stefano@agilitynetworks.com.br&amp;template_id=00X1g000000QTpI&amp;new_template=true&amp;save=1&apos;);
+
+&amp;new_template=true&apos; 
+
+location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid=dsa@agilitynetworks.com.br&amp;p24=dsa@agilitynetworks.com.br;suporte@agilitynetworks.com.br&amp;template_id=00X50000001NWa1&amp;p5=&amp;save=1&apos;); 
+*/</url>
+</WebLink>

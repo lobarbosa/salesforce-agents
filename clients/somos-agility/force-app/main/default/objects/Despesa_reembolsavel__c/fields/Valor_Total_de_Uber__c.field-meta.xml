@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_de_Uber__c</fullName>
+    <description>jn04122018 criar campo de acordo com a necessidade de visualização deste dado na notificação de capa.</description>
+    <label>Valor Total de Uber Reembolsável</label>
+    <summarizedField>Lancamento_Despesas__c.Valor_da_Despesa_Reembolsavel__c</summarizedField>
+    <summaryFilterItems>
+        <field>Lancamento_Despesas__c.Categoria_da_despesa__c</field>
+        <operation>equals</operation>
+        <value>Uber</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Lancamento_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

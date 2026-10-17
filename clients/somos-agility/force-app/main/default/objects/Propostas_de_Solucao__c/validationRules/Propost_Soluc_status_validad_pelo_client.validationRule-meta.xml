@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Propost_Soluc_status_validad_pelo_client</fullName>
+    <active>true</active>
+    <description>AM 26042018: quando o &quot;Status do PSL&quot; for selecionado &quot;Validado pelo cliente&quot; é obrigatório o preenchimento dos campos &quot;contato que validou/descartou&quot; e &quot;data/hora da validação&quot;</description>
+    <errorConditionFormula>AND(ISPICKVAL(Status_da_PSL__c ,&quot;Validado pelo Cliente&quot;),
+OR(
+ISBLANK( Contato_do_cliente_que_Validou_Descartou__c ),
+ISBLANK( Data_Hora_da_Valida_o_Descarte__c )))</errorConditionFormula>
+    <errorDisplayField>Data_Hora_da_Valida_o_Descarte__c</errorDisplayField>
+    <errorMessage>É necessário o preenchimento dos campos &quot;Contato do cliente que Validou/Descartou&quot; e &quot;Data/Hora da Validação/Descarte&quot;.</errorMessage>
+</ValidationRule>

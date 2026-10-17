@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Proces_Urgente_em_DSA_nao_desmarcar</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT(ISNEW()),(PRIORVALUE(Pedido_Urgente__c )=True&amp;&amp; Pedido_Urgente__c =False))</errorConditionFormula>
+    <errorDisplayField>Pedido_Urgente__c</errorDisplayField>
+    <errorMessage>Já foi solicitado um Pedido Urgente para este DSA não sendo possível desmarcar este campo</errorMessage>
+</ValidationRule>

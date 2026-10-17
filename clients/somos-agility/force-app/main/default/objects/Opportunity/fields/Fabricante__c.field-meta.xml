@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fabricante__c</fullName>
+    <description>É um campo de preenchimento obrigatório.
+Importante: as oportunidades devem ser cadastradas separadamente!!!</description>
+    <label>Fabricante</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Agility - APMS</fullName>
+                <default>false</default>
+                <label>Agility - APMS</label>
+            </value>
+            <value>
+                <fullName>Agility – SIS</fullName>
+                <default>false</default>
+                <label>Agility – SIS</label>
+            </value>
+            <value>
+                <fullName>Citrix</fullName>
+                <default>false</default>
+                <label>Citrix</label>
+            </value>
+            <value>
+                <fullName>Commvault</fullName>
+                <default>false</default>
+                <label>Commvault</label>
+            </value>
+            <value>
+                <fullName>Dynatrace</fullName>
+                <default>false</default>
+                <label>Dynatrace</label>
+            </value>
+            <value>
+                <fullName>F5 Networks</fullName>
+                <default>false</default>
+                <label>F5 Networks</label>
+            </value>
+            <value>
+                <fullName>Firemon</fullName>
+                <default>false</default>
+                <label>Firemon</label>
+            </value>
+            <value>
+                <fullName>Forescout</fullName>
+                <default>false</default>
+                <label>Forescout</label>
+            </value>
+            <value>
+                <fullName>Gigamon</fullName>
+                <default>false</default>
+                <label>Gigamon</label>
+            </value>
+            <value>
+                <fullName>Infoblox</fullName>
+                <default>false</default>
+                <label>Infoblox</label>
+            </value>
+            <value>
+                <fullName>Intel Security</fullName>
+                <default>false</default>
+                <label>Intel Security</label>
+            </value>
+            <value>
+                <fullName>NetApp</fullName>
+                <default>false</default>
+                <label>NetApp</label>
+            </value>
+            <value>
+                <fullName>Nutanix</fullName>
+                <default>false</default>
+                <label>Nutanix</label>
+            </value>
+            <value>
+                <fullName>OpenStack</fullName>
+                <default>false</default>
+                <label>OpenStack</label>
+            </value>
+            <value>
+                <fullName>Palo Alto</fullName>
+                <default>false</default>
+                <label>Palo Alto</label>
+            </value>
+            <value>
+                <fullName>Rackspace</fullName>
+                <default>false</default>
+                <label>Rackspace</label>
+            </value>
+            <value>
+                <fullName>Riverbed</fullName>
+                <default>false</default>
+                <label>Riverbed</label>
+            </value>
+            <value>
+                <fullName>RSA</fullName>
+                <default>false</default>
+                <label>RSA</label>
+            </value>
+            <value>
+                <fullName>Vmware</fullName>
+                <default>false</default>
+                <label>Vmware</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

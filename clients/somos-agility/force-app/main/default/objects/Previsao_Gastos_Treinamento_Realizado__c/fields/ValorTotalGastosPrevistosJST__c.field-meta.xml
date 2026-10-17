@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValorTotalGastosPrevistosJST__c</fullName>
+    <description>Valor total gasto previsto JST</description>
+    <formula>Previsao_de_Gastos_do_Treinamento__r.JOB_de_Solicitacao_de_Treinamentos__r.Valor_Total_de_Gastos_Previstos__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Valor total gasto previsto JST</inlineHelpText>
+    <label>Valor Total de Gastos Previstos JST</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

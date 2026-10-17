@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preencher_Canvas_e_Lista_de_Atividades</fullName>
+    <active>true</active>
+    <description>No Tipo de Registro = Demanda é obrigatório preencher os campos Canvas e Lista de Atividades caso o Status do Projeto seja igual a em planejjamento</description>
+    <errorConditionFormula>AND((RecordType.DeveloperName =&quot;Demanda&quot; &amp;&amp; ISPICKVAL( Project_Status__c ,&quot;Em Planejamento&quot;)),(ISBLANK( Canvas_Previsto__c )||ISBLANK( Lista_de_atividades_Previsto__c )))</errorConditionFormula>
+    <errorMessage>Favor preencher os campos Canvas (Previsto) e Lista de Atividades (Previsto)</errorMessage>
+</ValidationRule>

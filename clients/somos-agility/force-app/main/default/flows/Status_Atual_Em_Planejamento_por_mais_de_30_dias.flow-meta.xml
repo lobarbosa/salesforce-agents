@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Status Atual Em Planejamento por mais de 30 dias
+Descrição da regra de fluxo de trabalho: Quando o Status Atual do Projeto Permanece por mais de 30 dias, o GP é notificado para realizar alguma ação&quot;</description>
+    <label>Status Atual Em Planejamento por mais de 30 dias</label>
+    <migratedFromWorkflowRuleName>Status Atual Em Planejamento por mais de 30 dias</migratedFromWorkflowRuleName>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Project_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Em Planejamento</stringValue>
+            </value>
+        </filters>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>ScheduledPath1</name>
+            <label>ScheduledPath1</label>
+            <offsetNumber>30</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

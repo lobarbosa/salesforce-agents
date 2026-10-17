@@ -1,0 +1,22 @@
+<apex:page controller="clsListaMarcos" readonly="true">
+    <apex:form >
+        <apex:pageBlock >
+                    <apex:pageBlockButtons location="top">
+                <apex:commandButton value="Search" action="{Action}" reRender="contact-table" />
+                </apex:pageBlockButtons>
+                    <apex:pageBlock >
+                        <apex:pageBlockTable value="{!marcos_acts}" var="a">
+                    <apex:column >
+                    <apex:inputField id="Account" value="{!a.Contato_no_Cliente_1__c}"/>
+                        <apex:facet name="header">Marco ID</apex:facet>
+                        <apex:outputLink value="/{!URLFOR(a.Id)}">{!a.Name} </apex:outputLink>
+                        </apex:column> 
+                        <apex:column value="{!a.Nome_do_Marco__c}"/>       
+                        <apex:column value="{!a.Classe__c}"/>       
+                        <apex:column value="{!a.ID_do_Projeto__c}"/>    
+                        <apex:column value="{!a.Contato_no_Cliente_1__c}"/>                  
+                    </apex:pageBlockTable>
+            </apex:pageBlock>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

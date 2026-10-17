@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Arquiteto_de_Solucoes__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Arquiteto designado</label>
+    <lookupFilter>
+        <active>false</active>
+        <booleanFilter>1 AND 2 AND 3</booleanFilter>
+        <filterItems>
+            <field>Contact.Account.Name</field>
+            <operation>contains</operation>
+            <value>Agility</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operation>equals</operation>
+            <value>Sim</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Title</field>
+            <operation>contains</operation>
+            <value>Solution Architect,Gerente de Contas e Soluções,Coordenador de Arquitetura</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Oportunidades (Arquiteto de Soluções)</relationshipLabel>
+    <relationshipName>Oportunidades6</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

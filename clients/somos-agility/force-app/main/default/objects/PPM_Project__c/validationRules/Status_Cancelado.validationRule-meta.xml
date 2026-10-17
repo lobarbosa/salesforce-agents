@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Cancelado</fullName>
+    <active>true</active>
+    <description>Não pode alterar o Status do Projeto após Cancelado</description>
+    <errorConditionFormula>AND(ISPICKVAL( PRIORVALUE(Project_Status__c) , &quot;Cancelado&quot;), ISCHANGED( Project_Status__c ))</errorConditionFormula>
+    <errorDisplayField>Project_Status__c</errorDisplayField>
+    <errorMessage>Após Cancelado, não pode alterar o Status do Projeto.</errorMessage>
+</ValidationRule>

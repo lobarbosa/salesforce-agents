@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Item__c</fullName>
+    <label>Tipo de Item</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Serviço</fullName>
+                <default>false</default>
+                <label>Serviço</label>
+            </value>
+            <value>
+                <fullName>Produto</fullName>
+                <default>false</default>
+                <label>Produto</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

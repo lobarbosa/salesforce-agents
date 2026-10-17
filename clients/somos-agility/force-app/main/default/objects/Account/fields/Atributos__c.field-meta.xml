@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atributos__c</fullName>
+    <inlineHelpText>Selecionar todos que se aplicam</inlineHelpText>
+    <label>Atributos</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cliente</fullName>
+                <default>false</default>
+                <label>Cliente</label>
+            </value>
+            <value>
+                <fullName>Fornecedor Geral</fullName>
+                <default>false</default>
+                <label>Fornecedor Geral</label>
+            </value>
+            <value>
+                <fullName>Fornecedor Distribuidor de T.I</fullName>
+                <default>false</default>
+                <label>Fornecedor Distribuidor de T.I</label>
+            </value>
+            <value>
+                <fullName>Fornecedor Fabricante de T.I</fullName>
+                <default>false</default>
+                <label>Fornecedor Fabricante de T.I</label>
+            </value>
+            <value>
+                <fullName>Parceiro de Negócio</fullName>
+                <default>false</default>
+                <label>Parceiro de Negócio</label>
+            </value>
+            <value>
+                <fullName>Imprensa</fullName>
+                <default>false</default>
+                <label>Imprensa</label>
+            </value>
+            <value>
+                <fullName>Tecnologia</fullName>
+                <default>false</default>
+                <label>Tecnologia</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>6</visibleLines>
+</CustomField>

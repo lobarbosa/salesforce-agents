@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Contribuinte_ICMS__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Indica se a empresa é contribuinte do ICMS.</description>
+    <inlineHelpText>Indica se a empresa é contribuinte do ICMS.</inlineHelpText>
+    <label>Contribuinte ICMS</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Contribuinte</fullName>
+                <default>false</default>
+                <label>Contribuinte</label>
+            </value>
+            <value>
+                <fullName>Não contribuinte</fullName>
+                <default>false</default>
+                <label>Não contribuinte</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

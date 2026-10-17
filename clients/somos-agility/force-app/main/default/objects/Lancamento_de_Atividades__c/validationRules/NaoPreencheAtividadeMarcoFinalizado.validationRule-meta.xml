@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoPreencheAtividadeMarcoFinalizado</fullName>
+    <active>false</active>
+    <description>Não possibilita incluir um LAT caso o MCS esteja finalizado</description>
+    <errorConditionFormula>Marcos__r.Marcos_Finalizado__c = true</errorConditionFormula>
+    <errorMessage>Não é possível incluir Lançamento de Atividade relacionada a um Marco que já está finalizado.</errorMessage>
+</ValidationRule>

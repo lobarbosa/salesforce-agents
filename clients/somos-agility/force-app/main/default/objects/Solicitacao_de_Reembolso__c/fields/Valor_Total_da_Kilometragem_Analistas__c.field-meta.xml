@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_da_Kilometragem_Analistas__c</fullName>
+    <label>Valor Total da Kilometragem Analistas</label>
+    <summarizedField>Lancamento_de_Despesas__c.Valor_da_Kilometragem__c</summarizedField>
+    <summaryFilterItems>
+        <field>Lancamento_de_Despesas__c.Tipo_da_Despesa__c</field>
+        <operation>equals</operation>
+        <value>Kilometragem (Analistas)</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Lancamento_de_Despesas__c.Classe__c</field>
+        <operation>equals</operation>
+        <value>Reembolsável</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

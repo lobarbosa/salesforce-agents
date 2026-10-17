@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Revisao_Responsavel</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( ISPICKVAL( Status_da_Revis_o__c,&quot;Completo&quot;),
+ ISBLANK(  Respons_vel_do_NOC__c ))</errorConditionFormula>
+    <errorDisplayField>Respons_vel_do_NOC__c</errorDisplayField>
+    <errorMessage>Favor Informar o Responsável do NOC</errorMessage>
+</ValidationRule>

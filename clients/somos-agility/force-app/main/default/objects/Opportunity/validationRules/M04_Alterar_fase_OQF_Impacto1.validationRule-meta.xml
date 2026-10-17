@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M04_Alterar_fase_OQF_Impacto1</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Para alterar a fase da oportunidade de OQF para CVS é obrigatório preencher o campo &quot;Impacto 1&quot; na seção &quot;Defina os Impactos e a Cadeia de Dor no Cliente&quot;.</description>
+    <errorConditionFormula>AND(
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+(ISPICKVAL(PRIORVALUE(StageName),&quot;OQF&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;CVS/RVS&quot;)) ,ISBLANK( Impacto_Cargo_1__c ))</errorConditionFormula>
+    <errorMessage>Para alterar a fase da oportunidade de OQF para CVS é obrigatório preencher o campo &quot;Impacto 1&quot; na seção &quot;Defina os Impactos e a Cadeia de Dor no Cliente&quot; (Msg04)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Alterar_Fila_Somente_se_for_o_Owner</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF(ISCHANGED( Fila__c ),true,Owner:User.Department =&quot;ADM&quot;)</errorConditionFormula>
+    <errorDisplayField>Fila__c</errorDisplayField>
+    <errorMessage>Somente a Central de Serviços pode Alterar a Fila.</errorMessage>
+</ValidationRule>

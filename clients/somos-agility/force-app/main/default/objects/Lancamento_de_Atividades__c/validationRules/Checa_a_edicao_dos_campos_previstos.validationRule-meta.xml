@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_a_edicao_dos_campos_previstos</fullName>
+    <active>true</active>
+    <description>Checa a edição dos campos de previsão de início e fim.</description>
+    <errorConditionFormula>AND(
+    OR(
+        ISCHANGED(Inicio_previsto_da_atividade__c),
+        ISCHANGED(Fim_previsto_da_atividade__c)
+    ),
+    AND(
+        $Profile.Name &lt;&gt; &apos;Gerente de Projetos&apos;,
+        $Profile.Name &lt;&gt; &apos;Administração&apos;
+    )
+)</errorConditionFormula>
+    <errorMessage>Apenas o gerente de projetos pode editar os campos de previsão de início e fim da atividade.</errorMessage>
+</ValidationRule>

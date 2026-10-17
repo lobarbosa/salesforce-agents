@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nome_do_a_Colaborador_a_para_Espelhar__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Nome do(a) Colaborador(a) para Espelhar</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Requisições de Pessoal (Nome do(a) Colaborador(a) para Espelhar)</relationshipLabel>
+    <relationshipName>Requisi_es_de_Pessoal2</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

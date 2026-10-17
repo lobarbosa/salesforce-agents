@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contractor__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Related to a contact record.</inlineHelpText>
+    <label>Contractor</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Time Records</relationshipLabel>
+    <relationshipName>R00N80000002lYQJEA2</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

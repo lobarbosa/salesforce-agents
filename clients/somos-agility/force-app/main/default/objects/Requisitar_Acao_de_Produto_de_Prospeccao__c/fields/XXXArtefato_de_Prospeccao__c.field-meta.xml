@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>XXXArtefato_de_Prospeccao__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>XXXArtefato de Prospecção</label>
+    <referenceTo>Produto_de_Prospeccao__c</referenceTo>
+    <relationshipLabel>Requisitar Ação de Produtos</relationshipLabel>
+    <relationshipName>Acao_de_Produtos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

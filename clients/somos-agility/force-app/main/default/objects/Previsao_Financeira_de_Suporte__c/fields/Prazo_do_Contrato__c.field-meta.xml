@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Prazo_do_Contrato__c</fullName>
+    <label>Prazo do Contrato</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1 mês</fullName>
+                <default>false</default>
+                <label>1 mês</label>
+            </value>
+            <value>
+                <fullName>2 meses</fullName>
+                <default>false</default>
+                <label>2 meses</label>
+            </value>
+            <value>
+                <fullName>3 meses</fullName>
+                <default>false</default>
+                <label>3 meses</label>
+            </value>
+            <value>
+                <fullName>4 meses</fullName>
+                <default>false</default>
+                <label>4 meses</label>
+            </value>
+            <value>
+                <fullName>5 meses</fullName>
+                <default>false</default>
+                <label>5 meses</label>
+            </value>
+            <value>
+                <fullName>6 meses</fullName>
+                <default>false</default>
+                <label>6 meses</label>
+            </value>
+            <value>
+                <fullName>7 Meses</fullName>
+                <default>false</default>
+                <label>7 meses</label>
+            </value>
+            <value>
+                <fullName>8 meses</fullName>
+                <default>false</default>
+                <label>8 meses</label>
+            </value>
+            <value>
+                <fullName>9 meses</fullName>
+                <default>false</default>
+                <label>9 meses</label>
+            </value>
+            <value>
+                <fullName>10 meses</fullName>
+                <default>false</default>
+                <label>10 meses</label>
+            </value>
+            <value>
+                <fullName>11 meses</fullName>
+                <default>false</default>
+                <label>11 meses</label>
+            </value>
+            <value>
+                <fullName>12 meses</fullName>
+                <default>false</default>
+                <label>12 meses</label>
+            </value>
+            <value>
+                <fullName>14 meses</fullName>
+                <default>false</default>
+                <label>14 meses</label>
+            </value>
+            <value>
+                <fullName>15 meses</fullName>
+                <default>false</default>
+                <label>15 meses</label>
+            </value>
+            <value>
+                <fullName>24 meses</fullName>
+                <default>false</default>
+                <label>24 meses</label>
+            </value>
+            <value>
+                <fullName>36 meses</fullName>
+                <default>false</default>
+                <label>36 meses</label>
+            </value>
+            <value>
+                <fullName>48 meses</fullName>
+                <default>false</default>
+                <label>48 meses</label>
+            </value>
+            <value>
+                <fullName>50 meses</fullName>
+                <default>false</default>
+                <label>50 meses</label>
+            </value>
+            <value>
+                <fullName>60 meses</fullName>
+                <default>false</default>
+                <label>60 meses</label>
+            </value>
+            <value>
+                <fullName>72 meses</fullName>
+                <default>false</default>
+                <label>72 meses</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

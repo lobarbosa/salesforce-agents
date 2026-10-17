@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Perfil_de_Atendimento__c</fullName>
+    <description>jn10092018 criação do campo perfil de atendimento com as listas de opções &quot;Estratégico
+Nomeado, Em prospecção,Inativo &quot; cfe. solciitação do CT em 06092018</description>
+    <inlineHelpText>Escolha o perfil de atendimento de sua oportunidade, a partir das opções disponíveis.</inlineHelpText>
+    <label>Perfil de Atendimento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Estratégico</fullName>
+                <default>false</default>
+                <label>Estratégico</label>
+            </value>
+            <value>
+                <fullName>Nomeado</fullName>
+                <default>false</default>
+                <label>Nomeado</label>
+            </value>
+            <value>
+                <fullName>Em prospecção</fullName>
+                <default>false</default>
+                <label>Em prospecção</label>
+            </value>
+            <value>
+                <fullName>Inativo</fullName>
+                <default>false</default>
+                <label>Inativo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

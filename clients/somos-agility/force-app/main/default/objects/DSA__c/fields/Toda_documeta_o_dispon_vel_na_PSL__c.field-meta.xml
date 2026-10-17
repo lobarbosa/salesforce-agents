@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Toda_documeta_o_dispon_vel_na_PSL__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>jn08102018 - Criação de campo checkbox para confirmação de informação. Solicitado pelo CT em 04102018.</description>
+    <inlineHelpText>Favor marcar se toda documentação necessária indicada no termo de aceite já estiver  disponível na fase PSL.</inlineHelpText>
+    <label>Toda documetação  disponível  na PSL ?</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

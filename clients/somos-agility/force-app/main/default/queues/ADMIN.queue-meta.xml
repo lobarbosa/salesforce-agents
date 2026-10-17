@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesIncludeBosses>true</doesIncludeBosses>
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>ADMIN</name>
+    <queueMembers>
+        <users>
+            <user>admin@agilitynetworks.com.br</user>
+            <user>bruna.prates@agilitynetworks.com.br</user>
+            <user>fabio.gomes@agilitynetworks.com.br</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>

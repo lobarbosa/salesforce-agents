@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conversao_FOB_para_CIF__c</fullName>
+    <formula>IF( ISPICKVAL( Tipo_do_Produto__c ,&quot;Software&quot;),(25/100),
+IF( ISPICKVAL( Tipo_do_Produto__c ,&quot;Serviço&quot;),(50/100),(85/100)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conversão FOB para CIF</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

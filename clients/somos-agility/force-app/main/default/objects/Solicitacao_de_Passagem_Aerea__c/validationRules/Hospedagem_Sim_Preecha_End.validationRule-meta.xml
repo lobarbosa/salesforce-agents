@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hospedagem_Sim_Preecha_End</fullName>
+    <active>true</active>
+    <description>Preencha o Endereço do Hotel</description>
+    <errorConditionFormula>AND(ISPICKVAL( Hospedagem__c  , &quot;Sim&quot; ),ISBLANK(  Endere_o_proximo_ao_Evento_Cliente__c))</errorConditionFormula>
+    <errorDisplayField>Endere_o_proximo_ao_Evento_Cliente__c</errorDisplayField>
+    <errorMessage>É necessário informar o endereço próximo ao evento/cliente.</errorMessage>
+</ValidationRule>

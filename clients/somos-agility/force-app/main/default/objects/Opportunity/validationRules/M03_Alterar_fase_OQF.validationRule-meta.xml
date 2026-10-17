@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M03_Alterar_fase_OQF</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Para fases superiores a OEG é necessária aprovação do Gestor</description>
+    <errorConditionFormula>AND(
+     $Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;, 
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+     ISPICKVAL(PRIORVALUE(StageName),&quot;OQF&quot;),
+     OR  (ISPICKVAL(StageName,&quot;PSL&quot;),
+          ISPICKVAL(StageName,&quot;PFC&quot;),
+          ISPICKVAL(StageName,&quot;NEC&quot;),
+          ISPICKVAL(StageName,&quot;FPR&quot;)),
+     TEXT( Status_Qualificacao_OEG__c )&lt;&gt;&quot;Aprovado&quot; 
+)</errorConditionFormula>
+    <errorMessage>Avance para a fase OEG e solicite aprovação de seu Gestor (Msg03)</errorMessage>
+</ValidationRule>

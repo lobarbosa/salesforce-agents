@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Atual_Igual_a_Suspenso_Email</fullName>
+    <active>true</active>
+    <description>Quando o Satus do Projeto é selecionado como Suspenso é obrigatório informar pelo menos um Email do Cliente</description>
+    <errorConditionFormula>AND(ISPICKVAL( Project_Status__c ,&quot;Suspenso&quot;),ISBLANK(Email_Cliente_Status_Suspenso__c))</errorConditionFormula>
+    <errorDisplayField>Email_Cliente_Status_Suspenso__c</errorDisplayField>
+    <errorMessage>Favor informar o E-mail do Cliente</errorMessage>
+</ValidationRule>

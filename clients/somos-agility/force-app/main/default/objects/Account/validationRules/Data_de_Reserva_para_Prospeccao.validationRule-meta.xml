@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Reserva_para_Prospeccao</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISPICKVAL( Status_da_Conta__c , &quot;Reservado para Prospecção&quot;) , 
+ISBLANK( Data_Reserva__c))</errorConditionFormula>
+    <errorDisplayField>Data_Reserva__c</errorDisplayField>
+    <errorMessage>É obrigatório o preenchimento da data de reserva da conta para prospecção.</errorMessage>
+</ValidationRule>

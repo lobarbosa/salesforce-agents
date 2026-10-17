@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Indice_de_Reajuste__c</fullName>
+    <label>Índice de Reajuste</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>IPC</fullName>
+                <default>false</default>
+                <label>IPC</label>
+            </value>
+            <value>
+                <fullName>IPCA</fullName>
+                <default>false</default>
+                <label>IPCA</label>
+            </value>
+            <value>
+                <fullName>IGMP</fullName>
+                <default>false</default>
+                <label>IGMP</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

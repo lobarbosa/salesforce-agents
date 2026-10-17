@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Minhas_Solicitacoes_PS</fullName>
+    <columns>NAME</columns>
+    <columns>Solicitante__c</columns>
+    <columns>Ativo__c</columns>
+    <columns>Status_Empr_stimo__c</columns>
+    <columns>Status_Qualificacao__c</columns>
+    <columns>Data_Prevista_de_Retorno__c</columns>
+    <columns>Data_de_Devolucao__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATEDBY_USER.ALIAS</field>
+        <operation>contains</operation>
+        <value>pserv,nrodr</value>
+    </filters>
+    <label>Minhas Solicitações PS</label>
+    <sharedTo>
+        <role>Professional_Services</role>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aprovacao_final__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>AM231018: campos para segregar o fluxo do processo de aprovação e desviar para a aprovação final</description>
+    <label>Aprovação final</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_Responsavel_pelo_Custo_se_Soto</fullName>
+    <active>true</active>
+    <description>Checa o preenchimento do campo resposável pelo custo, se Soto.</description>
+    <errorConditionFormula>OR(
+    AND(
+        ISPICKVAL(Responsavel_pelo_Custo__c, &apos;&apos;),
+        $Profile.Name = &apos;Admin&apos;
+    ),
+    AND(
+        ISPICKVAL(Responsavel_pelo_Custo__c, &apos;&apos;),
+        OR(
+            ISPICKVAL(Status_de_Aprovacao__c, &apos;Aprovado&apos;),
+            ISPICKVAL(Status_de_Aprovacao__c, &apos;Pendente - Diretor comercial&apos;)
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>O campo &quot;responsável pelo custo&quot; não pode estar vazio.</errorMessage>
+</ValidationRule>

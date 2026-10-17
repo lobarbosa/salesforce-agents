@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requisitar_Acao_de_Produtos_v1</fullName>
+    <active>true</active>
+    <description>AM 08042017: novo tipo de registro</description>
+    <label>Requisitar Ação de Produtos v1</label>
+    <picklistValues>
+        <picklist>Linha_de_Neg_cios_2__c</picklist>
+        <values>
+            <fullName>APPLICATION DELIVERY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DIGITAL TRANSFORMATION</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SECURITY</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rascunho</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Recall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

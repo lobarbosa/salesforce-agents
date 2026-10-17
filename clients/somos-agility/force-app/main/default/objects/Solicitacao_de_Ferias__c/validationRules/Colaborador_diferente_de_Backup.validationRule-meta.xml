@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Colaborador_diferente_de_Backup</fullName>
+    <active>false</active>
+    <errorConditionFormula>Colaborador__r.FirstName &amp;&apos;&apos;&amp; Colaborador__r.LastName  = Contato_em_sua_Ausencia__r.FirstName &amp;&apos;&apos;&amp; Contato_em_sua_Ausencia__r.LastName</errorConditionFormula>
+    <errorMessage>O Contato de Ausência deve ser diferente do Colaborador.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Especificar_Horario_de_Trabalho</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISPICKVAL(  Hor_rio_de_Trabalho__c  , &quot;Outros - Especificar Abaixo&quot;) , 
+ISBLANK(  Especificar__c  ))</errorConditionFormula>
+    <errorMessage>Especificar como será o Horário de Trabalho da Vaga Solicitada</errorMessage>
+</ValidationRule>

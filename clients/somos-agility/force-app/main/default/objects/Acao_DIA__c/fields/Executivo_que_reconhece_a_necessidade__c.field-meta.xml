@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Executivo_que_reconhece_a_necessidade__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Insira o nome do executivo que reconhece a necessidade e a solução da Agility</inlineHelpText>
+    <label>Executivo que reconhece a necessidade</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Ação DIA (Executivo que reconhece a gravidade)</relationshipLabel>
+    <relationshipName>Acao_DIA_Executivo</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

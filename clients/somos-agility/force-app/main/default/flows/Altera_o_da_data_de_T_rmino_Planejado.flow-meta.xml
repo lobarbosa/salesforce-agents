@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Envio_de_Email_para_Tatiane</name>
+        <label>PPM_Project__c.Envio_de_Email_para_Tatiane</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>PPM_Project__c.Envio_de_Email_para_Tatiane</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>PPM_Project__c.Envio_de_Email_para_Tatiane</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alteração da data de Término Planejado
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <formulas>
+        <name>Termino_Planejado_AnteriorFormula</name>
+        <dataType>Date</dataType>
+        <expression>PRIORVALUE( $Record.Termino_planejado__c )</expression>
+    </formulas>
+    <label>Alteração da data de Término Planejado</label>
+    <migratedFromWorkflowRuleName>Alteração da data de Término Planejado</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Envio_de_Email_para_Tatiane</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Termino_Planejado_Anterior__c</field>
+            <value>
+                <elementReference>Termino_Planejado_AnteriorFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>NOT(ISNEW())&amp;&amp;ISCHANGED( {!$Record.Termino_planejado__c} )</filterFormula>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

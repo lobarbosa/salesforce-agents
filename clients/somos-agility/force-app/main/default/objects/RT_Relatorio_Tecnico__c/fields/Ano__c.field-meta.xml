@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ano__c</fullName>
+    <label>Ano</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Tipo__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>2016</fullName>
+                <default>false</default>
+                <label>2016</label>
+            </value>
+            <value>
+                <fullName>2017</fullName>
+                <default>false</default>
+                <label>2017</label>
+            </value>
+            <value>
+                <fullName>2018</fullName>
+                <default>false</default>
+                <label>2018</label>
+            </value>
+            <value>
+                <fullName>2019</fullName>
+                <default>false</default>
+                <label>2019</label>
+            </value>
+            <value>
+                <fullName>2020</fullName>
+                <default>false</default>
+                <label>2020</label>
+            </value>
+            <value>
+                <fullName>2021</fullName>
+                <default>false</default>
+                <label>2021</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>2016</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>2017</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>2018</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>2019</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>2020</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>2021</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campos_Financeiro</fullName>
+    <active>false</active>
+    <errorConditionFormula>NOT(ISNULL( Valor_Mensal_Sales_In_Realizado__c ))|| 
+NOT(ISNULL(  Novo_Valor_Sales_Out_Realizado__c  ))&amp;&amp; 
+( $User.Department &lt;&gt; &apos;Financeiro&apos; )</errorConditionFormula>
+    <errorMessage>Somente o Financeiro pode preencher os campos da Seção Realizado</errorMessage>
+</ValidationRule>

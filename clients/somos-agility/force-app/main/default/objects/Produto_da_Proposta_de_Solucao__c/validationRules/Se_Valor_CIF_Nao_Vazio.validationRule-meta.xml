@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Se_Valor_CIF_Nao_Vazio</fullName>
+    <active>true</active>
+    <description>Se Valor_CIF__c não for vazio, Nome_do_distribuidor__c obrigatoriamente deve ter um valor diferente de vazio.</description>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK(Valor_CIF__c)),
+    ISBLANK(TEXT(Nome_do_distribuidor__c))
+)</errorConditionFormula>
+    <errorDisplayField>Nome_do_distribuidor__c</errorDisplayField>
+    <errorMessage>Se houver um valor atribuído ao valor CIF, o nome do distribuidor deve ser indicado, obrigatoriamente.</errorMessage>
+</ValidationRule>

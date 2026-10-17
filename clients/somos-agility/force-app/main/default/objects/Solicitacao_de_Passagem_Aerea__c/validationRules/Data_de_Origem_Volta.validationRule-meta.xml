@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Origem_Volta</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(   De_Volta__c  ,&quot;Rio de Janeiro&quot;)
+||ISPICKVAL(  De_Volta__c  ,&quot;Curitiba&quot;)
+||ISPICKVAL(  De_Volta__c  ,&quot;Brasília&quot;)
+||ISPICKVAL(  De_Volta__c   ,&quot;Porto Alegre&quot;)
+||ISPICKVAL( De_Volta__c   ,&quot;Nova York&quot;),ISBLANK(   Data_Origem_Volta__c ))</errorConditionFormula>
+    <errorDisplayField>Data_Origem_Volta__c</errorDisplayField>
+    <errorMessage>Informar a Data de Origem da Volta.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Origem_Volta_Menor_que_outras</fullName>
+    <active>true</active>
+    <errorConditionFormula>Data_Destino_Volta__c &lt; Data_Origem_Volta__c ||Data_Destino_Volta__c &lt; Data_Origem_Ida__c</errorConditionFormula>
+    <errorDisplayField>Data_Destino_Volta__c</errorDisplayField>
+    <errorMessage>A Data de Destino da Volta não pode ser menor que a Data de Origem da Volta e/ou menor que a Data de Origem da Ida.</errorMessage>
+</ValidationRule>

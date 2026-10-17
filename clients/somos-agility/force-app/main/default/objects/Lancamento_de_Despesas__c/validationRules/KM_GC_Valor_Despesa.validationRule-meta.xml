@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>KM_GC_Valor_Despesa</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Tipo_da_Despesa__c,&quot;Kilometragem (GC&apos;s)&quot;),NOT(ISBLANK(  Valor_da_Despesa__c  )))</errorConditionFormula>
+    <errorMessage>A despesa solicitada é de Kilometragem, não devendo preencher o campo - Valor da Despesa. O cálculo é feito automaticamente pelo Sales Force</errorMessage>
+</ValidationRule>

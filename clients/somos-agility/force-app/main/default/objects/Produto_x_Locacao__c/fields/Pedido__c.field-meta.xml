@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pedido__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Campo destinado a realizar o vinculo com pedidos e produto.</description>
+    <label>Pedido</label>
+    <referenceTo>Pedido__c</referenceTo>
+    <relationshipLabel>Produtos x Locação</relationshipLabel>
+    <relationshipName>Produtos_x_Locacao_Pedido</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

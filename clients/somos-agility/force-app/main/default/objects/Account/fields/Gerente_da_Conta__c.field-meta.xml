@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Gerente_da_Conta__c</fullName>
+    <label>Gerente da Conta</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ademar Arantes Godoy</fullName>
+                <default>false</default>
+                <label>Ademar Arantes Godoy</label>
+            </value>
+            <value>
+                <fullName>Novos Negócios</fullName>
+                <default>false</default>
+                <label>Novos Negócios</label>
+            </value>
+            <value>
+                <fullName>Tânia Fiorini</fullName>
+                <default>false</default>
+                <label>Tânia Fiorini</label>
+            </value>
+            <value>
+                <fullName>Tatiane Medina</fullName>
+                <default>false</default>
+                <label>Tatiane Medina</label>
+            </value>
+            <value>
+                <fullName>Valtir Bonfiglioli</fullName>
+                <default>false</default>
+                <label>Valtir Bonfiglioli</label>
+            </value>
+            <value>
+                <fullName>Veridiana Aranha</fullName>
+                <default>false</default>
+                <label>Veridiana Aranha</label>
+            </value>
+            <value>
+                <fullName>Wendell Bitencourt</fullName>
+                <default>false</default>
+                <label>Wendell Bitencourt</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

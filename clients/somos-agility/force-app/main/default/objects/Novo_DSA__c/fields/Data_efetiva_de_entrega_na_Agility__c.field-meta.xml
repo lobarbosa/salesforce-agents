@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_efetiva_de_entrega_na_Agility__c</fullName>
+    <description>AM 23032018: verificar o objetivo deste campo</description>
+    <label>Data efetiva de entrega na Agility</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

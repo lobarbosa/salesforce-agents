@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>status_forecast_semanal</fullName>
+    <active>false</active>
+    <description>valida se existe somente um forecast semanal para a oportunidade</description>
+    <errorConditionFormula>IF(ISNEW(),AND(00NU40000020FNi.00N4z000003TXEL &gt; 0,
+ISPICKVAL(Status__c, &apos;Forecast Semanal&apos;)),
+AND(ISCHANGED(Status__c),AND(00NU40000020FNi.00N4z000003TXEL &gt; 0,
+ISPICKVAL(Status__c, &apos;Forecast Semanal&apos;))))</errorConditionFormula>
+    <errorMessage>Já existe um próximo passo com forecast semanal</errorMessage>
+</ValidationRule>

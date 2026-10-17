@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_PFP_existente_formula__c</fullName>
+    <description>AM181018: soma quantos campos checkbox são TRUE</description>
+    <externalId>false</externalId>
+    <formula>IF(PFP_1_Fechada__c ,  1, 0) + 
+IF(PFP_2_Fechada__c,  1, 0) + 
+IF(PFP_3_Fechada__c,  1, 0) 
+
+
+/*
+
+CASE(1,
+05
+IF(ISPICKVAL​ (MyField__c, &quot;SomeValue1&quot;),​ 1, 0) , value1 ,​​
+06
+IF(ISPICKVAL(MyField__c, &quot;SomeValue2&quot;), 1, 0),​​value2 ,
+07
+ // And so on
+08
+IF(ISPICKVAL(MyField__c, &quot;SomeValueN&quot;), 1, 0),​​valueN ,
+09
+// At last of nothing match
+10
+FinalValueIfnothingMatch
+11
+)
+
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valida PFP existente formula</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

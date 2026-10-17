@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modelo__c</fullName>
+    <label>Modelo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Marca__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>IdeaPad S145-15IWL</fullName>
+                <default>false</default>
+                <label>IdeaPad S145-15IWL</label>
+            </value>
+            <value>
+                <fullName>Aspire ES1-572</fullName>
+                <default>false</default>
+                <label>Aspire ES1-572</label>
+            </value>
+            <value>
+                <fullName>Inspiron 14z</fullName>
+                <default>false</default>
+                <label>Inspiron 14z</label>
+            </value>
+            <value>
+                <fullName>Inspiron N4050</fullName>
+                <default>false</default>
+                <label>Inspiron N4050</label>
+            </value>
+            <value>
+                <fullName>Inspiron P35G</fullName>
+                <default>false</default>
+                <label>Inspiron P35G</label>
+            </value>
+            <value>
+                <fullName>Latitude 3470</fullName>
+                <default>false</default>
+                <label>Latitude 3470</label>
+            </value>
+            <value>
+                <fullName>Latitude 3480</fullName>
+                <default>false</default>
+                <label>Latitude 3480</label>
+            </value>
+            <value>
+                <fullName>Latitude E5420</fullName>
+                <default>false</default>
+                <label>Latitude E5420</label>
+            </value>
+            <value>
+                <fullName>Vostro 3360</fullName>
+                <default>false</default>
+                <label>Vostro 3360</label>
+            </value>
+            <value>
+                <fullName>Vostro 3500</fullName>
+                <default>false</default>
+                <label>Vostro 3500</label>
+            </value>
+            <value>
+                <fullName>Vostro 3550</fullName>
+                <default>false</default>
+                <label>Vostro 3550</label>
+            </value>
+            <value>
+                <fullName>Vostro 3560</fullName>
+                <default>false</default>
+                <label>Vostro 3560</label>
+            </value>
+            <value>
+                <fullName>Vostro 3570</fullName>
+                <default>false</default>
+                <label>Vostro 3570</label>
+            </value>
+            <value>
+                <fullName>Vostro P19G</fullName>
+                <default>false</default>
+                <label>Vostro P19G</label>
+            </value>
+            <value>
+                <fullName>600B</fullName>
+                <default>false</default>
+                <label>600B</label>
+            </value>
+            <value>
+                <fullName>ThinkPad T430</fullName>
+                <default>false</default>
+                <label>ThinkPad T430</label>
+            </value>
+            <value>
+                <fullName>ThinkPad T430u</fullName>
+                <default>false</default>
+                <label>ThinkPad T430u</label>
+            </value>
+            <value>
+                <fullName>Macbook Air 11</fullName>
+                <default>false</default>
+                <label>Macbook Air 11</label>
+            </value>
+            <value>
+                <fullName>Moto G</fullName>
+                <default>false</default>
+                <label>Moto G</label>
+            </value>
+            <value>
+                <fullName>Galaxy J2</fullName>
+                <default>false</default>
+                <label>Galaxy J2</label>
+            </value>
+            <value>
+                <fullName>Galaxy J5</fullName>
+                <default>false</default>
+                <label>Galaxy J5</label>
+            </value>
+            <value>
+                <fullName>Aspire E5-573</fullName>
+                <default>false</default>
+                <label>Aspire E5-573</label>
+            </value>
+            <value>
+                <fullName>B490</fullName>
+                <default>false</default>
+                <label>B490</label>
+            </value>
+            <value>
+                <fullName>Nexus</fullName>
+                <default>false</default>
+                <label>Nexus</label>
+            </value>
+            <value>
+                <fullName>Iphone 5</fullName>
+                <default>false</default>
+                <label>Iphone 5</label>
+            </value>
+            <value>
+                <fullName>Razr HD</fullName>
+                <default>false</default>
+                <label>Razr HD</label>
+            </value>
+            <value>
+                <fullName>Galaxy A01 Core</fullName>
+                <default>false</default>
+                <label>Galaxy A01 Core</label>
+            </value>
+            <value>
+                <fullName>ThinkPad E14</fullName>
+                <default>false</default>
+                <label>ThinkPad E14</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Lenovo</controllingFieldValue>
+            <valueName>IdeaPad S145-15IWL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lenovo</controllingFieldValue>
+            <valueName>ThinkPad T430</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lenovo</controllingFieldValue>
+            <valueName>ThinkPad T430u</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lenovo</controllingFieldValue>
+            <valueName>B490</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lenovo</controllingFieldValue>
+            <valueName>ThinkPad E14</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Inspiron 14z</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Inspiron N4050</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Inspiron P35G</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Latitude 3470</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Latitude 3480</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Latitude E5420</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Vostro 3360</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Vostro 3500</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Vostro 3550</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Vostro 3560</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Vostro 3570</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dell</controllingFieldValue>
+            <valueName>Vostro P19G</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Samsung</controllingFieldValue>
+            <valueName>600B</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Samsung</controllingFieldValue>
+            <valueName>Galaxy J2</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Samsung</controllingFieldValue>
+            <valueName>Galaxy J5</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Samsung</controllingFieldValue>
+            <valueName>Galaxy A01 Core</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Acer</controllingFieldValue>
+            <valueName>Aspire ES1-572</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Acer</controllingFieldValue>
+            <valueName>Aspire E5-573</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apple</controllingFieldValue>
+            <valueName>Macbook Air 11</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apple</controllingFieldValue>
+            <valueName>Iphone 5</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Motorola</controllingFieldValue>
+            <valueName>Moto G</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Motorola</controllingFieldValue>
+            <valueName>Razr HD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>LG</controllingFieldValue>
+            <valueName>Nexus</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

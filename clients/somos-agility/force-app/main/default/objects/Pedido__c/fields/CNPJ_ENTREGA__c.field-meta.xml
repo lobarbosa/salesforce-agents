@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CNPJ_ENTREGA__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>campo destinado a receber a informação do cliente que será emitida a nota fiscal.</description>
+    <label>Cliente</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Pedidos</relationshipLabel>
+    <relationshipName>PedidosContas</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

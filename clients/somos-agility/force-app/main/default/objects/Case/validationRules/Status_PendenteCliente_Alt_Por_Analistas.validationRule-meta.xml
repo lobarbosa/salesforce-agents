@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_PendenteCliente_Alt_Por_Analistas</fullName>
+    <active>false</active>
+    <description>Os Analistas não podem alterar o status dos casos após fechado</description>
+    <errorConditionFormula>ISPICKVAL(Status, &quot;Pendente Cliente&quot;)&amp;&amp;
+( $User.Department = &apos;EA&apos; || $User.Department = &apos;DC&amp;C&apos;|| $User.Department = &apos;SEC&apos; || $User.Department = &apos;MS&apos;||$User.Department = &apos;Grupo Itau&apos; || $User.Department = &apos;Facility&apos;|| $User.Department = &apos;TIC&apos; )</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>Não é permitido alterar um Caso para o Status Pendente Cliente.
+Somente a Centrar de Serviços está autorizada a realizar esta alteração</errorMessage>
+</ValidationRule>

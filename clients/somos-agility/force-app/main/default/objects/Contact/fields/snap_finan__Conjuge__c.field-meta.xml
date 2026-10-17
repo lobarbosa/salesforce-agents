@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Conjuge__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Identifica o cônjuge do cliente.</description>
+    <inlineHelpText>Identifica o cônjuge do cliente.</inlineHelpText>
+    <label>Cônjuge</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Contatos</relationshipLabel>
+    <relationshipName>Conjuge</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

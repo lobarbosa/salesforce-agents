@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Realizado__c</fullName>
+    <externalId>false</externalId>
+    <formula>Opp_Realizado_3__c+Realizado_AI__c+Opp_Realizado_1__c+Realizado_L2_L7__c+Realizado_NGF__c+Opp_Realizado_2__c+Realizado_WAAR__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Realizado</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Negociacao_e_Compra__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>FO 15/12/17: Criado para fazer o link entre oportunidade e Negociação e Compra</description>
+    <label>Oportunidade</label>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>Negociação e Compras</relationshipLabel>
+    <relationshipName>Negocia_o_e_Compras</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

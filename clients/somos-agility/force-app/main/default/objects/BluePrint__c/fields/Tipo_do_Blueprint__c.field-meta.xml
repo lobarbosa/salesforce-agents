@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_do_Blueprint__c</fullName>
+    <description>AM 28022018: campo de listagem das opões do BP</description>
+    <label>Tipo do Blueprint</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Consultiva</fullName>
+                <default>false</default>
+                <label>Consultiva</label>
+            </value>
+            <value>
+                <fullName>Transacional</fullName>
+                <default>false</default>
+                <label>Transacional</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

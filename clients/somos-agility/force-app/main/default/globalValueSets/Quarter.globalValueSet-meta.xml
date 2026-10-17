@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Q1</fullName>
+        <default>false</default>
+        <label>Q1</label>
+    </customValue>
+    <customValue>
+        <fullName>Q2</fullName>
+        <default>false</default>
+        <label>Q2</label>
+    </customValue>
+    <customValue>
+        <fullName>Q3</fullName>
+        <default>false</default>
+        <label>Q3</label>
+    </customValue>
+    <customValue>
+        <fullName>Q4</fullName>
+        <default>false</default>
+        <label>Q4</label>
+    </customValue>
+    <masterLabel>Quarter</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

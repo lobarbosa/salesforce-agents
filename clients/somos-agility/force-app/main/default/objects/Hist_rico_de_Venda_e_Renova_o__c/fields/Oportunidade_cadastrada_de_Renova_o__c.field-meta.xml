@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade_cadastrada_de_Renova_o__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Este campo deverá ser preenchido com a oportunidade criada para próxima renovação.</inlineHelpText>
+    <label>Oportunidade ref. a Próxima Renovação</label>
+    <lookupFilter>
+        <active>false</active>
+        <errorMessage>A oportunidade deve estar com status &quot;Aberto&quot; e atrelada à mesma conta deste histórico.</errorMessage>
+        <filterItems>
+            <field>Opportunity.Account.Id</field>
+            <operation>equals</operation>
+            <valueField>$Source.Account_ID__c</valueField>
+        </filterItems>
+        <filterItems>
+            <field>Opportunity.Status__c</field>
+            <operation>equals</operation>
+            <value>Aberto</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>Equipamentos Ref. a Renovação</relationshipLabel>
+    <relationshipName>ultima_renovacao</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

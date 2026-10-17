@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PO__c</fullName>
+    <description>jn08082018 criação de campo PO para relacionar o PO aao campo tribo. solciitado por taiane no chamado 2018009296.</description>
+    <inlineHelpText>Escolha o PO referente a Tribo.</inlineHelpText>
+    <label>PO</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Rodrigo EV</fullName>
+                <default>false</default>
+                <label>Rodrigo EV</label>
+            </value>
+            <value>
+                <fullName>Amir Neves Ferreira Velho</fullName>
+                <default>false</default>
+                <label>Amir Neves Ferreira Velho</label>
+            </value>
+            <value>
+                <fullName>Mateus Belinaso</fullName>
+                <default>false</default>
+                <label>Mateus Belinaso</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

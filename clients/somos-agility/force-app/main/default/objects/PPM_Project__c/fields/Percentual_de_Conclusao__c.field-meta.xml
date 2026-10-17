@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Percentual_de_Conclusao__c</fullName>
+    <label>Percentual de Conclusão</label>
+    <summarizedField>Hist_rico_de_Status_do_Projeto__c.Percentual_de_Conclusao_teste__c</summarizedField>
+    <summaryForeignKey>Hist_rico_de_Status_do_Projeto__c.Projeto__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

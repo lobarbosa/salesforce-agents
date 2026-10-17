@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>My_DEPV_s</fullName>
+    <columns>NAME</columns>
+    <columns>OWNER.FIRST_NAME</columns>
+    <columns>Justificativa_do_Investimento__c</columns>
+    <columns>Recuperacao_do_Investimento__c</columns>
+    <columns>Classificacao_Gerencial__c</columns>
+    <columns>Valor_Total__c</columns>
+    <columns>Valor_Efetivo_Agility__c</columns>
+    <columns>Status_da_Qualificacao__c</columns>
+    <columns>Status__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>My DEPV&apos;s</label>
+</ListView>

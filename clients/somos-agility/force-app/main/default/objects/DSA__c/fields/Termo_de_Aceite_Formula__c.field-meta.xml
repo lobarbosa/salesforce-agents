@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Termo_de_Aceite_Formula__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;PROCESSAMENTO INTERNO DO PEDIDO&quot;   &amp;BR()&amp;  &quot;-Certifique-se que a PSL fechada esteja completa e correta , incluindo a PFP, Cotação de Compras, Proposta Comercial, SOW, CCS e&quot;  &amp;BR()&amp; &quot;aceite do cliente.&quot;   &amp;BR()&amp;  &quot;- Para cadastramento e envio interno do pedido (DSA) é obrigatório que o Gerente de Contas anexe o aceite formal do cliente.&quot;    &amp;BR()&amp; &quot;-São considerados aceites formais válidos:&quot;    &amp;BR()&amp;  &quot;- Pedido de Compras ou Autorização de Fornecimento Oficial do Cliente ou Similar Equivalente.&quot;   &amp;BR()&amp; &quot;- No caso de órgãos públicos, Nota de Empenho ou Contrato de Fornecimento assinado.&quot;   &amp;BR()&amp;  &quot;- Proposta Comercial Assinada no Campo Aceite pelo Diretor Financeiro, Presidente ou Área de Compras, com todas páginas vistadas.&quot;    &amp;BR()&amp; &quot;- Emails de aceite NÃO serão considerados como confirmação formal FIRME.&quot;  &amp;BR()&amp;  &quot;A ÁREA COMERCIAL NÃO PODE SE COMPROMETER COM O FECHAMENTO DO PEDIDO NO FORNECEDOR ANTES DA VALIDAÇÃO TÉCNICA&quot; &amp;BR()&amp;  &quot;E FINANCEIRA DO DSA.&quot;  &amp;BR()&amp; &quot; APENAS O DEPARTAMENTO DE OPERAÇÕES ESTÁ AUTORIZADO A COLOCAR PEDIDOS.&quot; &amp;BR()&amp; &quot; O PRAZO DE ANÁLISE E ACEITE DO PEDIDO INTERNO É DE 48 HORAS&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Termo de Aceite</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

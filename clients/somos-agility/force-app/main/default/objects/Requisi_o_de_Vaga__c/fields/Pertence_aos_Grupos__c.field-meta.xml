@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pertence_aos_Grupos__c</fullName>
+    <label>Pertence aos Grupos:</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Grupo Agility</fullName>
+                <default>false</default>
+                <label>Grupo Agility</label>
+            </value>
+            <value>
+                <fullName>Grupo Agility Tech Center</fullName>
+                <default>false</default>
+                <label>Grupo Agility Tech Center</label>
+            </value>
+            <value>
+                <fullName>Grupo Arquitetos</fullName>
+                <default>false</default>
+                <label>Grupo Arquitetos</label>
+            </value>
+            <value>
+                <fullName>Grupo Central de Atendimento</fullName>
+                <default>false</default>
+                <label>Grupo Central de Atendimento</label>
+            </value>
+            <value>
+                <fullName>Grupo Comercial</fullName>
+                <default>false</default>
+                <label>Grupo Comercial</label>
+            </value>
+            <value>
+                <fullName>Grupo Comercial Enterprise</fullName>
+                <default>false</default>
+                <label>Grupo Comercial Enterprise</label>
+            </value>
+            <value>
+                <fullName>Grupo Comercial Finanças</fullName>
+                <default>false</default>
+                <label>Grupo Comercial Finanças</label>
+            </value>
+            <value>
+                <fullName>Grupo Comercial GOV</fullName>
+                <default>false</default>
+                <label>Grupo Comercial GOV</label>
+            </value>
+            <value>
+                <fullName>Grupo Comercial Rio de Janeiro</fullName>
+                <default>false</default>
+                <label>Grupo Comercial Rio de Janeiro</label>
+            </value>
+            <value>
+                <fullName>Grupo Contratos</fullName>
+                <default>false</default>
+                <label>Grupo Contratos</label>
+            </value>
+            <value>
+                <fullName>Grupo Diretoria</fullName>
+                <default>false</default>
+                <label>Grupo Diretoria</label>
+            </value>
+            <value>
+                <fullName>Grupo DSA</fullName>
+                <default>false</default>
+                <label>Grupo DSA</label>
+            </value>
+            <value>
+                <fullName>Grupo Engenheiros de Vendas</fullName>
+                <default>false</default>
+                <label>Grupo Engenheiros de Vendas</label>
+            </value>
+            <value>
+                <fullName>Grupo Entrega de Aplicações</fullName>
+                <default>false</default>
+                <label>Grupo Entrega de Aplicações</label>
+            </value>
+            <value>
+                <fullName>Grupo Faturamento</fullName>
+                <default>false</default>
+                <label>Grupo Faturamento</label>
+            </value>
+            <value>
+                <fullName>Grupo Financeiro</fullName>
+                <default>false</default>
+                <label>Grupo Financeiro</label>
+            </value>
+            <value>
+                <fullName>Grupo Gerentes de Contas</fullName>
+                <default>false</default>
+                <label>Grupo Gerentes de Contas</label>
+            </value>
+            <value>
+                <fullName>Grupo Gestão de Serviços</fullName>
+                <default>false</default>
+                <label>Grupo Gestão de Serviços</label>
+            </value>
+            <value>
+                <fullName>Grupo GPTW</fullName>
+                <default>false</default>
+                <label>Grupo GPTW</label>
+            </value>
+            <value>
+                <fullName>Grupo Infraestrutura, Virtualização</fullName>
+                <default>false</default>
+                <label>Grupo Infraestrutura, Virtualização</label>
+            </value>
+            <value>
+                <fullName>Grupo Marketing</fullName>
+                <default>false</default>
+                <label>Grupo Marketing</label>
+            </value>
+            <value>
+                <fullName>Grupo NOC</fullName>
+                <default>false</default>
+                <label>Grupo NOC</label>
+            </value>
+            <value>
+                <fullName>Grupo POC</fullName>
+                <default>false</default>
+                <label>Grupo POC</label>
+            </value>
+            <value>
+                <fullName>Grupo Projetos DD&amp;C</fullName>
+                <default>false</default>
+                <label>Grupo Projetos DD&amp;C</label>
+            </value>
+            <value>
+                <fullName>Grupo Recepção</fullName>
+                <default>false</default>
+                <label>Grupo Recepção</label>
+            </value>
+            <value>
+                <fullName>Grupo Segurança e Conformidade</fullName>
+                <default>false</default>
+                <label>Grupo Segurança e Conformidade</label>
+            </value>
+            <value>
+                <fullName>Grupo Suporte DD&amp;C</fullName>
+                <default>false</default>
+                <label>Grupo Suporte DD&amp;C</label>
+            </value>
+            <value>
+                <fullName>Grupo Técnicos</fullName>
+                <default>false</default>
+                <label>Grupo Técnicos</label>
+            </value>
+            <value>
+                <fullName>Grupo Trabalhe Conosco</fullName>
+                <default>false</default>
+                <label>Grupo Trabalhe Conosco</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

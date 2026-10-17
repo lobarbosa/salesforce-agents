@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Solicitacao__c</fullName>
+    <label>Tipo de Solicitação</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Hospedagem Nacional</fullName>
+                <default>false</default>
+                <label>Hospedagem Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida Nacional</fullName>
+                <default>false</default>
+                <label>Ida Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida Internacional</fullName>
+                <default>false</default>
+                <label>Ida Internacional</label>
+            </value>
+            <value>
+                <fullName>Ida com Hospedagem Nacional</fullName>
+                <default>false</default>
+                <label>Ida com Hospedagem Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida com Hospedagem Internacional</fullName>
+                <default>false</default>
+                <label>Ida com Hospedagem Internacional</label>
+            </value>
+            <value>
+                <fullName>Ida com Hospedagem e Locação de Veículo Nacional</fullName>
+                <default>false</default>
+                <label>Ida com Hospedagem e Locação de Veículo Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida com Hospedagem e Locação de Veículo Internacional</fullName>
+                <default>false</default>
+                <label>Ida com Hospedagem e Locação de Veículo Internacional</label>
+            </value>
+            <value>
+                <fullName>Ida com Locação de Veículo Nacional</fullName>
+                <default>false</default>
+                <label>Ida com Locação de Veículo Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida com Locação de Veículo Internacional</fullName>
+                <default>false</default>
+                <label>Ida com Locação de Veículo Internacional</label>
+            </value>
+            <value>
+                <fullName>Volta Nacional</fullName>
+                <default>false</default>
+                <label>Volta Nacional</label>
+            </value>
+            <value>
+                <fullName>Volta Internacional</fullName>
+                <default>false</default>
+                <label>Volta Internacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta Nacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta Internacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta Internacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta com Hospedagem Nacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta com Hospedagem Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta com Hospedagem Internacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta com Hospedagem Internacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta com Hospedagem e Locação de Veículo Nacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta com Hospedagem e Locação de Veículo Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta com Hospedagem e Locação de Veículo Internacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta com Hospedagem e Locação de Veículo Internacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta com Locação de Veículo Nacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta com Locação de Veículo Nacional</label>
+            </value>
+            <value>
+                <fullName>Ida e Volta com Locação de Veículo Internacional</fullName>
+                <default>false</default>
+                <label>Ida e Volta com Locação de Veículo Internacional</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

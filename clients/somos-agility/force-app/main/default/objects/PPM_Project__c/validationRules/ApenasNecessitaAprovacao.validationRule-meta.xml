@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ApenasNecessitaAprovacao</fullName>
+    <active>true</active>
+    <description>Regra de validação para bloquear a alteração da data de ativação caso o Status esteja igual a Aprovado ou Reprovado.</description>
+    <errorConditionFormula>AND(
+ $Profile.Name = &apos;Gerente de Projetos&apos;,
+  ISCHANGED(Data_de_Faturamento_Ativacao__c),
+OR(
+  ISPICKVAL( StatusAlteracaoDataAtivacao__c , &apos;Aprovado&apos;),
+  ISPICKVAL( StatusAlteracaoDataAtivacao__c , &apos;Reprovado&apos;)
+)
+)</errorConditionFormula>
+    <errorMessage>Só será possível alterar a Data de Ativação de Contrato caso o campo Status Alteração Data Ativação esteja igual a Necessita Aprovação.</errorMessage>
+</ValidationRule>

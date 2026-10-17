@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_da_Oportunidade_Aberta_mais_Antiga__c</fullName>
+    <label>Data da Oportunidade Aberta mais Antiga</label>
+    <summarizedField>Opportunity.CreatedDate</summarizedField>
+    <summaryFilterItems>
+        <field>Opportunity.StageName</field>
+        <operation>equals</operation>
+        <value>1 - Prospecção, 2 - Qualificação, 3 - Desenvolvimento, 4 - Patrocinador, 5 - Proposição</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Opportunity.Categoria__c</field>
+        <operation>notEqual</operation>
+        <value>Contrato de Locação (Renovação), Contrato de Suporte (Novo), Contrato de Suporte (Renovação), Contrato de Suporte (Upgrade), Subscrição ou Renovação</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>min</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

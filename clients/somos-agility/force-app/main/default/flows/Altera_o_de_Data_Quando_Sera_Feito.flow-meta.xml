@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Altera_o_de_Data_Quando_Ser_Feito</name>
+        <label>Plano_de_Acao__c.Altera_o_de_Data_Quando_Ser_Feito</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Plano_de_Acao__c.Altera_o_de_Data_Quando_Ser_Feito</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Plano_de_Acao__c.Altera_o_de_Data_Quando_Ser_Feito</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alteração de Data Quando Sera Feito
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <formulas>
+        <name>Atualizar_valor_AnteriorFormula</name>
+        <dataType>Date</dataType>
+        <expression>PRIORVALUE( $Record.Quando_ser_feito__c )</expression>
+    </formulas>
+    <label>Alteração de Data Quando Sera Feito</label>
+    <migratedFromWorkflowRuleName>Alteração de Data Quando Sera Feito</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Altera_o_de_Data_Quando_Ser_Feito</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Data_Quando_Sera_Feito_Anterior__c</field>
+            <value>
+                <elementReference>Atualizar_valor_AnteriorFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>NOT(ISNEW())&amp;&amp;ISCHANGED( {!$Record.Quando_ser_feito__c} )</filterFormula>
+        <object>Plano_de_Acao__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

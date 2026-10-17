@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Renova_o__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>jn03102018 criar um &quot;checkbox&quot; para acrescentar na OQF - Informações da oportunidade, se chckbox = true = renovação .</description>
+    <inlineHelpText>Por gentileza, clique no campo, caso sua oportunidade seja de &quot;Renovação de base Agility&quot;</inlineHelpText>
+    <label>Renovação base Agility?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

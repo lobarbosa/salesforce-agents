@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Marco_Financeiro__c</fullName>
+    <label>Marco Financeiro</label>
+    <summaryFilterItems>
+        <field>Marcos__c.Classe__c</field>
+        <operation>equals</operation>
+        <value>Financeiro</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Marcos__c.ID_do_Projeto__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

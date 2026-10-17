@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mapeamentos_em_Analise__c</fullName>
+    <description>Campo Totalizador para mapeamentos ainda em fase de análise</description>
+    <label>Mapeamentos em Análise</label>
+    <summaryFilterItems>
+        <field>Mapeamento__c.Status_Aprovacao__c</field>
+        <operation>equals</operation>
+        <value>Pendente</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Mapeamento__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

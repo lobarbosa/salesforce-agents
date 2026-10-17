@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Msg01_Motivo_Outros_Obrigatorio</fullName>
+    <active>false</active>
+    <description>AM161018: Motivo_Outros_Obrigatório</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(Motivo__c, &quot;Outros&quot;),
+ISBLANK (Informe_o_motivo__c)
+)</errorConditionFormula>
+    <errorDisplayField>Informe_o_motivo__c</errorDisplayField>
+    <errorMessage>Favor informar o  motivo (Msg01)</errorMessage>
+</ValidationRule>

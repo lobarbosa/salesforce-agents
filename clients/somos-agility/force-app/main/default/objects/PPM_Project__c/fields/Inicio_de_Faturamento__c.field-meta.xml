@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inicio_de_Faturamento__c</fullName>
+    <label>Início de Faturamento / Ativação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Na Produção Parcial</fullName>
+                <default>false</default>
+                <label>Na Produção Parcial</label>
+            </value>
+            <value>
+                <fullName>Na Entrega dos Equipamentos</fullName>
+                <default>false</default>
+                <label>Na Entrega dos Equipamentos</label>
+            </value>
+            <value>
+                <fullName>No Término do Projeto</fullName>
+                <default>false</default>
+                <label>No Término do Projeto</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

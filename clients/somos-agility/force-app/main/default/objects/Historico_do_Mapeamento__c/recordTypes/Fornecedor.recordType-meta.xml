@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fornecedor</fullName>
+    <active>true</active>
+    <label>Fornecedor</label>
+    <picklistValues>
+        <picklist>Existe_budget_aprovado_alocado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Fase__c</picklist>
+        <values>
+            <fullName>Concluído</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Analise</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vencido</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ofertas_Mapeadas__c</picklist>
+        <values>
+            <fullName>GAA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GPD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PAM</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Resposta_do_fabricante__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desistência do Mapeamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em análise</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Mapeamento Vencido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Aprova_o__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vencido</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_registro__c</picklist>
+        <values>
+            <fullName>Cotação</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Desistência do Mapeamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Follow up Fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Follow up do Gerente de Contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retorno do fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitacao ao fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação de novo mapeamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação de renovação</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoAtualizaFaseEVP</fullName>
+    <active>true</active>
+    <description>Criar regra de validação que impede a atualização de fase da PSL caso tenha EVP a ser processado.</description>
+    <errorConditionFormula>AND(
+OR(INCLUDES( TipoPsl__c,&apos;Produtos&apos;),INCLUDES( TipoPsl__c,&apos;Serviços&apos;)),
+ISCHANGED(StatusPsl__c),
+ISPICKVAL(PRIORVALUE(StatusPsl__c) , &quot;Especificação Técnica&quot;),
+CountFluxoVendaProdutos__c &lt; 1
+)</errorConditionFormula>
+    <errorMessage>Será necessário incluir um Fluxo de Venda de Produtos e serviços e obter todas as aprovações para alterar a fase da Proposta de Solução.</errorMessage>
+</ValidationRule>

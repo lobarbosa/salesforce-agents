@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>sp1Subscri_o_vence_Hoje</name>
+        <label>Asset.Subscri_o_vence_Hoje</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Asset.Subscri_o_vence_Hoje</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Asset.Subscri_o_vence_Hoje</nameSegment>
+    </actionCalls>
+    <actionCalls>
+        <name>Subscri_o_Vence_Hoje_Now</name>
+        <label>Asset.Subscri_o_Vence_Hoje_Now</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Asset.Subscri_o_Vence_Hoje_Now</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Asset.Subscri_o_Vence_Hoje_Now</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Subscrição Vence Hoje!
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <label>Subscrição Vence Hoje!</label>
+    <migratedFromWorkflowRuleName>Subscrição Vence Hoje!</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Subscri_o_Vence_Hoje_Now</targetReference>
+        </connector>
+        <filterFormula>{!$Record.Vencimento_Subscri_o__c} = Today()</filterFormula>
+        <object>Asset</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <name>ScheduledPath1</name>
+            <connector>
+                <targetReference>sp1Subscri_o_vence_Hoje</targetReference>
+            </connector>
+            <label>ScheduledPath1</label>
+            <offsetNumber>0</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

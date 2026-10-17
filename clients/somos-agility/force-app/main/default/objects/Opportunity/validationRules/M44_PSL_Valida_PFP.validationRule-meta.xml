@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M44_PSL_Valida_PFP</fullName>
+    <active>false</active>
+    <description>AM181018</description>
+    <errorConditionFormula>AND( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;,
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+ISCHANGED(StageName),
+ISPICKVAL(PRIORVALUE(StageName), &quot;PSL&quot;),
+OR(
+Count_PSL_Fechada__c &lt; 1,
+Count_PSL_Fechada__c &gt; 1
+))
+
+
+
+/*
+FUNCIONA:
+AND (
+ISCHANGED(StageName),
+ISPICKVAL(PRIORVALUE(StageName), &quot;PSL&quot;),
+OR(
+Count_PSL_Fechada__c &lt; 1,
+Count_PSL_Fechada__c &gt; 1
+))
+
+SINTAXE OK:
+AND (
+ISCHANGED(StageName),
+ISPICKVAL(PRIORVALUE(StageName), &quot;PSL&quot;),
+Valida_PFP_existente__c &lt; 1,
+OR(
+Count_PSL_Fechada__c &lt; 1,
+Count_PSL_Fechada__c &gt; 1,
+Count_PSL_Fechada__c = 0)
+)
+*/</errorConditionFormula>
+    <errorMessage>Para avanço de fase , é obrigatório somente   1 Proposta de Solução &quot;Fechada pelo Cliente&quot; e,  na mesma PFC, pelo menos 1 PFP selecionada como &quot;Fechada&quot;  (Msg44)</errorMessage>
+</ValidationRule>

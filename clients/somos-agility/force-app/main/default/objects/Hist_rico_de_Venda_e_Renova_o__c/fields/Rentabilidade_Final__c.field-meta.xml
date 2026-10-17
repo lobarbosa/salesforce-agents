@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rentabilidade_Final__c</fullName>
+    <description>O campo Rentabilidade Final captura a oportunidade preenchida no campo Oportunidade Referente ao Evento e, dentro desta, captura o valor de Z_Rentabilidade Realizada - ERA UTILIZADO DENTRO DAS OPORTUNIDADES ANTIGAS, QUE UTILIZAVAM O FLUXO PRODUTO - RENTABILIDADE.</description>
+    <formula>Oportunidade_Referente_ao_Evento__r.Rentabilidade_Final__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Rentabilidade Final</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

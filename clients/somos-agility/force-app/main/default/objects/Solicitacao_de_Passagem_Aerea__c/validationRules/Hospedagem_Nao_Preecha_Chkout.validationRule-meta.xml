@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hospedagem_Nao_Preecha_Chkout</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL( Hospedagem__c  , &quot;Não&quot; ), NOT(ISBLANK(   Check_out__c )))</errorConditionFormula>
+    <errorDisplayField>Check_out__c</errorDisplayField>
+    <errorMessage>Para este tipo de solicitação não é necessário informar a data de Check-out</errorMessage>
+</ValidationRule>

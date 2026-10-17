@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pergunta_5__c</fullName>
+    <defaultValue>&quot; A Agility esteve disponível às suas necessidades ? &quot;</defaultValue>
+    <label>Pergunta 5:</label>
+    <length>256</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>5</visibleLines>
+</CustomField>

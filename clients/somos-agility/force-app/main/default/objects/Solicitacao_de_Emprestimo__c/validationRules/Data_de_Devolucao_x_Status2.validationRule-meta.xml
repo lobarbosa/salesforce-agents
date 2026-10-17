@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Devolucao_x_Status2</fullName>
+    <active>true</active>
+    <description>Quando a data de devolução estiver em branco, o Status não pode ser Finalizado</description>
+    <errorConditionFormula>AND(ISBLANK( Data_de_Devolucao__c ),TEXT( Status_Empr_stimo__c)=&apos;Finalizado&apos;)</errorConditionFormula>
+    <errorDisplayField>Status_Empr_stimo__c</errorDisplayField>
+    <errorMessage>O Status do Emprestimo não deve ser Finalizado pois o Ativo não foi Devolvido.</errorMessage>
+</ValidationRule>

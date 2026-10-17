@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Relacionado_a_Campanha__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Relacionado a Campanha</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>O valor não existe ou não é compatível com os critérios do filtro.
+A Campanha precisa estar Ativa para ser Relacionada a Despesa.</errorMessage>
+        <filterItems>
+            <field>Campaign.IsActive</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Campaign</referenceTo>
+    <relationshipName>Lancamento_de_Despesas1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

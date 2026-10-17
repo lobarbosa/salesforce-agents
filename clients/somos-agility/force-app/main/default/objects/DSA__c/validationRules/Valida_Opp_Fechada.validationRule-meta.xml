@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_Opp_Fechada</fullName>
+    <active>false</active>
+    <errorConditionFormula>OR(ISPICKVAL( Oportunidade__r.StageName  , &quot;1 - Prospecção&quot;), 
+ISPICKVAL( Oportunidade__r.StageName  , &quot;2 - Qualificação&quot;) , 
+ISPICKVAL( Oportunidade__r.StageName , &quot;3 - Desenvolvimento&quot;), 
+ISPICKVAL( Oportunidade__r.StageName  , &quot;4 - Patrocinador&quot;), 
+ISPICKVAL( Oportunidade__r.StageName  , &quot;5 - Proposição&quot;) , 
+ISPICKVAL( Oportunidade__r.StageName  , &quot;0 - Fechado/Perdido&quot;))</errorConditionFormula>
+    <errorMessage>Para criar um DSA é necessário que a oportunidade esteja Fechada/Ganha</errorMessage>
+</ValidationRule>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M30_Qualificacao_de_fase_NEC_para_FPR</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem /</description>
+    <errorConditionFormula>AND (
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Compras Financeiro&quot;, 
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;NEC&quot;), 
+ISPICKVAL(StageName, &quot;FPR&quot;),
+NOT(Controla_Encerramento__c) 
+)</errorConditionFormula>
+    <errorMessage>Para avançar para a fase final, clique no botão &quot;Encerrar Oportunidade&quot; e selecione a opção &quot;Win&quot;. Posteriormente clique no botão &quot;Marcar Fase como concluída&quot;. No caso de &quot;Loss&quot;, clique somente em &quot;Encerrar Oportunidade&quot; e selecione &quot;Loss&quot; (Msg30)</errorMessage>
+</ValidationRule>

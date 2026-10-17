@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PIN__c</fullName>
+    <inlineHelpText>É composto pelos dois últimos dígitos de seu CPF + Mês(2 dígitos) + Dia(2 dígitos) de seu nascimento.
+Ex: 123456789-11
+Data Nascimento: 01/10/2000
+PIN: 111001</inlineHelpText>
+    <label>PIN</label>
+    <length>7</length>
+    <maskChar>asterisk</maskChar>
+    <maskType>all</maskType>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>EncryptedText</type>
+</CustomField>

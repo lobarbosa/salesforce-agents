@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Personalizado</fullName>
+    <fields>Name</fields>
+    <fields>Cliente__c</fields>
+    <fields>Responsavel_pela_Acao_DIA__c</fields>
+    <fields>Arquiteto_de_Solucao_Responsavel__c</fields>
+    <fields>Linha_de_Negocio_Envolvida__c</fields>
+    <fields>Fabricante_Envolvido__c</fields>
+    <fields>Acao_DIA_Encerrada__c</fields>
+    <label>Personalizado</label>
+</CompactLayout>

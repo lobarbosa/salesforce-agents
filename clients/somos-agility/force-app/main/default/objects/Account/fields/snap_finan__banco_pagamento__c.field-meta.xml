@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__banco_pagamento__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Identifica o banco onde está a conta para pagamento da empresa</description>
+    <inlineHelpText>Identifica o banco onde está a conta para pagamento da empresa</inlineHelpText>
+    <label>Banco</label>
+    <referenceTo>snap_finan__Banco__c</referenceTo>
+    <relationshipLabel>Contas (pagamento)</relationshipLabel>
+    <relationshipName>contas_pagamento</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Marcos__c</fullName>
+    <description>AM301018: mestre detalhe no Marco</description>
+    <label>Marcos</label>
+    <referenceTo>Marcos__c</referenceTo>
+    <relationshipLabel>Lançamento de Créditos no Marco</relationshipLabel>
+    <relationshipName>Lancamento_de_Creditos_no_Marco</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

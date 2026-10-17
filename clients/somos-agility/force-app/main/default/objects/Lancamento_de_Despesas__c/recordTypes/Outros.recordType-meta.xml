@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Outros</fullName>
+    <active>false</active>
+    <description>Lançar Outros tipos de despesas</description>
+    <label>Outros1</label>
+    <picklistValues>
+        <picklist>Categoria_da_despesa__c</picklist>
+        <values>
+            <fullName>Alimentação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estacionamento avulso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pedágio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quilometragem</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Táxi</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uber</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Viagens</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Classe__c</picklist>
+        <values>
+            <fullName>Informativa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reembolsável</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RelacionadoArea__c</picklist>
+        <values>
+            <fullName>Application Delivery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial - Filial Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial - SP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial Mss</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Command Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Corporativo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Success</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cybersecurity</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cybersecurity - Filial Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Digital Transformation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diretoria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integração Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PMO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Plus - AD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Plus - Itaú</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Produtos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pós-Venda</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recursos Humanos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovações</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tecnologia Interna - TIC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vendas Técnicas</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Relacionado_a_entrega__c</picklist>
+        <values>
+            <fullName>Outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Projeto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suporte</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_Taxi__c</picklist>
+        <values>
+            <fullName>Táxi Convencional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uber</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_da_Despesa__c</picklist>
+        <values>
+            <fullName>Outros %28Especificar%29</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

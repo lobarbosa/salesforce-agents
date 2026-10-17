@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Evento_Tech_Center__c</fullName>
+    <label>Evento Tech Center</label>
+    <referenceTo>Evento_Tech_Center__c</referenceTo>
+    <relationshipLabel>Workflow de Validação do Tech Center</relationshipLabel>
+    <relationshipName>Workflow_de_Valida_o_do_Tech_Center</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

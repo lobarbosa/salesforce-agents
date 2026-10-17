@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_moeda_da_proposta__c</fullName>
+    <description>KONECTA BR 11/10/2019: Campo de lista de opções para encerramento da Proposta.</description>
+    <label>Tipo de moeda da proposta</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Real</fullName>
+                <default>false</default>
+                <label>Real</label>
+            </value>
+            <value>
+                <fullName>Dólar</fullName>
+                <default>false</default>
+                <label>Dólar</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

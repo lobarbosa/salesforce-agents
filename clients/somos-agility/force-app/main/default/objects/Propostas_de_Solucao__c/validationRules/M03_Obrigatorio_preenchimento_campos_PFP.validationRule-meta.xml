@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M03_Obrigatorio_preenchimento_campos_PFP</fullName>
+    <active>false</active>
+    <description>M03_Obrigatório_preenchimento_campos_PFP</description>
+    <errorConditionFormula>AND(
+PFP_1_Fechada__c = TRUE||PFP_2_Fechada__c = TRUE||PFP_3_Fechada__c = TRUE,
+ISBLANK(PFP_1__c)||ISBLANK(Nome_PFP_1__c),
+ISBLANK(PFP_2__c)||ISBLANK(Nome_PFP_2__c),
+ISBLANK(PFP_3__c)||ISBLANK(Nome_PFP_3__c)
+)
+
+
+/*
+SINTAXE OK
+AND(
+PFP_1_Fechada__c = TRUE||PFP_2_Fechada__c = TRUE||PFP_3_Fechada__c = TRUE,
+ISBLANK(PFP_1__c)||ISBLANK(Nome_PFP_1__c),
+AND(
+ISBLANK(PFP_2__c)||ISBLANK(Nome_PFP_2__c),
+AND(
+ISBLANK(PFP_3__c)||ISBLANK(Nome_PFP_3__c)
+)))
+*/</errorConditionFormula>
+    <errorMessage>Para selecionar o campo &quot;PFP Fechada&quot; é necessário preencher os campos do link e o de nome  desta PFP (Msg03)</errorMessage>
+</ValidationRule>

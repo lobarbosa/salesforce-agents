@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Service_Delivery_Manager__c</fullName>
+    <label>Service Delivery Manager:</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Situacao__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alessandra Lunardi</fullName>
+                <default>false</default>
+                <label>Alessandra Lunardi</label>
+            </value>
+            <value>
+                <fullName>Amanda Silva</fullName>
+                <default>false</default>
+                <label>Amanda Silva</label>
+            </value>
+            <value>
+                <fullName>Bruna Prates</fullName>
+                <default>false</default>
+                <label>Bruna Prates</label>
+            </value>
+            <value>
+                <fullName>Denis Alexander Ferreira</fullName>
+                <default>false</default>
+                <label>Denis Alexander Ferreira</label>
+            </value>
+            <value>
+                <fullName>Gabriela Oliveira</fullName>
+                <default>false</default>
+                <label>Gabriela Oliveira</label>
+            </value>
+            <value>
+                <fullName>Jimmy Rodrigues</fullName>
+                <default>false</default>
+                <label>Jimmy Rodrigues</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Normal</controllingFieldValue>
+            <controllingFieldValue>Crise</controllingFieldValue>
+            <controllingFieldValue>Atenção</controllingFieldValue>
+            <valueName>Alessandra Lunardi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Normal</controllingFieldValue>
+            <controllingFieldValue>Crise</controllingFieldValue>
+            <controllingFieldValue>Atenção</controllingFieldValue>
+            <valueName>Amanda Silva</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Normal</controllingFieldValue>
+            <controllingFieldValue>Crise</controllingFieldValue>
+            <controllingFieldValue>Atenção</controllingFieldValue>
+            <valueName>Bruna Prates</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Normal</controllingFieldValue>
+            <controllingFieldValue>Crise</controllingFieldValue>
+            <controllingFieldValue>Atenção</controllingFieldValue>
+            <valueName>Denis Alexander Ferreira</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Normal</controllingFieldValue>
+            <controllingFieldValue>Crise</controllingFieldValue>
+            <controllingFieldValue>Atenção</controllingFieldValue>
+            <valueName>Gabriela Oliveira</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Normal</controllingFieldValue>
+            <controllingFieldValue>Crise</controllingFieldValue>
+            <controllingFieldValue>Atenção</controllingFieldValue>
+            <valueName>Jimmy Rodrigues</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

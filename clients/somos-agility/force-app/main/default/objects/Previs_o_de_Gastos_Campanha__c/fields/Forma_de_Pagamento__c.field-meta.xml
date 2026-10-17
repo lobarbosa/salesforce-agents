@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Forma_de_Pagamento__c</fullName>
+    <label>Forma de Pagamento</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Parceiro_Patrocinador__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pagamento Direto ao Fornecedor</fullName>
+                <default>false</default>
+                <label>Pagamento Direto ao Fornecedor</label>
+            </value>
+            <value>
+                <fullName>Reembolso à Agility ( Remessa Internacional )</fullName>
+                <default>false</default>
+                <label>Reembolso à Agility ( Remessa Internacional )</label>
+            </value>
+            <value>
+                <fullName>Reembolso à Agility ( Nota Débito )</fullName>
+                <default>false</default>
+                <label>Reembolso à Agility ( Nota Débito )</label>
+            </value>
+            <value>
+                <fullName>Reembolso à Agility ( Nota Fiscal )</fullName>
+                <default>false</default>
+                <label>Reembolso à Agility ( Nota Fiscal )</label>
+            </value>
+            <value>
+                <fullName>Reembolso à Agility ( Desconto Financeiro em Compra )</fullName>
+                <default>false</default>
+                <label>Reembolso à Agility ( Desconto Financeiro em Compra )</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Pagamento Direto ao Fornecedor</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Reembolso à Agility ( Remessa Internacional )</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Reembolso à Agility ( Nota Débito )</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Reembolso à Agility ( Nota Fiscal )</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Reembolso à Agility ( Desconto Financeiro em Compra )</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

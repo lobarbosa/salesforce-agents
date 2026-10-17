@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fim__c</fullName>
+    <formula>IF(X5_dias__c =True, Inicio__c +4,
+IF(X10_dias__c =True, Inicio__c +9,
+IF( X15_dias__c =True,Inicio__c + 14, 
+IF(X20_dias__c =True, Inicio__c + 19,
+Inicio__c + 29))))
+
+
+/*
+ORIGINAL
+IF(X10_dias__c =True, Inicio__c +9,
+IF( X15_dias__c =True,Inicio__c + 14, 
+IF(X20_dias__c =True, Inicio__c + 19,
+Inicio__c + 29)))
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Fim</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

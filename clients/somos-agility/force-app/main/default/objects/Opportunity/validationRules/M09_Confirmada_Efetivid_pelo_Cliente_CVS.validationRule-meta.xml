@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M09_Confirmada_Efetivid_pelo_Cliente_CVS</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Confirmada Efetividade pelo Cliente?</description>
+    <errorConditionFormula>AND(
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;, 
+(ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)) ,ISBLANK(TEXT(    Confirmada_Efetividade_pelo_Cliente__c )))</errorConditionFormula>
+    <errorMessage>Para alterar de fase é obrigatório o preenchimento do campo &quot;Confirmada Efetividade pelo Cliente?&quot; (Msg09)</errorMessage>
+</ValidationRule>

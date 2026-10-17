@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Executivo_que_reconhece_a_necessidade__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Executivo que reconhece a necessidade</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Ações DIA- Desenvolvimento (Executivo que reconhece a necessidade)</relationshipLabel>
+    <relationshipName>A_es_DIA_Desenvolvimento1</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

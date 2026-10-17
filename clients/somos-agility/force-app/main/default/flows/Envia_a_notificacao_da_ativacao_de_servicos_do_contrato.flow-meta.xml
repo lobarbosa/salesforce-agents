@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Alerta_de_ativacao_dos_servicos_NFR</name>
+        <label>Alerta de ativação dos serviços - NFR</label>
+        <locationX>1172</locationX>
+        <locationY>298</locationY>
+        <actionName>Ativacao_dos_Servicos_e_Cobranca__c.Alerta_de_ativacao_dos_servicos_NFR</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Ativacao_dos_Servicos_e_Cobranca__c.Alerta_de_ativacao_dos_servicos_NFR</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>Alerta_de_ativacao_dos_servicos_Normal</name>
+        <label>Alerta de ativação dos serviços - Normal</label>
+        <locationX>1174</locationX>
+        <locationY>462</locationY>
+        <actionName>Ativacao_dos_Servicos_e_Cobranca__c.Alerta_de_ativacao_dos_servicos_Normal</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Ativacao_dos_Servicos_e_Cobranca__c.Alerta_de_ativacao_dos_servicos_Normal</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Verifica_o_tipo_de_cobranca</name>
+        <label>Verifica o tipo de cobrança</label>
+        <locationX>957</locationX>
+        <locationY>384</locationY>
+        <defaultConnectorLabel>Nenhum</defaultConnectorLabel>
+        <rules>
+            <name>Normal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Tipo_de_cobranca__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Normal</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Alerta_de_ativacao_dos_servicos_Normal</targetReference>
+            </connector>
+            <label>Normal</label>
+        </rules>
+        <rules>
+            <name>NFR</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Tipo_de_cobranca__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>NFR</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Alerta_de_ativacao_dos_servicos_NFR</targetReference>
+            </connector>
+            <label>NFR</label>
+        </rules>
+    </decisions>
+    <description>Envia a notificação da ativação de serviços do contrato, inclusos os times envolvidos - Atualizado em 18/08/2025.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>motivo_da_ativacao</name>
+        <dataType>String</dataType>
+        <expression>&apos;Início dos serviços referentes ao contrato &quot;&apos; + {!$Record.Contrato__r.Descri_ao_do_Contrato__c} + &apos;&quot;.&apos;</expression>
+    </formulas>
+    <formulas>
+        <name>primeiro_email</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  CONTAINS({!$Record.Destinatarios__c}, &quot;;&quot;),
+  LEFT({!$Record.Destinatarios__c}, FIND(&quot;;&quot;, {!$Record.Destinatarios__c}) - 1),
+  {!$Record.Destinatarios__c}
+)</expression>
+    </formulas>
+    <formulas>
+        <name>primeiro_time</name>
+        <dataType>String</dataType>
+        <expression>LEFT(
+   {!$Record.E_mail_time_envolvido__c},
+   IF(CONTAINS({!$Record.E_mail_time_envolvido__c}, &quot;;&quot;), FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) - 1, LEN({!$Record.E_mail_time_envolvido__c}))
+)</expression>
+    </formulas>
+    <formulas>
+        <name>segundo_email</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  CONTAINS({!$Record.Destinatarios__c}, &quot;;&quot;),
+  IF(
+    CONTAINS(RIGHT({!$Record.Destinatarios__c}, LEN({!$Record.Destinatarios__c}) - FIND(&quot;;&quot;, {!$Record.Destinatarios__c})), &quot;;&quot;),
+    LEFT(
+      RIGHT({!$Record.Destinatarios__c}, LEN({!$Record.Destinatarios__c}) - FIND(&quot;;&quot;, {!$Record.Destinatarios__c})),
+      FIND(&quot;;&quot;, RIGHT({!$Record.Destinatarios__c}, LEN({!$Record.Destinatarios__c}) - FIND(&quot;;&quot;, {!$Record.Destinatarios__c})) ) - 1
+    ),
+    RIGHT({!$Record.Destinatarios__c}, LEN({!$Record.Destinatarios__c}) - FIND(&quot;;&quot;, {!$Record.Destinatarios__c}))
+  ),
+  &quot;&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>segundo_time</name>
+        <dataType>String</dataType>
+        <expression>IF(
+   CONTAINS({!$Record.E_mail_time_envolvido__c}, &quot;;&quot;),
+   MID(
+      {!$Record.E_mail_time_envolvido__c},
+      FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1,
+      IF(CONTAINS(MID({!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1, LEN({!$Record.E_mail_time_envolvido__c})), &quot;;&quot;),
+         FIND(&quot;;&quot;, MID({!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1, LEN({!$Record.E_mail_time_envolvido__c}))) - 1,
+         LEN(MID({!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1, LEN({!$Record.E_mail_time_envolvido__c})))
+      )
+   ),
+   &quot;&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>terceiro_email</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  LEN(SUBSTITUTE({!$Record.Destinatarios__c}, &quot;;&quot;, &quot;&quot;)) = LEN({!$Record.Destinatarios__c}),
+  &quot;&quot;,
+  IF(
+    LEN(SUBSTITUTE({!$Record.Destinatarios__c}, &quot;;&quot;, &quot;&quot;)) = LEN({!$Record.Destinatarios__c}) - 1,
+    &quot;&quot;,
+    RIGHT(
+      {!$Record.Destinatarios__c},
+      LEN({!$Record.Destinatarios__c}) - FIND(&quot;;&quot;, {!$Record.Destinatarios__c}, FIND(&quot;;&quot;, {!$Record.Destinatarios__c}) + 1)
+    )
+  )
+)</expression>
+    </formulas>
+    <formulas>
+        <name>terceiro_time</name>
+        <dataType>String</dataType>
+        <expression>IF(
+   AND(CONTAINS({!$Record.E_mail_time_envolvido__c}, &quot;;&quot;), CONTAINS(MID({!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1, LEN({!$Record.E_mail_time_envolvido__c})), &quot;;&quot;)),
+   MID(
+      {!$Record.E_mail_time_envolvido__c},
+      FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1) + 1,
+      IF(CONTAINS(MID({!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1) + 1, LEN({!$Record.E_mail_time_envolvido__c})), &quot;;&quot;),
+         FIND(&quot;;&quot;, MID({!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1) + 1, LEN({!$Record.E_mail_time_envolvido__c}))) - 1,
+         LEN(MID({!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}, FIND(&quot;;&quot;, {!$Record.E_mail_time_envolvido__c}) + 1) + 1, LEN({!$Record.E_mail_time_envolvido__c})))
+      )
+   ),
+   &quot;&quot;
+)</expression>
+    </formulas>
+    <interviewLabel>Envia notificação da ativação de serviços do contrato {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Envia a notificação da ativação de serviços do contrato</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_a_data_de_ativacao_na_capa_do_contrato</name>
+        <label>Atualiza a data de ativação na capa do contrato</label>
+        <locationX>636</locationX>
+        <locationY>382</locationY>
+        <connector>
+            <targetReference>Atualiza_a_frase_default_do_campo_Motivo_da_ATV</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ContractNumber</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Contrato__r.ContractNumber</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Data_Prevista_de_Ativacao__c</field>
+            <value>
+                <elementReference>$Record.Data_de_Ativacao__c</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Contract</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_a_frase_default_do_campo_Motivo_da_ATV</name>
+        <label>Atualiza a frase default do campo Motivo da ATV</label>
+        <locationX>808</locationX>
+        <locationY>382</locationY>
+        <connector>
+            <targetReference>Verifica_o_tipo_de_cobranca</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Lastro_da_Ativacao__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Destinatario_1__c</field>
+            <value>
+                <elementReference>primeiro_email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Destinatario_2__c</field>
+            <value>
+                <elementReference>segundo_email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Destinatario_3__c</field>
+            <value>
+                <elementReference>terceiro_email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>E_mail_time_envolvido_1__c</field>
+            <value>
+                <elementReference>primeiro_time</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>E_mail_time_envolvido_2__c</field>
+            <value>
+                <elementReference>segundo_time</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>E_mail_time_envolvido_3__c</field>
+            <value>
+                <elementReference>terceiro_time</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Lastro_da_Ativacao__c</field>
+            <value>
+                <elementReference>motivo_da_ativacao</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Notificacao_enviada__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>510</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Atualiza_a_data_de_ativacao_na_capa_do_contrato</targetReference>
+        </connector>
+        <object>Ativacao_dos_Servicos_e_Cobranca__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

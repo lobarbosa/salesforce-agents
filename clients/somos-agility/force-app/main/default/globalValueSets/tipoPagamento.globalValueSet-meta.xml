@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Mensal</fullName>
+        <default>false</default>
+        <label>Mensal</label>
+    </customValue>
+    <customValue>
+        <fullName>Antecipado</fullName>
+        <default>false</default>
+        <label>Antecipado</label>
+    </customValue>
+    <masterLabel>Tipo de pagamento</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

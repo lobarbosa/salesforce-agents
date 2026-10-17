@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>E_mail_time_envolvido__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    INCLUDES(Time_envolvido__c, &quot;Application Delivery&quot;),
+    &quot;app.delivery@somosagility.com.br&quot; &amp;
+    IF(INCLUDES(Time_envolvido__c, &quot;Cyber Segurança&quot;), &quot;;cdc@somosagility.com.br;agilitygpd@somosagility.com.br;pentest@somosagility.com.br&quot;, &quot;&quot;) &amp;
+    IF(INCLUDES(Time_envolvido__c, &quot;InfraSec&quot;), &quot;;gssec@somosagility.com.br&quot;, &quot;&quot;) &amp;
+    IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus&quot;), &quot;;premiumplusad@somosagility.com.br&quot;, &quot;&quot;) &amp;
+    IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus - Dedicado&quot;), &quot;;premiumplus@somosagility.com.br&quot;, &quot;&quot;),
+    
+    IF(
+        INCLUDES(Time_envolvido__c, &quot;Cyber Segurança&quot;),
+        &quot;cdc@somosagility.com.br;agilitygpd@somosagility.com.br;pentest@somosagility.com.br&quot; &amp;
+        IF(INCLUDES(Time_envolvido__c, &quot;InfraSec&quot;), &quot;;gssec@somosagility.com.br&quot;, &quot;&quot;) &amp;
+        IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus&quot;), &quot;;premiumplusad@somosagility.com.br&quot;, &quot;&quot;) &amp;
+        IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus - Dedicado&quot;), &quot;;premiumplus@somosagility.com.br&quot;, &quot;&quot;),
+        
+        IF(
+            INCLUDES(Time_envolvido__c, &quot;InfraSec&quot;),
+            &quot;gssec@somosagility.com.br&quot; &amp;
+            IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus&quot;), &quot;;premiumplusad@somosagility.com.br&quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus - Dedicado&quot;), &quot;;premiumplus@somosagility.com.br&quot;, &quot;&quot;),
+            
+            IF(
+                INCLUDES(Time_envolvido__c, &quot;Premium Plus&quot;),
+                &quot;premiumplusad@somosagility.com.br&quot; &amp;
+                IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus - Dedicado&quot;), &quot;;premiumplus@somosagility.com.br&quot;, &quot;&quot;),
+                
+                IF(INCLUDES(Time_envolvido__c, &quot;Premium Plus - Dedicado&quot;), &quot;premiumplus@somosagility.com.br&quot;, &quot;&quot;)
+            )
+        )
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>E-mail time envolvido</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

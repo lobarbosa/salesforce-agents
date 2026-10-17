@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Finalizar_Primeiro_Atendimento</fullName>
+    <active>false</active>
+    <description>Regra para Finalizar o Primeiro Atendimento Antes de Fechar o Caso</description>
+    <errorConditionFormula>IF((( Owner:User.Department &lt;&gt;&apos;NOC&apos;)&amp;&amp;ISBLANK( Assunto_Service_Desk__c )&amp;&amp;ISBLANK( Descricao_Service_Desk__c )&amp;&amp;ISPICKVAL( Fila__c ,&quot;Spam&quot;)),ISPICKVAL( Status ,&quot;Fechado&quot;),false)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>O Primeiro Atendimento não foi Finalizado, por este motivo não é permitido Fechar o Caso.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Confirma_o_do_perfil_de_solu_o_Agility__c</fullName>
+    <description>AM 26022108:  campo Confirmação do perfil de solução Agility veio para para o Blueprint pois uma CVS pode ter vários Blueprint com vários perfis de solução</description>
+    <inlineHelpText>Selecionar “Consultiva” quando a Previsão de Investimento tiver maior predominância de Serviços sobre Produtos / Trabalharmos com foco sobre a melhora de um processo de negócio do cliente / Fornecermos insights únicos para a resolução do problema.</inlineHelpText>
+    <label>Perfil da Previsão de Investimento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Consultiva</fullName>
+                <default>false</default>
+                <label>Consultiva</label>
+            </value>
+            <value>
+                <fullName>Transacional</fullName>
+                <default>false</default>
+                <label>Transacional</label>
+            </value>
+            <value>
+                <fullName>Básica</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Básica</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Especificar_Tipo_de_Despesa</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND  (ISPICKVAL (  Tipo_da_Despesa__c ,&quot;Outros (Especificar)&quot;), ISBLANK( Outros_Especificar__c ))</errorConditionFormula>
+    <errorMessage>Especificar o Tipo da Despesa</errorMessage>
+</ValidationRule>

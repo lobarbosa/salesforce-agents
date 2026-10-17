@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_CVS_Fast_Track__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>AM 12062018: teste para validar CVS FT
+HR 25062019: Alteração de label Kaizen</description>
+    <label>Processamento Fast Track</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

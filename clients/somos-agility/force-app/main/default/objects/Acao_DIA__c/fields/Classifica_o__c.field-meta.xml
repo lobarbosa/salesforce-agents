@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Classifica_o__c</fullName>
+    <label>Classificação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>0-Oportunidade já registrada por outra revenda; parceiro/fabricante já atuando.</fullName>
+                <default>false</default>
+                <label>0-Oportunidade já registrada por outra revenda; parceiro/fabricante já atuando. Não dá &quot;Match&quot; .</label>
+            </value>
+            <value>
+                <fullName>1-&quot;Match&quot; pág. 1 x cliente - buscando interlocutor</fullName>
+                <default>false</default>
+                <label>1-&quot;Match&quot; pág. 1 x cliente - buscando interlocutor</label>
+            </value>
+            <value>
+                <fullName>2-Interlocutor alcançado, sem prioridade pelo Cliente</fullName>
+                <default>false</default>
+                <label>2-Interlocutor alcançado, sem prioridade pelo Cliente.</label>
+            </value>
+            <value>
+                <fullName>3-Priorizado pelo cliente, Há uma &quot;Dor&quot; e Compelling Técnico, Análise para envio ao orçamento</fullName>
+                <default>false</default>
+                <label>3-Priorizado pelo cliente, Há uma &quot;Dor&quot; e Compelling Técnico, Análise para envio ao orçamento</label>
+            </value>
+            <value>
+                <fullName>4-Engajado - Submetido ao Orçamento ou Verificando Concorrência</fullName>
+                <default>false</default>
+                <label>4-Engajado - Submetido ao Orçamento ou Verificando Concorrência</label>
+            </value>
+            <value>
+                <fullName>5-Engajado - Orçamento OK, Prazo em curso</fullName>
+                <default>false</default>
+                <label>5-Engajado - Orçamento OK, Prazo em curso</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

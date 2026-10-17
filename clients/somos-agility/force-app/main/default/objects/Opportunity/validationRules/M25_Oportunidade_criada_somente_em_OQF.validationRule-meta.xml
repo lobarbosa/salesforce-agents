@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M25_Oportunidade_criada_somente_em_OQF</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / A oportunidade somente pode ser criada na fase OQF</description>
+    <errorConditionFormula>AND(
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;, 
+ISNEW(),TEXT(StageName)&lt;&gt; &quot;Qualificação&quot;,  RecordType.Name = &quot;OQF&quot;)</errorConditionFormula>
+    <errorDisplayField>StageName</errorDisplayField>
+    <errorMessage>A Oportunidade somente pode ser criada na fase OQF  (Msg25)</errorMessage>
+</ValidationRule>

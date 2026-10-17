@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conta__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>JN13112018 -  criação de campo de conta e oportunidade para vincular objetos</description>
+    <label>Conta</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Metas GC</relationshipLabel>
+    <relationshipName>Metas_GC</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

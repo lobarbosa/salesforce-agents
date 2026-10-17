@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Contrato_Notificacao_de_Data_Prevista_de_Ativacao</name>
+        <label>Contrato - Notificação de Data Prevista de Ativação</label>
+        <locationX>50</locationX>
+        <locationY>360</locationY>
+        <actionName>Contract.Contrato_Notificacao_de_Data_Prevista_de_Ativacao</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Contract.Contrato_Notificacao_de_Data_Prevista_de_Ativacao</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>61.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Verificacao_da_Quantidade_de_Dias_ate_a_Ativacao</name>
+        <label>Verificação da Quantidade de Dias até a Ativação</label>
+        <locationX>182</locationX>
+        <locationY>252</locationY>
+        <defaultConnectorLabel>Saída Padrão</defaultConnectorLabel>
+        <rules>
+            <name>Data_Prevista_Para_Ativacao</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Dias_ate_a_Ativacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Contrato_Notificacao_de_Data_Prevista_de_Ativacao</targetReference>
+            </connector>
+            <label>Data Prevista Para Ativação</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Contrato - Notificação de Data Prevista de Ativação {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Contrato - Notificação de Data Prevista de Ativação</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>56</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Verificacao_da_Quantidade_de_Dias_ate_a_Ativacao</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Data_Prevista_de_Ativacao__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Contract</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2024-07-01</startDate>
+            <startTime>09:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

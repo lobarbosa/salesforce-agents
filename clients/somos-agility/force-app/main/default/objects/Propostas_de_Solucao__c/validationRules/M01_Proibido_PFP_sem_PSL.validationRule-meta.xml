@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M01_Proibido_PFP_sem_PSL</fullName>
+    <active>true</active>
+    <description>M01_Proibido_PFP_sem_PSL</description>
+    <errorConditionFormula>AND(
+Proposta_Fechada_pelo_Cliente__c = FALSE,
+PFP_1_Fechada__c = TRUE||PFP_2_Fechada__c = TRUE||PFP_3_Fechada__c = TRUE
+)</errorConditionFormula>
+    <errorMessage>Não é possível selecionar o campo &quot;PFP Fechada&quot; sem selecionar o campo &quot;Proposta Fechada pelo Cliente&quot; (Msg01)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Marketing</fullName>
+    <columns>NAME</columns>
+    <columns>Centro_de_Custo__c</columns>
+    <columns>Data__c</columns>
+    <columns>Justificativa__c</columns>
+    <columns>Nome_do_Evento__c</columns>
+    <columns>Tipo_do_Evento__c</columns>
+    <columns>Valor_Total_de_Gastos_Previstos__c</columns>
+    <columns>Valor_Total_de_Gastos_Realizados__c</columns>
+    <columns>Valor_Total_de_Patroc_nio_Realizado__c</columns>
+    <columns>Valor_Total_do_Patroc_nio_Previsto__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OWNER.FIRST_NAME</field>
+        <operation>contains</operation>
+        <value>Katheryn</value>
+    </filters>
+    <label>Marketing</label>
+    <sharedTo>
+        <role>Recursos_Humanos</role>
+    </sharedTo>
+</ListView>

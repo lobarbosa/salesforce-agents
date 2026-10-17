@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quantidade_de_Fases_do_Projeto_NUMBER__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Insira um número entre 0 e 3, a depender da quantidade de lições aprendidas durante o projeto.</inlineHelpText>
+    <label>Quantidade de Lições Aprendidas</label>
+    <precision>1</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dura_o__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( Dura_o_2__c &gt; 0, 
+TEXT( FLOOR( 24 * ( Dura_o_2__c - FLOOR(Dura_o_2__c ) ))) &amp; &quot;:&quot; &amp; 
+TEXT( ROUND( 60 * (ROUND( 24 * ( Dura_o_2__c - FLOOR(Dura_o_2__c ) ),8) - FLOOR( 
+ROUND( 24 * ( Dura_o_2__c - FLOOR(Dura_o_2__c ) ),8)) ),0)) &amp; &quot;:00&quot; 
+, &quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Duracao</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

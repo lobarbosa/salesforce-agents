@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_validade_da_Proposta_Comercial__c</fullName>
+    <description>Campo designado para determinar a validade do documento gerado pelo SDOC.</description>
+    <label>Data de validade da Proposta Comercial</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

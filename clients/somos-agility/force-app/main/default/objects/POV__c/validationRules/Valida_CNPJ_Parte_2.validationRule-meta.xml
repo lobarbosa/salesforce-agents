@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_CNPJ_Parte_2</fullName>
+    <active>false</active>
+    <errorConditionFormula>OR 
+( 
+AND 
+( 
+MOD 
+( 
+( 
+( VALUE( MID( CNPJ__c, 1, 1 ) ) * 6 ) + 
+( VALUE( MID( CNPJ__c, 2, 1 ) ) * 5 ) + 
+( VALUE( MID( CNPJ__c, 4, 1 ) ) * 4 ) + 
+( VALUE( MID( CNPJ__c, 5, 1 ) ) * 3 ) + 
+( VALUE( MID( CNPJ__c, 6, 1 ) ) * 2 ) + 
+( VALUE( MID( CNPJ__c, 8, 1 ) ) * 9 ) + 
+( VALUE( MID( CNPJ__c, 9, 1 ) ) * 8 ) + 
+( VALUE( MID( CNPJ__c, 10, 1 ) ) * 7 ) + 
+( VALUE( MID( CNPJ__c, 12, 1 ) ) * 6 ) + 
+( VALUE( MID( CNPJ__c, 13, 1 ) ) * 5 ) + 
+( VALUE( MID( CNPJ__c, 14, 1 ) ) * 4 ) + 
+( VALUE( MID( CNPJ__c, 15, 1 ) ) * 3 ) + 
+( VALUE( MID( CNPJ__c, 17, 1 ) ) * 2 ) 
+) 
+, 11 
+) &lt;= 1 
+, VALUE( MID( CNPJ__c, 18, 1 ) ) != 0 
+) 
+, AND 
+( 
+MOD( 
+( 
+( VALUE( MID( CNPJ__c, 1, 1 ) ) * 6 ) + 
+( VALUE( MID( CNPJ__c, 2, 1 ) ) * 5 ) + 
+( VALUE( MID( CNPJ__c, 4, 1 ) ) * 4 ) + 
+( VALUE( MID( CNPJ__c, 5, 1 ) ) * 3 ) + 
+( VALUE( MID( CNPJ__c, 6, 1 ) ) * 2 ) + 
+( VALUE( MID( CNPJ__c, 8, 1 ) ) * 9 ) + 
+( VALUE( MID( CNPJ__c, 9, 1 ) ) * 8 ) + 
+( VALUE( MID( CNPJ__c, 10, 1 ) ) * 7 ) + 
+( VALUE( MID( CNPJ__c, 12, 1 ) ) * 6 ) + 
+( VALUE( MID( CNPJ__c, 13, 1 ) ) * 5 ) + 
+( VALUE( MID( CNPJ__c, 14, 1 ) ) * 4 ) + 
+( VALUE( MID( CNPJ__c, 15, 1 ) ) * 3 ) + 
+( VALUE( MID( CNPJ__c, 17, 1 ) ) * 2 ) 
+) 
+, 11 ) &gt; 1 
+, ( 11 - MOD( 
+( 
+( VALUE( MID( CNPJ__c, 1, 1 ) ) * 6 ) + 
+( VALUE( MID( CNPJ__c, 2, 1 ) ) * 5 ) + 
+( VALUE( MID( CNPJ__c, 4, 1 ) ) * 4 ) + 
+( VALUE( MID( CNPJ__c, 5, 1 ) ) * 3 ) + 
+( VALUE( MID( CNPJ__c, 6, 1 ) ) * 2 ) + 
+( VALUE( MID( CNPJ__c, 8, 1 ) ) * 9 ) + 
+( VALUE( MID( CNPJ__c, 9, 1 ) ) * 8 ) + 
+( VALUE( MID( CNPJ__c, 10, 1 ) ) * 7 ) + 
+( VALUE( MID( CNPJ__c, 12, 1 ) ) * 6 ) + 
+( VALUE( MID( CNPJ__c, 13, 1 ) ) * 5 ) + 
+( VALUE( MID( CNPJ__c, 14, 1 ) ) * 4 ) + 
+( VALUE( MID( CNPJ__c, 15, 1 ) ) * 3 ) + 
+( VALUE( MID( CNPJ__c, 17, 1 ) ) * 2 ) 
+) 
+, 11 
+) ) != VALUE( MID( CNPJ__c, 18, 1 ) 
+) 
+) 
+)</errorConditionFormula>
+    <errorDisplayField>CNPJ__c</errorDisplayField>
+    <errorMessage>CNPJ Inválido.</errorMessage>
+</ValidationRule>

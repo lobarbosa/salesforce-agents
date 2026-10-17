@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Metas_New__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>181018</description>
+    <label>Metas_New</label>
+    <referenceTo>Metas_New__c</referenceTo>
+    <relationshipLabel>Metas GC</relationshipLabel>
+    <relationshipName>Metas_GC</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Etapa_da_Oportunidade__c</fullName>
+    <description>AM 31052018: adicionado Ações de Produto / 26042018: informa a etapa do processo</description>
+    <label>Etapa do processo Agility Way</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>DIA</fullName>
+                <default>false</default>
+                <label>DIA</label>
+            </value>
+            <value>
+                <fullName>Ação de Produtos</fullName>
+                <default>false</default>
+                <label>Ação de Produtos</label>
+            </value>
+            <value>
+                <fullName>OQF</fullName>
+                <default>false</default>
+                <label>OQF</label>
+            </value>
+            <value>
+                <fullName>CVS/RVS</fullName>
+                <default>false</default>
+                <label>CVS/RVS</label>
+            </value>
+            <value>
+                <fullName>PSL</fullName>
+                <default>false</default>
+                <label>PSL</label>
+            </value>
+            <value>
+                <fullName>PFC</fullName>
+                <default>false</default>
+                <label>PFC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

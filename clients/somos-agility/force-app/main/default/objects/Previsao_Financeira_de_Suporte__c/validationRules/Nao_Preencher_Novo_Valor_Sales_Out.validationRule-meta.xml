@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_Preencher_Novo_Valor_Sales_Out</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Tipo_do_Contrato__c , &quot;Novo (Sales In)&quot;), NOT(ISBLANK(Novo_Valor_Sales_Out_Previsto__c))||NOT(ISBLANK( Novo_Valor_Sales_Out_Realizado__c )))</errorConditionFormula>
+    <errorMessage>Não é necessário informar o Novo Valor (Sales Out) para este tipo de registro</errorMessage>
+</ValidationRule>

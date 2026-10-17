@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_Ressalvas_se_Soto</fullName>
+    <active>true</active>
+    <description>Checa o preenchimento do campo Ressalvas, se Soto.</description>
+    <errorConditionFormula>AND(
+    $Profile.Name = &apos;Admin&apos;,
+    ISCHANGED(Ressalvas_do_Diretor_Financeiro__c)
+)</errorConditionFormula>
+    <errorMessage>O campo &quot;ressalvas do diretor financeiro&quot; é de preenchimento exclusivo do diretor financeiro.</errorMessage>
+</ValidationRule>

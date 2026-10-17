@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Planned_Costs__c</fullName>
+    <inlineHelpText>Planned costs is a roll up summary of the cost items planned amount field that meet the following cost item status - Posted, Paid, On Hold, Received, Planned.</inlineHelpText>
+    <label>Planned Cost</label>
+    <summarizedField>Cronograma__c.Estimated_Costs__c</summarizedField>
+    <summaryFilterItems>
+        <field>Cronograma__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Planned, Received, On Hold, Paid, Posted</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Cronograma__c.Project__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

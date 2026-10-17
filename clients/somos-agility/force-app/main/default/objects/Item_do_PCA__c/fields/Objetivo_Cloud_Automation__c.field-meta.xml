@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Objetivo_Cloud_Automation__c</fullName>
+    <formula>CASE( Ano_PCA_em_Numero__c , 
+2017,Cliente__r.Objetivo_Cloud_Automation_2017__c, 
+2018,Cliente__r.Objetivo_Cloud_Automation_2018__c,
+2019,Cliente__r.Objetivo_Cloud_Automation_2019__c,
+2020,Cliente__r.Objetivo_Cloud_Automation_2020__c,
+2021,Cliente__r.Objetivo_Cloud_Automation_2021__c,
+2022,Cliente__r.Objetivo_Cloud_Automation_2022__c,
+2023,Cliente__r.Objetivo_Cloud_Automation_2023__c,
+2024,Cliente__r.Objetivo_Cloud_Automation_2024__c,
+Cliente__r.Objetivo_Cloud_Automation_2025__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Objetivo Digital Transformation</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

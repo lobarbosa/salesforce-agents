@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Variacao_do_Atraso_dias__c</fullName>
+    <externalId>false</externalId>
+    <formula>Duracao_Planejada__c -  Duracao_Projetada_dias__c</formula>
+    <label>Variação do Atraso (dias) (DAC)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

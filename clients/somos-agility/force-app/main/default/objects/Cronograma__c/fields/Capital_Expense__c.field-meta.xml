@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Capital_Expense__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>Costs that are a part of investments in your business and are called capital expenses. Capital expenses are considered assets.  3 types of capital cost include; business start-up costs , business assets, and business improvements.</inlineHelpText>
+    <label>Capital Expense</label>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

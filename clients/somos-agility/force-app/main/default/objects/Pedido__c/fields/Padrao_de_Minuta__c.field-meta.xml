@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Padrao_de_Minuta__c</fullName>
+    <label>Padrão de Minuta</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Minuta Padrão Agility Networks</fullName>
+                <default>false</default>
+                <label>Minuta Padrão Agility Networks</label>
+            </value>
+            <value>
+                <fullName>Minuta Padrão Cliente</fullName>
+                <default>false</default>
+                <label>Minuta Padrão Cliente</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

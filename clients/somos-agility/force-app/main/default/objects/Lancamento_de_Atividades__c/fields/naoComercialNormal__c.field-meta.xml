@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>naoComercialNormal__c</fullName>
+    <formula>AND( 
+isHorarioVerao__c = false, 
+IF( 
+OR( 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2018-12-25&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-1-1&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-1-25&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-4-19&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-4-21&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-5-1&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-7-9&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-9-7&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-10-12&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-11-2&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-11-15&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-11-20&quot;), 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-12-25&quot;) 
+), 
+true, 
+
+IF( 
+OR( 
+WEEKDAY(DATEVALUE(Inicio_da_atividade__c)) = 1, 
+WEEKDAY(DATEVALUE(Inicio_da_atividade__c)) = 7, 
+WEEKDAY(DATEVALUE(Fim_da_atividade__c)) = 1, 
+WEEKDAY(DATEVALUE(Fim_da_atividade__c)) = 7 
+), 
+true, 
+
+IF( 
+AND( 
+Data_Inicio_Atividade__c = DATEVALUE(Fim_da_atividade__c) 
+,VALUE(MID(TEXT(Inicio_da_atividade__c - 3/24), 12, 2)) &gt;= 0 
+,VALUE(MID(TEXT(Fim_da_atividade__c - 3/24), 12, 2)) &lt;= 8 
+,Duracao_da_atividade__c &lt;= 8 
+), 
+true, 
+
+IF( 
+AND( 
+VALUE( MID( TEXT( Inicio_da_atividade__c - 3/24), 12, 2 ) ) &gt;= 18 
+,VALUE( MID( TEXT( Fim_da_atividade__c - 3/24), 12, 2 ) ) &lt;= 8 
+,DATEVALUE(Inicio_da_atividade__c) &lt;&gt; DATEVALUE(Fim_da_atividade__c) 
+,Duracao_da_atividade__c &lt;= 14 
+), 
+true, 
+
+IF( 
+AND( 
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(Fim_da_atividade__c) 
+,VALUE( MID( TEXT( Inicio_da_atividade__c - 3/24), 12, 2 )) &gt;= 18 
+,VALUE( MID( TEXT( Fim_da_atividade__c - 3/24), 12, 2 )) &lt;= 24 
+,Duracao_da_atividade__c &lt;= 6 
+), 
+true 
+,false 
+) 
+) 
+) 
+) 
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Não Comercial - Normal</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

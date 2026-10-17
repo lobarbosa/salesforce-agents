@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>E_Renovacoes__c</fullName>
+    <description>Verifica se o OwnerId pertence à Renovações ou Shirlei, se sim, recebe &apos;Yes&apos;, caso contrário, &apos;No&apos;.</description>
+    <externalId>false</externalId>
+    <formula>IF(
+    OR(
+        LEFT(OwnerId, 15) = &apos;0050z00000791Pm&apos;,
+        LEFT(OwnerId, 15) = &apos;00538000005ZFBE&apos;
+    ),
+    &apos;Yes&apos;,
+    &apos;No&apos;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Verifica se o OwnerId pertence à Renovações ou Shirlei, se sim, recebe &apos;Yes&apos;, caso contrário, &apos;No&apos;.</inlineHelpText>
+    <label>É Renovações?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

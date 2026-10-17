@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>horarioComercialNormal__c</fullName>
+    <formula>AND( 
+isHorarioVerao__c = false, 
+IF(
+AND( 
+VALUE( MID( TEXT( Inicio_da_atividade__c - 3/24), 12, 2 ) ) &gt;= 8 
+,VALUE( MID( TEXT( Fim_da_atividade__c - 3/24), 12, 2 ) ) &lt;= 18 
+,DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(Fim_da_atividade__c) 
+,Duracao_da_atividade__c &lt;= 10 
+), 
+true,false 
+) 
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Horário Comercial - Normal</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

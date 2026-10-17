@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__bairro_faturamento__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Bairro para o endereço de faturamento</description>
+    <inlineHelpText>Bairro para o endereço de faturamento</inlineHelpText>
+    <label>Bairro para faturamento (DEPREC)</label>
+    <referenceTo>snap_finan__Bairro__c</referenceTo>
+    <relationshipLabel>Endereços de faturamento</relationshipLabel>
+    <relationshipName>enderecos_faturamento</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

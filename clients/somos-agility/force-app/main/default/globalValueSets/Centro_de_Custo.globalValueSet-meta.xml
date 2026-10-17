@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Application Delivery</fullName>
+        <default>false</default>
+        <label>Application Delivery</label>
+    </customValue>
+    <customValue>
+        <fullName>Comercial - Filial Sul</fullName>
+        <default>false</default>
+        <label>Comercial - Filial Sul</label>
+    </customValue>
+    <customValue>
+        <fullName>Comercial Mss</fullName>
+        <default>false</default>
+        <label>Comercial Mss</label>
+    </customValue>
+    <customValue>
+        <fullName>Comercial - SP</fullName>
+        <default>false</default>
+        <label>Comercial - SP</label>
+    </customValue>
+    <customValue>
+        <fullName>Command Center</fullName>
+        <default>false</default>
+        <label>Command Center</label>
+    </customValue>
+    <customValue>
+        <fullName>Corporativo</fullName>
+        <default>false</default>
+        <label>Corporativo</label>
+    </customValue>
+    <customValue>
+        <fullName>Customer Success</fullName>
+        <default>false</default>
+        <label>Customer Success</label>
+    </customValue>
+    <customValue>
+        <fullName>Cybersecurity</fullName>
+        <default>false</default>
+        <label>Cybersecurity</label>
+    </customValue>
+    <customValue>
+        <fullName>Cybersecurity - Filial Sul</fullName>
+        <default>false</default>
+        <label>Cybersecurity - Filial Sul</label>
+    </customValue>
+    <customValue>
+        <fullName>Digital Transformation</fullName>
+        <default>false</default>
+        <label>Digital Transformation</label>
+    </customValue>
+    <customValue>
+        <fullName>Diretoria</fullName>
+        <default>false</default>
+        <label>Diretoria</label>
+    </customValue>
+    <customValue>
+        <fullName>Expansão e Canais</fullName>
+        <default>false</default>
+        <label>Expansão e Canais</label>
+    </customValue>
+    <customValue>
+        <fullName>Financeiro</fullName>
+        <default>false</default>
+        <label>Financeiro</label>
+    </customValue>
+    <customValue>
+        <fullName>Integração Segurança</fullName>
+        <default>false</default>
+        <label>Integração Segurança</label>
+    </customValue>
+    <customValue>
+        <fullName>Marketing</fullName>
+        <default>false</default>
+        <label>Marketing</label>
+    </customValue>
+    <customValue>
+        <fullName>Novos Negócios</fullName>
+        <default>false</default>
+        <label>Novos Negócios</label>
+    </customValue>
+    <customValue>
+        <fullName>PMO</fullName>
+        <default>false</default>
+        <label>PMO</label>
+    </customValue>
+    <customValue>
+        <fullName>Pós-Venda</fullName>
+        <default>false</default>
+        <label>Pós-Venda</label>
+    </customValue>
+    <customValue>
+        <fullName>Premium Plus - AD</fullName>
+        <default>false</default>
+        <label>Premium Plus - AD</label>
+    </customValue>
+    <customValue>
+        <fullName>Premium Plus - Itaú</fullName>
+        <default>false</default>
+        <label>Premium Plus - Itaú</label>
+    </customValue>
+    <customValue>
+        <fullName>Produtos</fullName>
+        <default>false</default>
+        <label>Produtos</label>
+    </customValue>
+    <customValue>
+        <fullName>Recursos Humanos</fullName>
+        <default>false</default>
+        <label>Recursos Humanos</label>
+    </customValue>
+    <customValue>
+        <fullName>Renovações</fullName>
+        <default>false</default>
+        <label>Renovações</label>
+    </customValue>
+    <customValue>
+        <fullName>Tecnologia Interna - TIC</fullName>
+        <default>false</default>
+        <label>Tecnologia Interna - TIC</label>
+    </customValue>
+    <customValue>
+        <fullName>Vendas Técnicas</fullName>
+        <default>false</default>
+        <label>Vendas Técnicas</label>
+    </customValue>
+    <customValue>
+        <fullName>Depto Operações</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Depto Operações</label>
+    </customValue>
+    <customValue>
+        <fullName>Administrativo</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Administrativo</label>
+    </customValue>
+    <customValue>
+        <fullName>Gov TI</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Gov TI</label>
+    </customValue>
+    <customValue>
+        <fullName>Gov Gerencia</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Gov Gerencia</label>
+    </customValue>
+    <customValue>
+        <fullName>Tecnologia</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Tecnologia</label>
+    </customValue>
+    <customValue>
+        <fullName>Segurança</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Segurança</label>
+    </customValue>
+    <customValue>
+        <fullName>EA</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>EA</label>
+    </customValue>
+    <customValue>
+        <fullName>Pesq e Desenvolvimento</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Pesq e Desenvolvimento</label>
+    </customValue>
+    <customValue>
+        <fullName>Premium Plus</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Premium Plus</label>
+    </customValue>
+    <customValue>
+        <fullName>Segurança - Filial Sul</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Segurança - Filial Sul</label>
+    </customValue>
+    <customValue>
+        <fullName>Segurança - Filial Curitiba</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Segurança - Filial Curitiba</label>
+    </customValue>
+    <masterLabel>Centro de Custo</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contrato_de_Suporte_Existente</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL( Possui_Contrato_de_Suporte_Agility__c  , &quot;Existente&quot;),ISBLANK( Numero_do_Contrato__c ))</errorConditionFormula>
+    <errorDisplayField>Numero_do_Contrato__c</errorDisplayField>
+    <errorMessage>Favor Preencher o campo Número do Contrato</errorMessage>
+</ValidationRule>

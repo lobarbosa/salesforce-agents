@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Fechado</fullName>
+    <active>false</active>
+    <description>Só pode ser alterado o Status para &quot;Fechado&quot; desde o Status &quot;Escalado&quot; ou &quot;Em Andamento&quot; ou &quot;Escalado ao Fornecedor&quot;</description>
+    <errorConditionFormula>ISCHANGED(Status) 
+&amp;&amp; 
+TEXT(Status) = &quot;Fechado&quot; 
+&amp;&amp; 
+( 
+NOT(ISPICKVAL(PRIORVALUE(Status), &quot;Escalado&quot;)) 
+|| 
+NOT(ISPICKVAL(PRIORVALUE(Status), &quot;Em Andamento&quot;)) 
+||
+NOT(ISPICKVAL(PRIORVALUE(Status), &quot;Escalado ao Fornecedor&quot;)) 
+)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>Só pode ser alterado o Status para &quot;Fechado&quot; desde o Status &quot;Escalado&quot; ou &quot;Em Andamento&quot; ou &quot;Escalado ao Fornecedor&quot;</errorMessage>
+</ValidationRule>

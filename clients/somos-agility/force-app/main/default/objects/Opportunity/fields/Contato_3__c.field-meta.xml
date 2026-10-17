@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_3__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 25022018: AM 25022018: recriado terceiro campos de contato na seção &quot;Defina os Impactos e a Cadeia de Dor no Cliente&quot;</description>
+    <label>Contato</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.AccountId</field>
+            <operation>equals</operation>
+            <valueField>Contact.Account.Id</valueField>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Oportunidades (Contato)</relationshipLabel>
+    <relationshipName>Oportunidades7</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

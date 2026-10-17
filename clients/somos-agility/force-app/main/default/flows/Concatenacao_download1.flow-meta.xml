@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Alerta de Fluxo Incompleto.</description>
+        <name>Alerta_de_Fluxo_Incompleto</name>
+        <label>Alerta de Fluxo Incompleto</label>
+        <locationX>751</locationX>
+        <locationY>1029</locationY>
+        <actionName>Propostas_de_Solucao__c.Alerta_de_Fluxo_Incompleto</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <nameSegment>Propostas_de_Solucao__c.Alerta_de_Fluxo_Incompleto</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Verifica_final_da_PFP_1</name>
+        <label>Verifica final da PFP 1</label>
+        <locationX>505</locationX>
+        <locationY>387</locationY>
+        <defaultConnector>
+            <targetReference>Verifica_final_da_PFP_2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>É igual</defaultConnectorLabel>
+        <rules>
+            <name>diferente</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ultimosCaracteres_PFP1_Formula</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>&amp;download=1</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Concatena_PFP1</targetReference>
+            </connector>
+            <label>É diferente</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Verifica_final_da_PFP_2</name>
+        <label>Verifica final da PFP 2</label>
+        <locationX>730</locationX>
+        <locationY>397</locationY>
+        <defaultConnector>
+            <targetReference>Verifica_final_da_PFP_3</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>É igual</defaultConnectorLabel>
+        <rules>
+            <name>diferente_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ultimosCaracteres_PFP2_formula</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>&amp;download=1</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Concatena_PFP2</targetReference>
+            </connector>
+            <label>É diferente</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Verifica_final_da_PFP_3</name>
+        <label>Verifica final da PFP 3</label>
+        <locationX>929</locationX>
+        <locationY>375</locationY>
+        <defaultConnectorLabel>É igual</defaultConnectorLabel>
+        <rules>
+            <name>diferente_0_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ultimosCaracteres_PFP3_formula</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <stringValue>&amp;download=1</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Concatena_PFP3</targetReference>
+            </connector>
+            <label>É diferente</label>
+        </rules>
+    </decisions>
+    <description>Concatena automaticamente o parâmetro &amp;download=1 aos campos &quot;PFP 1 (UNC Path)&quot;, &quot;PFP 2 (UNC Path)&quot; e &quot;PFP 3 (UNC Path)&quot; sempre que possuírem valor preenchido.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>PFP1_download</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.PFP_1__c}&amp;&quot;&amp;download=1&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>PFP2_download</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.PFP_2__c}&amp;&quot;&amp;download=1&quot;</expression>
+    </formulas>
+    <formulas>
+        <description>Concatena &quot;&amp;download=1&quot; ao link da PFP 3.</description>
+        <name>PFP3_download</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.PFP_3__c}&amp;&quot;&amp;download=1&quot;</expression>
+    </formulas>
+    <formulas>
+        <name>ultimosCaracteres_PFP1_Formula</name>
+        <dataType>String</dataType>
+        <expression>RIGHT({!$Record.PFP_1__c}, 11)</expression>
+    </formulas>
+    <formulas>
+        <name>ultimosCaracteres_PFP2_formula</name>
+        <dataType>String</dataType>
+        <expression>RIGHT({!$Record.PFP_2__c}, 11)</expression>
+    </formulas>
+    <formulas>
+        <name>ultimosCaracteres_PFP3_formula</name>
+        <dataType>String</dataType>
+        <expression>RIGHT({!$Record.PFP_3__c}, 11)</expression>
+    </formulas>
+    <interviewLabel>Concatenação {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Concatenação &amp;download=1</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Se o campo PFP 1 UNC Path não estiver vazio, concatena &quot;&amp;download=1&quot; ao link da PFP.</description>
+        <name>Concatena_PFP1</name>
+        <label>Concatena PFP1</label>
+        <locationX>470</locationX>
+        <locationY>696</locationY>
+        <connector>
+            <targetReference>Verifica_final_da_PFP_2</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Alerta_de_Fluxo_Incompleto</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>PFP_1__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PFP_1__c</field>
+            <value>
+                <elementReference>PFP1_download</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Se o campo PFP 2 UNC Path não estiver vazio, concatena &quot;&amp;download=1&quot; ao link da PFP.</description>
+        <name>Concatena_PFP2</name>
+        <label>Concatena PFP2</label>
+        <locationX>754</locationX>
+        <locationY>690</locationY>
+        <connector>
+            <targetReference>Verifica_final_da_PFP_3</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Alerta_de_Fluxo_Incompleto</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>PFP_2__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PFP_2__c</field>
+            <value>
+                <elementReference>PFP2_download</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Se o campo PFP 3 UNC Path não estiver vazio, concatena &quot;&amp;download=1&quot; ao link da PFP.</description>
+        <name>Concatena_PFP3</name>
+        <label>Concatena PFP3</label>
+        <locationX>994</locationX>
+        <locationY>693</locationY>
+        <faultConnector>
+            <targetReference>Alerta_de_Fluxo_Incompleto</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>PFP_3__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>PFP_3__c</field>
+            <value>
+                <elementReference>PFP3_download</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>424</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Verifica_final_da_PFP_1</targetReference>
+        </connector>
+        <object>Propostas_de_Solucao__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

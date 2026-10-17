@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dept_Usuario_Atribuido__c</fullName>
+    <description>Indica o departamento do usuário proprietário do caso. É atualizado com cada alteração do proprietário. Serve para auxilio do workflow de escalação</description>
+    <externalId>false</externalId>
+    <label>Grupo Solucionador Atribuido</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

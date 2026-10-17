@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previs_o_de_Gastos_Previsto__c</fullName>
+    <label>Previsão de Gastos (Previsto)</label>
+    <referenceTo>Previsao_de_Gastos_Job_Investimentos__c</referenceTo>
+    <relationshipLabel>Previsão de Gastos dos Investimentos Realizados</relationshipLabel>
+    <relationshipName>Previs_o_de_Gastos_Realizado</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

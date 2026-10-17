@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Ter mesmas permissçoes do BDM EA.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Coordenador DCC &amp; C acessa pefil BDM EA</label>
+    <license>Salesforce</license>
+</PermissionSet>

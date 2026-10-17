@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In</fullName>
+    <active>true</active>
+    <description>Utilize para Lançar o previsto de um Novo Contrato</description>
+    <label>Sales In</label>
+    <picklistValues>
+        <picklist>Prazo_do_Contrato__c</picklist>
+        <values>
+            <fullName>1 mês</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>36 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>48 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>60 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7 Meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>72 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9 meses</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Renovacao__c</picklist>
+        <values>
+            <fullName>Renovação com Ampliação de Valor%2FCobertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovação com Redução de Valor%2FCobertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovação com Índice de Reajuste</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovação sem Índice de Reajuste</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_do_Contrato__c</picklist>
+        <values>
+            <fullName>Novo %28Sales In%29</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

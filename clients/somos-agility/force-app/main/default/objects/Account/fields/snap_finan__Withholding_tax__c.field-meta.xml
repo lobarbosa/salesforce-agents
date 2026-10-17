@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Withholding_tax__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <description>Indica se o fornecedor (internacional) está habilitado para se creditar do IR recolhido por uma empresa (cliente) prestador de serviço.</description>
+    <inlineHelpText>Indica se o fornecedor (internacional) está habilitado para se creditar do IR recolhido por uma empresa (cliente) prestador de serviço.</inlineHelpText>
+    <label>Withholding tax</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

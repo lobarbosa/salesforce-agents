@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M16_Nao_editar_apos_aprovacao_fase_OEG</fullName>
+    <active>false</active>
+    <description>AM 01062018: excluído da regra o perfil Admin / Após a alteração para a fase OEG não é possível mais editar campos das fases OQF / CVS e OEG</description>
+    <errorConditionFormula>AND( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;, 
+AND(ISPICKVAL( Status_Qualificacao_OEG__c ,&quot;Aprovado&quot;),ISCHANGED( Defina_a_situacao_do_Cliente__c )||ISCHANGED( Defina_os_problemas_do_cliente__c )||ISCHANGED( Contato_do_Cliente_Afetado__c )||ISCHANGED(BDR_Responsavel__c )||ISCHANGED( Impacto_Cargo_1__c )||ISCHANGED(Impacto_Cargo_2__c)||ISCHANGED(Impacto_Cargo_3__c)||ISCHANGED( Principal_executivo_interessado__c )||ISCHANGED( Informar_a_urgencia_da_necessidade__c )||ISCHANGED( Porque_a_solucao_e_importante__c )||ISCHANGED( Resp_Cliente_por_essas_informacoes__c )||ISCHANGED( Key_stakeholder_1__c )||ISCHANGED(Key_stakeholder_2__c )||ISCHANGED(Indicado_pelo_BDR__c )||ISCHANGED( Qual_o_papel_deste_Stakeholder_1__c )||ISCHANGED(Qual_o_papel_deste_Stakeholder_2__c )||ISCHANGED(Qual_o_papel_deste_Stakeholder_3__c )||ISCHANGED(Qual_o_papel_deste_Stakeholder_4__c )||ISCHANGED( Temos_acesso_ao_Stakeholder_1__c )||ISCHANGED(Temos_acesso_ao_Stakeholder_2__c )||ISCHANGED(Temos_acesso_ao_Stakeholder_3__c )||ISCHANGED(Temos_acesso_ao_Stakeholder_4__c )||ISCHANGED( Ha_budget_disponivel__c )||ISCHANGED( Contato_do_cliente_que_confirmou_orcamen__c )||ISCHANGED( Agility_a_definidora_da_solucao__c )||ISCHANGED( Existem_riscos_ou_restricoes_tecnicas__c )||ISCHANGED( Cliente_que_confirmou_a_Agility__c )||ISCHANGED( Comentarios_restricoes_tecnicas__c )||ISCHANGED( Por_que_seguir_sem_confirmacao_de_Budget__c )||ISCHANGED( Como_e_quando_compras_envolvida__c )||ISCHANGED( Por_que_seguir_s_sermos_definidores__c )))
+
+
+/*
+AND( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Service Manager&quot;, 
+AND (
+
+ORIGINAL
+AND(ISPICKVAL( Status_Qualificacao_OEG__c ,&quot;Aprovado&quot;),ISCHANGED( Defina_a_situacao_do_Cliente__c )||ISCHANGED( Defina_os_problemas_do_cliente__c )||ISCHANGED( Contato_1__c )||ISCHANGED(Contato_2__c )||ISCHANGED( Impacto_Cargo_1__c )||ISCHANGED(Impacto_Cargo_2__c)||ISCHANGED(Impacto_Cargo_3__c)||ISCHANGED( Principal_executivo_interessado__c )||ISCHANGED( Informar_a_urgencia_da_necessidade__c )||ISCHANGED( Porque_a_solucao_e_importante__c )||ISCHANGED( Resp_Cliente_por_essas_informacoes__c )||ISCHANGED( Key_stakeholder_1__c )||ISCHANGED(Key_stakeholder_2__c )||ISCHANGED(Key_stakeholder_3__c )||ISCHANGED( Qual_o_papel_deste_Stakeholder_1__c )||ISCHANGED(Qual_o_papel_deste_Stakeholder_2__c )||ISCHANGED(Qual_o_papel_deste_Stakeholder_3__c )||ISCHANGED(Qual_o_papel_deste_Stakeholder_4__c )||ISCHANGED( Temos_acesso_ao_Stakeholder_1__c )||ISCHANGED(Temos_acesso_ao_Stakeholder_2__c )||ISCHANGED(Temos_acesso_ao_Stakeholder_3__c )||ISCHANGED(Temos_acesso_ao_Stakeholder_4__c )||ISCHANGED( Ha_budget_disponivel__c )||ISCHANGED( Contato_do_cliente_que_confirmou_orcamen__c )||ISCHANGED( Agility_a_definidora_da_solucao__c )||ISCHANGED( Existem_riscos_ou_restricoes_tecnicas__c )||ISCHANGED( Cliente_que_confirmou_a_Agility__c )||ISCHANGED( Comentarios_restricoes_tecnicas__c )||ISCHANGED( Por_que_seguir_sem_confirmacao_de_Budget__c )||ISCHANGED( Como_e_quando_compras_envolvida__c )||ISCHANGED( Por_que_seguir_s_sermos_definidores__c ))
+*/</errorConditionFormula>
+    <errorMessage>Esta oportunidade já está classificada como Engajada. Não é possível editar informações nos campos desta fase (Msg16)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Propostas_de_Solu_o__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>jn11102018 criação de campo de pesquisa para lincar uma PSL a DSA</description>
+    <inlineHelpText>PSL referente a sua DSA</inlineHelpText>
+    <label>Propostas de Solução</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Propostas_de_Solucao__c.Proposta_Fechada_pelo_Cliente__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Propostas_de_Solucao__c</referenceTo>
+    <relationshipLabel>DSAs</relationshipLabel>
+    <relationshipName>DSAs</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

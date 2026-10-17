@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mestre</fullName>
+    <active>true</active>
+    <label>Mestre</label>
+    <picklistValues>
+        <picklist>Cargo__c</picklist>
+        <values>
+            <fullName>Analista Comercial Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista Desenvolvimento de Sistemas Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista Desenvolvimento de Sistemas Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista Financeiro Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista Financeiro Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista Fiscal Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Contratos Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Contratos e Renovações Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Contratos e Renovações Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Controladoria Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Controladoria Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Entregas Técnicas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Faturamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Governança Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Governança Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Infraestrutura Cloud Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Infraestrutura Devops Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Infraestrutura Devops Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Infraestrutura Devops Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Infraestrutura Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Infraestrutura Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Infraestrutura Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Marketing Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Marketing Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Projeto Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Recursos Humanos Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Segurança da Informação Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Segurança da Informação Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Segurança da Informação Sr I</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Suporte de TI Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Suporte de TI Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de Suporte de Técnico Jr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de departamento Pessoal Sr</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Analista de desenvolvimento de Sistemas Pl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Arquiteto de Soluções</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assistente de Vendas II</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Auxiliar Administrativo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Auxiliar de Estoque</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consultor Técnico de Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consultor Técnico de Sistemas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coordenador Técnico de Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coordenador de Arquitetura e Engenharia de TI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coordenador de Segurança da Informação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coordenador de Suporte de TI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diretor Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diretor Executivo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diretor de Serviços</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Engenheiro de Sistemas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Engenheiro de Sistemas IV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Engenheiro de Sistemas de Segurança Sr II</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Especialista Técnico de Entrega de Aplicações</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Especialista Técnico de Segurança da Informação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estagiario %28a%29 Segurança da Informação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente Financeiro E Operações</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente Regional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente Senior</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente Técnico de Entregas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Contratos e Serviços</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Desenvolvimento de Produtos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Entregas e Serviços</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Projetos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Projetos Técnicos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Recursos Humanos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente de Serviços de Segurança</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Centro_de_Custo__c</picklist>
+        <values>
+            <fullName>Application Delivery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial - Filial Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial - SP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial Mss</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Command Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Corporativo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Success</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cybersecurity</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cybersecurity - Filial Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Digital Transformation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diretoria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Expansão e Canais</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integração Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PMO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Plus - AD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Premium Plus - Itaú</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Produtos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pós-Venda</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Recursos Humanos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovações</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tecnologia Interna - TIC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vendas Técnicas</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

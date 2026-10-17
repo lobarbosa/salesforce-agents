@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Principal_executivo_interessado__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>De acordo com o Cliente qual o principal executivo interessado na resolução deste desafio</inlineHelpText>
+    <label>*Principal executivo interessado</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Oportunidades (Principal Interessado)</relationshipLabel>
+    <relationshipName>OportunidadesJ2om</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

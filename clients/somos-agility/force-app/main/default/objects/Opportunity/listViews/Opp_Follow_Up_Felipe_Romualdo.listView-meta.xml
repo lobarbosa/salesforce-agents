@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Opp_Follow_Up_Felipe_Romualdo</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>N_mero_da_Oportunidade__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <columns>Status__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CORE.USERS.FULL_NAME</field>
+        <operation>contains</operation>
+        <value>Laiz</value>
+    </filters>
+    <label>Opp. Follow-Up - Felipe Romualdo</label>
+    <sharedTo>
+        <role>Solutions_Architect</role>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M43_Atratividade_Valida_fase_OQF</fullName>
+    <active>false</active>
+    <description>JN10092018 criação de regra de validação da fase OQF para a fase CVS com o preenchimento obrigatório do campo novo &quot;Atratividade&quot;. Solicitação efetuada por CT em 06092018.</description>
+    <errorConditionFormula>AND( 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+(ISPICKVAL(PRIORVALUE(StageName),&quot;OQF&quot;) 
+&amp;&amp;ISPICKVAL(StageName,&quot;CVS/RVS&quot;)) ,ISBLANK(TEXT( Atratividade__c )))</errorConditionFormula>
+    <errorMessage>(msg.43)Escolha uma das opções do campo &quot;Atratividade&quot; para avançar  para a próxima fase.</errorMessage>
+</ValidationRule>

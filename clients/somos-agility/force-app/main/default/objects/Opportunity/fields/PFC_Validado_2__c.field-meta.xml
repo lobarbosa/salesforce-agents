@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PFC_Validado_2__c</fullName>
+    <label>PFC Validado 2</label>
+    <summaryFilterItems>
+        <field>Acoes_Pre_Fechamento__c.D_vidas_e_resist_ncias_superadas__c</field>
+        <operation>equals</operation>
+        <value>Sim</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Acoes_Pre_Fechamento__c.Necess_rio_Plano_de_Testes__c</field>
+        <operation>equals</operation>
+        <value>Não</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Acoes_Pre_Fechamento__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

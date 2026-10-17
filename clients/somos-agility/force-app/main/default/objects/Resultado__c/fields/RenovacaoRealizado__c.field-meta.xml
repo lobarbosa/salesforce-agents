@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RenovacaoRealizado__c</fullName>
+    <label>Renovação Realizado</label>
+    <summarizedField>Realizacao_Financeira_de_Venda__c.Renova_o__c</summarizedField>
+    <summaryForeignKey>Realizacao_Financeira_de_Venda__c.Resultado__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

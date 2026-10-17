@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Em_Planejam_somente_de_Analise_ou_Rejei</fullName>
+    <active>true</active>
+    <description>Somente é possível colocar o Status como Em Planejamento a partir do DSA Em Análise ou DSA Rejeitado ou Não Iniciado</description>
+    <errorConditionFormula>ISCHANGED( Project_Status__c )&amp;&amp; 
+TEXT(Project_Status__c) = &quot;Em Planejamento&quot; 
+&amp;&amp; 
+(NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;DSA em Análise&quot;))&amp;&amp;NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;DSA Rejeitado&quot;))&amp;&amp;NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Não iniciado&quot;))&amp;&amp;NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Suspenso&quot;))&amp;&amp;NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Freezing&quot;)))</errorConditionFormula>
+    <errorDisplayField>Project_Status__c</errorDisplayField>
+    <errorMessage>GP, somente pode ser alterado o Status para &quot;Em Planejamento&quot; desde o Status &quot;DSA em Análise&quot;, &quot;DSA Rejeitado&quot;,&quot;Não Iniciado&quot;,&quot;Suspenso&quot; ou &quot;Freezing&quot;</errorMessage>
+</ValidationRule>

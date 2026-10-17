@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Financeiro_Aberto__c</fullName>
+    <label>Valor Financeiro Aberto</label>
+    <summarizedField>Marcos__c.Valor_Financeiro_Aberto__c</summarizedField>
+    <summaryForeignKey>Marcos__c.ID_do_Projeto__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

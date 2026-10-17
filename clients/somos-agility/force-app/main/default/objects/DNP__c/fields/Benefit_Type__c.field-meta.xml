@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Benefit_Type__c</fullName>
+    <inlineHelpText>Tangible benefits can be tied directly to a number.</inlineHelpText>
+    <label>Benefit Type</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Tangible</fullName>
+                <default>false</default>
+                <label>Tangible</label>
+            </value>
+            <value>
+                <fullName>Intangible</fullName>
+                <default>false</default>
+                <label>Intangible</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

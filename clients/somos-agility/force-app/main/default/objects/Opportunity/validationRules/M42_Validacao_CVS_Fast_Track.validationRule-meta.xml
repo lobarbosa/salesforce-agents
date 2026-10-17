@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M42_Validacao_CVS_Fast_Track</fullName>
+    <active>false</active>
+    <description>AM 270618: Validação_CVS_Fast_Track</description>
+    <errorConditionFormula>AND(
+ISCHANGED(StageName), ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;), 
+Validacao_CVS_Fast_Track__c = FALSE,
+BluePrint__r.Sincronizar__c  = TRUE,
+Blueprint_validado__c &lt;&gt; 0,
+Rentabilidade_prevista_CVS__c + Sales_In_Net_previsto_CVS__c  &lt;&gt; 0
+)
+
+
+/*
+FUNCIONA
+AND(
+ISCHANGED(StageName), ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;), 
+Validacao_CVS_Fast_Track__c = FALSE,
+BluePrint__r.Sincronizar__c  = TRUE,
+Blueprint_validado__c &lt;&gt; 0&amp;,
+Rentabilidade_prevista_CVS__c + Sales_In_Net_previsto_CVS__c  &lt;&gt; 0
+)
+
+FT selecionado
+BP não validado
+BP não sincronzado
+Rentabilidade + sales in zerado
+*/</errorConditionFormula>
+    <errorMessage>Para CVS Fast Track não deve existir um Blueprint e nem Previsão Financeira de Venda (Msg41).</errorMessage>
+</ValidationRule>

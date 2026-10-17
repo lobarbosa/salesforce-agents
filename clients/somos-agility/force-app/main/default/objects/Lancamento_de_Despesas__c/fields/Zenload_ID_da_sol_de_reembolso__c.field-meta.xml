@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Zenload_ID_da_sol_de_reembolso__c</fullName>
+    <description>Campo criado para integração com Zenload - Atualizado em 23/07.</description>
+    <externalId>false</externalId>
+    <formula>Solicitacao_de_Reembolso__r.Name</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Zenload - ID da sol. de reembolso</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

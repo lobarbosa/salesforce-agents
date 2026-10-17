@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atribuido_a__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>AM 25042018: lista relacionada para designar o SE. JN 050402018 alteração de rotulo de Atribuido a para Executado por:</description>
+    <label>Executado por</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Atividade do Caso</relationshipLabel>
+    <relationshipName>Atividade_do_Caso</relationshipName>
+    <required>true</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

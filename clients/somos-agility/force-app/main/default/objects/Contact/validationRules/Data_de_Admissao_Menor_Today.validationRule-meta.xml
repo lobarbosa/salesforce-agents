@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Admissao_Menor_Today</fullName>
+    <active>false</active>
+    <description>A Data de Admissão deve ser menor/igual que a data de hoje</description>
+    <errorConditionFormula>Data_de_Admissao__c &gt; Today()+15</errorConditionFormula>
+    <errorMessage>A Data de Admissão deve ser menor/igual que a data de hoje</errorMessage>
+</ValidationRule>

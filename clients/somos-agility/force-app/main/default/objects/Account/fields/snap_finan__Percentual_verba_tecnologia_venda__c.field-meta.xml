@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Percentual_verba_tecnologia_venda__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Indica o % para cálculo da verba de tecnologia na venda.</description>
+    <inlineHelpText>Indica o % para cálculo da verba de tecnologia na venda.</inlineHelpText>
+    <label>% Verba de tecnologia na venda</label>
+    <precision>14</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Percent</type>
+</CustomField>

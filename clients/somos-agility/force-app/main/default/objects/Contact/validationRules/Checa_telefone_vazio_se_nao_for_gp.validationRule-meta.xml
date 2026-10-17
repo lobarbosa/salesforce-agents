@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_telefone_vazio_se_nao_for_gp</fullName>
+    <active>true</active>
+    <description>Checa se o campo telefone (phone) está vazio e o usuário não é grupo projetos.</description>
+    <errorConditionFormula>AND(
+    ISBLANK(Phone),
+    $Profile.Name &lt;&gt; &quot;Gerente de Projetos&quot;
+)</errorConditionFormula>
+    <errorMessage>Preencha o campo telefone (phone).</errorMessage>
+</ValidationRule>

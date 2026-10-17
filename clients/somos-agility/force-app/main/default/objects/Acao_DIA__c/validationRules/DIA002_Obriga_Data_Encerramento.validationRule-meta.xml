@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DIA002_Obriga_Data_Encerramento</fullName>
+    <active>true</active>
+    <description>FO 25/02: Obriga Data de Encerramento quando status do DIA é igual a Sucesso ou Insucesso.</description>
+    <errorConditionFormula>ISPICKVAL( Resultado_da_Acao_DIA__c , &quot;Sucesso&quot;) &amp;&amp;  ISBLANK( Comentarios_e_instrucoes__c )  || ISPICKVAL( Resultado_da_Acao_DIA__c , &quot;Insucesso&quot;) &amp;&amp;  ISBLANK( Comentarios_e_instrucoes__c )</errorConditionFormula>
+    <errorDisplayField>Comentarios_e_instrucoes__c</errorDisplayField>
+    <errorMessage>O campo é obrigatório em caso de Sucesso Insucesso da Ação DIA</errorMessage>
+</ValidationRule>

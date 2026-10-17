@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Ativacao_dos_Equipamentos_nula</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISBLANK( Data_de_Ativacao_dos_Equipamentos__c ) ,Autorizar_Notificacao_de_Risco_Suporte__c =True)</errorConditionFormula>
+    <errorDisplayField>Autorizar_Notificacao_de_Risco_Suporte__c</errorDisplayField>
+    <errorMessage>Somente é possível autorizar caso a Data de Ativação dos Equipamentos esteja preenchida.</errorMessage>
+</ValidationRule>

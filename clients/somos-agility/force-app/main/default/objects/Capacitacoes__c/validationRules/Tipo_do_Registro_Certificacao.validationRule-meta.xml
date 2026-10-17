@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_do_Registro_Certificacao</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF(RecordType.Id  = &apos;01238000000UVtJ&apos; &amp;&amp;
+ Exame__r.RecordType.Id  &lt;&gt; &apos;01238000000UVtT&apos;,True,False)</errorConditionFormula>
+    <errorDisplayField>Exame__c</errorDisplayField>
+    <errorMessage>O tipo do Exame é diferente do tipo de registro da capacitação</errorMessage>
+</ValidationRule>

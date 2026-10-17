@@ -1,0 +1,36 @@
+<apex:page standardcontroller="Case" tabstyle="Case">
+ 
+ <apex:form >
+ 
+ <apex:sectionheader title="Fechar Caso" ></apex:sectionheader>
+ 
+ <apex:pageblock mode="edit" id="CaseRC" title="Fechar Caso">
+ 
+   <apex:pageBlockButtons >
+      <apex:commandButton action="{!save}" value="Salvar"/>
+           <apex:commandButton value="Cancelar" rerender="out,in" action="{!cancel}" id="cancelButton" />
+     </apex:pageBlockButtons>
+ 
+<apex:pageblockSection title="Fechamento do Caso" columns="1" >
+
+
+<apex:selectList id="Status" value="{!Case.Status}" size="1">
+
+<apex:selectoption itemLabel="Fechado" itemValue="Fechado"></apex:selectoption>
+
+</apex:selectList>
+
+
+       
+<apex:inputField value="{!Case.Detalhes_do_Fechamento__c}" required="true" style="width: 455px;heigth:455px;"/>
+
+  </apex:pageblocksection>
+
+ 
+
+ 
+ </apex:pageblock>
+ 
+ </apex:form>
+ 
+</apex:page>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ambiente_que_o_Hardware_sera_Instalado__c</fullName>
+    <description>Campo descritivo do local que o hardware será instalado dentro da empresa</description>
+    <externalId>false</externalId>
+    <label>Ambiente que o Hardware será Instalado</label>
+    <length>100</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

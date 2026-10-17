@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cargo_Contato_1_OEG__c</fullName>
+    <description>AM 06042018: campo para informar o contato informado na fase OQF inserido na fase OEG pelo Process Builder - _Pre preenchimento OEG-OQF</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Confirme que é o contato na empresa afetado pela &quot;DOR&quot;.</inlineHelpText>
+    <label>Cargo Contato 1 OEG</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_NFR</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Faturamento__c , &quot;NFR&quot;), 
+(OR(ISBLANK(Observa_o_NFR__c))
+)
+)</errorConditionFormula>
+    <errorMessage>Quando o Status do Faturamento for NFR, Preencher o campo Observação NFR e Nota Fiscal NFR, e dizer qual é o status - Aberto ou Fechado.</errorMessage>
+</ValidationRule>

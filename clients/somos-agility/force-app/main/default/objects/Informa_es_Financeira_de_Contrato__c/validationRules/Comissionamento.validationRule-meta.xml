@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Comissionamento</fullName>
+    <active>true</active>
+    <errorConditionFormula>Porcentagem_de_Comissionamento__c&gt;0.04</errorConditionFormula>
+    <errorDisplayField>Porcentagem_de_Comissionamento__c</errorDisplayField>
+    <errorMessage>Porcentagem de Comissionamento deve estar entre 0 à 4%</errorMessage>
+</ValidationRule>

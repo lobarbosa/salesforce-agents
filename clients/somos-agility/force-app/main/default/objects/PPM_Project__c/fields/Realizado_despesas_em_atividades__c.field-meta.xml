@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Realizado_despesas_em_atividades__c</fullName>
+    <description>AM201118: soma dos lançamentos de despesas</description>
+    <label>Realizado despesas em atividades</label>
+    <summarizedField>Despesa_reembolsavel__c.Despesa_total__c</summarizedField>
+    <summaryFilterItems>
+        <field>Despesa_reembolsavel__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Aprovado</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Despesa_reembolsavel__c.Projetos__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusPsl__c</fullName>
+    <label>Fase</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Criação de Proposta</fullName>
+                <default>true</default>
+                <label>Criação de Proposta</label>
+            </value>
+            <value>
+                <fullName>PFP Base</fullName>
+                <default>false</default>
+                <label>PFP Base</label>
+            </value>
+            <value>
+                <fullName>Especificação Técnica</fullName>
+                <default>false</default>
+                <label>Especificação Técnica</label>
+            </value>
+            <value>
+                <fullName>Margens e Condições Comerciais</fullName>
+                <default>false</default>
+                <label>Margens e Condições Comerciais</label>
+            </value>
+            <value>
+                <fullName>Confecção de proposta</fullName>
+                <default>false</default>
+                <label>Confecção de proposta</label>
+            </value>
+            <value>
+                <fullName>Proposta enviada ao cliente</fullName>
+                <default>false</default>
+                <label>Proposta enviada ao cliente</label>
+            </value>
+            <value>
+                <fullName>Retorno do cliente</fullName>
+                <default>false</default>
+                <label>Retorno do cliente</label>
+            </value>
+            <value>
+                <fullName>Envio da Proposta ao Cliente</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Envio da Proposta ao Cliente</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_DSA</fullName>
+    <active>false</active>
+    <errorConditionFormula>OR(ISPICKVAL(  Aceite_do_Cliente__c  , &quot;Não&quot;), 
+ISPICKVAL(  Planilha_de_Forma_ao_de_pre_os__c  , &quot;Não&quot;) , 
+ISPICKVAL(  Proposta_de_Compra__c , &quot;Não&quot;), 
+ISPICKVAL(  Proposta_Final_de_Venda__c   , &quot;Não&quot;))</errorConditionFormula>
+    <errorDisplayField>Aceite_do_Cliente__c</errorDisplayField>
+    <errorMessage>Para criar um DSA é necessário anexar o Aceite do cliente, Proposta Final de Venda, Proposta de Compra e a Planilha de Formação de Preços.</errorMessage>
+</ValidationRule>

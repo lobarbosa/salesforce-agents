@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PM__c</fullName>
+    <description>jn08082018 criação do campo PM, solciitado por Tatiane Sousa pelo chamado 2018009296.</description>
+    <inlineHelpText>O responsável técnico será selecionado através da escolha do departamento responsável.</inlineHelpText>
+    <label>Responsável técnico</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Compet_ncias_Envolvidas__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ailton Augusto da Silva</fullName>
+                <default>false</default>
+                <label>Ailton Augusto da Silva</label>
+            </value>
+            <value>
+                <fullName>Eduardo Pasquotto Orsolini</fullName>
+                <default>false</default>
+                <label>Eduardo Pasquotto Orsolini</label>
+            </value>
+            <value>
+                <fullName>Everton Bezerra Lima</fullName>
+                <default>false</default>
+                <label>Everton Bezerra Lima</label>
+            </value>
+            <value>
+                <fullName>Gustavo Fernandes Eduardo</fullName>
+                <default>false</default>
+                <label>Gustavo Fernandes Eduardo</label>
+            </value>
+            <value>
+                <fullName>Hugo Andre Tadeu Novo Saadi</fullName>
+                <default>false</default>
+                <label>Hugo Andre Tadeu Novo Saadi</label>
+            </value>
+            <value>
+                <fullName>Julio Claudio Augusto de Toledo</fullName>
+                <default>false</default>
+                <label>Julio Claudio Augusto de Toledo</label>
+            </value>
+            <value>
+                <fullName>Plinio Eduardo Corregio</fullName>
+                <default>false</default>
+                <label>Plinio Eduardo Corregio</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Multi-cloud</controllingFieldValue>
+            <controllingFieldValue>IA</controllingFieldValue>
+            <valueName>Everton Bezerra Lima</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Integração Segurança</controllingFieldValue>
+            <controllingFieldValue>EA</controllingFieldValue>
+            <valueName>Gustavo Fernandes Eduardo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IA</controllingFieldValue>
+            <controllingFieldValue>CDC</controllingFieldValue>
+            <controllingFieldValue>Red team / PAM</controllingFieldValue>
+            <valueName>Hugo Andre Tadeu Novo Saadi</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CDC</controllingFieldValue>
+            <controllingFieldValue>Red team / PAM</controllingFieldValue>
+            <valueName>Plinio Eduardo Corregio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GPD</controllingFieldValue>
+            <valueName>Eduardo Pasquotto Orsolini</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Premium Plus AD</controllingFieldValue>
+            <valueName>Ailton Augusto da Silva</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Premium Plus dedicado</controllingFieldValue>
+            <valueName>Julio Claudio Augusto de Toledo</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

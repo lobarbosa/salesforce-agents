@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SE_Responsavel__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;&quot;
+
+
+/*
+Oportunidade__r.SE_SA_Reponsavel__r.FirstName &amp;&apos; &apos;&amp;  Oportunidade__r.SE_SA_Reponsavel__r.LastName  &amp;&apos; , &apos;&amp;  Oportunidade__r.SE_SA_Responsavel_DC_C__r.FirstName &amp;&apos; &apos;&amp;  Oportunidade__r.SE_SA_Responsavel_DC_C__r.LastName &amp;&apos; , &apos;&amp;  Oportunidade__r.SE_SA_Responsavel_SEG__r.FirstName &amp;&apos; &apos;&amp;  Oportunidade__r.SE_SA_Responsavel_SEG__r.LastName &amp;&apos; . &apos;&amp; Oportunidade__r.SE_SA_Responsavel_Cloud__r.FirstName &amp;&apos; &apos;&amp; Oportunidade__r.SE_SA_Responsavel_Cloud__r.LastName
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>SE Responsável</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

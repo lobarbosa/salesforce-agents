@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fase_do_Projeto__c</fullName>
+    <label>Fase do Projeto</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Construção</fullName>
+                <default>false</default>
+                <label>Construção</label>
+            </value>
+            <value>
+                <fullName>Documentação</fullName>
+                <default>false</default>
+                <label>Documentação</label>
+            </value>
+            <value>
+                <fullName>Fechamento</fullName>
+                <default>false</default>
+                <label>Fechamento</label>
+            </value>
+            <value>
+                <fullName>Planejamento</fullName>
+                <default>false</default>
+                <label>Planejamento</label>
+            </value>
+            <value>
+                <fullName>Validação</fullName>
+                <default>false</default>
+                <label>Validação</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

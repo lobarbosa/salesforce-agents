@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__telefone_faturamento__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Número de telefone utilizado para a emissão de nota fiscal</description>
+    <inlineHelpText>Número de telefone utilizado para a emissão de nota fiscal</inlineHelpText>
+    <label>Telefone para faturamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Phone</type>
+</CustomField>

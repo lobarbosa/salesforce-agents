@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quantidade_de_Processamentos_Urgentes</fullName>
+    <active>false</active>
+    <errorConditionFormula>Quantidade_de_Pedidos_Urgentes__c &gt;=2</errorConditionFormula>
+    <errorMessage>Este DSA já possui um Pedido Urgente.</errorMessage>
+</ValidationRule>

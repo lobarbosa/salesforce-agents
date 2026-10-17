@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_do_Contrato__c</fullName>
+    <label>Tipo do Contrato</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Novo (Sales In)</fullName>
+                <default>false</default>
+                <label>Novo (Sales In)</label>
+            </value>
+            <value>
+                <fullName>Renovação (Sales Out)</fullName>
+                <default>false</default>
+                <label>Renovação (Sales Out)</label>
+            </value>
+            <value>
+                <fullName>Upgrade de Contrato</fullName>
+                <default>false</default>
+                <label>Upgrade de Contrato</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

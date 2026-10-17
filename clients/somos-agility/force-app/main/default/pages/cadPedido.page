@@ -1,0 +1,261 @@
+<apex:page Controller="clsCadPedido" showHeader="{!Barras}"
+    tabStyle="Pedido__c" sidebar="false">
+    <!--Bibliotecas Jquery-->
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.JqueryUI, '/ui/jquery-ui.js')}" />
+    <!--Bibliotecas PrimeUI-->
+    <apex:includeScript value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.js')}" />
+    <!---------------------->
+    <!--CSS do PrimeUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.css')}" />
+    <!--CSS do JqueryUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryUI, '/themes/base/jquery-ui.css')}" />
+    <!---------------------->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/themes/overcast/theme.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/css/tabview/tabview.css')}" />
+    <!---------------------->
+    <script type="text/javascript">
+          
+          var Pos=0;
+          var Produto="{!(if(Produtos.size>0,'1','0'))}";
+          var Servico="{!(if(Servicos.size>0,'1','0'))}";
+          var Contrato="{!(if(ContratoSuportes.size>0,'1','0'))}";
+          var Locacao="{!(if(Locacoes.size>0,'1','0'))}";
+        if (Produto=="1"){
+                Pos=1;
+            }
+        else if (Servico=="1"){
+                Pos=2;
+            }
+        else if (Contrato=="1"){
+                Pos=3;
+            }
+        else if (Locacao=="1"){
+                Pos=4;
+            }
+           //alert(Pos); 
+          $(document).ready(function(){ 
+           $('#default').puitabview({
+            orientation: 'top',
+            activeIndex:(Pos)}  
+           ); 
+           }); 
+    </script>
+    
+    <style>
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+    {
+    border: 0px solid #d3d3d3;
+    background: #CDE8F0 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #555555;
+}
+
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited
+    {
+    color: #555555;
+    text-decoration: none;
+}
+
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus
+    {
+    border: 1px solid #999999;
+    background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-hover a,.ui-state-hover a:hover {
+    color: #212121;
+    text-decoration: none;
+}
+
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active
+    {
+    border: 1px solid #aaaaaa;
+    background: #a62264 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.ui-widget :active {
+    outline: none;
+}
+
+.ui-widget-content {
+    border: 1px solid #aaaaaa;
+    background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50%
+        repeat-x;
+    color: #222222;
+}
+
+.ui-widget-content a {
+    color: #222222;
+}
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    background: #CDE8F0 url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
+        50% 50% repeat-x;
+    color: black;
+    font-weight: bold;
+}
+
+.ui-widget-header a {
+    color: #CDE8F0;
+    font-weight: bold;
+}
+</style>
+    <apex:form id="frmPedido">
+       <input type="hidden" id="hMsg" value="{!Mensagem}"/>
+       <input type="hidden" id="hConv" value="{!Conv}"/>
+       <input type="hidden" value="{!idNegociacao}" name="idNegociacao"
+            id="idNegociacao" />
+        <div id="default" style="height: auto; display: block">
+            <ul>
+                <li><a href="#tab1" style="display:{!ConvertidoOK}">Relações de Pedidos</a></li>
+                <li><a href="#tab2" style="display:{!(if(Produtos.size>0,'block','none'))}">Produto</a></li>
+                <li><a href="#tab3" style="display:{!(if(Servicos.size>0,'block','none'))}">Servico</a></li>
+                <li><a href="#tab4" style="display:{!(if(ContratoSuportes.size>0,'block','none'))}">Contrato de Suporte</a></li>
+                <li><a href="#tab5" style="display:{!(if(Locacoes.size>0,'block','none'))}">Contrato de Locação</a></li>
+            </ul>
+            <div>
+                <!-- Aqui começa a parte de Pedidos-->
+                <div id="tab1">
+                    <!-- Releated List Contratos -->
+                            <apex:pageBlock title="Pedidos">
+                                <apex:pageBlockTable value="{!Pedido}"
+                                    var="child">
+                                    <apex:column headervalue="Núm. do Pedido">
+                                        <apex:outputLink value="/{!child.id}" target="_top">{!child.Name}</apex:outputLink>
+                                    </apex:column>
+                                </apex:pageBlockTable>
+                            </apex:pageBlock>
+                            <br />
+                </div>
+                <!--Aqui termina a parte de pedidos-->
+                <!-- Aqui começa a parte de produtos-->
+                <div id="tab2">
+                    <apex:pageBlock mode="edit">
+                        <apex:pageBlockSection columns="1">
+                            
+                            <apex:repeat value="{!Produtos}" var="aProd">
+                                <apex:outputText >Nome do Cliente: {!aProd.CNPJ_de_Destino__r.name}</apex:outputText>
+                                <apex:outputText >CNPJ de Destino: {!aProd.CNPJ_de_Destino__r.CNPJ__c}</apex:outputText>
+                                
+                                <apex:outputText >Código Fiscal de Compra: {!aProd.Categoria_de_Compra__r.Codigo_NewAge__c} -  {!aProd.Categoria_de_Compra__r.Descricao__c}</apex:outputText>
+                                <apex:outputText >Código Fiscal de Venda: {!aProd.Categoria__r.Codigo_NewAge__c} -  {!aProd.Categoria__r.Descricao__c}</apex:outputText>    
+                                <apex:inputField value="{!aProd.Envolve_Trade_In__c}" />
+                                <apex:inputField value="{!aProd.Descricao_Trade_in__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aProd.Requer_Acao_Emergencial_na_Pos_Venda__c}" />
+                                <apex:inputField value="{!aProd.Descricao_Acao_Emergencial__c}" style="width:350px;height:30px;"/>
+                                <hr />
+                                <br />
+                            </apex:repeat>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </div>
+                <!--Aqui termina a parte de produtos-->
+                <!-- Aqui começa a parte de serviços-->
+                <div id="tab3">
+                    <apex:pageBlock mode="edit">
+                        <apex:pageBlockSection columns="1">
+                            <apex:repeat value="{!Servicos}" var="aServ">
+                                <apex:outputText >Nome do Cliente: {!aServ.CNPJ_Destino__r.name}</apex:outputText>
+                                <apex:outputText >CNPJ de Destino: {!aServ.CNPJ_Destino__r.CNPJ__c}</apex:outputText>
+                                <apex:inputField value="{!aServ.Name}" />
+                                <apex:inputField value="{!aServ.Objetivo_do_Projeto__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aServ.Data_ideal_Primeiro_Contato__c}" />
+                                <apex:inputField value="{!aServ.Instrucoes_Adicionais__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aServ.Requer_Acao_Emergencial_na_Pos_Venda__c}" />
+                                <apex:inputField value="{!aServ.Descricao_Acao_Emergencial__c}" style="width:350px;height:30px;"/>
+                                <hr />
+                                <br />
+                            </apex:repeat>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </div>
+                <!--Aqui termina a parte de serviços-->
+                <!-- Aqui começa a parte de Contratos de servicos-->
+                <div id="tab4">
+                    <apex:pageBlock mode="edit">
+                        <apex:pageBlockSection columns="1">
+                            <apex:repeat value="{!ContratoSuportes}" var="aContSup">
+                                <apex:outputText >Nome do Cliente: {!aContSup.CNPJ_de_Destino__r.name}</apex:outputText>
+                                <apex:outputText >CNPJ de Destino: {!aContSup.CNPJ_de_Destino__r.CNPJ__c}</apex:outputText>
+                                <apex:inputField value="{!aContSup.Name}" />
+                                <apex:inputField value="{!aContSup.Prazo_do_contrato__c}" />
+                                <apex:inputField value="{!aContSup.Indice_de_Reajuste__c}" />
+                                <apex:inputField value="{!aContSup.Descricao_do_Indice__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aContSup.Minuta__c}" />
+                                <apex:inputField value="{!aContSup.Clausulas_com_acordos_Especiais__c}" />
+                                <apex:inputField value="{!aContSup.Descricao_Acordos_Especiais__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aContSup.Usuario_Principal_no_Cliente__c}" />
+                                <apex:inputField value="{!aContSup.Ativacao_do_Contrato__c}" />
+                                <apex:inputField value="{!aContSup.Tipo_de_Faturamento__c}" />
+                                <apex:inputField value="{!aContSup.Descricao_Tipo_de_Faturamento__c}" style="width:350px;height:30px;" />
+                                <apex:inputField value="{!aContSup.Instrucoes_Adicionais__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aContSup.Requer_Acao_Emergencial_na_Pos_Venda__c}" />
+                                <apex:inputField value="{!aContSup.Descricao_Acao_Emergencial__c}" style="width:350px;height:30px;"/>
+                                <hr />
+                                <br />
+                            </apex:repeat>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </div>
+                <!--Aqui termina a parte de Contratos de Suporte-->
+                <!-- Aqui começa a parte de Locações-->
+                <div id="tab5">
+                    <apex:pageBlock mode="edit">
+                        <apex:pageBlockSection columns="1">
+                            <apex:repeat value="{!Locacoes}" var="aLoc">
+                                <apex:outputText >Nome do Cliente: {!aLoc.CNPJ_Destino__r.name}</apex:outputText>
+                                <apex:outputText >CNPJ de Destino: {!aLoc.CNPJ_Destino__r.CNPJ__c}</apex:outputText>
+                                <apex:inputField value="{!aLoc.Name}" />
+                                <apex:inputField value="{!aLoc.Prazo_de_Duracao__c}" />
+                                <apex:inputField value="{!aLoc.Indice_de_Reajuste__c}" />
+                                <apex:inputField value="{!aLoc.Descricao_Indice_Reajuste__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aLoc.Minuta__c}" />
+                                <apex:inputField value="{!aLoc.Modificar_Clausula_Padrao_de_Cancelamane__c}" />
+                                <apex:inputField value="{!aLoc.Justificativa_Clausula_Padrao__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aLoc.Clausulas_com_acordos_Especiais__c}" />
+                                <apex:inputField value="{!aLoc.Descritivo_Clausulas_com_Acordo__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aLoc.Usuario_Principal_no_Cliente__c}" />
+                                <apex:inputField value="{!aLoc.Ativacao_do_Suporte_Referente_a_Locacao__c}" />
+                                <apex:inputField value="{!aLoc.Tipo_de_Faturamento__c}" />
+                                <apex:inputField value="{!aLoc.Parcela_Final_de_Opcao_de_Compra__c}" />
+                                <apex:inputField value="{!aLoc.Descricao_Parcela_Final__c}" style="width:350px;height:30px;"/>
+                                <apex:inputField value="{!aLoc.Instrucoes_Adicionais__c}" style="width:350px;height:30px;" />
+                                <apex:inputField value="{!aLoc.Requer_Acao_Emergencial_na_Pos_Venda__c}" />
+                                <apex:inputField value="{!aLoc.Descricao_Acao_Emergencial__c}" style="width:350px;height:30px;"/>
+                                <hr />
+                                <br />
+                            </apex:repeat>
+                        </apex:pageBlockSection>
+                    </apex:pageBlock>
+                </div>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <center>
+        <apex:commandButton action="{!SalvarPedido}" id="btnSalvarPedido" value="Salvar" style="display:{!if(ConvertidoOK=='none','block','none')}"/>
+        <apex:outputText value="" escape="false" >{!Mensagem}</apex:outputText>
+        </center>
+    </apex:form>
+    <script type='text/javascript'>
+    var idNegociacao=document.getElementById("idNegociacao").value;
+    if(document.getElementById("hConv").value=="2"){
+        alert('Criação de Pedidos realizada com sucesso');
+        window.open('https://na3.salesforce.com/apex/cadNegociacaoComercial?id=' +idNegociacao,'_top');
+    }
+    </script>
+</apex:page>

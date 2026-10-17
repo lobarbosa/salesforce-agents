@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Decisor_Influenciador_SEG__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Decisor / Influenciador SEG</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Account Plans (Decisor / Influenciador SEG)</relationshipLabel>
+    <relationshipName>Account_Plans7</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

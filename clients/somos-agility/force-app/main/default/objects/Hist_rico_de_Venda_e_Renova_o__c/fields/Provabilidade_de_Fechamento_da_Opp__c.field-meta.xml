@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Provabilidade_de_Fechamento_da_Opp__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (ISPICKVAL( Oportunidade_cadastrada_de_Renova_o__r.Certeza_do_Fechamento__c  ,&quot;Commit - 100%&quot;), 
+&quot;Commit - 100%&quot;, 
+IF (ISPICKVAL( Oportunidade_cadastrada_de_Renova_o__r.Certeza_do_Fechamento__c  ,&quot;Best Effort - 75%&quot;), 
+&quot;Best Effort - 75%&quot;, 
+IF (ISPICKVAL( Oportunidade_cadastrada_de_Renova_o__r.Certeza_do_Fechamento__c  ,&quot;Best Case - 50%&quot;), 
+&quot;Best Case - 50%&quot;, 
+IF (ISPICKVAL( Oportunidade_cadastrada_de_Renova_o__r.Certeza_do_Fechamento__c  ,&quot;Unknown - &lt; 50%&quot;), 
+&quot;Unknown - &lt; 50%&quot;, &apos;&apos;)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Provabilidade de Fechamento da Opp</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

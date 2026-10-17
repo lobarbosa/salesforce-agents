@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_em_sua_Ausencia__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Contato em sua Ausência</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Solicitação de Férias (Contato em sua Ausência)</relationshipLabel>
+    <relationshipName>Solicitaco_de_Ferias</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

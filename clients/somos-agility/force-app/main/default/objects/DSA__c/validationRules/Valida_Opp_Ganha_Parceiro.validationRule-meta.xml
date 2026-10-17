@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_Opp_Ganha_Parceiro</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( CONTAINS( Oportunidade__r.RecordType.Name , &apos;Parceiros&apos;),  NOT(ISPICKVAL(Oportunidade__r.StageName,&apos;Fechado ganho&apos;)))</errorConditionFormula>
+    <errorMessage>Para criar um DSA, é necessário que a sua oportunidade esteja devidamente fechada ganha.
+Retorne na oportunidade, na aba Atividade da Fase, localizada na parte central de sua tela e siga o procedimento de Fechamento.</errorMessage>
+</ValidationRule>

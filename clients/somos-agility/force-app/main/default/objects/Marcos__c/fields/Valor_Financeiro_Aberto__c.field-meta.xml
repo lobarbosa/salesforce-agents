@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Financeiro_Aberto__c</fullName>
+    <label>Valor Financeiro Aberto</label>
+    <summarizedField>Atividade_financeira_do_marco__c.Valor_Previsto_Reais__c</summarizedField>
+    <summaryFilterItems>
+        <field>Atividade_financeira_do_marco__c.Atividade_Conclu_da__c</field>
+        <operation>equals</operation>
+        <value>False</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Atividade_financeira_do_marco__c.Marcos__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

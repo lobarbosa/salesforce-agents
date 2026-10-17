@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Executor_nome_completo__c</fullName>
+    <description>AM141118: nome para visualizar no list view dos lançamentos no marco</description>
+    <externalId>false</externalId>
+    <formula>Executor_atividade__r.ContatoExecutor__r.FirstName &amp; &quot; &quot; &amp; Executor_atividade__r.ContatoExecutor__r.LastName
+
+/*
+
+Executor_atividade__r.Nome_Executor__r.FirstName &amp; &quot; &quot; &amp;  Executor_da_atividade__r.LastName
+
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Executor nome completo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

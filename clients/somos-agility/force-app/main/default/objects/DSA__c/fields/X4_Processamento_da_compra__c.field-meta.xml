@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X4_Processamento_da_compra__c</fullName>
+    <inlineHelpText>Data da confirmação de processamento no 4° distribuidor.</inlineHelpText>
+    <label>4° Processamento da compra</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

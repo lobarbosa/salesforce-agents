@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M37_Trava_para_voltar_fase</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / AM 08032018: teste de regra impossibilitando voltar para qualquer fase anterior</description>
+    <errorConditionFormula>AND( 
+    $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+    $Profile.Name &lt;&gt; &quot;Service Manager&quot;, 
+    $Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+    $Profile.Name &lt;&gt; &quot;Renovações&quot;,
+    CASE( StageName , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,2, 
+&quot;OEG&quot;,3, 
+&quot;PSL&quot;,4, 
+&quot;PFC&quot;,5, 
+&quot;NEC&quot;,6, 
+&quot;FPR&quot;,7, 
+0)
+&lt;
+CASE(PRIORVALUE(StageName) , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,1, 
+&quot;OEG&quot;,3, 
+&quot;PSL&quot;,4, 
+&quot;PFC&quot;,4, 
+&quot;NEC&quot;,4, 
+&quot;FPR&quot;,7,
+0)
+)
+
+/*
+ORIGINAL
+AND( 
+    $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+    $Profile.Name &lt;&gt; &quot;Service Manager&quot;, 
+    CASE( StageName , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,2, 
+&quot;OEG&quot;,3, 
+&quot;PSL&quot;,4, 
+&quot;PFC&quot;,5, 
+&quot;NEC&quot;,6, 
+&quot;FPR&quot;,7, 
+0)
+&lt;
+CASE(PRIORVALUE(StageName) , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,2, 
+&quot;OEG&quot;,3, 
+&quot;PSL&quot;,4, 
+&quot;PFC&quot;,4, 
+&quot;NEC&quot;,4, 
+&quot;FPR&quot;,7,
+0)
+)
+*/</errorConditionFormula>
+    <errorDisplayField>StageName</errorDisplayField>
+    <errorMessage>Não é possível voltar para  fase anterior (Msg37)</errorMessage>
+</ValidationRule>

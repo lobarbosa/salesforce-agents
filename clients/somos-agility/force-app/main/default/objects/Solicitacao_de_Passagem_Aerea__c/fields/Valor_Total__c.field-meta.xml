@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total__c</fullName>
+    <formula>(((Valor_Unitario_da_Locacao_de_Veiculo__c * Quantidade_de_Diarias__c) + (Valor_Unitario_da_Passagem_da_Ida__c + Valor_Unitario_da_Passagem_da_Volta__c + Reemissao_se_Aplicavel__c) * Quantidade_de_Passageiros__c) * Cambio_Turismo__c + (Valor_Unitario_da_Hospedagem__c * Quantidade_de_Diarias__c * Quantidade_de_Passageiros__c * Cambio_Turismo__c))
+
+/* (( (Valor_Unitario_da_Locacao_de_Veiculo__c * Quantidade_de_Diarias__c)+  Valor_Unitario_da_Passagem_da_Ida__c+ Valor_Unitario_da_Passagem_da_Volta__c + Reemissao_se_Aplicavel__c  )* Quantidade_de_Passageiros__c )*Cambio_Turismo__c + ( Valor_Unitario_da_Hospedagem__c * Quantidade_de_Diarias__c *Cambio_Turismo__c)
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor Total</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

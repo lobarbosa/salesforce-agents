@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alteração de Status
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <formulas>
+        <name>Atualizar_Status_Anterior_do_ProjetoFormula</name>
+        <dataType>String</dataType>
+        <expression>TEXT(PRIORVALUE( $Record.Project_Status__c) )</expression>
+    </formulas>
+    <label>Alteração de Status</label>
+    <migratedFromWorkflowRuleName>Alteração de Status</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Status_Anterior_do_Projeto__c</field>
+            <value>
+                <elementReference>Atualizar_Status_Anterior_do_ProjetoFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>ISCHANGED({!$Record.Project_Status__c})&amp;&amp;TEXT({!$Record.Project_Status__c} ) &lt;&gt;&quot;&quot;</filterFormula>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_horario__c</fullName>
+    <description>AM101118: campo que valida horário até 18 horas</description>
+    <externalId>false</externalId>
+    <formula>IF(
+OR(
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2018-12-25&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-1-1&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-1-25&quot;),
+/*DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-2-5&quot;),*/
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-4-19&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-4-21&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-5-1&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-7-9&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-9-7&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-10-12&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-11-2&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-11-15&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-11-20&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2019-12-25&quot;),
+DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(&quot;2020-1-1&quot;)
+
+),
+    &quot;Hora não comercial&quot;,
+
+IF( 
+    OR(
+        WEEKDAY(DATEVALUE(Inicio_da_atividade__c)) = 1,
+        WEEKDAY(DATEVALUE(Inicio_da_atividade__c)) = 7,
+        WEEKDAY(DATEVALUE(Fim_da_atividade__c)) = 1,
+        WEEKDAY(DATEVALUE(Fim_da_atividade__c)) = 7
+    ), 
+    &quot;Hora não comercial&quot;,
+
+    IF( 
+        AND(
+            Data_Inicio_Atividade__c = DATEVALUE(Fim_da_atividade__c) 
+            ,VALUE(MID(TEXT(Inicio_da_atividade__c  - 2/24), 12, 2)) &gt;= 0
+            ,VALUE(MID(TEXT(Fim_da_atividade__c  - 2/24), 12, 2)) &lt;= 8
+            ,Duracao_da_atividade__c &lt;= 8
+        ), 
+        &quot;Hora não comercial&quot;,
+    
+        IF(
+            AND(
+                VALUE( MID( TEXT( Inicio_da_atividade__c - 2/24), 12, 2 ) ) &gt;= 8
+                ,VALUE( MID( TEXT( Fim_da_atividade__c - 2/24), 12, 2 ) ) &lt;= 18
+                ,DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(Fim_da_atividade__c)
+                ,Duracao_da_atividade__c &lt;= 10
+            ),
+            &quot;Hora comercial&quot;,
+    
+            IF(
+                AND(
+                    VALUE( MID( TEXT( Inicio_da_atividade__c - 2/24), 12, 2 ) ) &gt;= 18
+                    ,VALUE( MID( TEXT( Fim_da_atividade__c - 2/24), 12, 2 ) ) &lt;= 8
+                    ,DATEVALUE(Inicio_da_atividade__c) &lt;&gt; DATEVALUE(Fim_da_atividade__c)
+                    ,Duracao_da_atividade__c &lt;= 14
+                ),
+                &quot;Hora não comercial&quot;,
+    
+                IF(
+                    AND(
+                        DATEVALUE(Inicio_da_atividade__c) = DATEVALUE(Fim_da_atividade__c) 
+                        ,VALUE( MID( TEXT( Inicio_da_atividade__c  - 2/24), 12, 2 )) &gt;= 18
+                        ,VALUE( MID( TEXT( Fim_da_atividade__c  - 2/24), 12, 2 )) &lt;= 24
+                        ,Duracao_da_atividade__c &lt;= 6
+                    ),
+                    &quot;Hora não comercial&quot;
+                    ,&quot;Inválido&quot;
+                )
+            ) 
+        )
+    )
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Tipo de horário</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

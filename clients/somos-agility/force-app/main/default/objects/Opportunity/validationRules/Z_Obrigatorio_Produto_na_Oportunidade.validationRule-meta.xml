@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Obrigatorio_Produto_na_Oportunidade</fullName>
+    <active>false</active>
+    <description>Regra para obrigar usuário adicionar um produto em uma oportunidade.</description>
+    <errorConditionFormula>IF(ISPICKVAL(Categoria__c ,&quot;Contrato de Locação (Renovação)&quot;)||ISPICKVAL( Categoria__c ,&quot;Contrato de Suporte (Novo)&quot;)||ISPICKVAL( Categoria__c ,&quot;Contrato de Suporte (Renovação)&quot;)||ISPICKVAL( Categoria__c ,&quot;Contrato de Suporte (Upgrade)&quot;),False,NOT(OR(ISNEW(),HasOpportunityLineItem)))</errorConditionFormula>
+    <errorMessage>É Obrigatório adicionar um Produto a oportunidade.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M47_VaidaPreenchimentoAtratividade</fullName>
+    <active>false</active>
+    <description>Verifica o preenchimento para da atratividade quando o perfil for GC.</description>
+    <errorConditionFormula>AND( 
+   CONTAINS(&apos;Gerente de Contas&apos;, $Profile.Name), 
+   ISPICKVAL(Atratividade__c, &apos;&apos;) 
+)</errorConditionFormula>
+    <errorMessage>É necessário preencher o campo atratividade GC.</errorMessage>
+</ValidationRule>

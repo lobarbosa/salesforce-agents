@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hobbies__c</fullName>
+    <label>Hobbies</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Academia</fullName>
+                <default>false</default>
+                <label>Academia</label>
+            </value>
+            <value>
+                <fullName>Acampar</fullName>
+                <default>false</default>
+                <label>Acampar</label>
+            </value>
+            <value>
+                <fullName>Acessar a Internet</fullName>
+                <default>false</default>
+                <label>Acessar a Internet</label>
+            </value>
+            <value>
+                <fullName>Andar a Cavalo</fullName>
+                <default>false</default>
+                <label>Andar a Cavalo</label>
+            </value>
+            <value>
+                <fullName>Andar de Bike</fullName>
+                <default>false</default>
+                <label>Andar de Bike</label>
+            </value>
+            <value>
+                <fullName>Assistir Filmes</fullName>
+                <default>false</default>
+                <label>Assistir Filmes</label>
+            </value>
+            <value>
+                <fullName>Assistir TV</fullName>
+                <default>false</default>
+                <label>Assistir TV</label>
+            </value>
+            <value>
+                <fullName>Automobilismo</fullName>
+                <default>false</default>
+                <label>Automobilismo</label>
+            </value>
+            <value>
+                <fullName>Caminhar</fullName>
+                <default>false</default>
+                <label>Caminhar</label>
+            </value>
+            <value>
+                <fullName>Cantar</fullName>
+                <default>false</default>
+                <label>Cantar</label>
+            </value>
+            <value>
+                <fullName>Caseiro(a)</fullName>
+                <default>false</default>
+                <label>Caseiro(a)</label>
+            </value>
+            <value>
+                <fullName>Colecionar Cartões</fullName>
+                <default>false</default>
+                <label>Colecionar Cartões</label>
+            </value>
+            <value>
+                <fullName>Compras no Shopping</fullName>
+                <default>false</default>
+                <label>Compras no Shopping</label>
+            </value>
+            <value>
+                <fullName>Conversar</fullName>
+                <default>false</default>
+                <label>Conversar</label>
+            </value>
+            <value>
+                <fullName>Correr</fullName>
+                <default>false</default>
+                <label>Correr</label>
+            </value>
+            <value>
+                <fullName>Corrida de Kart</fullName>
+                <default>false</default>
+                <label>Corrida de Kart</label>
+            </value>
+            <value>
+                <fullName>Costurar</fullName>
+                <default>false</default>
+                <label>Costurar</label>
+            </value>
+            <value>
+                <fullName>Cozinhar</fullName>
+                <default>false</default>
+                <label>Cozinhar</label>
+            </value>
+            <value>
+                <fullName>Cuidar do Carro</fullName>
+                <default>false</default>
+                <label>Cuidar do Carro</label>
+            </value>
+            <value>
+                <fullName>Dançar</fullName>
+                <default>false</default>
+                <label>Dançar</label>
+            </value>
+            <value>
+                <fullName>Dormir</fullName>
+                <default>false</default>
+                <label>Dormir</label>
+            </value>
+            <value>
+                <fullName>Escalada</fullName>
+                <default>false</default>
+                <label>Escalada</label>
+            </value>
+            <value>
+                <fullName>Esquiar</fullName>
+                <default>false</default>
+                <label>Esquiar</label>
+            </value>
+            <value>
+                <fullName>Fazer Origami</fullName>
+                <default>false</default>
+                <label>Fazer Origami</label>
+            </value>
+            <value>
+                <fullName>Fotografar</fullName>
+                <default>false</default>
+                <label>Fotografar</label>
+            </value>
+            <value>
+                <fullName>Jogar Basquete</fullName>
+                <default>false</default>
+                <label>Jogar Basquete</label>
+            </value>
+            <value>
+                <fullName>Jogar Boliche</fullName>
+                <default>false</default>
+                <label>Jogar Boliche</label>
+            </value>
+            <value>
+                <fullName>Jogar Cartas</fullName>
+                <default>false</default>
+                <label>Jogar Cartas</label>
+            </value>
+            <value>
+                <fullName>Jogar Futebol</fullName>
+                <default>false</default>
+                <label>Jogar Futebol</label>
+            </value>
+            <value>
+                <fullName>Jogar Paintball</fullName>
+                <default>false</default>
+                <label>Jogar Paintball</label>
+            </value>
+            <value>
+                <fullName>Jogar Sinuca</fullName>
+                <default>false</default>
+                <label>Jogar Sinuca</label>
+            </value>
+            <value>
+                <fullName>Jogar Tênis</fullName>
+                <default>false</default>
+                <label>Jogar Tênis</label>
+            </value>
+            <value>
+                <fullName>Jogar Video Game</fullName>
+                <default>false</default>
+                <label>Jogar Video Game</label>
+            </value>
+            <value>
+                <fullName>Jogar Volei</fullName>
+                <default>false</default>
+                <label>Jogar Volei</label>
+            </value>
+            <value>
+                <fullName>Jogar Xadrez</fullName>
+                <default>false</default>
+                <label>Jogar Xadrez</label>
+            </value>
+            <value>
+                <fullName>Ler</fullName>
+                <default>false</default>
+                <label>Ler</label>
+            </value>
+            <value>
+                <fullName>Nadar</fullName>
+                <default>false</default>
+                <label>Nadar</label>
+            </value>
+            <value>
+                <fullName>Passear</fullName>
+                <default>false</default>
+                <label>Passear</label>
+            </value>
+            <value>
+                <fullName>Pescar</fullName>
+                <default>false</default>
+                <label>Pescar</label>
+            </value>
+            <value>
+                <fullName>Pintar</fullName>
+                <default>false</default>
+                <label>Pintar</label>
+            </value>
+            <value>
+                <fullName>Praticar Lutas</fullName>
+                <default>false</default>
+                <label>Praticar Lutas</label>
+            </value>
+            <value>
+                <fullName>Praticar Meditação</fullName>
+                <default>false</default>
+                <label>Praticar Meditação</label>
+            </value>
+            <value>
+                <fullName>Praticar Pilates</fullName>
+                <default>false</default>
+                <label>Praticar Pilates</label>
+            </value>
+            <value>
+                <fullName>Praticar Yoga</fullName>
+                <default>false</default>
+                <label>Praticar Yoga</label>
+            </value>
+            <value>
+                <fullName>Religioso(a)</fullName>
+                <default>false</default>
+                <label>Religioso(a)</label>
+            </value>
+            <value>
+                <fullName>Sair com Amigos</fullName>
+                <default>false</default>
+                <label>Sair com Amigos</label>
+            </value>
+            <value>
+                <fullName>Saltar de Paraquedas</fullName>
+                <default>false</default>
+                <label>Saltar de Paraquedas</label>
+            </value>
+            <value>
+                <fullName>Surfar</fullName>
+                <default>false</default>
+                <label>Surfar</label>
+            </value>
+            <value>
+                <fullName>Tocar Bateria</fullName>
+                <default>false</default>
+                <label>Tocar Bateria</label>
+            </value>
+            <value>
+                <fullName>Tocar Guitarra</fullName>
+                <default>false</default>
+                <label>Tocar Guitarra</label>
+            </value>
+            <value>
+                <fullName>Tocar Violão</fullName>
+                <default>false</default>
+                <label>Tocar Violão</label>
+            </value>
+            <value>
+                <fullName>Viajar</fullName>
+                <default>false</default>
+                <label>Viajar</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>6</visibleLines>
+</CustomField>

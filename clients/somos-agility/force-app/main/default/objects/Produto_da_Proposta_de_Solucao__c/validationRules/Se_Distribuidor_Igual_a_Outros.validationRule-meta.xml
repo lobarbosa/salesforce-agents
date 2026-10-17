@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Se_Distribuidor_Igual_a_Outros</fullName>
+    <active>true</active>
+    <description>Se Nome_do_distribuidor__c for igual a &quot;Outros&quot;, o campo Se_outros_especifique__c passa a ser obrigatório, não podendo ser vazio.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Nome_do_distribuidor__c, &quot;Outros&quot;),
+    ISBLANK(Se_outros_especifique__c)
+)</errorConditionFormula>
+    <errorDisplayField>Se_outros_especifique__c</errorDisplayField>
+    <errorMessage>Se o nome do distribuidor for igual a &quot;Outros&quot;, é necessário fornecer maiores detalhes.</errorMessage>
+</ValidationRule>

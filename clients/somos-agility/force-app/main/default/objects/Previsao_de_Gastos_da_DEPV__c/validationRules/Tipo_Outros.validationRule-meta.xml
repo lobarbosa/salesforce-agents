@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_Outros</fullName>
+    <active>true</active>
+    <description>Se Tipo = Outros, será obrigatório preencher o campo especificar</description>
+    <errorConditionFormula>AND (ISPICKVAL( Tipo__c ,&quot;Outros (Especificar)&quot;),ISBLANK( Especifique__c ))</errorConditionFormula>
+    <errorDisplayField>Especifique__c</errorDisplayField>
+    <errorMessage>Especifique o Tipo</errorMessage>
+</ValidationRule>

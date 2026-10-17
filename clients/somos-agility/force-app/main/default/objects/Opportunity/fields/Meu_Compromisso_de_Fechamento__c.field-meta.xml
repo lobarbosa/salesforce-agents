@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Meu_Compromisso_de_Fechamento__c</fullName>
+    <description>Jn21092018 criar campo de fórmula para atribuir informação as somatórias dos  valores dos campos &quot;Certeza de Conclusão&quot; e Certeza de Vitória&quot;</description>
+    <externalId>false</externalId>
+    <formula>IF(		
+	AND(
+		(VALUE(TEXT(Certeza_de_Vit_ria__c)) + VALUE(TEXT(Certeza_de_Conclus_o__c)) &gt;= 165),
+		(Fechado__c == true)
+	),
+	&apos;Fechado&apos;,
+	IF(
+		(VALUE(TEXT(Certeza_de_Vit_ria__c)) + VALUE(TEXT(Certeza_de_Conclus_o__c)) &gt;= 165),
+		&apos;Commit&apos;,
+		IF(
+			(VALUE(TEXT(Certeza_de_Vit_ria__c)) + VALUE(TEXT(Certeza_de_Conclus_o__c)) &lt;= 100),
+			&apos;Improvável&apos;,
+			IF(
+				(VALUE(TEXT(Certeza_de_Vit_ria__c)) + VALUE(TEXT(Certeza_de_Conclus_o__c)) &gt; 100) &amp;&amp;
+				(VALUE(TEXT(Certeza_de_Vit_ria__c)) + VALUE(TEXT(Certeza_de_Conclus_o__c)) &lt; 165),
+				&apos;Possível&apos;,
+				&apos;Para obter a sua previsão de fechamento, escolha 1 das opções de cada campos ao lado - Certeza de Conclusão e Certeza de 	Vitória&apos;
+			)
+		)		
+	)
+)</formula>
+    <label>Meu Compromisso de Fechamento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

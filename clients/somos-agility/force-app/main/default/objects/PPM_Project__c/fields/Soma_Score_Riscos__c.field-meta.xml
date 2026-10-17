@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Soma_Score_Riscos__c</fullName>
+    <label>Soma Score Riscos</label>
+    <summarizedField>Riscos_do_Projeto__c.Score__c</summarizedField>
+    <summaryForeignKey>Riscos_do_Projeto__c.Projeto__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atualizar_Estagio_se_Blueprint_Aprovado</fullName>
+    <active>true</active>
+    <description>Para atualizar o estágio da oportunidade, o blueprint atrelado à mesma deve ser aprovado!</description>
+    <errorConditionFormula>AND(
+    Quantidade_de_Blueprints__c &gt; 0,
+    OR(
+        ISPICKVAL(PRIORVALUE(StageName), &quot;Ação DIA&quot;),
+        ISPICKVAL(PRIORVALUE(StageName), &quot;OQF&quot;),
+        ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;)
+    ),
+    OR(
+        ISPICKVAL(StageName, &quot;PSL&quot;),
+        ISPICKVAL(StageName, &quot;NEC&quot;),
+        ISPICKVAL(StageName, &quot;FPR&quot;)
+    ),
+    NOT(Blueprint_Aprovado__c)
+)</errorConditionFormula>
+    <errorMessage>Para atualizar o estágio da oportunidade, o blueprint atrelado à mesma deve ser aprovado!</errorMessage>
+</ValidationRule>

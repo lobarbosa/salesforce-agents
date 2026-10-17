@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>HoraAcionamentoTerceirosN1__c</fullName>
+    <label>Hora de Acionamento de Terceiros - N1</label>
+    <summarizedField>horasCreditoSuporte__c.Hora__c</summarizedField>
+    <summaryFilterItems>
+        <field>horasCreditoSuporte__c.TipoSuporte__c</field>
+        <operation>equals</operation>
+        <value>Acionamento de Terceiros</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>horasCreditoSuporte__c.Nivel__c</field>
+        <operation>equals</operation>
+        <value>Nível 1</value>
+    </summaryFilterItems>
+    <summaryForeignKey>horasCreditoSuporte__c.LancamentoCreditoSuporte__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

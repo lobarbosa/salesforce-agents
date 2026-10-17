@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Referente_ao_Contrato__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <label>Referente ao Contrato</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.Nome_da_Conta__c</field>
+            <operation>equals</operation>
+            <valueField>Contract.Account.Id</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contract</referenceTo>
+    <relationshipLabel>Pesquisa de Satisfação</relationshipLabel>
+    <relationshipName>Pesquisa_de_Satisfa_o</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

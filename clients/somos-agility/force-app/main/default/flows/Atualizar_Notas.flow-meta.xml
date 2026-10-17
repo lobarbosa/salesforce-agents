@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Atualizar Notas
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>Atualizar_Nota_1Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_1__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_2Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_2__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_3Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_3__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_4Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_4__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_5Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_5__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_6Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_6__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_7Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_7__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_8Formula</name>
+        <dataType>Number</dataType>
+        <expression>VALUE(TEXT( $Record.Nota_8__c ))</expression>
+        <scale>0</scale>
+    </formulas>
+    <formulas>
+        <name>Atualizar_Nota_FinalFormula</name>
+        <dataType>Number</dataType>
+        <expression>( NULLVALUE($Record.Nota_pergunta_1__c,0) +
+ NULLVALUE($Record.Nota_pergunta_2__c ,0)+
+NULLVALUE( $Record.Nota_pergunta_3__c ,0)+
+ NULLVALUE($Record.Nota_pergunta_4__c ,0)+
+ NULLVALUE($Record.Nota_pergunta_5__c ,0)+
+ NULLVALUE($Record.Nota_pergunta_6__c ,0)+
+ NULLVALUE($Record.Nota_pergunta_7__c ,0)+
+ NULLVALUE($Record.Nota_pergunta_8__c ,0)) /  $Record.Qtde_de_Notas_Preenchidas__c</expression>
+        <scale>2</scale>
+    </formulas>
+    <label>Atualizar Notas</label>
+    <migratedFromWorkflowRuleName>Atualizar Notas</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>772</locationX>
+        <locationY>371</locationY>
+        <inputAssignments>
+            <field>Nota_Final_Nova__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_FinalFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_1__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_1Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_2__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_2Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_3__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_3Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_4__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_4Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_5__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_5Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_6__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_6Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_7__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_7Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Nota_pergunta_8__c</field>
+            <value>
+                <elementReference>Atualizar_Nota_8Formula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>646</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>ISNEW() || NOT(ISNEW())</filterFormula>
+        <object>Pesquisa_de_Satisfacao__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

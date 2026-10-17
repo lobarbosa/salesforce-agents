@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Instrucao_CVS_FT__c</fullName>
+    <description>AM 17062018 texto de ajuda. JN04072018 alteração texto de &quot;pedir&quot; par alterar, conforme pedido do Carlos em 0307.</description>
+    <externalId>false</externalId>
+    <formula>&quot;Quando aprovar uma Fast Track? Casos de fornecimentos simples, complementares a um fornecimento já efetuado pela Agility nos ultimos 3 anos, onde o cliente não precisa ser convencido ou não precise justificar internamente esta compra.Exemplos: - Inclusão de cobertura a novos equipamentos em contratos de suporte existentes; - Aumento de quantidade ou capacidade de equipamentos ou licenças a um projeto já fornecido pela Agiity; - Serviços complementares a projetos já fornecidos pela Agility (Adição de Escopo). Casos de oportunidades simples de renovação/suporte de bases não Agility. Solicite ao PO da linha de negócios de apoio  a validação de sua oportunidade Fast Track no campo ao lado.&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Instrução CVS FT</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

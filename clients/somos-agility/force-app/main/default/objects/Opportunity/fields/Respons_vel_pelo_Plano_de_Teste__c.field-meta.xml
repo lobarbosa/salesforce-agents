@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Respons_vel_pelo_Plano_de_Teste__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>jn19092018 - criar campo de pesquisa (contato) Responsável pelo Plano de Teste de acordo com sprint 5 , a peddo de CT.</description>
+    <inlineHelpText>caso hja a a necessidade de Plano de Teste, favor informar o nome do responsável.</inlineHelpText>
+    <label>Condutor do plano de testes</label>
+    <lookupFilter>
+        <active>true</active>
+        <booleanFilter>1 AND 2</booleanFilter>
+        <filterItems>
+            <field>Contact.Account.Name</field>
+            <operation>contains</operation>
+            <value>Agility</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operation>equals</operation>
+            <value>Sim</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Oportunidades (Responsável pelo Plano de Teste)</relationshipLabel>
+    <relationshipName>Oportunidades4</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

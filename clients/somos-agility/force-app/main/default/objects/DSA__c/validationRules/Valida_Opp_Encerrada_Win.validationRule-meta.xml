@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_Opp_Encerrada_Win</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND ( NOT(CONTAINS( Oportunidade__r.RecordType.Name , &apos;Parceiros&apos;)),
+OR(ISPICKVAL( Oportunidade__r.Status__c , &quot;Desengajada&quot;), 
+ISPICKVAL( Oportunidade__r.Status__c , &quot;Encerrado Loss&quot;) , 
+ISPICKVAL( Oportunidade__r.Status__c , &quot;&quot;) , 
+ISPICKVAL( Oportunidade__r.Status__c  , &quot;Aberto&quot;)))</errorConditionFormula>
+    <errorMessage>Para criar um DSA,  é necessário que a sua oportunidade esteja devidamente encerrada com status &quot;Encerrada Win&quot;.
+Retorne na oportunidade, clique  no botão &lt;Encerrar Oportunidade&gt; localizado na parte superior direita de sua tela e siga o procedimento.</errorMessage>
+</ValidationRule>

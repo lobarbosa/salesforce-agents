@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M03_Trava_Edicao_DueDate</fullName>
+    <active>true</active>
+    <description>AM 26052018: Este campo não pode ser editado após a sua criação.</description>
+    <errorConditionFormula>AND(NOT(ISNULL(PRIORVALUE(ActivityDate))),ISCHANGED(ActivityDate))</errorConditionFormula>
+    <errorDisplayField>ActivityDate</errorDisplayField>
+    <errorMessage>Este campo não pode ser editado (Msg03).</errorMessage>
+</ValidationRule>

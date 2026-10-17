@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Desligamento</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Contato_Trabalha_Atualmente_na_Empresa__c ,&quot;Não&quot;)&amp;&amp; Account.Id=&apos;0015000000OZGSR&apos;,ISBLANK( Data_de_desligamento__c))</errorConditionFormula>
+    <errorDisplayField>Data_de_desligamento__c</errorDisplayField>
+    <errorMessage>Informar a Data de Desligamento</errorMessage>
+</ValidationRule>

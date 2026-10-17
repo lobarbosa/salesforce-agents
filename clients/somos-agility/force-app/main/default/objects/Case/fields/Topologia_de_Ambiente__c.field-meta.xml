@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Topologia_de_Ambiente__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>O campo traz o desenho da Topologia do cliente</description>
+    <inlineHelpText>Desenho da Topologia do cliente</inlineHelpText>
+    <label>Topologia de Ambiente</label>
+    <referenceTo>Topologia_de_Ambiente__c</referenceTo>
+    <relationshipLabel>Casos</relationshipLabel>
+    <relationshipName>Casos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oferta_relacionada__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Oferta relacionada</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Ofertas__c.Linha_de_Negocios_2__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Linha_de_Negocios__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Ofertas__c</referenceTo>
+    <relationshipLabel>Produtos de Prospecção</relationshipLabel>
+    <relationshipName>Produtos_Pre_Venda</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

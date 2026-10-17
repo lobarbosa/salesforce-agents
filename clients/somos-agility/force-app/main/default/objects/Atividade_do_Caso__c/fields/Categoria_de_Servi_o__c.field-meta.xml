@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categoria_de_Servi_o__c</fullName>
+    <label>Categoria de Serviço</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Reclassificar_Categoria_de_Servico__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alteração/ Mudança (sem impacto para o cliente)</fullName>
+                <default>false</default>
+                <label>Alteração/ Mudança (sem impacto para o cliente)</label>
+            </value>
+            <value>
+                <fullName>Assesment (Análise, Validação e Testes)</fullName>
+                <default>false</default>
+                <label>Assesment (Análise, Validação e Testes)</label>
+            </value>
+            <value>
+                <fullName>Ativação de Suporte</fullName>
+                <default>false</default>
+                <label>Ativação de Suporte</label>
+            </value>
+            <value>
+                <fullName>Atividade Preventiva</fullName>
+                <default>false</default>
+                <label>Atividade Preventiva</label>
+            </value>
+            <value>
+                <fullName>Documentação</fullName>
+                <default>false</default>
+                <label>Documentação</label>
+            </value>
+            <value>
+                <fullName>Empréstimo</fullName>
+                <default>false</default>
+                <label>Empréstimo</label>
+            </value>
+            <value>
+                <fullName>Estudos</fullName>
+                <default>false</default>
+                <label>Estudos</label>
+            </value>
+            <value>
+                <fullName>GMUD</fullName>
+                <default>false</default>
+                <label>GMUD</label>
+            </value>
+            <value>
+                <fullName>Incidente</fullName>
+                <default>false</default>
+                <label>Incidente</label>
+            </value>
+            <value>
+                <fullName>Instalação, Configuração</fullName>
+                <default>false</default>
+                <label>Instalação, Configuração</label>
+            </value>
+            <value>
+                <fullName>Laboratório</fullName>
+                <default>false</default>
+                <label>Laboratório</label>
+            </value>
+            <value>
+                <fullName>Problema</fullName>
+                <default>false</default>
+                <label>Problema</label>
+            </value>
+            <value>
+                <fullName>RMA (Substituição de Equipamento)</fullName>
+                <default>false</default>
+                <label>RMA (Substituição de Equipamento)</label>
+            </value>
+            <value>
+                <fullName>Solicitação de Informação</fullName>
+                <default>false</default>
+                <label>Solicitação de Informação</label>
+            </value>
+            <value>
+                <fullName>Treinamento e Workshop</fullName>
+                <default>false</default>
+                <label>Treinamento e Workshop</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Alteração/ Mudança (sem impacto para o cliente)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Assesment (Análise, Validação e Testes)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Ativação de Suporte</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Atividade Preventiva</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Documentação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Empréstimo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Estudos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>GMUD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Incidente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Instalação, Configuração</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Laboratório</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Problema</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>RMA (Substituição de Equipamento)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Solicitação de Informação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>checked</controllingFieldValue>
+            <valueName>Treinamento e Workshop</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

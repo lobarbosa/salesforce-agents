@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_do_POC__c</fullName>
+    <inlineHelpText>Não Iniciado	
+Iniciado em Andamento
+Iniciado em HOLD
+Cancelado
+Concluído</inlineHelpText>
+    <label>Status do POC</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Não Iniciado</fullName>
+                <default>false</default>
+                <label>Não Iniciado</label>
+            </value>
+            <value>
+                <fullName>Iniciado em Andamento</fullName>
+                <default>false</default>
+                <label>Iniciado em Andamento</label>
+            </value>
+            <value>
+                <fullName>Iniciado em HOLD</fullName>
+                <default>false</default>
+                <label>Iniciado em HOLD</label>
+            </value>
+            <value>
+                <fullName>Cancelado</fullName>
+                <default>false</default>
+                <label>Cancelado</label>
+            </value>
+            <value>
+                <fullName>Concluído</fullName>
+                <default>false</default>
+                <label>Concluído</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

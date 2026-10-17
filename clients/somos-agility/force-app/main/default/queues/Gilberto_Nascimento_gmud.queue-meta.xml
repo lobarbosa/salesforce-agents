@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesIncludeBosses>true</doesIncludeBosses>
+    <doesSendEmailToMembers>true</doesSendEmailToMembers>
+    <email>gilberto.nascimento@agilitynetworks.com.br</email>
+    <name>Gilberto Nascimento</name>
+    <queueMembers>
+        <users>
+            <user>suporte.agility@agilitynetworks.com.br</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>GMUD__c</sobjectType>
+    </queueSobject>
+</Queue>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Gestor_do_Solicitante__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 22042018: definir solicitante e gestor do solicitante para serem usados no alerta de e-mail</description>
+    <label>Gestor do Solicitante</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Ação DIA (Gestor do Solicitante)</relationshipLabel>
+    <relationshipName>Acao_DIA1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

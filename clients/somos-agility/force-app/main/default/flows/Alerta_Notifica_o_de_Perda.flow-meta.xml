@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notifica_o_de_Perda_de_Contrato</name>
+        <label>Opportunity.Notifica_o_de_Perda_de_Contrato</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Opportunity.Notifica_o_de_Perda_de_Contrato</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Opportunity.Notifica_o_de_Perda_de_Contrato</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alerta Notificação de Perda
+Descrição da regra de fluxo de trabalho: Alerta Notificação de Perda de Contrato 16.10.20&quot;</description>
+    <label>Alerta Notificação de Perda</label>
+    <migratedFromWorkflowRuleName>Alerta Notificação de Perda</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notifica_o_de_Perda_de_Contrato</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>1 AND (2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9) AND 10</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Encerrado Loss</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>3N</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>MNG-DEVOPS/MCLOUD</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>MNG-DIGIEXP</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>GEST-VULNERB</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>IDENTITY-GOV</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>GPD – Gestão de Privacidade de Dados</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>GAA – Gestão Avançada de Ameaças</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Produto_Recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>PAM – Proteção de Aplicações Multicloud</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Renova_o__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

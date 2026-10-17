@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M03_Nao_preencher_quilometragem</fullName>
+    <active>true</active>
+    <description>AM060918: não permite preencher os campos da seção &quot;Quilometragem&quot;</description>
+    <errorConditionFormula>AND(
+TEXT(Categoria_da_despesa__c) &lt;&gt; &quot;Quilometragem&quot;,
+NOT(ISBLANK( Kilometros_Percorridos_Ida__c ))|| 
+NOT(ISBLANK( Kilometros_Percorridos_Volta__c ))|| 
+NOT(ISBLANK( Link_da_Distancia__c )))</errorConditionFormula>
+    <errorMessage>Para lançar uma despesa de quilometragem, crie um novo registro (Msg03).</errorMessage>
+</ValidationRule>

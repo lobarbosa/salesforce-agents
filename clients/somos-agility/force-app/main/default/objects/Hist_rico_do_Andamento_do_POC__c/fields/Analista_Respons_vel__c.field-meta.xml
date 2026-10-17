@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Analista_Respons_vel__c</fullName>
+    <label>Analista Responsável</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Allan Silva</fullName>
+                <default>false</default>
+                <label>Allan Silva</label>
+            </value>
+            <value>
+                <fullName>Denis D&apos;amico</fullName>
+                <default>false</default>
+                <label>Denis D&apos;amico</label>
+            </value>
+            <value>
+                <fullName>Erick Coelho</fullName>
+                <default>false</default>
+                <label>Erick Coelho</label>
+            </value>
+            <value>
+                <fullName>Fabio Coelho</fullName>
+                <default>false</default>
+                <label>Fabio Coelho</label>
+            </value>
+            <value>
+                <fullName>Guilherme Morais</fullName>
+                <default>false</default>
+                <label>Guilherme Morais</label>
+            </value>
+            <value>
+                <fullName>Rodrigo Ev</fullName>
+                <default>false</default>
+                <label>Rodrigo Ev</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

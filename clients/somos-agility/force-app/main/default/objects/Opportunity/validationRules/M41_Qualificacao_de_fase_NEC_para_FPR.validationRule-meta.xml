@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M41_Qualificacao_de_fase_NEC_para_FPR</fullName>
+    <active>true</active>
+    <description>AM 06062018: Esta fase é exclusiva para uso do Financeiro (Msg41).</description>
+    <errorConditionFormula>AND ( 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renvoações&quot;, 
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Service Manager&quot;,
+$Profile.Name &lt;&gt; &quot;Financeiro Agility&quot;,
+$Profile.Name &lt;&gt; &quot;Compras Financeiro&quot;,
+$Profile.Name &lt;&gt; &quot;Diretor Financeiro&quot;,
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;NEC&quot;)
+     )
+
+/*
+
+AND ( 
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;PSL&quot;), 
+PSL_Validado__c = 0 
+     )
+*/</errorConditionFormula>
+    <errorMessage>Esta fase é exclusiva para uso do Financeiro (Msg41).</errorMessage>
+</ValidationRule>

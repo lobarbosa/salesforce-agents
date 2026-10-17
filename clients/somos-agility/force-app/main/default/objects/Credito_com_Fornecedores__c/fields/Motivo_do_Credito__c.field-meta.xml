@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_do_Credito__c</fullName>
+    <inlineHelpText>Descreva o motivo do fornecedor disponibilizar este crédito à Agility</inlineHelpText>
+    <label>Motivo do Crédito</label>
+    <length>5000</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

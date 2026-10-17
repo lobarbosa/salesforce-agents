@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OportunidadesAtrasadas</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>CORE.USERS.FIRST_NAME</columns>
+    <columns>Rentabilidade_prevista__c</columns>
+    <columns>Sales_In_Previsto__c</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>Linha_de_Negocio__c</columns>
+    <columns>Renova_o__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OPPORTUNITY.CLOSE_DATE</field>
+        <operation>lessThan</operation>
+        <value>TODAY</value>
+    </filters>
+    <filters>
+        <field>Status__c</field>
+        <operation>equals</operation>
+        <value>Aberto</value>
+    </filters>
+    <label>Oportunidades atrasadas</label>
+</ListView>
