@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ConnectedApp xmlns="http://soap.sforce.com/2006/04/metadata">
+    <contactEmail>luigi.scola@centric.com.br</contactEmail>
+    <label>PowerAutomateIntegration</label>
+    <oauthConfig>
+        <callbackUrl>http://localhost</callbackUrl>
+        <certificate>MIIDkDCCAngCCQDMnbQSGqRcszANBgkqhkiG9w0BAQsFADCBiTELMAkGA1UEBhMCQlIxCzAJBgNVBAgMAlNQMQswCQYDVQQHDAJTUDEQMA4GA1UECgwHQ2VudHJpYzELMAkGA1UECwwCQlIxFjAUBgNVBAMMDUNlbnRyaWNTeXN0ZW0xKTAnBgkqhkiG9w0BCQEWGmx1aWdpLnNjb2xhQGNlbnRyaWMuY29tLmJyMB4XDTI1MDUyMjIzMjgzMVoXDTM1MDUyMDIzMjgzMVowgYkxCzAJBgNVBAYTAkJSMQswCQYDVQQIDAJTUDELMAkGA1UEBwwCU1AxEDAOBgNVBAoMB0NlbnRyaWMxCzAJBgNVBAsMAkJSMRYwFAYDVQQDDA1DZW50cmljU3lzdGVtMSkwJwYJKoZIhvcNAQkBFhpsdWlnaS5zY29sYUBjZW50cmljLmNvbS5icjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANwyP1Nhx/ATwy9UqVdUq1tJZWripZ8k5BcExm+oiX9FIXFVgCNrPTViVNkC0MQuwRkNfdKEDLjWCxi/gU3E2U9QxXPLrcV9uucM8h20Tgw7h9vbCZjy/jw+AAMQmbtmNYtdR+IvLeKOqFeXeAOjsod7hU/H1IQKwIItR91DkIwus7KYQ3t0FbSrmEWxzVbNNmrlvbSmh3lj8muDfFK5xRjIIF/45fIbKxy9Qi4VkaZJivCnZsEGsxk/1fe0pOC3d3kJ9RpPIRRWjIKrv0I61KlpJ3oZOLwpuHuMebvpESRxI3S0Qlmbq9Ad0lhxsHEa3mb976kH39+9p/oucNI/z3UCAwEAATANBgkqhkiG9w0BAQsFAAOCAQEAvnpWR/cCziLpWyRKVDP4Y4i1K9sruX6sSBR1NDdGXgcjGBTdUNJ5eE88NepbGgjzv6P5pKpnDs0P5P35SKItD/udlX642RPT7BPB8bixqijt/IEC0HIAmvPJa7dXTeqCgpOIMxRsfu7sXOivmpiE51a0Cy+NZ5dUwePz2R0Bhqq902IWD4+bH4y9tlu91HHSJfVTHqeykU3MEnL423VN4GMAHkGZZG8/Q/lryHT7hQnpPMFokkyTUf+Yg4uD8gJvsejN9aOrEmJCfK1l+45XNmHoL/si9id93wpxgovAbz7c6+6AjnuRvtC5lbPyqP6L3XAPH7GYgSioHpWsnAHNjw==</certificate>
+        <consumerKey>3MVG96WMoUG6yB9IfJryrZnRV.rgyvquI7goMdDm9Asssm2p7cFsjMeOdJ4Xuks1SyAfxAj45DBjnwQIfwo.U</consumerKey>
+        <isAdminApproved>false</isAdminApproved>
+        <isClientCredentialEnabled>false</isClientCredentialEnabled>
+        <isCodeCredentialEnabled>false</isCodeCredentialEnabled>
+        <isCodeCredentialPostOnly>false</isCodeCredentialPostOnly>
+        <isConsumerSecretOptional>false</isConsumerSecretOptional>
+        <isIntrospectAllTokens>false</isIntrospectAllTokens>
+        <isNamedUserJwtEnabled>false</isNamedUserJwtEnabled>
+        <isPkceRequired>false</isPkceRequired>
+        <isRefreshTokenRotationEnabled>false</isRefreshTokenRotationEnabled>
+        <isSecretRequiredForRefreshToken>false</isSecretRequiredForRefreshToken>
+        <isSecretRequiredForTokenExchange>false</isSecretRequiredForTokenExchange>
+        <isTokenExchangeEnabled>false</isTokenExchangeEnabled>
+        <scopes>Api</scopes>
+        <scopes>Full</scopes>
+        <scopes>RefreshToken</scopes>
+        <scopes>OpenID</scopes>
+        <scopes>Lightning</scopes>
+    </oauthConfig>
+    <oauthPolicy>
+        <ipRelaxation>BYPASS_2FACTOR</ipRelaxation>
+        <isTokenExchangeFlowEnabled>false</isTokenExchangeFlowEnabled>
+        <refreshTokenPolicy>infinite</refreshTokenPolicy>
+    </oauthPolicy>
+</ConnectedApp>
