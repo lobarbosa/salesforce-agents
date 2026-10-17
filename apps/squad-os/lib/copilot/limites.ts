@@ -16,6 +16,9 @@ export const MAX_DEMANDAS_POR_REQUISICAO = 1;
 export const MAX_DEMANDAS_POR_HORA = 5;
 /** Requisições por pessoa por minuto (melhor esforço: memória do processo). */
 export const MAX_REQUISICOES_POR_MINUTO = 20;
+// Teto diário durável por usuário (Postgres, lib/limite-uso.ts). O por-minuto
+// acima é em memória e só segura rajada numa instância.
+export const MAX_REQUISICOES_POR_DIA = 300;
 
 const PAPEIS_ACEITOS = new Set(["user", "assistant"]);
 
