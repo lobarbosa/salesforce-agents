@@ -7,6 +7,17 @@ import { Modal } from "@/components/Modal";
 import type { ContaVista, EventoVisto } from "@/lib/contas-data";
 import { bloqueioDocumento, formatarReais, lerReais, prazo, ROTULO_STATUS, type Acao } from "@/lib/contas";
 import { acceptDo, erroDeUpload, TAMANHO_MAX_ARQUIVO, TAMANHO_MAX_MB } from "@/lib/upload-regras";
+import type { NaturezaCusto, Periodicidade } from "@/lib/generated/prisma/client";
+import { PERIODICIDADES, ROTULO_NATUREZA, ROTULO_REPETIR, rotuloCompetencia } from "@/lib/recorrencias";
+import {
+  corpoRecorrencia,
+  enviarJson,
+  FormRecorrencia,
+  textoGeracao,
+  SeletorCliente,
+  SeletorNatureza,
+  valorParaCampo,
+} from "@/components/FormRecorrencia";
 
 // Contas a pagar e fila de aprovações (mesmo componente, dois modos).
 // Padrões: lista do ClickUp + fila de aprovação do Jira Service Management.
@@ -21,6 +32,9 @@ const ROTULO_EVENTO: Record<string, string> = {
   paga: "marcou como paga",
   cancelada: "cancelou",
   documento: "anexou o documento",
+  valor_alterado: "corrigiu o valor",
+  classificada: "classificou",
+  recorrente: "tornou recorrente",
 };
 
 const ROTULO_ACAO: Record<Acao, string> = {
@@ -51,6 +65,7 @@ export function ContasPagar({
   decidiveis,
   contaInicial,
   categorias,
+  clientes = [],
 }: {
   contas: ContaVista[];
   hoje: string;
@@ -59,6 +74,8 @@ export function ContasPagar({
   decidiveis?: string[];
   contaInicial?: string;
   categorias: string[];
+  /** Para natureza/cliente no lançamento e na classificação. */
+  clientes?: { id: string; nome: string }[];
 }) {
   const router = useRouter();
   const [aberta, setAberta] = useState<string | null>(contaInicial ?? null);
@@ -80,6 +97,9 @@ export function ContasPagar({
           {c.descricao && <span className="sub">{c.descricao}</span>}
         </th>
         <td>{c.categoria || <span className="sub">—</span>}</td>
+        <td>
+          <TipoConta conta={c} />
+        </td>
         <td className="num">{formatarReais(c.valor)}</td>
         <td>{c.temDocumento ? "anexado" : <span className="aviso-texto">sem documento</span>}</td>
         <td>
@@ -98,6 +118,7 @@ export function ContasPagar({
             <th scope="col">Vencimento</th>
             <th scope="col">Fornecedor</th>
             <th scope="col">Categoria</th>
+            <th scope="col">Tipo</th>
             <th scope="col" className="num">Valor</th>
             <th scope="col">Documento</th>
             <th scope="col">Situação</th>
@@ -161,6 +182,7 @@ export function ContasPagar({
       {lancando && (
         <NovaConta
           categorias={categorias}
+          clientes={clientes}
           onClose={() => setLancando(false)}
           onCriada={(id) => {
             setLancando(false);
@@ -169,20 +191,50 @@ export function ContasPagar({
           }}
         />
       )}
-      {aberta && <DetalheConta id={aberta} onClose={() => setAberta(null)} onMudou={aoMudar} />}
+      {aberta && (
+        <DetalheConta
+          id={aberta}
+          clientes={clientes}
+          categorias={categorias}
+          onClose={() => setAberta(null)}
+          onMudou={aoMudar}
+        />
+      )}
+    </>
+  );
+}
+
+/** "Recorrente" (com link para o modelo) ou "Avulsa", e a natureza embaixo. */
+function TipoConta({ conta: c }: { conta: ContaVista }) {
+  return (
+    <>
+      {c.recorrenciaId ? (
+        <Link href={`/financeiro/recorrentes?modelo=${c.recorrenciaId}`} className="badge-tipo recorrente">
+          Recorrente{c.competencia ? ` · ${rotuloCompetencia(c.competencia)}` : ""}
+        </Link>
+      ) : (
+        <span className="badge-tipo avulsa">Avulsa</span>
+      )}
+      <span className="sub">{c.natureza ? ROTULO_NATUREZA[c.natureza] : "sem natureza"}</span>
     </>
   );
 }
 
 function NovaConta({
   categorias,
+  clientes,
   onClose,
   onCriada,
 }: {
   categorias: string[];
+  clientes: { id: string; nome: string }[];
   onClose: () => void;
   onCriada: (id: string) => void;
 }) {
+  const [natureza, setNatureza] = useState<NaturezaCusto | "">("");
+  const [clientId, setClientId] = useState("");
+  const [repetir, setRepetir] = useState(false);
+  const [periodicidade, setPeriodicidade] = useState<Periodicidade>("mensal");
   const [erro, setErro] = useState("");
   const [erroValor, setErroValor] = useState("");
   const [enviando, setEnviando] = useState(false);
@@ -199,6 +251,14 @@ function NovaConta({
     if (doc instanceof File && doc.size > TAMANHO_MAX_ARQUIVO) {
       setErro(`O documento passa de ${TAMANHO_MAX_MB} MB.`);
       return;
+    }
+    if (repetir && !natureza) {
+      setErro("Para repetir, escolha a natureza: custo direto ou despesa fixa.");
+      return;
+    }
+    if (!repetir) {
+      form.delete("repetir");
+      form.delete("valorVariavel");
     }
     setEnviando(true);
     setErro("");
@@ -262,6 +322,45 @@ function NovaConta({
             ))}
           </datalist>
         </label>
+        <div className="form-linha">
+          <SeletorNatureza name="natureza" valor={natureza} onChange={setNatureza} obrigatorio={repetir} />
+          <SeletorCliente name="clientId" clientes={clientes} valor={clientId} onChange={setClientId} />
+        </div>
+        <fieldset className="form-repetir">
+          <legend className="sr-only">Recorrência</legend>
+          <label className="form-check">
+            <input type="checkbox" checked={repetir} onChange={(e) => setRepetir(e.target.checked)} />
+            Repetir {ROTULO_REPETIR[periodicidade]}
+          </label>
+          {repetir && (
+            <div className="form-linha">
+              <label>
+                Periodicidade
+                <select
+                  name="repetir"
+                  value={periodicidade}
+                  onChange={(e) => setPeriodicidade(e.target.value as Periodicidade)}
+                >
+                  {PERIODICIDADES.map((p) => (
+                    <option key={p} value={p}>
+                      {ROTULO_REPETIR[p]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="form-check">
+                <input type="checkbox" name="valorVariavel" />
+                Valor variável (conta de consumo)
+              </label>
+            </div>
+          )}
+          {repetir && (
+            <span className="sub">
+              As próximas contas são geradas sozinhas no mesmo dia de vencimento, 30 dias antes, aguardando aprovação.
+              Edite ou encerre em Despesas recorrentes.
+            </span>
+          )}
+        </fieldset>
         <label>
           Documento fiscal (NF, boleto)
           <input name="documento" type="file" accept={acceptDo("conta")} />
@@ -284,15 +383,33 @@ interface Detalhe {
   conta: ContaVista;
   eventos: EventoVisto[];
   bloqueios: Record<Acao, string | null>;
+  bloqueioValor: string | null;
 }
 
-function DetalheConta({ id, onClose, onMudou }: { id: string; onClose: () => void; onMudou: () => void }) {
+function DetalheConta({
+  id,
+  clientes,
+  categorias,
+  onClose,
+  onMudou,
+}: {
+  id: string;
+  clientes: { id: string; nome: string }[];
+  categorias: string[];
+  onClose: () => void;
+  onMudou: () => void;
+}) {
   const [d, setD] = useState<Detalhe | null>(null);
   const [erro, setErro] = useState("");
   const [confirmando, setConfirmando] = useState<Acao | null>(null);
   const [comentario, setComentario] = useState("");
   const [agindo, setAgindo] = useState(false);
   const [aviso, setAviso] = useState("");
+  const [editando, setEditando] = useState<"valor" | "classificar" | "recorrente" | null>(null);
+  const [novoValor, setNovoValor] = useState("");
+  const [natureza, setNatureza] = useState<NaturezaCusto | "">("");
+  const [clientId, setClientId] = useState("");
+  const [resumoRecorrencia, setResumoRecorrencia] = useState("");
 
   useEffect(() => {
     let vivo = true;
@@ -328,6 +445,29 @@ function DetalheConta({ id, onClose, onMudou }: { id: string; onClose: () => voi
     setConfirmando(null);
     setComentario("");
     setAviso(`Feito: ${ROTULO_ACAO[acao].toLowerCase()}.`);
+    await recarregar();
+  }
+
+  function abrirEdicao(qual: "valor" | "classificar" | "recorrente") {
+    if (!d) return;
+    setErro("");
+    setNovoValor(valorParaCampo(d.conta.valor));
+    setNatureza(d.conta.natureza ?? "");
+    setClientId(d.conta.clientId ?? "");
+    setEditando(qual);
+  }
+
+  async function alterar(corpo: Record<string, unknown>, feito: string) {
+    setAgindo(true);
+    setErro("");
+    const e = await enviarJson(`/api/financeiro/contas/${id}`, "PATCH", corpo);
+    setAgindo(false);
+    if (e) {
+      setErro(e);
+      return;
+    }
+    setEditando(null);
+    setAviso(feito);
     await recarregar();
   }
 
@@ -403,7 +543,134 @@ function DetalheConta({ id, onClose, onMudou }: { id: string; onClose: () => voi
                 )}
               </dd>
             </div>
+            <div>
+              <dt>Tipo</dt>
+              <dd>
+                <TipoConta conta={c} />
+              </dd>
+            </div>
+            <div>
+              <dt>Cliente</dt>
+              <dd>{c.clientNome ?? "—"}</dd>
+            </div>
           </dl>
+
+          {resumoRecorrencia && <div className="overview-empty ok">Recorrência criada: {resumoRecorrencia}.</div>}
+
+          <div className="acoes-conta">
+            {d.bloqueioValor === null && (
+              <div className="acao">
+                <button type="button" className="btn-ghost" disabled={agindo} onClick={() => abrirEdicao("valor")}>
+                  Corrigir valor
+                </button>
+              </div>
+            )}
+            <div className="acao">
+              <button type="button" className="btn-ghost" disabled={agindo} onClick={() => abrirEdicao("classificar")}>
+                Classificar
+              </button>
+            </div>
+            {!c.recorrenciaId && (
+              <div className="acao">
+                <button type="button" className="btn-ghost" disabled={agindo} onClick={() => abrirEdicao("recorrente")}>
+                  Tornar recorrente
+                </button>
+              </div>
+            )}
+          </div>
+
+          {editando === "valor" && (
+            <div className="confirmar" role="group" aria-label="Corrigir valor">
+              <label>
+                Valor correto (R$)
+                <input
+                  value={novoValor}
+                  onChange={(e) => setNovoValor(e.target.value)}
+                  inputMode="decimal"
+                  placeholder="1.234,56"
+                />
+              </label>
+              <p className="sub">
+                Fica na trilha (de → para). Quem corrige o valor não aprova esta conta — outra pessoa decide.
+              </p>
+              <div className="form-acoes">
+                <button type="button" className="btn-ghost" onClick={() => setEditando(null)}>
+                  Voltar
+                </button>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  disabled={agindo || lerReais(novoValor) === null}
+                  onClick={() => alterar({ valor: novoValor }, "Valor corrigido.")}
+                >
+                  {agindo ? "Salvando…" : "Confirmar novo valor"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {editando === "classificar" && (
+            <div className="confirmar form-conta" role="group" aria-label="Classificar conta">
+              <div className="form-linha">
+                <SeletorNatureza valor={natureza} onChange={setNatureza} />
+                <SeletorCliente clientes={clientes} valor={clientId} onChange={setClientId} />
+              </div>
+              <div className="form-acoes">
+                <button type="button" className="btn-ghost" onClick={() => setEditando(null)}>
+                  Voltar
+                </button>
+                <button
+                  type="button"
+                  className="btn-primary"
+                  disabled={agindo}
+                  onClick={() => alterar({ natureza, clientId }, "Classificação salva.")}
+                >
+                  {agindo ? "Salvando…" : "Salvar classificação"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {editando === "recorrente" && (
+            <div className="confirmar">
+              <p>
+                Cria uma despesa recorrente a partir desta conta. Ela vira a ocorrência de{" "}
+                <strong>{rotuloCompetencia(c.vencimento.slice(0, 7))}</strong>; as próximas são geradas sozinhas.
+              </p>
+              <FormRecorrencia
+                inicial={{
+                  fornecedor: c.fornecedor,
+                  descricao: c.descricao,
+                  categoria: c.categoria,
+                  valor: valorParaCampo(c.valor),
+                  valorVariavel: false,
+                  periodicidade: "mensal",
+                  diaVencimento: String(Number(c.vencimento.slice(8, 10))),
+                  inicio: c.vencimento.slice(0, 7),
+                  fim: "",
+                  natureza: c.natureza ?? "",
+                  clientId: c.clientId ?? "",
+                }}
+                inicioFixo
+                clientes={clientes}
+                categorias={categorias}
+                rotuloEnviar="Tornar recorrente"
+                onCancelar={() => setEditando(null)}
+                onEnviar={async (v) => {
+                  const e = await enviarJson("/api/financeiro/recorrentes", "POST", { ...corpoRecorrencia(v), contaId: c.id }, (r) =>
+                    setResumoRecorrencia(textoGeracao(r.geracao))
+                  );
+                  if (!e) {
+                    setEditando(null);
+                    setAviso("Conta tornada recorrente.");
+                    onMudou();
+                    await recarregar();
+                  }
+                  return e;
+                }}
+              />
+            </div>
+          )}
 
           <div className="acoes-conta">
             {(ACOES_DO_STATUS[c.status] ?? []).map((a, i, lista) => {

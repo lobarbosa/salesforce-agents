@@ -1,4 +1,10 @@
 {
   "buildCommand": "npm run vercel-build",
-  "outputDirectory": ".next"
+  "outputDirectory": ".next",
+  "crons": [
+    {
+      "path": "/api/cron/recorrencias",
+      "schedule": "7 9 * * *"
+    }
+  ]
 }

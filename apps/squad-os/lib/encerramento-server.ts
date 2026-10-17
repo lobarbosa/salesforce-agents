@@ -33,6 +33,9 @@ export async function historicoDoCliente(
   const demandas = await db.demanda.count({ where: { clientId } });
   const registrosTempo = await db.registroTempo.count({ where: { demanda: { clientId } } });
   const execucoes = await db.execucaoAgente.count({ where: { clientId } });
+  // Custo alocado ao cliente: excluir faria o FK virar NULL e a margem por cliente perderia o histórico.
+  const contasPagar = await db.contaPagar.count({ where: { clientId } });
+  const despesasRecorrentes = await db.despesaRecorrente.count({ where: { clientId } });
   const contrato = await db.contrato.findUnique({
     where: { clientId },
     select: { horasContratadas: true, _count: { select: { entregaveis: true } } },
@@ -41,6 +44,8 @@ export async function historicoDoCliente(
     demandas,
     registrosTempo,
     execucoes,
+    contasPagar,
+    despesasRecorrentes,
     entregaveis: contrato?._count.entregaveis ?? 0,
     horasContratadas: contrato?.horasContratadas ?? 0,
   };

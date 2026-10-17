@@ -102,6 +102,9 @@ export interface HistoricoDoCliente {
   demandas: number;
   registrosTempo: number;
   execucoes: number;
+  /** Contas a pagar e despesas recorrentes alocadas ao cliente (opcionais nos testes antigos). */
+  contasPagar?: number;
+  despesasRecorrentes?: number;
   entregaveis: number;
   horasContratadas: number;
 }
@@ -115,6 +118,9 @@ export function bloqueiosDeExclusao(h: HistoricoDoCliente): string[] {
   if (h.demandas > 0) b.push(plural(h.demandas, "demanda", "demandas"));
   if (h.registrosTempo > 0) b.push(plural(h.registrosTempo, "registro de horas", "registros de horas"));
   if (h.execucoes > 0) b.push(plural(h.execucoes, "execução de agente", "execuções de agente"));
+  if ((h.contasPagar ?? 0) > 0) b.push(plural(h.contasPagar!, "conta a pagar alocada", "contas a pagar alocadas"));
+  if ((h.despesasRecorrentes ?? 0) > 0)
+    b.push(plural(h.despesasRecorrentes!, "despesa recorrente alocada", "despesas recorrentes alocadas"));
   if (h.entregaveis > 0) b.push(plural(h.entregaveis, "entregável no contrato", "entregáveis no contrato"));
   if (h.horasContratadas > 0) b.push(`contrato com ${h.horasContratadas}h contratadas`);
   return b;

@@ -145,6 +145,10 @@ caso("excluir: cada tipo de histórico bloqueia sozinho", () => {
     assert.equal(bloqueiosDeExclusao({ ...SEM_HISTORICO, [campo]: 1 }).length, 1, campo);
   }
   assert.deepEqual(bloqueiosDeExclusao({ ...SEM_HISTORICO, demandas: 1, execucoes: 2 }), ["1 demanda", "2 execuções de agente"]);
+  assert.deepEqual(bloqueiosDeExclusao({ ...SEM_HISTORICO, contasPagar: 3, despesasRecorrentes: 1 }), [
+    "3 contas a pagar alocadas",
+    "1 despesa recorrente alocada",
+  ]);
 });
 
 caso("excluir: cliente ativo nunca é excluído, mesmo sem histórico", () => {

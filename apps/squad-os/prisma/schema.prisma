@@ -136,6 +136,10 @@ model Client {
   ragChunks RagChunk[]
   execucoes ExecucaoAgente[]
 
+  // Custo alocado ao cliente (margem de contribuição por cliente).
+  contasPagar         ContaPagar[]
+  despesasRecorrentes DespesaRecorrente[]
+
   @@map("clients")
 }
 
@@ -568,10 +572,73 @@ model ContaPagar {
 
   atualizadoEm DateTime @updatedAt @map("atualizado_em")
 
+  // Recorrência (16/10/2026). Tudo nulo = conta avulsa lançada antes da
+  // classificação existir. `competencia` ('YYYY-MM') só é preenchida em conta
+  // ligada a uma recorrência: é a chave que impede gerar a mesma conta duas
+  // vezes (unique com recorrenciaId; o Postgres aceita vários NULL, então as
+  // avulsas não colidem). Contrato de colunas com o cfo_agent (konecta-agents).
+  recorrenciaId String?            @map("recorrencia_id")
+  recorrencia   DespesaRecorrente? @relation(fields: [recorrenciaId], references: [id], onDelete: SetNull)
+  competencia   String?
+  natureza      NaturezaCusto?
+  clientId      String?            @map("client_id")
+  client        Client?            @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
   eventos EventoConta[]
 
+  @@unique([recorrenciaId, competencia])
   @@index([status, vencimento])
   @@map("contas_pagar")
+}
+
+// Natureza do custo, para a margem de contribuição do cfo_agent:
+// direto = custo do serviço prestado (consultor/terceiro alocado a cliente);
+// fixo   = despesa operacional (software, salário administrativo, aluguel...).
+enum NaturezaCusto {
+  direto
+  fixo
+}
+
+enum Periodicidade {
+  mensal
+  trimestral
+  semestral
+  anual
+}
+
+// Modelo de despesa que se repete. Não é conta: a cada competência devida o
+// Squad OS gera a ContaPagar correspondente (lib/recorrencias-data.ts), que
+// segue o fluxo normal (aguardando aprovação → aprovada → paga). Mudar o modelo
+// vale para as próximas contas, nunca reescreve as já geradas.
+model DespesaRecorrente {
+  id            String        @id @default(cuid())
+  fornecedor    String
+  descricao     String        @default("")
+  categoria     String        @default("")
+  // Valor previsto por ocorrência (não por mês: anual de 1.200 é 1.200).
+  valor         Decimal       @db.Decimal(14, 2)
+  // Conta de consumo: o valor gerado é estimativa e é confirmado a cada mês
+  // (editável enquanto a conta aguarda aprovação).
+  valorVariavel Boolean       @default(false) @map("valor_variavel")
+  periodicidade Periodicidade @default(mensal)
+  // 1–31; em mês mais curto, vence no último dia.
+  diaVencimento Int           @map("dia_vencimento")
+  // Primeira e última competência (gravadas como dia 1 do mês). fimEm nulo = sem fim.
+  inicioEm      DateTime      @map("inicio_em") @db.Date
+  fimEm         DateTime?     @map("fim_em") @db.Date
+  ativa         Boolean       @default(true)
+  natureza      NaturezaCusto
+  clientId      String?       @map("client_id")
+  client        Client?       @relation(fields: [clientId], references: [id], onDelete: SetNull)
+
+  criadoPorEmail String   @map("criado_por_email")
+  criadoEm       DateTime @default(now()) @map("criado_em")
+  atualizadoEm   DateTime @updatedAt @map("atualizado_em")
+
+  contas ContaPagar[]
+
+  @@index([ativa])
+  @@map("despesas_recorrentes")
 }
 
 // Trilha de auditoria: uma linha por ação (lançada, aprovada, recusada, paga,

@@ -17,6 +17,7 @@ const ITENS_FINANCEIRO = [
   { href: "/financeiro", rotulo: "Painel financeiro", exato: true },
   { href: "/financeiro/saude", rotulo: "Saúde financeira" },
   { href: "/financeiro/contas", rotulo: "Contas a pagar" },
+  { href: "/financeiro/recorrentes", rotulo: "Despesas recorrentes" },
   { href: "/financeiro/aprovacoes", rotulo: "Aprovações" },
   { href: "/financeiro/contabilidade", rotulo: "Contabilidade" },
   { href: "/financeiro/divergencias", rotulo: "Divergências" },
