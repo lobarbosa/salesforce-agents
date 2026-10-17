@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#0070D2</headerColor>
+        <logoVersion>1</logoVersion>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description>Build stronger customer relationships, manage renewals, and stay organized.</description>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>Relationship Management</label>
+    <navType>Standard</navType>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_Mais_Polimeros_Vendedor</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Standard</profile>
+    </profileActionOverrides>
+    <profileActionOverrides>
+        <actionName>Tab</actionName>
+        <content>Home_Mais_Polimeros_Vendedor</content>
+        <formFactor>Large</formFactor>
+        <pageOrSobjectType>standard-home</pageOrSobjectType>
+        <type>Flexipage</type>
+        <profile>Read Only</profile>
+    </profileActionOverrides>
+    <tabs>standard-home</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-Contract</tabs>
+    <tabs>standard-Event</tabs>
+    <tabs>standard-CollaborationGroup</tabs>
+    <tabs>standard-ContentNote</tabs>
+    <tabs>standard-Task</tabs>
+    <tabs>TransferenciaConta__c</tabs>
+    <tabs>Controledeamostra__c</tabs>
+    <tabs>Perfil__c</tabs>
+    <tabs>PesquisaDesenvolvimento__c</tabs>
+    <tabs>ComprasValGroup__c</tabs>
+    <tabs>Solicitar_no_Projeto__c</tabs>
+    <tabs>Quadro_de_Metas__c</tabs>
+    <tabs>Tipo_de_Entrada_Saida__c</tabs>
+    <tabs>Segmentacao_Mais_Polimeros__c</tabs>
+    <tabs>Relacionamento_de_Campanha__c</tabs>
+    <tabs>Validade_do_Estoque__c</tabs>
+    <tabs>Limite_de_Credito__c</tabs>
+    <tabs>MP_Whatsapp_Code__c</tabs>
+    <tabs>MP_Whatsapp_Conversa__c</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>Relationship_Management_UtilityBar</utilityBar>
+</CustomApplication>
