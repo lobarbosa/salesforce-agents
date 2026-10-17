@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M07_Coment_sobre_a_visao_estabeleci_CVS</fullName>
+    <active>true</active>
+    <description>Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Comentários sobre a visão estabelecida</description>
+    <errorConditionFormula>AND(
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+(ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)&amp;&amp;ISPICKVAL(    Cliente_ja_possui_visao_estabelecida__c ,&quot;Sim&quot;)) ,ISBLANK( Comentarios_sobre_a_visao_estabelecida__c ))</errorConditionFormula>
+    <errorMessage>Para alterar de fase é obrigatório o preenchimento do campo &quot;Comentários sobre a visão estabelecida&quot;  (Msg07)</errorMessage>
+</ValidationRule>

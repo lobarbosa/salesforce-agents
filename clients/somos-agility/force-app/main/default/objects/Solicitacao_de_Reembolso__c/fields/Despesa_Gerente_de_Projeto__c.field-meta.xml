@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Despesa_Gerente_de_Projeto__c</fullName>
+    <description>Captura o nome do gerente de projeto do lançamento de despesa através do flow &quot;sincroniza campos&quot;.</description>
+    <externalId>false</externalId>
+    <label>Despesa Gerente de Projeto</label>
+    <length>100</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

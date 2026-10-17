@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Plano_de_Testes__c</fullName>
+    <label>Tipo de Plano de Testes</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Try and buy</fullName>
+                <default>false</default>
+                <label>Try and buy</label>
+            </value>
+            <value>
+                <fullName>Com vantagem negociada</fullName>
+                <default>false</default>
+                <label>Com vantagem negociada - last call</label>
+            </value>
+            <value>
+                <fullName>Com vantagem negociada - direito de recusa</fullName>
+                <default>false</default>
+                <label>Com vantagem negociada - direito de recusa</label>
+            </value>
+            <value>
+                <fullName>Sem vantagem negociada</fullName>
+                <default>false</default>
+                <label>Sem vantagem negociada</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

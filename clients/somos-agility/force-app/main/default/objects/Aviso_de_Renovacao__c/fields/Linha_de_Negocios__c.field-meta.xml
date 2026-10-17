@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Linha_de_Negocios__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 23032018: pesquisa relacionada da linha de negócios</description>
+    <label>Linha de Negócios</label>
+    <referenceTo>Linha_de_Negocios__c</referenceTo>
+    <relationshipLabel>Aviso de Renovação</relationshipLabel>
+    <relationshipName>Aviso_de_Renovacao</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

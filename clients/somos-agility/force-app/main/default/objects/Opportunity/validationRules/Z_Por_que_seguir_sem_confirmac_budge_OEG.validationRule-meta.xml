@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Por_que_seguir_sem_confirmac_budge_OEG</fullName>
+    <active>false</active>
+    <description>***O CAMPO Por_que_seguir_sem_confirmacao_budge NÃO EXISTE MAIS*** Para alterar a fase da oport  de OEG para PSL é obrigatório preencher a o campo Por que Seguir s/ confirmação de budget caso a inform Não esteja no campo Agility é detentora da solucao</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;OEG&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;PSL&quot;)) ,( ISPICKVAL(   Ha_budget_disponivel__c  ,&quot;Não&quot;)&amp;&amp; ISBLANK(   Por_que_seguir_sem_confirmacao_de_Budget__c  )))</errorConditionFormula>
+    <errorMessage>** Para alterar de fase é obrigatório o preenchimento do campo &quot;Por que seguir s/ confirmação de budget?&quot; **</errorMessage>
+</ValidationRule>

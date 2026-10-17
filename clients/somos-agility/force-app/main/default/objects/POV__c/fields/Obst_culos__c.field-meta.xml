@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Obst_culos__c</fullName>
+    <inlineHelpText>Há obstáculos ou Riscos Sérios (&quot;Deal Stoppers&quot;) na oportunidade?</inlineHelpText>
+    <label>Obstáculos</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Mapeado</fullName>
+                <default>false</default>
+                <label>Mapeado</label>
+            </value>
+            <value>
+                <fullName>Desconhecido</fullName>
+                <default>false</default>
+                <label>Desconhecido</label>
+            </value>
+            <value>
+                <fullName>Não tenho certeza</fullName>
+                <default>false</default>
+                <label>Não tenho certeza</label>
+            </value>
+            <value>
+                <fullName>Nenhum</fullName>
+                <default>false</default>
+                <label>Nenhum</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

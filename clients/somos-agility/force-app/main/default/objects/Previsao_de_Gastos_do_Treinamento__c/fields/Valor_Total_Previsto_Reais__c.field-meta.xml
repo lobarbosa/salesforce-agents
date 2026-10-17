@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_Previsto_Reais__c</fullName>
+    <formula>(Valor_Unitario_Treinamento_Reais__c * Quantidade_Treinamento__c) +  (Valor_Unitario_Exame_Reais__c * Quantidade_Exame__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor Total Previsto (Reais)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

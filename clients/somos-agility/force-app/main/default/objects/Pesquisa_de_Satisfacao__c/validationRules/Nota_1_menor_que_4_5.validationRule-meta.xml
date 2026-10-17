@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nota_1_menor_que_4_5</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND((TEXT( Nota_1__c ) &lt;&gt; &quot;4.5&quot; &amp;&amp; TEXT( Nota_1__c ) &lt;&gt; &quot;5&quot;) &amp;&amp; TEXT( Nota_1__c )&lt;&gt;&quot;&quot;,ISBLANK( Comentario_1__c ))</errorConditionFormula>
+    <errorDisplayField>Comentario_1__c</errorDisplayField>
+    <errorMessage>A Nota informada foi menor que  4,5, por favor deixe o seu comentário</errorMessage>
+</ValidationRule>

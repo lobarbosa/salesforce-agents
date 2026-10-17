@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BusinessProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conversão</fullName>
+    <isActive>true</isActive>
+    <values>
+        <fullName>Conversão</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Novo</fullName>
+        <default>true</default>
+    </values>
+    <values>
+        <fullName>Não qualificado</fullName>
+        <default>false</default>
+    </values>
+</BusinessProcess>

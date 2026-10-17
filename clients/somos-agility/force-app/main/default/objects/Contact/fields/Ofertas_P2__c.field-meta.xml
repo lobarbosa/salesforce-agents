@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ofertas_P2__c</fullName>
+    <label>Ofertas (P2)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Network Control &amp; Application Visibility</fullName>
+                <default>false</default>
+                <label>Network Control &amp; Application Visibility</label>
+            </value>
+            <value>
+                <fullName>Application Delivery</fullName>
+                <default>false</default>
+                <label>Application Delivery</label>
+            </value>
+            <value>
+                <fullName>Application Performance &amp; Availability</fullName>
+                <default>false</default>
+                <label>Application Performance &amp; Availability</label>
+            </value>
+            <value>
+                <fullName>Branch Office Infrastructure Optimization</fullName>
+                <default>false</default>
+                <label>Branch Office Infrastructure Optimization</label>
+            </value>
+            <value>
+                <fullName>ADC Automation</fullName>
+                <default>false</default>
+                <label>ADC Automation</label>
+            </value>
+            <value>
+                <fullName>Cloud Migration Guidance</fullName>
+                <default>false</default>
+                <label>Cloud Migration Guidance</label>
+            </value>
+            <value>
+                <fullName>Private Cloud Solutions</fullName>
+                <default>false</default>
+                <label>Private Cloud Solutions</label>
+            </value>
+            <value>
+                <fullName>Public Cloud Solutions</fullName>
+                <default>false</default>
+                <label>Public Cloud Solutions</label>
+            </value>
+            <value>
+                <fullName>Multi Cloud Solutions</fullName>
+                <default>false</default>
+                <label>Multi Cloud Solutions</label>
+            </value>
+            <value>
+                <fullName>Hyperconverged Solutions</fullName>
+                <default>false</default>
+                <label>Hyperconverged Solutions</label>
+            </value>
+            <value>
+                <fullName>Storage &amp; Data Management</fullName>
+                <default>false</default>
+                <label>Storage &amp; Data Management</label>
+            </value>
+            <value>
+                <fullName>Network Services Automation</fullName>
+                <default>false</default>
+                <label>Network Services Automation</label>
+            </value>
+            <value>
+                <fullName>Software Defined Solutions</fullName>
+                <default>false</default>
+                <label>Software Defined Solutions</label>
+            </value>
+            <value>
+                <fullName>Enterprise Mobility Management</fullName>
+                <default>false</default>
+                <label>Enterprise Mobility Management</label>
+            </value>
+            <value>
+                <fullName>App &amp; Desktop Virtualization</fullName>
+                <default>false</default>
+                <label>App &amp; Desktop Virtualization</label>
+            </value>
+            <value>
+                <fullName>Governance, Risk &amp; Compliance</fullName>
+                <default>false</default>
+                <label>Governance, Risk &amp; Compliance</label>
+            </value>
+            <value>
+                <fullName>Visibility &amp; Identity</fullName>
+                <default>false</default>
+                <label>Visibility &amp; Identity</label>
+            </value>
+            <value>
+                <fullName>Application Defense</fullName>
+                <default>false</default>
+                <label>Application Defense</label>
+            </value>
+            <value>
+                <fullName>Infrastructure Defense</fullName>
+                <default>false</default>
+                <label>Infrastructure Defense</label>
+            </value>
+            <value>
+                <fullName>EndPoint Defense</fullName>
+                <default>false</default>
+                <label>EndPoint Defense</label>
+            </value>
+            <value>
+                <fullName>Managed Security Services - MSS</fullName>
+                <default>false</default>
+                <label>Managed Security Services - MSS</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

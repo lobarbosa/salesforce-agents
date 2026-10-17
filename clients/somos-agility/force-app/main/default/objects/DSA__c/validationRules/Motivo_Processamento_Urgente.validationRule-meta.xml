@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_Processamento_Urgente</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( Pedido_Urgente__c =True, ISBLANK( Motivo_pedido_urgente__c ) )</errorConditionFormula>
+    <errorDisplayField>Motivo_pedido_urgente__c</errorDisplayField>
+    <errorMessage>Informar o Motivo do Processamento  Urgência para a priorização do DSA</errorMessage>
+</ValidationRule>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In_L2_Total_Ano__c</fullName>
+    <formula>Sales_In_Q1_Application_Delivery__c + Sales_In_Q2_Application_Delivery__c + Sales_In_Q3_Application_Delivery__c + Sales_In_Q4_Application_Delivery__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Antigo: Sales In - Total - Ano (Application Delivery)</inlineHelpText>
+    <label>Recorrente ajustado AD - Total - Ano</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M31_Qualificacao_de_fase_PFC_para_NEC</fullName>
+    <active>true</active>
+    <description>AM 010CN: para avançar para a fase NEC é necessário que o campo &quot;Dúvidas e resistências superadas&quot;  do objeto Ações Pre fechamento esteja como &quot;SIM&quot; e que, caso seja &quot;Necessário o Plano de Testes&quot;, a resposta a Reconheu a Efetividade dos Testes seja &quot;SIM&quot;</description>
+    <errorConditionFormula>AND (
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+   ISCHANGED(StageName), 
+   ISPICKVAL(PRIORVALUE(StageName), &quot;PFC&quot;), 
+   AND (
+     PFC_Validado__c = 0,
+     PFC_Validado_2__c = 0)
+)
+
+/*
+AND ( 
+   ISCHANGED(StageName), 
+   ISPICKVAL(PRIORVALUE(StageName), &quot;PFC&quot;), 
+   AND (
+     PFC_Validado__c = 0,
+     PFC_Validado_2__c = 0)
+)
+*/</errorConditionFormula>
+    <errorMessage>Para avançar a fase, é necessário que entre em Ações Pré Fechamento e responda &quot;Sim&quot; em &quot;Dúvidas e resistências superadas&quot; e caso seja &quot;Necessário o Plano de Testes&quot;, a resposta &quot;Reconheceu a Efetividade dos Testes&quot; também deverá ser &quot;Sim&quot; (Msg31)</errorMessage>
+</ValidationRule>

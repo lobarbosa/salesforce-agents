@@ -1,0 +1,3647 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PFC</fullName>
+    <active>true</active>
+    <businessProcess>OQF</businessProcess>
+    <compactLayoutAssignment>Layout_AW</compactLayoutAssignment>
+    <description>Ações do Pré Fechamento</description>
+    <label>PFC</label>
+    <picklistValues>
+        <picklist>Agility_a_definidora_da_solucao__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ano_de_Competencia__c</picklist>
+        <values>
+            <fullName>2017</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2018</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2019</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2020</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2021</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2022</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2023</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2024</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2025</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2026</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2027</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2028</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2029</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2030</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>AtratividadeVisaoLN__c</picklist>
+        <values>
+            <fullName>Alta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Baixa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Média</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Atratividade__c</picklist>
+        <values>
+            <fullName>Alta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Baixa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Média</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>BOM_Quote__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>BP_Finalizado_e_Disponibilizado_para_GC__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>BU__c</picklist>
+        <values>
+            <fullName>Cibersegurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infraestrutura</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Budget_Aprovado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Cadastro_fiscais_financeiros_validos__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Cadastros_fisc_fin_do_Cliente_v_lidos__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Categoria__c</picklist>
+        <values>
+            <fullName>Comissionamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Locação %28Renovação%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Suporte %28Novo%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Suporte %28Renovação%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Suporte %28Upgrade%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Parcela Avulsa de Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Produto %28Sem Serviço%29 - Com ou Sem Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Projeto %28Produto %2B Serviços%29 - Com ou Sem Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Serviço %28Avulso ou Projeto%29 - Com ou Sem Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Subscrição ou Renovação</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Certeza_de_Conclus_o__c</picklist>
+        <values>
+            <fullName>100</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>75</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Certeza_de_Vit_ria__c</picklist>
+        <values>
+            <fullName>100</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>50</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>75</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Certeza_do_Fechamento__c</picklist>
+        <values>
+            <fullName>Awareness - 5%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Be to Commit - 90%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Best Case - 50%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Best Effort - 75%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Closed - 100%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commit - 95%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pipeline - 30%25</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Classificacao__c</picklist>
+        <values>
+            <fullName>0 - Oportunidade já registrada por outra revenda%3B parceiro%2Ffabricante já atuando%2E Não dá %22Match%22%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1 - %22Match%22 pág%2E 1 x cliente - buscando interlocutor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2 - Interlocutor alcançado%2C sem prioridade pelo Cliente%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3 - Priorizado pelo cliente%2C Há uma %22Dor%22 e Compelling Técnico%2C Análise para envio ao orçamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4 - Engajado - Submetido ao Orçamento ou Verificando Concorrência</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Cliente_Avaliando_Valores__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Cliente_Utiliza_Contrato__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Cliente_Utiliza_Portal__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Cliente_ja_possui_visao_estabelecida__c</picklist>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Cliente_reconhece_criterios_alcancados__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Compet_ncia__c</picklist>
+        <values>
+            <fullName>Abril</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agosto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dezembro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fevereiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Janeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Julho</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Junho</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Março</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Novembro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outubro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Setembro</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Concorrente_1__c</picklist>
+        <values>
+            <fullName>Concorrente 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 7</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Concorrente_2__c</picklist>
+        <values>
+            <fullName>Concorrente 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 7</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Concorrente_3__c</picklist>
+        <values>
+            <fullName>Concorrente 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente 7</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Condicao_de_Pagamento__c</picklist>
+        <values>
+            <fullName>Mensal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Parcela Única</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Condicoes_especiais_de_fornecimento__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Confirmacao_do_perfil_de_solucao_Agility__c</picklist>
+        <values>
+            <fullName>Básica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consultiva</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Confirmada_Efetividade_pelo_Cliente__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Confirmada_primazia_pelo_Cliente__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Contrato_Aprovado_Internamente__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Contrato_de_Suporte__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Conversao_de_Lead__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Country__c</picklist>
+        <values>
+            <fullName>Australia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Bonaire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Botswana</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Canada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chile</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Columbia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ecuador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>France</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Iceland</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indonesia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Japan</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Kenya</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mexico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nepal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palau</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Peru</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>South Africa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Spain</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Switzerland</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tanzania</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thailand</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>United States</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Venezuela</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vietnam</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Criacao_da_Solucao__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Criterios_de_sucesso_foram_alcancados__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>E_possivel_obter_o_budget_em_breve_OEG__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>E_refresh__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Entendimento_do_Escopo__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>EscalaComissionamento__c</picklist>
+        <values>
+            <fullName>Não Qualificado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perfil A - 2019</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perfil A - 2020</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perfil B - 2019</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perfil B - 2020</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perfil C - 2019</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perfil C - 2020</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Existem_riscos_ou_restricoes_tecnicas__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Fabricante__c</picklist>
+        <values>
+            <fullName>Agility %E2%80%93 SIS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agility - APMS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Citrix</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commvault</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dynatrace</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5 Networks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Firemon</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Forescout</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gigamon</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infoblox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Intel Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NetApp</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nutanix</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OpenStack</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rackspace</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riverbed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vmware</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Fase_Mapeamento__c</picklist>
+        <values>
+            <fullName>Aberto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concluído</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Análise</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ForecastCategoryName</picklist>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ganho</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Improvavel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perdido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Possível</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Gerente_de_Negocios__c</picklist>
+        <values>
+            <fullName>Ademar Arantes Godoy</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fabio Sugimoto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tatiane Oliveira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Valtir Bonfiglioli</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Veridiana Aranha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wendell Bitencourt</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ha_budget_disponivel_OEG__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ha_budget_disponivel__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ha_chance_de_obte_lo__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LeadSource</picklist>
+        <values>
+            <fullName>Campanha Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Success</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Evento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação Interna</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação Linha de Negócio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Distribuidor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Parceiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PABX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospecção - Gerente de Contas</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sales Ops</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação de Orçamento via E-mail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Treinamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web Site Agility %E2%80%93 E-mail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web Site Agility Networks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Whatsapp</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Linha_de_Neg_cio__c</picklist>
+        <values>
+            <fullName>ADC Geral %28 Application Delivery Controllers%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AI %28Armazenamento Inteligente%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AUTOM e IPAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DC SRV%2C NETWORKS%2C OUTROS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DCF%2C ASM%2C APM%2C BYOD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGEN NAC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGF %28Next Gen%2E Firewalls%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VOG %28Virtualização%2C Orquestração%2C Gerenciamento%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WAAR %28Aceleração WAN%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WEB SECURITY</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Linha_de_Neg_cios_BDM__c</picklist>
+        <values>
+            <fullName>DATA CENTER %26 CLOUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ENTREGA DE APLICAÇÃO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEGURANÇA</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Linha_de_Negocio__c</picklist>
+        <values>
+            <fullName>DIGITAL TRANSFORMATION</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SECURITY</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Mapeamento_Confirmado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Mapeamento_esta_valido_com_fabricante__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Meu_Compromisso__c</picklist>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Improvável</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Possível</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motivo_Loss__c</picklist>
+        <values>
+            <fullName>Alteração de Escopo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desativação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>End of Support</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>No decision</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tech Refresh</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Troca de Tecnologia</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motivo_Win__c</picklist>
+        <values>
+            <fullName>Aumento de escopo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Redução de escopo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Redução devido concorrência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sem alterações na base</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motivo__c</picklist>
+        <values>
+            <fullName>Aberto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aderência do Produto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Duplicada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fabricante Concorrente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Falta de Orçamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Melhor preço</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refresh c%2F Agility</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Refresh c%2F outra Revenda</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Relacionamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Target Não Atingido</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Necessario_ja_envolver_area_de_compras__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Nova_visao_estabelecida_com_sucesso__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>O_processo_de_compras_conhecido__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>O_processo_de_decis_o_conhecido__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ofertas_Mapeadas__c</picklist>
+        <values>
+            <fullName>GAA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GPD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PAM</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ofertas__c</picklist>
+        <values>
+            <fullName>Cloud %26 SDN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DHCP%2FIPAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DNS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerenciamento Inteligente de Tráfego</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sinalização e Roaming</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transição para IPv6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Visibilidade e Planejamento de Redes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VoLTE</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origem_da_Oportunidade__c</picklist>
+        <values>
+            <fullName>Base Assistec</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campanha de Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Evento Interno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indiação de Parceiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Distribuidor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Funcionário Assistec</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Gerente de Contrato</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Novos Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospecção - Gerente de Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Receptivo Contato Base</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Site Assistec</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Outros__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Perfil_de_Atendimento__c</picklist>
+        <values>
+            <fullName>Em prospecção</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estratégico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inativo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nomeado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Pre_classificacao_do_perfil_da_solucao__c</picklist>
+        <values>
+            <fullName>Consultiva</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transacional</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Prioridade__c</picklist>
+        <values>
+            <fullName>Baixa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Importante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Média</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Urgente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Probabilidade_Diretoria__c</picklist>
+        <values>
+            <fullName>Frio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Probabilidade__c</picklist>
+        <values>
+            <fullName>Commit</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Analise</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Possível</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_Fabricante__c</picklist>
+        <values>
+            <fullName>AGILITY-AUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AGILITY-SEG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIOps NGFW</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARMIS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS Fargate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS Trasit Gateway</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advanced Threat Prevention</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advanced URL Filtering</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon CloudFront</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Block Store %28EBS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Cloud Compute %28EC2%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Container Service %28ECS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Kubernetes Service %28EKS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Route 53</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Simple Storage Service %28S3%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Virtual Private Cloud %28VPC%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Access Policy Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Advanced Firewall Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Advanced WAF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP DNS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Local Traffic Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Policy Enforcement Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP SSL Orchestrator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP VIPRION Chassis and Blades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Virtual Edition</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP iSeries Appliances</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BLACKBERRY CYLANCE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BloxOne %28SaaS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNA - Cloud Network Automation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYMULATE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud Privilege Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cortex</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cyberark</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cylance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DHCP%2C DNS and IPAM %28DDI%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DNS Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DNS Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DYANATRACE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Distributed Cloud Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EC2 AWS Auto Scaling</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Elastic Load Balancing %28ELB%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Endpoint Privilege Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Enterprise Data loss Prevention %28DLP%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extrahop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5 rSeries</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIREMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FORESCOUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIGAMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HASHCORP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IBM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INETCO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indentity Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infoblox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IoT Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Contêiner CN-Series</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Hardware</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Virtual VM-Series</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGINX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NONAME</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OTHER</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer APEX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Analyzer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer GigaStor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Gigaflow</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Management Server %28OMS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Taps</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ObserverONE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PENTEST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Panorama</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Picus Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Positivo Server %26 Solutions</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prisma CLOUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prisma SASE %28Access%2C SD-WAN %26 ADEM%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PrivacyTools</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Privileged Access</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QOMPLX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QUALYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rainforest</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riverbed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SALT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SECURITY%2EAI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Secret Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Security Compass</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shape Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VELOS Chassis and Blades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VERACODE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VaultOne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Veeam</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WildFire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Workforce %26 Custumer Access</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>f5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>iRules</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_OneTime__c</picklist>
+        <values>
+            <fullName>AWS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYBERARK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extrahop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIREFLY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIREMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIGAMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GREMLIN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INETCO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INFOBLOX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Jumpad</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Picus Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QUALYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RAINFOREST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RIVERBED</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Security Compass</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VERACODE</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_Recorrente__c</picklist>
+        <values>
+            <fullName>3N</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GEST-VULNERB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IDENTITY-GOV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MNG-DEVOPS%2FMCLOUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MNG-DIGIEXP</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto__c</picklist>
+        <values>
+            <fullName>Authentication</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Exchange</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Firepass</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Token</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WebAccelerator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XenApp</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XenDesktop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XenServer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>enVision</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Progresso__c</picklist>
+        <values>
+            <fullName>Concluída</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em andamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não iniciada</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Qual_o_papel_deste_Stakeholder_1__c</picklist>
+        <values>
+            <fullName>Mobilizador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PowerSponsor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Stakeholder</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Qual_o_papel_deste_Stakeholder_2__c</picklist>
+        <values>
+            <fullName>Mobilizador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PowerSponsor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Stakeholder</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Qual_o_papel_deste_Stakeholder_3__c</picklist>
+        <values>
+            <fullName>Mobilizador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PowerSponsor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Stakeholder</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Qual_o_papel_deste_Stakeholder_4__c</picklist>
+        <values>
+            <fullName>Mobilizador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PowerSponsor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Stakeholder</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Realizado_UTD__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Renova_ao_ano_anterior__c</picklist>
+        <values>
+            <fullName>Primeira Renovação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovado pela Agility Networks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovado por outra Revenda</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Requisitar_SE_SA_de_Cloud_para_Projeto__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Requisitar_SE_SA_de_DC_C_para_o_Projeto__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Requisitar_SE_SA_de_SEG_para_o_Projeto__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Requisitar_SE_para_o_Projeto__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Responsavel_pela_Acao_DIA__c</picklist>
+        <values>
+            <fullName>BDR</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerente da Conta</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Revis_o__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>10</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>6</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>7</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>8</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>9</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Revisao_da_Solucao__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Setor_Area__c</picklist>
+        <values>
+            <fullName>Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infraestrutura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Segurança</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Situa_o_do_Mapeamento__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Negado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não Solicitado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente %28Em Análise%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>StatusFastTrack__c</picklist>
+        <values>
+            <fullName>Aguardando Aprovação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aguardando Envio</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Qualifica_o_SE_Cloud__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não Solicitado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Qualifica_o_SE_DC_C__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não Solicitado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Qualifica_o_SE_EA__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não Solicitado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Qualifica_o_SE_SEG__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não Solicitado</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Qualificacao_OEG__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rascunho</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Recall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Aberto</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Desengajada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Encerrado Loss</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Encerrado Win</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Encerrado Win - Processada Financeiro</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Temos_acesso_ao_Stakeholder_1__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Temos_acesso_ao_Stakeholder_2__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Temos_acesso_ao_Stakeholder_3__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Temos_acesso_ao_Stakeholder_4__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Acao_DIA__c</picklist>
+        <values>
+            <fullName>Desenvolvimento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Plano de Execução</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Encerramento__c</picklist>
+        <values>
+            <fullName>Aberto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Loss</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Win</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Renovacao__c</picklist>
+        <values>
+            <fullName>Nenhuma</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Renovação com Ampliação de Valor%2FCobertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovação com Redução de Valor%2FCobertura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovação com Índice de Reajuste</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Renovação sem Índice de Reajuste</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Existing Business</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>New Business</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Unidade_de_Neg_cios__c</picklist>
+        <values>
+            <fullName>Telecomunicações</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Visao_de_solucao_estabelecida_por__c</picklist>
+        <values>
+            <fullName>Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrência</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Z_Linha_de_Negocios__c</picklist>
+        <values>
+            <fullName>APPLICATION DELIVERY</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DIGITAL  TRANSFORMATION</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SECURITY</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>snap_finan__Codigo_Servico__c</picklist>
+        <values>
+            <fullName>01015 - Execução de obra hidráulica e obras semelhantes%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01023 - Execução de obras de constr%2E civil%2C elétrica ou semelhantes%2C e respec%2E serv%2E aux%2E ou complement%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01031 - Demolição%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01058 - Reparação%2C conservação e reforma de edifícios%2C estradas%2C pontes%2C portos e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01090 - Escoramento%2C contenção de encostas e serviços congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01104 - Carpintaria e serralheria%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01210 - Paisagismo%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01228 - Colocação de tapetes%2C cortinas%2C revestimentos%2C vidros%2C divisórias%2C placas de gesso e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01236 - Recuperação%2C raspagem%2C polimento e lustração de pisos e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01244 - Calafetação%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01325 - Varrição%2C coleta%2C remoção%2C incineração%2C tratamento%2C reciclagem separação e destinação final de lixo%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01384 - Limpeza%2C manutenção e conservação de vias e logradouros públicos%2C parques%2C jardins e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01406 - Limpeza%2C manutenção e conservação de imóveis%2C chaminés%2C piscinas e congêneres%2C inclusive fossas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01430 - Decoração%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01449 - Jardinagem%2C inclusive corte e poda de árvores%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01465 - Dedetização%2C desinfecção%2C desinsetização%2C imunização%2C higienização e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01473 - Limpeza e dragagem de rios%2C portos%2C canais%2C lagos%2C represas%2C açudes e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01481 - Serviços de exploração de rodovia mediante cobrança de preço ou pedágio dos usuários%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01520 - Engenharia%2C agronomia%2C arquitetura%2C urbanismo e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01589 - Agrimensura%2C geologia e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01694 - Elaboração de planos diretores%2C elaboração de anteprojetos e projetos para trabalhos de engenharia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01724 - Controle e tratamento de efluentes de qualquer natureza e de agentes físicos%2C químicos e biológicos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01740 - Florestamento%2C reflorestamento%2C semeadura%2C adubação e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01805 - Acompanhamento e fiscalização da execução de obras de engenharia%2C arquitetura e urbanismo%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01821 - Aerofotogrametria%2C cartografia%2C mapeamento%2C levantamentos topográficos e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01864 - Pesquisa%2C perfuração%2C serviços relacionados com a exploração de petróleo e gás natural%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01872 - Nucleação e bombardeamento de nuvens e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01880 - Assistência técnica%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01899 - Planejamento%2C coordenação%2C programação ou organização técnica%2C financeira ou administrativa%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01902 - Perícias%2C laudos%2C exames técnicos e análises técnicas%2C inclusive institutos psicotécnicos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>01903 - Inspeção ambiental veicular</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02038 - Análise de organização e métodos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02054 - Desenho industrial%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02097 - Serviços de assistência social%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02119 - Serviços de avaliação de bens e serviços de qualquer natureza%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02143 - Serviços de biologia%2C biotecnologia e química%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02151 - Serviços técnicos em edificações%2C eletrônica%2C eletrotécnica%2C mecânica%2C telecomunicações%2C congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02186 - Serviços de desenhos técnicos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02216 - Serviços de meteorologia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02224 - Serviços de museologia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02321 - Transporte público de passageiros%2C realizado pela Companhia do Metropolitano de São Paulo - METRÔ%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02330 - Transporte por ônibus %28concessionária e permissionárias%29%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02364 - Transporte por táxi%2C explorado por pessoa jurídica%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02402 - Transporte de escolares%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02429 - Transporte de pessoas%2C por qualquer meio dentro do território do município%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02445 - Transporte de bens ou valores%2C dentro do território do Município%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02453 - Coleta%2C remessa ou entrega de correspondências%2C realizados pelos correios agências franqueadas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02461 - Coleta%2C remessa ou entrega de correspondências e congêneres%2C realizados por courrier e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02496 - Propaganda e publicidade%2C promoção de vendas%2C planejamento de campanhas e materiais publicitários%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02500 - Serviços de programação visual%2C comunicação visual e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02534 - Serviços de reportagem%2C assessoria de imprensa%2C jornalismo e relações públicas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02658 - Análise e desenvolvimento de sistemas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02666 - Programação%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02682 - Processamento de dados e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02690 - Elaboração de programas de computadores %28software%29%2C inclusive de jogos eletrônicos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02798 - Licenciamento ou cessão de direito de uso de programas de computação%2C inclusive distribuição%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02879 - Assessoria e consultoria em informática%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02917 - Suporte técnico em informática%2C instalação%2C configuração e manutenção de programas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02933 - Planejamento%2C confecção%2C manutenção e atualização de páginas eletrônicas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03085 - Serviços de pesquisas e desenvolvimento de qualquer natureza%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03093 - Análises%2C exames%2C pesquisas%2C compilação%2C fornecimento de informações e coleta de dados%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03115 - Assessoria ou consultoria de qualquer natureza%2C não contida em outros itens desta lista%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03123 - Tradução e interpretação%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03158 - Digitação%2C estenografia%2C expediente%2C secretaria em geral%2C resposta audível e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03204 - Administração de bens e negócios em geral%2C inclusive de terceiros%2C exceto imóveis%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03212 - Administração de imóveis%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03220 - Advocacia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03387 - Arbitragem de qualquer espécie%2C inclusive jurídica%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03395 - Auditoria%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03450 - Atuária e cálculos técnicos de qualquer natureza%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03476 - Contabilidade%2C inclusive serviços técnicos e auxiliares%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03654 - Consultoria e assessoria econômica ou financeira%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03719 - Estatística%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03743 - Assessoria%2C gerenciamento de informação e congêneres%2C relacionados a factoring%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03751 - Apresentação de palestras%2C conferências%2C seminários e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03877 - Serv Registros Públicos%2FCartorários%2FNotariais exceto autent documentos%2C reconhec firmas e prest inf</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03878 - Autenticação documentos%2C reconhec firmas%2C prestação de informações%2C por notários e oficiais registro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03956 - Serviços de biblioteconomia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04030 - Medicina e biomedicina%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04138 - Análises clínicas%2C radio%2Fquimioterapia%2C ultra-sonogr%2C resson%2E mag%2C radiologia%2C tomogr%2E e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04170 - Laboratórios%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04189 - Hospitais%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04197 - Clínicas e casas de saúde%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04219 - Ambulatórios e prontos socorros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04235 - Sanatórios%2C manicômios e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04251 - Instrumentação cirúrgica%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04260 - Acupuntura%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04316 - Enfermagem%2C inclusive serviços auxiliares%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04383 - Serviços farmacêuticos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04391 - Fisioterapia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04472 - Fonoaudiologia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04510 - Terapia ocupacional%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04588 - Terapias destinadas ao tratamento físico e mental%2C massoterapia%2C naturologia e naturopatia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04626 - Nutrição%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04634 - Obstetrícia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04693 - Odontologia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04774 - Ortóptica%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05037 - Próteses sob encomenda%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05100 - Psicanálise%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05118 - Psicologia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05150 - Casas de repouso e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05177 - Creches%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05185 - Asilos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05193 - Inseminação artificial%2C fertilização in vitro e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05223 - Bancos de sangue%2C leite%2C pele%2C olhos%2C óvulos%2C sêmen e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05231 - Coleta de sangue%2C leite%2C tecidos%2C sêmen%2C órgãos e materiais biológicos de qualquer espécie%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05266 - Unidade de atendimento%2C assistência ou tratamento móvel e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05274 - Planos de medicina de grupo ou individual e convênios para prestação de assistência médica%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05312 - Planos de saúde que se cumpram através de serviços de terceiros contratados e credenciados%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05380 - Medicina veterinária e zootecnia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05428 - Hospitais%2C clínicas%2C ambulatórios%2C prontos-socorros e congêneres%2C na área veterinária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05436 - Laboratórios de análise na área veterinária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05460 - Inseminação artificial%2C fertilização in vitro e congêneres%2C na área veterinária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05479 - Bancos de sangue e de órgãos e congêneres%2C na área veterinária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05495 - Coleta de sangue%2C leite%2C tecidos%2C sêmen%2C órgãos e materiais biológicos%2C na área veterinária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05517 - Unidade de atendimento%2C assistência ou tratamento móvel e congêneres%2C na área veterinária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05533 - Planos de atendimento e assistência médico-veterinária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05576 - Patologia e eletricidade médica%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05584 - Casas de recuperação%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05657 - Ginástica%2C dança%2C esportes%2C natação%2C artes marciais e demais atividades físicas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05673 - Ensino regular pré-escolar%2C fundamental e médio%2C inclusive cursos profissionalizantes%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05690 - Ensino superior%2C cursos de graduação e demais cursos seqüenciais%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05711 - Ensino superior%2C cursos de pós-graduação%2C mestrado%2C doutorado%2C pós-doutorado%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05738 - Auto-escolas%2C moto-escolas e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05762 - Serviços de instrução%2C treinamento e avaliação de conhecimentos de qualquer natureza%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05771 - Administração de fundos quaisquer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05800 - Organização e administração de consórcios%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05820 - Administração de cartão de crédito ou débito e congêneres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05836 - Administração de carteira de clientes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05837 - Administração de cheques pré-datados e congêneres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05851 - Arrendamento mercantil de quaisquer bens e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05870 - Locação%2FManutenção cofres particulares%2Fterminais eletrônicos%2Fde atendimento%2F de bens e equipamentos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05871 - Fornecimento%2Femissão atestados%2C inclusive atestado de idoneidade%2C de capacidade financeira%2C etc%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05872 - Elaboração%2Frenovação cadastral%2Fcongêneres%2Cinclusão%2Fexclusão no Cadastro Emitentes Cheques sem Fundos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05873 - Re%2Femissão%2Ffornecimento docs%2E em geral%2Clicenc%2Ftransf veículos agenc fiduciário%2Fdepositário e outros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05874 - Acesso%2Fmovimentação%2Fatendimento%2Fconsulta contas em geral%2Cacesso terms%2E antendimento e a outro banco%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05875 - Emissão%2Freemissão%2Falteração%2Fcessão%2Fsubstituição%2Fcancelamento%2Fregistro contrato de crédito e outros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05876 - Cobranças%2Frecebimentos títulos%2Fcontas%2Fcarnês%2Fcâmbio%2Ftributos%2C rec%2Fpgto%2Femissão fichas docs%2E e outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05877 - Pagamentos de títulos%2Fcontas%2Fcarnês%2Fcâmbio%2Ftributos e por conta de terceiros%2C emissão de carnês%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05878 - Abertura contas no País e no exterior%2C bem como a manutenção das referidas contas ativas e inativas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05879 - Devolução%2Fprotesto títulos%2C sustação protesto%2C manut%2Freapresentação títulos%2Fdemais serv relacionados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05881 - Oper cambio%2C ed%2Falt%2Fpror%2Fcan%2Fbaixa contr cambio%3B emis reg exp%2Fcréd%3B cob%2Fdep ext%3B emis%2Fforn%2Fcan cheq%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05885 - Emissão%2C fornecimento%2C devolução%2C sustação%2C cancelamento e oposição de cheques%2C avulso ou por talão%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05886 - Aval%2Fvist imóvel%2Fobra%2C análise téc%2Fjur%2C %28re%29emiss%2Falt%2Ftrans%2Freneg contrato%2C %28re%29emiss termo quitação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05887 - Fornec%2Femissão%2Freemissão%2Frenovação%2Fmanutenção cartão magnético%2Fcrédito%2Fdébito%2Fsalário e congêneres</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05888 - Custódia em geral%2C inclusive de títulos e valores mobiliários%2C realizada pela BM%26FBOVESPA S%2EA%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05889 - Custódia em geral%2C inclusive de títulos e valores mobiliários</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05890 - Compensação títulos%2C serviços relacionados a depósito%2C a saque contas%2C realizados pela BM%26FBOVESPA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05891 - Comp cheques e títulos%2C serviços relacionados a depósito%2C a saque de contas%2C por qualq meio%2Fprocesso</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05892 - Emiss%2Freemiss%2Fliquid%2Falter%2Fcanc%2Fbaixa%2C ordens de pag%2Fcrédito%2C serv relac transf val%2Fdados%2Ffund%2Fpag</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05893 - Emiss%2Freemiss%2Fliquid%2Falter%2Fcanc%2Fbaixa%2C ordens de pag%2Fcrédito%2C serv relac transf val%2Fdados%2Ffund%2Fpag</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05894 - Administração de distribuição de co-seguros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05916 - Serviços de regulação de sinistros%3B avaliação de riscos para cobertura de contratos de seguros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06009 - Representação de qualquer natureza%2C inclusive comercial%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06041 - Distribuição de bens de terceiros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06050 - Agenciamento%2C corretagem ou intermediação de planos de previdência privada%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06076 - Agenciamento%2C corretagem ou intermediação de câmbio%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06084 - Agenciamento ou intermediação de seguros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06092 - Agenciamento%2C corretagem ou intermediação de cartões de crédito%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06114 - Agenciamento%2C corretagem ou intermediação de planos de saúde%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06130 - Corretagem de seguros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06157 - Agenciamento%2C corretagem ou intermediação de títulos em geral%2C valores mobiliários%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06173 - Agenciamento%2C corretagem de direitos de propriedade industrial%2C artística e literária%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06190 - Agenciamento%2C corretagem ou intermediação de contratos de arrendamento mercantil%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06220 - Agenciamento%2C corretagem ou intermediação de contratos de franquia %28franchising%29%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06238 - Agenciamento%2C corretagem ou intermediação de contratos de faturização %28factoring%29%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06270 - Agenciamento%2C corretagem ou intermediação de bens%2C realizados no âmbito de BM%26F</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06297 - Agenciamento%2C corretagem ou intermediação de bens móveis ou imóveis%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06335 - Agenciamento marítimo%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06351 - Agenciamento de notícias%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06394 - Agenciamento de publicidade e propaganda%2C inclusive agenciamento de veiculação%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06475 - Recrutamento%2C agenciamento%2C seleção e colocação de mão-de-obra%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06491 - Fornecimento de mão-de-obra em caráter temporário%2C de empregados ou trabalhadores%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06521 - Franquia %28franchising%29%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06530 - Leilão e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06564 - Cobranças e recebimentos por conta de terceiros e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06572 - Funerais%2C fornecimento de caixão%2C urna ou esquifes%3B aluguel de capela%3B e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06599 - Cremação de corpos e partes de corpos cadavéricos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06602 - Planos ou convênio funerários%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06610 - Manutenção e conservação de jazigos e cemitérios%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06637 - Serviços de desembaraço aduaneiro%2C comissários%2C despachantes e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06777 - Produção de eventos%2C espetáculos%2C entrevistas%2C shows%2C ballet%2C danças%2C desfiles e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06793 - Fonografia ou gravação de sons%2C inclusive trucagem%2C dublagem%2C mixagem e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06807 - Fotografia%2C cinematografia%2C revelação%2C ampliação%2C cópia%2C retocagem%2C reprodução%2C trucagem%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06815 - Reprografia%2C microfilmagem e digitalização%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06831 - Colocação de molduras e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06858 - Encadernação%2C gravação e douração de livros%2C revistas e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06912 - Artes gráficas%2C tipografia%2C diagramação%2C paginação e gravação%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06939 - Composição gráfica%2C fotocomposição%2C clicheria%2C zincografia%2C litografia%2C fotolitografia e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06963 - Serviços de chaveiros%2C carimbos%2C placas%2C sinalização visual%2C banners e adesivos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07005 - Hospedagem em hotéis e hotelaria marítima%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07013 - Hospedagem em pensões%2C albergues%2C pousadas%2C hospedarias%2C e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07056 - Hospedagem em motéis%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07099 - Hospedagem em apart-service%2C flat%2C apart-hotéis%2C residence-service e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07129 - Agenciamento%2C organização%2C promoção%2C intermediação e execução de programas de turismo%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07137 - Guias de turismo%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07161 - Planejamento%2C organização e administração de feiras%2C exposições e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07196 - Organização de festas e recepções%2C bufê%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07218 - Recreação e animação%2C inclusive em festas e eventos de qualquer natureza%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07285 - Instalação e montagem de aparelhos%2C máquinas e equipamentos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07315 - Instalação e montagem industrial%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07331 - Lustração de bens móveis%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07366 - Lubrificação%2C lavagem e limpeza não automáticas de veículos%2C exceto em postos de gasolina%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07390 - Lubrificação%2C lavagem e limpeza de veículos%2C inclusive automáticas%2C em postos de gasolina%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07412 - Lubrificação%2C lavagem e limpeza automáticas de veículos%2C exceto em postos de gasolina%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07439 - Lubrificação%2C limpeza%2C revisão de máquinas%2C equipamentos%2C elevadores e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07447 - Carga e recarga de aparelhos%2C equipamentos e objetos de quaisquer natureza%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07455 - Conserto%2C restauração%2C manutenção%2C conservação e pintura de veículos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07471 - Conserto%2C restauração%2C manutenção%2C conservação e pintura de veículos%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07498 - Conserto%2C restauração%2C manutenção e conservação de máquinas%2C equipamentos%2C elevadores e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07510 - Blindagem%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07552 - Retífica e recondicionamento de motores%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07560 - Recauchutagem ou regeneração de pneus%2C borracharia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07579 - Restauração%2C recondicionamento%2C acondicionamento%2C pintura e congêneres%2C de objetos quaisquer%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07595 - Alfaiataria%2C costura e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07617 - Tinturaria e lavanderia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07641 - Tapeçaria e reforma de estofamentos em geral%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07676 - Funilaria e lanternagem%2C incluindo a pintura%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07765 - Cessão de direito de uso de marcas e de sinais de propaganda%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07773 - Exploração de salões de festas%2C centro de convenções%2C stands%2C quadras esportivas%2C estádios%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07790 - Locação%2C sublocação%2C arrendamento%2C direito de passagem de ferrovia%2C rodovia%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07803 - Cessão de andaimes%2C palcos%2C coberturas e outras estruturas de uso temporário%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07811 - Guarda e estacionamento de veículos terrestres automotores%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07838 - Guarda e estacionamento de veículos terrestres automotores%2C em postos de gasolina%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07846 - Guarda e estacionamento do tipo %22valet service%22%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07854 - Guarda e estacionamento de aeronaves e de embarcações%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07870 - Vigilância%2C segurança ou monitoramento de bens e pessoas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07897 - Escolta%2C inclusive de veículos e cargas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07927 - Armazenamento%2C depósito%2C carga%2C descarga%2C arrumação e guarda de bens de qualquer espécie%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07951 - Serviços portuários e ferroportuários e congênres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07960 - Serviços aeroportuários%2C utilização de aeroporto%2C movimentação de passageiros%2C e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07978 - Serviços de terminais rodoviários%2C ferroviários%2C metroviários%2C movimentação de passageiros%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08052 - Espetáculos teatrais%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08079 - Exibições cinematográficas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08087 - Espetáculos circenses%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08095 - Programas de auditório%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08117 - Parques de diversões%2C centros de lazer e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08125 - Boates%2C taxi-dancing%2C night-club%2C cabaré%2C danceteria%2C casas noturnas e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08133 - Shows%2C bailes%2C desfiles%2C festivais e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08168 - Óperas%2C ballet%2C danças%2C concertos%2C recitais e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08176 - Feiras%2C exposições%2C congressos e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08192 - Corridas e competições de animais%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08206 - Competições esportivas%2C de destreza física ou intelectual%2C com ou sem a participação do espectador%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08214 - Desfiles de blocos carnavalescos ou folclóricos%2C trios elétricos e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08230 - Exibição de filmes%2C musicais%2C espetáculos%2C shows%2C concertos%2C desfiles%2C óperas e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08281 - Competições - GP Brasil de Fórmula 1%2E Prestado por contribuinte estabelecido no Munic%2E de São Paulo%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08311 - Bilhar por tempo %28snooker%29%2C bilhar por ficha e pebolim%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08320 - Boliche%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08338 - Divertimento eletrônico%2C vitrola automática%2C cabines privê%2C computadores%2C videogames%2C videokê%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08354 - Divertimento eletrônico%2C vitrola automática%2C cabines privê%2C computadores%2C videogames%2C videokê%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08362 - Máquina Eletronicamente Programável com distribuição de prêmios%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08370 - Máquina Eletronicamente Programável com distribuição de prêmios %28tipo bingo%29%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08397 - Carteado%2C dominó%2C víspora%2C e outros tipos de diversões com cobrança facultativa de ingresso%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08400 - Execução de música%2C individualmente ou por conjunto%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08419 - Fornecimento de música para ambientes fechados ou não%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08478 - Distribuição e venda de cartelas%2C sorteios ou prêmios em bingos%2C telebingos e assemelhados%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08486 - Serviços de distribuição e venda de bilhetes de loteria%2C cartões%2C pules ou cupons de apostas%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08494 - Barbearia%2C cabeleireiros%2C manicuros%2C pedicuros e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08516 - Esteticistas%2C tratamento de pele%2C depilação e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08532 - Banhos%2C duchas%2C sauna%2C massagens e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08567 - Centros de emagrecimento%2C spa e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08648 - Guarda%2C tratamento%2C amestramento%2C embelezamento%2C alojamento e congêneres%2C relativos a animais%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08672 - Serviços de investigações particulares%2C detetives e congêneres%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08842 - Serviços de artistas%2C atletas%2C modelos e manequins%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08885 - Serviços de ourivesaria e lapidação%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08893 - Serviços relativos a obras de arte sob encomenda%2E</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>snap_finan__Tributacao_Servico__c</picklist>
+        <values>
+            <fullName>Isento %2F Imune</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Suspenso %2F Decisão Judicial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tributado em São Paulo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tributado fora de São Paulo</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

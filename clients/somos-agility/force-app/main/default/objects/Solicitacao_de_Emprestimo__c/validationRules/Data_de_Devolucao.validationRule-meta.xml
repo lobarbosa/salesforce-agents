@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Devolucao</fullName>
+    <active>false</active>
+    <description>a data de devolução não pode ser maior que 45 dias</description>
+    <errorConditionFormula>$User.Department &lt;&gt; &apos;Administração&apos; &amp;&amp; ( Data_Prevista_de_Retorno__c -  Data_de_Saida_do_Equipamento__c &gt;45)</errorConditionFormula>
+    <errorDisplayField>Data_Prevista_de_Retorno__c</errorDisplayField>
+    <errorMessage>A Data Prevista de Retorno deve ser menor que 45 dias.</errorMessage>
+</ValidationRule>

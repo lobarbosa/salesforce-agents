@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Alteracoes_Manuais</fullName>
+    <active>false</active>
+    <description>Não está permitido mudar manualmente o Status para os valores &quot;Novo&quot;,&quot;Atribuido&quot;, &quot;Escalado&quot;</description>
+    <errorConditionFormula>NOT(ISNEW()) &amp;&amp; ISCHANGED(Status)
+&amp;&amp;
+(
+TEXT(Status) = &quot;Novo&quot;
+||
+TEXT(Status) = &quot;Atribuido&quot;
+||
+TEXT(Status) = &quot;Escalado&quot;
+)</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>Não está permitido mudar manualmente o Status para os valores &quot;Novo&quot;,&quot;Atribuido&quot;, &quot;Escalado&quot;</errorMessage>
+</ValidationRule>

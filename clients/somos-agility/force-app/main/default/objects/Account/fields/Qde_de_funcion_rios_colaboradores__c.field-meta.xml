@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qde_de_funcion_rios_colaboradores__c</fullName>
+    <description>JN criação do campo simples de quantidade de funcionários e colaboradores na Conta para o SO avaliar o perfil das Contas e Oportunidades, oferecendo soluções de acordo com o tamanho da empresa.</description>
+    <externalId>false</externalId>
+    <label>Qde. de funcionários / colaboradores</label>
+    <precision>5</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

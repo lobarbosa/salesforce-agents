@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Bairro_comercial__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Bairro para endereço comercial.</description>
+    <inlineHelpText>Bairro para endereço comercial.</inlineHelpText>
+    <label>Bairro comercial</label>
+    <referenceTo>snap_finan__Bairro__c</referenceTo>
+    <relationshipLabel>Contatos (Bairro comercial)</relationshipLabel>
+    <relationshipName>Bairro_comercial</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

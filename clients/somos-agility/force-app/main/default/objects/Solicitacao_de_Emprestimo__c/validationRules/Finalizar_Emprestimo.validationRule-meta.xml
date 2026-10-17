@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Finalizar_Emprestimo</fullName>
+    <active>true</active>
+    <description>Quando o Status é alterado para Finalizado é obrigatório preencher a data de devolução</description>
+    <errorConditionFormula>AND(ISPICKVAL( Status_Empr_stimo__c ,&quot;Finalizado&quot;),ISBLANK( Data_de_Devolucao__c ))</errorConditionFormula>
+    <errorDisplayField>Data_de_Devolucao__c</errorDisplayField>
+    <errorMessage>Informe a Data de Devolução</errorMessage>
+</ValidationRule>

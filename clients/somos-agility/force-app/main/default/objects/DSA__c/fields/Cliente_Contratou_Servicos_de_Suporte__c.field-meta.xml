@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cliente_Contratou_Servicos_de_Suporte__c</fullName>
+    <label>Cliente Contratou Serviços de Suporte?</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Contrato_de_Suporte_Agility__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sim</fullName>
+                <default>false</default>
+                <label>Sim</label>
+            </value>
+            <value>
+                <fullName>Não</fullName>
+                <default>false</default>
+                <label>Não</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Com Contrato de Suporte</controllingFieldValue>
+            <valueName>Sim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sem Contrato de Suporte</controllingFieldValue>
+            <valueName>Não</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

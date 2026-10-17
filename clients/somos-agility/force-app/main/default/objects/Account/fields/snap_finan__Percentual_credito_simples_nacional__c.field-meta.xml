@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Percentual_credito_simples_nacional__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Indica o % de crédito de ICMS concedido nas operações de saída.</description>
+    <inlineHelpText>Indica o % de crédito de ICMS concedido nas operações de saída.</inlineHelpText>
+    <label>% Crédito do Simples Nacional</label>
+    <precision>12</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Percent</type>
+</CustomField>

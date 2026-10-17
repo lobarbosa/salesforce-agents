@@ -1,0 +1,28 @@
+<template>
+    <template if:true={loading}>
+        <lightning-card style="height: 60px">
+            <div class="spinnerHolder slds-align_absolute-center">
+                <lightning-spinner alternative-text="Carregando" size="medium" variant="brand"></lightning-spinner>
+            </div>
+        </lightning-card>
+    </template>
+
+    <template if:false={loading}>
+        <template if:true={hasHistorico}>
+            <lightning-card style="height: 60px" title="Histórico de Status da PSL">
+                <div class="slds-p-horizontal_medium">
+                    <template for:each={historicoStatusPSL} for:item="status" for:index="i">
+                        <span key={status.index} class="slds-badge slds-badge_lightest slds-m-around_xx-small">
+                            <span style="padding-top: 0.1rem;">
+                                {status.nome}
+                            </span>
+                            <span class="slds-badge__icon slds-badge__icon_right">
+                                <lightning-helptext class="helpText" content={status.tempoFormatado}></lightning-helptext>
+                            </span>
+                        </span>
+                    </template>
+                </div>
+            </lightning-card>
+        </template>
+    </template>
+</template>

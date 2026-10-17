@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SLA_para_Qualificacao__c</fullName>
+    <label>SLA para Qualificação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>4 horas</fullName>
+                <default>false</default>
+                <label>4 horas</label>
+            </value>
+            <value>
+                <fullName>6 horas</fullName>
+                <default>false</default>
+                <label>6 horas</label>
+            </value>
+            <value>
+                <fullName>8 Horas</fullName>
+                <default>false</default>
+                <label>8 Horas</label>
+            </value>
+            <value>
+                <fullName>12 Horas</fullName>
+                <default>false</default>
+                <label>12 Horas</label>
+            </value>
+            <value>
+                <fullName>24 Horas</fullName>
+                <default>false</default>
+                <label>24 Horas</label>
+            </value>
+            <value>
+                <fullName>2 dias</fullName>
+                <default>false</default>
+                <label>2 dias</label>
+            </value>
+            <value>
+                <fullName>4 dias</fullName>
+                <default>false</default>
+                <label>4 dias</label>
+            </value>
+            <value>
+                <fullName>6 dias</fullName>
+                <default>false</default>
+                <label>6 dias</label>
+            </value>
+            <value>
+                <fullName>8 dias</fullName>
+                <default>false</default>
+                <label>8 dias</label>
+            </value>
+            <value>
+                <fullName>10 dias</fullName>
+                <default>false</default>
+                <label>10 dias</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Necessidade__c</fullName>
+    <inlineHelpText>Qual o requisito de negócio mais importante? &quot;Para resolver a dor, é necessário...&quot;
+A &quot;Necessidade&quot; é um requisito de negócio (geralmente acompanhada de uma ação) que terá um impacto de negócio mensurável quando realizado.</inlineHelpText>
+    <label>Necessidade</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Mapeado</fullName>
+                <default>false</default>
+                <label>Mapeado</label>
+            </value>
+            <value>
+                <fullName>Desconhecido</fullName>
+                <default>false</default>
+                <label>Desconhecido</label>
+            </value>
+            <value>
+                <fullName>Não tenho certeza</fullName>
+                <default>false</default>
+                <label>Não tenho certeza</label>
+            </value>
+            <value>
+                <fullName>Nenhum</fullName>
+                <default>false</default>
+                <label>Nenhum</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

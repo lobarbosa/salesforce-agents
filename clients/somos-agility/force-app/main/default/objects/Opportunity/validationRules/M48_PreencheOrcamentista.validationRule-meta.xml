@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M48_PreencheOrcamentista</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Administração&quot;,
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+(ISPICKVAL(PRIORVALUE(StageName),&quot;OEG&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;psl&quot;)) ,ISBLANK(  Or_amentista__c  ))</errorConditionFormula>
+    <errorDisplayField>Or_amentista__c</errorDisplayField>
+    <errorMessage>É necessário preencher o System Engineer da Oportunidade para alterar a fase de OEG para PSL.</errorMessage>
+</ValidationRule>

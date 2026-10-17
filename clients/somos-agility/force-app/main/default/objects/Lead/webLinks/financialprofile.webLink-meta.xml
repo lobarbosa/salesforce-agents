@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>financialprofile</fullName>
+    <availability>online</availability>
+    <displayType>link</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>true</hasMenubar>
+    <hasScrollbars>true</hasScrollbars>
+    <hasToolbar>true</hasToolbar>
+    <isResizable>true</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>financial profile</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>true</showsLocation>
+    <showsStatus>true</showsStatus>
+    <url>http://hoovers.com/free/search/simple/xmillion/index.xhtml?query_string={!Account_Name}&amp;which=company&amp;page=1</url>
+</WebLink>

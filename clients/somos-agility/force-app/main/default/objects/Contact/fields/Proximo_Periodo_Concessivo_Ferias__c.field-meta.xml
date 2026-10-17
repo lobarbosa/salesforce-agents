@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Proximo_Periodo_Concessivo_Ferias__c</fullName>
+    <formula>IF((ISBLANK(Data_de_desligamento__c ))&amp;&amp;(MONTH(Data_de_Admissao__c)&gt;MONTH(TODAY())),DATE(YEAR(TODAY()),MONTH(Data_de_Admissao__c),DAY(Data_de_Admissao__c)), 
+IF((ISBLANK(Data_de_desligamento__c ))&amp;&amp;(MONTH(Data_de_Admissao__c)&lt;MONTH(TODAY())),DATE(YEAR(TODAY())+1,MONTH(Data_de_Admissao__c),DAY(Data_de_Admissao__c)), 
+IF((ISBLANK(Data_de_desligamento__c ))&amp;&amp;(DAY(Data_de_Admissao__c) &gt;= DAY(TODAY())),DATE(YEAR(TODAY()),MONTH(Data_de_Admissao__c),DAY(Data_de_Admissao__c)),
+IF(NOT(ISBLANK(Data_de_desligamento__c )),
+ Data_em_Branco__c ,DATE(YEAR(TODAY())+1,MONTH(Data_de_Admissao__c),DAY(Data_de_Admissao__c))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Próximo Período Concessivo - Férias</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

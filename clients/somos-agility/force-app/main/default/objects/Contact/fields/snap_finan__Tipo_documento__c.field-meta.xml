@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Tipo_documento__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Tipo de documento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>RG</fullName>
+                <default>false</default>
+                <label>RG</label>
+            </value>
+            <value>
+                <fullName>RNE</fullName>
+                <default>false</default>
+                <label>RNE</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

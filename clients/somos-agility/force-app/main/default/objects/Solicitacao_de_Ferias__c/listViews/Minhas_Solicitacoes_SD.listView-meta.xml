@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Minhas_Solicitacoes_SD</fullName>
+    <columns>NAME</columns>
+    <columns>Colaborador__c</columns>
+    <columns>area__c</columns>
+    <columns>Contato_em_sua_Ausencia__c</columns>
+    <columns>Inicio__c</columns>
+    <columns>Fim__c</columns>
+    <columns>Status_da_Qualificao__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATEDBY_USER.ALIAS</field>
+        <operation>contains</operation>
+        <value>sdeli</value>
+    </filters>
+    <label>Minhas Solicitações SD&apos;s</label>
+    <sharedTo>
+        <role>Service_Delivery</role>
+    </sharedTo>
+</ListView>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cota_de_Contratos_de_Suporte_bdm__c</fullName>
+    <label>Cota de Contratos de Suporte BDM</label>
+    <summarizedField>Item_das_Metas_Contratos__c.Valor_da_Meta__c</summarizedField>
+    <summaryFilterItems>
+        <field>Item_das_Metas_Contratos__c.Atual__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Item_das_Metas_Contratos__c.Tipo__c</field>
+        <operation>equals</operation>
+        <value>BDM</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Item_das_Metas_Contratos__c.Metas__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

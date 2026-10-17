@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SomaRentabilidadePrevistaPSL__c</fullName>
+    <label>Soma rentabilidade prevista PSL</label>
+    <summarizedField>Opportunity.Rentabilidade_prevista_PSL__c</summarizedField>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

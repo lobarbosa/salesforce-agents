@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Operacao_CFOP_Venda__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Operação (CFOP)</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Categoria__c.Operacao__c</field>
+            <operation>equals</operation>
+            <value>Saída</value>
+        </filterItems>
+        <filterItems>
+            <field>Categoria__c.TIPO__c</field>
+            <operation>equals</operation>
+            <value>PRODUTO</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Categoria__c</referenceTo>
+    <relationshipLabel>Produtos x Locações</relationshipLabel>
+    <relationshipName>Produtos_x_LocacoesCFOPVenda</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

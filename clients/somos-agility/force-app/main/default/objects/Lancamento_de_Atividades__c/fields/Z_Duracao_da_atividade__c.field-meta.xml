@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Duracao_da_atividade__c</fullName>
+    <description>AM091118: O ARREDONDAMENTO PASSARÁ A SER NO CAMPO DE TOTAL HC + HNC no objeto Marco 
+ / AM271018: cálculo com base nas regras de negócio (arredondamento para 60 minutos e 100% de adicional em horário não comercial)</description>
+    <externalId>false</externalId>
+    <formula>0</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Desenvolvimento.</inlineHelpText>
+    <label>Z_Duração da atividade</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

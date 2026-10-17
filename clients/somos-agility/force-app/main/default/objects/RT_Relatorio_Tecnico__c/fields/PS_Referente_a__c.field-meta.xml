@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PS_Referente_a__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( SD__c = True,&quot;Service Delivery&quot;,IF( Projeto__c = True,&quot;Projeto&quot;,IF( Managed_Services__c =True,&quot;Managed Services&quot;,IF( Suporte__c =True,&quot;Suporte&quot;,&quot;Nenhum&quot;))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>PS Referente a:</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

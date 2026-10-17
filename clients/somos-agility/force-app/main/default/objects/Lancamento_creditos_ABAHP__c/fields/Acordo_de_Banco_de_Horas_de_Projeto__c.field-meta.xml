@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Acordo_de_Banco_de_Horas_de_Projeto__c</fullName>
+    <description>AM201118</description>
+    <label>Acordo de Banco de Horas de Projeto</label>
+    <referenceTo>Acordo_de_Banco_de_Horas_de_Projeto__c</referenceTo>
+    <relationshipLabel>Lançamento de créditos ABAHP</relationshipLabel>
+    <relationshipName>Lancamento_de_creditos_ABAHP</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

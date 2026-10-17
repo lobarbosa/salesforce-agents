@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ResponsavelFase__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( ISPICKVAL( StatusPsl__c, &apos;Criação de Proposta&apos;) , &apos;Gerente de Contas&apos;, 
+IF( ISPICKVAL( StatusPsl__c, &apos;PFP Base&apos;) , &apos;Inside Sales&apos;, 
+IF( ISPICKVAL( StatusPsl__c, &apos;Especificação Técnica&apos;) , &apos;Orçamentista&apos;, 
+IF( ISPICKVAL( StatusPsl__c, &apos;Margens e Condições Comerciais&apos;) , &apos;Gerente de Contas&apos;, 
+IF(AND( 
+ISPICKVAL( StatusPsl__c, &apos;Envio da Proposta ao Cliente&apos;) , 
+ISPICKVAL( ResponsavelEnvioProposta__c, &apos;Inside Sales&apos;)),&apos;Inside Sales&apos;,
+IF(AND( 
+ISPICKVAL( StatusPsl__c, &apos;Envio da Proposta ao Cliente&apos;) , 
+ISPICKVAL( ResponsavelEnvioProposta__c, &apos;Gerente de Contas&apos;)),&apos;Gerente de Contas&apos;,
+&apos; &apos; 
+))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Responsável pela Fase</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

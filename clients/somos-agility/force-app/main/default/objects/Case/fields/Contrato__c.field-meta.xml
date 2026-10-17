@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contrato__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Campo para poder criar formulas e puxar dados do contrato</description>
+    <label>Relativo ao Contrato</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>Erro de filtro no campo Cotrato do Caso: O contrato selecionado não pertence à conta do caso</errorMessage>
+        <filterItems>
+            <field>$Source.AccountId</field>
+            <operation>equals</operation>
+            <valueField>Contract.AccountId</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contract</referenceTo>
+    <relationshipLabel>Casos</relationshipLabel>
+    <relationshipName>Casos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

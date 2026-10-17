@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Contribuinte_IPI__c</fullName>
+    <defaultValue>false</defaultValue>
+    <deprecated>false</deprecated>
+    <description>Indica se a empresa é contribuinte do IPI.</description>
+    <inlineHelpText>Indica se a empresa é contribuinte do IPI.</inlineHelpText>
+    <label>Contribuinte IPI</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

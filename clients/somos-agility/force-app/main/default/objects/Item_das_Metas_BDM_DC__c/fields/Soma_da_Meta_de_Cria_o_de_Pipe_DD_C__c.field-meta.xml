@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Soma_da_Meta_de_Cria_o_de_Pipe_DD_C__c</fullName>
+    <formula>Meta_de_Cria_o_de_Pipeline_AI__c + Meta_de_Cria_o_de_Pipeline_AUTOM__c + Meta_de_Cria_o_de_Pipeline_VOG__c+ Meta_Cria_o_Pipe_DC_SRV_Network_Outro__c +  Meta_de_Cria_o_de_Pipeline_NUTANIX__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Meta de Criação de Pipe DD&amp;C</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

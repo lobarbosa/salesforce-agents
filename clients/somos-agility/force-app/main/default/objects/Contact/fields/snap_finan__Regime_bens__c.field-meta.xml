@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Regime_bens__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Indica o regime de bens de acordo com o estado civil da pessoa.</description>
+    <inlineHelpText>Indica o regime de bens de acordo com o estado civil da pessoa.</inlineHelpText>
+    <label>Regime de bens</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Comunhão parcial</fullName>
+                <default>false</default>
+                <label>Comunhão parcial</label>
+            </value>
+            <value>
+                <fullName>Comunhão universal</fullName>
+                <default>false</default>
+                <label>Comunhão universal</label>
+            </value>
+            <value>
+                <fullName>Participação nos aquestros</fullName>
+                <default>false</default>
+                <label>Participação nos aquestros</label>
+            </value>
+            <value>
+                <fullName>Separação total</fullName>
+                <default>false</default>
+                <label>Separação total</label>
+            </value>
+            <value>
+                <fullName>União estável</fullName>
+                <default>false</default>
+                <label>União estável</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

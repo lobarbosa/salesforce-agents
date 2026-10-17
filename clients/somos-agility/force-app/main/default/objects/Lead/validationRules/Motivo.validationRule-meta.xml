@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo</fullName>
+    <active>true</active>
+    <description>Valida o preenchimento do motivo quando o GC selecionar o status &quot;Encerrado&quot;</description>
+    <errorConditionFormula>AND( 
+				 ISPICKVAL(Status, &quot;Encerrado&quot;)
+			 ,ISBLANK(DescricaoMotivo__c)
+				,$Profile.Name = &apos;Gerente de Contas&apos;
+)</errorConditionFormula>
+    <errorMessage>Se Status do Lead for &quot;Encerrado&quot;, é obrigatório informar o Motivo.</errorMessage>
+</ValidationRule>

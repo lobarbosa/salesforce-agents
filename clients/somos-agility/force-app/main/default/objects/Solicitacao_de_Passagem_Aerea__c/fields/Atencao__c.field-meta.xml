@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atencao__c</fullName>
+    <externalId>false</externalId>
+    <formula>&apos;As datas dos eventos serão consideradas para cotação da passagem/hospedagem/locação de veículo de menor preço. Caso o cancelamento das passagens seja por motivos pessoais, o colaborador poderá arcar com os gastos. O colaborador deve sempre optar pela melhor condição financeira, ficando sujeito a advertência e/ou arcar com os gastos excedentes. Sobre as acomodações de Hospedagem, para colaboradores do mesmo Sexo o quarto será compartilhado.&apos;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Atenção!</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

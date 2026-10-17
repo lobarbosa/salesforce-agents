@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Descrever_Ambiente_do_Hardware</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND (ISPICKVAL(  DSA_de_Hardware__c , &quot;Sim&quot;) , 
+ISBLANK(  Ambiente_que_o_HW_SW_sera_Instalado__c  ))</errorConditionFormula>
+    <errorMessage>Descrever em qual Ambiente do cliente o Hardware será instalado!</errorMessage>
+</ValidationRule>

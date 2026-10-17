@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Obriga_Comentarios_na_Perda</fullName>
+    <active>true</active>
+    <description>FO 15/12/17: Quando o campo Tipo de encerramento conter o valor Loss, obriga os campos  Descreva o motivo Loss (Concorrência) ou Descreva o motivo Loss (No decision)</description>
+    <errorConditionFormula>ISBLANK( Descreva_Loss__c   )  &amp;&amp; ISPICKVAL(  Tipo_de_encerramento__c  , &quot;Loss&quot;)</errorConditionFormula>
+    <errorMessage>O campo Descreva na seção Loss é obrigatório.</errorMessage>
+</ValidationRule>

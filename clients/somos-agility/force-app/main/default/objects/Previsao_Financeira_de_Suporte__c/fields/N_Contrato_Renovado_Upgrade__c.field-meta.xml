@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>N_Contrato_Renovado_Upgrade__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Nº Contrato Renovado / Upgrade</label>
+    <referenceTo>Contract</referenceTo>
+    <relationshipLabel>Previsão Financeira de Suporte</relationshipLabel>
+    <relationshipName>Previs_o_Financeira_Suporte</relationshipName>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

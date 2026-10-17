@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assignment_Description__c</fullName>
+    <inlineHelpText>Please include any notes on the description of the role requested.  Does this role call for travel?  What is the priority?  Who will this team member report to?  What is the frequency of engagement summary reports?</inlineHelpText>
+    <label>Assignment Description</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

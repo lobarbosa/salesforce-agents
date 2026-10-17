@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Impacto_Cargo_1__c</fullName>
+    <description>jn 19042018 criar um help conforme pedido do Carlos em 1704.</description>
+    <inlineHelpText>Qual é o impacto que o contato sofrerá com a &quot;DOR&quot;.</inlineHelpText>
+    <label>*Impacto</label>
+    <length>4000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

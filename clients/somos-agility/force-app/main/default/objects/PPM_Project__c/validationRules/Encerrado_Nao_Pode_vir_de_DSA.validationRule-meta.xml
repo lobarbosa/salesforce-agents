@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Encerrado_Nao_Pode_vir_de_DSA</fullName>
+    <active>true</active>
+    <description>Somente é possível colocar o Encerrado como Não Iniciado a partir do DSA Em Análise ou DSA Rejeitado</description>
+    <errorConditionFormula>AND(
+ISCHANGED( Project_Status__c ),
+TEXT(Project_Status__c) = &quot;Encerrado&quot;,  
+NOT( ISPICKVAL(PRIORVALUE(Project_Status__c),&quot;Atrasado&quot;)),
+NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Dentro do Prazo&quot;)),
+NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Freezing&quot;)),
+NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Não Iniciado&quot;)),
+NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Não Iniciado&quot;)),
+NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Suspenso&quot;)),
+NOT( ISPICKVAL( PRIORVALUE(Project_Status__c),&quot;Inativo&quot;))
+)</errorConditionFormula>
+    <errorDisplayField>Project_Status__c</errorDisplayField>
+    <errorMessage>GP, somente pode ser alterado o Status para &quot;Encerrado&quot; desde o Status &quot;Não Iniciado&quot; - &quot;Dentro do Prazo&quot; - &quot;Atrasado&quot; - &quot;Freezing&quot; - &quot;Inativo&quot;.</errorMessage>
+</ValidationRule>

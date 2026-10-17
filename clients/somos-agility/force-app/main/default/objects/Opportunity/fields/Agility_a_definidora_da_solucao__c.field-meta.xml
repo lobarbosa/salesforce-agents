@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Agility_a_definidora_da_solucao__c</fullName>
+    <inlineHelpText>A solução elaborada pela Agility é considerada a melhor pelo cliente e nos confere a primazia ?</inlineHelpText>
+    <label>Agility é a definidora da solução?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Validado</valueSetName>
+    </valueSet>
+</CustomField>

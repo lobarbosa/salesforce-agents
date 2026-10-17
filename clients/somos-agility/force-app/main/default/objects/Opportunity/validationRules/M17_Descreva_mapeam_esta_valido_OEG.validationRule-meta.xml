@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M17_Descreva_mapeam_esta_valido_OEG</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / Quando o campo Mapeamento está válido com fabricante? possuir a opção Sim o campo descreva(Descreva_mapeada_opp_fabricante__c ) é obrigatório</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+ISPICKVAL(  Mapeamento_esta_valido_com_fabricante__c   ,&quot;Sim&quot;),ISBLANK(     Descreva_mapeada_opp_fabricante__c ))</errorConditionFormula>
+    <errorDisplayField>Descreva_mapeada_opp_fabricante__c</errorDisplayField>
+    <errorMessage>Favor descrever (Msg17)</errorMessage>
+</ValidationRule>

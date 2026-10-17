@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Risco_Imagem__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Risco__c ,&apos;Amarelo&apos;), IMAGE(&apos;https://agilitynetworks--c.na32.content.force.com/servlet/servlet.ImageServer?id=01538000002gBg8&amp;oid=00DHa0000070wxf&amp;lastMod=1499350755000&apos;,&apos;Amarelo&apos;,20,20),IF(ISPICKVAL(Risco__c ,&apos;Vermelho&apos;),IMAGE(&apos;https://agilitynetworks--c.na32.content.force.com/servlet/servlet.ImageServer?id=01538000002gBfU&amp;oid=00DHa0000070wxf&amp;lastMod=1499350695000&apos;,&apos;Vermelho&apos;,20,20),IF(ISPICKVAL(Risco__c ,&apos;Verde&apos;),IMAGE(&apos;https://agilitynetworks--c.na32.content.force.com/servlet/servlet.ImageServer?id=01538000002gBfj&amp;oid=00DHa0000070wxf&amp;lastMod=1499350732000&apos;,&apos;Verde&apos;,20,20),&quot;&quot;)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Risco</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

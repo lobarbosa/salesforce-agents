@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Percep_o_do_relacionamento__c</fullName>
+    <label>Percepção do relacionamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ótimo</fullName>
+                <default>false</default>
+                <label>Ótimo</label>
+            </value>
+            <value>
+                <fullName>Bom</fullName>
+                <default>false</default>
+                <label>Bom</label>
+            </value>
+            <value>
+                <fullName>Exige atenção</fullName>
+                <default>false</default>
+                <label>Exige atenção</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

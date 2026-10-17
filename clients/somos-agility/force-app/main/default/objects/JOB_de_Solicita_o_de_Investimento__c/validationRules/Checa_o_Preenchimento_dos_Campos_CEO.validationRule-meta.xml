@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_o_Preenchimento_dos_Campos_CEO</fullName>
+    <active>true</active>
+    <description>Checa o correto preenchimento dos campos Classificação Gerencial 1 e Valor Anual de Gastos Previstos 1.</description>
+    <errorConditionFormula>AND(
+    ISBLANK(Valor_Anual_de_Gastos_Previstos__c),
+    OR(
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Aquisição destinada a Insumos de Contratos&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Despesa Mês Corrente&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2020&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2021&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2022&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2023&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2024&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2025&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2026&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2027&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Investimento 2028&quot;),
+        ISPICKVAL(Classificacao_Gerencial__c, &quot;Insumo de Serviços&quot;)
+    )
+)</errorConditionFormula>
+    <errorMessage>Os campos Classificação Gerencial 1 e Valor Anual de Gastos Previstos 1 devem estar preenchidos.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Vertical_GC__c</fullName>
+    <label>Vertical</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Commercial</fullName>
+                <default>false</default>
+                <label>Commercial</label>
+            </value>
+            <value>
+                <fullName>Customers Acquisition</fullName>
+                <default>false</default>
+                <label>Customers Acquisition</label>
+            </value>
+            <value>
+                <fullName>Enterprise</fullName>
+                <default>false</default>
+                <label>Enterprise</label>
+            </value>
+            <value>
+                <fullName>Large Accounts</fullName>
+                <default>false</default>
+                <label>Large Accounts</label>
+            </value>
+            <value>
+                <fullName>Renovações</fullName>
+                <default>false</default>
+                <label>Renovações</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

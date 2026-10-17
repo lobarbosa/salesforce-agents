@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Codigo_Fiscal_do_Servico__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Código Fiscal do Serviço</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Produto_NewAge__c.Tipo_de_Produto__c</field>
+            <operation>equals</operation>
+            <value>Serviços</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Produto_NewAge__c</referenceTo>
+    <relationshipLabel>Serviços x Pedidos</relationshipLabel>
+    <relationshipName>Servi_os_x_Pedidos</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

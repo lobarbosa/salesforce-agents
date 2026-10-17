@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Observacao_Ativacao</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISBLANK( Observacao_Ativacao__c ),NOT(ISNULL(Data_de_Faturamento_Ativacao__c)))</errorConditionFormula>
+    <errorMessage>Favor preencher o campo Observação na sessão - Previsão de Ativação de Suporte</errorMessage>
+</ValidationRule>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pre_classificacao_do_perfil_da_solucao__c</fullName>
+    <inlineHelpText>“Consultiva” é apenas quando a oportunidade tiver POTENCIAL para: maior predominância de Serviços sobre Produtos / Trabalharmos com foco sobre a melhora de um processo de negócio do cliente / Fornecermos insights únicos para a resolução do problema.</inlineHelpText>
+    <label>Pré classificação do perfil da solução</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Consultiva</fullName>
+                <default>false</default>
+                <label>Consultiva</label>
+            </value>
+            <value>
+                <fullName>Transacional</fullName>
+                <default>false</default>
+                <label>Transacional</label>
+            </value>
+            <value>
+                <fullName>Básica</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Básica</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

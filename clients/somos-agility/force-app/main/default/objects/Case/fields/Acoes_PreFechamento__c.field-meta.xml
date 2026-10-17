@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Acoes_PreFechamento__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 21062018: criado para relacionar o APF em Casos para implementar  o PB que atualiza o oportunidade no caso.</description>
+    <label>Ações Pré Fechamento</label>
+    <referenceTo>Acoes_Pre_Fechamento__c</referenceTo>
+    <relationshipLabel>Casos</relationshipLabel>
+    <relationshipName>Casos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

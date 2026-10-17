@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In_Previsto__c</fullName>
+    <description>Campo utilizado para condensar os valores de sales in PSL e sales in CVS, exibindo o valor de sales in conforme a fase da oportunidade.</description>
+    <formula>/*
+IF(
+	AND(
+		OR(
+		    ISPICKVAL(StageName, &apos;CVS/RVS&apos;)
+		   ,ISPICKVAL(StageName, &apos;OEG&apos;)
+	    ),
+			Sales_In_Net_previsto_PSL__c = 0
+	)				
+		,Sales_In_Net_previsto_CVS__c
+		,Sales_In_Net_previsto_PSL__c
+)
+*/
+
+IF(
+    RecorrenteNominalNetPrevistoPSL__c = 0,
+    IF(
+        RecorrenteNominalNetPrevistoCVS__c = 0,
+        0,
+        RecorrenteNominalNetPrevistoCVS__c
+    ),
+    RecorrenteNominalNetPrevistoPSL__c
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Antigo: Sales In previsto; Campo de apoio para o relatório.</inlineHelpText>
+    <label>Recorrente ajustado previsto</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

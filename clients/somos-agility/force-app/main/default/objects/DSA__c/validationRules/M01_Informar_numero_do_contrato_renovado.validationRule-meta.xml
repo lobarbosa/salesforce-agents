@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M01_Informar_numero_do_contrato_renovado</fullName>
+    <active>false</active>
+    <description>AM030818: Informar_numero_do_contrato_renovado</description>
+    <errorConditionFormula>AND (ISPICKVAL(  Tipo_de_Contrato_de_Suporte__c   , &quot;Renovação&quot;) , 
+ISBLANK(   N_mero__c   ))</errorConditionFormula>
+    <errorDisplayField>N_mero__c</errorDisplayField>
+    <errorMessage>Informe o número do contrato (Msg01)</errorMessage>
+</ValidationRule>

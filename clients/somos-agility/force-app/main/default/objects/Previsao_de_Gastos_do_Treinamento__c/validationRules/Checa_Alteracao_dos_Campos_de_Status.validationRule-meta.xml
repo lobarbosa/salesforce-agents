@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_Alteracao_dos_Campos_de_Status</fullName>
+    <active>true</active>
+    <description>Checa alteração dos campos de Status de Gastos e do Patrocínio, permitindo que apenas os usuários com perfis Compras Financeiro e Administrator os editem.</description>
+    <errorConditionFormula>/*
+AND(
+    OR(
+        AND(
+            ISNEW(),
+            OR(
+                NOT(ISPICKVAL(Status_de_Gastos__c, &quot;Aberto&quot;)),
+                NOT(ISBLANK(TEXT(Status_do_Patrocinio__c)))
+            )
+        ),
+        ISCHANGED(Status_de_Gastos__c),
+        ISCHANGED(Status_do_Patrocinio__c)
+    ),
+    NOT(
+        OR(
+            $Profile.Name = &quot;Compras Financeiro&quot;,
+            $Profile.Name = &quot;Administração&quot;
+        )
+    )
+)
+*/
+
+AND(
+    OR(
+        ISCHANGED(Status_de_Gastos__c),
+        ISCHANGED(Status_do_Patrocinio__c)
+    ),
+    NOT(
+        OR(
+            $Profile.Name = &quot;Compras Financeiro&quot;,
+            $Profile.Name = &quot;Administração&quot;
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>Apenas o Financeiro indicará alterações para Status de Gastos ou Status do Patrocínio! Retorne os valores dos campos para default.</errorMessage>
+</ValidationRule>

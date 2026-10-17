@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CountFluxoVendaProdutos__c</fullName>
+    <label>Count - Fluxo de Venda de Produtos</label>
+    <summaryFilterItems>
+        <field>FluxoVendaProdutos__c.Status__c</field>
+        <operation>equals</operation>
+        <value>Validação de Pricing</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>FluxoVendaProdutos__c.StatusAprovacoes__c</field>
+        <operation>equals</operation>
+        <value>Fluxo de Vendas Finalizado</value>
+    </summaryFilterItems>
+    <summaryForeignKey>FluxoVendaProdutos__c.PropostaSolucao__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

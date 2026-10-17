@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M02_Campos_da_secao_contrato_obrigatorio</fullName>
+    <active>false</active>
+    <description>AM 8/8/18: campos_da_seção_Contrato_obrigatório</description>
+    <errorConditionFormula>AND( 
+    ISPICKVAL(Tipo_de_Contrato_de_Suporte__c, &apos;Novo&apos;), 
+    OR(
+        ISBLANK(TEXT(Banco_de_Horas_Contratadas_Por_Mes__c)),
+        ISBLANK(Descricao_do_Contrato__c),
+        ISBLANK(Dura_o_do_Contrato_Meses__c),
+        ISBLANK(TEXT(Tipo_do_Contrato__c)),
+        ISBLANK(TEXT(Tipo_de_Renovacao__c))
+       ) 
+)
+
+/*
+AND( 
+    ISPICKVAL(STipo_de_Contrato_de_Suporte__c, &apos;Novo&apos;), 
+    OR(
+        ISBLANK(TEXT(Banco_de_Horas_Contratadas_Por_Mes__c)),
+        ISBLANK(Signature_Card_Date_Submitted__c) 
+    ) 
+)
+
+Tipo_de_Contrato_de_Suporte__c = &quot;Novo&quot;
+
+Banco_de_Horas_Contratadas_Por_Mes__c
+Descricao_do_Contrato__c
+Dura_o_do_Contrato_Meses__c
+Tipo_do_Contrato__c
+Tipo_de_Renovacao__c
+*/</errorConditionFormula>
+    <errorMessage>Favor preencher todos os campos da seção &quot;Informações do Contrato&quot; (Msg02)</errorMessage>
+</ValidationRule>

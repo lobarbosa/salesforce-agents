@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Servico_do_Cenario_3__c</fullName>
+    <label>Tipo de Serviço do Cenário 3</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Turn key</fullName>
+                <default>false</default>
+                <label>Turn key</label>
+            </value>
+            <value>
+                <fullName>Time material</fullName>
+                <default>false</default>
+                <label>Time material</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

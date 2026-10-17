@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NomeAprovadorEtapa__c</fullName>
+    <description>Campo para receber o nome do aprovador de cada etapa a ser usado no modelo de email.</description>
+    <externalId>false</externalId>
+    <label>Nome Aprovador etapas</label>
+    <length>255</length>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

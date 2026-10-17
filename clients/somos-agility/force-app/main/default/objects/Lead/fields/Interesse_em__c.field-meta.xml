@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interesse_em__c</fullName>
+    <label>Interesse em</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>3 Com</fullName>
+                <default>false</default>
+                <label>3 Com</label>
+            </value>
+            <value>
+                <fullName>AppSense</fullName>
+                <default>false</default>
+                <label>AppSense</label>
+            </value>
+            <value>
+                <fullName>C.A. (Computer Associates)</fullName>
+                <default>false</default>
+                <label>C.A. (Computer Associates)</label>
+            </value>
+            <value>
+                <fullName>Citrix</fullName>
+                <default>false</default>
+                <label>Citrix</label>
+            </value>
+            <value>
+                <fullName>F5</fullName>
+                <default>false</default>
+                <label>F5</label>
+            </value>
+            <value>
+                <fullName>HP</fullName>
+                <default>false</default>
+                <label>HP</label>
+            </value>
+            <value>
+                <fullName>Microsoft</fullName>
+                <default>false</default>
+                <label>Microsoft</label>
+            </value>
+            <value>
+                <fullName>NetApp</fullName>
+                <default>false</default>
+                <label>NetApp</label>
+            </value>
+            <value>
+                <fullName>Riverbed</fullName>
+                <default>false</default>
+                <label>Riverbed</label>
+            </value>
+            <value>
+                <fullName>RSA</fullName>
+                <default>false</default>
+                <label>RSA</label>
+            </value>
+            <value>
+                <fullName>SonicWall</fullName>
+                <default>false</default>
+                <label>SonicWall</label>
+            </value>
+            <value>
+                <fullName>Symantec</fullName>
+                <default>false</default>
+                <label>Symantec</label>
+            </value>
+            <value>
+                <fullName>Thin Print</fullName>
+                <default>false</default>
+                <label>Thin Print</label>
+            </value>
+            <value>
+                <fullName>Trend Micro</fullName>
+                <default>false</default>
+                <label>Trend Micro</label>
+            </value>
+            <value>
+                <fullName>VMware</fullName>
+                <default>false</default>
+                <label>VMware</label>
+            </value>
+            <value>
+                <fullName>Wyse</fullName>
+                <default>false</default>
+                <label>Wyse</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

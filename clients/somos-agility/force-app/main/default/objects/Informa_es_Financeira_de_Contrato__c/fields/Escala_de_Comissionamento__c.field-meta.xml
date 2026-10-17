@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Escala_de_Comissionamento__c</fullName>
+    <label>Escala de Comissionamento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Faturamento__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CLT – Comissionamento Antigo</fullName>
+                <default>false</default>
+                <label>CLT – Comissionamento Antigo</label>
+            </value>
+            <value>
+                <fullName>CLT – Novo Contrato</fullName>
+                <default>false</default>
+                <label>CLT – Novo Contrato</label>
+            </value>
+            <value>
+                <fullName>CLT - Renovação + Aumento Real + Correção</fullName>
+                <default>false</default>
+                <label>CLT - Renovação + Aumento Real + Correção</label>
+            </value>
+            <value>
+                <fullName>CLT - Renovação com Correção</fullName>
+                <default>false</default>
+                <label>CLT - Renovação com Correção</label>
+            </value>
+            <value>
+                <fullName>CLT – Renovação com Desconto</fullName>
+                <default>false</default>
+                <label>CLT – Renovação com Desconto</label>
+            </value>
+            <value>
+                <fullName>CLT - Renovação com Reajuste Parcial</fullName>
+                <default>false</default>
+                <label>CLT - Renovação com Reajuste Parcial</label>
+            </value>
+            <value>
+                <fullName>CLT – Renovação sem Correção</fullName>
+                <default>false</default>
+                <label>CLT – Renovação sem Correção</label>
+            </value>
+            <value>
+                <fullName>CLT - Sales In</fullName>
+                <default>false</default>
+                <label>Sales In</label>
+            </value>
+            <value>
+                <fullName>Sales Out</fullName>
+                <default>false</default>
+                <label>Sales Out</label>
+            </value>
+            <value>
+                <fullName>Herdado</fullName>
+                <default>false</default>
+                <label>Herdado</label>
+            </value>
+            <value>
+                <fullName>Perfil A - 2026</fullName>
+                <default>false</default>
+                <label>Perfil A - 2026</label>
+            </value>
+            <value>
+                <fullName>Perfil B - 2026</fullName>
+                <default>false</default>
+                <label>Perfil B - 2026</label>
+            </value>
+            <value>
+                <fullName>Perfil C - 2026</fullName>
+                <default>false</default>
+                <label>Perfil C - 2026</label>
+            </value>
+            <value>
+                <fullName>PJ – Comissionamento Antigo</fullName>
+                <default>false</default>
+                <label>PJ – Comissionamento Antigo</label>
+            </value>
+            <value>
+                <fullName>PJ - Novo Contrato</fullName>
+                <default>false</default>
+                <label>PJ - Novo Contrato</label>
+            </value>
+            <value>
+                <fullName>PJ - Renovação + Aumento Real + Correção</fullName>
+                <default>false</default>
+                <label>PJ - Renovação + Aumento Real + Correção</label>
+            </value>
+            <value>
+                <fullName>PJ - Renovação com Correção</fullName>
+                <default>false</default>
+                <label>PJ - Renovação com Correção</label>
+            </value>
+            <value>
+                <fullName>PJ - Renovação com Desconto</fullName>
+                <default>false</default>
+                <label>PJ - Renovação com Desconto</label>
+            </value>
+            <value>
+                <fullName>PJ – Renovação sem Correção</fullName>
+                <default>false</default>
+                <label>PJ – Renovação sem Correção</label>
+            </value>
+            <value>
+                <fullName>Não Qualificado</fullName>
+                <default>false</default>
+                <label>Não Qualificado</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Nulo</controllingFieldValue>
+            <controllingFieldValue>NFAP</controllingFieldValue>
+            <controllingFieldValue>NFR</controllingFieldValue>
+            <controllingFieldValue>F</controllingFieldValue>
+            <controllingFieldValue>FA</controllingFieldValue>
+            <controllingFieldValue>FANR</controllingFieldValue>
+            <valueName>CLT - Sales In</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nulo</controllingFieldValue>
+            <controllingFieldValue>NFAP</controllingFieldValue>
+            <controllingFieldValue>NFR</controllingFieldValue>
+            <controllingFieldValue>F</controllingFieldValue>
+            <controllingFieldValue>FA</controllingFieldValue>
+            <controllingFieldValue>FANR</controllingFieldValue>
+            <valueName>Sales Out</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nulo</controllingFieldValue>
+            <controllingFieldValue>NFAP</controllingFieldValue>
+            <controllingFieldValue>NFR</controllingFieldValue>
+            <controllingFieldValue>F</controllingFieldValue>
+            <controllingFieldValue>FA</controllingFieldValue>
+            <controllingFieldValue>FANR</controllingFieldValue>
+            <valueName>Herdado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nulo</controllingFieldValue>
+            <controllingFieldValue>NFAP</controllingFieldValue>
+            <controllingFieldValue>NFR</controllingFieldValue>
+            <controllingFieldValue>F</controllingFieldValue>
+            <controllingFieldValue>FA</controllingFieldValue>
+            <controllingFieldValue>FANR</controllingFieldValue>
+            <valueName>Perfil A - 2026</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nulo</controllingFieldValue>
+            <controllingFieldValue>NFAP</controllingFieldValue>
+            <controllingFieldValue>NFR</controllingFieldValue>
+            <controllingFieldValue>F</controllingFieldValue>
+            <controllingFieldValue>FA</controllingFieldValue>
+            <controllingFieldValue>FANR</controllingFieldValue>
+            <valueName>Perfil B - 2026</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nulo</controllingFieldValue>
+            <controllingFieldValue>NFAP</controllingFieldValue>
+            <controllingFieldValue>NFR</controllingFieldValue>
+            <controllingFieldValue>F</controllingFieldValue>
+            <controllingFieldValue>FA</controllingFieldValue>
+            <controllingFieldValue>FANR</controllingFieldValue>
+            <valueName>Perfil C - 2026</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nulo</controllingFieldValue>
+            <controllingFieldValue>NFAP</controllingFieldValue>
+            <controllingFieldValue>NFR</controllingFieldValue>
+            <controllingFieldValue>F</controllingFieldValue>
+            <controllingFieldValue>FA</controllingFieldValue>
+            <controllingFieldValue>FANR</controllingFieldValue>
+            <valueName>Não Qualificado</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

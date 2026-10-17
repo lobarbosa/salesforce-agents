@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Center</fullName>
+    <active>true</active>
+    <label>Data Center</label>
+    <picklistValues>
+        <picklist>Tipo_de_Meta__c</picklist>
+        <values>
+            <fullName>DC</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Time_envolvido__c</fullName>
+    <description>Qual ou quais serão os times envolvidos? Selecione até 3 opções.</description>
+    <label>Time envolvido</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Application Delivery</fullName>
+                <default>false</default>
+                <label>Application Delivery</label>
+            </value>
+            <value>
+                <fullName>Cyber Segurança</fullName>
+                <default>false</default>
+                <label>Cyber Segurança</label>
+            </value>
+            <value>
+                <fullName>InfraSec</fullName>
+                <default>false</default>
+                <label>InfraSec</label>
+            </value>
+            <value>
+                <fullName>Premium Plus</fullName>
+                <default>false</default>
+                <label>Premium Plus</label>
+            </value>
+            <value>
+                <fullName>Premium Plus - Dedicado</fullName>
+                <default>false</default>
+                <label>Premium Plus - Dedicado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

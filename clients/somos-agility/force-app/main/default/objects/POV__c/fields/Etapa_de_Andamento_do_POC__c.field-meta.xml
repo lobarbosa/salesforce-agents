@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Etapa_de_Andamento_do_POC__c</fullName>
+    <label>Etapa de Andamento do POV</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Status__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cancelado</fullName>
+                <default>false</default>
+                <label>Cancelado</label>
+            </value>
+            <value>
+                <fullName>Em Andamento</fullName>
+                <default>false</default>
+                <label>Em Andamento</label>
+            </value>
+            <value>
+                <fullName>Executado com Sucesso</fullName>
+                <default>false</default>
+                <label>Executado com Sucesso</label>
+            </value>
+            <value>
+                <fullName>Parado</fullName>
+                <default>false</default>
+                <label>Parado</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Aprovado</controllingFieldValue>
+            <valueName>Em Andamento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Aprovado</controllingFieldValue>
+            <valueName>Executado com Sucesso</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Aprovado</controllingFieldValue>
+            <valueName>Parado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rejeitado</controllingFieldValue>
+            <valueName>Cancelado</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

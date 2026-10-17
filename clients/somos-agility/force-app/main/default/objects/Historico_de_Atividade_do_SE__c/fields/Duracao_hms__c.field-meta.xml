@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Duracao_hms__c</fullName>
+    <externalId>false</externalId>
+    <formula>Text(FLOOR((NOW() - CreatedDate) * 24))
+&amp;&quot;:&quot;&amp;Text(FLOOR(((NOW() - CreatedDate) * 24 - FLOOR((NOW() - CreatedDate) * 24))* 60))
+&amp;&quot;:&quot;&amp;Text(FLOOR((( (NOW() - CreatedDate) * 24 - FLOOR((NOW() - CreatedDate) * 24 )) * 60 - FLOOR(((NOW() - CreatedDate) * 24 - FLOOR((NOW() - CreatedDate) * 24 )) * 60 )) * 60 ))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Duracao_hms</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

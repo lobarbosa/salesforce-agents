@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Assunto__c</fullName>
+    <label>Qual o interesse principal pela Agility?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Datacenter Firewall</fullName>
+                <default>false</default>
+                <label>Datacenter Firewall</label>
+            </value>
+            <value>
+                <fullName>Application Firewall</fullName>
+                <default>false</default>
+                <label>Application Firewall</label>
+            </value>
+            <value>
+                <fullName>Fraud Protection</fullName>
+                <default>false</default>
+                <label>Fraud Protection</label>
+            </value>
+            <value>
+                <fullName>Key Management</fullName>
+                <default>false</default>
+                <label>Key Management</label>
+            </value>
+            <value>
+                <fullName>Perimeter Security</fullName>
+                <default>false</default>
+                <label>Perimeter Security</label>
+            </value>
+            <value>
+                <fullName>Network Access Control</fullName>
+                <default>false</default>
+                <label>Network Access Control</label>
+            </value>
+            <value>
+                <fullName>Password Protection</fullName>
+                <default>false</default>
+                <label>Password Protection</label>
+            </value>
+            <value>
+                <fullName>Device Protection</fullName>
+                <default>false</default>
+                <label>Device Protection</label>
+            </value>
+            <value>
+                <fullName>Access Policy Manager</fullName>
+                <default>false</default>
+                <label>Access Policy Manager</label>
+            </value>
+            <value>
+                <fullName>Two-Factor Authentication</fullName>
+                <default>false</default>
+                <label>Two-Factor Authentication</label>
+            </value>
+            <value>
+                <fullName>Information and Event Management</fullName>
+                <default>false</default>
+                <label>Information and Event Management</label>
+            </value>
+            <value>
+                <fullName>OpenStack Services</fullName>
+                <default>false</default>
+                <label>OpenStack Services</label>
+            </value>
+            <value>
+                <fullName>OpenStack Ready!</fullName>
+                <default>false</default>
+                <label>OpenStack Ready!</label>
+            </value>
+            <value>
+                <fullName>Cloud Migration Guidance</fullName>
+                <default>false</default>
+                <label>Cloud Migration Guidance</label>
+            </value>
+            <value>
+                <fullName>Local Traffic Management</fullName>
+                <default>false</default>
+                <label>Local Traffic Management</label>
+            </value>
+            <value>
+                <fullName>Global Traffic Management</fullName>
+                <default>false</default>
+                <label>Global Traffic Management</label>
+            </value>
+            <value>
+                <fullName>Web Acceleration</fullName>
+                <default>false</default>
+                <label>Web Acceleration</label>
+            </value>
+            <value>
+                <fullName>Application Performance Management</fullName>
+                <default>false</default>
+                <label>Application Performance Management</label>
+            </value>
+            <value>
+                <fullName>Network Performance Management</fullName>
+                <default>false</default>
+                <label>Network Performance Management</label>
+            </value>
+            <value>
+                <fullName>Branch Office Acceleration</fullName>
+                <default>false</default>
+                <label>Branch Office Acceleration</label>
+            </value>
+            <value>
+                <fullName>Hyperconverged Branch</fullName>
+                <default>false</default>
+                <label>Hyperconverged Branch</label>
+            </value>
+            <value>
+                <fullName>Invisible Infrastructure</fullName>
+                <default>false</default>
+                <label>Invisible Infrastructure</label>
+            </value>
+            <value>
+                <fullName>Storage &amp; Data Management</fullName>
+                <default>false</default>
+                <label>Storage &amp; Data Management</label>
+            </value>
+            <value>
+                <fullName>App &amp; Desktop Virtualization</fullName>
+                <default>false</default>
+                <label>App &amp; Desktop Virtualization</label>
+            </value>
+            <value>
+                <fullName>Network Automation &amp; DDI</fullName>
+                <default>false</default>
+                <label>Network Automation &amp; DDI</label>
+            </value>
+            <value>
+                <fullName>SDDC</fullName>
+                <default>false</default>
+                <label>SDDC</label>
+            </value>
+            <value>
+                <fullName>SDN &amp; SD-WAN</fullName>
+                <default>false</default>
+                <label>SDN &amp; SD-WAN</label>
+            </value>
+            <value>
+                <fullName>Enterprise Mobility Management</fullName>
+                <default>false</default>
+                <label>Enterprise Mobility Management</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

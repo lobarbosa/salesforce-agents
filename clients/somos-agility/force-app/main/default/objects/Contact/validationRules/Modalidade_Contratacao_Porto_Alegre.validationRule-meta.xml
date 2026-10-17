@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modalidade_Contratacao_Porto_Alegre</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF( ISBLANK( MailingAddress ) , ISPICKVAL(Modalidade_de_contrata_o__c, 	&quot;Porto Alegre&quot;) ,  ISPICKVAL(Modalidade_de_contrata_o__c, &quot;Presencial&quot;) )</errorConditionFormula>
+    <errorDisplayField>Modalidade_de_contrata_o__c</errorDisplayField>
+    <errorMessage>Se o Modelo de Contratação for Porto Alegre favor preencher o campos de &quot;Endereço&quot; e &quot;Telefone&quot; no Contato</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Aprovar_ou_Rejeitar_SE_DC</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF((NOT(ISBLANK(  SE_SA_Responsavel_DC_C__c  )) &amp;&amp; NOT(ISBLANK(   Notas_sobre_Rejei_o_SE_DC__c  ))),True,False)</errorConditionFormula>
+    <errorMessage>BDM, Você deve somente preencher um dos campos.  ***SE/SA Responsável*** para aprovar ou 
+***Notas sobre Rejeição SE*** para rejeitar.</errorMessage>
+</ValidationRule>

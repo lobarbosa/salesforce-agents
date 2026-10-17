@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Nao_Iniciado_Novo</fullName>
+    <active>false</active>
+    <description>O Status de um Projeto novo deve ser sempre Não iniciado</description>
+    <errorConditionFormula>ISNEW() 
+&amp;&amp; 
+( 
+TEXT(Project_Status__c ) &lt;&gt; &quot;Não iniciado&quot;)</errorConditionFormula>
+    <errorDisplayField>Project_Status__c</errorDisplayField>
+    <errorMessage>GP, o Status do Projeto deve ser Não iniciado</errorMessage>
+</ValidationRule>

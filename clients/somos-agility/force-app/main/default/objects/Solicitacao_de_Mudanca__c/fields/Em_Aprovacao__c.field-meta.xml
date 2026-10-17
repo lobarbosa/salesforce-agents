@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Em_Aprovacao__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Este flag deve ser marcado ao entrar no processo de aprovação &quot;Origem Cliente v1&quot; e desmarcado ao sair do mesmo. A fim de suportar a regra de validação &quot;Valida DSA e DEPV&quot;.</description>
+    <inlineHelpText>Apoio para processo de aprovação (Desenvolvimento).</inlineHelpText>
+    <label>Em Aprovação</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

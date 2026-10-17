@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Blueprint_validado__c</fullName>
+    <description>Contador de BluePrint sincronizado e com “Status do Blueprint” = Validado pelo Cliente.</description>
+    <label>Blueprint validado</label>
+    <summaryFilterItems>
+        <field>BluePrint__c.Sincronizar__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>BluePrint__c.Status_do_Blueprint__c</field>
+        <operation>equals</operation>
+        <value>Validado pelo Cliente</value>
+    </summaryFilterItems>
+    <summaryForeignKey>BluePrint__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PFV_com_total_de_CVS__c</fullName>
+    <description>valores inseridos em PFV, serão demonstrados em Blueprint e os totais em CVS</description>
+    <label>PFV com total de CVS</label>
+    <summarizedField>BluePrint__c.Sales_In_Net__c</summarizedField>
+    <summaryFilterItems>
+        <field>BluePrint__c.Sincronizar__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>BluePrint__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Evento__c</fullName>
+    <label>Tipo de Evento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Apresentação Técnica / EBC</fullName>
+                <default>false</default>
+                <label>Apresentação Técnica / EBC</label>
+            </value>
+            <value>
+                <fullName>Evento de Marketing</fullName>
+                <default>false</default>
+                <label>Evento de Marketing</label>
+            </value>
+            <value>
+                <fullName>Teste Customizado</fullName>
+                <default>false</default>
+                <label>Teste Customizado</label>
+            </value>
+            <value>
+                <fullName>Testes Padronizados do ATC</fullName>
+                <default>false</default>
+                <label>Testes Padronizados do ATC</label>
+            </value>
+            <value>
+                <fullName>Treinamento Interno</fullName>
+                <default>false</default>
+                <label>Treinamento Interno</label>
+            </value>
+            <value>
+                <fullName>Treinamento Público</fullName>
+                <default>false</default>
+                <label>Treinamento Público</label>
+            </value>
+            <value>
+                <fullName>Utilização Interna</fullName>
+                <default>false</default>
+                <label>Utilização Interna</label>
+            </value>
+            <value>
+                <fullName>Visita Institucional</fullName>
+                <default>false</default>
+                <label>Visita Institucional</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

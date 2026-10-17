@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_do_Resgate_Convertido__c</fullName>
+    <description>Formula Anterior: IF((ISPICKVAL( Moeda__c ,&quot;Dólar&quot;)&amp;&amp;ISPICKVAL( Tipo_do_Valor__c ,&quot;FOB&quot;)),( Valor_do_Desconto_Resgatado__c  * Taxa_cambial__c )*  Conversao_FOB_para_CIF__c  +(Valor_do_Desconto_Resgatado__c * Taxa_cambial__c ) ,
+IF((ISPICKVAL( Moeda__c ,&quot;Reais&quot;)&amp;&amp;ISPICKVAL( Tipo_do_Valor__c ,&quot;FOB&quot;)),(Valor_do_Desconto_Resgatado__c * Conversao_FOB_para_CIF__c )+(Valor_do_Desconto_Resgatado__c ) ,
+IF((ISPICKVAL( Moeda__c ,&quot;Dólar&quot;)&amp;&amp;ISPICKVAL( Tipo_do_Valor__c ,&quot;CIF&quot;)),(Valor_do_Desconto_Resgatado__c * Taxa_cambial__c),
+Valor_do_Desconto_Resgatado__c)))</description>
+    <formula>IF((ISPICKVAL( Moeda__c ,&quot;Dólar&quot;)&amp;&amp;ISPICKVAL( Tipo_do_Valor__c ,&quot;FOB&quot;)),( Valor_do_Resgate_Convertido_RS__c )* Taxa_de_Conversao_FOB_para_CIF__c  +(Valor_do_Resgate_Convertido_RS__c ) ,
+IF((ISPICKVAL( Moeda__c ,&quot;Reais&quot;)&amp;&amp;ISPICKVAL( Tipo_do_Valor__c ,&quot;FOB&quot;)),(Valor_do_Desconto_Resgatado__c * Taxa_de_Conversao_FOB_para_CIF__c )+(Valor_do_Desconto_Resgatado__c ) ,
+IF((ISPICKVAL( Moeda__c ,&quot;Dólar&quot;)&amp;&amp;ISPICKVAL( Tipo_do_Valor__c ,&quot;CIF&quot;)),(Valor_do_Resgate_Convertido_RS__c),
+Valor_do_Desconto_Resgatado__c)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor do Resgate Convertido (CIF)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

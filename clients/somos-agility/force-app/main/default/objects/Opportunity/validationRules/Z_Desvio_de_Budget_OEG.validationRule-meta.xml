@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Desvio_de_Budget_OEG</fullName>
+    <active>false</active>
+    <description>*** O CAMPO &quot;Por_que_seguir_sem_confirmacao_de_Budget&quot; NÃO EXISTE MAIS***  Para alterar a fase da oportunidade de OEG para PSL é obrigatório preencher a informação  no campo Há budget SIM.</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;OEG&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;PSL&quot;)) ,( ISPICKVAL( Ha_budget_disponivel__c ,&quot;Não&quot;)&amp;&amp; ISBLANK( Por_que_seguir_sem_confirmacao_de_Budget__c )))</errorConditionFormula>
+    <errorMessage>** Para alterar de fase é obrigatório o preenchimento do campo &quot;Desvio de Budget&quot; **</errorMessage>
+</ValidationRule>

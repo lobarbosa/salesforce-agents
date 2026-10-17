@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cliente_que_confirmou_a_Agility__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Quem no cliente confirmou a Agility como definidora da solução?</inlineHelpText>
+    <label>Resp. pela confirmação</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.AccountId</field>
+            <operation>equals</operation>
+            <valueField>Contact.Account.Id</valueField>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Oportunidades (Cliente que confirmou a Agility)</relationshipLabel>
+    <relationshipName>OportunidadesmHqe</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

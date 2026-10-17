@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atividade_Realizada__c</fullName>
+    <label>Atividade Realizada:</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Confecção de relatório</fullName>
+                <default>false</default>
+                <label>Confecção de relatório</label>
+            </value>
+            <value>
+                <fullName>Kickoff Externo</fullName>
+                <default>false</default>
+                <label>Kickoff Externo</label>
+            </value>
+            <value>
+                <fullName>Kickoff Interno</fullName>
+                <default>false</default>
+                <label>Kickoff Interno</label>
+            </value>
+            <value>
+                <fullName>Reunião Comercial</fullName>
+                <default>false</default>
+                <label>Reunião Comercial</label>
+            </value>
+            <value>
+                <fullName>Reunião de Cadência</fullName>
+                <default>false</default>
+                <label>Reunião de Cadência</label>
+            </value>
+            <value>
+                <fullName>Workshop</fullName>
+                <default>false</default>
+                <label>Workshop</label>
+            </value>
+            <value>
+                <fullName>Reunião Técnica</fullName>
+                <default>false</default>
+                <label>Reunião Técnica</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Proposta_Soluc_status_descar_pelo_client</fullName>
+    <active>true</active>
+    <description>AM 24042018: quando o &quot;Status da PSL&quot; for selecionado &quot;Descartado pelo cliente&quot; é obrigatório o preenchimento do campo &quot;data/hora da validação&quot;.</description>
+    <errorConditionFormula>AND(ISPICKVAL(Status_da_PSL__c ,&quot;Descartado pelo Cliente&quot;),
+ISBLANK( Data_Hora_da_Valida_o_Descarte__c ))</errorConditionFormula>
+    <errorDisplayField>Data_Hora_da_Valida_o_Descarte__c</errorDisplayField>
+    <errorMessage>É necessário o preenchimento do campo &quot;Data/Hora da Validação/Descarte&quot;.</errorMessage>
+</ValidationRule>

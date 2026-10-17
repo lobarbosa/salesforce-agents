@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Technical_Delivery_Manager__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM100918: contato com filtro da função</description>
+    <label>Customer Success</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Contas (Technical Delivery Manager)</relationshipLabel>
+    <relationshipName>Contas2</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

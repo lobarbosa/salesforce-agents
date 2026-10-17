@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nota_Final__c</fullName>
+    <externalId>false</externalId>
+    <formula>( Nota_pergunta_1__c + Nota_pergunta_2__c + Nota_pergunta_3__c + Nota_pergunta_4__c + Nota_pergunta_5__c + Nota_pergunta_6__c + Nota_pergunta_7__c + Nota_pergunta_8__c)/ Qtde_de_Notas_Preenchidas__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Nota Final Fórmula</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

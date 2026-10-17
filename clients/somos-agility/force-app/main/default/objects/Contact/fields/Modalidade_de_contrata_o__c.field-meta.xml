@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Modalidade_de_contrata_o__c</fullName>
+    <label>Modalidade de contratação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Presencial</fullName>
+                <default>false</default>
+                <label>Presencial</label>
+            </value>
+            <value>
+                <fullName>Teletrabalho</fullName>
+                <default>false</default>
+                <label>Teletrabalho</label>
+            </value>
+            <value>
+                <fullName>Porto Alegre</fullName>
+                <default>false</default>
+                <label>Porto Alegre</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

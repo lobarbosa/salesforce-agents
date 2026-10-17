@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mudan_as_em_Aberto</fullName>
+    <columns>NAME</columns>
+    <columns>Cliente__c</columns>
+    <columns>Area__c</columns>
+    <columns>Vertical__c</columns>
+    <columns>Analista_Executor__c</columns>
+    <columns>Data_Execucao__c</columns>
+    <columns>Status__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status__c</field>
+        <operation>notEqual</operation>
+        <value>Sucesso,Rollback,Rejeitada,Cancelada,Pendente</value>
+    </filters>
+    <label>Mudanças em Aberto</label>
+</ListView>

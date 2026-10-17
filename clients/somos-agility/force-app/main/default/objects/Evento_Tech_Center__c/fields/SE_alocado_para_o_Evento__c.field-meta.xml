@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SE_alocado_para_o_Evento__c</fullName>
+    <label>SE alocado para o Evento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <controllingField>LN_Envolvida__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Nenhum</fullName>
+                <default>false</default>
+                <label>Nenhum</label>
+            </value>
+            <value>
+                <fullName>Leonardo Feitosa</fullName>
+                <default>false</default>
+                <label>Leonardo Feitosa</label>
+            </value>
+            <value>
+                <fullName>Rafael Augusto</fullName>
+                <default>false</default>
+                <label>Rafael Augusto</label>
+            </value>
+            <value>
+                <fullName>Rafael Pereira</fullName>
+                <default>false</default>
+                <label>Rafael Pereira</label>
+            </value>
+            <value>
+                <fullName>Rodrigo Ev</fullName>
+                <default>false</default>
+                <label>Rodrigo Ev</label>
+            </value>
+            <value>
+                <fullName>Stefan Braitti</fullName>
+                <default>false</default>
+                <label>Stefan Braitti</label>
+            </value>
+            <value>
+                <fullName>Natan Franghieru</fullName>
+                <default>false</default>
+                <label>Natan Franghieru</label>
+            </value>
+            <value>
+                <fullName>Nicolas Hotz</fullName>
+                <default>false</default>
+                <label>Nicolas Hotz</label>
+            </value>
+            <value>
+                <fullName>Leandro Alencar</fullName>
+                <default>false</default>
+                <label>Leandro Alencar</label>
+            </value>
+            <value>
+                <fullName>Rodrigo Passos</fullName>
+                <default>false</default>
+                <label>Rodrigo Passos</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Thiago Lima</fullName>
+                <default>false</default>
+                <label>INATIVO - Thiago Lima</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Amir Neves</fullName>
+                <default>false</default>
+                <label>INATIVO - Amir Neves</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Andre Vasquez</fullName>
+                <default>false</default>
+                <label>INATIVO - Andre Vasquez</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Daniel Sabatini</fullName>
+                <default>false</default>
+                <label>INATIVO - Daniel Sabatini</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Erick Coelho</fullName>
+                <default>false</default>
+                <label>INATIVO - Erick Coelho</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Fabio Campos</fullName>
+                <default>false</default>
+                <label>INATIVO - Fabio Campos</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Fabio Coelho</fullName>
+                <default>false</default>
+                <label>INATIVO - Fabio Coelho</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Guilherme Morais</fullName>
+                <default>false</default>
+                <label>INATIVO - Guilherme Morais</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Marco Sasso</fullName>
+                <default>false</default>
+                <label>INATIVO - Marco Sasso</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Nelson Mincov</fullName>
+                <default>false</default>
+                <label>INATIVO - Nelson Mincov</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Paulo Figueiredo</fullName>
+                <default>false</default>
+                <label>INATIVO - Paulo Figueiredo</label>
+            </value>
+            <value>
+                <fullName>INATIVO - Allan Silva</fullName>
+                <default>false</default>
+                <label>INATIVO - Allan Silva</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Entrega de Aplicação</controllingFieldValue>
+            <controllingFieldValue>Segurança</controllingFieldValue>
+            <valueName>Leonardo Feitosa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Entrega de Aplicação</controllingFieldValue>
+            <controllingFieldValue>Data Center</controllingFieldValue>
+            <controllingFieldValue>Segurança</controllingFieldValue>
+            <valueName>Rodrigo Ev</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Entrega de Aplicação</controllingFieldValue>
+            <controllingFieldValue>Data Center</controllingFieldValue>
+            <controllingFieldValue>Segurança</controllingFieldValue>
+            <valueName>Stefan Braitti</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Entrega de Aplicação</controllingFieldValue>
+            <controllingFieldValue>Data Center</controllingFieldValue>
+            <controllingFieldValue>Segurança</controllingFieldValue>
+            <valueName>Leandro Alencar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Entrega de Aplicação</controllingFieldValue>
+            <controllingFieldValue>Segurança</controllingFieldValue>
+            <valueName>INATIVO - Allan Silva</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Data Center</controllingFieldValue>
+            <valueName>Rafael Augusto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Data Center</controllingFieldValue>
+            <controllingFieldValue>Cloud</controllingFieldValue>
+            <valueName>Natan Franghieru</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Data Center</controllingFieldValue>
+            <valueName>Rodrigo Passos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Segurança</controllingFieldValue>
+            <valueName>Rafael Pereira</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Segurança</controllingFieldValue>
+            <valueName>Nicolas Hotz</valueName>
+        </valueSettings>
+    </valueSet>
+    <visibleLines>6</visibleLines>
+</CustomField>

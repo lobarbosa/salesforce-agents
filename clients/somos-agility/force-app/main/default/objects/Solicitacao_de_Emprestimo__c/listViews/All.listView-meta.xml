@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Solicitante__c</columns>
+    <columns>Cliente__c</columns>
+    <columns>Status_Empr_stimo__c</columns>
+    <columns>Status_Qualificacao__c</columns>
+    <columns>RECORDTYPE</columns>
+    <columns>Data_Prevista_de_Retorno__c</columns>
+    <columns>Data_Prevista_de_Retorno_Anterior__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Numero_de_Serie__c</columns>
+    <columns>Nome_do_Ativo__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Tudo</label>
+    <sharedTo>
+        <role>Gerente_de_Operacoes</role>
+        <role>Opera_es_Financeiro</role>
+    </sharedTo>
+</ListView>

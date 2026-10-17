@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In_Net_previsto_CVS__c</fullName>
+    <inlineHelpText>Antigo: Sales In (Net) Previsto CVS</inlineHelpText>
+    <label>Recorrente ajustado (Net) Previsto CVS</label>
+    <summarizedField>BluePrint__c.Sales_In_Net_CVS__c</summarizedField>
+    <summaryFilterItems>
+        <field>BluePrint__c.Sincronizar__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>BluePrint__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

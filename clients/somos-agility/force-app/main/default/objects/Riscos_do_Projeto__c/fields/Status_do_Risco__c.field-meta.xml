@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_do_Risco__c</fullName>
+    <label>Status do Risco</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aceito</fullName>
+                <default>false</default>
+                <label>Aceito</label>
+            </value>
+            <value>
+                <fullName>Em Análise</fullName>
+                <default>false</default>
+                <label>Em Análise</label>
+            </value>
+            <value>
+                <fullName>Evitado</fullName>
+                <default>false</default>
+                <label>Evitado</label>
+            </value>
+            <value>
+                <fullName>Fechado</fullName>
+                <default>false</default>
+                <label>Fechado</label>
+            </value>
+            <value>
+                <fullName>Identificado</fullName>
+                <default>false</default>
+                <label>Identificado</label>
+            </value>
+            <value>
+                <fullName>Mitigado</fullName>
+                <default>false</default>
+                <label>Mitigado</label>
+            </value>
+            <value>
+                <fullName>Ocorrido</fullName>
+                <default>false</default>
+                <label>Ocorrido</label>
+            </value>
+            <value>
+                <fullName>Transferido</fullName>
+                <default>false</default>
+                <label>Transferido</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

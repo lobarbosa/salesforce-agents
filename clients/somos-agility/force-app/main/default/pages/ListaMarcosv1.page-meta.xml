@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApexPage xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>44.0</apiVersion>
+    <availableInTouch>true</availableInTouch>
+    <confirmationTokenRequired>false</confirmationTokenRequired>
+    <description>AM211118: correção para o erro: Visualforce Error Collection size 2.575 exceeds maximum size of 1.000.</description>
+    <label>ListaMarcos v1</label>
+</ApexPage>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Descreva_cadastro_fiscal_valido_OEG</fullName>
+    <active>false</active>
+    <description>Quando o campo Cadastro fiscais/financeiros válidos? possuir a opção Sim o campo descreva(Descreva_cadastro_fiscais_validos__c ) é obrigatório.
+12042018 A pedido do Carlos T, não haverá mais esta regra para simplificar o processo de aprovação Mori ok</description>
+    <errorConditionFormula>AND(ISPICKVAL(  Cadastro_fiscais_financeiros_validos__c   ,&quot;Sim&quot;),ISBLANK(   Descreva_cadastro_fiscais_Agilty_validos__c ))</errorConditionFormula>
+    <errorDisplayField>Descreva_cadastro_fiscais_Agilty_validos__c</errorDisplayField>
+    <errorMessage>Favor descrever</errorMessage>
+</ValidationRule>

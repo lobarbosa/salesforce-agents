@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Produto_Recorrente__c</fullName>
+    <label>Produto: Recorrente</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>3N</fullName>
+                <default>false</default>
+                <label>3N</label>
+            </value>
+            <value>
+                <fullName>MNG-DEVOPS/MCLOUD</fullName>
+                <default>false</default>
+                <label>MNG-DEVOPS/MCLOUD</label>
+            </value>
+            <value>
+                <fullName>MNG-DIGIEXP</fullName>
+                <default>false</default>
+                <label>MNG-DIGIEXP</label>
+            </value>
+            <value>
+                <fullName>GEST-VULNERB</fullName>
+                <default>false</default>
+                <label>GEST-VULNERB</label>
+            </value>
+            <value>
+                <fullName>IDENTITY-GOV</fullName>
+                <default>false</default>
+                <label>IDENTITY-GOV</label>
+            </value>
+            <value>
+                <fullName>TT-INTEL</fullName>
+                <default>false</default>
+                <label>TT-INTEL</label>
+            </value>
+            <value>
+                <fullName>APPSEC-LCYCLE</fullName>
+                <default>false</default>
+                <label>APPSEC-LCYCLE</label>
+            </value>
+            <value>
+                <fullName>GAA – Gestão Avançada de Ameaças</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>GAA – Gestão Avançada de Ameaças</label>
+            </value>
+            <value>
+                <fullName>GPD – Gestão de Privacidade de Dados</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>GPD – Gestão de Privacidade de Dados</label>
+            </value>
+            <value>
+                <fullName>PAM – Proteção de Aplicações Multicloud</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>PAM – Proteção de Aplicações Multicloud</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

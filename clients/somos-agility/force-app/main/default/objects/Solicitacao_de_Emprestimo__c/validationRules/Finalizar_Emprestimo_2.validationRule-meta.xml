@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Finalizar_Emprestimo_2</fullName>
+    <active>false</active>
+    <description>Quando a data de devolução é preenchida é obrigatório alterar o campo Status Empréstimo para Finalizado</description>
+    <errorConditionFormula>IF(NOT(ISBLANK( Data_de_Devolucao__c )),TEXT(Status_Empr_stimo__c) &lt;&gt;&quot;Finalizado&quot; ,TEXT( Status_Empr_stimo__c) = &quot;Finalizado&quot;)</errorConditionFormula>
+    <errorDisplayField>Status_Empr_stimo__c</errorDisplayField>
+    <errorMessage>O Status Empréstimo deve ser igual a Finalizado</errorMessage>
+</ValidationRule>

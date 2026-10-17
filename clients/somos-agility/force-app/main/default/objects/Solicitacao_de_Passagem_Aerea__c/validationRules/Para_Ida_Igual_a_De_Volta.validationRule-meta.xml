@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Para_Ida_Igual_a_De_Volta</fullName>
+    <active>false</active>
+    <description>A Cidade de Destino da Ida deve ser igual a Cidade de Origem da Volta
+IF((ISPICKVAL(De_Ida__c,&quot;São Paulo&quot;)=ISPICKVAL( Para_Volta__c ,&quot;São Paulo&quot;)),True,TEXT( Para_Ida__c )= TEXT( De_Volta__c ))</description>
+    <errorConditionFormula>AND(ISPICKVAL(Tipo_de_Solicitacao__c,&quot;Ida e Volta Nacional&quot;)
+||ISPICKVAL(Tipo_de_Solicitacao__c,&quot;Ida e Volta com Hospedagem Nacional&quot;)
+||ISPICKVAL(Tipo_de_Solicitacao__c,&quot;Ida e Volta com Hospedagem e Locação de Veículo Nacional&quot;)
+||ISPICKVAL(Tipo_de_Solicitacao__c,&quot;Ida e Volta com Locação de Veículo Nacional&quot;),TEXT( Para_Ida__c ) &lt;&gt; TEXT( De_Volta__c ))</errorConditionFormula>
+    <errorDisplayField>De_Volta__c</errorDisplayField>
+    <errorMessage>A Cidade de Origem da Volta deve ser Igual a Cidade de Destino da Ida.</errorMessage>
+</ValidationRule>

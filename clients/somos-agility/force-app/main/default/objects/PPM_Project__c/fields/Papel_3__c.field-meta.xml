@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Papel_3__c</fullName>
+    <label>Papel 3</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Financeiro / Fiscal / Logística</fullName>
+                <default>false</default>
+                <label>Financeiro / Fiscal / Logística</label>
+            </value>
+            <value>
+                <fullName>Gerente de Projetos</fullName>
+                <default>false</default>
+                <label>Gerente de Projetos</label>
+            </value>
+            <value>
+                <fullName>Patrocinador Executivo</fullName>
+                <default>false</default>
+                <label>Patrocinador Executivo</label>
+            </value>
+            <value>
+                <fullName>Responsável Negócios</fullName>
+                <default>false</default>
+                <label>Responsável Negócios</label>
+            </value>
+            <value>
+                <fullName>Responsável Técnico</fullName>
+                <default>false</default>
+                <label>Responsável Técnico</label>
+            </value>
+            <value>
+                <fullName>Usuário Chave</fullName>
+                <default>false</default>
+                <label>Usuário Chave</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

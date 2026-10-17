@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Coordernador_T_cnico_Respons_vel__c</fullName>
+    <label>Coordenador Técnico Responsável</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Danilo Marchetti Chaves</fullName>
+                <default>false</default>
+                <label>Danilo Marchetti Chaves</label>
+            </value>
+            <value>
+                <fullName>Eduardo Ukstin</fullName>
+                <default>false</default>
+                <label>Eduardo Ukstin</label>
+            </value>
+            <value>
+                <fullName>Fabricio Almeida</fullName>
+                <default>false</default>
+                <label>Fabricio Almeida</label>
+            </value>
+            <value>
+                <fullName>Geraldo Marco Antonio Prado Junior</fullName>
+                <default>false</default>
+                <label>Geraldo Marco Antonio Prado Junior</label>
+            </value>
+            <value>
+                <fullName>Jose Valente</fullName>
+                <default>false</default>
+                <label>Jose Valente</label>
+            </value>
+            <value>
+                <fullName>Juscelino Reis</fullName>
+                <default>false</default>
+                <label>Juscelino Reis</label>
+            </value>
+            <value>
+                <fullName>Mateus Belinaso</fullName>
+                <default>false</default>
+                <label>Mateus Belinaso</label>
+            </value>
+            <value>
+                <fullName>Paulo Elias de Oliveira</fullName>
+                <default>false</default>
+                <label>Paulo Elias de Oliveira</label>
+            </value>
+            <value>
+                <fullName>Renato Araujo Ferreira</fullName>
+                <default>false</default>
+                <label>Renato Araujo Ferreira</label>
+            </value>
+            <value>
+                <fullName>Ricardo Calimanis</fullName>
+                <default>false</default>
+                <label>Ricardo Calimanis</label>
+            </value>
+            <value>
+                <fullName>Rodrigo Passos</fullName>
+                <default>false</default>
+                <label>Rodrigo Passos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mes__c</fullName>
+    <label>Mês</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Tipo__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Janeiro</fullName>
+                <default>false</default>
+                <label>Janeiro</label>
+            </value>
+            <value>
+                <fullName>Fevereiro</fullName>
+                <default>false</default>
+                <label>Fevereiro</label>
+            </value>
+            <value>
+                <fullName>Março</fullName>
+                <default>false</default>
+                <label>Março</label>
+            </value>
+            <value>
+                <fullName>Abril</fullName>
+                <default>false</default>
+                <label>Abril</label>
+            </value>
+            <value>
+                <fullName>Maio</fullName>
+                <default>false</default>
+                <label>Maio</label>
+            </value>
+            <value>
+                <fullName>Junho</fullName>
+                <default>false</default>
+                <label>Junho</label>
+            </value>
+            <value>
+                <fullName>Julho</fullName>
+                <default>false</default>
+                <label>Julho</label>
+            </value>
+            <value>
+                <fullName>Agosto</fullName>
+                <default>false</default>
+                <label>Agosto</label>
+            </value>
+            <value>
+                <fullName>Setembro</fullName>
+                <default>false</default>
+                <label>Setembro</label>
+            </value>
+            <value>
+                <fullName>Outubro</fullName>
+                <default>false</default>
+                <label>Outubro</label>
+            </value>
+            <value>
+                <fullName>Novembro</fullName>
+                <default>false</default>
+                <label>Novembro</label>
+            </value>
+            <value>
+                <fullName>Dezembro</fullName>
+                <default>false</default>
+                <label>Dezembro</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Janeiro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Fevereiro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Março</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Abril</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Maio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Junho</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Julho</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Agosto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Setembro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Outubro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Novembro</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAO</controllingFieldValue>
+            <controllingFieldValue>Sumário Executivo</controllingFieldValue>
+            <valueName>Dezembro</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

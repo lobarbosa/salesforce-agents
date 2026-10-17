@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreencherMotivoAtraso</fullName>
+    <active>true</active>
+    <description>Regra de validação criada para garantir o preenchimento do campo Motivo Atraso quando o GP informar um responsável pelo atraso.</description>
+    <errorConditionFormula>AND(
+OR(
+ISPICKVAL(ResponsavelAtraso__c,&apos;Agility&apos;),
+ISPICKVAL(ResponsavelAtraso__c,&apos;Cliente&apos;)
+),
+ISBLANK(MotivoAtraso__c)
+)</errorConditionFormula>
+    <errorMessage>Ao informar o campo Responsável Atraso será necessário preencher o Motivo Atraso para salvar as alterações no Salesforce.</errorMessage>
+</ValidationRule>

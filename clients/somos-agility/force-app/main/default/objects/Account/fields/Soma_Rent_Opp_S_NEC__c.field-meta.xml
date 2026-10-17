@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Soma_Rent_Opp_S_NEC__c</fullName>
+    <label>Soma Rent. Opp S/ NEC</label>
+    <summarizedField>Opportunity.Amount</summarizedField>
+    <summaryFilterItems>
+        <field>Opportunity.StageName</field>
+        <operation>notEqual</operation>
+        <value>NEC, 6 - Fechado/Ganho, 0 - Fechado/Perdido, 7 - Processado ERP</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

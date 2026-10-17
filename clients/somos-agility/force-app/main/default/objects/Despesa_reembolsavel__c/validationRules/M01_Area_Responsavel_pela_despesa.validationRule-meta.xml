@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M01_Area_Responsavel_pela_despesa</fullName>
+    <active>false</active>
+    <description>AM23072018: om exceção da área de suporte e projetos, demais áreas devem selecionar a opção &quot;Outros&quot;</description>
+    <errorConditionFormula>AND( 
+$Profile.Name = &quot;Solutions Architect&quot;||
+$Profile.Name = &quot;Diretor Comercial&quot;|| 
+$Profile.Name = &quot;Gerente de Contas&quot;||
+$Profile.Name = &quot;Diretor de Marketing&quot;||
+$Profile.Name = &quot;Diretor Financeiro&quot;||
+$Profile.Name = &quot;Financeiro Agility&quot;||
+$Profile.Name = &quot;Compras Financeiro&quot;||
+$Profile.Name = &quot;BDM EA&quot;||
+$Profile.Name = &quot;BDM SEG&quot;||
+$Profile.Name = &quot;RH&quot;||
+$Profile.Name = &quot;Sales Operations&quot;||
+$Profile.Name = &quot;Diretor Comercial&quot;||
+$Profile.Name = &quot;System Engineer&quot;||
+$Profile.Name = &quot;Solution Manager&quot;||
+$Profile.Name = &quot;Service Delivery&quot;||
+$Profile.Name = &quot;Diretor SEG&quot;||
+$Profile.Name = &quot;Diretor Comercial&quot;||
+$Profile.Name = &quot;Service Manager&quot;,
+TEXT( Area_responsavel_pela_despesa__c )&lt;&gt;&quot;Outros&quot; 
+)
+
+/*
+$Profile.Name = &quot;Diretor de Produtos&quot;||
+$Profile.Name = &quot;Diretor de Produtos e BDM DT&quot;||
+*/</errorConditionFormula>
+    <errorDisplayField>Area_responsavel_pela_despesa__c</errorDisplayField>
+    <errorMessage>Selecione a opção &quot;Outros&quot; (Msg01)</errorMessage>
+</ValidationRule>

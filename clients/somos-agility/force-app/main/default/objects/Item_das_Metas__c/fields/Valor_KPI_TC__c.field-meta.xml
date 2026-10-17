@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_KPI_TC__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (ISPICKVAL(  Realizado_TC__c  , &quot;sim&quot;), 
+ Realizou_1_evento_tipo_EBC_no_Tech_Cente__c ,0 )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor KPI TC</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

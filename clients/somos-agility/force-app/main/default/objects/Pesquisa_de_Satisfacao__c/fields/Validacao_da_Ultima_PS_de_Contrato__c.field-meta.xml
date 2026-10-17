@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_da_Ultima_PS_de_Contrato__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( DATEVALUE(CreatedDate) =  DATEVALUE(Nome_da_Conta__r.Ultima_Pesquisa_Contratos__c) &amp;&amp;  RecordType.Id = &apos;01238000000UVbP&apos; ,&quot;1&quot;,&quot;0&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Validação da Ultima PS de Contrato</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PslSemOrcamentista</fullName>
+    <active>true</active>
+    <description>Regra de validação que valida o campo System Engineer na Opp, caso não esteja preenchido será cobrado o preenchimento.</description>
+    <errorConditionFormula>AND(
+ISBLANK(Oportunidade__r.Or_amentista__c),
+ISNEW()
+)</errorConditionFormula>
+    <errorMessage>Para criar uma Proposta de Solução, será necessário o preenchimento do campo Orçamentista na Oportunidade</errorMessage>
+</ValidationRule>

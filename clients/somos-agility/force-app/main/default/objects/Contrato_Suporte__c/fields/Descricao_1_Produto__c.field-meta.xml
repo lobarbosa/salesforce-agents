@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Descricao_1_Produto__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;Cod Fabricante: &quot; &amp; Produto_1__r.Codigo_do_Fabricante__c &amp;br()&amp;
+ &quot;Nome do Fabricante: &quot; &amp;  Produto_1__r.Nome_do_Fabricante__c &amp;br()&amp;
+ &quot;Cod Linha Negocios: &quot; &amp;   Produto_1__r.Cod_Linha_Negocios__c&amp;br()&amp;
+ &quot;Linha de Negocios: &quot; &amp;   Produto_1__r.Desc_Linha_Negocios__c&amp;br()&amp;
+ &quot;Cod Sub-linha: &quot; &amp;   Produto_1__r.Cod_Sublinha_de_Produtos__c &amp;br()&amp;
+ &quot;Sub Linha de Produto: &quot; &amp;   Produto_1__r.Desc_Sublinha_de_Produtos__c&amp;br()&amp;
+ &quot;Dt Ult. Atualização: &quot; &amp;   Text(Produto_1__r.Dt_Ultima_Atualizacao__c)&amp;br()&amp;
+ &quot;NCM: &quot; &amp;   Produto_1__r.NCM__c&amp;br()&amp;
+ &quot;Descrição: &quot; &amp;  Produto_1__r.Descricao__c &amp;br()</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Descrição 1º Produto</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

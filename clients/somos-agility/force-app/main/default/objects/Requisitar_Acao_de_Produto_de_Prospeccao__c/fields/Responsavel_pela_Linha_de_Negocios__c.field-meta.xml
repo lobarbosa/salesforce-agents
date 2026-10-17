@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Responsavel_pela_Linha_de_Negocios__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 19032018: campo destinado a informar o responsável pela LN que recebera o alerta de e-mail das etapas 2,3 e 4 do processo de aprovação &quot;Requisitar Ação de Produtos: Qualificação Ação de Produtos&quot;</description>
+    <label>Responsável pela Linha de Negócios</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Requisitar Ação de Produtos</relationshipLabel>
+    <relationshipName>Requisitar_A_o_de_Produtos2</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

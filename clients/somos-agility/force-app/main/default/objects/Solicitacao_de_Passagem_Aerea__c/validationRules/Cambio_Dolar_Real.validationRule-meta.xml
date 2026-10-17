@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cambio_Dolar_Real</fullName>
+    <active>false</active>
+    <errorConditionFormula>IF(NOT(ISNEW())&amp;&amp;ISPICKVAL( Moeda__c ,&quot;Reais&quot;), Cambio_Turismo__c&gt;1.00,Cambio_Turismo__c = 1.00)</errorConditionFormula>
+    <errorDisplayField>Cambio_Turismo__c</errorDisplayField>
+    <errorMessage>Caso a Moeda seja Reais o Câmbio deve ser igua a 1, caso seja Dólar, favor informar o Câmbio Turismo do dia.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Iniciado</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISPICKVAL( Project_Status__c ,&quot;Atrasado&quot;)||ISPICKVAL( Project_Status__c ,&quot;Cancelado&quot;)||ISPICKVAL( Project_Status__c ,&quot;Dentro do Prazo&quot;)|| ISPICKVAL( Project_Status__c ,&quot;Encerrado&quot;)|| ISPICKVAL( Project_Status__c ,&quot;Finalizado&quot;)||ISPICKVAL( Project_Status__c ,&quot;Freezing&quot;)||ISPICKVAL( Project_Status__c ,&quot;Tendência de Atraso&quot;) , ISBLANK( Inicio_Realizado__c  ) )</errorConditionFormula>
+    <errorDisplayField>Inicio_Realizado__c</errorDisplayField>
+    <errorMessage>Favor Preencher a data de Inicio Realizado</errorMessage>
+</ValidationRule>

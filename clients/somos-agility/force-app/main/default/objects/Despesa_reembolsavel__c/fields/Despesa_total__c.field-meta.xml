@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Despesa_total__c</fullName>
+    <description>AM140918: somatória da despesa dos lançamentos</description>
+    <label>Despesa total</label>
+    <summarizedField>Lancamento_Despesas__c.Valor_da_Despesa__c</summarizedField>
+    <summaryForeignKey>Lancamento_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

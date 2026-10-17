@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Ocorrido_Obrigatorio_Acao_Tomada</fullName>
+    <active>true</active>
+    <description>Quando o Status do Risco é Ocorrido é obrigatório informar a ação tomada</description>
+    <errorConditionFormula>AND(ISPICKVAL( Status_do_Risco__c ,&quot;Ocorrido&quot;),ISBLANK( Acao_Tomada__c ))</errorConditionFormula>
+    <errorDisplayField>Acao_Tomada__c</errorDisplayField>
+    <errorMessage>É Obrigatório informar a Ação Tomada</errorMessage>
+</ValidationRule>

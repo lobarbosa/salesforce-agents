@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Nao_pode_aprovar_sem_informar_o_SE_da</fullName>
+    <active>false</active>
+    <description>BDM não pode aprovar sem informar o SE Responsável</description>
+    <errorConditionFormula>AND(ISPICKVAL(PRIORVALUE(Status_Qualifica_o_SE_DC_C__c) ,&quot;Pendente&quot;)&amp;&amp;ISPICKVAL(Status_Qualifica_o_SE_DC_C__c ,&quot;Aprovado&quot;),ISBLANK( SE_SA_Responsavel_DC_C__c ))</errorConditionFormula>
+    <errorMessage>BDM, você deve informar o SE Responsável antes de realizar a qualificação</errorMessage>
+</ValidationRule>

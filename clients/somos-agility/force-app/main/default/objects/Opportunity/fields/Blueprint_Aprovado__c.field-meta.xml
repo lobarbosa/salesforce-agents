@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Blueprint_Aprovado__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>Referente ao objeto anteriormente chamado de Blueprint, agora chamado de Previsão de Investimento.</inlineHelpText>
+    <label>Previsão de Investimento Aprovada?</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

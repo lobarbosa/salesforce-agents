@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Observa_es_da_Atratividade__c</fullName>
+    <description>jn04102018 criar campo Observações - Atratividade de acordo com a solicitação do CT em 02102018. Sprint 7 de entregas.</description>
+    <inlineHelpText>Favor informar em detalhes as observações sobre a &quot;Atratividade&quot;.</inlineHelpText>
+    <label>Observações da Atratividade</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>10</visibleLines>
+</CustomField>

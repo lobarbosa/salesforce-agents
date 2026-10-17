@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lembrete__c</fullName>
+    <externalId>false</externalId>
+    <formula>&quot;Caso o cliente não tenha as suas dúvidas e resistências superadas ou se neste caso foi necessário um plano de testes e ele não tenha reconhecido a efetividade, a Oportunidade deve ser encerrada (abandonada).&quot;</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Lembrete</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

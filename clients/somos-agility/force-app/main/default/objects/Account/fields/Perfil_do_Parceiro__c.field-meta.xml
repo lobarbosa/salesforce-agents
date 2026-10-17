@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Perfil_do_Parceiro__c</fullName>
+    <label>Perfil do Parceiro</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Finder</fullName>
+                <default>false</default>
+                <label>Finder</label>
+            </value>
+            <value>
+                <fullName>Referral</fullName>
+                <default>false</default>
+                <label>Referral</label>
+            </value>
+            <value>
+                <fullName>Authorized</fullName>
+                <default>false</default>
+                <label>Authorized</label>
+            </value>
+            <value>
+                <fullName>ORM</fullName>
+                <default>false</default>
+                <label>ORM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

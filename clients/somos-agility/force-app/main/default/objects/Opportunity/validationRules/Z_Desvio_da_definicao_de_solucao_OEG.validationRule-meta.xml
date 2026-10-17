@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Desvio_da_definicao_de_solucao_OEG</fullName>
+    <active>false</active>
+    <description>***VERIFICAR REGRA DE VALIDAÇÃO*** Para alterar a fase da oportunidade de OEG para PSL é obrigatório preencher a o campo Desvio da definição de solução caso a informação Não esteja no campo Agility é detentora da solucao *** verificar erro*** AM</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;OEG&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;PSL&quot;)) ,( ISPICKVAL(    Agility_a_definidora_da_solucao__c ,&quot;Não&quot;)&amp;&amp; ISBLANK(   Por_que_seguir_s_sermos_definidores__c )))</errorConditionFormula>
+    <errorMessage>***VERIFICAR REGRA DE VALIDAÇÃO***  - ** Para alterar de fase é obrigatório o preenchimento do campo &quot;Desvio da definição de solução&quot; **</errorMessage>
+</ValidationRule>

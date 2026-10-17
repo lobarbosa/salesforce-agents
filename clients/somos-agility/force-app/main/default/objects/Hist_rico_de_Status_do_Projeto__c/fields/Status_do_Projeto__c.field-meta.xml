@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_do_Projeto__c</fullName>
+    <label>Status do Projeto</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Atrasado</fullName>
+                <default>false</default>
+                <label>Atrasado</label>
+            </value>
+            <value>
+                <fullName>Cancelado</fullName>
+                <default>false</default>
+                <label>Cancelado</label>
+            </value>
+            <value>
+                <fullName>Dentro do Prazo</fullName>
+                <default>false</default>
+                <label>Dentro do Prazo</label>
+            </value>
+            <value>
+                <fullName>DSA Em Análise</fullName>
+                <default>false</default>
+                <label>DSA Em Análise</label>
+            </value>
+            <value>
+                <fullName>DSA Rejeitado</fullName>
+                <default>false</default>
+                <label>DSA Rejeitado</label>
+            </value>
+            <value>
+                <fullName>Encerrado</fullName>
+                <default>false</default>
+                <label>Encerrado</label>
+            </value>
+            <value>
+                <fullName>Finalizado</fullName>
+                <default>false</default>
+                <label>Finalizado</label>
+            </value>
+            <value>
+                <fullName>Freezing</fullName>
+                <default>false</default>
+                <label>Freezing</label>
+            </value>
+            <value>
+                <fullName>Suspenso</fullName>
+                <default>false</default>
+                <label>Suspenso</label>
+            </value>
+            <value>
+                <fullName>Inativo</fullName>
+                <default>false</default>
+                <label>Inativo</label>
+            </value>
+            <value>
+                <fullName>Não Iniciado</fullName>
+                <default>false</default>
+                <label>Não Iniciado</label>
+            </value>
+            <value>
+                <fullName>Tendência de Atraso</fullName>
+                <default>false</default>
+                <label>Tendência de Atraso</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

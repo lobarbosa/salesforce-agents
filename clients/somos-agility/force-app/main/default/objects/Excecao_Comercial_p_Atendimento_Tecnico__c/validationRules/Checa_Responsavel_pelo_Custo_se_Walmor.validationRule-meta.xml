@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_Responsavel_pelo_Custo_se_Walmor</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+     NOT(ISPICKVAL(Responsavel_pelo_Custo__c, &apos;&apos;)),
+    $Profile.Name = &apos;Administração&apos;
+)</errorConditionFormula>
+    <errorMessage>Walmor, o campo &quot;responsável pelo custo&quot; é de preenchimento exclusivo do Soto.</errorMessage>
+</ValidationRule>

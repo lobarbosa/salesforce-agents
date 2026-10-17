@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Classe__c</fullName>
+    <label>Classe</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Ativação NOC</fullName>
+                <default>false</default>
+                <label>Ativação NOC</label>
+            </value>
+            <value>
+                <fullName>Ativação Suporte</fullName>
+                <default>false</default>
+                <label>Ativação Suporte</label>
+            </value>
+            <value>
+                <fullName>Atividade Técnica</fullName>
+                <default>false</default>
+                <label>Atividade Técnica</label>
+            </value>
+            <value>
+                <fullName>Cerimonial de Projeto</fullName>
+                <default>false</default>
+                <label>Cerimonial de Projeto</label>
+            </value>
+            <value>
+                <fullName>Financeiro</fullName>
+                <default>false</default>
+                <label>Financeiro</label>
+            </value>
+            <value>
+                <fullName>Logística</fullName>
+                <default>false</default>
+                <label>Logística</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

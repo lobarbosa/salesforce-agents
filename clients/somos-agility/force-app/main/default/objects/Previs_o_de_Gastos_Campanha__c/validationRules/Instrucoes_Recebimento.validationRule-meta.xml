@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Instrucoes_Recebimento</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND ( ISPICKVAL( Parceiro_Patrocinador__c , &quot;Sim&quot;), 
+ISBLANK( Instru_es_p_Recebimento_do_Patroc_nio__c ))</errorConditionFormula>
+    <errorMessage>Quando Houver Parceiro Patrocinador, informar o Valor do Patrocínio / Forma de Pagamento do Patrocínio / Instruções para Recebimento do Patrocínio e Nome do Patrocinado</errorMessage>
+</ValidationRule>

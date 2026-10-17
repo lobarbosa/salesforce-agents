@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compet_ncias_Envolvidas__c</fullName>
+    <description>jn08082018 alterar o nomeclatura de time tecnico para tribo, de acordo com o chamado 2018009296 de 08082018, por taiane Sousa.</description>
+    <inlineHelpText>Escolha o departamento responsável pelo projeto.</inlineHelpText>
+    <label>Departamento responsável</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CDC</fullName>
+                <default>false</default>
+                <label>CDC</label>
+            </value>
+            <value>
+                <fullName>EA</fullName>
+                <default>false</default>
+                <label>EA</label>
+            </value>
+            <value>
+                <fullName>GPD</fullName>
+                <default>false</default>
+                <label>GPD</label>
+            </value>
+            <value>
+                <fullName>IA</fullName>
+                <default>false</default>
+                <label>IA</label>
+            </value>
+            <value>
+                <fullName>Integração Segurança</fullName>
+                <default>false</default>
+                <label>Integração Segurança</label>
+            </value>
+            <value>
+                <fullName>Multi-cloud</fullName>
+                <default>false</default>
+                <label>Multi-cloud</label>
+            </value>
+            <value>
+                <fullName>Premium Plus AD</fullName>
+                <default>false</default>
+                <label>Premium Plus AD</label>
+            </value>
+            <value>
+                <fullName>Premium Plus dedicado</fullName>
+                <default>false</default>
+                <label>Premium Plus dedicado</label>
+            </value>
+            <value>
+                <fullName>Red team / PAM</fullName>
+                <default>false</default>
+                <label>Red team / PAM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contrato_de_Suporte_Entrega_Parcial</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND(ISPICKVAL(  Projeto_cont_m_equipamentos__c   , &quot;Sim&quot;),ISBLANK(Expectativa_de_Entrega_dos_Equipamentos__c  ))</errorConditionFormula>
+    <errorMessage>Favor preencher os campos da Sessão Previsão de Ativação de Suporte em relação aos equipamentos</errorMessage>
+</ValidationRule>

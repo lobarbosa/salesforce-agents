@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_do_caso__c</fullName>
+    <label>Tipo do caso</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Contrato Agility</fullName>
+                <default>true</default>
+                <label>Contrato Agility</label>
+            </value>
+            <value>
+                <fullName>Custo Agility</fullName>
+                <default>false</default>
+                <label>Custo Agility</label>
+            </value>
+            <value>
+                <fullName>Horas de Suporte de Sustentação</fullName>
+                <default>false</default>
+                <label>Horas de Suporte de Sustentação</label>
+            </value>
+            <value>
+                <fullName>Negociação Comercial</fullName>
+                <default>false</default>
+                <label>Negociação Comercial</label>
+            </value>
+            <value>
+                <fullName>Projetos</fullName>
+                <default>false</default>
+                <label>Projetos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

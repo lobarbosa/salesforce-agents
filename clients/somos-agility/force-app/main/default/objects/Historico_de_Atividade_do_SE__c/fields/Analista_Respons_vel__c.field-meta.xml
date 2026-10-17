@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Analista_Respons_vel__c</fullName>
+    <label>Analista Responsavel</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Tipo_da_Atividade__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alexandre Aristeu</fullName>
+                <default>false</default>
+                <label>Alexandre Aristeu</label>
+            </value>
+            <value>
+                <fullName>Amir Velho</fullName>
+                <default>false</default>
+                <label>Amir Velho</label>
+            </value>
+            <value>
+                <fullName>Anderson Madruli</fullName>
+                <default>false</default>
+                <label>Anderson Madruli</label>
+            </value>
+            <value>
+                <fullName>David Renjiffo</fullName>
+                <default>false</default>
+                <label>David Renjiffo</label>
+            </value>
+            <value>
+                <fullName>Eduardo Ukstin</fullName>
+                <default>false</default>
+                <label>Eduardo Ukstin</label>
+            </value>
+            <value>
+                <fullName>Geraldo Junior</fullName>
+                <default>false</default>
+                <label>Geraldo Junior</label>
+            </value>
+            <value>
+                <fullName>Leonardo Feitoza</fullName>
+                <default>false</default>
+                <label>Leonardo Feitoza</label>
+            </value>
+            <value>
+                <fullName>Luiz Garcia</fullName>
+                <default>false</default>
+                <label>Luiz Garcia</label>
+            </value>
+            <value>
+                <fullName>Marcio Costa</fullName>
+                <default>false</default>
+                <label>Marcio Costa</label>
+            </value>
+            <value>
+                <fullName>Mauro Lima</fullName>
+                <default>false</default>
+                <label>Mauro Lima</label>
+            </value>
+            <value>
+                <fullName>Nicolas Hotz</fullName>
+                <default>false</default>
+                <label>Nicolas Hotz</label>
+            </value>
+            <value>
+                <fullName>Rafael Pereira</fullName>
+                <default>false</default>
+                <label>Rafael Pereira</label>
+            </value>
+            <value>
+                <fullName>Rodrigo EV</fullName>
+                <default>false</default>
+                <label>Rodrigo EV</label>
+            </value>
+            <value>
+                <fullName>Rodrigo Passos</fullName>
+                <default>false</default>
+                <label>Rodrigo Passos</label>
+            </value>
+            <value>
+                <fullName>Stefan Braitti</fullName>
+                <default>false</default>
+                <label>Stefan Braitti</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Alexandre Aristeu</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Amir Velho</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Anderson Madruli</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>David Renjiffo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Eduardo Ukstin</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Geraldo Junior</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Leonardo Feitoza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Luiz Garcia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Marcio Costa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Mauro Lima</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Nicolas Hotz</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Rafael Pereira</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Rodrigo EV</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Rodrigo Passos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>(Cliente) Prospeccao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Administrativo</controllingFieldValue>
+            <controllingFieldValue>(Interno) Outros</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reunião</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Demonstracao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Documentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Reuniao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Treinamento/Workshop</controllingFieldValue>
+            <controllingFieldValue>(Interno) Reuniao/outros *DESATIVADO</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Configuracao</controllingFieldValue>
+            <controllingFieldValue>(Interno) Apresentacao</controllingFieldValue>
+            <controllingFieldValue>(Cliente) Treinamento/Workshop</controllingFieldValue>
+            <valueName>Stefan Braitti</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

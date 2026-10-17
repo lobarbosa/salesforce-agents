@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Acao_Dia_obrigatorio_quando_for_fase_DIA</fullName>
+    <active>true</active>
+    <description>AM 26042018: Ação_Dia_orbigatório_quando_for_fase_DIA</description>
+    <errorConditionFormula>ISPICKVAL ( Etapa_da_Oportunidade__c , &quot;DIA&quot;) &amp;&amp;  ISBLANK( A_o_DIA__c )
+
+
+/*
+
+ISBLANK (ISPICKVAL( A_o_DIA__c ) &amp;&amp;  (Etapa_da_Oportunidade__c = &quot;DIA&quot;))
+
+AND( ISPICKVAL( LeadSource , &quot;Campanha Marketing&quot;) , 
+ISBLANK( Campaign.Name ))
+
+
+*/</errorConditionFormula>
+    <errorDisplayField>A_o_DIA__c</errorDisplayField>
+    <errorMessage>Selecionar a Ação Dia referente</errorMessage>
+</ValidationRule>

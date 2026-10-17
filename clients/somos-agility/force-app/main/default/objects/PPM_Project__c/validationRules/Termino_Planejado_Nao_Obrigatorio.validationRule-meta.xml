@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Termino_Planejado_Nao_Obrigatorio</fullName>
+    <active>true</active>
+    <description>A data de término planejado não é obrigatória quando o Status do Projeto está com o Status igual de DSA em Análise / DSA Rejeitado / Não Iniciado / Em Planejamento</description>
+    <errorConditionFormula>AND(
+	ISPICKVAL(Project_Status__c ,&quot;DSA em Análise&quot;) ||
+	ISPICKVAL(Project_Status__c ,&quot;DSA Rejeitado&quot;)  ||
+	ISPICKVAL(Project_Status__c ,&quot;Não iniciado&quot;)  ||
+	ISPICKVAL(Project_Status__c, &quot;Em Planejamento&quot;)
+	,NOT(
+		ISBLANK(Termino_planejado__c)
+		)
+	,ISPICKVAL(PRIORVALUE(Project_Status__c),&apos;Dentro do prazo&apos;)
+)</errorConditionFormula>
+    <errorDisplayField>Termino_planejado__c</errorDisplayField>
+    <errorMessage>Não é necessário informar o Término Planejado</errorMessage>
+</ValidationRule>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Produto_OneTime_Oportunidade__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    TEXT(DSA_1__r.Oportunidade__r.Produto_OneTime__c) &lt;&gt; &quot;&quot;,
+    TEXT(DSA_1__r.Oportunidade__r.Produto_OneTime__c),
+    TEXT(Produto_OneTime__c)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Produto: OneTime</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

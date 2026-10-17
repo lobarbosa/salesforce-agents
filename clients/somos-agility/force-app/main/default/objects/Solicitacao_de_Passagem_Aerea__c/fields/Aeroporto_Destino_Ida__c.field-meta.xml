@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aeroporto_Destino_Ida__c</fullName>
+    <label>Aeroporto Destino:</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Para_Ida__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AAX - Araxá</fullName>
+                <default>false</default>
+                <label>AAX - Araxá</label>
+            </value>
+            <value>
+                <fullName>AEP - Aeroparque Jorge Newbery - Buenos Aires</fullName>
+                <default>false</default>
+                <label>AEP - Aeroparque Jorge Newbery - Buenos Aires</label>
+            </value>
+            <value>
+                <fullName>AIF - Assis</fullName>
+                <default>false</default>
+                <label>AIF - Assis</label>
+            </value>
+            <value>
+                <fullName>ARU - Araçatuba</fullName>
+                <default>false</default>
+                <label>ARU - Araçatuba</label>
+            </value>
+            <value>
+                <fullName>ATL - Atlanta</fullName>
+                <default>false</default>
+                <label>ATL - Atlanta</label>
+            </value>
+            <value>
+                <fullName>ATM - Altamira</fullName>
+                <default>false</default>
+                <label>ATM - Altamira</label>
+            </value>
+            <value>
+                <fullName>BEL - Belém</fullName>
+                <default>false</default>
+                <label>BEL - Belém</label>
+            </value>
+            <value>
+                <fullName>BSB - Brasília</fullName>
+                <default>false</default>
+                <label>BSB - Brasília</label>
+            </value>
+            <value>
+                <fullName>CAC - Cascavel</fullName>
+                <default>false</default>
+                <label>CAC - Cascavel</label>
+            </value>
+            <value>
+                <fullName>CAW - Campos</fullName>
+                <default>false</default>
+                <label>CAW - Campos</label>
+            </value>
+            <value>
+                <fullName>CFB - Cabo Frio</fullName>
+                <default>false</default>
+                <label>CFB - Cabo Frio</label>
+            </value>
+            <value>
+                <fullName>CGH - Congonhas</fullName>
+                <default>false</default>
+                <label>CGH - Congonhas</label>
+            </value>
+            <value>
+                <fullName>CLV - Caldas Novas</fullName>
+                <default>false</default>
+                <label>CLV - Caldas Novas</label>
+            </value>
+            <value>
+                <fullName>CNF - Confins</fullName>
+                <default>false</default>
+                <label>CNF - Confins</label>
+            </value>
+            <value>
+                <fullName>CTG - Cartagena</fullName>
+                <default>false</default>
+                <label>CTG - Cartagena</label>
+            </value>
+            <value>
+                <fullName>CWB - Curitiba</fullName>
+                <default>false</default>
+                <label>CWB - Curitiba</label>
+            </value>
+            <value>
+                <fullName>CXJ - Caxias do Sul</fullName>
+                <default>false</default>
+                <label>CXJ - Caxias do Sul</label>
+            </value>
+            <value>
+                <fullName>DFW - Dallas Ft Worth Intl</fullName>
+                <default>false</default>
+                <label>DFW - Dallas Ft Worth Intl</label>
+            </value>
+            <value>
+                <fullName>DOU - Dourados</fullName>
+                <default>false</default>
+                <label>DOU - Dourados</label>
+            </value>
+            <value>
+                <fullName>EZE - Aeroporto de Ezeiza - Buenos Aires</fullName>
+                <default>false</default>
+                <label>EZE - Aeroporto de Ezeiza - Buenos Aires</label>
+            </value>
+            <value>
+                <fullName>FLN - Florianópolis</fullName>
+                <default>false</default>
+                <label>FLN - Florianópolis</label>
+            </value>
+            <value>
+                <fullName>FOR - Aeroporto de Fortaleza</fullName>
+                <default>false</default>
+                <label>FOR - Aeroporto de Fortaleza</label>
+            </value>
+            <value>
+                <fullName>FRC - Franca</fullName>
+                <default>false</default>
+                <label>FRC - Franca</label>
+            </value>
+            <value>
+                <fullName>GIG	- Galeão</fullName>
+                <default>false</default>
+                <label>GIG	- Galeão</label>
+            </value>
+            <value>
+                <fullName>GRU - Guarulhos</fullName>
+                <default>false</default>
+                <label>GRU - Guarulhos</label>
+            </value>
+            <value>
+                <fullName>GVR - Governador Valadares</fullName>
+                <default>false</default>
+                <label>GVR - Governador Valadares</label>
+            </value>
+            <value>
+                <fullName>GYN - Goiânia</fullName>
+                <default>false</default>
+                <label>GYN - Goiânia</label>
+            </value>
+            <value>
+                <fullName>IAH - Houston</fullName>
+                <default>false</default>
+                <label>IAH - Houston</label>
+            </value>
+            <value>
+                <fullName>IGU - Foz do Iguaçu</fullName>
+                <default>false</default>
+                <label>IGU - Foz do Iguaçu</label>
+            </value>
+            <value>
+                <fullName>IPN - Ipatinga</fullName>
+                <default>false</default>
+                <label>IPN - Ipatinga</label>
+            </value>
+            <value>
+                <fullName>JOI - Joinville</fullName>
+                <default>false</default>
+                <label>JOI - Joinville</label>
+            </value>
+            <value>
+                <fullName>JTC - Bauru</fullName>
+                <default>false</default>
+                <label>JTC - Bauru</label>
+            </value>
+            <value>
+                <fullName>LAJ - Lages</fullName>
+                <default>false</default>
+                <label>LAJ - Lages</label>
+            </value>
+            <value>
+                <fullName>LAS - Las Vegas</fullName>
+                <default>false</default>
+                <label>LAS - Las Vegas</label>
+            </value>
+            <value>
+                <fullName>LAX - Los Angeles</fullName>
+                <default>false</default>
+                <label>LAX - Los Angeles</label>
+            </value>
+            <value>
+                <fullName>LDB - Londrina</fullName>
+                <default>false</default>
+                <label>LDB - Londrina</label>
+            </value>
+            <value>
+                <fullName>LGA - Nova York</fullName>
+                <default>false</default>
+                <label>LGA - Nova York</label>
+            </value>
+            <value>
+                <fullName>LIM - Lima</fullName>
+                <default>false</default>
+                <label>LIM - Lima</label>
+            </value>
+            <value>
+                <fullName>MAB - Marabá</fullName>
+                <default>false</default>
+                <label>MAB - Marabá</label>
+            </value>
+            <value>
+                <fullName>MCP - Macapá</fullName>
+                <default>false</default>
+                <label>MCP - Macapá</label>
+            </value>
+            <value>
+                <fullName>MGF - Maringá</fullName>
+                <default>false</default>
+                <label>MGF - Maringá</label>
+            </value>
+            <value>
+                <fullName>MIA - Aeroporto Internacional de Miami</fullName>
+                <default>false</default>
+                <label>MIA - Aeroporto Internacional de Miami</label>
+            </value>
+            <value>
+                <fullName>MII - Marília</fullName>
+                <default>false</default>
+                <label>MII - Marília</label>
+            </value>
+            <value>
+                <fullName>NVT - Navegantes</fullName>
+                <default>false</default>
+                <label>NVT - Navegantes</label>
+            </value>
+            <value>
+                <fullName>ORD - O&apos;Hare</fullName>
+                <default>false</default>
+                <label>ORD - O&apos;Hare</label>
+            </value>
+            <value>
+                <fullName>OUS - Ourinhos</fullName>
+                <default>false</default>
+                <label>OUS - Ourinhos</label>
+            </value>
+            <value>
+                <fullName>PET - Pelotas</fullName>
+                <default>false</default>
+                <label>PET - Pelotas</label>
+            </value>
+            <value>
+                <fullName>PFB - Passo Fundo</fullName>
+                <default>false</default>
+                <label>PFB - Passo Fundo</label>
+            </value>
+            <value>
+                <fullName>PGZ - Ponta Grossa</fullName>
+                <default>false</default>
+                <label>PGZ - Ponta Grossa</label>
+            </value>
+            <value>
+                <fullName>PLU - Pampulha</fullName>
+                <default>false</default>
+                <label>PLU - Pampulha</label>
+            </value>
+            <value>
+                <fullName>POA - Porto Alegre</fullName>
+                <default>false</default>
+                <label>POA - Porto Alegre</label>
+            </value>
+            <value>
+                <fullName>PPB - Presidente Prudente</fullName>
+                <default>false</default>
+                <label>PPB - Presidente Prudente</label>
+            </value>
+            <value>
+                <fullName>PTY - Tocumen</fullName>
+                <default>false</default>
+                <label>PTY -  Tocumen</label>
+            </value>
+            <value>
+                <fullName>RAO - Ribeirão Preto</fullName>
+                <default>false</default>
+                <label>RAO - Ribeirão Preto</label>
+            </value>
+            <value>
+                <fullName>RVD - Rio Verde</fullName>
+                <default>false</default>
+                <label>RVD - Rio Verde</label>
+            </value>
+            <value>
+                <fullName>SBMG - Maringá</fullName>
+                <default>false</default>
+                <label>SBMG - Maringá</label>
+            </value>
+            <value>
+                <fullName>SDU - Santos Dumont</fullName>
+                <default>false</default>
+                <label>SDU - Santos Dumont</label>
+            </value>
+            <value>
+                <fullName>SEA - Seattle</fullName>
+                <default>false</default>
+                <label>SEA - Seattle</label>
+            </value>
+            <value>
+                <fullName>SJK - São José dos Campos</fullName>
+                <default>false</default>
+                <label>SJK - São José dos Campos</label>
+            </value>
+            <value>
+                <fullName>SJP - São José do Rio Preto</fullName>
+                <default>false</default>
+                <label>SJP - São José do Rio Preto</label>
+            </value>
+            <value>
+                <fullName>SLZ - São Luiz</fullName>
+                <default>false</default>
+                <label>SLZ - São Luiz</label>
+            </value>
+            <value>
+                <fullName>TJL - Três Lagoas</fullName>
+                <default>false</default>
+                <label>TJL - Três Lagoas</label>
+            </value>
+            <value>
+                <fullName>UBA - Uberaba</fullName>
+                <default>false</default>
+                <label>UBA - Uberaba</label>
+            </value>
+            <value>
+                <fullName>UDI - Uberlândia</fullName>
+                <default>false</default>
+                <label>UDI - Uberlândia</label>
+            </value>
+            <value>
+                <fullName>VCP - Viracopos</fullName>
+                <default>false</default>
+                <label>VCP - Viracopos</label>
+            </value>
+            <value>
+                <fullName>VIX - Vitória</fullName>
+                <default>false</default>
+                <label>VIX - Vitória</label>
+            </value>
+            <value>
+                <fullName>XAP - Chapecó</fullName>
+                <default>false</default>
+                <label>XAP - Chapecó</label>
+            </value>
+            <value>
+                <fullName>XXX - Não se aplica</fullName>
+                <default>true</default>
+                <label>XXX - Não se aplica</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Assis</controllingFieldValue>
+            <controllingFieldValue>Maringá</controllingFieldValue>
+            <controllingFieldValue>Piraju</controllingFieldValue>
+            <controllingFieldValue>Salto Grande</controllingFieldValue>
+            <controllingFieldValue>Palmital</controllingFieldValue>
+            <controllingFieldValue>Candido Mota</controllingFieldValue>
+            <controllingFieldValue>Taciba</controllingFieldValue>
+            <controllingFieldValue>Sandovalina</controllingFieldValue>
+            <controllingFieldValue>Forestópolis</controllingFieldValue>
+            <controllingFieldValue>Presidente Prudente</controllingFieldValue>
+            <controllingFieldValue>Teodoro Sampaio</controllingFieldValue>
+            <controllingFieldValue>Colorado</controllingFieldValue>
+            <valueName>LDB - Londrina</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Assis</controllingFieldValue>
+            <controllingFieldValue>São José do Rio Preto</controllingFieldValue>
+            <controllingFieldValue>Tres Lagoas</controllingFieldValue>
+            <controllingFieldValue>Piraju</controllingFieldValue>
+            <controllingFieldValue>Salto Grande</controllingFieldValue>
+            <controllingFieldValue>Palmital</controllingFieldValue>
+            <controllingFieldValue>Candido Mota</controllingFieldValue>
+            <controllingFieldValue>Chavantes</controllingFieldValue>
+            <controllingFieldValue>Ourinhos</controllingFieldValue>
+            <controllingFieldValue>Presidente Prudente</controllingFieldValue>
+            <valueName>MII - Marília</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Assis</controllingFieldValue>
+            <controllingFieldValue>Maringá</controllingFieldValue>
+            <controllingFieldValue>Tres Lagoas</controllingFieldValue>
+            <controllingFieldValue>Taciba</controllingFieldValue>
+            <controllingFieldValue>Sandovalina</controllingFieldValue>
+            <controllingFieldValue>Rosana</controllingFieldValue>
+            <controllingFieldValue>Ourinhos</controllingFieldValue>
+            <controllingFieldValue>Forestópolis</controllingFieldValue>
+            <controllingFieldValue>Presidente Prudente</controllingFieldValue>
+            <controllingFieldValue>Teodoro Sampaio</controllingFieldValue>
+            <controllingFieldValue>Colorado</controllingFieldValue>
+            <valueName>PPB - Presidente Prudente</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Assis</controllingFieldValue>
+            <controllingFieldValue>Não se aplica</controllingFieldValue>
+            <controllingFieldValue>Cartagena</controllingFieldValue>
+            <controllingFieldValue>Buenos Aires</controllingFieldValue>
+            <controllingFieldValue>Fortaleza</controllingFieldValue>
+            <controllingFieldValue>Vitória</controllingFieldValue>
+            <controllingFieldValue>Lima</controllingFieldValue>
+            <controllingFieldValue>Florianópolis</controllingFieldValue>
+            <controllingFieldValue>Atlanta</controllingFieldValue>
+            <controllingFieldValue>Las Vegas</controllingFieldValue>
+            <controllingFieldValue>Los Angeles</controllingFieldValue>
+            <controllingFieldValue>São José do Rio Preto</controllingFieldValue>
+            <controllingFieldValue>Belo Horizonte</controllingFieldValue>
+            <controllingFieldValue>Uberlândia</controllingFieldValue>
+            <controllingFieldValue>Maringá</controllingFieldValue>
+            <controllingFieldValue>Belém</controllingFieldValue>
+            <controllingFieldValue>Dallas</controllingFieldValue>
+            <controllingFieldValue>Navegantes</controllingFieldValue>
+            <controllingFieldValue>São Paulo</controllingFieldValue>
+            <controllingFieldValue>Rio de Janeiro</controllingFieldValue>
+            <controllingFieldValue>Curitiba</controllingFieldValue>
+            <controllingFieldValue>Brasília</controllingFieldValue>
+            <controllingFieldValue>Nova York</controllingFieldValue>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <controllingFieldValue>Chicago</controllingFieldValue>
+            <controllingFieldValue>Houston</controllingFieldValue>
+            <controllingFieldValue>Seattle</controllingFieldValue>
+            <controllingFieldValue>Cidade do Panamá</controllingFieldValue>
+            <controllingFieldValue>Hortolandia</controllingFieldValue>
+            <controllingFieldValue>Selviria</controllingFieldValue>
+            <controllingFieldValue>Tres Lagoas</controllingFieldValue>
+            <controllingFieldValue>Caçu</controllingFieldValue>
+            <controllingFieldValue>Abdon Batista</controllingFieldValue>
+            <controllingFieldValue>Piraju</controllingFieldValue>
+            <controllingFieldValue>Salto Grande</controllingFieldValue>
+            <controllingFieldValue>Palmital</controllingFieldValue>
+            <controllingFieldValue>Candido Mota</controllingFieldValue>
+            <controllingFieldValue>Taciba</controllingFieldValue>
+            <controllingFieldValue>Sandovalina</controllingFieldValue>
+            <controllingFieldValue>Rosana</controllingFieldValue>
+            <controllingFieldValue>São Joaquim da Barra</controllingFieldValue>
+            <controllingFieldValue>Guara</controllingFieldValue>
+            <controllingFieldValue>Chavantes</controllingFieldValue>
+            <controllingFieldValue>Ilha Solteira</controllingFieldValue>
+            <controllingFieldValue>Campos Novos</controllingFieldValue>
+            <controllingFieldValue>Ourinhos</controllingFieldValue>
+            <controllingFieldValue>Forestópolis</controllingFieldValue>
+            <controllingFieldValue>Presidente Prudente</controllingFieldValue>
+            <controllingFieldValue>Teodoro Sampaio</controllingFieldValue>
+            <controllingFieldValue>Colorado</controllingFieldValue>
+            <controllingFieldValue>Primavera</controllingFieldValue>
+            <valueName>XXX - Não se aplica</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cartagena</controllingFieldValue>
+            <valueName>CTG - Cartagena</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Buenos Aires</controllingFieldValue>
+            <valueName>AEP - Aeroparque Jorge Newbery - Buenos Aires</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Buenos Aires</controllingFieldValue>
+            <valueName>EZE - Aeroporto de Ezeiza - Buenos Aires</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fortaleza</controllingFieldValue>
+            <valueName>FOR - Aeroporto de Fortaleza</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Miami</controllingFieldValue>
+            <valueName>MIA - Aeroporto Internacional de Miami</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Foz do Iguaçu</controllingFieldValue>
+            <valueName>IGU - Foz do Iguaçu</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Vitória</controllingFieldValue>
+            <valueName>VIX - Vitória</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Lima</controllingFieldValue>
+            <valueName>LIM - Lima</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Florianópolis</controllingFieldValue>
+            <controllingFieldValue>Navegantes</controllingFieldValue>
+            <valueName>FLN - Florianópolis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Atlanta</controllingFieldValue>
+            <valueName>ATL - Atlanta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Las Vegas</controllingFieldValue>
+            <valueName>LAS - Las Vegas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Los Angeles</controllingFieldValue>
+            <valueName>LAX - Los Angeles</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São José do Rio Preto</controllingFieldValue>
+            <controllingFieldValue>Selviria</controllingFieldValue>
+            <controllingFieldValue>Tres Lagoas</controllingFieldValue>
+            <controllingFieldValue>Caçu</controllingFieldValue>
+            <controllingFieldValue>Ilha Solteira</controllingFieldValue>
+            <controllingFieldValue>Presidente Prudente</controllingFieldValue>
+            <valueName>ARU - Araçatuba</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São José do Rio Preto</controllingFieldValue>
+            <controllingFieldValue>Piraju</controllingFieldValue>
+            <controllingFieldValue>Salto Grande</controllingFieldValue>
+            <controllingFieldValue>Palmital</controllingFieldValue>
+            <controllingFieldValue>Chavantes</controllingFieldValue>
+            <controllingFieldValue>Ourinhos</controllingFieldValue>
+            <valueName>JTC - Bauru</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São José do Rio Preto</controllingFieldValue>
+            <controllingFieldValue>Selviria</controllingFieldValue>
+            <controllingFieldValue>Candido Mota</controllingFieldValue>
+            <controllingFieldValue>Guara</controllingFieldValue>
+            <controllingFieldValue>Ilha Solteira</controllingFieldValue>
+            <valueName>SJP - São José do Rio Preto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belo Horizonte</controllingFieldValue>
+            <valueName>CNF - Confins</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belo Horizonte</controllingFieldValue>
+            <valueName>GVR - Governador Valadares</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belo Horizonte</controllingFieldValue>
+            <valueName>IPN - Ipatinga</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belo Horizonte</controllingFieldValue>
+            <valueName>PLU - Pampulha</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Uberlândia</controllingFieldValue>
+            <controllingFieldValue>São Joaquim da Barra</controllingFieldValue>
+            <valueName>AAX - Araxá</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Uberlândia</controllingFieldValue>
+            <controllingFieldValue>Brasília</controllingFieldValue>
+            <controllingFieldValue>Caçu</controllingFieldValue>
+            <valueName>CLV - Caldas Novas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Uberlândia</controllingFieldValue>
+            <controllingFieldValue>São Joaquim da Barra</controllingFieldValue>
+            <controllingFieldValue>Guara</controllingFieldValue>
+            <valueName>UBA - Uberaba</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Uberlândia</controllingFieldValue>
+            <controllingFieldValue>Brasília</controllingFieldValue>
+            <valueName>UDI - Uberlândia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Maringá</controllingFieldValue>
+            <controllingFieldValue>Taciba</controllingFieldValue>
+            <controllingFieldValue>Sandovalina</controllingFieldValue>
+            <controllingFieldValue>Rosana</controllingFieldValue>
+            <controllingFieldValue>Teodoro Sampaio</controllingFieldValue>
+            <controllingFieldValue>Colorado</controllingFieldValue>
+            <valueName>MGF - Maringá</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Maringá</controllingFieldValue>
+            <controllingFieldValue>Forestópolis</controllingFieldValue>
+            <valueName>SBMG - Maringá</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belém</controllingFieldValue>
+            <valueName>ATM - Altamira</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belém</controllingFieldValue>
+            <controllingFieldValue>Primavera</controllingFieldValue>
+            <valueName>BEL - Belém</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belém</controllingFieldValue>
+            <valueName>MAB - Marabá</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Belém</controllingFieldValue>
+            <controllingFieldValue>Primavera</controllingFieldValue>
+            <valueName>MCP - Macapá</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Dallas</controllingFieldValue>
+            <valueName>DFW - Dallas Ft Worth Intl</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Navegantes</controllingFieldValue>
+            <controllingFieldValue>Curitiba</controllingFieldValue>
+            <valueName>CWB - Curitiba</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Navegantes</controllingFieldValue>
+            <controllingFieldValue>Curitiba</controllingFieldValue>
+            <valueName>JOI - Joinville</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Navegantes</controllingFieldValue>
+            <controllingFieldValue>Curitiba</controllingFieldValue>
+            <controllingFieldValue>Abdon Batista</controllingFieldValue>
+            <valueName>NVT - Navegantes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São Paulo</controllingFieldValue>
+            <controllingFieldValue>Hortolandia</controllingFieldValue>
+            <valueName>CGH - Congonhas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São Paulo</controllingFieldValue>
+            <controllingFieldValue>Hortolandia</controllingFieldValue>
+            <valueName>GRU - Guarulhos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São Paulo</controllingFieldValue>
+            <valueName>SJK - São José dos Campos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São Paulo</controllingFieldValue>
+            <controllingFieldValue>Hortolandia</controllingFieldValue>
+            <valueName>VCP - Viracopos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rio de Janeiro</controllingFieldValue>
+            <valueName>CAW - Campos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rio de Janeiro</controllingFieldValue>
+            <valueName>CFB - Cabo Frio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rio de Janeiro</controllingFieldValue>
+            <valueName>GIG	- Galeão</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rio de Janeiro</controllingFieldValue>
+            <valueName>SDU - Santos Dumont</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Curitiba</controllingFieldValue>
+            <valueName>PGZ - Ponta Grossa</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Brasília</controllingFieldValue>
+            <valueName>BSB - Brasília</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Brasília</controllingFieldValue>
+            <valueName>GYN - Goiânia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Nova York</controllingFieldValue>
+            <valueName>LGA - Nova York</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <valueName>CXJ - Caxias do Sul</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <valueName>PET - Pelotas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <controllingFieldValue>Campos Novos</controllingFieldValue>
+            <valueName>PFB - Passo Fundo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Porto Alegre</controllingFieldValue>
+            <valueName>POA - Porto Alegre</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Chicago</controllingFieldValue>
+            <valueName>ORD - O&apos;Hare</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Houston</controllingFieldValue>
+            <valueName>IAH - Houston</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Seattle</controllingFieldValue>
+            <valueName>SEA - Seattle</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Cidade do Panamá</controllingFieldValue>
+            <valueName>PTY - Tocumen</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Selviria</controllingFieldValue>
+            <controllingFieldValue>Tres Lagoas</controllingFieldValue>
+            <controllingFieldValue>Ilha Solteira</controllingFieldValue>
+            <valueName>TJL - Três Lagoas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Caçu</controllingFieldValue>
+            <valueName>RVD - Rio Verde</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Abdon Batista</controllingFieldValue>
+            <controllingFieldValue>Campos Novos</controllingFieldValue>
+            <valueName>LAJ - Lages</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Abdon Batista</controllingFieldValue>
+            <controllingFieldValue>Campos Novos</controllingFieldValue>
+            <valueName>XAP - Chapecó</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Piraju</controllingFieldValue>
+            <controllingFieldValue>Chavantes</controllingFieldValue>
+            <valueName>OUS - Ourinhos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palmital</controllingFieldValue>
+            <controllingFieldValue>Candido Mota</controllingFieldValue>
+            <valueName>AIF - Assis</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Rosana</controllingFieldValue>
+            <valueName>DOU - Dourados</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>São Joaquim da Barra</controllingFieldValue>
+            <controllingFieldValue>Guara</controllingFieldValue>
+            <valueName>RAO - Ribeirão Preto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Guara</controllingFieldValue>
+            <valueName>FRC - Franca</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Primavera</controllingFieldValue>
+            <valueName>SLZ - São Luiz</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dia_da_semana_Suspensao__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(
+    MOD(Data_de_termino_suspensao__c - DATE(1900, 1, 7), 7),
+    0, &quot;Domingo&quot;,
+    1, &quot;Segunda-feira&quot;,
+    2, &quot;Terça-feira&quot;,
+    3, &quot;Quarta-feira&quot;,
+    4, &quot;Quinta-feira&quot;,
+    5, &quot;Sexta-feira&quot;,
+    6, &quot;Sábado&quot;,
+    &quot;Desconhecido&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Dia da semana - Suspensão</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

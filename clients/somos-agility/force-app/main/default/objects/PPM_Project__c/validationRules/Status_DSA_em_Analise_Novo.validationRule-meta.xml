@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_DSA_em_Analise_Novo</fullName>
+    <active>true</active>
+    <description>O Status de um Projeto novo deve ser sempre DSA em Analise</description>
+    <errorConditionFormula>ISNEW() 
+&amp;&amp; 
+( 
+TEXT(Project_Status__c ) &lt;&gt; &quot;DSA em Análise&quot;)</errorConditionFormula>
+    <errorDisplayField>Project_Status__c</errorDisplayField>
+    <errorMessage>GP, o Status Inicial do Projeto deve ser DSA em Análise</errorMessage>
+</ValidationRule>

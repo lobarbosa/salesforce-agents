@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rec_Efet_dos_Testes__c</fullName>
+    <label>*Rec Efet dos Testes</label>
+    <summaryFilterItems>
+        <field>Plano_de_Testes__c.Reconheceu_efetividade_do_teste_2__c</field>
+        <operation>equals</operation>
+        <value>Sim</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Plano_de_Testes__c.Acoes_Pre_Fechamento__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Executor_atividade__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM131118: lookup dos executores</description>
+    <label>Executor da atividade</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Executor_atividade__c.Marcos__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Marcos__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Executor_atividade__c</referenceTo>
+    <relationshipLabel>Lançamento de Atividades</relationshipLabel>
+    <relationshipName>Lancamento_de_Atividades</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

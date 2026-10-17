@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M02_Informar_projeto_relacionado</fullName>
+    <active>true</active>
+    <description>AM 30072018: é necessário informar o número do projeto relacionado</description>
+    <errorConditionFormula>AND(
+Solicitacao_de_Reembolso__r.Despesa_de_projeto__c = TRUE, 
+ISBLANK (Relacionado_ao_Projeto__c)
+)</errorConditionFormula>
+    <errorMessage>É necessário informar o projeto relacionado (Msg02)</errorMessage>
+</ValidationRule>

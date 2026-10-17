@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bebiba__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL(Com_Bebida__c ,&quot;Não&quot;),&quot;Nenhuma&quot;, 
+IF(ISPICKVAL( Quantidade__c , &quot;Até 5 Pessoas&quot;),&quot;2 Litros de Suco&quot;, 
+IF(ISPICKVAL(Com_Bebida__c ,&quot;Não&quot;),&quot;Nenhuma&quot;, 
+IF(ISPICKVAL( Quantidade__c , &quot;Até 10 Pessoas&quot;),&quot;3 Litros de Suco&quot;, 
+IF(ISPICKVAL(Com_Bebida__c ,&quot;Não&quot;),&quot;Nenhuma&quot;, 
+IF(ISPICKVAL( Quantidade__c , &quot;Até 20 Pessoas&quot;),&quot;6 Litros de Suco&quot;, 
+IF(ISPICKVAL(Com_Bebida__c ,&quot;Não&quot;),&quot;Nenhuma&quot;, 
+IF(ISPICKVAL( Quantidade__c , &quot;Até 30 Pessoas&quot;),&quot;9 Litros de Suco&quot;, 
+IF(ISPICKVAL(Com_Bebida__c ,&quot;Não&quot;),&quot;Nenhuma&quot;, 
+IF(ISPICKVAL(Com_Bebida__c ,&quot;Não&quot;),&quot;Nenhuma&quot;,&quot;Nenhuma&quot; 
+) 
+) 
+) 
+) 
+) 
+) 
+) 
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Bebiba</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

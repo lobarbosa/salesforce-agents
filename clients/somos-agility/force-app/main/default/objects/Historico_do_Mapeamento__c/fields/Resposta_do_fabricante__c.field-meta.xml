@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resposta_do_fabricante__c</fullName>
+    <description>AM 19082028: tipos de resposa</description>
+    <label>Resposta do Fabricante</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Em análise</fullName>
+                <default>true</default>
+                <label>Em análise</label>
+            </value>
+            <value>
+                <fullName>Não se aplica</fullName>
+                <default>false</default>
+                <label>Não se aplica</label>
+            </value>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Rejeitado</fullName>
+                <default>false</default>
+                <label>Rejeitado</label>
+            </value>
+            <value>
+                <fullName>Mapeamento Vencido</fullName>
+                <default>false</default>
+                <label>Mapeamento Vencido</label>
+            </value>
+            <value>
+                <fullName>Desistência do Mapeamento</fullName>
+                <default>false</default>
+                <label>Desistência do Mapeamento</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

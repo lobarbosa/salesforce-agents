@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Staus_do_POC__c</fullName>
+    <label>Staus do POV</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aguardando envio do equipamento</fullName>
+                <default>false</default>
+                <label>Aguardando envio do equipamento</label>
+            </value>
+            <value>
+                <fullName>Aguardando informação por parte da Agility</fullName>
+                <default>false</default>
+                <label>Aguardando informação por parte da Agility</label>
+            </value>
+            <value>
+                <fullName>Aguardando informação por parte do cliente</fullName>
+                <default>false</default>
+                <label>Aguardando informação por parte do cliente</label>
+            </value>
+            <value>
+                <fullName>Aguardando liberação do cliente para inicio</fullName>
+                <default>false</default>
+                <label>Aguardando liberação do cliente para inicio</label>
+            </value>
+            <value>
+                <fullName>Aguardando retirada do equipamento</fullName>
+                <default>false</default>
+                <label>Aguardando retirada do equipamento</label>
+            </value>
+            <value>
+                <fullName>Cancelado</fullName>
+                <default>false</default>
+                <label>Cancelado</label>
+            </value>
+            <value>
+                <fullName>Cliente avaliando</fullName>
+                <default>false</default>
+                <label>Cliente avaliando</label>
+            </value>
+            <value>
+                <fullName>Concluído com sucesso</fullName>
+                <default>false</default>
+                <label>Concluído com sucesso</label>
+            </value>
+            <value>
+                <fullName>Concluído sem sucesso</fullName>
+                <default>false</default>
+                <label>Concluído sem sucesso</label>
+            </value>
+            <value>
+                <fullName>Elaboração do relatório final</fullName>
+                <default>false</default>
+                <label>Elaboração do relatório final</label>
+            </value>
+            <value>
+                <fullName>Elaboração do SDD</fullName>
+                <default>false</default>
+                <label>Elaboração do SDD</label>
+            </value>
+            <value>
+                <fullName>Em andamento</fullName>
+                <default>false</default>
+                <label>Em andamento</label>
+            </value>
+            <value>
+                <fullName>Início</fullName>
+                <default>false</default>
+                <label>Início</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

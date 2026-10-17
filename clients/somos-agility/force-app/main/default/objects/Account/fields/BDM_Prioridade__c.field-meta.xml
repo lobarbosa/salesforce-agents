@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BDM_Prioridade__c</fullName>
+    <inlineHelpText>Nível  para atendimento de BDM</inlineHelpText>
+    <label>BDM - Prioridade</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1 - Alta com foco</fullName>
+                <default>false</default>
+                <label>1 - Alta com foco</label>
+            </value>
+            <value>
+                <fullName>2 - Alta</fullName>
+                <default>false</default>
+                <label>2 - Alta</label>
+            </value>
+            <value>
+                <fullName>3 - Média</fullName>
+                <default>false</default>
+                <label>3 - Média</label>
+            </value>
+            <value>
+                <fullName>4 - Baixa</fullName>
+                <default>false</default>
+                <label>4 - Baixa</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

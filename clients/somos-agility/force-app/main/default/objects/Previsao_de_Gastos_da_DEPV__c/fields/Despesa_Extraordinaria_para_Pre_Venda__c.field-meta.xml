@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Despesa_Extraordinaria_para_Pre_Venda__c</fullName>
+    <label>Despesa Extraordinária de Venda</label>
+    <referenceTo>Despesa_Extraordinaria_para_Pre_Venda__c</referenceTo>
+    <relationshipLabel>Previsão de Gastos da Despesa Extraordinária de Venda</relationshipLabel>
+    <relationshipName>Previsao_de_Gastos_da_DEPV</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

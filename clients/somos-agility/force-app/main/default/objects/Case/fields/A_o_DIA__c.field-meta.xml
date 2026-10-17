@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>A_o_DIA__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Selecionar a &quot;Ação DIA&quot; na lista quando o campo &quot;Etapa do processo Agility Way&quot; for igual a &quot;DIA&quot;.</inlineHelpText>
+    <label>Ação DIA</label>
+    <referenceTo>Acao_DIA__c</referenceTo>
+    <relationshipLabel>Casos</relationshipLabel>
+    <relationshipName>Casos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

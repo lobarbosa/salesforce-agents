@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Origem_da_campanha_obrigatorio</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( ISPICKVAL( LeadSource , &quot;Campanha Marketing&quot;) , 
+ISBLANK( Origem_da_campanha_principal__c ))</errorConditionFormula>
+    <errorDisplayField>CampaignId</errorDisplayField>
+    <errorMessage>Quando origem do Lead igual Campanha Marketing, o campo &quot;Origem da campanha principal&quot; deve ser preenchido.</errorMessage>
+</ValidationRule>

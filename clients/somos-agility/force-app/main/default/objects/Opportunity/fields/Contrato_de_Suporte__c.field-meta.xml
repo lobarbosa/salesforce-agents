@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contrato_de_Suporte__c</fullName>
+    <label>Contrato de Suporte?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Categoria__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Não</fullName>
+                <default>false</default>
+                <label>Não</label>
+            </value>
+            <value>
+                <fullName>Sim</fullName>
+                <default>false</default>
+                <label>Sim</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Contrato de Locação (Renovação)</controllingFieldValue>
+            <controllingFieldValue>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</controllingFieldValue>
+            <controllingFieldValue>Contrato de Suporte (Upgrade)</controllingFieldValue>
+            <controllingFieldValue>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</controllingFieldValue>
+            <controllingFieldValue>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</controllingFieldValue>
+            <controllingFieldValue>Parcela Avulsa de Contrato de Suporte</controllingFieldValue>
+            <controllingFieldValue>Subscrição ou Renovação</controllingFieldValue>
+            <controllingFieldValue>Contrato de Suporte (Novo)</controllingFieldValue>
+            <controllingFieldValue>Contrato de Suporte (Renovação)</controllingFieldValue>
+            <controllingFieldValue>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</controllingFieldValue>
+            <valueName>Sim</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</controllingFieldValue>
+            <controllingFieldValue>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</controllingFieldValue>
+            <controllingFieldValue>Comissionamento</controllingFieldValue>
+            <controllingFieldValue>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</controllingFieldValue>
+            <controllingFieldValue>Subscrição ou Renovação</controllingFieldValue>
+            <controllingFieldValue>Contrato de Suporte (Renovação)</controllingFieldValue>
+            <controllingFieldValue>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</controllingFieldValue>
+            <valueName>Não</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

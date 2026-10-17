@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ofertas__c</fullName>
+    <label>Ofertas</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>GPD – Gestão de Privacidade de Dados</fullName>
+                <default>false</default>
+                <label>GPD – Gestão de Privacidade de Dados</label>
+            </value>
+            <value>
+                <fullName>GAA – Gestão Avançada de Ameaças</fullName>
+                <default>false</default>
+                <label>GAA – Gestão Avançada de Ameaças</label>
+            </value>
+            <value>
+                <fullName>PAM – Proteção de Aplicações Multicloud</fullName>
+                <default>false</default>
+                <label>PAM – Proteção de Aplicações Multicloud</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

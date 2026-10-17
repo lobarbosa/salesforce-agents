@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_Resgatado__c</fullName>
+    <label>Valor Total  Resgatado</label>
+    <summarizedField>Resgate_de_Credito_com_Fornecedor__c.Valor_do_Resgate_Convertido__c</summarizedField>
+    <summaryForeignKey>Resgate_de_Credito_com_Fornecedor__c.Credito_com_Fornecedores__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

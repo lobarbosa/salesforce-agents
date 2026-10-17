@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Colaborador__c</columns>
+    <columns>area__c</columns>
+    <columns>Contato_em_sua_Ausencia__c</columns>
+    <columns>Inicio__c</columns>
+    <columns>Fim__c</columns>
+    <columns>Status_da_Qualificao__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Colaborador__c</field>
+        <operation>contains</operation>
+        <value>SHIRLEI</value>
+    </filters>
+    <label>Tudo</label>
+    <sharedTo>
+        <role>ADM</role>
+        <role>Recursos_Humanos</role>
+    </sharedTo>
+</ListView>

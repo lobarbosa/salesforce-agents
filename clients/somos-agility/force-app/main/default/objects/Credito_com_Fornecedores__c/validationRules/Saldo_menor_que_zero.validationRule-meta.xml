@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Saldo_menor_que_zero</fullName>
+    <active>true</active>
+    <description>Aviso para quando o saldo for insuficiente</description>
+    <errorConditionFormula>Saldo__c  &lt; 0</errorConditionFormula>
+    <errorMessage>Saldo insuficiente!</errorMessage>
+</ValidationRule>

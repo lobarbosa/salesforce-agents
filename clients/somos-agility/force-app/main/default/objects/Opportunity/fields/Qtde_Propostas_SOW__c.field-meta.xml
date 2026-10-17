@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qtde_Propostas_SOW__c</fullName>
+    <label>Qtde Propostas SOW</label>
+    <summaryFilterItems>
+        <field>Propostas_de_Solucao__c.Proposta_Fechada_pelo_Cliente__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Propostas_de_Solucao__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

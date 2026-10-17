@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FreezingDataRetornoFreezingObrigatorio</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				TEXT(Project_Status__c) = &quot;Freezing&quot;,
+				ISBLANK(DataRetornoFreezing__c)
+)</errorConditionFormula>
+    <errorDisplayField>DataRetornoFreezing__c</errorDisplayField>
+    <errorMessage>Preencha esse campo</errorMessage>
+</ValidationRule>

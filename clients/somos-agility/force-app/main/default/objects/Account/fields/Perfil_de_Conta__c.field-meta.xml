@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Perfil_de_Conta__c</fullName>
+    <label>Perfil de Conta</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Comercial</fullName>
+                <default>false</default>
+                <label>Comercial</label>
+            </value>
+            <value>
+                <fullName>Named New</fullName>
+                <default>false</default>
+                <label>Named New</label>
+            </value>
+            <value>
+                <fullName>Named</fullName>
+                <default>false</default>
+                <label>Named</label>
+            </value>
+            <value>
+                <fullName>Named Target</fullName>
+                <default>false</default>
+                <label>Named Target</label>
+            </value>
+            <value>
+                <fullName>Cliente</fullName>
+                <default>false</default>
+                <label>Cliente</label>
+            </value>
+            <value>
+                <fullName>Prospect</fullName>
+                <default>false</default>
+                <label>Prospect</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

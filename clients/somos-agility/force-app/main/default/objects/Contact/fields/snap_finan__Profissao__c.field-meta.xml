@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Profissao__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <description>Identifica a profissão da pessoa.</description>
+    <inlineHelpText>Identifica a profissão da pessoa.</inlineHelpText>
+    <label>Profissão</label>
+    <referenceTo>snap_finan__profissao__c</referenceTo>
+    <relationshipLabel>Contatos</relationshipLabel>
+    <relationshipName>Profissao</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

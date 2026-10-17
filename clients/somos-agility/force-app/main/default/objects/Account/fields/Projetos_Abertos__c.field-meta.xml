@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Projetos_Abertos__c</fullName>
+    <label>Projetos Abertos</label>
+    <summaryFilterItems>
+        <field>PPM_Project__c.Project_Status__c</field>
+        <operation>notEqual</operation>
+        <value>Cancelado,Finalizado</value>
+    </summaryFilterItems>
+    <summaryForeignKey>PPM_Project__c.Conta__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

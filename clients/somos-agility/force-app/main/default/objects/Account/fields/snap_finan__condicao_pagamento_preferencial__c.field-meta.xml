@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__condicao_pagamento_preferencial__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <deprecated>false</deprecated>
+    <label>Condição de pagamento preferencial</label>
+    <referenceTo>snap_finan__condicao_pagamento__c</referenceTo>
+    <relationshipLabel>Contas</relationshipLabel>
+    <relationshipName>Contas</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

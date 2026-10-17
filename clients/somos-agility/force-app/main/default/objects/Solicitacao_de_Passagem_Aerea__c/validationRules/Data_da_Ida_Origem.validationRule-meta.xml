@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_da_Ida_Origem</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISNEW()&amp;&amp; Emergencial__c =False,(Data_Origem_Ida__c &lt;NOW()+2),Data_Origem_Ida__c &lt;NOW()+1)</errorConditionFormula>
+    <errorDisplayField>Data_Origem_Ida__c</errorDisplayField>
+    <errorMessage>A Data da Ida deve ser superior a 2 dias da data atual.</errorMessage>
+</ValidationRule>

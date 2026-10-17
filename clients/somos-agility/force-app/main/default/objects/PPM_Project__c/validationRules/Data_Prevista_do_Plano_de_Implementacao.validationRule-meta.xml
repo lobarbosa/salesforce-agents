@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Prevista_do_Plano_de_Implementacao</fullName>
+    <active>false</active>
+    <description>Após Preenchida não é possível alterar a Data Prevista do Plano de Implementação</description>
+    <errorConditionFormula>IF(ISNULL(Plano_de_Implementacao_Previsto__c )&amp;&amp;ISCHANGED(Plano_de_Implementacao_Previsto__c ) &amp;&amp; $User.Id = &apos;0053B000000cZFX&apos;,False,True)</errorConditionFormula>
+    <errorDisplayField>Plano_de_Implementacao_Previsto__c</errorDisplayField>
+    <errorMessage>Após Preenchida não é possível alterar a Data Prevista do Plano de Implementação</errorMessage>
+</ValidationRule>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Atual_Igual_a_Suspenso_Risco</fullName>
+    <active>true</active>
+    <description>Quando o Satus do Projeto é selecionado como Suspenso é obrigatório informar o Risco</description>
+    <errorConditionFormula>AND(ISPICKVAL( Project_Status__c ,&quot;Suspenso&quot;),ISBLANK( Risco__c ))</errorConditionFormula>
+    <errorDisplayField>Risco__c</errorDisplayField>
+    <errorMessage>Favor informar o Risco</errorMessage>
+</ValidationRule>

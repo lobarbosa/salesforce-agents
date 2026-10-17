@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Lote_residencial__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Identifica o lote do endereço residencial do cliente.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Identifica o lote do endereço residencial do cliente.</inlineHelpText>
+    <label>Lote residencial</label>
+    <length>20</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Superior_Responsavel</fullName>
+    <active>true</active>
+    <description>Caso seja informado &quot;Sim&quot; no campo Superior Responsável Fornecedor será obrigatório informar o nome no campo Responsável Fabricante</description>
+    <errorConditionFormula>AND(ISPICKVAL( Superior_Responsavel_Fornecedor__c ,&quot;Sim&quot;),ISBLANK( Responsavel_Fabricante__c ))</errorConditionFormula>
+    <errorDisplayField>Responsavel_Fabricante__c</errorDisplayField>
+    <errorMessage>Favor informar o Responsável</errorMessage>
+</ValidationRule>

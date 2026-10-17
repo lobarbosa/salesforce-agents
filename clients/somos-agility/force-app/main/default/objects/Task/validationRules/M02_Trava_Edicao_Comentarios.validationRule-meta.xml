@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M02_Trava_Edicao_Comentarios</fullName>
+    <active>false</active>
+    <description>AM 26052018: Este campo não pode ser editado após a sua criação.</description>
+    <errorConditionFormula>AND(NOT(ISNULL(PRIORVALUE(Description))),
+ISCHANGED(Description),
+NOT($User.Id = &apos;0050z0000079CJ6&apos; ))
+
+
+/*
+SINTAXE OK
+OR(
+AND(
+NOT(ISNULL(PRIORVALUE(Description))),ISCHANGED(Description),
+AND(
+ISPICKVAL( Status, &quot;Rejeitado&quot;),ISBLANK( Description ))))
+
+SINTAXE OK - AND(
+NOT(ISNULL(PRIORVALUE(Description))),ISCHANGED(Description),
+AND(
+ISPICKVAL( Status, &quot;Rejeitado&quot;),ISBLANK( Description ))
+)
+
+
+SINTAXE OK - AND(ISPICKVAL( Status, &quot;Rejeitado&quot;),ISBLANK( Description ))
+
+ORIGINAL 
+ - AND(NOT(ISNULL(PRIORVALUE(Description))),ISCHANGED(Description))
+*/</errorConditionFormula>
+    <errorDisplayField>Description</errorDisplayField>
+    <errorMessage>Este campo não pode ser editado (Msg02).</errorMessage>
+</ValidationRule>

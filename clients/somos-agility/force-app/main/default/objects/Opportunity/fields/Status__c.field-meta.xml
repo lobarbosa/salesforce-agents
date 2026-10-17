@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aberto</fullName>
+                <default>true</default>
+                <label>Aberto</label>
+            </value>
+            <value>
+                <fullName>Desengajada</fullName>
+                <default>false</default>
+                <label>Desengajada</label>
+            </value>
+            <value>
+                <fullName>Encerrado Loss</fullName>
+                <default>false</default>
+                <label>Encerrado Loss</label>
+            </value>
+            <value>
+                <fullName>Encerrado Win</fullName>
+                <default>false</default>
+                <label>Encerrado Win</label>
+            </value>
+            <value>
+                <fullName>Encerrado Win - Processada Financeiro</fullName>
+                <default>false</default>
+                <label>Encerrado Win - Processada Financeiro</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M05_Valida_Uma_PFP</fullName>
+    <active>true</active>
+    <description>Não permitir o preenchimento de mais de uma PFP em uma PSL fechada pelo cliente.</description>
+    <errorConditionFormula>AND(
+	Proposta_Fechada_pelo_Cliente__c = true,
+		OR(PFP_1_Fechada__c = true,
+		   PFP_2_Fechada__c = true
+		),
+		OR(PFP_1_Fechada__c = true,
+		   PFP_3_Fechada__c = true
+		),
+		OR(PFP_2_Fechada__c = true,
+		   PFP_3_Fechada__c = true
+		)
+)</errorConditionFormula>
+    <errorMessage>(M05) Não é possível preencher mais de uma PFP para uma PSL fechada pelo cliente.</errorMessage>
+</ValidationRule>

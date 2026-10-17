@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Somente_Dono_RT_pode_Alterar_apos_Aprov</fullName>
+    <active>true</active>
+    <description>Somente o proprietário do RT pode Alterar os campos Status / Quando será feito e Observação</description>
+    <errorConditionFormula>AND(ISPICKVAL( ID_do_RT_Relatorio_Tecnico__r.Status__c ,&quot;Aprovado&quot;)&amp;&amp; 
+ID_do_RT_Relatorio_Tecnico__r.RecordTypeId = &apos;01238000000RYHL&apos;&amp;&amp; $User.Id &lt;&gt; ID_do_RT_Relatorio_Tecnico__r.Owner:User.Id,ISCHANGED( Status_da_Atividade_do_Plano_de_A_o__c )||ISCHANGED( Quando_ser_feito__c )||ISCHANGED( Observacoes__c ))</errorConditionFormula>
+    <errorMessage>Somente o Proprietário do RT pode realizar alterações após aprovado</errorMessage>
+</ValidationRule>

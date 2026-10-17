@@ -1,0 +1,646 @@
+<apex:page StandardController="Servico_x_Pedido__c" showHeader="false"
+    tabStyle="Servico_x_Pedido__c" extensions="clsCadServicoxPedido"
+    id="cadServicoxPedido">
+    <!--Bibliotecas Jquery-->
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.JqueryUI, '/ui/jquery-ui.js')}" />
+    <!--Bibliotecas PrimeUI-->
+    <apex:includeScript value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.js')}" />
+    <!---------------------->
+    <!--Bibliotecas de Formatações-->
+    <apex:includeScript value="{!URLFOR($Resource.JqueryFormat, 'JqueryFormat.js')}" />
+    <!---------------------->
+    <!--CSS do PrimeUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.css')}" />
+    <!--CSS do JqueryUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryUI, '/themes/base/jquery-ui.css')}" />
+    <!---------------------->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/themes/overcast/theme.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/css/tabview/tabview.css')}" />
+    <!---------------------->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#default').puitabview();
+            
+            $('#img_help_CNPJTerc').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Ao embutir esse valor, será somado ao valor serviços e descontado da rentabilidade'});
+            
+             $('#img_help_CodFiscal').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa Serv*, escolhendo a opção Todos os Campos'}); 
+            
+        });
+    </script>
+    <style>
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+    {
+    border: 0px solid #d3d3d3;
+    background: #CDE8F0 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #555555;
+}
+
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited
+    {
+    color: #555555;
+    text-decoration: none;
+}
+
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus
+    {
+    border: 1px solid #999999;
+    background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-hover a,.ui-state-hover a:hover {
+    color: #212121;
+    text-decoration: none;
+}
+
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active
+    {
+    border: 1px solid #aaaaaa;
+    background: #006854 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.ui-widget :active {
+    outline: none;
+}
+
+.ui-widget-content {
+    border: 1px solid #aaaaaa;
+    background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50%
+        repeat-x;
+    color: #222222;
+}
+
+.ui-widget-content a {
+    color: #222222;
+}
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    background: #CDE8F0 url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
+        50% 50% repeat-x;
+    color: black;
+    font-weight: bold;
+}
+
+.ui-widget-header a {
+    color: #CDE8F0;
+    font-weight: bold;
+}
+</style>
+
+    <div id="default" style="display: none">
+        <ul>
+            <li><a href="#tab1">Novo Serviço</a></li>
+        </ul>
+        <div>
+            <div id="tab1">
+
+                <apex:form id="frmPost" onsubmit="return validarFRM(this)">
+                <br/>
+                    <input type="hidden" value="{!idServico}" name="idServico"
+                        id="idServico" />
+                    <input type="hidden" value="{!idNegociacao}" name="idNegociacao"
+                        id="idNegociacao" />
+                    <input type="hidden" value="{!idOportunidade}"
+                        name="idOportunidade" id="idOportunidade" />
+                    <input type="hidden" value="{!Redict}" name="Redict" id="Redict" />
+
+                    <input type="hidden" value="{!ReadOnly}" name="ReadOnly"
+                        id="ReadOnly" />
+                    <input type="hidden" value="{!DisabledField}" name="DisabledField"
+                        id="DisabledField" />
+                    <input type="hidden" value="{!mBotao}" name="mBotao" id="mBotao" />
+                    <input type="hidden" value="{!idContaFatServ}" name="idConfigfirst"
+                        id="idConfigfirst" />
+                        
+                        <input type="hidden" value="{!SeguraCampo}" name="SeguraCampo"
+                        id="SeguraCampo" />
+                        
+                        <input type="hidden" value="{!CambioGlobal}" name="CambioGlobal"
+                        id="CambioGlobal" />
+                    <apex:pageBlock id="pgMaster">
+                        <hr />
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                <apex:outputlabel id="txtMsg" style="color:red" value="{!msgRetorno}"></apex:outputlabel>
+                                <br/>
+                                    <div id="dv_Produto" style="display: block;">
+                                        <table width="100%">
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações do
+                                                    Serviço <apex:inputField id="txtNegociacaoComercial"
+                                                        value="{!Servico_x_Pedido__c.Negociacao_Comercial__c}"
+                                                        style="display:none;" />
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Origem de Faturamento</td>
+                                                <td><apex:selectList id="ddlOrigemFat"
+                                                        value="{!Servico_x_Pedido__c.CNPJ_de_Faturamento__c}"
+                                                        size="1">
+                                                        <apex:selectOptions value="{!OrigemFat}"></apex:selectOptions>
+                                                    </apex:selectList> <!--<apex:inputfield id="txtcnpjFat"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.CNPJ_de_Faturamento__c}" />-->
+                                                </td>
+                                                <td>CNPJ de Destino</td>
+                                                <td><apex:inputfield id="txtCNPJDestino"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.CNPJ_Destino__c}"
+                                                        onchange="RetornaDescDest(document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtCNPJDestino_lkid').value);" />
+                                                    <br /> <label id="txtCNPJDest"></label></td>
+                                            </tr>
+
+                                            <tr>
+                                            <!--<td>Condição de Pagamento Compra</td>
+                                                <td><apex:inputfield id="txtCondicaoPagamentoCompra"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.Condicao_de_Pagamento_Compra__c}" />
+                                                </td>-->
+                                                <td>
+                                                
+                                                Descrição Fiscal do Serviço
+                                                <img   class="helpOrb" id="img_help_CodFiscal" title="" src="/s.gif" ></img>
+                                                </td>
+                                                <td><apex:inputfield id="txtCodigoFiscalServico"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.Codigo_Fiscal_do_Servico__c}" />
+                                                </td>
+                                                <td>
+                                                
+                                                Código Fiscal
+                                                
+                                                
+                                                
+                                                </td>
+                                                <td><apex:outputText value="{!strCFOP}"></apex:outputText>
+                                                    <apex:inputfield id="txtOperacaoCFOP" required="true"
+                                                        value="{!Servico_x_Pedido__c.Operacao_CFOP__c}"
+                                                        style="display:none" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Moeda</td>
+                                                <td>
+                                                
+                                                <apex:selectList id="txtMoeda"
+                                                        value="{!Servico_x_Pedido__c.Moeda__c}"
+                                                        size="1" onchange="inativaCambio(this.value,'')">
+                                                        <apex:selectOptions value="{!MoedaServ}"></apex:selectOptions>
+                                                    </apex:selectList>
+                                                <!--<apex:inputfield id="txtMoeda" required="true"
+                                                        value="{!Servico_x_Pedido__c.Moeda__c}"
+                                                        onchange="inativaCambio(this.value,'')" />-->
+                                                        
+                                                        
+                                                </td>
+                                                <td>Câmbio</td>
+                                                <td><apex:inputfield id="txtCambio" required="true"
+                                                        value="{!Servico_x_Pedido__c.Cambio__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Competência</td>
+                                                <td><apex:selectList id="ddlCompetencia"
+                                                        value="{!Servico_x_Pedido__c.Competencia__c}" size="1" required="true">
+                                                        <apex:selectOptions value="{!Competencia}"></apex:selectOptions>
+                                                    </apex:selectList> <!--<apex:inputfield id="txtCompetencia"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.Competencia__c}" />--></td>
+                                                <td>Fase da Metodologia</td>
+                                                <td><apex:selectList id="ddlFase"
+                                                        value="{!Servico_x_Pedido__c.Fase_da_Metodologia__c}"
+                                                        size="1" required="true">
+                                                        <apex:selectOptions value="{!FasedaMetodlogia}"></apex:selectOptions>
+                                                    </apex:selectList> 
+                                                    <!--<apex:inputfield id="txtFaseMetodologia"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.Fase_da_Metodologia__c}" />-->
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                
+                                                <td>Quantidade Analistas</td>
+                                                <td><apex:inputfield id="txtQuantidadeAnalista"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.Quantidade_Analistas__c}" /></td>
+                                                
+                                                
+                                                <td>Qtd. Horas Horário Comercial</td>
+                                                <td><apex:inputfield id="txtQtdHorasHorarioComercial"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.Qtd_Horas_Horario_Comercial__c}" /></td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>Qtd. Horas Extraordinário</td>
+                                                <td colspan="4"><apex:inputfield id="txtqtdHorasExtraordinario" required="true"
+                                                        value="{!Servico_x_Pedido__c.Qtd_Horas_Extraordinario__c}" /></td>
+
+                                            </tr>
+
+
+
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;Custos de
+                                                    deslocamento e viagem</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Local da Prestação de Serviços</td>
+                                                <td>
+                                                <apex:selectList id="txtLocalPrestServico"
+                                                        value="{!Servico_x_Pedido__c.Local_da_Prestacao_de_Servicos__c}"
+                                                        size="1" required="true" onchange="CalcularVerba(document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtQuantidadeAnalista').value,document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtqtdHorasExtraordinario').value,document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtQtdHorasHorarioComercial').value,this.value);habilitalcob(this.value);HabilitarDesp(document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtInstrucaoCobranca').value,this.value);">
+                                                        <apex:selectOptions value="{!LocalPrest}"></apex:selectOptions>
+                                                    </apex:selectList> 
+                                                </td>
+                                                <td>Verba Pre-alocada</td>
+                                                <td >
+                                                    <!--<apex:outputText value="{!vlr}" id="txtVerba">
+                                                </apex:outputText>--> <apex:inputfield id="txtVerbaPreAlocadaDeslocamento" required="false"
+                                                        value="{!Servico_x_Pedido__c.Verba_Pre_alocada_para_deslocamento__c}" />
+                                                </td>
+                                                
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label id="lblNome" style="display:none">Instrução de cobrança de viagem</label> 
+                                                    
+                                                </td>
+                                                <td colspan="4">
+                                                <apex:inputfield id="txtInstrucaoCobranca"
+                                                        
+                                                        value="{!Servico_x_Pedido__c.Instrucao_de_Cobranca__c}"
+                                                        onchange="HabilitarDesp(this.value,document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtLocalPrestServico').value);" style="display:none"/>
+                                                </td>
+                                                
+
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="dv_Custo" style="display: none;">
+                                        <table width="100%">
+                                            <tr>
+                                                <td>Passagens</td>
+                                                <td width="32%">
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <apex:inputfield id="txtPassagens" required="false"
+                                                        value="{!Servico_x_Pedido__c.Passagens__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" />
+                                                </td>
+                                                <td>Transporte</td>
+                                                <td><apex:inputfield id="txtTransporte"
+                                                        required="false"
+                                                        value="{!Servico_x_Pedido__c.Transporte__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Pedágio</td>
+                                                <td>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <apex:inputfield id="txtPedagio" required="false"
+                                                        value="{!Servico_x_Pedido__c.Pedagio__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" />
+                                                </td>
+                                                <td>Alimentação</td>
+                                                <td><apex:inputfield id="txtAlimentacao"
+                                                        required="false"
+                                                        value="{!Servico_x_Pedido__c.Alimentacao__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Hospedagem</td>
+                                                <td>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <apex:inputfield id="txtHospedagem" required="false"
+                                                        value="{!Servico_x_Pedido__c.Hospedagem__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" />
+                                                </td>
+                                                <td>Estacionamento</td>
+                                                <td><apex:inputfield id="txtEstacionamento"
+                                                        required="false"
+                                                        value="{!Servico_x_Pedido__c.Estacionamento__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Outros</td>
+                                                <td colspan="4">
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <apex:inputfield id="txtOutros" required="false"
+                                                        value="{!Servico_x_Pedido__c.Outros__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" />
+                                                </td>
+                                            </tr>
+
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div id="dv_Informacao" style="display: block;">
+                                        <table width="100%">
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Observação</td>
+                                                <td colspan="3"><apex:inputfield id="txtObservacao"
+                                                        required="false"
+                                                        value="{!Servico_x_Pedido__c.Observacao__c}"
+                                                        style="width:350px;height:100px;" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Desconto %</td>
+                                                <td colspan="3"><apex:inputfield id="txtDesconto"
+                                                        required="false"
+                                                        value="{!Servico_x_Pedido__c.Desconto__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Subcontratação de Terceiros</td>
+                                                <td colspan="3"><apex:inputfield id="txtServicosTerceiros" required="true"
+                                                        value="{!Servico_x_Pedido__c.Subcontratacao_de_Terceiros__c}"
+                                                        onchange="HabilaTerc(this.value)" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>CNPJ do Terceiro 
+                                                
+                                                <img   class="helpOrb" id="img_help_CNPJTerc" title="" src="/s.gif" ></img>
+                                                
+                                                </td>
+                                                <td id="cnpj_terc" style="display: none" colspan="4"><apex:inputfield id="txtCnpjTerceiro" required="false"
+                                                        value="{!Servico_x_Pedido__c.CNPJ_de_Contratacao_Terceiros__c}" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Valor da Subcontratação</td>
+                                                <td colspan="3"><apex:inputfield id="txtValorTerceiro"
+                                                        required="false"
+                                                        value="{!Servico_x_Pedido__c.Servicos_de_terceiros__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                            </tr>
+                                            <tr>
+                                            <td>Condição de Pagamento</td>
+                                                <td colspan="3"><apex:inputfield id="txtCondicaoPagamentoVenda"
+                                                        required="true"
+                                                        value="{!Servico_x_Pedido__c.Condicao_de_Pagamento__c}" />
+                                                </td>
+                                            
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <hr />
+                        <center>
+                            <apex:commandButton action="{!SalvarPedidoxServico}"
+                                id="btnSalvarOpt" value="Salvar" style="display:{!mBotao}" />
+                        </center>
+
+                    </apex:pageBlock>
+                </apex:form>
+
+            </div>
+        </div>
+    </div>
+    <script tyle="text/javascript">
+    
+        document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtLocalPrestServico').value="{!Servico_x_Pedido__c.Local_da_Prestacao_de_Servicos__c}";
+        if (document.getElementById('idConfigfirst').value == '') {
+            document
+                    .getElementById('cadServicoxPedido:frmPost:pgMaster:ddlOrigemFat').value = '0015000000OZGSRAA5';
+        } else {
+            document
+                    .getElementById('cadServicoxPedido:frmPost:pgMaster:ddlOrigemFat').value = document
+                    .getElementById('idConfigfirst').value;
+        }
+
+        function inativaCambio(vlr, tipo) {
+        //alert(vlr);
+            if (vlr == 'Real') {
+                document
+                        .getElementById('cadServicoxPedido:frmPost:pgMaster:txtCambio').value = 0;
+                document
+                        .getElementById('cadServicoxPedido:frmPost:pgMaster:txtCambio').readOnly = true;
+            } else {
+                document
+                        .getElementById('cadServicoxPedido:frmPost:pgMaster:txtCambio').readOnly = false;
+                 if(document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtCambio').value=="" || document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtCambio').value=="0"){
+                    document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtCambio').value = document.getElementById('CambioGlobal').value;
+                 }
+            }
+        }
+        
+        if (document.getElementById('ReadOnly').value == 'true') {
+            //Irá bloquear todos os campos para edição
+            itens = document.getElementsByTagName('input');
+            for (i = 0; i < itens.length; i++) {
+                itens[i].setAttribute('disabled', 'true');
+            }
+            itensList = document.getElementsByTagName('select');
+            for (i = 0; i < itensList.length; i++) {
+                itensList[i].setAttribute('disabled', 'true');
+            }
+        }
+        var Habilitar = 1;
+        
+        if (document.getElementById('idServico').value != ''
+                && document.getElementById('Redict').value == '1') {
+            window.open(
+                    'https://na3.salesforce.com/apex/cadNegociacaoComercial?id='
+                            + document.getElementById('idNegociacao').value
+                            + '&idServico='
+                            + document.getElementById('idServico').value
+                            + '&Redict=1', '_top');
+            Habilitar = 0;
+        } else if (document.getElementById('Redict').value == '2') {
+            window.open(
+                    'https://na3.salesforce.com/apex/cadNegociacaoComercial?id='
+                            + document.getElementById('idNegociacao').value
+                            + '&idServico=', '_top');
+            Habilitar = 0;
+        }
+
+        if (Habilitar == 1) {
+            document.getElementById('default').style.display = 'block';
+        }
+
+        //alert("{!$Component.frmPost.txtValorTerceiro}");
+        //Campos ReadOnly.
+//        document.getElementById("cadServicoxPedido:frmPost:pgMaster:txtVerbaPreAlocadaDeslocamento").readOnly = true;
+        //Funções de preenchimento automatico:
+        
+        function CalcularVerba(qtdAnalista, qtdHorasExtra, qtdHorasNormais,
+                valor) {
+
+            Visualforce.remoting.Manager
+                    .invokeAction(
+                            '{!$RemoteAction.clsCadServicoxPedido.CalculaVerba}',
+                            qtdAnalista,
+                            qtdHorasExtra,
+                            qtdHorasNormais,
+                            valor,
+                            function(result, event) {
+                                if (event.status) {
+                                    if (result != '') {
+                                        //alert('Gravação realizada com sucesso');
+                                        //window.location.reload(true);
+                                        document
+                                                .getElementById("cadServicoxPedido:frmPost:pgMaster:txtVerbaPreAlocadaDeslocamento").value = result;
+                                    }
+
+                                }
+                            });
+        }
+
+        //Bloqueia e Desbloqueia os campos de Custo de Viajem.
+        function HabilitarDesp(vlr,vlr_viagem) {
+            //alert(vlr);
+            //alert(vlr_viagem);
+            if (vlr == 'Cliente ( Nota de Débito )' || (vlr_viagem != 'Viagem(Acima 200KM)' && vlr_viagem != '')) {
+                document.getElementById("dv_Custo").style.display = 'none';
+            } else if (vlr != '') {
+                document.getElementById("dv_Custo").style.display = 'block';
+            }
+            else{
+              document.getElementById("dv_Custo").style.display = 'block';
+            }
+        }
+
+        function validarFRM(frm){
+            var msg='';
+            try{
+            if(document.getElementById("cadServicoxPedido:frmPost:pgMaster:ddlCompetencia").value==''){
+                msg+='Por favor preencher a Competencia\n';
+            }
+            
+            if(document.getElementById("cadServicoxPedido:frmPost:pgMaster:ddlFase").value==''){
+                msg+='Por favor preencher a Fase da Metodologia\n';
+            }
+            if(document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtCambio').value=='0' && document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtMoeda').value=='Dolar'){
+                msg+='Por favor preencher o valor em dolar maior que 0\n';
+            }
+            if(msg!=''){
+                alert(msg);
+                return false;
+            }
+            else{
+                return true;
+            }
+                }
+            catch(err){
+                return true;
+            }
+        }
+
+        function habilitalcob(vlr){
+            if (vlr == 'Viagem(Acima 200KM)') {
+                document.getElementById("lblNome").style.display = 'block';
+                document.getElementById("cadServicoxPedido:frmPost:pgMaster:txtInstrucaoCobranca").style.display = 'block';
+            }
+            else{
+                document.getElementById("lblNome").style.display = 'none';
+                document.getElementById("cadServicoxPedido:frmPost:pgMaster:txtInstrucaoCobranca").style.display = 'none';
+            }
+        }
+
+        //Funções de preenchimento automatico:
+        function RetornaDescDest(idCNPJ) {
+            //alert(idProd);
+            Visualforce.remoting.Manager
+                    .invokeAction(
+                            '{!$RemoteAction.clsCadServicoxPedido.RetornaCNPJDest}',
+                            idCNPJ,
+                            function(result, event) {
+                                if (event.status) {
+                                    if (result != '') {
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        //alert('Gravação realizada com sucesso');
+                                        //window.location.reload(true);
+                                        //alert(result);
+
+                                        document.getElementById("txtCNPJDest").innerHTML = result;
+                                    }
+
+                                }
+                            });
+        }
+
+        inativaCambio(document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtMoeda').value,'');
+        //Bloqueia terc
+        function HabilaTerc(vlr) {
+        //alert(vlr);
+            if (vlr == 'Sim') {
+                document
+                        .getElementById('cadServicoxPedido:frmPost:pgMaster:txtCnpjTerceiro').disabled = false;
+                document.getElementById('cnpj_terc').style.display = 'block';
+                document
+                        .getElementById('cadServicoxPedido:frmPost:pgMaster:txtValorTerceiro').disabled = false;
+            } else {
+                document
+                        .getElementById('cadServicoxPedido:frmPost:pgMaster:txtCnpjTerceiro').disabled = true;
+                document.getElementById('cnpj_terc').style.display = 'none';
+                document
+                        .getElementById('cadServicoxPedido:frmPost:pgMaster:txtValorTerceiro').disabled = true;
+            }
+        }
+
+
+                HabilitarDesp(document
+                .getElementById("cadServicoxPedido:frmPost:pgMaster:txtInstrucaoCobranca").value);
+
+        habilitalcob(document
+                .getElementById("cadServicoxPedido:frmPost:pgMaster:txtLocalPrestServico").value);
+HabilaTerc(document
+                .getElementById("cadServicoxPedido:frmPost:pgMaster:txtServicosTerceiros").value);
+        RetornaDescForn(document
+                .getElementById('cadServicoxPedido:frmPost:pgMaster:txtCNPJDestino_lkid').value);
+                
+
+        document
+                .getElementById('cadServicoxPedido:frmPost:pgMaster:txtcnpjFat')
+                .focus();
+        //inativaCambio(document.getElementById('cadServicoxPedido:frmPost:pgMaster:txtMoeda').value,'');
+    </script>
+</apex:page>

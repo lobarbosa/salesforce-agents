@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Origem_Ida</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(   De_Ida__c  ,&quot;São Paulo&quot;)
+,ISBLANK(   Data_Origem_Ida__c  ))</errorConditionFormula>
+    <errorDisplayField>Data_Origem_Ida__c</errorDisplayField>
+    <errorMessage>Informar a Data de Origem da Ida.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Produto_Fabricante__c</fullName>
+    <label>Produto Fabricante</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Produto_OneTime__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetName>Produto_Fabricante</valueSetName>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP iSeries Appliances</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP VIPRION Chassis and Blades</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Virtual Edition</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>F5 rSeries</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>VELOS Chassis and Blades</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Local Traffic Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP DNS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Advanced WAF</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Advanced Firewall Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Access Policy Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Policy Enforcement Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP SSL Orchestrator</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>iRules</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>Distributed Cloud Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>NGINX</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>Shape Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>GIGAMON</controllingFieldValue>
+            <controllingFieldValue>FIREMON</controllingFieldValue>
+            <controllingFieldValue>INETCO</controllingFieldValue>
+            <controllingFieldValue>QUALYS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <controllingFieldValue>VERACODE</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <controllingFieldValue>OTHER</controllingFieldValue>
+            <valueName>OTHER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GIGAMON</controllingFieldValue>
+            <valueName>GIGAMON</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FIREMON</controllingFieldValue>
+            <valueName>FIREMON</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INETCO</controllingFieldValue>
+            <valueName>INETCO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Cortex</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>NGFW - Next-gen Firewall Hardware</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>NGFW - Next-gen Firewall Virtual VM-Series</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>NGFW - Next-gen Firewall Contêiner CN-Series</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>AIOps NGFW</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Panorama</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Advanced Threat Prevention</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Advanced URL Filtering</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>WildFire</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>DNS Protection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>IoT Protection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Enterprise Data loss Prevention (DLP)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Prisma SASE (Access, SD-WAN &amp; ADEM)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Prisma CLOUD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>DHCP, DNS and IPAM (DDI)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>BloxOne (SaaS)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>DNS Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Palo Alto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>QUALYS</controllingFieldValue>
+            <valueName>QUALYS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Privileged Access</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Workforce &amp; Custumer Access</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Indentity Management</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Secret Management</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Endpoint Privilege Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Cloud Privilege Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>VERACODE</controllingFieldValue>
+            <valueName>VERACODE</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>CNA - Cloud Network Automation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IBM</controllingFieldValue>
+            <valueName>Apptio</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>IBM</controllingFieldValue>
+            <valueName>Turbonomic</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

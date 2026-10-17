@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Nao_Obrigatorio_Produto_na_Oportunidad</fullName>
+    <active>false</active>
+    <description>Regra para não permitir o usuário a não adicionar um produto em uma oportunidade no caso da categoria ser somente suporte</description>
+    <errorConditionFormula>IF(ISPICKVAL(Categoria__c ,&quot;Contrato de Locação (Renovação)&quot;)||ISPICKVAL( Categoria__c ,&quot;Contrato de Suporte (Novo)&quot;)||ISPICKVAL( Categoria__c ,&quot;Contrato de Suporte (Renovação)&quot;)||ISPICKVAL( Categoria__c ,&quot;Contrato de Suporte (Upgrade)&quot;),False,NOT(OR(ISNEW(),HasOpportunityLineItem)))</errorConditionFormula>
+    <errorMessage>Para este tipo de Categoria de Oportunidade, adicione somente a Previsão Financeira de Suporte.</errorMessage>
+</ValidationRule>

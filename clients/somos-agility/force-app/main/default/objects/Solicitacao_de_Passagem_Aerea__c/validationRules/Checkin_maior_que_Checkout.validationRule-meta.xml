@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checkin_maior_que_Checkout</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL( Hospedagem__c , &quot;Sim&quot;),Check_in__c &gt;  Check_out__c)</errorConditionFormula>
+    <errorMessage>A data de Check-in não pode ser maior que a data de Check-out</errorMessage>
+</ValidationRule>

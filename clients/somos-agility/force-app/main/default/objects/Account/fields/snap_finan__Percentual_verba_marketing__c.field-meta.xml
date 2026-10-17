@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Percentual_verba_marketing__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Indica o % utilizado para calcular a verba de marketing de uma cotação de venda. Quando este valor não for definido, o sistema utiliza o % do cadastro da empresa que vende o produto.</description>
+    <inlineHelpText>Indica o % utilizado para calcular a verba de marketing de uma cotação de venda. Quando este valor não for definido, o sistema utiliza o % do cadastro da empresa que vende o produto.</inlineHelpText>
+    <label>% da verba de marketing</label>
+    <precision>12</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Percent</type>
+</CustomField>

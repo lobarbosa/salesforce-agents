@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reembolso_Menor_30_dias</fullName>
+    <active>false</active>
+    <description>Caso seja liberado a inclusão de bloqueio somente para a classe reembolsavel
+&amp;&amp;  ISPICKVAL(Classe__c,&quot;Reembolsável&quot;))</description>
+    <errorConditionFormula>IF(Solicitacao_de_Reembolso__r.Aprovado_Reembolso_Vencido__c =False 
+,Today() - Data_da_Despesa__c &gt;=32,False)</errorConditionFormula>
+    <errorDisplayField>Data_da_Despesa__c</errorDisplayField>
+    <errorMessage>Reembolso com data de despesa maior que 30 dias não são Autorizados</errorMessage>
+</ValidationRule>

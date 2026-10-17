@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categoria_de_Servi_o__c</fullName>
+    <label>Categoria de Serviço</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Nivel_de_Atendimento__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alteração/ Mudança</fullName>
+                <default>false</default>
+                <label>Alteração/ Mudança</label>
+            </value>
+            <value>
+                <fullName>Assesment</fullName>
+                <default>false</default>
+                <label>Assesment</label>
+            </value>
+            <value>
+                <fullName>Ativação de Suporte</fullName>
+                <default>false</default>
+                <label>Ativação de Suporte</label>
+            </value>
+            <value>
+                <fullName>Atividade Preventiva</fullName>
+                <default>false</default>
+                <label>Atividade Preventiva</label>
+            </value>
+            <value>
+                <fullName>Documentação</fullName>
+                <default>false</default>
+                <label>Documentação</label>
+            </value>
+            <value>
+                <fullName>Empréstimo</fullName>
+                <default>false</default>
+                <label>Empréstimo</label>
+            </value>
+            <value>
+                <fullName>Estudos</fullName>
+                <default>false</default>
+                <label>Estudos</label>
+            </value>
+            <value>
+                <fullName>GMUD</fullName>
+                <default>false</default>
+                <label>GMUD</label>
+            </value>
+            <value>
+                <fullName>Instalação, Configuração</fullName>
+                <default>false</default>
+                <label>Instalação, Configuração</label>
+            </value>
+            <value>
+                <fullName>Interjornada</fullName>
+                <default>false</default>
+                <label>Interjornada</label>
+            </value>
+            <value>
+                <fullName>Laboratório</fullName>
+                <default>false</default>
+                <label>Laboratório</label>
+            </value>
+            <value>
+                <fullName>Monitoramento</fullName>
+                <default>false</default>
+                <label>Monitoramento</label>
+            </value>
+            <value>
+                <fullName>RAO</fullName>
+                <default>false</default>
+                <label>RAO</label>
+            </value>
+            <value>
+                <fullName>RMA (Substituição de Equipamento)</fullName>
+                <default>false</default>
+                <label>RMA (Substituição de Equipamento)</label>
+            </value>
+            <value>
+                <fullName>Solicitação de Informação</fullName>
+                <default>false</default>
+                <label>Solicitação de Informação</label>
+            </value>
+            <value>
+                <fullName>Topologia</fullName>
+                <default>false</default>
+                <label>Topologia</label>
+            </value>
+            <value>
+                <fullName>Treinamento</fullName>
+                <default>false</default>
+                <label>Treinamento</label>
+            </value>
+            <value>
+                <fullName>Treinamento e Workshop</fullName>
+                <default>false</default>
+                <label>Treinamento e Workshop</label>
+            </value>
+            <value>
+                <fullName>Incidente - INATIVO</fullName>
+                <default>false</default>
+                <label>Incidente - INATIVO</label>
+            </value>
+            <value>
+                <fullName>Problema - INATIVO</fullName>
+                <default>false</default>
+                <label>Problema - INATIVO</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Alteração/ Mudança</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Assesment</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Ativação de Suporte</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Atividade Preventiva</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Documentação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Empréstimo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Estudos</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>GMUD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Instalação, Configuração</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Interjornada</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Laboratório</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Monitoramento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>RAO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>RMA (Substituição de Equipamento)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Solicitação de Informação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Topologia</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Treinamento</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>N1</controllingFieldValue>
+            <controllingFieldValue>N2</controllingFieldValue>
+            <controllingFieldValue>N3</controllingFieldValue>
+            <valueName>Treinamento e Workshop</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

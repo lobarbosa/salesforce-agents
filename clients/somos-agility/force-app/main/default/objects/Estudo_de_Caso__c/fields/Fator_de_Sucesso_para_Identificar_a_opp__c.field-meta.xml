@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fator_de_Sucesso_para_Identificar_a_opp__c</fullName>
+    <inlineHelpText>O que foi importante para identificar esta oportunidade de projeto dentro do cliente?</inlineHelpText>
+    <label>Fator de Sucesso para Identificar a opp?</label>
+    <length>500</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

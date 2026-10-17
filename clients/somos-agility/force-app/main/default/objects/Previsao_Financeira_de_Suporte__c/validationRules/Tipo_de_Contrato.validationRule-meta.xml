@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Contrato</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(	Tipo_do_Contrato__c , &quot;Novo (Sales In)&quot;), ISBLANK( Valor_Mensal_Sales_In_Previsto__c ))</errorConditionFormula>
+    <errorDisplayField>Valor_Mensal_Sales_In_Previsto__c</errorDisplayField>
+    <errorMessage>Informar o Valor Mensal (Sales In) Previsto</errorMessage>
+</ValidationRule>

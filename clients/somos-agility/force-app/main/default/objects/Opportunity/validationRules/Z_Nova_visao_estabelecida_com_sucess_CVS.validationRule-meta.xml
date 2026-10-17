@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Nova_visao_estabelecida_com_sucess_CVS</fullName>
+    <active>false</active>
+    <description>***O CAMPO Nova_visao_estabelecida_com_sucess_CVS FOI DESATIVADO*** Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Nova visão estabelecida com sucesso?</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)) ,ISBLANK(TEXT(     Nova_visao_estabelecida_com_sucesso__c )))</errorConditionFormula>
+    <errorMessage>** Para alterar de fase é obrigatório o preenchimento do campo &quot;Nova visão estabelecida com sucesso?&quot; **</errorMessage>
+</ValidationRule>

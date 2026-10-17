@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Acordos_Especiais</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND (ISPICKVAL(   Contrato_Possui_Acordos_Especiais__c  , &quot;Sim&quot;) , 
+ISBLANK(   Acordos_Especiais_Para_o_Contrato__c   ))</errorConditionFormula>
+    <errorMessage>Informe os acordos especiais negociados!</errorMessage>
+</ValidationRule>

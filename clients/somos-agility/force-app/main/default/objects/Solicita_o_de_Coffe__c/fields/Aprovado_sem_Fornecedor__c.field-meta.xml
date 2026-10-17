@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aprovado_sem_Fornecedor__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>Caso o Gestor realize a aprovação sem informar um fornecedor, o pedido será enviado a Padaria Merci</inlineHelpText>
+    <label>Aprovado sem Fornecedor?</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rentabilidade_One_time_Produto_Subscri__c</fullName>
+    <description>Rentabilidade One-time Software</description>
+    <inlineHelpText>Rentabilidade One-time Software</inlineHelpText>
+    <label>Rentabilidade One-time Software</label>
+    <precision>12</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

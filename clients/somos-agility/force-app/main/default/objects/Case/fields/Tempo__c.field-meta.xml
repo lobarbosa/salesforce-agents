@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tempo__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISNULL(ClosedDate) || ISNULL(CreatedDate),NULL,
+IF(ClosedDate - CreatedDate &gt;= 1.0,
+TEXT(FLOOR(ClosedDate - CreatedDate)) &amp; &quot; Dia&quot; &amp;
+IF(FLOOR(ClosedDate - CreatedDate) &gt; 1, &quot;s&quot;,&quot;&quot;) &amp;
+IF(MOD(FLOOR((ClosedDate - CreatedDate) * 1440),1440) &gt; 0, &quot;, &quot;,&quot;&quot;),
+&quot;&quot;) &amp;
+IF(MOD(FLOOR((ClosedDate - CreatedDate) * 24),24) &gt;= 1.0,
+TEXT(MOD(FLOOR((ClosedDate - CreatedDate)*24),24)) &amp; &quot; Hora&quot; &amp;
+IF(FLOOR((ClosedDate - CreatedDate)*24) &gt; 1, &quot;s&quot;,&quot;&quot;) &amp;
+IF(MOD(FLOOR((ClosedDate - CreatedDate) * 1440),60) &gt; 0, &quot;, &quot;,&quot;&quot;),
+&quot;&quot;) &amp;
+IF(MOD(FLOOR((ClosedDate - CreatedDate)*1440),60) &gt; 0,
+TEXT(MOD(FLOOR((ClosedDate - CreatedDate)*1440+1),60)) &amp; &quot; Minuto&quot;
+&amp; IF(FLOOR((ClosedDate - CreatedDate)*1440) &gt; 1, &quot;s&quot;,&quot;&quot;),
+&quot;&quot;)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Tempo Total</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

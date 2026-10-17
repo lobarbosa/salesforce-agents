@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_KPI_Pipe_SEG__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF (ISPICKVAL(  Realizado_Pipe_SEG__c  , &quot;sim&quot;), 
+ Realizou_80_da_meta_de_Pipe_Valido_SEG__c  ,0 )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor KPI SEG</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

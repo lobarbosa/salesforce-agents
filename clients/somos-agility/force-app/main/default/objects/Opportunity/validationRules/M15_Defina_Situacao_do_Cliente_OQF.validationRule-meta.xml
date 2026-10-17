@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M15_Defina_Situacao_do_Cliente_OQF</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Para alterar a fase da oportunidade de OQF para CVS é obrigatório preencher o campo Defina a situação do Cliente</description>
+    <errorConditionFormula>AND(
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;, 
+(ISPICKVAL(PRIORVALUE(StageName),&quot;OQF&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;CVS/RVS&quot;)) ,ISBLANK( Defina_a_situacao_do_Cliente__c ))</errorConditionFormula>
+    <errorMessage>Para alterar de fase é obrigatório o preenchimento do campo &quot;Defina a situação do Cliente&quot;  (Msg15)</errorMessage>
+</ValidationRule>

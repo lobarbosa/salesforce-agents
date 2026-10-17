@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EscalaComissionamento__c</fullName>
+    <label>Escala de Comissionamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Perfil A - 2019</fullName>
+                <default>false</default>
+                <label>Perfil A - 2019</label>
+            </value>
+            <value>
+                <fullName>Perfil B - 2019</fullName>
+                <default>false</default>
+                <label>Perfil B - 2019</label>
+            </value>
+            <value>
+                <fullName>Perfil C - 2019</fullName>
+                <default>false</default>
+                <label>Perfil C - 2019</label>
+            </value>
+            <value>
+                <fullName>Perfil A - 2020</fullName>
+                <default>false</default>
+                <label>Perfil A - 2020</label>
+            </value>
+            <value>
+                <fullName>Perfil B - 2020</fullName>
+                <default>false</default>
+                <label>Perfil B - 2020</label>
+            </value>
+            <value>
+                <fullName>Perfil C - 2020</fullName>
+                <default>false</default>
+                <label>Perfil C - 2020</label>
+            </value>
+            <value>
+                <fullName>Não Qualificado</fullName>
+                <default>false</default>
+                <label>Não Qualificado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

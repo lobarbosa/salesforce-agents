@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FO_Descricao_obrigatorio</fullName>
+    <active>false</active>
+    <description>Quando o campo Tipo de Plano de Testes for igual a Com vantagem negociada, o campo descrição é obrigatorio</description>
+    <errorConditionFormula>ISBLANK( Descreva_a_vantagem_negociada__c )  &amp;&amp; ISPICKVAL(Tipo_de_Plano_de_Testes__c, &quot;Com vantagem negociada&quot;)</errorConditionFormula>
+    <errorDisplayField>Descreva_a_vantagem_negociada__c</errorDisplayField>
+    <errorMessage>O campo Descreva a vantagem negociada é obrigatório quando o campo Tipo de Plano de Testes conter o valor Com vantagem negociada</errorMessage>
+</ValidationRule>

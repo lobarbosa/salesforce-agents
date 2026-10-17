@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Valor_CIF_Taxa_de_Conversao_0</fullName>
+    <active>true</active>
+    <description>Se o tipo do valor for igual a CIF a taxa de conversão deve ser igual a 0</description>
+    <errorConditionFormula>AND(ISPICKVAL(Tipo_do_Valor__c ,&quot;CIF&quot;), Taxa_de_Conversao_FOB_para_CIF__c &lt;&gt;0)</errorConditionFormula>
+    <errorDisplayField>Taxa_de_Conversao_FOB_para_CIF__c</errorDisplayField>
+    <errorMessage>A Taxa de Conversão deve ser igual a 0</errorMessage>
+</ValidationRule>

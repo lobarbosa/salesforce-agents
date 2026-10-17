@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Cadastrar_Endereco</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <height>600</height>
+    <linkType>page</linkType>
+    <masterLabel>Consultar CEP</masterLabel>
+    <openType>noSidebar</openType>
+    <page>snap_finan__busca_cep</page>
+    <protected>false</protected>
+</WebLink>

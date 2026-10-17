@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atualizar_Estagio_se_Cerimonia_Realizada</fullName>
+    <active>true</active>
+    <description>Para atualizar o estágio da oportunidade, o campo &quot;Cerimônia Realizada?&quot; deve ser checado!</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(PRIORVALUE(StageName), &quot;Ação DIA&quot;),
+    OR(
+        ISPICKVAL(StageName, &quot;OQF&quot;),
+        ISPICKVAL(StageName, &quot;CVS/RVS&quot;),
+        ISPICKVAL(StageName, &quot;PSL&quot;),
+        ISPICKVAL(StageName, &quot;NEC&quot;),
+        ISPICKVAL(StageName, &quot;FPR&quot;)
+    ),
+    NOT(Cerimonia_Realizada__c)
+)</errorConditionFormula>
+    <errorMessage>Para atualizar o estágio da oportunidade, o campo &quot;Cerimônia Realizada?&quot; deve ser checado!</errorMessage>
+</ValidationRule>

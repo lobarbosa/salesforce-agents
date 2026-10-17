@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nota_de_Qualifica_o_de_POC__c</fullName>
+    <externalId>false</externalId>
+    <formula>Nota_dor__c + Nota_necessidade__c + Nota_adequa_ao__c + Nota_budget__c + Nota_direcionador__c + Nota_ownership__c + Nota_tempo__c + Nota_donothing__c + Nota_obstaculos__c + Nota_competidores__c + Nota_esforco__c+0.1</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Nota de Qualificação de POV</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>1</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

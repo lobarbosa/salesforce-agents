@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>recorrenteAjustadoSUM__c</fullName>
+    <defaultValue>0</defaultValue>
+    <description>Campo que será preenchido pela atualização de campo da regra de fluxo de trabalho &quot;PreencheRecorrenteAjustado&quot; para que seja possível o uso do resumo de totalização no objeto bluePrint.</description>
+    <label>Recorrente ajustado previsto SUM</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

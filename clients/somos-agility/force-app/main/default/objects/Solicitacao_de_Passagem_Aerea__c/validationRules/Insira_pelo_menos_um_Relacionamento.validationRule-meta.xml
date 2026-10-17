@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Insira_pelo_menos_um_Relacionamento</fullName>
+    <active>true</active>
+    <description>regra para validar se existe pelo menos 1 relacionamento alem da conta</description>
+    <errorConditionFormula>AND(Evento__c =False,ISBLANK( Relacionado_ao_Chamado__c ) &amp;&amp; ISBLANK( Relacionado_ao_Contrato__c ) &amp;&amp; ISBLANK( Relacionado_a_Oportunidade__c )&amp;&amp;ISBLANK ( Relacionado_ao_Projeto__c )&amp;&amp;ISBLANK( Relacionado_ao_JOB_Investimentos__c )&amp;&amp;Visita_a_Filial__c =False)</errorConditionFormula>
+    <errorMessage>Insira pelo menos 1 Relacionamento além da Conta</errorMessage>
+</ValidationRule>

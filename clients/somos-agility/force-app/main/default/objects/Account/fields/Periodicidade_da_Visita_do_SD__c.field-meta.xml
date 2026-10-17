@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Periodicidade_da_Visita_do_SD__c</fullName>
+    <label>Periodicidade da Visita do SD</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Bimestral</fullName>
+                <default>false</default>
+                <label>Bimestral</label>
+            </value>
+            <value>
+                <fullName>Mensal</fullName>
+                <default>false</default>
+                <label>Mensal</label>
+            </value>
+            <value>
+                <fullName>Quinzenal</fullName>
+                <default>false</default>
+                <label>Quinzenal</label>
+            </value>
+            <value>
+                <fullName>Remoto</fullName>
+                <default>false</default>
+                <label>Remoto</label>
+            </value>
+            <value>
+                <fullName>Semestral</fullName>
+                <default>false</default>
+                <label>Semestral</label>
+            </value>
+            <value>
+                <fullName>Trimestral</fullName>
+                <default>false</default>
+                <label>Trimestral</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

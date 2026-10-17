@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Controlador_da_picklist_Reconheceu_a_efe__c</fullName>
+    <description>AM 18032018: este campo define as combinações que ficarão disponíveis para seleção do picklist &quot;Reconheceu efetividade do teste&quot; dentro do objeto &quot;Plano de Testes&quot; onde o valor &quot;Não&quot; não deve aparecer quando os campos &quot;Dúvidas e resistências superadas&quot; = Sim e &quot;Necessário Plano de Testes&quot; = Sim.</description>
+    <externalId>false</externalId>
+    <formula>IF(
+AND(
+ISPICKVAL(Acoes_Pre_Fechamento__r.D_vidas_e_resist_ncias_superadas__c, &quot;Sim&quot;), 
+ISPICKVAL(Acoes_Pre_Fechamento__r.Necess_rio_Plano_de_Testes__c, &quot;Sim&quot;)
+),
+&quot;DuvidaSim/PlanoSim&quot;,
+IF(
+AND(
+ISPICKVAL(Acoes_Pre_Fechamento__r.D_vidas_e_resist_ncias_superadas__c, &quot;Sim&quot;), 
+ISPICKVAL(Acoes_Pre_Fechamento__r.Necess_rio_Plano_de_Testes__c, &quot;Não&quot;)
+),
+&quot;DuvidaSim/PlanoNão&quot;,
+IF(
+AND(
+ISPICKVAL(Acoes_Pre_Fechamento__r.D_vidas_e_resist_ncias_superadas__c, &quot;Não&quot;), 
+ISPICKVAL(Acoes_Pre_Fechamento__r.Necess_rio_Plano_de_Testes__c, &quot;Sim&quot;)
+),
+&quot;DuvidaNão/PlanoSim&quot;,
+IF(
+AND(
+ISPICKVAL(Acoes_Pre_Fechamento__r.D_vidas_e_resist_ncias_superadas__c, &quot;Não&quot;), 
+ISPICKVAL(Acoes_Pre_Fechamento__r.Necess_rio_Plano_de_Testes__c, &quot;Não&quot;)
+),
+&quot;DuvidaNão/PlanoNão&quot;,&quot;&quot;
+)
+)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Controlador da picklist Reconhec (formu)</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pagamento_Comissao</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF  (ISPICKVAL( Escala_de_Comissionamento__c ,&quot;Nenhum&quot;),(Pago__c =TRUE),FALSE)</errorConditionFormula>
+    <errorDisplayField>Pago__c</errorDisplayField>
+    <errorMessage>Não há Valor a ser Pago!</errorMessage>
+</ValidationRule>

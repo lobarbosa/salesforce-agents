@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preencher_Cronograma_e_Plano_Implementac</fullName>
+    <active>false</active>
+    <description>No Tipo de Registro = Projeto é obrigatório preencher os campos Cronograma  e Plano de Implementação caso o Status do Projeto seja igual a em planejjamento</description>
+    <errorConditionFormula>AND((RecordType.DeveloperName =&quot;Projeto&quot; &amp;&amp; ISPICKVAL( Project_Status__c ,&quot;Em Planejamento&quot;)),(ISBLANK(  Plano_de_Implementacao_Previsto__c  )||ISBLANK(  Cronograma_Previsto__c  )))</errorConditionFormula>
+    <errorMessage>Favor preencher os campos Plano de Implementação (Previsto) e Cronograma (Previsto)</errorMessage>
+</ValidationRule>

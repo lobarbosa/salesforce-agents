@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Stefan_Nao_Pode_KM</fullName>
+    <active>true</active>
+    <errorConditionFormula>IF(ISPICKVAL(Tipo_da_Despesa__c , &apos;Kilometragem (Analistas)&apos;),
+(Solicitacao_de_Reembolso__r.Solicitante__r.LastName = &apos;dos Santos Patto Braitti&apos; &amp;&amp;  Solicitacao_de_Reembolso__r.Solicitante__r.FirstName = &apos;Stefan&apos;),FALSE)</errorConditionFormula>
+    <errorDisplayField>Tipo_da_Despesa__c</errorDisplayField>
+    <errorMessage>Stefan, utilize o tipo KM Gerente de Contas</errorMessage>
+</ValidationRule>

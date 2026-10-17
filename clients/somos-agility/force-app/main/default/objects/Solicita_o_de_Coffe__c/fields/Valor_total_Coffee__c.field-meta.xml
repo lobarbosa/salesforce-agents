@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_total_Coffee__c</fullName>
+    <formula>IF((ISPICKVAL( Quantidade__c ,&quot;Até 5 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Letícia&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),109.64,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 10 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Letícia&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),197.25,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 20 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Letícia&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),372.50,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 30 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Letícia&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),547.75,
+
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 5 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Merci&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),87.97,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 10 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Merci&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),171.75,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 20 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Merci&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),275.13,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 30 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Padaria Merci&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),471.18, 
+
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 5 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Santa Etienne&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),117.80,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 10 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Santa Etienne&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),196.95,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 20 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Santa Etienne&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),338.70,
+IF((ISPICKVAL( Quantidade__c ,&quot;Até 30 pessoas&quot;)&amp;&amp;ISPICKVAL( Fornecedor__c ,&quot;Santa Etienne&quot;)&amp;&amp; Solicitacao_Enviada_para_o_Fornecedor__c = True),500.90,0))))))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor total Coffee</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

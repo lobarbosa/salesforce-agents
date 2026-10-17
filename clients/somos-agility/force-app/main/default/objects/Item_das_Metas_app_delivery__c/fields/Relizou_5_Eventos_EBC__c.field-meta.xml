@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Relizou_5_Eventos_EBC__c</fullName>
+    <externalId>false</externalId>
+    <formula>Realizou_5_Eventos_tipo_EBC_no_TC__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>3 x Compartilhados com GC	
+2 x  Iniciativas Próprias</inlineHelpText>
+    <label>Relizar 5 Eventos EBC</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fase_da_Metodologia__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>É a fase que o serviço deverá ser prestado.</description>
+    <label>Fase da Metodologia</label>
+    <referenceTo>Fase_da_Metodologia__c</referenceTo>
+    <relationshipLabel>Serviços x Pedidos</relationshipLabel>
+    <relationshipName>Servicos_x_PedidosFase</relationshipName>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

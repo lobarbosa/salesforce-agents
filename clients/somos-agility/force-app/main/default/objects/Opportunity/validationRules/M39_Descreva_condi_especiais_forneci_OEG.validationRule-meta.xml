@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M39_Descreva_condi_especiais_forneci_OEG</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / Quando o campo Condições especiais de fornecimento? possuir a opção Sim o campo descreva(Descreva_condicoes_especiais_forneciment__c ) é obrigatório</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;, 
+ISPICKVAL(   Condicoes_especiais_de_fornecimento__c ,&quot;Sim&quot;),ISBLANK(    Descreva_condicoes_especiais_forneciment__c ))</errorConditionFormula>
+    <errorDisplayField>Descreva_condicoes_especiais_forneciment__c</errorDisplayField>
+    <errorMessage>Favor descrever (Msg39)</errorMessage>
+</ValidationRule>

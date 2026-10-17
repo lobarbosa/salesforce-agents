@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Work_Request_Type__c</fullName>
+    <inlineHelpText>Please note that a work request is not a trouble ticket.  Work requests are submitted to the project management office for strategic improvements for business units.</inlineHelpText>
+    <label>Work Request Type</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Project Request</fullName>
+                <default>false</default>
+                <label>Project Request</label>
+            </value>
+            <value>
+                <fullName>Scope Change</fullName>
+                <default>false</default>
+                <label>Scope Change</label>
+            </value>
+            <value>
+                <fullName>Enhancement Request</fullName>
+                <default>false</default>
+                <label>Enhancement Request</label>
+            </value>
+            <value>
+                <fullName>Infrastructure Request</fullName>
+                <default>false</default>
+                <label>Infrastructure Request</label>
+            </value>
+            <value>
+                <fullName>Other</fullName>
+                <default>false</default>
+                <label>Other</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

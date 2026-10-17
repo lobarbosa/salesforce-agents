@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Submeter_para_SE</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Submeter para SE</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!Evento_Tech_Center__c.Id}&amp;p3_lkid={!Evento_Tech_Center__c.Id}&amp;rtype=003&amp;p2_lkid=grupoengenheirosdevendas@agilitynetworks.com.br&amp;p24={!Evento_Tech_Center__c.E_mail__c};grupoengenheirosdevendas@agilitynetworks.com.br;techcenter@agilitynetworks.com.br&amp;template_id=00X50000001PeRm&amp;p5=&amp;save=1&apos;);</url>
+</WebLink>

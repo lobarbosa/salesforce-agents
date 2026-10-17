@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Markup</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(OR(ISPICKVAL( Tipo__c, &quot;Software&quot;),
+ISPICKVAL( Tipo__c, &quot;Hardware&quot;)),
+ISNULL(Markup__c))</errorConditionFormula>
+    <errorDisplayField>Markup__c</errorDisplayField>
+    <errorMessage>Obrigatório preenchimento do Markup quando Tipo é Software ou Hardware.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M_tricas_e_Resultados_Estabelecidos__c</fullName>
+    <inlineHelpText>Quais foram as Métricas e Resultados estabelecidos com o Ciente?</inlineHelpText>
+    <label>Métricas e Resultados Estabelecidos</label>
+    <length>1000</length>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

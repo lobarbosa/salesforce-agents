@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Dia_da_Semana</fullName>
+    <active>false</active>
+    <description>Não pode criar solicitação de passagem aérea aos sábados e domingo</description>
+    <errorConditionFormula>IF(Dia_da_Semana__c = &quot;Domingo&quot;||Dia_da_Semana__c =&quot;Sábado&quot;,True,False)</errorConditionFormula>
+    <errorMessage>Atenção, as solicitações de passagem aérea devem ser criadas somente de segunda a sexta.</errorMessage>
+</ValidationRule>

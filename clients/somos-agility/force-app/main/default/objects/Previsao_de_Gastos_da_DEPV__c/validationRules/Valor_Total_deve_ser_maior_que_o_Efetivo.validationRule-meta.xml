@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_deve_ser_maior_que_o_Efetivo</fullName>
+    <active>false</active>
+    <errorConditionFormula>Valor_Total__c &lt;  Valor_Efetivo__c</errorConditionFormula>
+    <errorMessage>O Valor Total deve ser Maior que o Valor Efetivo</errorMessage>
+</ValidationRule>

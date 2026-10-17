@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Origem_e_Destino_Ida</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Tipo_de_Solicitacao__c , &quot;Ida&quot; )||ISPICKVAL(Tipo_de_Solicitacao__c , &quot;Ida com Hospedagem&quot; )||ISPICKVAL(Tipo_de_Solicitacao__c , &quot;Ida com Hospedagem e Locação de Veículo&quot;  )||ISPICKVAL(Tipo_de_Solicitacao__c , &quot;Ida e Volta&quot;  ), ISBLANK( Data_Origem_Ida__c )&amp;&amp;ISBLANK(  Data_Destino_Ida__c  ) )</errorConditionFormula>
+    <errorMessage>Informar a Data de Origem e Destino da Ida.</errorMessage>
+</ValidationRule>

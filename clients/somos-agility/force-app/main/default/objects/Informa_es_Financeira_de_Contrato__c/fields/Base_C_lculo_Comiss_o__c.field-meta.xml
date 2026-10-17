@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Base_C_lculo_Comiss_o__c</fullName>
+    <description>AM 28022018: adicionado o campo valor_upgrade__c lançado no objeto &quot;Contrato&quot; na soma das despesas (solicitado por Juliana Mendes)</description>
+    <formula>IF(
+    ISPICKVAL(Faturamento__c, &quot;F&quot;) &amp;&amp;
+    (NF__c &lt;&gt; &quot;&quot;) &amp;&amp;
+    (
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil A - 2024&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil B - 2024&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil C - 2024&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil A - 2025&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil B - 2025&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil C - 2025&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil A - 2026&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil B - 2026&quot;) ||
+        ISPICKVAL(Escala_de_Comissionamento__c, &quot;Perfil C - 2026&quot;)
+    ),
+    (
+        Valor_Faturado__c -
+        (
+            Qtde_de_Parcelas_Pagas_Neste_Faturamento__c *
+            (
+                Custo_Direto_do_Contrato_R__c +
+                Custo_Direto_M_s_Recurso_Alocado_R__c +
+                Valor_upgrade__c
+            )
+        )
+    ),
+    (
+        L_quido_Faturado__c -
+        (
+            Qtde_de_Parcelas_Pagas_Neste_Faturamento__c *
+            (
+                Custo_Direto_do_Contrato_R__c +
+                Custo_Direto_M_s_Recurso_Alocado_R__c +
+                Valor_upgrade__c
+            )
+        )
+    )
+)
+
+/* Obsoleto desde 17-01-2025
+IF(ISPICKVAL(Faturamento__c,&quot;F&quot;)&amp;&amp;(NF__c &lt;&gt;&quot;&quot;)&amp;&amp;(ISPICKVAL(Escala_de_Comissionamento__c ,&quot;Perfil A&quot;)||
+ISPICKVAL(Escala_de_Comissionamento__c ,&quot;Perfil B&quot;)||
+ISPICKVAL(Escala_de_Comissionamento__c ,&quot;Perfil C&quot;)),
+( Valor_Faturado__c-( Qtde_de_Parcelas_Pagas_Neste_Faturamento__c * (Custo_Direto_do_Contrato_R__c+ Custo_Direto_M_s_Recurso_Alocado_R__c+Valor_upgrade__c ))),
+( L_quido_Faturado__c -( Qtde_de_Parcelas_Pagas_Neste_Faturamento__c * (Custo_Direto_do_Contrato_R__c+ Custo_Direto_M_s_Recurso_Alocado_R__c+Valor_upgrade__c ))))
+*/
+
+
+/*
+
+AM 17042018: Calcula corretamente só os perfis A,B e C
+IF(ISPICKVAL(Faturamento__c,&quot;F&quot;)&amp;&amp;(NF__c &lt;&gt;&quot;&quot;)&amp;&amp; ISPICKVAL(Escala_de_Comissionamento__c ,&quot;Perfil A&quot;)&amp;&amp; ISPICKVAL(Escala_de_Comissionamento__c ,&quot;Perfil B&quot;)&amp;&amp; ISPICKVAL(Escala_de_Comissionamento__c ,&quot;Perfil C&quot;),( L_quido_Faturado__c -( Qtde_de_Parcelas_Pagas_Neste_Faturamento__c * (Custo_Direto_do_Contrato_R__c+ Custo_Direto_M_s_Recurso_Alocado_R__c+Valor_upgrade__c ))),( Valor_Faturado__c -( Qtde_de_Parcelas_Pagas_Neste_Faturamento__c * (Custo_Direto_do_Contrato_R__c+ Custo_Direto_M_s_Recurso_Alocado_R__c+Valor_upgrade__c ))))
+
+100042018
+IF(ISPICKVAL(Faturamento__c,&quot;F&quot;)&amp;&amp;(NF__c &lt;&gt;&quot;&quot;),( L_quido_Faturado__c -( Qtde_de_Parcelas_Pagas_Neste_Faturamento__c * (Custo_Direto_do_Contrato_R__c+ Custo_Direto_M_s_Recurso_Alocado_R__c+Valor_upgrade__c ))),0)
+
+ANTERIOR
+IF(ISPICKVAL(Faturamento__c,&quot;F&quot;)&amp;&amp;(NF__c &lt;&gt;&quot;&quot;),( L_quido_Faturado__c -( Qtde_de_Parcelas_Pagas_Neste_Faturamento__c * (Custo_Direto_do_Contrato_R__c+ Custo_Direto_M_s_Recurso_Alocado_R__c+Valor_upgrade__c ))),0)
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Base Cálculo Comissão</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

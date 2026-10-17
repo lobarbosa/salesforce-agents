@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Comente_a_efetividade_da_solucao__c</fullName>
+    <inlineHelpText>Comentários sobre a efetividade da solução Agility</inlineHelpText>
+    <label>Comente a efetividade da solução:</label>
+    <length>5000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

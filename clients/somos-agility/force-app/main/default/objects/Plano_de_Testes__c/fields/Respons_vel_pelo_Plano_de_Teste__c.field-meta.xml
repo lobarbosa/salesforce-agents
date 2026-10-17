@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Respons_vel_pelo_Plano_de_Teste__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>jn19092018 criar campo Responsavel pelo Plano de Teste em PT cfe sprint 5 CT.</description>
+    <label>Responsável pelo Plano de Teste</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Contact.Account.AccountNumber</field>
+            <operation>contains</operation>
+            <value>Agility</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operation>equals</operation>
+            <value>Sim</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Planos de Testes (Responsável pelo Plano de Teste)</relationshipLabel>
+    <relationshipName>Planos_de_Testes1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

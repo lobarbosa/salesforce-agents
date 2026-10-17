@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_M08_Concorrentes_nao_podem_ser_iguais</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Os concorrentes não podem ser iguais</description>
+    <errorConditionFormula>IF(NOT(ISBLANK(TEXT(Concorrente_1__c )))&amp;&amp; (NOT(ISBLANK(TEXT(Concorrente_2__c )))&amp;&amp;(NOT(ISBLANK(TEXT(Concorrente_3__c ))))),
+TEXT( Concorrente_1__c ) = TEXT(Concorrente_2__c )|| TEXT( Concorrente_2__c ) = TEXT(Concorrente_3__c )|| 
+TEXT( Concorrente_3__c ) = TEXT(Concorrente_1__c ),
+
+IF(NOT(ISBLANK(TEXT(Concorrente_1__c )))&amp;&amp;(NOT(ISBLANK(TEXT(Concorrente_2__c )))) ,
+TEXT( Concorrente_1__c ) = TEXT(Concorrente_2__c ),
+
+IF(NOT(ISBLANK(TEXT(Concorrente_2__c )))&amp;&amp; (NOT(ISBLANK(TEXT(Concorrente_3__c )))),
+TEXT( Concorrente_2__c ) = TEXT(Concorrente_3__c ),
+
+IF(NOT(ISBLANK(TEXT(Concorrente_3__c )))&amp;&amp; (NOT(ISBLANK(TEXT(Concorrente_1__c )))),
+TEXT( Concorrente_3__c ) = TEXT(Concorrente_1__c ),
+false))))</errorConditionFormula>
+    <errorMessage>Os concorrentes não podem ser iguais  (Msg08)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Renovacao__c</fullName>
+    <label>Tipo de Renovação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Renovação com Índice de Reajuste</fullName>
+                <default>false</default>
+                <label>Renovação com Índice de Reajuste</label>
+            </value>
+            <value>
+                <fullName>Renovação sem Índice de Reajuste</fullName>
+                <default>false</default>
+                <label>Renovação sem Índice de Reajuste</label>
+            </value>
+            <value>
+                <fullName>Renovação com Redução de Valor/Cobertura</fullName>
+                <default>false</default>
+                <label>Renovação com Redução de Valor/Cobertura</label>
+            </value>
+            <value>
+                <fullName>Renovação com Ampliação de Valor/Cobertura</fullName>
+                <default>false</default>
+                <label>Renovação com Ampliação de Valor/Cobertura</label>
+            </value>
+            <value>
+                <fullName>Nenhuma</fullName>
+                <default>true</default>
+                <label>Nenhuma</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

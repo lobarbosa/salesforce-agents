@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Blueprint_status_nenhum</fullName>
+    <active>false</active>
+    <description>JN 09052018: quando o &quot;Status do Blueprint&quot; for selecionado &quot;--Nenhum--&quot;,  é obrigatório o preenchimento do campo &quot;Status do Blueprint&quot; for &lt; Validado pelo Cliente&gt; , ou &lt;Descartado pelo Cliente&gt; .</description>
+    <errorConditionFormula>(ISPICKVAL(Status_do_Blueprint__c ,&quot;&quot;))</errorConditionFormula>
+    <errorDisplayField>Status_do_Blueprint__c</errorDisplayField>
+    <errorMessage>É necessário o preenchimento do campo &quot;*Status do Blueprint&quot;. com as opções &quot;Validado pelo Cliente&quot; ou &quot;Descartado pelo Cliente&quot;.</errorMessage>
+</ValidationRule>

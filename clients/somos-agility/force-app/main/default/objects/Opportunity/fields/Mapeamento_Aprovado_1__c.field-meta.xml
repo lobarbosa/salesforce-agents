@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mapeamento_Aprovado_1__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>Selecionar o campo apenas se a oportunidade estiver aprovada pelo Fabricante</inlineHelpText>
+    <label>Mapeado</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

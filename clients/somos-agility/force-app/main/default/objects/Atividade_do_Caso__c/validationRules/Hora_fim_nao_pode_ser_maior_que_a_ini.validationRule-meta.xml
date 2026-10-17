@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hora_fim_nao_pode_ser_maior_que_a_ini</fullName>
+    <active>true</active>
+    <description>AM 05052018: hora de fim não pode ser maior que a incial</description>
+    <errorConditionFormula>Hora_Final_da_Atividade__c  &lt;  Hora_Inicial_da_Atividade__c 
+
+
+/*
+AND( ISPICKVAL( Tipo_de_Solicitacao__c ,&quot;Ida e Volta&quot;)||ISPICKVAL( Tipo_de_Solicitacao__c ,&quot;Volta&quot;),Data_Origem_Volta__c &lt; Data_Destino_Ida__c)
+
+*/</errorConditionFormula>
+    <errorDisplayField>Hora_Final_da_Atividade__c</errorDisplayField>
+    <errorMessage>A hora final não não pode ser maior que a hora inicial.</errorMessage>
+</ValidationRule>

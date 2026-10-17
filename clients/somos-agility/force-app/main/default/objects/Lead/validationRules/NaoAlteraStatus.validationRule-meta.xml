@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoAlteraStatus</fullName>
+    <active>false</active>
+    <description>Não possibilirta alteração do campo Status no Lead</description>
+    <errorConditionFormula>AND( 
+Owner:User.Profile.Name &lt;&gt; &apos;Marketing&apos;,
+$Profile.Name &lt;&gt; &apos;Marketing&apos;,
+OR(
+ISPICKVAL(Status,&apos;Não Qualificado&apos;),
+ISPICKVAL(Status,&apos;Novo&apos;),
+ISPICKVAL(Status,&apos;Conversão&apos;)
+)
+)</errorConditionFormula>
+    <errorMessage>Não é possível alterar o status do Lead para diferente de &quot;Encerrado&quot;. Caso precise converter o Lead, utilize o botão &quot;Conversão&quot; disponível na parte superior da página.</errorMessage>
+</ValidationRule>

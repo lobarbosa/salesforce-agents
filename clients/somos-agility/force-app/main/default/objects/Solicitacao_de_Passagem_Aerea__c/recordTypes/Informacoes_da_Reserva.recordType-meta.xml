@@ -1,0 +1,2204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Informacoes_da_Reserva</fullName>
+    <active>true</active>
+    <description>Selecione posteriormente este registro para informar os dados da reserva</description>
+    <label>Informações da Reserva</label>
+    <picklistValues>
+        <picklist>Aeroporto_Destino_Ida__c</picklist>
+        <values>
+            <fullName>AAX - Araxá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AEP - Aeroparque Jorge Newbery - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIF - Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARU - Araçatuba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ATL - Atlanta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ATM - Altamira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BEL - Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BSB - Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAC - Cascavel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAW - Campos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CFB - Cabo Frio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CGH - Congonhas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CLV - Caldas Novas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNF - Confins</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTG - Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CWB - Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CXJ - Caxias do Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DFW - Dallas Ft Worth Intl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOU - Dourados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EZE - Aeroporto de Ezeiza - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FLN - Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FOR - Aeroporto de Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FRC - Franca</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIG%09- Galeão</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GRU - Guarulhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GVR - Governador Valadares</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GYN - Goiânia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IAH - Houston</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IGU - Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IPN - Ipatinga</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JOI - Joinville</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JTC - Bauru</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAJ - Lages</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAS - Las Vegas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAX - Los Angeles</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LDB - Londrina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LGA - Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIM - Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MAB - Marabá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MCP - Macapá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MGF - Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MIA - Aeroporto Internacional de Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MII - Marília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NVT - Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ORD - O%27Hare</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OUS - Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PET - Pelotas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PFB - Passo Fundo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PGZ - Ponta Grossa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PLU - Pampulha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>POA - Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PPB - Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PTY - Tocumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RAO - Ribeirão Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RVD - Rio Verde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SBMG - Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDU - Santos Dumont</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEA - Seattle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SJK - São José dos Campos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SJP - São José do Rio Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SLZ - São Luiz</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TJL - Três Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UBA - Uberaba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UDI - Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VCP - Viracopos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIX - Vitória</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XAP - Chapecó</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XXX - Não se aplica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Aeroporto_Destino_Volta__c</picklist>
+        <values>
+            <fullName>AAX - Araxá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AEP - Aeroparque Jorge Newbery - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIF - Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARU - Araçatuba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ATM - Altamira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BEL - Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BSB - Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAW - Campos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CFB - Cabo Frio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CGH - Congonhas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CLV - Caldas Novas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNF - Confins</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTG - Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CWB - Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CXJ - Caxias do Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOU - Dourados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dallas Ft Worth Intl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EZE - Ezeiza - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FLN - Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FOR -  Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FRC - Franca</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIG%09- Galeão</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GRU - Guarulhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GVR - Governador Valadares</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GYN - Goiânia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IGU - Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IPN - Ipatinga</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JOI - Joinville</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JTC - Baurú</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAJ - Lages</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LDB - Londrina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LGA - Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIM - Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MAB - Marabá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MCP - Macapá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MGF - Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MIA - Aeroporto Internacional de Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MII - Marília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NVT - Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OUS - Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PET - Pelotas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PFB - Passo Fundo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PGZ - Ponta Grossa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PLU - Pampulha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>POA - Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PPB - Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PTY - Tocumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RAO - Ribeirão Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RVD - Rio Verde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDU - Santos Dumont</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SLZ - São Luiz</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TJL - Três Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UBA - Uberaba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UDI - Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VCP - Viracopos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIX - Vitória</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XAP - Chapecó</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XXX - Não se aplica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Aeroporto_Origem_Ida__c</picklist>
+        <values>
+            <fullName>AAX - Araxá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AEP - Aeroparque Jorge Newbery - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIF - Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARU - Araçatuba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ATM - Altamira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BEL - Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BSB - Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAC - Cascavel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAW - Campos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CFB - Cabo Frio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CGH - Congonhas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CLV - Caldas Novas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNF - Confins</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTG - Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CWB - Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CXJ - Caxias do Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOU - Dourados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EZE - Aeroporto de Ezeiza - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FLN - Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FOR - Aeroporto de Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FRC - Franca</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIG%09- Galeão</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GRU - Guarulhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GVR - Governador Valadares</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GYN - Goiânia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IGU - Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IPN - Ipatinga</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JOI - Joinville</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JTC - Bauru</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAJ - Lages</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LDB - Londrina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LGA - La Guardia -  Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIM - Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MAB - Marabá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MCP - Macapá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MGF - Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MIA - Aeroporto Internacional de Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MII - Marília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NVT - Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OUS - Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PET - Pelotas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PFB - Passo Fundo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PLU - Pampulha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>POA - Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PPB - Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PTY - Tocumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RAO - Ribeirão Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RVD - Rio Verde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDU - Santos Dumont</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SJK - São José dos Campos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SLZ - São Luiz</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TJL - Três Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UBA - Uberaba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UDI - Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VCP - Viracopos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIX - Vitória</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XAP - Chapecó</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XXX - Não se aplica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Aeroporto_Origem_Volta__c</picklist>
+        <values>
+            <fullName>AAX - Araxá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AEP - Aeroparque Jorge Newbery - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIF - Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARU - Araçatuba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ATL - Atlanta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ATM - Altamira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BEL - Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BSB - Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAC - Cascavel</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CAW - Campos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CFB - Cabo Frio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CGH - Congonhas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CLV - Caldas Novas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNF - Confins</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CTG - Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CWB - Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CXJ - Caxias do Sul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DFW Dallas Ft Worth Intl</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DOU - Dourados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EZE - Aeroporto de Ezeiza - Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FLN - Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FOR - Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FRC - Franca</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIG%09- Galeão</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GRU - Guarulhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GVR - Governador Valadares</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GYN - Goiânia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IAH - Houston</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IGU - Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IPN - Ipatinga</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JOI - Joinville</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JTC - Bauru</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAJ - Lages</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAS - Las Vegas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LAX - Los Angeles</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LDB - Londrina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LGA - Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>LIM - Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MAB - Marabá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MCP - Macapá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MGF - Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MIA - Aeroporto Internacional de Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MII - Marília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NVT - Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ORD - O%27Hare</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OUS - Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PET - Pelotas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PFB - Passo Fundo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PLU - Pampulha</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>POA - Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PPB - Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PTY - Tocumen</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RAO - Ribeirão Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RVD - Rio Verde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDU - Santos Dumont</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SEA - Seattle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SJK - São José dos Campos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SJP - São José do Rio Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SLZ - São Luiz</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TJL - Três Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UBA - Uberaba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>UDI - Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VCP - Viracopos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VIX - Vitória</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XAP - Chapecó</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XXX - Não se aplica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Categoria_do_Veiculo__c</picklist>
+        <values>
+            <fullName>Econômico com Ar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SUV Automática</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Companhia_A_rea_da_Volta__c</picklist>
+        <values>
+            <fullName>American Airlines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Avianca</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Azul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Copa Airleines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Delta Airlines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Emirates</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gol</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Latam Airlines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lufthansa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nenhuma</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Passaredo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qatar Airways</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>United Airlines</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Companhia_Aerea_da_Ida__c</picklist>
+        <values>
+            <fullName>American Airlines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Avianca</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Azul</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Copa Airleines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Delta Airlines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Emirates</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gol</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Latam Airlines</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lufthansa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nenhuma</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Passaredo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qatar Airways</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>United Airlines</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>De_Ida__c</picklist>
+        <values>
+            <fullName>Abdon Batista</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belo Horizonte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campos Novos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Candido Mota</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Caçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chavantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cidade do Panama</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Colorado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Forestópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Guara</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hortolândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ilha Solteira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palmital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Piraju</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Primavera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rio de Janeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rosana</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salto Grande</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sandovalina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Selviria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Joaquim da Barra</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Paulo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Taciba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teodoro Sampaio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Três Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vitória</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>De_Volta__c</picklist>
+        <values>
+            <fullName>Abdon Batista</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atlanta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belo Horizonte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campos Novos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Caçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chavantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chicago</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cidade do Panama</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Colorado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cândido Mota</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dallas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Forestópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Guara</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hortolândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Houston</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ilha Solteira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Las Vegas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Los Angeles</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palmital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Piraju</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Primavera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rio de Janeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rosana</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salto Grande</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sandovalina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seattle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Selviria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Joaquim da Barra</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São José do Rio Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Paulo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Taciba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teodoro Sampaio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Três Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vitória</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Hospedagem__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ja_possui_Orcamento__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Locacao_de_Veiculo__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Locadora__c</picklist>
+        <values>
+            <fullName>Hertz</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Localiza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Movida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Unidas</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Moeda__c</picklist>
+        <values>
+            <fullName>Dólar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reais</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Opcao_de_Hospedagem_Escolhida__c</picklist>
+        <values>
+            <fullName>Opção 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 4</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Opcao_de_Locacao_de_Veiculo_Escolhida__c</picklist>
+        <values>
+            <fullName>Opção 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 4</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Opcao_de_Passagem_Escolhida_Ida__c</picklist>
+        <values>
+            <fullName>Opção 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 4</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Opcao_de_Passagem_Escolhida_Volta__c</picklist>
+        <values>
+            <fullName>Opção 1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 3</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Opção 4</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Para_Ida__c</picklist>
+        <values>
+            <fullName>Abdon Batista</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atlanta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belo Horizonte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campos Novos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Candido Mota</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Caçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chavantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chicago</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cidade do Panamá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Colorado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Dallas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Forestópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Guara</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hortolandia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Houston</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ilha Solteira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Las Vegas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Los Angeles</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palmital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Piraju</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Primavera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rio de Janeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rosana</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salto Grande</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sandovalina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seattle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Selviria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Joaquim da Barra</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São José do Rio Preto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Paulo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Taciba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teodoro Sampaio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tres Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vitória</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Para_Volta__c</picklist>
+        <values>
+            <fullName>Abdon Batista</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Assis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belo Horizonte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Belém</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Brasília</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Buenos Aires</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Campos Novos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Candido Mota</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cartagena</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Caçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Chavantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cidade do Panamá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Colorado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Curitiba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Florianópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Forestópolis</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fortaleza</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Foz do Iguaçu</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Guara</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hortolândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ilha Solteira</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Lima</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maringá</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Miami</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Navegantes</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Nova York</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não se aplica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ourinhos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palmital</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Piraju</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Porto Alegre</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Presidente Prudente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Primavera</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rio de Janeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rosana</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Salto Grande</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sandovalina</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Selviria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Joaquim da Barra</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>São Paulo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Taciba</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Teodoro Sampaio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Três Lagoas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Uberlândia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vitória</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Qualificacao_Gestor__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Aprovada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancelada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cotação%2FReserva Solicitada</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Crédito %2F Aprovada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Devolvida</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente Gestor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitada</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Solicitacao__c</picklist>
+        <values>
+            <fullName>Hospedagem Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida com Hospedagem Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida com Hospedagem Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida com Hospedagem e Locação de Veículo Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida com Hospedagem e Locação de Veículo Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida com Locação de Veículo Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida com Locação de Veículo Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta com Hospedagem Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta com Hospedagem Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta com Hospedagem e Locação de Veículo Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta com Hospedagem e Locação de Veículo Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta com Locação de Veículo Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ida e Volta com Locação de Veículo Nacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Volta Internacional</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Volta Nacional</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

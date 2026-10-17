@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M29_Qualificacao_de_fase_CVS_para_OEG_2</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / AM 16052018: para avançar para a fase OEG é necessário que o valor do Sales In Net ou da Rentabilidade Prevista seja maior que 0.</description>
+    <errorConditionFormula>AND( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;,
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+CASE( StageName , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,2, 
+0) 
+&lt; 
+CASE(PRIORVALUE(StageName) , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,1,
+0),
+
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;), 
+Rentabilidade_prevista_CVS__c + Sales_In_Net_previsto_CVS__c = 0,
+Validacao_CVS_Fast_Track__c = FALSE 
+)
+
+
+/*
+Ultima versao
+AND( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;,
+
+CASE( StageName , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,2, 
+0) 
+&lt; 
+CASE(PRIORVALUE(StageName) , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,1,
+0),
+
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;), 
+Rentabilidade_prevista_CVS__c + Sales_In_Net_previsto_CVS__c = 0,
+
+
+OR(Validacao_CVS_Fast_Track__c = FALSE))
+
+
+ORIGINAL:
+AND( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;,
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;), 
+Rentabilidade_prevista_CVS__c + Sales_In_Net_previsto_CVS__c = 0,
+OR(Validacao_CVS_Fast_Track__c = FALSE))
+
+CASE( StageName , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,2, 
+0) 
+&lt; 
+CASE(PRIORVALUE(StageName) , 
+&quot;OQF&quot;,1, 
+&quot;CVS/RVS&quot;,1,
+0) 
+) 
+
+
+*/</errorConditionFormula>
+    <errorMessage>Para avançar para a fase OEG é necessário informar o valor do Sales In Net ou da Rentabilidade Prevista no objeto &quot;Previsão Financeira de Venda&quot; dentro do &quot;Blueprint&quot; (Msg29)</errorMessage>
+</ValidationRule>

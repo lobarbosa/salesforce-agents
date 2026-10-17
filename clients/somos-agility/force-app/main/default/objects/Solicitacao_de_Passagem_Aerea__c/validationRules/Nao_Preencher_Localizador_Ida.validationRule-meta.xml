@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_Preencher_Localizador_Ida</fullName>
+    <active>true</active>
+    <description>Caso a Solicitação seja somente de volta, não deve preencher o Localizador da ida</description>
+    <errorConditionFormula>AND(NOT(ISNEW())
+&amp;&amp;ISPICKVAL(Tipo_de_Solicitacao__c , &quot;Volta Nacional&quot;)
+||ISPICKVAL(Tipo_de_Solicitacao__c , &quot;Volta Internacional&quot;)
+,NOT(ISBLANK( Localizador_Ida__c )))</errorConditionFormula>
+    <errorDisplayField>Localizador_Ida__c</errorDisplayField>
+    <errorMessage>Não é necessário informar o Localizador da Ida para este Tipo de Solicitação</errorMessage>
+</ValidationRule>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SE_Respons_vel__c</fullName>
+    <label>SE Responsável</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Allan Douglas</fullName>
+                <default>false</default>
+                <label>Allan Douglas</label>
+            </value>
+            <value>
+                <fullName>Amir Velho</fullName>
+                <default>false</default>
+                <label>Amir Velho</label>
+            </value>
+            <value>
+                <fullName>Andre Vasquez</fullName>
+                <default>false</default>
+                <label>Andre Vasquez</label>
+            </value>
+            <value>
+                <fullName>Erick Coelho</fullName>
+                <default>false</default>
+                <label>Erick Coelho</label>
+            </value>
+            <value>
+                <fullName>Fabio Campos</fullName>
+                <default>false</default>
+                <label>Fabio Campos</label>
+            </value>
+            <value>
+                <fullName>Fabio Coelho</fullName>
+                <default>false</default>
+                <label>Fabio Coelho</label>
+            </value>
+            <value>
+                <fullName>Guilherme Morais</fullName>
+                <default>false</default>
+                <label>Guilherme Morais</label>
+            </value>
+            <value>
+                <fullName>Leonardo Feitoza</fullName>
+                <default>false</default>
+                <label>Leonardo Feitoza</label>
+            </value>
+            <value>
+                <fullName>Nelson Mincov</fullName>
+                <default>false</default>
+                <label>Nelson Mincov</label>
+            </value>
+            <value>
+                <fullName>Paulo Figueiredo</fullName>
+                <default>false</default>
+                <label>Paulo Figueiredo</label>
+            </value>
+            <value>
+                <fullName>Rafael Augusto</fullName>
+                <default>false</default>
+                <label>Rafael Augusto</label>
+            </value>
+            <value>
+                <fullName>Rodrigo Ev</fullName>
+                <default>false</default>
+                <label>Rodrigo Ev</label>
+            </value>
+            <value>
+                <fullName>Nenhum</fullName>
+                <default>false</default>
+                <label>Nenhum</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

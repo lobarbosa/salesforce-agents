@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EscopoSolicitacao__c</fullName>
+    <description>Campo utilizado para guardar o valor descrito pelo usuário no flow de Solicitação de Fast Track</description>
+    <label>Escopo da Solicitação</label>
+    <length>400</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>4</visibleLines>
+</CustomField>

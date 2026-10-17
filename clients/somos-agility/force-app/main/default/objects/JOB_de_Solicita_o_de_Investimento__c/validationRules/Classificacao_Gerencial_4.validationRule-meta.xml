@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Classificacao_Gerencial_4</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( ISBLANK( Nome_Cliente_s_e_Contrato_s__c ) ,  ISPICKVAL(    Classifica_o_Gerencial_4__c , &quot;Aquisição destinada a Insumos de Contratos&quot;))</errorConditionFormula>
+    <errorDisplayField>Nome_Cliente_s_e_Contrato_s__c</errorDisplayField>
+    <errorMessage>O campo deve ser preenchido se &quot;Aquisição destinada a Insumos de Contratos&quot; for selecionada em &quot;Classificação Gerencial 4&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ModalidadeFornecimento__c</fullName>
+    <label>Modalidade de fornecimento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Insumos__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Comodato</fullName>
+                <default>false</default>
+                <label>Comodato</label>
+            </value>
+            <value>
+                <fullName>Licenciamento de Software</fullName>
+                <default>false</default>
+                <label>Licenciamento de Software</label>
+            </value>
+            <value>
+                <fullName>Locação</fullName>
+                <default>false</default>
+                <label>Locação</label>
+            </value>
+            <value>
+                <fullName>Serviços Mensais Subcontratados</fullName>
+                <default>false</default>
+                <label>Serviços Mensais Subcontratados</label>
+            </value>
+            <value>
+                <fullName>Serviços Financiados</fullName>
+                <default>false</default>
+                <label>Serviços Terceiros Financiados</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Declarado</controllingFieldValue>
+            <valueName>Comodato</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Declarado</controllingFieldValue>
+            <valueName>Licenciamento de Software</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Declarado</controllingFieldValue>
+            <valueName>Locação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Declarado</controllingFieldValue>
+            <valueName>Serviços Mensais Subcontratados</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Declarado</controllingFieldValue>
+            <valueName>Serviços Financiados</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

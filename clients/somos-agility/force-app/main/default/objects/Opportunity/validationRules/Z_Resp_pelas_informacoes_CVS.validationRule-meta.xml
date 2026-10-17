@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Resp_pelas_informacoes_CVS</fullName>
+    <active>false</active>
+    <description>***DESATIVADO***  Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Resp. pelas informações</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)&amp;&amp;ISPICKVAL(    Cliente_ja_possui_visao_estabelecida__c ,&quot;Sim&quot;)) ,ISBLANK(  Informante_sobre_a_visao_estabelecida__c ))</errorConditionFormula>
+    <errorMessage>** Para alterar de fase é obrigatório o preenchimento do campo &quot;Resp. pelas informações&quot;: **</errorMessage>
+</ValidationRule>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fornecedor__c</fullName>
+    <label>Fornecedor</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Network1</fullName>
+                <default>false</default>
+                <label>Network1</label>
+            </value>
+            <value>
+                <fullName>Westcon</fullName>
+                <default>false</default>
+                <label>Westcon</label>
+            </value>
+            <value>
+                <fullName>CNT Brasil</fullName>
+                <default>false</default>
+                <label>CNT Brasil</label>
+            </value>
+            <value>
+                <fullName>Officer</fullName>
+                <default>false</default>
+                <label>Officer</label>
+            </value>
+            <value>
+                <fullName>Ação Informática</fullName>
+                <default>false</default>
+                <label>Ação Informática</label>
+            </value>
+            <value>
+                <fullName>Comstor</fullName>
+                <default>false</default>
+                <label>Comstor</label>
+            </value>
+            <value>
+                <fullName>Inspirit</fullName>
+                <default>false</default>
+                <label>Inspirit</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

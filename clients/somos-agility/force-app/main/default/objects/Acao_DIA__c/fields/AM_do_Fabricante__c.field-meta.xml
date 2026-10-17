@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AM_do_Fabricante__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Campo para inserção de contato referente ao GC do fabricante</description>
+    <label>AM do Fabricante</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Ação DIA (AM do Fabricante)</relationshipLabel>
+    <relationshipName>A_o_DIA1</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

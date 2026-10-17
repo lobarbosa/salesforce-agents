@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Prevista</fullName>
+    <active>false</active>
+    <description>jn170918 regra desativado a pedido da Tatiane em 1709 chamado 2018011034</description>
+    <errorConditionFormula>AND( ISPICKVAL( Marcos__r.Classe__c,&quot;Financeiro&quot;),
+ ISBLANK( Data_Prevista__c ))</errorConditionFormula>
+    <errorMessage>Favor informar a Data Prevista</errorMessage>
+</ValidationRule>

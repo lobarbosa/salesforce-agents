@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FO_LN_obrigatorio</fullName>
+    <active>true</active>
+    <description>FO 15/12/17: Obriga linha de produto, quando Necessário apoio de Produto igual a Sim</description>
+    <errorConditionFormula>ISBLANK(  Linha_de_Neg_cios__c  ) &amp;&amp; ISPICKVAL( Necessario_apoio_de_Produto__c , &quot;Sim&quot;)</errorConditionFormula>
+    <errorDisplayField>Linha_de_Neg_cios__c</errorDisplayField>
+    <errorMessage>Selecione uma Linha de Negócio quando o campo Necessário apoio de Produto for igual a Sim</errorMessage>
+</ValidationRule>

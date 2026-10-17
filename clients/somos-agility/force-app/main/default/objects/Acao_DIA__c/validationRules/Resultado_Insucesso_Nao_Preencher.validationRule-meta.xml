@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resultado_Insucesso_Nao_Preencher</fullName>
+    <active>false</active>
+    <description>Quando o resultado da Ação dia é igual a Insucesso não é obrigatório o preenchimento do campo Motivo do Sucesso</description>
+    <errorConditionFormula>AND(TEXT(Resultado_da_Acao_DIA__c) &lt;&gt; &quot;Insucesso&quot;,NOT(ISBLANK( Motivo__c )))</errorConditionFormula>
+    <errorDisplayField>Motivo__c</errorDisplayField>
+    <errorMessage>Não é necessário preencher este campo</errorMessage>
+</ValidationRule>

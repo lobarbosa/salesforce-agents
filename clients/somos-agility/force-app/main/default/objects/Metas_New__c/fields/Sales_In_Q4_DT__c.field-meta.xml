@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In_Q4_DT__c</fullName>
+    <defaultValue>0</defaultValue>
+    <inlineHelpText>Antigo: Sales In - Q4 - Digital Transformation</inlineHelpText>
+    <label>Recorrente ajustado DT - Q4</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

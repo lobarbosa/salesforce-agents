@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Layout_AW</fullName>
+    <fields>Name</fields>
+    <fields>AccountId</fields>
+    <fields>CloseDate</fields>
+    <fields>OwnerId</fields>
+    <fields>Linha_de_Negocio__c</fields>
+    <fields>Status__c</fields>
+    <label>Layout_AW</label>
+</CompactLayout>

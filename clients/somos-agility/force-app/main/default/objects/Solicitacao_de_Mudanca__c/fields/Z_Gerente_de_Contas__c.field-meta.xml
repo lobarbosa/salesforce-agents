@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Gerente_de_Contas__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM161018:</description>
+    <label>Z_Gerente de Contas</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Contact.Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operation>equals</operation>
+            <value>Sim</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Account.Name</field>
+            <operation>contains</operation>
+            <value>Agility</value>
+        </filterItems>
+        <filterItems>
+            <field>Contact.Title</field>
+            <operation>contains</operation>
+            <value>Gerente de Contas</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Solicitação de Mudança (Gerente de Contas)</relationshipLabel>
+    <relationshipName>Nova_Solicita_o_de_Mudan_a1</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

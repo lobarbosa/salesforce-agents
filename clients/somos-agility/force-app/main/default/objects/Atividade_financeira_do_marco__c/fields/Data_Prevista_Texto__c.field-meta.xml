@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Prevista_Texto__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(MONTH(Data_Prevista__c)=1,&quot;1 - Janeiro&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=2,&quot;2 - Fevereiro&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=3,&quot;3 - Março&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=4,&quot;4 - Abril&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=5,&quot;5 - Maio&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=6,&quot;6 - Junho&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=7,&quot;7 - Julho&quot; &amp;&apos; &apos;&amp;TEXT( YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=8,&quot;8 - Agosto&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=9,&quot;9 - Setembro&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=10,&quot;10 - Outubro&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+IF(MONTH(Data_Prevista__c)=11,&quot;11 - Novembro&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)),
+&quot;12 - Dezembro&quot; &amp;&apos; &apos;&amp; TEXT(YEAR(Data_Prevista__c)))))))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Data Prevista</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SolicitarFastTrack</fullName>
+    <availability>online</availability>
+    <description>HM2406 - Botão que chama um flow para solicitar fast track a oportunidade.</description>
+    <displayType>button</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>true</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>600</height>
+    <isResizable>true</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Solicitar Fast Track</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>/flow/SolicitacaoFastTrack?OpptyId={!Opportunity.Id}&amp;TipoSolucao={!Opportunity.Pre_classificacao_do_perfil_da_solucao__c}&amp;retURL={!Opportunity.Id}</url>
+</WebLink>

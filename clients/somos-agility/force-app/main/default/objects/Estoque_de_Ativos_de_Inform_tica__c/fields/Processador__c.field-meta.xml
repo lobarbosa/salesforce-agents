@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Processador__c</fullName>
+    <label>Processador</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sem Processador</fullName>
+                <default>false</default>
+                <label>Sem Processador</label>
+            </value>
+            <value>
+                <fullName>Intel Core i3</fullName>
+                <default>false</default>
+                <label>Intel Core i3</label>
+            </value>
+            <value>
+                <fullName>Intel Core i5</fullName>
+                <default>false</default>
+                <label>Intel Core i5</label>
+            </value>
+            <value>
+                <fullName>Intel Core i7</fullName>
+                <default>false</default>
+                <label>Intel Core i7</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

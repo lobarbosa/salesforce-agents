@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Recurso__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <label>Recurso</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Recurso x Contrato de Suportes</relationshipLabel>
+    <relationshipName>Recurso_x_Contrato_de_Suportes</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

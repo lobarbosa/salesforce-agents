@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Previsto_deve_ter_um_JST</fullName>
+    <active>true</active>
+    <description>Quando o Status for igual a Previsto é obrigatório informar o JST</description>
+    <errorConditionFormula>AND(( ISPICKVAL(Status__c ,&quot;Aprovado&quot;)&amp;&amp;  Valor__c &gt;0),ISBLANK( JST__c ))</errorConditionFormula>
+    <errorDisplayField>JST__c</errorDisplayField>
+    <errorMessage>Favor informar o ID do JST</errorMessage>
+</ValidationRule>

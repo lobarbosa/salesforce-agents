@@ -1,0 +1,1345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Codigo_Servico__c</fullName>
+    <deprecated>false</deprecated>
+    <label>Código de Serviço</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01015 - Execução de obra hidráulica e obras semelhantes.</fullName>
+                <default>false</default>
+                <label>01015 - Execução de obra hidráulica e obras semelhantes.</label>
+            </value>
+            <value>
+                <fullName>01023 - Execução de obras de constr. civil, elétrica ou semelhantes, e respec. serv. aux. ou complement.</fullName>
+                <default>false</default>
+                <label>01023 - Execução de obras de constr. civil, elétrica ou semelhantes, e respec. serv. aux. ou complement.</label>
+            </value>
+            <value>
+                <fullName>01031 - Demolição.</fullName>
+                <default>false</default>
+                <label>01031 - Demolição.</label>
+            </value>
+            <value>
+                <fullName>01058 - Reparação, conservação e reforma de edifícios, estradas, pontes, portos e congêneres.</fullName>
+                <default>false</default>
+                <label>01058 - Reparação, conservação e reforma de edifícios, estradas, pontes, portos e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01090 - Escoramento, contenção de encostas e serviços congêneres.</fullName>
+                <default>false</default>
+                <label>01090 - Escoramento, contenção de encostas e serviços congêneres.</label>
+            </value>
+            <value>
+                <fullName>01104 - Carpintaria e serralheria.</fullName>
+                <default>false</default>
+                <label>01104 - Carpintaria e serralheria.</label>
+            </value>
+            <value>
+                <fullName>01210 - Paisagismo.</fullName>
+                <default>false</default>
+                <label>01210 - Paisagismo.</label>
+            </value>
+            <value>
+                <fullName>01228 - Colocação de tapetes, cortinas, revestimentos, vidros, divisórias, placas de gesso e congêneres.</fullName>
+                <default>false</default>
+                <label>01228 - Colocação de tapetes, cortinas, revestimentos, vidros, divisórias, placas de gesso e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01236 - Recuperação, raspagem, polimento e lustração de pisos e congêneres.</fullName>
+                <default>false</default>
+                <label>01236 - Recuperação, raspagem, polimento e lustração de pisos e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01244 - Calafetação.</fullName>
+                <default>false</default>
+                <label>01244 - Calafetação.</label>
+            </value>
+            <value>
+                <fullName>01325 - Varrição, coleta, remoção, incineração, tratamento, reciclagem separação e destinação final de lixo.</fullName>
+                <default>false</default>
+                <label>01325 - Varrição, coleta, remoção, incineração, tratamento, reciclagem separação e destinação final de lixo.</label>
+            </value>
+            <value>
+                <fullName>01384 - Limpeza, manutenção e conservação de vias e logradouros públicos, parques, jardins e congêneres.</fullName>
+                <default>false</default>
+                <label>01384 - Limpeza, manutenção e conservação de vias e logradouros públicos, parques, jardins e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01406 - Limpeza, manutenção e conservação de imóveis, chaminés, piscinas e congêneres, inclusive fossas.</fullName>
+                <default>false</default>
+                <label>01406 - Limpeza, manutenção e conservação de imóveis, chaminés, piscinas e congêneres, inclusive fossas.</label>
+            </value>
+            <value>
+                <fullName>01430 - Decoração.</fullName>
+                <default>false</default>
+                <label>01430 - Decoração.</label>
+            </value>
+            <value>
+                <fullName>01449 - Jardinagem, inclusive corte e poda de árvores.</fullName>
+                <default>false</default>
+                <label>01449 - Jardinagem, inclusive corte e poda de árvores.</label>
+            </value>
+            <value>
+                <fullName>01465 - Dedetização, desinfecção, desinsetização, imunização, higienização e congêneres.</fullName>
+                <default>false</default>
+                <label>01465 - Dedetização, desinfecção, desinsetização, imunização, higienização e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01473 - Limpeza e dragagem de rios, portos, canais, lagos, represas, açudes e congêneres.</fullName>
+                <default>false</default>
+                <label>01473 - Limpeza e dragagem de rios, portos, canais, lagos, represas, açudes e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01481 - Serviços de exploração de rodovia mediante cobrança de preço ou pedágio dos usuários.</fullName>
+                <default>false</default>
+                <label>01481 - Serviços de exploração de rodovia mediante cobrança de preço ou pedágio dos usuários.</label>
+            </value>
+            <value>
+                <fullName>01520 - Engenharia, agronomia, arquitetura, urbanismo e congêneres.</fullName>
+                <default>false</default>
+                <label>01520 - Engenharia, agronomia, arquitetura, urbanismo e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01589 - Agrimensura, geologia e congêneres.</fullName>
+                <default>false</default>
+                <label>01589 - Agrimensura, geologia e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01694 - Elaboração de planos diretores, elaboração de anteprojetos e projetos para trabalhos de engenharia.</fullName>
+                <default>false</default>
+                <label>01694 - Elaboração de planos diretores, elaboração de anteprojetos e projetos para trabalhos de engenharia.</label>
+            </value>
+            <value>
+                <fullName>01724 - Controle e tratamento de efluentes de qualquer natureza e de agentes físicos, químicos e biológicos.</fullName>
+                <default>false</default>
+                <label>01724 - Controle e tratamento de efluentes de qualquer natureza e de agentes físicos, químicos e biológicos.</label>
+            </value>
+            <value>
+                <fullName>01740 - Florestamento, reflorestamento, semeadura, adubação e congêneres.</fullName>
+                <default>false</default>
+                <label>01740 - Florestamento, reflorestamento, semeadura, adubação e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01805 - Acompanhamento e fiscalização da execução de obras de engenharia, arquitetura e urbanismo.</fullName>
+                <default>false</default>
+                <label>01805 - Acompanhamento e fiscalização da execução de obras de engenharia, arquitetura e urbanismo.</label>
+            </value>
+            <value>
+                <fullName>01821 - Aerofotogrametria, cartografia, mapeamento, levantamentos topográficos e congêneres.</fullName>
+                <default>false</default>
+                <label>01821 - Aerofotogrametria, cartografia, mapeamento, levantamentos topográficos e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01864 - Pesquisa, perfuração, serviços relacionados com a exploração de petróleo e gás natural.</fullName>
+                <default>false</default>
+                <label>01864 - Pesquisa, perfuração, serviços relacionados com a exploração de petróleo e gás natural.</label>
+            </value>
+            <value>
+                <fullName>01872 - Nucleação e bombardeamento de nuvens e congêneres.</fullName>
+                <default>false</default>
+                <label>01872 - Nucleação e bombardeamento de nuvens e congêneres.</label>
+            </value>
+            <value>
+                <fullName>01880 - Assistência técnica.</fullName>
+                <default>false</default>
+                <label>01880 - Assistência técnica.</label>
+            </value>
+            <value>
+                <fullName>01899 - Planejamento, coordenação, programação ou organização técnica, financeira ou administrativa.</fullName>
+                <default>false</default>
+                <label>01899 - Planejamento, coordenação, programação ou organização técnica, financeira ou administrativa.</label>
+            </value>
+            <value>
+                <fullName>01902 - Perícias, laudos, exames técnicos e análises técnicas, inclusive institutos psicotécnicos.</fullName>
+                <default>false</default>
+                <label>01902 - Perícias, laudos, exames técnicos e análises técnicas, inclusive institutos psicotécnicos.</label>
+            </value>
+            <value>
+                <fullName>01903 - Inspeção ambiental veicular</fullName>
+                <default>false</default>
+                <label>01903 - Inspeção ambiental veicular</label>
+            </value>
+            <value>
+                <fullName>02038 - Análise de organização e métodos.</fullName>
+                <default>false</default>
+                <label>02038 - Análise de organização e métodos.</label>
+            </value>
+            <value>
+                <fullName>02054 - Desenho industrial.</fullName>
+                <default>false</default>
+                <label>02054 - Desenho industrial.</label>
+            </value>
+            <value>
+                <fullName>02097 - Serviços de assistência social.</fullName>
+                <default>false</default>
+                <label>02097 - Serviços de assistência social.</label>
+            </value>
+            <value>
+                <fullName>02119 - Serviços de avaliação de bens e serviços de qualquer natureza.</fullName>
+                <default>false</default>
+                <label>02119 - Serviços de avaliação de bens e serviços de qualquer natureza.</label>
+            </value>
+            <value>
+                <fullName>02143 - Serviços de biologia, biotecnologia e química.</fullName>
+                <default>false</default>
+                <label>02143 - Serviços de biologia, biotecnologia e química.</label>
+            </value>
+            <value>
+                <fullName>02151 - Serviços técnicos em edificações, eletrônica, eletrotécnica, mecânica, telecomunicações, congêneres.</fullName>
+                <default>false</default>
+                <label>02151 - Serviços técnicos em edificações, eletrônica, eletrotécnica, mecânica, telecomunicações, congêneres.</label>
+            </value>
+            <value>
+                <fullName>02186 - Serviços de desenhos técnicos.</fullName>
+                <default>false</default>
+                <label>02186 - Serviços de desenhos técnicos.</label>
+            </value>
+            <value>
+                <fullName>02216 - Serviços de meteorologia.</fullName>
+                <default>false</default>
+                <label>02216 - Serviços de meteorologia.</label>
+            </value>
+            <value>
+                <fullName>02224 - Serviços de museologia.</fullName>
+                <default>false</default>
+                <label>02224 - Serviços de museologia.</label>
+            </value>
+            <value>
+                <fullName>02321 - Transporte público de passageiros, realizado pela Companhia do Metropolitano de São Paulo - METRÔ.</fullName>
+                <default>false</default>
+                <label>02321 - Transporte público de passageiros, realizado pela Companhia do Metropolitano de São Paulo - METRÔ.</label>
+            </value>
+            <value>
+                <fullName>02330 - Transporte por ônibus (concessionária e permissionárias).</fullName>
+                <default>false</default>
+                <label>02330 - Transporte por ônibus (concessionária e permissionárias).</label>
+            </value>
+            <value>
+                <fullName>02364 - Transporte por táxi, explorado por pessoa jurídica.</fullName>
+                <default>false</default>
+                <label>02364 - Transporte por táxi, explorado por pessoa jurídica.</label>
+            </value>
+            <value>
+                <fullName>02402 - Transporte de escolares.</fullName>
+                <default>false</default>
+                <label>02402 - Transporte de escolares.</label>
+            </value>
+            <value>
+                <fullName>02429 - Transporte de pessoas, por qualquer meio dentro do território do município.</fullName>
+                <default>false</default>
+                <label>02429 - Transporte de pessoas, por qualquer meio dentro do território do município.</label>
+            </value>
+            <value>
+                <fullName>02445 - Transporte de bens ou valores, dentro do território do Município.</fullName>
+                <default>false</default>
+                <label>02445 - Transporte de bens ou valores, dentro do território do Município.</label>
+            </value>
+            <value>
+                <fullName>02453 - Coleta, remessa ou entrega de correspondências, realizados pelos correios agências franqueadas.</fullName>
+                <default>false</default>
+                <label>02453 - Coleta, remessa ou entrega de correspondências, realizados pelos correios agências franqueadas.</label>
+            </value>
+            <value>
+                <fullName>02461 - Coleta, remessa ou entrega de correspondências e congêneres, realizados por courrier e congêneres.</fullName>
+                <default>false</default>
+                <label>02461 - Coleta, remessa ou entrega de correspondências e congêneres, realizados por courrier e congêneres.</label>
+            </value>
+            <value>
+                <fullName>02496 - Propaganda e publicidade, promoção de vendas, planejamento de campanhas e materiais publicitários.</fullName>
+                <default>false</default>
+                <label>02496 - Propaganda e publicidade, promoção de vendas, planejamento de campanhas e materiais publicitários.</label>
+            </value>
+            <value>
+                <fullName>02500 - Serviços de programação visual, comunicação visual e congêneres.</fullName>
+                <default>false</default>
+                <label>02500 - Serviços de programação visual, comunicação visual e congêneres.</label>
+            </value>
+            <value>
+                <fullName>02534 - Serviços de reportagem, assessoria de imprensa, jornalismo e relações públicas.</fullName>
+                <default>false</default>
+                <label>02534 - Serviços de reportagem, assessoria de imprensa, jornalismo e relações públicas.</label>
+            </value>
+            <value>
+                <fullName>02658 - Análise e desenvolvimento de sistemas.</fullName>
+                <default>false</default>
+                <label>02658 - Análise e desenvolvimento de sistemas.</label>
+            </value>
+            <value>
+                <fullName>02666 - Programação.</fullName>
+                <default>false</default>
+                <label>02666 - Programação.</label>
+            </value>
+            <value>
+                <fullName>02682 - Processamento de dados e congêneres.</fullName>
+                <default>false</default>
+                <label>02682 - Processamento de dados e congêneres.</label>
+            </value>
+            <value>
+                <fullName>02690 - Elaboração de programas de computadores (software), inclusive de jogos eletrônicos.</fullName>
+                <default>false</default>
+                <label>02690 - Elaboração de programas de computadores (software), inclusive de jogos eletrônicos.</label>
+            </value>
+            <value>
+                <fullName>02798 - Licenciamento ou cessão de direito de uso de programas de computação, inclusive distribuição.</fullName>
+                <default>false</default>
+                <label>02798 - Licenciamento ou cessão de direito de uso de programas de computação, inclusive distribuição.</label>
+            </value>
+            <value>
+                <fullName>02879 - Assessoria e consultoria em informática.</fullName>
+                <default>false</default>
+                <label>02879 - Assessoria e consultoria em informática.</label>
+            </value>
+            <value>
+                <fullName>02917 - Suporte técnico em informática, instalação, configuração e manutenção de programas.</fullName>
+                <default>false</default>
+                <label>02917 - Suporte técnico em informática, instalação, configuração e manutenção de programas.</label>
+            </value>
+            <value>
+                <fullName>02933 - Planejamento, confecção, manutenção e atualização de páginas eletrônicas.</fullName>
+                <default>false</default>
+                <label>02933 - Planejamento, confecção, manutenção e atualização de páginas eletrônicas.</label>
+            </value>
+            <value>
+                <fullName>03085 - Serviços de pesquisas e desenvolvimento de qualquer natureza.</fullName>
+                <default>false</default>
+                <label>03085 - Serviços de pesquisas e desenvolvimento de qualquer natureza.</label>
+            </value>
+            <value>
+                <fullName>03093 - Análises, exames, pesquisas, compilação, fornecimento de informações e coleta de dados.</fullName>
+                <default>false</default>
+                <label>03093 - Análises, exames, pesquisas, compilação, fornecimento de informações e coleta de dados.</label>
+            </value>
+            <value>
+                <fullName>03115 - Assessoria ou consultoria de qualquer natureza, não contida em outros itens desta lista.</fullName>
+                <default>false</default>
+                <label>03115 - Assessoria ou consultoria de qualquer natureza, não contida em outros itens desta lista.</label>
+            </value>
+            <value>
+                <fullName>03123 - Tradução e interpretação.</fullName>
+                <default>false</default>
+                <label>03123 - Tradução e interpretação.</label>
+            </value>
+            <value>
+                <fullName>03158 - Digitação, estenografia, expediente, secretaria em geral, resposta audível e congêneres.</fullName>
+                <default>false</default>
+                <label>03158 - Digitação, estenografia, expediente, secretaria em geral, resposta audível e congêneres.</label>
+            </value>
+            <value>
+                <fullName>03204 - Administração de bens e negócios em geral, inclusive de terceiros, exceto imóveis.</fullName>
+                <default>false</default>
+                <label>03204 - Administração de bens e negócios em geral, inclusive de terceiros, exceto imóveis.</label>
+            </value>
+            <value>
+                <fullName>03212 - Administração de imóveis.</fullName>
+                <default>false</default>
+                <label>03212 - Administração de imóveis.</label>
+            </value>
+            <value>
+                <fullName>03220 - Advocacia.</fullName>
+                <default>false</default>
+                <label>03220 - Advocacia.</label>
+            </value>
+            <value>
+                <fullName>03387 - Arbitragem de qualquer espécie, inclusive jurídica.</fullName>
+                <default>false</default>
+                <label>03387 - Arbitragem de qualquer espécie, inclusive jurídica.</label>
+            </value>
+            <value>
+                <fullName>03395 - Auditoria.</fullName>
+                <default>false</default>
+                <label>03395 - Auditoria.</label>
+            </value>
+            <value>
+                <fullName>03450 - Atuária e cálculos técnicos de qualquer natureza.</fullName>
+                <default>false</default>
+                <label>03450 - Atuária e cálculos técnicos de qualquer natureza.</label>
+            </value>
+            <value>
+                <fullName>03476 - Contabilidade, inclusive serviços técnicos e auxiliares.</fullName>
+                <default>false</default>
+                <label>03476 - Contabilidade, inclusive serviços técnicos e auxiliares.</label>
+            </value>
+            <value>
+                <fullName>03654 - Consultoria e assessoria econômica ou financeira.</fullName>
+                <default>false</default>
+                <label>03654 - Consultoria e assessoria econômica ou financeira.</label>
+            </value>
+            <value>
+                <fullName>03719 - Estatística.</fullName>
+                <default>false</default>
+                <label>03719 - Estatística.</label>
+            </value>
+            <value>
+                <fullName>03743 - Assessoria, gerenciamento de informação e congêneres, relacionados a factoring.</fullName>
+                <default>false</default>
+                <label>03743 - Assessoria, gerenciamento de informação e congêneres, relacionados a factoring.</label>
+            </value>
+            <value>
+                <fullName>03751 - Apresentação de palestras, conferências, seminários e congêneres.</fullName>
+                <default>false</default>
+                <label>03751 - Apresentação de palestras, conferências, seminários e congêneres.</label>
+            </value>
+            <value>
+                <fullName>03877 - Serv Registros Públicos/Cartorários/Notariais exceto autent documentos, reconhec firmas e prest inf</fullName>
+                <default>false</default>
+                <label>03877 - Serv Registros Públicos/Cartorários/Notariais exceto autent documentos, reconhec firmas e prest inf</label>
+            </value>
+            <value>
+                <fullName>03878 - Autenticação documentos, reconhec firmas, prestação de informações, por notários e oficiais registro</fullName>
+                <default>false</default>
+                <label>03878 - Autenticação documentos, reconhec firmas, prestação de informações, por notários e oficiais registro</label>
+            </value>
+            <value>
+                <fullName>03956 - Serviços de biblioteconomia.</fullName>
+                <default>false</default>
+                <label>03956 - Serviços de biblioteconomia.</label>
+            </value>
+            <value>
+                <fullName>04030 - Medicina e biomedicina.</fullName>
+                <default>false</default>
+                <label>04030 - Medicina e biomedicina.</label>
+            </value>
+            <value>
+                <fullName>04138 - Análises clínicas, radio/quimioterapia, ultra-sonogr, resson. mag, radiologia, tomogr. e congêneres.</fullName>
+                <default>false</default>
+                <label>04138 - Análises clínicas, radio/quimioterapia, ultra-sonogr, resson. mag, radiologia, tomogr. e congêneres.</label>
+            </value>
+            <value>
+                <fullName>04170 - Laboratórios.</fullName>
+                <default>false</default>
+                <label>04170 - Laboratórios.</label>
+            </value>
+            <value>
+                <fullName>04189 - Hospitais.</fullName>
+                <default>false</default>
+                <label>04189 - Hospitais.</label>
+            </value>
+            <value>
+                <fullName>04197 - Clínicas e casas de saúde.</fullName>
+                <default>false</default>
+                <label>04197 - Clínicas e casas de saúde.</label>
+            </value>
+            <value>
+                <fullName>04219 - Ambulatórios e prontos socorros.</fullName>
+                <default>false</default>
+                <label>04219 - Ambulatórios e prontos socorros.</label>
+            </value>
+            <value>
+                <fullName>04235 - Sanatórios, manicômios e congêneres.</fullName>
+                <default>false</default>
+                <label>04235 - Sanatórios, manicômios e congêneres.</label>
+            </value>
+            <value>
+                <fullName>04251 - Instrumentação cirúrgica.</fullName>
+                <default>false</default>
+                <label>04251 - Instrumentação cirúrgica.</label>
+            </value>
+            <value>
+                <fullName>04260 - Acupuntura.</fullName>
+                <default>false</default>
+                <label>04260 - Acupuntura.</label>
+            </value>
+            <value>
+                <fullName>04316 - Enfermagem, inclusive serviços auxiliares.</fullName>
+                <default>false</default>
+                <label>04316 - Enfermagem, inclusive serviços auxiliares.</label>
+            </value>
+            <value>
+                <fullName>04383 - Serviços farmacêuticos.</fullName>
+                <default>false</default>
+                <label>04383 - Serviços farmacêuticos.</label>
+            </value>
+            <value>
+                <fullName>04391 - Fisioterapia.</fullName>
+                <default>false</default>
+                <label>04391 - Fisioterapia.</label>
+            </value>
+            <value>
+                <fullName>04472 - Fonoaudiologia.</fullName>
+                <default>false</default>
+                <label>04472 - Fonoaudiologia.</label>
+            </value>
+            <value>
+                <fullName>04510 - Terapia ocupacional.</fullName>
+                <default>false</default>
+                <label>04510 - Terapia ocupacional.</label>
+            </value>
+            <value>
+                <fullName>04588 - Terapias destinadas ao tratamento físico e mental, massoterapia, naturologia e naturopatia.</fullName>
+                <default>false</default>
+                <label>04588 - Terapias destinadas ao tratamento físico e mental, massoterapia, naturologia e naturopatia.</label>
+            </value>
+            <value>
+                <fullName>04626 - Nutrição.</fullName>
+                <default>false</default>
+                <label>04626 - Nutrição.</label>
+            </value>
+            <value>
+                <fullName>04634 - Obstetrícia.</fullName>
+                <default>false</default>
+                <label>04634 - Obstetrícia.</label>
+            </value>
+            <value>
+                <fullName>04693 - Odontologia.</fullName>
+                <default>false</default>
+                <label>04693 - Odontologia.</label>
+            </value>
+            <value>
+                <fullName>04774 - Ortóptica.</fullName>
+                <default>false</default>
+                <label>04774 - Ortóptica.</label>
+            </value>
+            <value>
+                <fullName>05037 - Próteses sob encomenda.</fullName>
+                <default>false</default>
+                <label>05037 - Próteses sob encomenda.</label>
+            </value>
+            <value>
+                <fullName>05100 - Psicanálise.</fullName>
+                <default>false</default>
+                <label>05100 - Psicanálise.</label>
+            </value>
+            <value>
+                <fullName>05118 - Psicologia.</fullName>
+                <default>false</default>
+                <label>05118 - Psicologia.</label>
+            </value>
+            <value>
+                <fullName>05150 - Casas de repouso e congêneres.</fullName>
+                <default>false</default>
+                <label>05150 - Casas de repouso e congêneres.</label>
+            </value>
+            <value>
+                <fullName>05177 - Creches.</fullName>
+                <default>false</default>
+                <label>05177 - Creches.</label>
+            </value>
+            <value>
+                <fullName>05185 - Asilos.</fullName>
+                <default>false</default>
+                <label>05185 - Asilos.</label>
+            </value>
+            <value>
+                <fullName>05193 - Inseminação artificial, fertilização in vitro e congêneres.</fullName>
+                <default>false</default>
+                <label>05193 - Inseminação artificial, fertilização in vitro e congêneres.</label>
+            </value>
+            <value>
+                <fullName>05223 - Bancos de sangue, leite, pele, olhos, óvulos, sêmen e congêneres.</fullName>
+                <default>false</default>
+                <label>05223 - Bancos de sangue, leite, pele, olhos, óvulos, sêmen e congêneres.</label>
+            </value>
+            <value>
+                <fullName>05231 - Coleta de sangue, leite, tecidos, sêmen, órgãos e materiais biológicos de qualquer espécie.</fullName>
+                <default>false</default>
+                <label>05231 - Coleta de sangue, leite, tecidos, sêmen, órgãos e materiais biológicos de qualquer espécie.</label>
+            </value>
+            <value>
+                <fullName>05266 - Unidade de atendimento, assistência ou tratamento móvel e congêneres.</fullName>
+                <default>false</default>
+                <label>05266 - Unidade de atendimento, assistência ou tratamento móvel e congêneres.</label>
+            </value>
+            <value>
+                <fullName>05274 - Planos de medicina de grupo ou individual e convênios para prestação de assistência médica.</fullName>
+                <default>false</default>
+                <label>05274 - Planos de medicina de grupo ou individual e convênios para prestação de assistência médica.</label>
+            </value>
+            <value>
+                <fullName>05312 - Planos de saúde que se cumpram através de serviços de terceiros contratados e credenciados.</fullName>
+                <default>false</default>
+                <label>05312 - Planos de saúde que se cumpram através de serviços de terceiros contratados e credenciados.</label>
+            </value>
+            <value>
+                <fullName>05380 - Medicina veterinária e zootecnia.</fullName>
+                <default>false</default>
+                <label>05380 - Medicina veterinária e zootecnia.</label>
+            </value>
+            <value>
+                <fullName>05428 - Hospitais, clínicas, ambulatórios, prontos-socorros e congêneres, na área veterinária.</fullName>
+                <default>false</default>
+                <label>05428 - Hospitais, clínicas, ambulatórios, prontos-socorros e congêneres, na área veterinária.</label>
+            </value>
+            <value>
+                <fullName>05436 - Laboratórios de análise na área veterinária.</fullName>
+                <default>false</default>
+                <label>05436 - Laboratórios de análise na área veterinária.</label>
+            </value>
+            <value>
+                <fullName>05460 - Inseminação artificial, fertilização in vitro e congêneres, na área veterinária.</fullName>
+                <default>false</default>
+                <label>05460 - Inseminação artificial, fertilização in vitro e congêneres, na área veterinária.</label>
+            </value>
+            <value>
+                <fullName>05479 - Bancos de sangue e de órgãos e congêneres, na área veterinária.</fullName>
+                <default>false</default>
+                <label>05479 - Bancos de sangue e de órgãos e congêneres, na área veterinária.</label>
+            </value>
+            <value>
+                <fullName>05495 - Coleta de sangue, leite, tecidos, sêmen, órgãos e materiais biológicos, na área veterinária.</fullName>
+                <default>false</default>
+                <label>05495 - Coleta de sangue, leite, tecidos, sêmen, órgãos e materiais biológicos, na área veterinária.</label>
+            </value>
+            <value>
+                <fullName>05517 - Unidade de atendimento, assistência ou tratamento móvel e congêneres, na área veterinária.</fullName>
+                <default>false</default>
+                <label>05517 - Unidade de atendimento, assistência ou tratamento móvel e congêneres, na área veterinária.</label>
+            </value>
+            <value>
+                <fullName>05533 - Planos de atendimento e assistência médico-veterinária.</fullName>
+                <default>false</default>
+                <label>05533 - Planos de atendimento e assistência médico-veterinária.</label>
+            </value>
+            <value>
+                <fullName>05576 - Patologia e eletricidade médica.</fullName>
+                <default>false</default>
+                <label>05576 - Patologia e eletricidade médica.</label>
+            </value>
+            <value>
+                <fullName>05584 - Casas de recuperação.</fullName>
+                <default>false</default>
+                <label>05584 - Casas de recuperação.</label>
+            </value>
+            <value>
+                <fullName>05657 - Ginástica, dança, esportes, natação, artes marciais e demais atividades físicas.</fullName>
+                <default>false</default>
+                <label>05657 - Ginástica, dança, esportes, natação, artes marciais e demais atividades físicas.</label>
+            </value>
+            <value>
+                <fullName>05673 - Ensino regular pré-escolar, fundamental e médio, inclusive cursos profissionalizantes.</fullName>
+                <default>false</default>
+                <label>05673 - Ensino regular pré-escolar, fundamental e médio, inclusive cursos profissionalizantes.</label>
+            </value>
+            <value>
+                <fullName>05690 - Ensino superior, cursos de graduação e demais cursos seqüenciais.</fullName>
+                <default>false</default>
+                <label>05690 - Ensino superior, cursos de graduação e demais cursos seqüenciais.</label>
+            </value>
+            <value>
+                <fullName>05711 - Ensino superior, cursos de pós-graduação, mestrado, doutorado, pós-doutorado.</fullName>
+                <default>false</default>
+                <label>05711 - Ensino superior, cursos de pós-graduação, mestrado, doutorado, pós-doutorado.</label>
+            </value>
+            <value>
+                <fullName>05738 - Auto-escolas, moto-escolas e congêneres.</fullName>
+                <default>false</default>
+                <label>05738 - Auto-escolas, moto-escolas e congêneres.</label>
+            </value>
+            <value>
+                <fullName>05762 - Serviços de instrução, treinamento e avaliação de conhecimentos de qualquer natureza.</fullName>
+                <default>false</default>
+                <label>05762 - Serviços de instrução, treinamento e avaliação de conhecimentos de qualquer natureza.</label>
+            </value>
+            <value>
+                <fullName>05771 - Administração de fundos quaisquer</fullName>
+                <default>false</default>
+                <label>05771 - Administração de fundos quaisquer</label>
+            </value>
+            <value>
+                <fullName>05800 - Organização e administração de consórcios.</fullName>
+                <default>false</default>
+                <label>05800 - Organização e administração de consórcios.</label>
+            </value>
+            <value>
+                <fullName>05820 - Administração de cartão de crédito ou débito e congêneres</fullName>
+                <default>false</default>
+                <label>05820 - Administração de cartão de crédito ou débito e congêneres</label>
+            </value>
+            <value>
+                <fullName>05836 - Administração de carteira de clientes</fullName>
+                <default>false</default>
+                <label>05836 - Administração de carteira de clientes</label>
+            </value>
+            <value>
+                <fullName>05837 - Administração de cheques pré-datados e congêneres</fullName>
+                <default>false</default>
+                <label>05837 - Administração de cheques pré-datados e congêneres</label>
+            </value>
+            <value>
+                <fullName>05851 - Arrendamento mercantil de quaisquer bens e congêneres.</fullName>
+                <default>false</default>
+                <label>05851 - Arrendamento mercantil de quaisquer bens e congêneres.</label>
+            </value>
+            <value>
+                <fullName>05870 - Locação/Manutenção cofres particulares/terminais eletrônicos/de atendimento/ de bens e equipamentos.</fullName>
+                <default>false</default>
+                <label>05870 - Locação/Manutenção cofres particulares/terminais eletrônicos/de atendimento/ de bens e equipamentos.</label>
+            </value>
+            <value>
+                <fullName>05871 - Fornecimento/emissão atestados, inclusive atestado de idoneidade, de capacidade financeira, etc.</fullName>
+                <default>false</default>
+                <label>05871 - Fornecimento/emissão atestados, inclusive atestado de idoneidade, de capacidade financeira, etc.</label>
+            </value>
+            <value>
+                <fullName>05872 - Elaboração/renovação cadastral/congêneres,inclusão/exclusão no Cadastro Emitentes Cheques sem Fundos</fullName>
+                <default>false</default>
+                <label>05872 - Elaboração/renovação cadastral/congêneres,inclusão/exclusão no Cadastro Emitentes Cheques sem Fundos</label>
+            </value>
+            <value>
+                <fullName>05873 - Re/emissão/fornecimento docs. em geral,licenc/transf veículos agenc fiduciário/depositário e outros.</fullName>
+                <default>false</default>
+                <label>05873 - Re/emissão/fornecimento docs. em geral,licenc/transf veículos agenc fiduciário/depositário e outros.</label>
+            </value>
+            <value>
+                <fullName>05874 - Acesso/movimentação/atendimento/consulta contas em geral,acesso terms. antendimento e a outro banco.</fullName>
+                <default>false</default>
+                <label>05874 - Acesso/movimentação/atendimento/consulta contas em geral,acesso terms. antendimento e a outro banco.</label>
+            </value>
+            <value>
+                <fullName>05875 - Emissão/reemissão/alteração/cessão/substituição/cancelamento/registro contrato de crédito e outros.</fullName>
+                <default>false</default>
+                <label>05875 - Emissão/reemissão/alteração/cessão/substituição/cancelamento/registro contrato de crédito e outros.</label>
+            </value>
+            <value>
+                <fullName>05876 - Cobranças/recebimentos títulos/contas/carnês/câmbio/tributos, rec/pgto/emissão fichas docs. e outros</fullName>
+                <default>false</default>
+                <label>05876 - Cobranças/recebimentos títulos/contas/carnês/câmbio/tributos, rec/pgto/emissão fichas docs. e outros</label>
+            </value>
+            <value>
+                <fullName>05877 - Pagamentos de títulos/contas/carnês/câmbio/tributos e por conta de terceiros, emissão de carnês.</fullName>
+                <default>false</default>
+                <label>05877 - Pagamentos de títulos/contas/carnês/câmbio/tributos e por conta de terceiros, emissão de carnês.</label>
+            </value>
+            <value>
+                <fullName>05878 - Abertura contas no País e no exterior, bem como a manutenção das referidas contas ativas e inativas.</fullName>
+                <default>false</default>
+                <label>05878 - Abertura contas no País e no exterior, bem como a manutenção das referidas contas ativas e inativas.</label>
+            </value>
+            <value>
+                <fullName>05879 - Devolução/protesto títulos, sustação protesto, manut/reapresentação títulos/demais serv relacionados</fullName>
+                <default>false</default>
+                <label>05879 - Devolução/protesto títulos, sustação protesto, manut/reapresentação títulos/demais serv relacionados</label>
+            </value>
+            <value>
+                <fullName>05881 - Oper cambio, ed/alt/pror/can/baixa contr cambio; emis reg exp/créd; cob/dep ext; emis/forn/can cheq.</fullName>
+                <default>false</default>
+                <label>05881 - Oper cambio, ed/alt/pror/can/baixa contr cambio; emis reg exp/créd; cob/dep ext; emis/forn/can cheq.</label>
+            </value>
+            <value>
+                <fullName>05885 - Emissão, fornecimento, devolução, sustação, cancelamento e oposição de cheques, avulso ou por talão.</fullName>
+                <default>false</default>
+                <label>05885 - Emissão, fornecimento, devolução, sustação, cancelamento e oposição de cheques, avulso ou por talão.</label>
+            </value>
+            <value>
+                <fullName>05886 - Aval/vist imóvel/obra, análise téc/jur, (re)emiss/alt/trans/reneg contrato, (re)emiss termo quitação</fullName>
+                <default>false</default>
+                <label>05886 - Aval/vist imóvel/obra, análise téc/jur, (re)emiss/alt/trans/reneg contrato, (re)emiss termo quitação</label>
+            </value>
+            <value>
+                <fullName>05887 - Fornec/emissão/reemissão/renovação/manutenção cartão magnético/crédito/débito/salário e congêneres</fullName>
+                <default>false</default>
+                <label>05887 - Fornec/emissão/reemissão/renovação/manutenção cartão magnético/crédito/débito/salário e congêneres</label>
+            </value>
+            <value>
+                <fullName>05888 - Custódia em geral, inclusive de títulos e valores mobiliários, realizada pela BM&amp;FBOVESPA S.A.</fullName>
+                <default>false</default>
+                <label>05888 - Custódia em geral, inclusive de títulos e valores mobiliários, realizada pela BM&amp;FBOVESPA S.A.</label>
+            </value>
+            <value>
+                <fullName>05889 - Custódia em geral, inclusive de títulos e valores mobiliários</fullName>
+                <default>false</default>
+                <label>05889 - Custódia em geral, inclusive de títulos e valores mobiliários</label>
+            </value>
+            <value>
+                <fullName>05890 - Compensação títulos, serviços relacionados a depósito, a saque contas, realizados pela BM&amp;FBOVESPA</fullName>
+                <default>false</default>
+                <label>05890 - Compensação títulos, serviços relacionados a depósito, a saque contas, realizados pela BM&amp;FBOVESPA</label>
+            </value>
+            <value>
+                <fullName>05891 - Comp cheques e títulos, serviços relacionados a depósito, a saque de contas, por qualq meio/processo</fullName>
+                <default>false</default>
+                <label>05891 - Comp cheques e títulos, serviços relacionados a depósito, a saque de contas, por qualq meio/processo</label>
+            </value>
+            <value>
+                <fullName>05892 - Emiss/reemiss/liquid/alter/canc/baixa, ordens de pag/crédito, serv relac transf val/dados/fund/pag</fullName>
+                <default>false</default>
+                <label>05892 - Emiss/reemiss/liquid/alter/canc/baixa, ordens de pag/crédito, serv relac transf val/dados/fund/pag</label>
+            </value>
+            <value>
+                <fullName>05893 - Emiss/reemiss/liquid/alter/canc/baixa, ordens de pag/crédito, serv relac transf val/dados/fund/pag</fullName>
+                <default>false</default>
+                <label>05893 - Emiss/reemiss/liquid/alter/canc/baixa, ordens de pag/crédito, serv relac transf val/dados/fund/pag</label>
+            </value>
+            <value>
+                <fullName>05894 - Administração de distribuição de co-seguros.</fullName>
+                <default>false</default>
+                <label>05894 - Administração de distribuição de co-seguros.</label>
+            </value>
+            <value>
+                <fullName>05916 - Serviços de regulação de sinistros; avaliação de riscos para cobertura de contratos de seguros.</fullName>
+                <default>false</default>
+                <label>05916 - Serviços de regulação de sinistros; avaliação de riscos para cobertura de contratos de seguros.</label>
+            </value>
+            <value>
+                <fullName>06009 - Representação de qualquer natureza, inclusive comercial.</fullName>
+                <default>false</default>
+                <label>06009 - Representação de qualquer natureza, inclusive comercial.</label>
+            </value>
+            <value>
+                <fullName>06041 - Distribuição de bens de terceiros.</fullName>
+                <default>false</default>
+                <label>06041 - Distribuição de bens de terceiros.</label>
+            </value>
+            <value>
+                <fullName>06050 - Agenciamento, corretagem ou intermediação de planos de previdência privada.</fullName>
+                <default>false</default>
+                <label>06050 - Agenciamento, corretagem ou intermediação de planos de previdência privada.</label>
+            </value>
+            <value>
+                <fullName>06076 - Agenciamento, corretagem ou intermediação de câmbio.</fullName>
+                <default>false</default>
+                <label>06076 - Agenciamento, corretagem ou intermediação de câmbio.</label>
+            </value>
+            <value>
+                <fullName>06084 - Agenciamento ou intermediação de seguros.</fullName>
+                <default>false</default>
+                <label>06084 - Agenciamento ou intermediação de seguros.</label>
+            </value>
+            <value>
+                <fullName>06092 - Agenciamento, corretagem ou intermediação de cartões de crédito.</fullName>
+                <default>false</default>
+                <label>06092 - Agenciamento, corretagem ou intermediação de cartões de crédito.</label>
+            </value>
+            <value>
+                <fullName>06114 - Agenciamento, corretagem ou intermediação de planos de saúde.</fullName>
+                <default>false</default>
+                <label>06114 - Agenciamento, corretagem ou intermediação de planos de saúde.</label>
+            </value>
+            <value>
+                <fullName>06130 - Corretagem de seguros.</fullName>
+                <default>false</default>
+                <label>06130 - Corretagem de seguros.</label>
+            </value>
+            <value>
+                <fullName>06157 - Agenciamento, corretagem ou intermediação de títulos em geral, valores mobiliários.</fullName>
+                <default>false</default>
+                <label>06157 - Agenciamento, corretagem ou intermediação de títulos em geral, valores mobiliários.</label>
+            </value>
+            <value>
+                <fullName>06173 - Agenciamento, corretagem de direitos de propriedade industrial, artística e literária.</fullName>
+                <default>false</default>
+                <label>06173 - Agenciamento, corretagem de direitos de propriedade industrial, artística e literária.</label>
+            </value>
+            <value>
+                <fullName>06190 - Agenciamento, corretagem ou intermediação de contratos de arrendamento mercantil.</fullName>
+                <default>false</default>
+                <label>06190 - Agenciamento, corretagem ou intermediação de contratos de arrendamento mercantil.</label>
+            </value>
+            <value>
+                <fullName>06220 - Agenciamento, corretagem ou intermediação de contratos de franquia (franchising).</fullName>
+                <default>false</default>
+                <label>06220 - Agenciamento, corretagem ou intermediação de contratos de franquia (franchising).</label>
+            </value>
+            <value>
+                <fullName>06238 - Agenciamento, corretagem ou intermediação de contratos de faturização (factoring).</fullName>
+                <default>false</default>
+                <label>06238 - Agenciamento, corretagem ou intermediação de contratos de faturização (factoring).</label>
+            </value>
+            <value>
+                <fullName>06270 - Agenciamento, corretagem ou intermediação de bens, realizados no âmbito de BM&amp;F</fullName>
+                <default>false</default>
+                <label>06270 - Agenciamento, corretagem ou intermediação de bens, realizados no âmbito de BM&amp;F</label>
+            </value>
+            <value>
+                <fullName>06297 - Agenciamento, corretagem ou intermediação de bens móveis ou imóveis.</fullName>
+                <default>false</default>
+                <label>06297 - Agenciamento, corretagem ou intermediação de bens móveis ou imóveis.</label>
+            </value>
+            <value>
+                <fullName>06335 - Agenciamento marítimo.</fullName>
+                <default>false</default>
+                <label>06335 - Agenciamento marítimo.</label>
+            </value>
+            <value>
+                <fullName>06351 - Agenciamento de notícias.</fullName>
+                <default>false</default>
+                <label>06351 - Agenciamento de notícias.</label>
+            </value>
+            <value>
+                <fullName>06394 - Agenciamento de publicidade e propaganda, inclusive agenciamento de veiculação.</fullName>
+                <default>false</default>
+                <label>06394 - Agenciamento de publicidade e propaganda, inclusive agenciamento de veiculação.</label>
+            </value>
+            <value>
+                <fullName>06475 - Recrutamento, agenciamento, seleção e colocação de mão-de-obra.</fullName>
+                <default>false</default>
+                <label>06475 - Recrutamento, agenciamento, seleção e colocação de mão-de-obra.</label>
+            </value>
+            <value>
+                <fullName>06491 - Fornecimento de mão-de-obra em caráter temporário, de empregados ou trabalhadores.</fullName>
+                <default>false</default>
+                <label>06491 - Fornecimento de mão-de-obra em caráter temporário, de empregados ou trabalhadores.</label>
+            </value>
+            <value>
+                <fullName>06521 - Franquia (franchising).</fullName>
+                <default>false</default>
+                <label>06521 - Franquia (franchising).</label>
+            </value>
+            <value>
+                <fullName>06530 - Leilão e congêneres.</fullName>
+                <default>false</default>
+                <label>06530 - Leilão e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06564 - Cobranças e recebimentos por conta de terceiros e congêneres.</fullName>
+                <default>false</default>
+                <label>06564 - Cobranças e recebimentos por conta de terceiros e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06572 - Funerais, fornecimento de caixão, urna ou esquifes; aluguel de capela; e congêneres.</fullName>
+                <default>false</default>
+                <label>06572 - Funerais, fornecimento de caixão, urna ou esquifes; aluguel de capela; e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06599 - Cremação de corpos e partes de corpos cadavéricos.</fullName>
+                <default>false</default>
+                <label>06599 - Cremação de corpos e partes de corpos cadavéricos.</label>
+            </value>
+            <value>
+                <fullName>06602 - Planos ou convênio funerários.</fullName>
+                <default>false</default>
+                <label>06602 - Planos ou convênio funerários.</label>
+            </value>
+            <value>
+                <fullName>06610 - Manutenção e conservação de jazigos e cemitérios.</fullName>
+                <default>false</default>
+                <label>06610 - Manutenção e conservação de jazigos e cemitérios.</label>
+            </value>
+            <value>
+                <fullName>06637 - Serviços de desembaraço aduaneiro, comissários, despachantes e congêneres.</fullName>
+                <default>false</default>
+                <label>06637 - Serviços de desembaraço aduaneiro, comissários, despachantes e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06777 - Produção de eventos, espetáculos, entrevistas, shows, ballet, danças, desfiles e congêneres.</fullName>
+                <default>false</default>
+                <label>06777 - Produção de eventos, espetáculos, entrevistas, shows, ballet, danças, desfiles e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06793 - Fonografia ou gravação de sons, inclusive trucagem, dublagem, mixagem e congêneres.</fullName>
+                <default>false</default>
+                <label>06793 - Fonografia ou gravação de sons, inclusive trucagem, dublagem, mixagem e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06807 - Fotografia, cinematografia, revelação, ampliação, cópia, retocagem, reprodução, trucagem.</fullName>
+                <default>false</default>
+                <label>06807 - Fotografia, cinematografia, revelação, ampliação, cópia, retocagem, reprodução, trucagem.</label>
+            </value>
+            <value>
+                <fullName>06815 - Reprografia, microfilmagem e digitalização.</fullName>
+                <default>false</default>
+                <label>06815 - Reprografia, microfilmagem e digitalização.</label>
+            </value>
+            <value>
+                <fullName>06831 - Colocação de molduras e congêneres.</fullName>
+                <default>false</default>
+                <label>06831 - Colocação de molduras e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06858 - Encadernação, gravação e douração de livros, revistas e congêneres.</fullName>
+                <default>false</default>
+                <label>06858 - Encadernação, gravação e douração de livros, revistas e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06912 - Artes gráficas, tipografia, diagramação, paginação e gravação.</fullName>
+                <default>false</default>
+                <label>06912 - Artes gráficas, tipografia, diagramação, paginação e gravação.</label>
+            </value>
+            <value>
+                <fullName>06939 - Composição gráfica, fotocomposição, clicheria, zincografia, litografia, fotolitografia e congêneres.</fullName>
+                <default>false</default>
+                <label>06939 - Composição gráfica, fotocomposição, clicheria, zincografia, litografia, fotolitografia e congêneres.</label>
+            </value>
+            <value>
+                <fullName>06963 - Serviços de chaveiros, carimbos, placas, sinalização visual, banners e adesivos.</fullName>
+                <default>false</default>
+                <label>06963 - Serviços de chaveiros, carimbos, placas, sinalização visual, banners e adesivos.</label>
+            </value>
+            <value>
+                <fullName>07005 - Hospedagem em hotéis e hotelaria marítima.</fullName>
+                <default>false</default>
+                <label>07005 - Hospedagem em hotéis e hotelaria marítima.</label>
+            </value>
+            <value>
+                <fullName>07013 - Hospedagem em pensões, albergues, pousadas, hospedarias, e congêneres.</fullName>
+                <default>false</default>
+                <label>07013 - Hospedagem em pensões, albergues, pousadas, hospedarias, e congêneres.</label>
+            </value>
+            <value>
+                <fullName>07056 - Hospedagem em motéis.</fullName>
+                <default>false</default>
+                <label>07056 - Hospedagem em motéis.</label>
+            </value>
+            <value>
+                <fullName>07099 - Hospedagem em apart-service, flat, apart-hotéis, residence-service e congêneres.</fullName>
+                <default>false</default>
+                <label>07099 - Hospedagem em apart-service, flat, apart-hotéis, residence-service e congêneres.</label>
+            </value>
+            <value>
+                <fullName>07129 - Agenciamento, organização, promoção, intermediação e execução de programas de turismo.</fullName>
+                <default>false</default>
+                <label>07129 - Agenciamento, organização, promoção, intermediação e execução de programas de turismo.</label>
+            </value>
+            <value>
+                <fullName>07137 - Guias de turismo.</fullName>
+                <default>false</default>
+                <label>07137 - Guias de turismo.</label>
+            </value>
+            <value>
+                <fullName>07161 - Planejamento, organização e administração de feiras, exposições e congêneres.</fullName>
+                <default>false</default>
+                <label>07161 - Planejamento, organização e administração de feiras, exposições e congêneres.</label>
+            </value>
+            <value>
+                <fullName>07196 - Organização de festas e recepções, bufê.</fullName>
+                <default>false</default>
+                <label>07196 - Organização de festas e recepções, bufê.</label>
+            </value>
+            <value>
+                <fullName>07218 - Recreação e animação, inclusive em festas e eventos de qualquer natureza.</fullName>
+                <default>false</default>
+                <label>07218 - Recreação e animação, inclusive em festas e eventos de qualquer natureza.</label>
+            </value>
+            <value>
+                <fullName>07285 - Instalação e montagem de aparelhos, máquinas e equipamentos.</fullName>
+                <default>false</default>
+                <label>07285 - Instalação e montagem de aparelhos, máquinas e equipamentos.</label>
+            </value>
+            <value>
+                <fullName>07315 - Instalação e montagem industrial.</fullName>
+                <default>false</default>
+                <label>07315 - Instalação e montagem industrial.</label>
+            </value>
+            <value>
+                <fullName>07331 - Lustração de bens móveis.</fullName>
+                <default>false</default>
+                <label>07331 - Lustração de bens móveis.</label>
+            </value>
+            <value>
+                <fullName>07366 - Lubrificação, lavagem e limpeza não automáticas de veículos, exceto em postos de gasolina.</fullName>
+                <default>false</default>
+                <label>07366 - Lubrificação, lavagem e limpeza não automáticas de veículos, exceto em postos de gasolina.</label>
+            </value>
+            <value>
+                <fullName>07390 - Lubrificação, lavagem e limpeza de veículos, inclusive automáticas, em postos de gasolina.</fullName>
+                <default>false</default>
+                <label>07390 - Lubrificação, lavagem e limpeza de veículos, inclusive automáticas, em postos de gasolina.</label>
+            </value>
+            <value>
+                <fullName>07412 - Lubrificação, lavagem e limpeza automáticas de veículos, exceto em postos de gasolina.</fullName>
+                <default>false</default>
+                <label>07412 - Lubrificação, lavagem e limpeza automáticas de veículos, exceto em postos de gasolina.</label>
+            </value>
+            <value>
+                <fullName>07439 - Lubrificação, limpeza, revisão de máquinas, equipamentos, elevadores e congêneres.</fullName>
+                <default>false</default>
+                <label>07439 - Lubrificação, limpeza, revisão de máquinas, equipamentos, elevadores e congêneres.</label>
+            </value>
+            <value>
+                <fullName>07447 - Carga e recarga de aparelhos, equipamentos e objetos de quaisquer natureza.</fullName>
+                <default>false</default>
+                <label>07447 - Carga e recarga de aparelhos, equipamentos e objetos de quaisquer natureza.</label>
+            </value>
+            <value>
+                <fullName>07455 - Conserto, restauração, manutenção, conservação e pintura de veículos.</fullName>
+                <default>false</default>
+                <label>07455 - Conserto, restauração, manutenção, conservação e pintura de veículos.</label>
+            </value>
+            <value>
+                <fullName>07471 - Conserto, restauração, manutenção, conservação e pintura de veículos.</fullName>
+                <default>false</default>
+                <label>07471 - Conserto, restauração, manutenção, conservação e pintura de veículos.</label>
+            </value>
+            <value>
+                <fullName>07498 - Conserto, restauração, manutenção e conservação de máquinas, equipamentos, elevadores e congêneres.</fullName>
+                <default>false</default>
+                <label>07498 - Conserto, restauração, manutenção e conservação de máquinas, equipamentos, elevadores e congêneres.</label>
+            </value>
+            <value>
+                <fullName>07510 - Blindagem.</fullName>
+                <default>false</default>
+                <label>07510 - Blindagem.</label>
+            </value>
+            <value>
+                <fullName>07552 - Retífica e recondicionamento de motores.</fullName>
+                <default>false</default>
+                <label>07552 - Retífica e recondicionamento de motores.</label>
+            </value>
+            <value>
+                <fullName>07560 - Recauchutagem ou regeneração de pneus, borracharia.</fullName>
+                <default>false</default>
+                <label>07560 - Recauchutagem ou regeneração de pneus, borracharia.</label>
+            </value>
+            <value>
+                <fullName>07579 - Restauração, recondicionamento, acondicionamento, pintura e congêneres, de objetos quaisquer.</fullName>
+                <default>false</default>
+                <label>07579 - Restauração, recondicionamento, acondicionamento, pintura e congêneres, de objetos quaisquer.</label>
+            </value>
+            <value>
+                <fullName>07595 - Alfaiataria, costura e congêneres.</fullName>
+                <default>false</default>
+                <label>07595 - Alfaiataria, costura e congêneres.</label>
+            </value>
+            <value>
+                <fullName>07617 - Tinturaria e lavanderia.</fullName>
+                <default>false</default>
+                <label>07617 - Tinturaria e lavanderia.</label>
+            </value>
+            <value>
+                <fullName>07641 - Tapeçaria e reforma de estofamentos em geral.</fullName>
+                <default>false</default>
+                <label>07641 - Tapeçaria e reforma de estofamentos em geral.</label>
+            </value>
+            <value>
+                <fullName>07676 - Funilaria e lanternagem, incluindo a pintura.</fullName>
+                <default>false</default>
+                <label>07676 - Funilaria e lanternagem, incluindo a pintura.</label>
+            </value>
+            <value>
+                <fullName>07765 - Cessão de direito de uso de marcas e de sinais de propaganda.</fullName>
+                <default>false</default>
+                <label>07765 - Cessão de direito de uso de marcas e de sinais de propaganda.</label>
+            </value>
+            <value>
+                <fullName>07773 - Exploração de salões de festas, centro de convenções, stands, quadras esportivas, estádios.</fullName>
+                <default>false</default>
+                <label>07773 - Exploração de salões de festas, centro de convenções, stands, quadras esportivas, estádios.</label>
+            </value>
+            <value>
+                <fullName>07790 - Locação, sublocação, arrendamento, direito de passagem de ferrovia, rodovia.</fullName>
+                <default>false</default>
+                <label>07790 - Locação, sublocação, arrendamento, direito de passagem de ferrovia, rodovia.</label>
+            </value>
+            <value>
+                <fullName>07803 - Cessão de andaimes, palcos, coberturas e outras estruturas de uso temporário.</fullName>
+                <default>false</default>
+                <label>07803 - Cessão de andaimes, palcos, coberturas e outras estruturas de uso temporário.</label>
+            </value>
+            <value>
+                <fullName>07811 - Guarda e estacionamento de veículos terrestres automotores.</fullName>
+                <default>false</default>
+                <label>07811 - Guarda e estacionamento de veículos terrestres automotores.</label>
+            </value>
+            <value>
+                <fullName>07838 - Guarda e estacionamento de veículos terrestres automotores, em postos de gasolina.</fullName>
+                <default>false</default>
+                <label>07838 - Guarda e estacionamento de veículos terrestres automotores, em postos de gasolina.</label>
+            </value>
+            <value>
+                <fullName>07846 - Guarda e estacionamento do tipo &quot;valet service&quot;.</fullName>
+                <default>false</default>
+                <label>07846 - Guarda e estacionamento do tipo &quot;valet service&quot;.</label>
+            </value>
+            <value>
+                <fullName>07854 - Guarda e estacionamento de aeronaves e de embarcações.</fullName>
+                <default>false</default>
+                <label>07854 - Guarda e estacionamento de aeronaves e de embarcações.</label>
+            </value>
+            <value>
+                <fullName>07870 - Vigilância, segurança ou monitoramento de bens e pessoas.</fullName>
+                <default>false</default>
+                <label>07870 - Vigilância, segurança ou monitoramento de bens e pessoas.</label>
+            </value>
+            <value>
+                <fullName>07897 - Escolta, inclusive de veículos e cargas.</fullName>
+                <default>false</default>
+                <label>07897 - Escolta, inclusive de veículos e cargas.</label>
+            </value>
+            <value>
+                <fullName>07927 - Armazenamento, depósito, carga, descarga, arrumação e guarda de bens de qualquer espécie.</fullName>
+                <default>false</default>
+                <label>07927 - Armazenamento, depósito, carga, descarga, arrumação e guarda de bens de qualquer espécie.</label>
+            </value>
+            <value>
+                <fullName>07951 - Serviços portuários e ferroportuários e congênres.</fullName>
+                <default>false</default>
+                <label>07951 - Serviços portuários e ferroportuários e congênres.</label>
+            </value>
+            <value>
+                <fullName>07960 - Serviços aeroportuários, utilização de aeroporto, movimentação de passageiros, e congêneres.</fullName>
+                <default>false</default>
+                <label>07960 - Serviços aeroportuários, utilização de aeroporto, movimentação de passageiros, e congêneres.</label>
+            </value>
+            <value>
+                <fullName>07978 - Serviços de terminais rodoviários, ferroviários, metroviários, movimentação de passageiros.</fullName>
+                <default>false</default>
+                <label>07978 - Serviços de terminais rodoviários, ferroviários, metroviários, movimentação de passageiros.</label>
+            </value>
+            <value>
+                <fullName>08052 - Espetáculos teatrais.</fullName>
+                <default>false</default>
+                <label>08052 - Espetáculos teatrais.</label>
+            </value>
+            <value>
+                <fullName>08079 - Exibições cinematográficas.</fullName>
+                <default>false</default>
+                <label>08079 - Exibições cinematográficas.</label>
+            </value>
+            <value>
+                <fullName>08087 - Espetáculos circenses.</fullName>
+                <default>false</default>
+                <label>08087 - Espetáculos circenses.</label>
+            </value>
+            <value>
+                <fullName>08095 - Programas de auditório.</fullName>
+                <default>false</default>
+                <label>08095 - Programas de auditório.</label>
+            </value>
+            <value>
+                <fullName>08117 - Parques de diversões, centros de lazer e congêneres.</fullName>
+                <default>false</default>
+                <label>08117 - Parques de diversões, centros de lazer e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08125 - Boates, taxi-dancing, night-club, cabaré, danceteria, casas noturnas e congêneres.</fullName>
+                <default>false</default>
+                <label>08125 - Boates, taxi-dancing, night-club, cabaré, danceteria, casas noturnas e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08133 - Shows, bailes, desfiles, festivais e congêneres.</fullName>
+                <default>false</default>
+                <label>08133 - Shows, bailes, desfiles, festivais e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08168 - Óperas, ballet, danças, concertos, recitais e congêneres.</fullName>
+                <default>false</default>
+                <label>08168 - Óperas, ballet, danças, concertos, recitais e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08176 - Feiras, exposições, congressos e congêneres.</fullName>
+                <default>false</default>
+                <label>08176 - Feiras, exposições, congressos e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08192 - Corridas e competições de animais.</fullName>
+                <default>false</default>
+                <label>08192 - Corridas e competições de animais.</label>
+            </value>
+            <value>
+                <fullName>08206 - Competições esportivas, de destreza física ou intelectual, com ou sem a participação do espectador.</fullName>
+                <default>false</default>
+                <label>08206 - Competições esportivas, de destreza física ou intelectual, com ou sem a participação do espectador.</label>
+            </value>
+            <value>
+                <fullName>08214 - Desfiles de blocos carnavalescos ou folclóricos, trios elétricos e congêneres.</fullName>
+                <default>false</default>
+                <label>08214 - Desfiles de blocos carnavalescos ou folclóricos, trios elétricos e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08230 - Exibição de filmes, musicais, espetáculos, shows, concertos, desfiles, óperas e congêneres.</fullName>
+                <default>false</default>
+                <label>08230 - Exibição de filmes, musicais, espetáculos, shows, concertos, desfiles, óperas e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08281 - Competições - GP Brasil de Fórmula 1. Prestado por contribuinte estabelecido no Munic. de São Paulo.</fullName>
+                <default>false</default>
+                <label>08281 - Competições - GP Brasil de Fórmula 1. Prestado por contribuinte estabelecido no Munic. de São Paulo.</label>
+            </value>
+            <value>
+                <fullName>08311 - Bilhar por tempo (snooker), bilhar por ficha e pebolim.</fullName>
+                <default>false</default>
+                <label>08311 - Bilhar por tempo (snooker), bilhar por ficha e pebolim.</label>
+            </value>
+            <value>
+                <fullName>08320 - Boliche.</fullName>
+                <default>false</default>
+                <label>08320 - Boliche.</label>
+            </value>
+            <value>
+                <fullName>08338 - Divertimento eletrônico, vitrola automática, cabines privê, computadores, videogames, videokê.</fullName>
+                <default>false</default>
+                <label>08338 - Divertimento eletrônico, vitrola automática, cabines privê, computadores, videogames, videokê.</label>
+            </value>
+            <value>
+                <fullName>08354 - Divertimento eletrônico, vitrola automática, cabines privê, computadores, videogames, videokê.</fullName>
+                <default>false</default>
+                <label>08354 - Divertimento eletrônico, vitrola automática, cabines privê, computadores, videogames, videokê.</label>
+            </value>
+            <value>
+                <fullName>08362 - Máquina Eletronicamente Programável com distribuição de prêmios.</fullName>
+                <default>false</default>
+                <label>08362 - Máquina Eletronicamente Programável com distribuição de prêmios.</label>
+            </value>
+            <value>
+                <fullName>08370 - Máquina Eletronicamente Programável com distribuição de prêmios (tipo bingo).</fullName>
+                <default>false</default>
+                <label>08370 - Máquina Eletronicamente Programável com distribuição de prêmios (tipo bingo).</label>
+            </value>
+            <value>
+                <fullName>08397 - Carteado, dominó, víspora, e outros tipos de diversões com cobrança facultativa de ingresso.</fullName>
+                <default>false</default>
+                <label>08397 - Carteado, dominó, víspora, e outros tipos de diversões com cobrança facultativa de ingresso.</label>
+            </value>
+            <value>
+                <fullName>08400 - Execução de música, individualmente ou por conjunto.</fullName>
+                <default>false</default>
+                <label>08400 - Execução de música, individualmente ou por conjunto.</label>
+            </value>
+            <value>
+                <fullName>08419 - Fornecimento de música para ambientes fechados ou não.</fullName>
+                <default>false</default>
+                <label>08419 - Fornecimento de música para ambientes fechados ou não.</label>
+            </value>
+            <value>
+                <fullName>08478 - Distribuição e venda de cartelas, sorteios ou prêmios em bingos, telebingos e assemelhados.</fullName>
+                <default>false</default>
+                <label>08478 - Distribuição e venda de cartelas, sorteios ou prêmios em bingos, telebingos e assemelhados.</label>
+            </value>
+            <value>
+                <fullName>08486 - Serviços de distribuição e venda de bilhetes de loteria, cartões, pules ou cupons de apostas.</fullName>
+                <default>false</default>
+                <label>08486 - Serviços de distribuição e venda de bilhetes de loteria, cartões, pules ou cupons de apostas.</label>
+            </value>
+            <value>
+                <fullName>08494 - Barbearia, cabeleireiros, manicuros, pedicuros e congêneres.</fullName>
+                <default>false</default>
+                <label>08494 - Barbearia, cabeleireiros, manicuros, pedicuros e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08516 - Esteticistas, tratamento de pele, depilação e congêneres.</fullName>
+                <default>false</default>
+                <label>08516 - Esteticistas, tratamento de pele, depilação e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08532 - Banhos, duchas, sauna, massagens e congêneres.</fullName>
+                <default>false</default>
+                <label>08532 - Banhos, duchas, sauna, massagens e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08567 - Centros de emagrecimento, spa e congêneres.</fullName>
+                <default>false</default>
+                <label>08567 - Centros de emagrecimento, spa e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08648 - Guarda, tratamento, amestramento, embelezamento, alojamento e congêneres, relativos a animais.</fullName>
+                <default>false</default>
+                <label>08648 - Guarda, tratamento, amestramento, embelezamento, alojamento e congêneres, relativos a animais.</label>
+            </value>
+            <value>
+                <fullName>08672 - Serviços de investigações particulares, detetives e congêneres.</fullName>
+                <default>false</default>
+                <label>08672 - Serviços de investigações particulares, detetives e congêneres.</label>
+            </value>
+            <value>
+                <fullName>08842 - Serviços de artistas, atletas, modelos e manequins.</fullName>
+                <default>false</default>
+                <label>08842 - Serviços de artistas, atletas, modelos e manequins.</label>
+            </value>
+            <value>
+                <fullName>08885 - Serviços de ourivesaria e lapidação.</fullName>
+                <default>false</default>
+                <label>08885 - Serviços de ourivesaria e lapidação.</label>
+            </value>
+            <value>
+                <fullName>08893 - Serviços relativos a obras de arte sob encomenda.</fullName>
+                <default>false</default>
+                <label>08893 - Serviços relativos a obras de arte sob encomenda.</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

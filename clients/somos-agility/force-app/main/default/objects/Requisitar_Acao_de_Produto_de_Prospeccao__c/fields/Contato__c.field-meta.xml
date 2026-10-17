@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Contato</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Requisitar Ação de Produtos</relationshipLabel>
+    <relationshipName>Requisitar_A_o_de_Produtos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

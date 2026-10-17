@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Total_Realizado__c</fullName>
+    <formula>IF( Ano_PCA__c =&apos;2017&apos;, Cliente__r.Oportunidades_Fechadas_2017__c ,
+IF( Ano_PCA__c =&apos;2018&apos;, Cliente__r.Oportunidades_Fechadas_2018__c ,
+IF( Ano_PCA__c =&apos;2019&apos;, Cliente__r.Oportunidades_Fechadas_2019__c ,
+IF( Ano_PCA__c =&apos;2020&apos;, Cliente__r.Oportunidades_Fechadas_2020__c ,
+IF( Ano_PCA__c =&apos;2021&apos;, Cliente__r.Oportunidades_Fechadas_2021__c ,
+IF( Ano_PCA__c =&apos;2022&apos;, Cliente__r.Oportunidades_Fechadas_2022__c ,
+IF( Ano_PCA__c =&apos;2023&apos;, Cliente__r.Oportunidades_Fechadas_2023__c ,
+IF( Ano_PCA__c =&apos;2024&apos;, Cliente__r.Oportunidades_Fechadas_2024__c ,
+IF( Ano_PCA__c =&apos;2025&apos;, Cliente__r.Oportunidades_Fechadas_2025__c ,0)))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Total Realizado</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

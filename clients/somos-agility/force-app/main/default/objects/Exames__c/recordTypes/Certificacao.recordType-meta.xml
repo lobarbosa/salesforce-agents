@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Certificacao</fullName>
+    <active>true</active>
+    <description>Cadastrar uma nova Certificação</description>
+    <label>Certificação</label>
+    <picklistValues>
+        <picklist>Area_de_Negocio__c</picklist>
+        <values>
+            <fullName>Application Delivery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DataCenter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mobility</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PMO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Security</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ofertas__c</picklist>
+        <values>
+            <fullName>App %26 Desktop Virtualization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Application Defense</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Application Performance and Availability</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Branch Office Infrastructure Optimization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud Migration guidance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EndPoint Defense</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Governance%2C Risk and Compliance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hyperconverged Solutions</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infrastructure Defense</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MSS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mobility Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Multi Cloud Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Network Control %26 Application Visibility</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Network Service Automation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Private Cloud Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Public Cloud Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Software Defined Solutions</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Storage %26 Data Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Visibility and Identity</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Time_Tecnico__c</picklist>
+        <values>
+            <fullName>Application Delivery</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CCT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DataCenter</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mobility</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PMO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Security</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

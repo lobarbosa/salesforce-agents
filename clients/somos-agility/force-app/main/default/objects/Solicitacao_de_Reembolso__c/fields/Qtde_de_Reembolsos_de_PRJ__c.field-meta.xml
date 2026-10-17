@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qtde_de_Reembolsos_de_PRJ__c</fullName>
+    <label>Qtde de Reembolsos de PRJ</label>
+    <summaryFilterItems>
+        <field>Lancamento_de_Despesas__c.Relacionado_ao_Projeto__c</field>
+        <operation>notEqual</operation>
+        <value></value>
+    </summaryFilterItems>
+    <summaryForeignKey>Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

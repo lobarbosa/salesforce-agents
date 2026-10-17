@@ -1,0 +1,641 @@
+<apex:page StandardController="Produto_Pedido__c" showHeader="false"
+    tabStyle="Produto_Pedido__c" extensions="clsCadProdutoxPedido"
+    id="cadProdutoxPedido">
+    <!--Bibliotecas Jquery-->
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.JqueryUI, '/ui/jquery-ui.js')}" />
+    <!--Bibliotecas PrimeUI-->
+    <apex:includeScript value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.js')}" />
+    <!---------------------->
+    <!--Bibliotecas de Formatações-->
+    <apex:includeScript value="{!URLFOR($Resource.JqueryFormat, 'JqueryFormat.js')}" />
+    <!---------------------->
+    <!--CSS do PrimeUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.css')}" />
+    <!--CSS do JqueryUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryUI, '/themes/base/jquery-ui.css')}" />
+    <!---------------------->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/themes/overcast/theme.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/css/tabview/tabview.css')}" />
+    <!---------------------->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#default').puitabview(); 
+             $('#img_help_prod').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa Nome do Item*, escolhendo a opção Todos os Campos'});
+            
+             $('#img_help_pagCompra').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa ddl*, escolhendo a opção Todos os Campos'}); 
+            
+            $('#img_help_pagVenda').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa ddl*, escolhendo a opção Todos os Campos'}); 
+            
+            $('#img_help_CodFCompra').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa Cat*, escolhendo a opção Todos os Campos'}); 
+            
+            $('#img_help_CodFVenda').puitooltip({  
+            showEvent: 'mouseover',  
+            at: 'left bottom',  
+            content: 'Favor preencher na pesquisa Cat*, escolhendo a opção Todos os Campos'}); 
+        });
+    </script>
+
+    <style>
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+    {
+    border: 0px solid #d3d3d3;
+    background: #CDE8F0 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #555555;
+}
+
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited
+    {
+    color: #555555;
+    text-decoration: none;
+}
+
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus
+    {
+    border: 1px solid #999999;
+    background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-hover a,.ui-state-hover a:hover {
+    color: #212121;
+    text-decoration: none;
+}
+
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active
+    {
+    border: 1px solid #aaaaaa;
+    background: #006854 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.ui-widget :active {
+    outline: none;
+}
+
+.ui-widget-content {
+    border: 1px solid #aaaaaa;
+    background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50%
+        repeat-x;
+    color: #222222;
+}
+
+.ui-widget-content a {
+    color: #222222;
+}
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    background: #CDE8F0 url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
+        50% 50% repeat-x;
+    color: black;
+    font-weight: bold;
+}
+
+.ui-widget-header a {
+    color: #CDE8F0;
+    font-weight: bold;
+}
+</style>
+
+    <div id="default" style="display: none">
+        <ul>
+            <li><a href="#tab1">Novo Produto</a></li>
+        </ul>
+        <div>
+            <div id="tab1">
+                <apex:form id="frmPost" onsubmit="return validarFRM(this)">
+                <br />
+                            <apex:outputText id="txtMensagem" value="{!msgRetorno}" style="color:red;"></apex:outputText>
+                    <input type="hidden" value="{!idProduto}" name="idProduto"
+                        id="idProduto" />
+                    <input type="hidden" value="{!idNegociacao}" name="idNegociacao"
+                        id="idNegociacao" />
+                    <input type="hidden" value="{!idOportunidade}"
+                        name="idOportunidade" id="idOportunidade" />
+                    <input type="hidden" value="{!Redict}" name="Redict" id="Redict" />
+
+                    <input type="hidden" value="{!ReadOnly}" name="ReadOnly"
+                        id="ReadOnly" />
+                    <input type="hidden" value="{!DisabledField}" name="DisabledField"
+                        id="DisabledField" />
+                    <input type="hidden" value="{!mBotao}" name="mBotao" id="mBotao" />
+                    <input type="hidden" value="{!Produto_pedido__c.CNPJ_de_Faturamento__c}" name="idConfigfirst"
+                        id="idConfigfirst" />
+                    <input type="hidden" value="{!SeguraCampo}" name="SeguraCampo"
+                        id="SeguraCampo" />
+                    <input type="hidden" value="{!prodCambio}" name="Cambio"
+                        id="Cambio" />
+                    <input type="hidden" value="{!prodCambioVenda}" name="CambioVenda"
+                        id="CambioVenda" />
+                        
+                    <input type="hidden" value="{!CambioGlobal}" name="CambioGlobal"
+                        id="CambioGlobal" />
+                    <apex:pageBlock id="pgMaster">
+                        <hr />
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    <div id="dv_Produto" style="display: block;">
+                                        <table width="100%">
+                                            <!-- Informações Gerais do Produto-->
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações <apex:inputField id="txtNegociacaoComercial"
+                                                        value="{!Produto_Pedido__c.Negociacao_Comercial__c}"
+                                                        style="display:none;" />
+                                                </td>
+                                            </tr>
+                                            <tr id="tr_Informacao_1">
+                                                <td>
+                                                
+                                                Produto
+                                                <img   class="helpOrb" id="img_help_prod" title="Favor preencher na pesquisa *Nome do Item, escolhendo a opção Todos os Campos" src="/s.gif" ></img>
+                                                
+                                                </td>
+                                                <td colspan="4"><apex:inputfield id="txtProdutoCompra"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.Produto_NewAge__c}"
+                                                        onchange="RetornaDesc(document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtProdutoCompra_lkid').value);" />
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Detalhes do Produto</td>
+                                                <td colspan="4"><apex:inputfield id="txtDescricaoProduto" required="false"
+                                                        value="{!Produto_Pedido__c.Descricao__c}" /></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>Origem de Faturamento</td>
+
+                                                <td><apex:selectList id="ddlOrigemFat"
+                                                        value="{!Produto_Pedido__c.CNPJ_de_Faturamento__c}"
+                                                        size="1" required="true">
+                                                        <apex:selectOptions value="{!OrigemFat}"></apex:selectOptions>
+                                                    </apex:selectList> <!--<apex:inputfield id="txtcnpjFat"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.CNPJ_de_Faturamento__c}"   />-->
+
+                                                </td>
+                                            </tr>
+                                            <!-- Informações de Compra-->
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações de compra</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fornecedor</td>
+                                                <td><apex:inputfield id="txtFornecedorCompra"
+                                                        value="{!Produto_Pedido__c.Fornecedor__c}"
+                                                        required="true"
+                                                        onchange="RetornaDescForn(document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtFornecedorCompra_lkid').value);" />
+                                                    <br /> <label id="txtFornecedor"></label></td>
+
+                                                <td>
+                                                
+                                                Código Fiscal de Compra
+                                                <img   class="helpOrb" id="img_help_CodFCompra" title="" src="/s.gif" ></img>
+                                                </td>
+                                                <td><apex:inputField id="txtCategoriaCompra"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.Categoria_de_Compra__c}" /></td>
+
+                                            </tr>
+                                            <tr id="tr_Produto_1">
+                                                <td>Moeda de Compra</td>
+                                                <td>
+                                                
+                                                <apex:selectList id="txtMoedaCompra"
+                                                        value="{!Produto_Pedido__c.Moeda_Compra__c}"
+                                                        size="1" onchange="inativaCambio(this.value,'Compra')"
+                                                        required="true">
+                                                        <apex:selectOptions value="{!MoedaProd}"></apex:selectOptions>
+                                                    </apex:selectList>
+                                                
+                                                <!--<apex:inputfield id="txtMoedaCompra"
+                                                        value="{!Produto_Pedido__c.Moeda_Compra__c}"
+                                                        onchange="inativaCambio(this.value,'Compra')" />-->
+                                                        
+                                                        
+                                                        </td>
+                                                <td>Câmbio da Compra (R$)</td>
+                                                <td colspan="3"><apex:inputfield id="txtCotacaoCompra"
+                                                        value="{!Produto_Pedido__c.Cotacao_Compra__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" required="true"/></td>
+                                            </tr>
+                                            <tr id="tr_Produto_2">
+                                                <td>Quantidade do Item</td>
+                                                <td><apex:inputfield id="txtQuantidadeCompra"
+                                                        value="{!Produto_Pedido__c.Quantidade__c}"
+                                                        required="true"
+                                                        onchange="RetornaValorTot(this.value,document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtValorProdutoCompra').value);" /></td>
+                                                <td>Valor Unitario</td>
+                                                <td><apex:inputfield id="txtValorProdutoCompra"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.Valor_do_produto__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)"
+                                                        onblur="RetornaValorTot(document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtQuantidadeCompra').value,this.value);" />
+
+
+                                                    <br /> Valor Total de Compra:<label id="txtValorTotal"></label>
+                                                </td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Valor Rebate Fabricante ( em U$ )</td>
+                                                <td colspan="4"><apex:inputfield id="txtValorRewards"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.Valor_Rewards__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                
+                                                Condição de Pagamento de Compra
+                                                
+                                                <img   class="helpOrb" id="img_help_pagCompra" title="" src="/s.gif" ></img>
+                                                
+                                                </td>
+                                                <td><apex:inputField id="txtCondicaoPagamentoCompra"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.Condicao_de_Pagamento_Compra__c}" />
+                                                </td>
+                                            </tr>
+                                            <!-- Informações de Venda-->
+                                            <tr
+                                                class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações de Venda</td>
+                                            </tr>
+                                            <tr id="tr_Informacao_1">
+
+                                                <td>CNPJ de Destino</td>
+                                                <td><apex:inputfield id="txtCNPJDest"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.CNPJ_de_Destino__c}"
+                                                        onchange="RetornaDescDest(document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCNPJDest_lkid').value);" />
+
+                                                    <br /> <label id="txtCNPJDest"></label></td>
+                                                <td>
+                                                
+                                                Código Fiscal de Venda
+                                                
+                                                <img   class="helpOrb" id="img_help_CodFVenda" title="" src="/s.gif" ></img>
+                                                
+                                                </td>
+                                                <td><apex:inputfield id="txtCategoriaVenda"
+                                                        required="true" value="{!Produto_Pedido__c.Categoria__c}" /></td>
+                                            </tr>
+                                            <tr id="tr_Produto_1">
+                                                <td>Moeda de Venda</td>
+                                                <td>
+                                                
+                                                
+                                                <apex:selectList id="txtMoeda"
+                                                        value="{!Produto_Pedido__c.Moeda__c}"
+                                                        required="true"
+                                                        size="1" onchange="inativaCambio(this.value,'Venda')">
+                                                        <apex:selectOptions value="{!MoedaProd}"></apex:selectOptions>
+                                                    </apex:selectList>
+                                                
+                                                <!--<apex:inputfield id="txtMoeda"
+                                                        value="{!Produto_Pedido__c.Moeda__c}"
+                                                        onchange="inativaCambio(this.value,'Venda')" />-->
+                                                        
+                                                
+                                                
+                                                </td>
+
+                                                <td>Câmbio da Venda (R$)</td>
+                                                <td><apex:inputfield id="txtCotacao"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.Cotacao_do_Dolar__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Markup</td>
+                                                <td><apex:inputfield id="txtMarkup" required="true"
+                                                        value="{!Produto_Pedido__c.Markup__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+                                                <td>
+                                                
+                                                Condição de Pagamento
+                                                <img   class="helpOrb" id="img_help_pagVenda" title="" src="/s.gif" ></img>
+                                                </td>
+                                                <td><apex:inputfield id="txtCondPagamento"
+                                                        required="true"
+                                                        value="{!Produto_Pedido__c.Condicao_de_Pagamento__c}" /></td>
+
+
+                                            </tr>
+                                            <tr>
+                                                <td>Comissão Intermediária (%)</td>
+                                                <td colspan="4"><apex:inputfield id="txtComissao"
+                                                        required="false"
+                                                        value="{!Produto_Pedido__c.Comissao_Intermediaria__c}"
+                                                        onkeypress="mascara(this,moeda2Casas)" /></td>
+
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <hr />
+                        <center>
+                            <apex:commandButton action="{!SalvarPedidoxProduto}"
+                                id="btnSalvarOpt" value="Incluir item na lista"
+                                style="display:{!mBotao}" />
+                            
+                        </center>
+                    </apex:pageBlock>
+                </apex:form>
+            </div>
+        </div>
+    </div>
+
+    <script style="text/javascript">
+    
+        
+
+       
+
+        if (document
+                .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoeda').value != 'Real'
+                && document
+                        .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoeda').value != 'Dolar') {
+            document
+                    .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoeda').value = 'Real';
+        }
+
+        if (document.getElementById('idConfigfirst').value == '') {
+            document
+                    .getElementById('cadProdutoxPedido:frmPost:pgMaster:ddlOrigemFat').value = '0015000000OZGSRAA5';
+        } 
+        
+        function validarFRM(frm){
+            var msg='';
+            
+            if(document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacaoCompra').value=='0' && document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoedaCompra').value=='Dolar'){
+                msg+='Por favor preencher o valor em dolar maior que 0\n';
+            }
+            
+            if(document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacao').value=='0' && document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoeda').value=='Dolar'){
+                msg+='Por favor preencher o valor em dolar maior que 0\n';
+            }
+            if(msg!=''){
+                alert(msg);
+                return false;
+            }
+            else{
+                return true;
+            }
+        }
+        
+        function inativaCambio(vlr, tipo) {
+        var cambio=document.getElementById('CambioGlobal').value;
+        var Rcambio=cambio.replace('.',',');
+            if (tipo == 'Compra') {
+                if (vlr == 'Real') {
+                    document
+                            .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacaoCompra').value = 0;
+                    document
+                            .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacaoCompra').readOnly = true;
+                } else {
+                    document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacaoCompra').value = Rcambio;
+                    document
+                            .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacaoCompra').readOnly = false;
+                }
+            } else if (tipo == 'Venda') {
+                if (vlr == 'Real') {
+                    document
+                            .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacao').value = 0;
+                    document
+                            .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacao').readOnly = true;
+                } else {
+                   document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacao').value = Rcambio;
+                    document
+                            .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacao').readOnly = false;
+                }
+
+            }
+        }
+        inativaCambio(
+                document
+                        .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoedaCompra').value,
+                'Compra');
+        inativaCambio(
+                document
+                        .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoeda').value,
+                'Venda');
+        if (document.getElementById('ReadOnly').value == 'true') {
+            //Irá bloquear todos os campos para edição
+            itens = document.getElementsByTagName('input');
+            for (i = 0; i < itens.length; i++) {
+                itens[i].setAttribute('disabled', 'true');
+            }
+            itensList = document.getElementsByTagName('select');
+            for (i = 0; i < itensList.length; i++) {
+                itensList[i].setAttribute('disabled', 'true');
+            }
+        }
+        var Habilitar = 1;
+        if (document.getElementById('idProduto').value != ''
+                && document.getElementById('Redict').value == '1') {
+            window.open(
+                    'https://na3.salesforce.com/apex/cadNegociacaoComercial?id='
+                            + document.getElementById('idNegociacao').value
+                            + '&idProduto='
+                            + document.getElementById('idProduto').value
+                            + '&Redict=1', '_top');
+            Habilitar = 0;
+        } else if (document.getElementById('Redict').value == '2') {
+            window.open(
+                    'https://na3.salesforce.com/apex/cadNegociacaoComercial?id='
+                            + document.getElementById('idNegociacao').value
+                            + '&idProduto=', '_top');
+            Habilitar = 0;
+        }
+        if (Habilitar == 1) {
+            document.getElementById('default').style.display = 'block';
+        }
+            
+        //Funções de preenchimento automatico:
+        function RetornaDesc(idProd) {
+            //alert(idProd);
+            Visualforce.remoting.Manager
+                    .invokeAction(
+                            '{!$RemoteAction.clsCadProdutoxPedido.RetornaDescricao}',
+                            idProd,
+                            function(result, event) {
+                                if (event.status) {
+                                    if (result != '') {
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        //alert('Gravação realizada com sucesso');
+                                        //window.location.reload(true);
+                                        //alert(result);
+
+                                        document
+                                                .getElementById("cadProdutoxPedido:frmPost:pgMaster:txtDescricaoProduto").innerHTML = result;
+                                    }
+
+                                }
+                            });
+        }
+        //Funções de preenchimento automatico:
+        function RetornaValorTot(vlrUnit, qtdProd) {
+            //alert(idProd);
+            Visualforce.remoting.Manager
+                    .invokeAction(
+                            '{!$RemoteAction.clsCadProdutoxPedido.RetornaValor}',
+                            vlrUnit,
+                            qtdProd,
+                            function(result, event) {
+                                if (event.status) {
+                                    if (result != '') {
+                                        document
+                                                .getElementById("txtValorTotal").innerHTML = result;
+                                    }
+
+                                }
+                            });
+        }
+
+        //Funções de preenchimento automatico:
+        function RetornaDescForn(idForn) {
+            //alert(idProd);
+            Visualforce.remoting.Manager
+                    .invokeAction(
+                            '{!$RemoteAction.clsCadProdutoxPedido.RetornaFornecedor}',
+                            idForn,
+                            function(result, event) {
+                                if (event.status) {
+                                    if (result != '') {
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        //alert('Gravação realizada com sucesso');
+                                        //window.location.reload(true);
+                                        //alert(result);
+
+                                        document
+                                                .getElementById("txtFornecedor").innerHTML = result;
+                                    }
+
+                                }
+                            });
+        }
+
+        //Funções de preenchimento automatico:
+        function RetornaDescDest(idCNPJ) {
+            //alert(idProd);
+            Visualforce.remoting.Manager
+                    .invokeAction(
+                            '{!$RemoteAction.clsCadProdutoxPedido.RetornaCNPJDest}',
+                            idCNPJ,
+                            function(result, event) {
+                                if (event.status) {
+                                    if (result != '') {
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        result = result.replace("{B}", "<br/>");
+                                        //alert('Gravação realizada com sucesso');
+                                        //window.location.reload(true);
+                                        //alert(result);
+
+                                        document.getElementById("txtCNPJDest").innerHTML = result;
+                                    }
+
+                                }
+                            });
+        }
+
+        RetornaDesc(document
+                .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtProdutoCompra_lkid').value);
+        RetornaDescForn(document
+                .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtFornecedorCompra_lkid').value);
+        RetornaDescDest(document
+                .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCNPJDest_lkid').value);
+        RetornaValorTot(
+                document
+                        .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtQuantidadeCompra').value,
+                document
+                        .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtValorProdutoCompra').value);
+        document.getElementById(
+                'cadProdutoxPedido:frmPost:pgMaster:txtProdutoCompra').focus();
+                if (document.getElementById('Cambio').value != '') {
+            document
+                    .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacaoCompra').value = document
+                    .getElementById('Cambio').value;
+        }
+
+        /*if (document.getElementById('CambioVenda').value != '') {
+            document
+                    .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacao').value = document
+                    .getElementById('CambioVenda').value;
+        }*/
+         if (document
+                .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtValorProdutoCompra').value == '') {
+                
+                var cambio=document.getElementById('CambioGlobal').value;
+        var Rcambio=cambio.replace('.',',');
+        //alert(Rcambio);
+                
+            document
+                    .getElementById('cadProdutoxPedido:frmPost:pgMaster:txtMoedaCompra').value = 'Dolar';
+          document.getElementById('cadProdutoxPedido:frmPost:pgMaster:txtCotacaoCompra').value = Rcambio;
+        }
+    </script>
+</apex:page>

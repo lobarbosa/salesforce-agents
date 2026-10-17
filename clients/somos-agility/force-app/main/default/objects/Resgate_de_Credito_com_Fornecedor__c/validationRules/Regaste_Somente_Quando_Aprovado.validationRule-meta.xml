@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Regaste_Somente_Quando_Aprovado</fullName>
+    <active>true</active>
+    <description>Somente é possível realizar resgates quando o Status for igual a aprovado</description>
+    <errorConditionFormula>IF((ISPICKVAL( Credito_com_Fornecedores__r.Status__c ,&quot;Rascunho&quot;)||ISPICKVAL(Credito_com_Fornecedores__r.Status__c,&quot;Pendente&quot;)||ISPICKVAL(Credito_com_Fornecedores__r.Status__c,&quot;Rejeitado&quot;)), Credito_com_Fornecedores__r.Quantidade_de_Resgates__c &gt;=0,false)</errorConditionFormula>
+    <errorMessage>Somente é possível realizar resgates após a aprovação do Crédito.</errorMessage>
+</ValidationRule>

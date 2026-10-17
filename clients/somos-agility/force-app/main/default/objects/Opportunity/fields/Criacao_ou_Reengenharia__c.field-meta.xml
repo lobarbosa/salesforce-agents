@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Criacao_ou_Reengenharia__c</fullName>
+    <description>AM 24042018: Criação da Visão Tipo - Automação: Ao salvar o registro, o campo ID Criação da Visão Tipo será condicionado ao campo ID 8 Cliente já possui a visão estabelecida. Se ID 8 = SIM o ID Criação da Visão Tipo será uma Reengenharia, se não será um Criação das Visão da Solução. Valores a serem inseridos &quot;CVS&quot; ou &quot;RVS&quot;</description>
+    <externalId>false</externalId>
+    <formula>CASE(  Cliente_ja_possui_visao_estabelecida__c  , 
+&quot;Sim&quot;,&quot;Reengenharia da Visão da Solução&quot;, 
+&quot;Não&quot;,&quot;Criação da Visão da Solução&quot;,&quot;&quot;)
+
+
+/*
+AND(
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Service Manager&quot;,
+*/</formula>
+    <label>Criação ou Reengenharia?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

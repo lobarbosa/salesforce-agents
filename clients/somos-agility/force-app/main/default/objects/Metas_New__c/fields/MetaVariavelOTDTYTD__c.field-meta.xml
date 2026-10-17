@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MetaVariavelOTDTYTD__c</fullName>
+    <formula>IF(
+	today() &gt;= DATE(year(today()),01,01) &amp;&amp;
+	today() &lt;= DATE(year(today()),03,31),
+	Rentabilidade_Q1_Digital_Transformation__c,
+	IF(
+		today() &gt;= DATE(year(today()),04,01) &amp;&amp;
+		today() &lt;= DATE(year(today()),06,30),
+		Rentabilidade_Q1_Digital_Transformation__c + Rentabilidade_Q2_Digital_Tranformation__c,
+		IF(
+			today() &gt;= DATE(year(today()),07,01) &amp;&amp;
+			today() &lt;= DATE(year(today()),09,30),
+			Rentabilidade_Q1_Digital_Transformation__c + Rentabilidade_Q2_Digital_Tranformation__c + Rentabilidade_Q3_Digital_Tranformation__c,
+			IF(
+				today() &gt;= DATE(year(today()),10,01) &amp;&amp;
+				today() &lt;= DATE(year(today()),12,31),
+				Rentabilidade_Q1_Digital_Transformation__c + Rentabilidade_Q2_Digital_Tranformation__c + Rentabilidade_Q3_Digital_Tranformation__c + Rentabilidade_Q4_Digital_Tranformation__c,
+				0				
+			)
+		)
+	)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Meta variável: OT (DT) YTD</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

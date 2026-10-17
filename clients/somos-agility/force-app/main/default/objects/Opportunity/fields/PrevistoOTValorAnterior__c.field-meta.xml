@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrevistoOTValorAnterior__c</fullName>
+    <defaultValue>0</defaultValue>
+    <description>Campo criado para guardar o valor anterior do &quot;&quot;, a fim de popular uma variável para o modelo de e-mail &quot;Notificação de alteração do meu compromisso de fechamento&quot;.</description>
+    <inlineHelpText>One time</inlineHelpText>
+    <label>Previsto OT (Valor Anterior)</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nome_do_distribuidor__c</fullName>
+    <label>Nome do distribuidor</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Adistec</fullName>
+                <default>false</default>
+                <label>Adistec</label>
+            </value>
+            <value>
+                <fullName>AK Networks</fullName>
+                <default>false</default>
+                <label>AK Networks</label>
+            </value>
+            <value>
+                <fullName>CLM</fullName>
+                <default>false</default>
+                <label>CLM</label>
+            </value>
+            <value>
+                <fullName>Ingram</fullName>
+                <default>false</default>
+                <label>Ingram</label>
+            </value>
+            <value>
+                <fullName>M3Corp</fullName>
+                <default>false</default>
+                <label>M3Corp</label>
+            </value>
+            <value>
+                <fullName>TD Synnex</fullName>
+                <default>false</default>
+                <label>TD Synnex</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

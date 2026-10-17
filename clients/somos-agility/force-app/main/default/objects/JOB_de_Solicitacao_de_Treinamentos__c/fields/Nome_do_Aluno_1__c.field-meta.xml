@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nome_do_Aluno_1__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <description>Busca um contado na conta Agility Networks</description>
+    <label>Nome do(a) Aluno(a) 1:</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Contact.Account.Name</field>
+            <operation>contains</operation>
+            <value>Agility</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>JOB de Solicitação de Treinamentos</relationshipLabel>
+    <relationshipName>JOB_de_Solicita_o_de_Treinamentos</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

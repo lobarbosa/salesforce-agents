@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Depois_que_Enviado_pode_somente_Cancelar</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( Solicitacao_Enviada_para_o_Fornecedor__c = true,  Cancelar__c =false) &amp;&amp;  $User.ProfileId &lt;&gt; &apos;00e38000000jRQi&apos;</errorConditionFormula>
+    <errorMessage>Não é possível editar este Coffee, somente Cancelar o Pedido.</errorMessage>
+</ValidationRule>

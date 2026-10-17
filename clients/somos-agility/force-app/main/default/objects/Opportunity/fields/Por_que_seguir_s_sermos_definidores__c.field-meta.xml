@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Por_que_seguir_s_sermos_definidores__c</fullName>
+    <inlineHelpText>Por que devemos continuar nesta oportunidade se não somos os definidores da solução para o cliente?</inlineHelpText>
+    <label>Desvio da definição de solução</label>
+    <length>10000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

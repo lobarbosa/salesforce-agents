@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo__c</fullName>
+    <label>Tipo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>RCA</fullName>
+                <default>false</default>
+                <label>RCA</label>
+            </value>
+            <value>
+                <fullName>RAO</fullName>
+                <default>false</default>
+                <label>RAO</label>
+            </value>
+            <value>
+                <fullName>Sumário Executivo</fullName>
+                <default>false</default>
+                <label>Sumário Executivo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

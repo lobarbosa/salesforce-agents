@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Relacionado_ao_Projeto__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <label>Relacionado ao Projeto:</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>O valor não existe ou não é compatível com os critérios do filtro. F3</errorMessage>
+        <filterItems>
+            <field>PPM_Project__c.Conta__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Relacionado_a_Conta__c</valueField>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>PPM_Project__c</referenceTo>
+    <relationshipLabel>Lançamento de Despesas</relationshipLabel>
+    <relationshipName>Lan_amento_de_Despesas</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

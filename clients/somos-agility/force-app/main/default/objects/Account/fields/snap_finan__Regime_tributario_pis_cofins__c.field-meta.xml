@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Regime_tributario_pis_cofins__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Identifica o regime tributário do contribuinte para o PIS e COFINS.</description>
+    <inlineHelpText>Identifica o regime tributário do contribuinte para o PIS e COFINS.</inlineHelpText>
+    <label>Regime tributário PIS/COFINS</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1-Não cumulativo</fullName>
+                <default>true</default>
+                <label>1-Não cumulativo</label>
+            </value>
+            <value>
+                <fullName>2-Cumulativo</fullName>
+                <default>false</default>
+                <label>2-Cumulativo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

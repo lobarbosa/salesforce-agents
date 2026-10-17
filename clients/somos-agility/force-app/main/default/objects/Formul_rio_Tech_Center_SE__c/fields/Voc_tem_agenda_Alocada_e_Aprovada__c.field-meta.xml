@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Voc_tem_agenda_Alocada_e_Aprovada__c</fullName>
+    <inlineHelpText>-Você tem agenda alocada e aprovada para acompanhar a montagem e teste do ambiente? 
+-Você tem agenda alocada e aprovada para acompanhar o(s) dia(s) de teste?</inlineHelpText>
+    <label>Você tem agenda Alocada e Aprovada?</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Sim</fullName>
+                <default>false</default>
+                <label>Sim</label>
+            </value>
+            <value>
+                <fullName>Não</fullName>
+                <default>false</default>
+                <label>Não</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

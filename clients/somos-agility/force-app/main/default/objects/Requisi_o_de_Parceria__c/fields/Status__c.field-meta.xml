@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <description>Status de fluxo de aprovação 30/06/21</description>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pendente</fullName>
+                <default>true</default>
+                <label>Pendente</label>
+            </value>
+            <value>
+                <fullName>Aprovado_CEO</fullName>
+                <default>false</default>
+                <label>Aprovado CEO</label>
+            </value>
+            <value>
+                <fullName>Reprovado_CEO</fullName>
+                <default>false</default>
+                <label>Reprovado CEO</label>
+            </value>
+            <value>
+                <fullName>Pendente Contratos</fullName>
+                <default>false</default>
+                <label>Pendente Contratos</label>
+            </value>
+            <value>
+                <fullName>Aprovado Contratos</fullName>
+                <default>false</default>
+                <label>Aprovado Contratos</label>
+            </value>
+            <value>
+                <fullName>Recall</fullName>
+                <default>false</default>
+                <label>Recall</label>
+            </value>
+            <value>
+                <fullName>Reprovado Contratos</fullName>
+                <default>false</default>
+                <label>Reprovado Contratos</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>Suporte_Gerencial_Respons_vel__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Suporte_Gerencial_Respons_vel__c</field>
+        <operation>contains</operation>
+        <value>Anderson</value>
+    </filters>
+    <filters>
+        <field>Suporte_Gerencial_Respons_vel__c</field>
+        <operation>notContain</operation>
+        <value>v1</value>
+    </filters>
+    <label>Tudo</label>
+</ListView>

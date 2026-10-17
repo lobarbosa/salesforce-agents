@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M01_Preencher_DSA</fullName>
+    <active>false</active>
+    <description>AM241018: obrigatório DSA quando selecionado &quot;SOW&quot; ou &quot;PSP&quot;</description>
+    <errorConditionFormula>AND(
+ISBLANK(DSA_relacionado__c),
+OR(
+ISPICKVAL(Tipo_de_credito__c,&quot;SOW&quot;),
+ISPICKVAL(Tipo_de_credito__c,&quot;PSP&quot;)
+)
+)
+
+
+
+/*
+AND(
+ISPICKVAL(Tipo_de_credito__c,&quot;SOW&quot;),
+ISBLANK(DSA_relacionado__c)
+)
+
+
+ANTIGO
+AND(
+ISPICKVAL(Tipo_de_credito__c,&quot;SOW&quot;),
+OR(
+ISBLANK(DSA_relacionado__c),
+NOT(ISBLANK(Part_number_relacionado__c)),
+NOT(ISBLANK(CR_relacionado__c))
+)
+)
+*/</errorConditionFormula>
+    <errorDisplayField>DSA_relacionado__c</errorDisplayField>
+    <errorMessage>Preencha o campo &quot;DSA relacionado&quot; (Msg01)</errorMessage>
+</ValidationRule>

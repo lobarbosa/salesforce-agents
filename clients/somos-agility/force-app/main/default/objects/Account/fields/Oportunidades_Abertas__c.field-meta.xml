@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidades_Abertas__c</fullName>
+    <label>Oportunidades Abertas</label>
+    <summaryFilterItems>
+        <field>Opportunity.Status__c</field>
+        <operation>equals</operation>
+        <value>Aberto</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

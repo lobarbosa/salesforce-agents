@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Todos_os_Ativos</fullName>
+    <columns>NAME</columns>
+    <columns>Cliente__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Data_Prevista_de_Retorno__c</columns>
+    <columns>Solicitante__c</columns>
+    <columns>Status_Empr_stimo__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Todos os Ativos</label>
+</ListView>

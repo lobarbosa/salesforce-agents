@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M26_Porque_a_Solucao_e_Importante_OQF</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Para alterar a fase da oportunidade de OQF para CVS é obrigatório preencher o campo Por que a Solução é Importante</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+(ISPICKVAL(PRIORVALUE(StageName),&quot;OQF&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;CVS/RVS&quot;)) ,ISBLANK(    Porque_a_solucao_e_importante__c ))</errorConditionFormula>
+    <errorMessage>** Para alterar de fase é obrigatório o preenchimento do campo &quot;Por que a Solução é Importante?&quot; (Msg26)</errorMessage>
+</ValidationRule>

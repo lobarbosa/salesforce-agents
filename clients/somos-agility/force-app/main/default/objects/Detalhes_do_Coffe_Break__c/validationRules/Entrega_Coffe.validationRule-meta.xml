@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Entrega_Coffe</fullName>
+    <active>true</active>
+    <errorConditionFormula>Data_Hora_da_Entrega__c  &lt;=  Solicita_o_de_Coffe_Break__r.Data_Hora_da_Solicita_o__c  +2</errorConditionFormula>
+    <errorMessage>&quot;APENAS SOLICITAÇÕES COM 48 HORAS DE ANTECEDENCIA PARA ENTREGA SÃO ACEITAS&quot;</errorMessage>
+</ValidationRule>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Executores_pendentes__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    NOT(
+        OR(
+            AND(
+                VALUE(TEXT(Qtd_de_executores__c)) &gt;= 1,
+                ISPICKVAL(
+                    Status_de_aprovacao_1__c,
+                    &quot;Pendente - Preenchimento do executor&quot;
+                )
+            ),
+            AND(
+                VALUE(TEXT(Qtd_de_executores__c)) &gt;= 2,
+                ISPICKVAL(
+                    Status_de_aprovacao_2__c,
+                    &quot;Pendente - Preenchimento do executor&quot;
+                )
+            ),
+            AND(
+                VALUE(TEXT(Qtd_de_executores__c)) &gt;= 3,
+                ISPICKVAL(
+                    Status_de_aprovacao_3__c,
+                    &quot;Pendente - Preenchimento do executor&quot;
+                )
+            )
+        )
+    ),
+
+    &quot;Nenhum analista pendente&quot;,
+
+    IF(
+        AND(
+            VALUE(TEXT(Qtd_de_executores__c)) &gt;= 1,
+            ISPICKVAL(
+                Status_de_aprovacao_1__c,
+                &quot;Pendente - Preenchimento do executor&quot;
+            ),
+            NOT(ISBLANK(Executor_da_atividade_1__c))
+        ),
+        TRIM(
+            BLANKVALUE(Executor_da_atividade_1__r.FirstName, &quot;&quot;)
+            &amp; &quot; &quot;
+            &amp; BLANKVALUE(Executor_da_atividade_1__r.LastName, &quot;&quot;)
+        ),
+        &quot;&quot;
+    )
+    &amp;
+    IF(
+        AND(
+            VALUE(TEXT(Qtd_de_executores__c)) &gt;= 2,
+            ISPICKVAL(
+                Status_de_aprovacao_2__c,
+                &quot;Pendente - Preenchimento do executor&quot;
+            ),
+            NOT(ISBLANK(Executor_da_atividade_2__c))
+        ),
+        IF(
+            AND(
+                VALUE(TEXT(Qtd_de_executores__c)) &gt;= 1,
+                ISPICKVAL(
+                    Status_de_aprovacao_1__c,
+                    &quot;Pendente - Preenchimento do executor&quot;
+                ),
+                NOT(ISBLANK(Executor_da_atividade_1__c))
+            ),
+            &quot;, &quot;,
+            &quot;&quot;
+        )
+        &amp;
+        TRIM(
+            BLANKVALUE(Executor_da_atividade_2__r.FirstName, &quot;&quot;)
+            &amp; &quot; &quot;
+            &amp; BLANKVALUE(Executor_da_atividade_2__r.LastName, &quot;&quot;)
+        ),
+        &quot;&quot;
+    )
+    &amp;
+    IF(
+        AND(
+            VALUE(TEXT(Qtd_de_executores__c)) &gt;= 3,
+            ISPICKVAL(
+                Status_de_aprovacao_3__c,
+                &quot;Pendente - Preenchimento do executor&quot;
+            ),
+            NOT(ISBLANK(Executor_da_atividade_3__c))
+        ),
+        IF(
+            OR(
+                AND(
+                    VALUE(TEXT(Qtd_de_executores__c)) &gt;= 1,
+                    ISPICKVAL(
+                        Status_de_aprovacao_1__c,
+                        &quot;Pendente - Preenchimento do executor&quot;
+                    ),
+                    NOT(ISBLANK(Executor_da_atividade_1__c))
+                ),
+                AND(
+                    VALUE(TEXT(Qtd_de_executores__c)) &gt;= 2,
+                    ISPICKVAL(
+                        Status_de_aprovacao_2__c,
+                        &quot;Pendente - Preenchimento do executor&quot;
+                    ),
+                    NOT(ISBLANK(Executor_da_atividade_2__c))
+                )
+            ),
+            &quot;, &quot;,
+            &quot;&quot;
+        )
+        &amp;
+        TRIM(
+            BLANKVALUE(Executor_da_atividade_3__r.FirstName, &quot;&quot;)
+            &amp; &quot; &quot;
+            &amp; BLANKVALUE(Executor_da_atividade_3__r.LastName, &quot;&quot;)
+        ),
+        &quot;&quot;
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Executores pendentes</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

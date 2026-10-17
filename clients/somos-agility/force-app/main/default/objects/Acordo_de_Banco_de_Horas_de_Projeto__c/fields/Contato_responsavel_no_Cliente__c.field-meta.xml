@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_responsavel_no_Cliente__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM231118: responsável pelo ABAHP</description>
+    <label>Contato responsável no Cliente</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Acordo de Banco de Horas de Projeto (Contaro responsável no Cliente)</relationshipLabel>
+    <relationshipName>Acordo_de_Banco_de_Horas_de_Projeto1</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

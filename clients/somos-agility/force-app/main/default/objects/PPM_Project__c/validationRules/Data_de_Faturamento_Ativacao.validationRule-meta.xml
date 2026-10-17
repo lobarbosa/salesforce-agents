@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Faturamento_Ativacao</fullName>
+    <active>true</active>
+    <description>Quando o Inicio do Faturamento estiver preenchido obriga o preenchimento do campo Data de Faturamento - Ativação</description>
+    <errorConditionFormula>AND ( ISPICKVAL( Inicio_de_Faturamento__c ,&quot;Na Produção Parcial&quot;)||ISPICKVAL( Inicio_de_Faturamento__c ,&quot;Na Entrega dos Equipamentos&quot;)||ISPICKVAL( Inicio_de_Faturamento__c ,&quot;No Término do Projeto&quot;),ISBLANK( Data_de_Faturamento_Ativacao__c ))</errorConditionFormula>
+    <errorMessage>Favor informar a Data de Faturamento / Ativação</errorMessage>
+</ValidationRule>

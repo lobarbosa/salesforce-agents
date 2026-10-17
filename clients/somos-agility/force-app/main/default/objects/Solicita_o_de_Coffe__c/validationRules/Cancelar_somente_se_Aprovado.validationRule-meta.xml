@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cancelar_somente_se_Aprovado</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL( Status__c ,&quot;Pendente&quot;)||(ISPICKVAL( Status__c ,&quot;Rejeitado&quot;)||ISPICKVAL( Status__c ,&quot;Cancelado&quot;)||ISPICKVAL( Status__c ,&quot;Recall&quot;)), Cancelar__c =True)</errorConditionFormula>
+    <errorDisplayField>Cancelar__c</errorDisplayField>
+    <errorMessage>Só é possível cancelar a solicitação caso já tenha sido aprovada.</errorMessage>
+</ValidationRule>

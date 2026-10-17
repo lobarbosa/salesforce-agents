@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inserir_apenas_uma_referencia</fullName>
+    <active>true</active>
+    <errorConditionFormula>(ISBLANK( Referente_ao_Contrato__c  )&amp;&amp;NOT(ISBLANK(  Referente_ao_Projeto__c  )) &amp;&amp; NOT(ISBLANK(  TEXT( Ref_ao_Service_Delivery_Manager__c)  )))
+||
+
+(NOT(ISBLANK( Referente_ao_Contrato__c  ))&amp;&amp;ISBLANK(  Referente_ao_Projeto__c  ) &amp;&amp; NOT(ISBLANK( TEXT( Ref_ao_Service_Delivery_Manager__c) )))
+||
+(NOT(ISBLANK( Referente_ao_Contrato__c  ))&amp;&amp;NOT(ISBLANK(  Referente_ao_Projeto__c  )) &amp;&amp; ISBLANK( TEXT( Ref_ao_Service_Delivery_Manager__c)  ))
+||
+(NOT(ISBLANK( Referente_ao_Contrato__c  ))&amp;&amp;NOT(ISBLANK(  Referente_ao_Projeto__c  )) &amp;&amp; (NOT(ISBLANK( TEXT( Ref_ao_Service_Delivery_Manager__c)  ))))</errorConditionFormula>
+    <errorMessage>Informe apenas uma Referência. (SD, Contrato ou Projeto)</errorMessage>
+</ValidationRule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Voltar</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <linkType>url</linkType>
+    <masterLabel>Voltar</masterLabel>
+    <openType>replace</openType>
+    <protected>false</protected>
+    <url>https://na3.salesforce.com/{!Detalhes_do_Coffe_Break__c.Solicita_o_de_Coffe_BreakId__c}</url>
+</WebLink>

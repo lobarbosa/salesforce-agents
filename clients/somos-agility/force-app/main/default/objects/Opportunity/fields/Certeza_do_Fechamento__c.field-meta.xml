@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Certeza_do_Fechamento__c</fullName>
+    <inlineHelpText>Insira a Probabilidade Correta de Fechamento dentro do Quarter</inlineHelpText>
+    <label>Z_Meu Compromisso do Fechamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Closed - 100%</fullName>
+                <default>false</default>
+                <label>Closed - 100%</label>
+            </value>
+            <value>
+                <fullName>Commit - 95%</fullName>
+                <default>false</default>
+                <label>Commit - 95%</label>
+            </value>
+            <value>
+                <fullName>Be to Commit - 90%</fullName>
+                <default>false</default>
+                <label>Be to Commit - 90%</label>
+            </value>
+            <value>
+                <fullName>Best Effort - 75%</fullName>
+                <default>false</default>
+                <label>Best Effort - 75%</label>
+            </value>
+            <value>
+                <fullName>Best Case - 50%</fullName>
+                <default>false</default>
+                <label>Best Case - 50%</label>
+            </value>
+            <value>
+                <fullName>Pipeline - 30%</fullName>
+                <default>false</default>
+                <label>Pipeline - 30%</label>
+            </value>
+            <value>
+                <fullName>Awareness - 5%</fullName>
+                <default>false</default>
+                <label>Awareness - 5%</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

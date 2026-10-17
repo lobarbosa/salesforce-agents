@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Personalizado</fullName>
+    <fields>Data_do_Resgate_do_Desconto__c</fields>
+    <fields>Valor_do_Desconto_Resgatado__c</fields>
+    <fields>Taxa_cambial__c</fields>
+    <fields>Valor_do_Resgate_Convertido_RS__c</fields>
+    <fields>Taxa_de_Conversao_FOB_para_CIF__c</fields>
+    <fields>Valor_do_Resgate_Convertido__c</fields>
+    <label>Personalizado</label>
+</CompactLayout>

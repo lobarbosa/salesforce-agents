@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Impacto__c</fullName>
+    <label>Impacto</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1 - Alto</fullName>
+                <default>false</default>
+                <label>1 - Alto</label>
+            </value>
+            <value>
+                <fullName>2 - Médio</fullName>
+                <default>false</default>
+                <label>2 - Médio</label>
+            </value>
+            <value>
+                <fullName>3 - Baixo</fullName>
+                <default>false</default>
+                <label>3 - Baixo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

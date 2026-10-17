@@ -1,0 +1,385 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Proposta_enviada_ao_cliente</fullName>
+    <active>true</active>
+    <label>Proposta enviada ao cliente</label>
+    <picklistValues>
+        <picklist>Categoria__c</picklist>
+        <values>
+            <fullName>Comissionamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Locação %28Renovação%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Suporte %28Novo%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Suporte %28Renovação%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Contrato de Suporte %28Upgrade%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Parcela Avulsa de Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Produto %28Sem Serviço%29 - Com ou Sem Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Projeto %28Produto %2B Serviços%29 - Com ou Sem Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Serviço %28Avulso ou Projeto%29 - Com ou Sem Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Subscrição ou Renovação</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Classificacao_Risco_SOW__c</picklist>
+        <values>
+            <fullName>1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Comissao__c</picklist>
+        <values>
+            <fullName>Não Qualificada</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Qualificada</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Necess_rio_Plano_de_Testes__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Prazo_de_Contrato_do_Cen_rio_1__c</picklist>
+        <values>
+            <fullName>12 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>36 meses</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Prazo_de_Contrato_do_Cen_rio_2__c</picklist>
+        <values>
+            <fullName>12 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>36 meses</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Prazo_de_Contrato_do_Cen_rio_3__c</picklist>
+        <values>
+            <fullName>12 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24 meses</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>36 meses</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Respons_vel_pela_execu_o_desta_etapa1__c</picklist>
+        <values>
+            <fullName>Gerente de contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Orçamentista</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Respons_vel_pela_execu_o_desta_etapa__c</picklist>
+        <values>
+            <fullName>Gerente de contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sales Operations</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>ResponsavelEnvioProposta__c</picklist>
+        <values>
+            <fullName>Gerente de Contas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Inside Sales</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>StatusPsl__c</picklist>
+        <values>
+            <fullName>Confecção de proposta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Criação de Proposta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Especificação Técnica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Margens e Condições Comerciais</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PFP Base</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Proposta enviada ao cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Retorno do cliente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_da_PSL__c</picklist>
+        <values>
+            <fullName>Descartado pelo Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Validado pelo Cliente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_da_Qualificacao__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rascunho</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Recall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_de_Aprovacao__c</picklist>
+        <values>
+            <fullName>Aguardando aprovação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não submetido</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Rejeitado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TipoProposta2__c</picklist>
+        <values>
+            <fullName>Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial sem hora aberta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Técnica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TipoProposta3__c</picklist>
+        <values>
+            <fullName>Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial sem hora aberta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Técnica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TipoProposta__c</picklist>
+        <values>
+            <fullName>Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comercial sem hora aberta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Técnica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>TipoPsl__c</picklist>
+        <values>
+            <fullName>Produtos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Serviços</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Servi_o_do_Cen_rio_1__c</picklist>
+        <values>
+            <fullName>Time Material</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Turn Key</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Servi_o_do_Cen_rio_2__c</picklist>
+        <values>
+            <fullName>Time Material</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Turn Key</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_Servi_o_do_Cen_rio_3__c</picklist>
+        <values>
+            <fullName>Time Material</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Turn Key</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_moeda_da_proposta_2__c</picklist>
+        <values>
+            <fullName>Dólar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Real</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_moeda_da_proposta_3__c</picklist>
+        <values>
+            <fullName>Dólar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Real</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_moeda_da_proposta__c</picklist>
+        <values>
+            <fullName>Dólar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Real</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_proposta_a_ser_enviada__c</picklist>
+        <values>
+            <fullName>Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Técnica</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_de_Altera_o_de_Status__c</fullName>
+    <label>Status da Última Alteração de Status</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Pendente</fullName>
+                <default>false</default>
+                <label>Pendente</label>
+            </value>
+            <value>
+                <fullName>Rejeitado</fullName>
+                <default>false</default>
+                <label>Rejeitado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

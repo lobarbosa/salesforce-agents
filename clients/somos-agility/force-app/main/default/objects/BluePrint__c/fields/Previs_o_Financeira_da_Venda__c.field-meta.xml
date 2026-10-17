@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previs_o_Financeira_da_Venda__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>relacionamento entre o objeto previsão financeira de venda e blueprint</description>
+    <label>Previsão Financeira da Venda</label>
+    <referenceTo>Produto_da_Proposta_de_Solucao__c</referenceTo>
+    <relationshipName>BluePrint</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

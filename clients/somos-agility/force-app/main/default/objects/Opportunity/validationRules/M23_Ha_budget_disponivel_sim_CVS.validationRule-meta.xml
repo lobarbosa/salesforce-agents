@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M23_Ha_budget_disponivel_sim_CVS</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / Quando o campo Ha Budget disponível tiver a opção Sim o campo Contato do cliente que confirmou na seção Orçamento</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+ISPICKVAL( Ha_budget_disponivel__c ,&quot;Sim&quot;),ISBLANK( Contato_do_cliente_que_confirmou_orcamen__c ))</errorConditionFormula>
+    <errorDisplayField>Contato_do_cliente_que_confirmou_orcamen__c</errorDisplayField>
+    <errorMessage>Favor informar o Contato do Cliente que confirmou (Msg23)</errorMessage>
+</ValidationRule>

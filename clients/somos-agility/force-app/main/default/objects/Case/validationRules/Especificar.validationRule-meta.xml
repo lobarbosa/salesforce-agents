@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Especificar</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL( Assunto_lista_opcoes__c ,&quot;Outros&quot;),ISBLANK( Especificar__c ))</errorConditionFormula>
+    <errorDisplayField>Especificar__c</errorDisplayField>
+    <errorMessage>Especifique o Assunto</errorMessage>
+</ValidationRule>

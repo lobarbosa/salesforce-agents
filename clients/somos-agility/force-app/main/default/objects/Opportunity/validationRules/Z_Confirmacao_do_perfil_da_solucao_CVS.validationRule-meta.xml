@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Confirmacao_do_perfil_da_solucao_CVS</fullName>
+    <active>false</active>
+    <description>***ESTE CAMPO FOI TRANSFERIDO PARA O BLUEPRINT*** Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Confirmação do Perfil de Solução Agility?</description>
+    <errorConditionFormula>AND((ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)) ,ISBLANK(TEXT(   Confirmacao_do_perfil_de_solucao_Agility__c )))</errorConditionFormula>
+    <errorMessage>** Para alterar de fase é obrigatório o preenchimento do campo &quot;Confirmação do Perfil de Solução Agility&quot; **</errorMessage>
+</ValidationRule>

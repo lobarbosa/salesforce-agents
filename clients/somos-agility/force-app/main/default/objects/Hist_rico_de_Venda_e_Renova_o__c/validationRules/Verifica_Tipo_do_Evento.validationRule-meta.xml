@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Verifica_Tipo_do_Evento</fullName>
+    <active>true</active>
+    <description>Verifica tipo do evento, se o campo Tipo_do_Evento__c for igual a &quot;Não Renovado / Opção Cliente&quot; ou &quot;Renovado por outra Revenda&quot;, os campos Per_odo_Renovado__c (text), DsaHistorico__c (lookup) e Pr_ximo_Vencimento__c (date) não podem estar vazios.</description>
+    <errorConditionFormula>AND(
+    NOT(
+        OR(
+            ISPICKVAL(Tipo_do_Evento__c, &quot;Não Renovado / Opção Cliente&quot;),
+            ISPICKVAL(Tipo_do_Evento__c, &quot;Renovado por outra Revenda&quot;),
+            ISPICKVAL(Tipo_do_Evento__c, &quot;Vendido por Outra Revenda&quot;),
+            ISPICKVAL(Tipo_do_Evento__c, &quot;Atendimento Suporte Agility&quot;)
+        )
+    ),
+    OR(
+        ISBLANK(Periodo_de_subscricao_contratado_meses__c),
+        ISBLANK(DsaHistorico__c),
+        ISBLANK(Pr_ximo_Vencimento__c)
+    )
+)</errorConditionFormula>
+    <errorMessage>Preencher os campos &quot;Período de subscrição contratado&quot;, &quot;DSA obrigatório&quot; e &quot;Próximo vencimento&quot;.</errorMessage>
+</ValidationRule>

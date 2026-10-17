@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Comissao_Terceiros</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND (ISPICKVAL(  Comiss_o_de_Terceiros__c , &quot;Sim&quot;) , 
+ISBLANK(  Valor_R__c  ))</errorConditionFormula>
+    <errorMessage>Informe o Valor a pagar de Comissão para Terceiros</errorMessage>
+</ValidationRule>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_da_Volta_Destino</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( ISPICKVAL( Tipo_de_Solicitacao__c ,&quot;Ida e Volta&quot;)||ISPICKVAL( Tipo_de_Solicitacao__c ,&quot;Volta&quot;),Data_Origem_Volta__c &lt; Data_Destino_Ida__c)</errorConditionFormula>
+    <errorDisplayField>Data_Origem_Volta__c</errorDisplayField>
+    <errorMessage>A Data de Origem da Volta deve ser maior que a Data de Destino da Ida.</errorMessage>
+</ValidationRule>

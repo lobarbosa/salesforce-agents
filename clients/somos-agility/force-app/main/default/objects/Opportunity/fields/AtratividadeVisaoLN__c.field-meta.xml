@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AtratividadeVisaoLN__c</fullName>
+    <description>Campo solicitado para que o responsável pela linha de negócio aponte o nível de atratividade de acordo com sua análise.</description>
+    <label>Atratividade (Visão LN)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Baixa</fullName>
+                <default>false</default>
+                <label>Baixa</label>
+            </value>
+            <value>
+                <fullName>Média</fullName>
+                <default>false</default>
+                <label>Média</label>
+            </value>
+            <value>
+                <fullName>Alta</fullName>
+                <default>false</default>
+                <label>Alta</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

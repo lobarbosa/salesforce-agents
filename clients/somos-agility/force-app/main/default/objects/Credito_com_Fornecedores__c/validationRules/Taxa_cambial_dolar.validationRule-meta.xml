@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Taxa_cambial_dolar</fullName>
+    <active>true</active>
+    <description>Se a moeda for dólar, a taxa cambial tem que ser &gt;1</description>
+    <errorConditionFormula>AND(ISPICKVAL( Moeda__c ,&quot;Dólar&quot;), Taxa_cambial__c &lt;=0.01)</errorConditionFormula>
+    <errorDisplayField>Taxa_cambial__c</errorDisplayField>
+    <errorMessage>Se a moeda for dólar, é obrigatório inserir um valor do câmbio maior do que 0.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_Revisao_Observacoes</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( ISPICKVAL( Status_da_Revis_o__c,&quot;Pendente&quot;),
+ ISBLANK(  Observa_o__c  ))</errorConditionFormula>
+    <errorDisplayField>Observa_o__c</errorDisplayField>
+    <errorMessage>Favor Informar a Observação</errorMessage>
+</ValidationRule>

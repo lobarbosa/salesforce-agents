@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qual_o_papel_deste_Stakeholder_3__c</fullName>
+    <inlineHelpText>Power Sponsor - não tem poder de decisão final porém tem forte poder de influência. Stakeholder - parte interessada da área de negócios com poder de decisão / Mobilizador - influencia o processo sem poder de decisão.</inlineHelpText>
+    <label>Qual o papel deste Stakeholder?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetName>Qual_o_Papel_deste_Stakeholder</valueSetName>
+    </valueSet>
+</CustomField>

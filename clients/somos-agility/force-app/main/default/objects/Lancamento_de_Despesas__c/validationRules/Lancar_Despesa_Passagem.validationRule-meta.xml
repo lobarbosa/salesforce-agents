@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Lancar_Despesa_Passagem</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL( Tipo_da_Despesa__c , &quot;Passagem Aérea&quot;), ISBLANK(Valor_da_Despesa__c))</errorConditionFormula>
+    <errorDisplayField>Valor_da_Despesa__c</errorDisplayField>
+    <errorMessage>Favor informar o Valor da Despesa</errorMessage>
+</ValidationRule>

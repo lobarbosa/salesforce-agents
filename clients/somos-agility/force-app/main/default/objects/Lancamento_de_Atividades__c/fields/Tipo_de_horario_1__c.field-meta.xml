@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_horario_1__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  AND(
+    WEEKDAY(DATEVALUE(Inicio_da_atividade_1__c - (3/24))) &gt;= 2,
+    WEEKDAY(DATEVALUE(Inicio_da_atividade_1__c - (3/24))) &lt;= 6,
+
+    VALUE(LEFT(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 2)) &gt;= 9,
+
+    OR(
+      VALUE(LEFT(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 2)) &lt; 18,
+      AND(
+        VALUE(LEFT(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 2)) = 18,
+        VALUE(MID(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 4, 2)) = 0
+      )
+    ),
+
+    WEEKDAY(DATEVALUE(Fim_da_atividade_1__c - (3/24))) &gt;= 2,
+    WEEKDAY(DATEVALUE(Fim_da_atividade_1__c - (3/24))) &lt;= 6,
+
+    VALUE(LEFT(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 2)) &gt;= 9,
+
+    OR(
+      VALUE(LEFT(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 2)) &lt; 18,
+      AND(
+        VALUE(LEFT(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 2)) = 18,
+        VALUE(MID(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 4, 2)) = 0
+      )
+    )
+  ),
+  &quot;Comercial&quot;,
+
+  IF(
+    AND(
+      OR(
+        WEEKDAY(DATEVALUE(Inicio_da_atividade_1__c - (3/24))) = 1,
+        WEEKDAY(DATEVALUE(Inicio_da_atividade_1__c - (3/24))) = 7,
+
+        VALUE(LEFT(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 2)) &lt; 9,
+
+        VALUE(LEFT(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 2)) &gt; 18,
+
+        AND(
+          VALUE(LEFT(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 2)) = 18,
+          VALUE(MID(RIGHT(TEXT(Inicio_da_atividade_1__c - (3/24)), 9), 4, 2)) &gt;= 1
+        )
+      ),
+
+      OR(
+        WEEKDAY(DATEVALUE(Fim_da_atividade_1__c - (3/24))) = 1,
+        WEEKDAY(DATEVALUE(Fim_da_atividade_1__c - (3/24))) = 7,
+
+        VALUE(LEFT(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 2)) &lt; 9,
+
+        VALUE(LEFT(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 2)) &gt; 18,
+
+        AND(
+          VALUE(LEFT(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 2)) = 18,
+          VALUE(MID(RIGHT(TEXT(Fim_da_atividade_1__c - (3/24)), 9), 4, 2)) &gt;= 1
+        )
+      )
+    ),
+    &quot;Não Comercial&quot;,
+    &quot;Misto&quot;
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Tipo de horário</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aprovar_Vencido_Gestor</fullName>
+    <active>true</active>
+    <description>Regra Anterior: AND(Aprovado_Reembolso_Vencido__c = True, 
+($User.FirstName &amp;&apos;  &apos;&amp; $User.LastName) &lt;&gt; Gerente__c)
+
+AND(Aprovado_Reembolso_Vencido__c = True, 
+($User.FirstName &amp;&apos; &apos;&amp; $User.LastName) = CreatedBy.FirstName &amp; &apos; &apos;&amp; CreatedBy.LastName )</description>
+    <errorConditionFormula>AND(Aprovado_Reembolso_Vencido__c = True, 
+($User.FirstName &amp;&apos; &apos;&amp; $User.LastName) &lt;&gt; Gerente__c)</errorConditionFormula>
+    <errorDisplayField>Aprovado_Reembolso_Vencido__c</errorDisplayField>
+    <errorMessage>Somente seu Gestor pode autorizar seu reembolso vencido</errorMessage>
+</ValidationRule>

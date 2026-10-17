@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Blueprint_status_validado_pelo_cliente</fullName>
+    <active>true</active>
+    <description>AM 24042018: quando o &quot;Status do Blueprint&quot; for selecionado &quot;Validado pelo cliente&quot; é obrigatório o preenchimento dos campos &quot;contato que validou/descartou&quot; e &quot;data/hora da validação&quot;.</description>
+    <errorConditionFormula>AND(ISPICKVAL(Status_do_Blueprint__c ,&quot;Validado pelo Cliente&quot;),
+OR(
+ISBLANK( Contato_do_cliente_que_Validou_Descartou__c ),
+ISBLANK( Data_Hora_da_Validacao_Descarte__c )))</errorConditionFormula>
+    <errorMessage>É necessário o preenchimento dos campos &quot;Contato do cliente que Validou/Descartou&quot; e &quot;Data/Hora da Validação/Descarte&quot;.</errorMessage>
+</ValidationRule>

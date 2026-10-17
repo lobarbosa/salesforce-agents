@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EF_compacto</fullName>
+    <fields>Name</fields>
+    <fields>Tipo_de_excecao__c</fields>
+    <fields>Status_da_Solicitacao__c</fields>
+    <fields>Data_da_Solicita_o__c</fields>
+    <label>EF-compacto</label>
+</CompactLayout>

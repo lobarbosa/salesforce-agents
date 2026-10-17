@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Relacionado_ao_projeto_obrigatorio</fullName>
+    <active>false</active>
+    <description>Quando a opção projeto for selecionada, abrir o campo relacionado ao projeto como obrigatório</description>
+    <errorConditionFormula>AND (ISPICKVAL(Relacionado_a_entrega__c, &apos;Projeto&apos;),
+						 ISBLANK(Relacionado_ao_Projeto__c))</errorConditionFormula>
+    <errorDisplayField>Relacionado_ao_Projeto__c</errorDisplayField>
+    <errorMessage>Quando a opção Projeto for selecionado no campo &quot;Relacionado a Entrega&quot; deve ser informado um projeto no campo &quot;Relacionado ao Projeto&quot;</errorMessage>
+</ValidationRule>

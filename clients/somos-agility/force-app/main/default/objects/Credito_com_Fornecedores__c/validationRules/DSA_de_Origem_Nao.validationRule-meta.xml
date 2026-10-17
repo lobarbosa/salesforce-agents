@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DSA_de_Origem_Nao</fullName>
+    <active>true</active>
+    <description>Caso seja informado no campo Há DSA de origem a informação Não , não será obrigatório informar o ID do DSA</description>
+    <errorConditionFormula>AND(ISPICKVAL( Ha_DSA_de_origem__c ,&quot;Não&quot;),NOT(ISBLANK( DSA_de_origem__c )))</errorConditionFormula>
+    <errorDisplayField>DSA_de_origem__c</errorDisplayField>
+    <errorMessage>Não é necessário informar o DSA</errorMessage>
+</ValidationRule>

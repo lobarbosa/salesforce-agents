@@ -1,0 +1,731 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Requisi_o_de_Conta</fullName>
+    <active>true</active>
+    <businessProcess>Conversão</businessProcess>
+    <label>Requisição de Conta</label>
+    <picklistValues>
+        <picklist>Assunto__c</picklist>
+        <values>
+            <fullName>Access Policy Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>App %26 Desktop Virtualization</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Application Firewall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Application Performance Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Branch Office Acceleration</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud Migration Guidance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Datacenter Firewall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Device Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Enterprise Mobility Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fraud Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Global Traffic Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hyperconverged Branch</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Information and Event Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Invisible Infrastructure</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Key Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Local Traffic Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Network Access Control</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Network Automation %26 DDI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Network Performance Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OpenStack Ready%21</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OpenStack Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Password Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Perimeter Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDDC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SDN %26 SD-WAN</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Storage %26 Data Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Two-Factor Authentication</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web Acceleration</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Departamento__c</picklist>
+        <values>
+            <fullName>Compras</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Jurídico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Negócios</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RH</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TI %E2%80%93 Desenvolvimento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TI %E2%80%93 Infra</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TI %E2%80%93 Redes1</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TI %E2%80%93 Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TI - Geral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Telecom</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Industry</picklist>
+        <values>
+            <fullName>ASP %28Provedor de Serviços de Aplicação%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Agricultura</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Alimentos e Bebidas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ambiental</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Arquitetura%2F Engenharia%2F Construção</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Automotiva</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Biotecnologia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comunicação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comércio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Comércio Eletrônico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Concorrente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Construtora</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consultoria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Desenvolvedor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Distribuidor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diversos</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Educação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Eletroeletrônico</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Eletrônica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Energia%2F Óleo%2F Gás</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Entretenimento%2F Viagem e Hospitalidade</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Exército</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Farmacêutica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro - Banco</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro - Outros</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro - Seguradoras</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Finanças</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Fábrica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gráfica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ISP  %28Provedor de Serviços de Internet%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indústria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integrador</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Internet Data Center</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Justiça Eleitoral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Justiça Estadual</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Justiça Federal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Justiça do Trabalho</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Manufaturados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Maquinário</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mineração</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mídia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Papel e Celulose</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pesquisa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Polícia Civil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Polícia Militar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prestação de Serviços</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Química</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Saúde</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Segurança</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tecnologia</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Telecomunicações</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Transporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Têxtil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Utilidades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Varejo%2F Atacado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Interesse_em__c</picklist>
+        <values>
+            <fullName>3 Com</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AppSense</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>C%2EA%2E %28Computer Associates%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Citrix</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Microsoft</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NetApp</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>RSA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riverbed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SonicWall</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Symantec</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thin Print</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Trend Micro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VMware</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Wyse</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Interesse_s__c</picklist>
+        <values>
+            <fullName>Integração - Cyberark</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integração - F5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integração - Hashicorp</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integração - Infoblox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Integração - Palo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XaaS - GAA</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XaaS - GPD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>XaaS - PAM</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>LeadSource</picklist>
+        <values>
+            <fullName>Campanha Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Customer Success</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email Marketing</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Evento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação Interna</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação Linha de Negócio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Distribuidor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Fabricante</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indicação de Parceiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PABX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prospecção - Gerente de Contas</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sales Ops</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação de Orçamento via E-mail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Treinamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web Site Agility %E2%80%93 E-mail</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web Site Agility Networks</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Whatsapp</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>MotivoEncerramento__c</picklist>
+        <values>
+            <fullName>Não há budget</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SPAM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sem projeto previsto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solução não atende o negócio</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>N_vel__c</picklist>
+        <values>
+            <fullName>Analista</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Consultor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Coordenação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Diretoria</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estagiário</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gerência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Presidência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Superintendência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vice-Presidência</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Name</picklist>
+        <values>
+            <fullName>Dr%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mr%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Mrs%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ms%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prof%2E</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Ofertas__c</picklist>
+        <values>
+            <fullName>GAA %E2%80%93 Gestão Avançada de Ameaças</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GPD %E2%80%93 Gestão de Privacidade de Dados</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PAM %E2%80%93 Proteção de Aplicações Multicloud</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Probabilidade_de_Fechamento__c</picklist>
+        <values>
+            <fullName>Awareness - 5%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Be to Commit - 90%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Best Case - 50%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Best Effort - 75%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Commit - 95%25</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pipeline - 30%25</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Rating</picklist>
+        <values>
+            <fullName>Frio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Quente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

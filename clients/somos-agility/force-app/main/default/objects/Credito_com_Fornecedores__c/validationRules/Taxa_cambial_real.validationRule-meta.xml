@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Taxa_cambial_real</fullName>
+    <active>true</active>
+    <description>Se a moeda for real, a taxa cambial tem que ser = a 0.</description>
+    <errorConditionFormula>AND(ISPICKVAL( Moeda__c ,&quot;Reais&quot;), Taxa_cambial__c &gt;0 )</errorConditionFormula>
+    <errorDisplayField>Taxa_cambial__c</errorDisplayField>
+    <errorMessage>Se a moeda for real,o valor do câmbio deve ser 0.</errorMessage>
+</ValidationRule>

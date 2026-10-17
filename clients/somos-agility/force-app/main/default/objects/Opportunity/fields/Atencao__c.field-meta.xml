@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atencao__c</fullName>
+    <defaultValue>&quot;* Closed – 100%; Pedido na Agility.&quot;&amp;BR()&amp;&apos;&apos;&amp;BR()&amp;  
+&quot;* Commit – 95%; Projeto em compras e/ou decisão já tomada em favor da Agility.&quot;&amp;BR()&amp;&apos;&apos;&amp;BR()&amp; 
+&quot;* Be to Commit – 90%; Projeto com o orçamento aprovado mas possui algum risco devido a concorrência e/ou ao “timing” do projeto.&quot;&amp;BR()&amp;&apos;&apos;&amp;BR()&amp; 
+&quot;* Best Effort  - 75%: oportunidades onde existe a necessidade técnica, a Agility é o integrador preferencial, mas que ainda não foi iniciado o processo de compras.&quot;&amp;BR()&amp;&apos;&apos;&amp;BR()&amp; 
+&quot;* Best Case – 50%: oportunidades onde existe a necessidade técnica mas a Agility não é preferencial, existe concorrência de solução e/ou de integrador.&quot;&amp;BR()&amp;&apos;&apos;&amp;BR()&amp; 
+&quot;* Pipeline - 30%: oportunidades em estágio de convencimento da solução. Projeto já identificado porém ainda sem informações precisas de budget e orçamento.&quot;&amp;BR()&amp;&apos;&apos;&amp;BR()&amp; 
+&quot;* Awareness – 5%: Identificada a necessidade e o cliente já sabe que a Agility pode ajudar na solução.&quot;</defaultValue>
+    <label>Atenção!</label>
+    <length>5000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>20</visibleLines>
+</CustomField>

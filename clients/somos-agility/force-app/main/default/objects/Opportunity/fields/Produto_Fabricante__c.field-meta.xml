@@ -1,0 +1,701 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Produto_Fabricante__c</fullName>
+    <label>Produto: Fabricante</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Produto_OneTime__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Advanced Threat Prevention</fullName>
+                <default>false</default>
+                <label>Advanced Threat Prevention</label>
+            </value>
+            <value>
+                <fullName>BIG-IP iSeries Appliances</fullName>
+                <default>false</default>
+                <label>BIG-IP iSeries Appliances</label>
+            </value>
+            <value>
+                <fullName>BIG-IP VIPRION Chassis and Blades</fullName>
+                <default>false</default>
+                <label>BIG-IP VIPRION Chassis and Blades</label>
+            </value>
+            <value>
+                <fullName>BIG-IP Virtual Edition</fullName>
+                <default>false</default>
+                <label>BIG-IP Virtual Edition</label>
+            </value>
+            <value>
+                <fullName>F5 rSeries</fullName>
+                <default>false</default>
+                <label>F5 rSeries</label>
+            </value>
+            <value>
+                <fullName>VELOS Chassis and Blades</fullName>
+                <default>false</default>
+                <label>VELOS Chassis and Blades</label>
+            </value>
+            <value>
+                <fullName>BIG-IP Local Traffic Manager</fullName>
+                <default>false</default>
+                <label>BIG-IP Local Traffic Manager</label>
+            </value>
+            <value>
+                <fullName>BIG-IP DNS</fullName>
+                <default>false</default>
+                <label>BIG-IP DNS</label>
+            </value>
+            <value>
+                <fullName>BIG-IP Advanced WAF</fullName>
+                <default>false</default>
+                <label>BIG-IP Advanced WAF</label>
+            </value>
+            <value>
+                <fullName>BIG-IP Advanced Firewall Manager</fullName>
+                <default>false</default>
+                <label>BIG-IP Advanced Firewall Manager</label>
+            </value>
+            <value>
+                <fullName>BIG-IP Access Policy Manager</fullName>
+                <default>false</default>
+                <label>BIG-IP Access Policy Manager</label>
+            </value>
+            <value>
+                <fullName>BIG-IP Policy Enforcement Manager</fullName>
+                <default>false</default>
+                <label>BIG-IP Policy Enforcement Manager</label>
+            </value>
+            <value>
+                <fullName>BIG-IP SSL Orchestrator</fullName>
+                <default>false</default>
+                <label>BIG-IP SSL Orchestrator</label>
+            </value>
+            <value>
+                <fullName>iRules</fullName>
+                <default>false</default>
+                <label>iRules</label>
+            </value>
+            <value>
+                <fullName>Distributed Cloud Services</fullName>
+                <default>false</default>
+                <label>Distributed Cloud Services</label>
+            </value>
+            <value>
+                <fullName>Cortex</fullName>
+                <default>false</default>
+                <label>Cortex</label>
+            </value>
+            <value>
+                <fullName>NGINX</fullName>
+                <default>false</default>
+                <label>NGINX</label>
+            </value>
+            <value>
+                <fullName>Shape Security</fullName>
+                <default>false</default>
+                <label>Shape Security</label>
+            </value>
+            <value>
+                <fullName>NGFW - Next-gen Firewall Hardware</fullName>
+                <default>false</default>
+                <label>NGFW - Next-gen Firewall Hardware</label>
+            </value>
+            <value>
+                <fullName>NGFW - Next-gen Firewall Virtual VM-Series</fullName>
+                <default>false</default>
+                <label>NGFW - Next-gen Firewall Virtual VM-Series</label>
+            </value>
+            <value>
+                <fullName>NGFW - Next-gen Firewall Contêiner CN-Series</fullName>
+                <default>false</default>
+                <label>NGFW - Next-gen Firewall Contêiner CN-Series</label>
+            </value>
+            <value>
+                <fullName>AIOps NGFW</fullName>
+                <default>false</default>
+                <label>AIOps NGFW</label>
+            </value>
+            <value>
+                <fullName>Panorama</fullName>
+                <default>false</default>
+                <label>Panorama</label>
+            </value>
+            <value>
+                <fullName>Advanced URL Filtering</fullName>
+                <default>false</default>
+                <label>Advanced URL Filtering</label>
+            </value>
+            <value>
+                <fullName>WildFire</fullName>
+                <default>false</default>
+                <label>WildFire</label>
+            </value>
+            <value>
+                <fullName>DNS Protection</fullName>
+                <default>false</default>
+                <label>DNS Protection</label>
+            </value>
+            <value>
+                <fullName>IoT Protection</fullName>
+                <default>false</default>
+                <label>IoT Protection</label>
+            </value>
+            <value>
+                <fullName>Enterprise Data loss Prevention (DLP)</fullName>
+                <default>false</default>
+                <label>Enterprise Data loss Prevention (DLP)</label>
+            </value>
+            <value>
+                <fullName>Prisma SASE (Access, SD-WAN &amp; ADEM)</fullName>
+                <default>false</default>
+                <label>Prisma SASE (Access, SD-WAN &amp; ADEM)</label>
+            </value>
+            <value>
+                <fullName>Prisma CLOUD</fullName>
+                <default>false</default>
+                <label>Prisma CLOUD</label>
+            </value>
+            <value>
+                <fullName>DHCP, DNS and IPAM (DDI)</fullName>
+                <default>false</default>
+                <label>DHCP, DNS and IPAM (DDI)</label>
+            </value>
+            <value>
+                <fullName>BloxOne (SaaS)</fullName>
+                <default>false</default>
+                <label>BloxOne (SaaS)</label>
+            </value>
+            <value>
+                <fullName>DNS Security</fullName>
+                <default>false</default>
+                <label>DNS Security</label>
+            </value>
+            <value>
+                <fullName>CNA - Cloud Network Automation</fullName>
+                <default>false</default>
+                <label>CNA - Cloud Network Automation</label>
+            </value>
+            <value>
+                <fullName>Privileged Access</fullName>
+                <default>false</default>
+                <label>Privileged Access</label>
+            </value>
+            <value>
+                <fullName>Workforce &amp; Custumer Access</fullName>
+                <default>false</default>
+                <label>Workforce &amp; Custumer Access</label>
+            </value>
+            <value>
+                <fullName>Indentity Management</fullName>
+                <default>false</default>
+                <label>Indentity Management</label>
+            </value>
+            <value>
+                <fullName>Secret Management</fullName>
+                <default>false</default>
+                <label>Secret Management</label>
+            </value>
+            <value>
+                <fullName>Endpoint Privilege Security</fullName>
+                <default>false</default>
+                <label>Endpoint Privilege Security</label>
+            </value>
+            <value>
+                <fullName>Cloud Privilege Security</fullName>
+                <default>false</default>
+                <label>Cloud Privilege Security</label>
+            </value>
+            <value>
+                <fullName>Observer APEX</fullName>
+                <default>false</default>
+                <label>Observer APEX</label>
+            </value>
+            <value>
+                <fullName>Observer Analyzer</fullName>
+                <default>false</default>
+                <label>Observer Analyzer</label>
+            </value>
+            <value>
+                <fullName>Observer Management Server (OMS)</fullName>
+                <default>false</default>
+                <label>Observer Management Server (OMS)</label>
+            </value>
+            <value>
+                <fullName>Observer Gigaflow</fullName>
+                <default>false</default>
+                <label>Observer Gigaflow</label>
+            </value>
+            <value>
+                <fullName>Observer GigaStor</fullName>
+                <default>false</default>
+                <label>Observer GigaStor</label>
+            </value>
+            <value>
+                <fullName>Observer Taps</fullName>
+                <default>false</default>
+                <label>Observer Taps</label>
+            </value>
+            <value>
+                <fullName>ObserverONE</fullName>
+                <default>false</default>
+                <label>ObserverONE</label>
+            </value>
+            <value>
+                <fullName>Amazon Elastic Cloud Compute (EC2)</fullName>
+                <default>false</default>
+                <label>Amazon Elastic Cloud Compute (EC2)</label>
+            </value>
+            <value>
+                <fullName>EC2 AWS Auto Scaling</fullName>
+                <default>false</default>
+                <label>EC2 AWS Auto Scaling</label>
+            </value>
+            <value>
+                <fullName>Elastic Load Balancing (ELB)</fullName>
+                <default>false</default>
+                <label>Elastic Load Balancing (ELB)</label>
+            </value>
+            <value>
+                <fullName>AWS Trasit Gateway</fullName>
+                <default>false</default>
+                <label>AWS Trasit Gateway</label>
+            </value>
+            <value>
+                <fullName>Amazon CloudFront</fullName>
+                <default>false</default>
+                <label>Amazon CloudFront</label>
+            </value>
+            <value>
+                <fullName>Amazon Virtual Private Cloud (VPC)</fullName>
+                <default>false</default>
+                <label>Amazon Virtual Private Cloud (VPC)</label>
+            </value>
+            <value>
+                <fullName>Amazon Route 53</fullName>
+                <default>false</default>
+                <label>Amazon Route 53</label>
+            </value>
+            <value>
+                <fullName>Amazon Simple Storage Service (S3)</fullName>
+                <default>false</default>
+                <label>Amazon Simple Storage Service (S3)</label>
+            </value>
+            <value>
+                <fullName>Amazon Elastic Block Store (EBS)</fullName>
+                <default>false</default>
+                <label>Amazon Elastic Block Store (EBS)</label>
+            </value>
+            <value>
+                <fullName>AWS Fargate</fullName>
+                <default>false</default>
+                <label>AWS Fargate</label>
+            </value>
+            <value>
+                <fullName>Amazon Elastic Container Service (ECS)</fullName>
+                <default>false</default>
+                <label>Amazon Elastic Container Service (ECS)</label>
+            </value>
+            <value>
+                <fullName>Amazon Elastic Kubernetes Service (EKS)</fullName>
+                <default>false</default>
+                <label>Amazon Elastic Kubernetes Service (EKS)</label>
+            </value>
+            <value>
+                <fullName>AGILITY-AUT</fullName>
+                <default>false</default>
+                <label>AGILITY-AUT</label>
+            </value>
+            <value>
+                <fullName>AGILITY-SEG</fullName>
+                <default>false</default>
+                <label>AGILITY-SEG</label>
+            </value>
+            <value>
+                <fullName>ARMIS</fullName>
+                <default>false</default>
+                <label>ARMIS</label>
+            </value>
+            <value>
+                <fullName>BLACKBERRY CYLANCE</fullName>
+                <default>false</default>
+                <label>BLACKBERRY CYLANCE</label>
+            </value>
+            <value>
+                <fullName>CYMULATE</fullName>
+                <default>false</default>
+                <label>CYMULATE</label>
+            </value>
+            <value>
+                <fullName>DYANATRACE</fullName>
+                <default>false</default>
+                <label>DYANATRACE</label>
+            </value>
+            <value>
+                <fullName>FIREMON</fullName>
+                <default>false</default>
+                <label>FIREMON</label>
+            </value>
+            <value>
+                <fullName>FORESCOUT</fullName>
+                <default>false</default>
+                <label>FORESCOUT</label>
+            </value>
+            <value>
+                <fullName>GIGAMON</fullName>
+                <default>false</default>
+                <label>GIGAMON</label>
+            </value>
+            <value>
+                <fullName>HASHCORP</fullName>
+                <default>false</default>
+                <label>HASHCORP</label>
+            </value>
+            <value>
+                <fullName>INETCO</fullName>
+                <default>false</default>
+                <label>INETCO</label>
+            </value>
+            <value>
+                <fullName>NONAME</fullName>
+                <default>false</default>
+                <label>NONAME</label>
+            </value>
+            <value>
+                <fullName>OTHER</fullName>
+                <default>false</default>
+                <label>OTHER</label>
+            </value>
+            <value>
+                <fullName>PENTEST</fullName>
+                <default>false</default>
+                <label>PENTEST</label>
+            </value>
+            <value>
+                <fullName>QOMPLX</fullName>
+                <default>false</default>
+                <label>QOMPLX</label>
+            </value>
+            <value>
+                <fullName>QUALYS</fullName>
+                <default>false</default>
+                <label>QUALYS</label>
+            </value>
+            <value>
+                <fullName>SALT</fullName>
+                <default>false</default>
+                <label>SALT</label>
+            </value>
+            <value>
+                <fullName>SECURITY.AI</fullName>
+                <default>false</default>
+                <label>SECURITY.AI</label>
+            </value>
+            <value>
+                <fullName>VERACODE</fullName>
+                <default>false</default>
+                <label>VERACODE</label>
+            </value>
+            <value>
+                <fullName>AWS</fullName>
+                <default>false</default>
+                <label>AWS</label>
+            </value>
+            <value>
+                <fullName>Cyberark</fullName>
+                <default>false</default>
+                <label>Cyberark</label>
+            </value>
+            <value>
+                <fullName>Cylance</fullName>
+                <default>false</default>
+                <label>Cylance</label>
+            </value>
+            <value>
+                <fullName>Extrahop</fullName>
+                <default>false</default>
+                <label>Extrahop</label>
+            </value>
+            <value>
+                <fullName>f5</fullName>
+                <default>false</default>
+                <label>f5</label>
+            </value>
+            <value>
+                <fullName>Infoblox</fullName>
+                <default>false</default>
+                <label>Infoblox</label>
+            </value>
+            <value>
+                <fullName>PrivacyTools</fullName>
+                <default>false</default>
+                <label>PrivacyTools</label>
+            </value>
+            <value>
+                <fullName>Rainforest</fullName>
+                <default>false</default>
+                <label>Rainforest</label>
+            </value>
+            <value>
+                <fullName>Riverbed</fullName>
+                <default>false</default>
+                <label>Riverbed</label>
+            </value>
+            <value>
+                <fullName>Thales</fullName>
+                <default>false</default>
+                <label>Thales</label>
+            </value>
+            <value>
+                <fullName>Palo Alto</fullName>
+                <default>false</default>
+                <label>Palo Alto</label>
+            </value>
+            <value>
+                <fullName>Veeam</fullName>
+                <default>false</default>
+                <label>Veeam</label>
+            </value>
+            <value>
+                <fullName>VaultOne</fullName>
+                <default>false</default>
+                <label>VaultOne</label>
+            </value>
+            <value>
+                <fullName>IBM</fullName>
+                <default>false</default>
+                <label>IBM</label>
+            </value>
+            <value>
+                <fullName>Picus Security</fullName>
+                <default>false</default>
+                <label>Picus Security</label>
+            </value>
+            <value>
+                <fullName>Positivo Server &amp; Solutions</fullName>
+                <default>false</default>
+                <label>Positivo Server &amp; Solutions</label>
+            </value>
+            <value>
+                <fullName>Security Compass</fullName>
+                <default>false</default>
+                <label>Security Compass</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>GIGAMON</controllingFieldValue>
+            <valueName>GIGAMON</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GIGAMON</controllingFieldValue>
+            <controllingFieldValue>FIREMON</controllingFieldValue>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <controllingFieldValue>INETCO</controllingFieldValue>
+            <valueName>OTHER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FIREMON</controllingFieldValue>
+            <valueName>FIREMON</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>Advanced Threat Prevention</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP iSeries Appliances</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP VIPRION Chassis and Blades</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Virtual Edition</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>F5 rSeries</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>VELOS Chassis and Blades</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Local Traffic Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP DNS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Advanced WAF</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Advanced Firewall Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Access Policy Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP Policy Enforcement Manager</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>BIG-IP SSL Orchestrator</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>iRules</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>Distributed Cloud Services</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>NGINX</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AWS</controllingFieldValue>
+            <controllingFieldValue>F5</controllingFieldValue>
+            <valueName>Shape Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Cortex</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>NGFW - Next-gen Firewall Hardware</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>NGFW - Next-gen Firewall Virtual VM-Series</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>NGFW - Next-gen Firewall Contêiner CN-Series</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>AIOps NGFW</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Panorama</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Advanced URL Filtering</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>WildFire</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>DNS Protection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>IoT Protection</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Enterprise Data loss Prevention (DLP)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Prisma SASE (Access, SD-WAN &amp; ADEM)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Prisma CLOUD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>DHCP, DNS and IPAM (DDI)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>BloxOne (SaaS)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>DNS Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Palo Alto</controllingFieldValue>
+            <valueName>Palo Alto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Veeam</controllingFieldValue>
+            <valueName>Veeam</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Privileged Access</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Workforce &amp; Custumer Access</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Indentity Management</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Secret Management</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Endpoint Privilege Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CYBERARK</controllingFieldValue>
+            <valueName>Cloud Privilege Security</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INFOBLOX</controllingFieldValue>
+            <valueName>CNA - Cloud Network Automation</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INETCO</controllingFieldValue>
+            <valueName>INETCO</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

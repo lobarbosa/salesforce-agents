@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Certificacao</fullName>
+    <active>true</active>
+    <description>Criar Capacitação para Certificação</description>
+    <label>Certificação</label>
+    <picklistValues>
+        <picklist>Status__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Job Reprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não Realizado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Previsto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tentativa__c</picklist>
+        <values>
+            <fullName>1ª Tentativa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2ª Tentativa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3ª Tentativa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4ª Tentativa</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

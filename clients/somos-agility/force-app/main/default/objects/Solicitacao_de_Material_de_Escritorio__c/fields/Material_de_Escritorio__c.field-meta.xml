@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Material_de_Escritorio__c</fullName>
+    <label>Material de Escritório</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Material_de_Escritorio__c.Estoque_Atual__c</field>
+            <operation>greaterThan</operation>
+            <value>0</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Material_de_Escritorio__c</referenceTo>
+    <relationshipLabel>Solicitação de Material de Escritório</relationshipLabel>
+    <relationshipName>Solicita_o_de_Material_de_Escrit_rio</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

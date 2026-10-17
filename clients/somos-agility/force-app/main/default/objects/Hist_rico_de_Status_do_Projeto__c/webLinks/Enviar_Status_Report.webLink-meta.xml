@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Enviar_Status_Report</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Enviar Status Report</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!Hist_rico_de_Status_do_Projeto__c.Id}&amp;p3_lkid={!Hist_rico_de_Status_do_Projeto__c.Id}&amp;p2_lkid={!Hist_rico_de_Status_do_Projeto__c.Nome_do_ContatoId__c}&amp;rtype=003&amp;p4={!PPM_Project__c.Email_GC__c}&amp;template_id=00X38000001wBBJ&amp;new_template=true&apos;);{!Hist_rico_de_Status_do_Projeto__c.E_mails_para_CC_Status_Report__c};
+
+
+
+/*
+ORIGINAL
+location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!Hist_rico_de_Status_do_Projeto__c.Id}&amp;p3_lkid={!Hist_rico_de_Status_do_Projeto__c.Id}&amp;p2_lkid={!Hist_rico_de_Status_do_Projeto__c.Nome_do_ContatoId__c}&amp;rtype=003&amp;p4={!PPM_Project__c.Email_GC__c}&amp;template_id=00X38000001sjml&amp;new_template=true&apos;);{!Hist_rico_de_Status_do_Projeto__c.E_mails_para_CC_Status_Report__c};
+
+
+&amp;template_id=00X50000001Pbo4
+*/</url>
+</WebLink>

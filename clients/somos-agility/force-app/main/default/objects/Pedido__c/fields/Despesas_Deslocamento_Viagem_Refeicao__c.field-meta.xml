@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Despesas_Deslocamento_Viagem_Refeicao__c</fullName>
+    <description>Determina quem irá arcar com as despeças do projeto</description>
+    <label>Despesas Deslocamento, Viagem, Refeição</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Agility Networks</fullName>
+                <default>false</default>
+                <label>Agility Networks</label>
+            </value>
+            <value>
+                <fullName>Cliente</fullName>
+                <default>false</default>
+                <label>Cliente</label>
+            </value>
+            <value>
+                <fullName>Nenhum</fullName>
+                <default>false</default>
+                <label>Nenhum</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

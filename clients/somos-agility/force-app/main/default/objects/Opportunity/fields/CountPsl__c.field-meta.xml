@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CountPsl__c</fullName>
+    <label>CountPsl</label>
+    <summaryFilterItems>
+        <field>Propostas_de_Solucao__c.StatusPsl__c</field>
+        <operation>equals</operation>
+        <value>Envio da Proposta ao Cliente</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Propostas_de_Solucao__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_Numero_do_Contrato_se_Suporte</fullName>
+    <active>true</active>
+    <description>Se Relacionado_a_entrega__c for igual a &quot;Suporte&quot;, o campo Numero_do_Contrato__c não pode estar vazio e, o campo Relacionado_ao_Projeto__c, por sua vez, deve estar vazio.</description>
+    <errorConditionFormula>OR(
+    AND(
+        ISPICKVAL(Relacionado_a_entrega__c, &quot;Suporte&quot;),
+            OR(
+                AND(
+                    ISBLANK(Numero_do_Contrato__c),
+                    NOT(ISBLANK(Relacionado_ao_Projeto__c))
+                ),
+                AND(
+                    NOT(ISBLANK(Numero_do_Contrato__c)),
+                    NOT(ISBLANK(Relacionado_ao_Projeto__c))
+                )
+            )
+    ),
+    AND(
+        ISPICKVAL(Relacionado_a_entrega__c, &quot;Suporte&quot;),
+        ISBLANK(Numero_do_Contrato__c)
+    )
+)</errorConditionFormula>
+    <errorMessage>Para lançamentos referentes a &quot;suporte&quot;, preencher o campo &quot;número do contrato&quot; e deixar vazio o campo &quot;relacionado ao projeto&quot;.</errorMessage>
+</ValidationRule>

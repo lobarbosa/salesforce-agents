@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade_relacionada__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 02052018: campo da oportunidade relacionada atualizada automaticamente pelo process builder &quot;Atualização do campo Oportunidade no Caso&quot;</description>
+    <label>Oportunidade relacionada</label>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>Casos</relationshipLabel>
+    <relationshipName>Casos</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

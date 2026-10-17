@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Minimo_de_40_Cota_em_DCF_ASM_APM_BYOD__c</fullName>
+    <externalId>false</externalId>
+    <formula>M_nimo_de_40_daCota_em_DCF_ASM_APM_BYOD__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Mínimo de 40% Cota em DCF/ASM/APM/BYOD</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

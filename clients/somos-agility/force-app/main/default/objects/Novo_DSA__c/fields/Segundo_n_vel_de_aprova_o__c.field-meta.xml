@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Segundo_n_vel_de_aprova_o__c</fullName>
+    <description>AM 10042018: lista de múltipla escolha para múltiplos aprovadores</description>
+    <label>Segundo nível de aprovação</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Digital</fullName>
+                <default>false</default>
+                <label>Digital</label>
+            </value>
+            <value>
+                <fullName>Premium Plus</fullName>
+                <default>false</default>
+                <label>Premium Plus</label>
+            </value>
+            <value>
+                <fullName>Produto</fullName>
+                <default>false</default>
+                <label>Produto</label>
+            </value>
+            <value>
+                <fullName>Projeto</fullName>
+                <default>false</default>
+                <label>Projeto</label>
+            </value>
+            <value>
+                <fullName>Suporte</fullName>
+                <default>false</default>
+                <label>Suporte</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>5</visibleLines>
+</CustomField>

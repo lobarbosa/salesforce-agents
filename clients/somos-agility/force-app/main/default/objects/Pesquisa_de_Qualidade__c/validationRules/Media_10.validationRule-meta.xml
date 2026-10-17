@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Media_10</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(
+    M_dia_Geral__c  &lt; 0,
+    M_dia_Geral__c  &gt; 10
+)</errorConditionFormula>
+    <errorDisplayField>M_dia_Geral__c</errorDisplayField>
+    <errorMessage>A Média Geral deverá ser de 0 a 10</errorMessage>
+</ValidationRule>

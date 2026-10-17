@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Quarter__c</fullName>
+    <label>Quarter</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>MesCompetencia__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1º Quarter 2025</fullName>
+                <default>false</default>
+                <label>1º Quarter 2025</label>
+            </value>
+            <value>
+                <fullName>2º Quarter 2025</fullName>
+                <default>false</default>
+                <label>2º Quarter 2025</label>
+            </value>
+            <value>
+                <fullName>3º Quarter 2025</fullName>
+                <default>false</default>
+                <label>3º Quarter 2025</label>
+            </value>
+            <value>
+                <fullName>4º Quarter 2025</fullName>
+                <default>false</default>
+                <label>4º Quarter 2025</label>
+            </value>
+            <value>
+                <fullName>1º Quarter 2026</fullName>
+                <default>false</default>
+                <label>1º Quarter 2026</label>
+            </value>
+            <value>
+                <fullName>2º Quarter 2026</fullName>
+                <default>false</default>
+                <label>2º Quarter 2026</label>
+            </value>
+            <value>
+                <fullName>3º Quarter 2026</fullName>
+                <default>false</default>
+                <label>3º Quarter 2026</label>
+            </value>
+            <value>
+                <fullName>4º Quarter 2026</fullName>
+                <default>false</default>
+                <label>4º Quarter 2026</label>
+            </value>
+            <value>
+                <fullName>1º Quarter 2024</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>1º Quarter 2024</label>
+            </value>
+            <value>
+                <fullName>1ºQuarter 2020</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>1ºQuarter 2020</label>
+            </value>
+            <value>
+                <fullName>1ºQuarter 2021</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>1ºQuarter 2021</label>
+            </value>
+            <value>
+                <fullName>1ºQuarter 2022</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>1ºQuarter 2022</label>
+            </value>
+            <value>
+                <fullName>1ºQuarter 2023</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>1ºQuarter 2023</label>
+            </value>
+            <value>
+                <fullName>2º Quarter 2024</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>2º Quarter 2024</label>
+            </value>
+            <value>
+                <fullName>2ºQuarter 2020</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>2ºQuarter 2020</label>
+            </value>
+            <value>
+                <fullName>2ºQuarter 2021</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>2ºQuarter 2021</label>
+            </value>
+            <value>
+                <fullName>2ºQuarter 2022</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>2ºQuarter 2022</label>
+            </value>
+            <value>
+                <fullName>2ºQuarter 2023</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>2ºQuarter 2023</label>
+            </value>
+            <value>
+                <fullName>3º Quarter 2024</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3º Quarter 2024</label>
+            </value>
+            <value>
+                <fullName>3ºQuarter 2020</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3ºQuarter 2020</label>
+            </value>
+            <value>
+                <fullName>3ºQuarter 2021</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3ºQuarter 2021</label>
+            </value>
+            <value>
+                <fullName>3ºQuarter 2022</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3ºQuarter 2022</label>
+            </value>
+            <value>
+                <fullName>3ºQuarter 2023</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>3ºQuarter 2023</label>
+            </value>
+            <value>
+                <fullName>4º Quarter 2024</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>4º Quarter 2024</label>
+            </value>
+            <value>
+                <fullName>4ºQuarter 2020</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>4ºQuarter 2020</label>
+            </value>
+            <value>
+                <fullName>4ºQuarter 2021</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>4ºQuarter 2021</label>
+            </value>
+            <value>
+                <fullName>4ºQuarter 2022</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>4ºQuarter 2022</label>
+            </value>
+            <value>
+                <fullName>4ºQuarter 2023</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>4ºQuarter 2023</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Novembro</controllingFieldValue>
+            <controllingFieldValue>Dezembro</controllingFieldValue>
+            <controllingFieldValue>Outubro</controllingFieldValue>
+            <valueName>4º Quarter 2025</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Novembro</controllingFieldValue>
+            <controllingFieldValue>Dezembro</controllingFieldValue>
+            <controllingFieldValue>Outubro</controllingFieldValue>
+            <valueName>4º Quarter 2026</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Janeiro</controllingFieldValue>
+            <controllingFieldValue>Fevereiro</controllingFieldValue>
+            <controllingFieldValue>Março</controllingFieldValue>
+            <valueName>1º Quarter 2025</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Janeiro</controllingFieldValue>
+            <controllingFieldValue>Fevereiro</controllingFieldValue>
+            <controllingFieldValue>Março</controllingFieldValue>
+            <valueName>1º Quarter 2026</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Abril</controllingFieldValue>
+            <controllingFieldValue>Maio</controllingFieldValue>
+            <controllingFieldValue>Junho</controllingFieldValue>
+            <valueName>2º Quarter 2025</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Abril</controllingFieldValue>
+            <controllingFieldValue>Maio</controllingFieldValue>
+            <controllingFieldValue>Junho</controllingFieldValue>
+            <valueName>2º Quarter 2026</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Julho</controllingFieldValue>
+            <controllingFieldValue>Agosto</controllingFieldValue>
+            <controllingFieldValue>Setembro</controllingFieldValue>
+            <valueName>3º Quarter 2025</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Julho</controllingFieldValue>
+            <controllingFieldValue>Agosto</controllingFieldValue>
+            <controllingFieldValue>Setembro</controllingFieldValue>
+            <valueName>3º Quarter 2026</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_Mes_do_Historico_Ultimo__c</fullName>
+    <formula>CASE(
+TEXT(M_s__c),
+&apos;Janeiro&apos;,DATE( Ano_em_Numero__c ,01,31),
+&apos;Fevereiro&apos;,DATE(Ano_em_Numero__c,02,28),
+&apos;Marco&apos;,DATE(Ano_em_Numero__c,03,31),
+&apos;Abril&apos;,DATE(Ano_em_Numero__c,04,30),
+&apos;Maio&apos;,DATE(Ano_em_Numero__c,05,31),
+&apos;Junho&apos;,DATE(Ano_em_Numero__c,06,30),
+&apos;Julho&apos;,DATE(Ano_em_Numero__c,07,31),
+&apos;Agosto&apos;,DATE(Ano_em_Numero__c,08,31),
+&apos;Setembro&apos;,DATE(Ano_em_Numero__c,09,30),
+&apos;Outubro&apos;,DATE(Ano_em_Numero__c,10,30),
+&apos;Novembro&apos;,DATE(Ano_em_Numero__c,11,30),
+DATE(Ano_em_Numero__c,12,31))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Data/Mês do Histórico - Ultimo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Date</type>
+</CustomField>

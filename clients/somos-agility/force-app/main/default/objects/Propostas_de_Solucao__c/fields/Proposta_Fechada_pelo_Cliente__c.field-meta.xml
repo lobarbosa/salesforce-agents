@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Proposta_Fechada_pelo_Cliente__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>jn04102018 criar campo de &quot;proposta fechada&quot; a pedido do CT . sprint 7 em 02102018.</description>
+    <inlineHelpText>Marcar se esta será a proposta  efetivamente proposta fechada pelo cliente.</inlineHelpText>
+    <label>*Proposta Fechada pelo Cliente</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

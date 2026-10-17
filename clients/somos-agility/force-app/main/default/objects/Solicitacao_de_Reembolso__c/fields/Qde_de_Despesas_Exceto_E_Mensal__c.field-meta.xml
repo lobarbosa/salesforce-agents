@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Qde_de_Despesas_Exceto_E_Mensal__c</fullName>
+    <label>Qtde de Despesas Exceto E.Mensal</label>
+    <summaryFilterItems>
+        <field>Lancamento_de_Despesas__c.Tipo_da_Despesa__c</field>
+        <operation>notEqual</operation>
+        <value>Estacionamento Mensal</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

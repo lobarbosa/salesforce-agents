@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Usuario_Nao_Pode_Criar_RT_de_Pesquisa</fullName>
+    <active>false</active>
+    <description>Prezado, você não tem autorização para criar um registro de Relatório Técnico do tipo Pesquisa de Satisfação.</description>
+    <errorConditionFormula>IF((ISNEW())&amp;&amp;(($User.Department=&apos;Suporte&apos;)||($User.Department =&apos;Projetos&apos;)||($User.Department =&apos;SD&apos;)&amp;&amp; 
+RecordType.Id &lt;&gt; &apos;01238000000RYHL&apos;),True,False)</errorConditionFormula>
+    <errorMessage>Prezado, você não tem autorização para criar um registro de Relatório Técnico do tipo Pesquisa de Satisfação.</errorMessage>
+</ValidationRule>

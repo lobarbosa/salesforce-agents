@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categoria_do_Veiculo__c</fullName>
+    <label>Categoria do Veículo</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Locacao_de_Veiculo__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Econômico com Ar</fullName>
+                <default>false</default>
+                <label>Econômico com Ar</label>
+            </value>
+            <value>
+                <fullName>SUV Automática</fullName>
+                <default>false</default>
+                <label>SUV Automática</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>Econômico com Ar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sim</controllingFieldValue>
+            <valueName>SUV Automática</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

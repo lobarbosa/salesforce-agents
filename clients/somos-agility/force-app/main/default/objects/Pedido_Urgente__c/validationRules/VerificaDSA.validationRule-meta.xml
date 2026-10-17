@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VerificaDSA</fullName>
+    <active>false</active>
+    <description>Verifica se há DSA pendente para que haja uma solicitação de processamento urgente</description>
+    <errorConditionFormula>NOT(ISPICKVAL(DSA__r.Status_DSA__c,&apos;Pendente&apos;))</errorConditionFormula>
+    <errorMessage>Não é possível criar um processamento urgente para esta DSA pois a DSA não está pendente.</errorMessage>
+</ValidationRule>

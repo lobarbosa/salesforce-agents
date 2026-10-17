@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_registro__c</fullName>
+    <description>AM 19082018: tipos de solicitação</description>
+    <label>Tipo de registro</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Desistência do Mapeamento</fullName>
+                <default>false</default>
+                <label>Desistência do Mapeamento</label>
+            </value>
+            <value>
+                <fullName>Follow up Fabricante</fullName>
+                <default>false</default>
+                <label>Follow up Fabricante</label>
+            </value>
+            <value>
+                <fullName>Retorno do fabricante</fullName>
+                <default>false</default>
+                <label>Retorno do fabricante</label>
+            </value>
+            <value>
+                <fullName>Solicitação de novo mapeamento</fullName>
+                <default>false</default>
+                <label>Solicitação de novo mapeamento</label>
+            </value>
+            <value>
+                <fullName>Solicitação de renovação</fullName>
+                <default>false</default>
+                <label>Solicitação de renovação</label>
+            </value>
+            <value>
+                <fullName>Solicitacao ao fabricante</fullName>
+                <default>false</default>
+                <label>Solicitação ao fabricante</label>
+            </value>
+            <value>
+                <fullName>Cotação</fullName>
+                <default>true</default>
+                <label>Cotação</label>
+            </value>
+            <value>
+                <fullName>Follow up do Gerente de Contas</fullName>
+                <default>false</default>
+                <label>Follow up do Gerente de Contas</label>
+            </value>
+            <value>
+                <fullName>Follow up SA</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Follow up SA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

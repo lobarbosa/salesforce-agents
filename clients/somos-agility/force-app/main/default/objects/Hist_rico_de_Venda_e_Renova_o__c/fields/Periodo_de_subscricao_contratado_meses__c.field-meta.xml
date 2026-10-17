@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Periodo_de_subscricao_contratado_meses__c</fullName>
+    <externalId>false</externalId>
+    <inlineHelpText>Este campo deverá ser preenchido com o número de meses (Ex: 12 meses, 24 meses, 36 Meses).</inlineHelpText>
+    <label>Período de subscrição contratado (meses)</label>
+    <precision>16</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

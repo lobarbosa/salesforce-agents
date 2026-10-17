@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__Tipo_residencia__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Identifica o tipo de residência da pessoa.</description>
+    <inlineHelpText>Identifica o tipo de residência da pessoa.</inlineHelpText>
+    <label>Tipo de residência</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Imóvel próprio</fullName>
+                <default>false</default>
+                <label>Imóvel próprio</label>
+            </value>
+            <value>
+                <fullName>Imóvel alugado</fullName>
+                <default>false</default>
+                <label>Imóvel alugado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

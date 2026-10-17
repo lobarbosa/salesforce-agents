@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_Total_Informativo__c</fullName>
+    <description>jn04122018 criar campo totalizador de Valor Total Informativo para atender a necessidade da notificação de capa.</description>
+    <label>Valor Total Informativo</label>
+    <summarizedField>Lancamento_Despesas__c.Valor_da_Despesa_Informativa__c</summarizedField>
+    <summaryFilterItems>
+        <field>Lancamento_Despesas__c.Classe__c</field>
+        <operation>equals</operation>
+        <value>Informativa</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Lancamento_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

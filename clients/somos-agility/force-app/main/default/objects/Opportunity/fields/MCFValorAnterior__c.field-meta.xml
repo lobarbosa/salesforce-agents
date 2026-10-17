@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MCFValorAnterior__c</fullName>
+    <description>Campo criado para guardar o valor anterior do meu compromisso de fechamento, a fim de popular uma variável para o modelo de e-mail &quot;Notificação de alteração do meu compromisso de fechamento&quot;.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>MCF: Meu compromisso de fechamento</inlineHelpText>
+    <label>MCF (Valor anterior)</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

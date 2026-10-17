@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M02_Alterar_fase_OEG</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / Para concluir a fase OEG é necessário que seu Gestor tenha aprovado</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;,
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+     $Profile.Name &lt;&gt; &quot;Administração&quot;, 
+     ISPICKVAL(PRIORVALUE(StageName),&quot;OEG&quot;),
+     OR  (ISPICKVAL(StageName,&quot;PSL&quot;),
+          ISPICKVAL(StageName,&quot;PFC&quot;),
+          ISPICKVAL(StageName,&quot;NEC&quot;),
+          ISPICKVAL(StageName,&quot;FPR&quot;)),
+     TEXT( Status_Qualificacao_OEG__c )&lt;&gt;&quot;Aprovado&quot; 
+)</errorConditionFormula>
+    <errorMessage>É necessário enviar para aprovação do seu gestor (Msg02)</errorMessage>
+</ValidationRule>

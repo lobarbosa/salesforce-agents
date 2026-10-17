@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Soma_da_Rent_Prev_das_Opp_Abertas_Renew__c</fullName>
+    <label>Soma da Rent. Prev das Opp Abertas Renew</label>
+    <summarizedField>Opportunity.Rentabilidade_prevista_PSL__c</summarizedField>
+    <summaryFilterItems>
+        <field>Opportunity.Status__c</field>
+        <operation>equals</operation>
+        <value>Aberto</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Opportunity.Renova_o__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

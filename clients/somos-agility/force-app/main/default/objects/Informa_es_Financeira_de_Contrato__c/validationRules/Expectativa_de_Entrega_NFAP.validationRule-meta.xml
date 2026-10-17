@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Expectativa_de_Entrega_NFAP</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND (  ISPICKVAL  (Faturamento__c, &quot;NFAP&quot;) ,
+ ISBLANK(   Expectativa_de_Entrega_dos_Equipamen_old__c  ))</errorConditionFormula>
+    <errorDisplayField>Expectativa_de_Entrega_dos_Equipamen_old__c</errorDisplayField>
+    <errorMessage>Favor Informar a Expectativa de Entrega dos Equipamentos</errorMessage>
+</ValidationRule>

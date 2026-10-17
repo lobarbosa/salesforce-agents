@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_se_hora_fim_maior_que_hora_inicio</fullName>
+    <active>true</active>
+    <description>Checará se a hora final da atividade é maior que a hora inicial, contemplando os 3 executores.</description>
+    <errorConditionFormula>OR(
+    AND(
+        NOT(ISBLANK(Inicio_previsto_da_atividade__c)),
+        NOT(ISBLANK(Fim_previsto_da_atividade__c)),
+        Inicio_previsto_da_atividade__c &gt;= Fim_previsto_da_atividade__c
+    ),
+    AND(
+        NOT(ISBLANK(Inicio_da_atividade_1__c)),
+        NOT(ISBLANK(Fim_da_atividade_1__c)),
+        Inicio_da_atividade_1__c &gt;= Fim_da_atividade_1__c
+    ),
+    AND(
+        NOT(ISBLANK(Inicio_da_atividade_2__c)),
+        NOT(ISBLANK(Fim_da_atividade_2__c)),
+        Inicio_da_atividade_2__c &gt;= Fim_da_atividade_2__c
+    ),
+    AND(
+        NOT(ISBLANK(Inicio_da_atividade_3__c)),
+        NOT(ISBLANK(Fim_da_atividade_3__c)),
+        Inicio_da_atividade_3__c &gt;= Fim_da_atividade_3__c
+    )
+)</errorConditionFormula>
+    <errorMessage>A hora final deve ser maior que a hora inicial da atividade.</errorMessage>
+</ValidationRule>

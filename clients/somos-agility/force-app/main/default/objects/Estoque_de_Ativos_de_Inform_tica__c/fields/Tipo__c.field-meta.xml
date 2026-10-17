@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo__c</fullName>
+    <label>Tipo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Notebook</fullName>
+                <default>false</default>
+                <label>Notebook</label>
+            </value>
+            <value>
+                <fullName>Celular</fullName>
+                <default>false</default>
+                <label>Celular</label>
+            </value>
+            <value>
+                <fullName>Impressora</fullName>
+                <default>false</default>
+                <label>Impressora</label>
+            </value>
+            <value>
+                <fullName>Desktop</fullName>
+                <default>false</default>
+                <label>Desktop</label>
+            </value>
+            <value>
+                <fullName>Chip</fullName>
+                <default>false</default>
+                <label>Chip</label>
+            </value>
+            <value>
+                <fullName>Telefone Fixo</fullName>
+                <default>false</default>
+                <label>Telefone Fixo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

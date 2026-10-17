@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TotalDespesaProjeto__c</fullName>
+    <label>Total despesa projeto</label>
+    <summaryFilterItems>
+        <field>Lancamento_de_Despesas__c.Relacionado_a_entrega__c</field>
+        <operation>equals</operation>
+        <value>Projeto</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

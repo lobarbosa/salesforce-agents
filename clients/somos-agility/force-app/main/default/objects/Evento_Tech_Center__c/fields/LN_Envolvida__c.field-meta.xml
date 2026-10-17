@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LN_Envolvida__c</fullName>
+    <label>LN Envolvida</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Tipo_de_Evento__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cloud</fullName>
+                <default>false</default>
+                <label>Cloud</label>
+            </value>
+            <value>
+                <fullName>Data Center</fullName>
+                <default>false</default>
+                <label>Data Center</label>
+            </value>
+            <value>
+                <fullName>Entrega de Aplicação</fullName>
+                <default>false</default>
+                <label>Entrega de Aplicação</label>
+            </value>
+            <value>
+                <fullName>Segurança</fullName>
+                <default>false</default>
+                <label>Segurança</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Apresentação Técnica / EBC</controllingFieldValue>
+            <controllingFieldValue>Testes Padronizados do ATC</controllingFieldValue>
+            <controllingFieldValue>Teste Customizado</controllingFieldValue>
+            <valueName>Cloud</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apresentação Técnica / EBC</controllingFieldValue>
+            <controllingFieldValue>Testes Padronizados do ATC</controllingFieldValue>
+            <controllingFieldValue>Teste Customizado</controllingFieldValue>
+            <valueName>Data Center</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apresentação Técnica / EBC</controllingFieldValue>
+            <controllingFieldValue>Testes Padronizados do ATC</controllingFieldValue>
+            <controllingFieldValue>Teste Customizado</controllingFieldValue>
+            <valueName>Entrega de Aplicação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Apresentação Técnica / EBC</controllingFieldValue>
+            <controllingFieldValue>Testes Padronizados do ATC</controllingFieldValue>
+            <controllingFieldValue>Teste Customizado</controllingFieldValue>
+            <valueName>Segurança</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

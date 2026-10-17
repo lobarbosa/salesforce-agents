@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nivel_de_Atendimento__c</fullName>
+    <description>Classificação para o nível de atendimento ao caso recebido.</description>
+    <inlineHelpText>Níveis de classificação de atendimento do caso.</inlineHelpText>
+    <label>Nível de Atendimento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>true</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>N1</fullName>
+                <default>false</default>
+                <label>N1</label>
+            </value>
+            <value>
+                <fullName>N2</fullName>
+                <default>false</default>
+                <label>N2</label>
+            </value>
+            <value>
+                <fullName>N3</fullName>
+                <default>false</default>
+                <label>N3</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

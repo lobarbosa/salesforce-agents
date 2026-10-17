@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Referente_ao_Service_Delivery_Manager__c</fullName>
+    <label>Referente ao Service Delivery Manager</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alessandra Moreira Duarte Lunardi</fullName>
+                <default>false</default>
+                <label>Alessandra Moreira Duarte Lunardi</label>
+            </value>
+            <value>
+                <fullName>Patricia Cordella</fullName>
+                <default>false</default>
+                <label>Patricia Cordella</label>
+            </value>
+            <value>
+                <fullName>Paula Cristina Papis</fullName>
+                <default>false</default>
+                <label>Paula Cristina Papis</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_do_cliente_que_confirmou_primaz__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Seção Primazia</description>
+    <inlineHelpText>Quem no cliente confirmou que a Agility tem a primazia da solução?</inlineHelpText>
+    <label>Contato do cliente que confirmou:</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>$Source.AccountId</field>
+            <operation>equals</operation>
+            <valueField>Contact.Account.Id</valueField>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Oportunidades (Cliente que confirmou a primazia)</relationshipLabel>
+    <relationshipName>OportunidadesWK9i</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

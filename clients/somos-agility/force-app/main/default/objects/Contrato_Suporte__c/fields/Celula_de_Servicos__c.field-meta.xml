@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Celula_de_Servicos__c</fullName>
+    <label>Célula de Serviços</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Infraestrutura</fullName>
+                <default>false</default>
+                <label>Infraestrutura</label>
+            </value>
+            <value>
+                <fullName>Virtualização</fullName>
+                <default>false</default>
+                <label>Virtualização</label>
+            </value>
+            <value>
+                <fullName>Armazenamento</fullName>
+                <default>false</default>
+                <label>Armazenamento</label>
+            </value>
+            <value>
+                <fullName>Entrega de Aplicação</fullName>
+                <default>false</default>
+                <label>Entrega de Aplicação</label>
+            </value>
+            <value>
+                <fullName>Otimização WAN</fullName>
+                <default>false</default>
+                <label>Otimização WAN</label>
+            </value>
+            <value>
+                <fullName>L2-L2 Visibility &amp; Security</fullName>
+                <default>false</default>
+                <label>L2-L2 Visibility &amp; Security</label>
+            </value>
+            <value>
+                <fullName>DDI - DNS, DHCP , IPAM</fullName>
+                <default>false</default>
+                <label>DDI - DNS, DHCP , IPAM</label>
+            </value>
+            <value>
+                <fullName>Ngen Firewalls</fullName>
+                <default>false</default>
+                <label>Ngen Firewalls</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

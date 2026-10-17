@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Rentabilidade_prevista_PSL__c</fullName>
+    <description>JN Rentabilidade Prevista PSL, excluir do rotulo o sulfixo PSL.</description>
+    <inlineHelpText>Antigo: Rentabilidade Prevista PSL</inlineHelpText>
+    <label>One time previsto PSL</label>
+    <summarizedField>Propostas_de_Solucao__c.Rentabilidade_Prevista_2__c</summarizedField>
+    <summaryFilterItems>
+        <field>Propostas_de_Solucao__c.Sincronizar__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Propostas_de_Solucao__c.Oportunidade__c</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

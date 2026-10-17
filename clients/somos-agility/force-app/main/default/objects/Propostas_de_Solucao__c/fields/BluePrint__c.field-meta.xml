@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BluePrint__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>BluePrint</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>BluePrint__c.Oportunidade__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.Oportunidade__c</valueField>
+        </filterItems>
+        <filterItems>
+            <field>BluePrint__c.Sales_In_Net__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filterItems>
+        <filterItems>
+            <field>BluePrint__c.Rentabilidade_prevista__c</field>
+            <operation>equals</operation>
+            <value>0</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>BluePrint__c</referenceTo>
+    <relationshipLabel>Propostas de Solução</relationshipLabel>
+    <relationshipName>Propostas_de_Solu_o</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

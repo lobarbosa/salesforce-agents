@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Desenvolvimento</fullName>
+    <active>true</active>
+    <label>Desenvolvimento</label>
+    <picklistValues>
+        <picklist>A_o_realizada__c</picklist>
+        <values>
+            <fullName>Em análise</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Acao_DIA_Encerrada__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Budget_aprovado__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>true</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Classifica_o__c</picklist>
+        <values>
+            <fullName>0-Oportunidade já registrada por outra revenda%3B parceiro%2Ffabricante já atuando%2E</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>1-%22Match%22 pág%2E 1 x cliente - buscando interlocutor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>2-Interlocutor alcançado%2C sem prioridade pelo Cliente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>3-Priorizado pelo cliente%2C Há uma %22Dor%22 e Compelling Técnico%2C Análise para envio ao orçamento</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>4-Engajado - Submetido ao Orçamento ou Verificando Concorrência</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>5-Engajado - Orçamento OK%2C Prazo em curso</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_Fabricante__c</picklist>
+        <values>
+            <fullName>AGILITY-AUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AGILITY-SEG</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AIOps NGFW</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ARMIS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS Fargate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>AWS Trasit Gateway</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advanced Threat Prevention</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Advanced URL Filtering</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon CloudFront</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Block Store %28EBS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Cloud Compute %28EC2%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Container Service %28ECS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Elastic Kubernetes Service %28EKS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Route 53</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Simple Storage Service %28S3%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Amazon Virtual Private Cloud %28VPC%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Apptio</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Access Policy Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Advanced Firewall Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Advanced WAF</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP DNS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Local Traffic Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Policy Enforcement Manager</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP SSL Orchestrator</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP VIPRION Chassis and Blades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP Virtual Edition</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BIG-IP iSeries Appliances</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BLACKBERRY CYLANCE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>BloxOne %28SaaS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CNA - Cloud Network Automation</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYMULATE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cloud Privilege Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cortex</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cyberark</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cylance</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DHCP%2C DNS and IPAM %28DDI%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DNS Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DNS Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DYANATRACE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Distributed Cloud Services</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>EC2 AWS Auto Scaling</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Elastic Load Balancing %28ELB%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Endpoint Privilege Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Enterprise Data loss Prevention %28DLP%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extrahop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5 rSeries</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIREMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FORESCOUT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIGAMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gremlin</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>HASHCORP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INETCO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Indentity Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infoblox</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IoT Protection</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Contêiner CN-Series</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Hardware</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGFW - Next-gen Firewall Virtual VM-Series</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NGINX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>NONAME</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OTHER</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer APEX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Analyzer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer GigaStor</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Gigaflow</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Management Server %28OMS%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Observer Taps</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>ObserverONE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PENTEST</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palo Alto%C2%A0</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Panorama</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prisma CLOUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Prisma SASE %28Access%2C SD-WAN %26 ADEM%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PrivacyTools</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Privileged Access</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QOMPLX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QUALYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rainforest</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riverbed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SALT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>SECURITY%2EAI</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Secret Management</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Shape Security</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Turbonomic</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VELOS Chassis and Blades</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VERACODE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VaultOne</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Veeam</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>WildFire</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Workforce %26 Custumer Access</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>f5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>iRules</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_OneTime__c</picklist>
+        <values>
+            <fullName>AWS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>CYBERARK</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Extrahop</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>F5</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>FIREMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Firefly</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GIGAMON</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Granulate</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Gremlin</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Huawei</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IBM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INETCO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>INFOBLOX</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>JScrambler</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>OTHER</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Palo Alto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PrivacyTools</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>QUALYS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Rainforest</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Riverbed</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Thales</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>VERACODE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vault One</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Veeam</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Produto_Recorrente__c</picklist>
+        <values>
+            <fullName>3N</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>APPSEC-LCYCLE</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>GEST-VULNERB</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>IDENTITY-GOV</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MNG-DEVOPS%2FMCLOUD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>MNG-DIGIEXP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>TT-INTEL</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Resultado_da_Acao_DIA__c</picklist>
+        <values>
+            <fullName>Concluido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Setor_rea__c</picklist>
+        <values>
+            <fullName>Cloud</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Infra</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Seg</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_A_o_DIA__c</picklist>
+        <values>
+            <fullName>Desenvolvimento</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+</RecordType>

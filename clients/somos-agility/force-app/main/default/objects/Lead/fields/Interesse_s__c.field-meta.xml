@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Interesse_s__c</fullName>
+    <label>Interesse(s)</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Integração - Palo Alto</fullName>
+                <default>false</default>
+                <label>Integração - Palo Alto</label>
+            </value>
+            <value>
+                <fullName>Integração - F5</fullName>
+                <default>false</default>
+                <label>Integração - F5</label>
+            </value>
+            <value>
+                <fullName>Integração - Infoblox</fullName>
+                <default>false</default>
+                <label>Integração - Infoblox</label>
+            </value>
+            <value>
+                <fullName>Integração - Hashicorp</fullName>
+                <default>false</default>
+                <label>Integração - Hashicorp</label>
+            </value>
+            <value>
+                <fullName>Integração - Cyberark</fullName>
+                <default>false</default>
+                <label>Integração - Cyberark</label>
+            </value>
+            <value>
+                <fullName>XaaS - GAA</fullName>
+                <default>false</default>
+                <label>XaaS - GAA</label>
+            </value>
+            <value>
+                <fullName>XaaS - GPD</fullName>
+                <default>false</default>
+                <label>XaaS - GPD</label>
+            </value>
+            <value>
+                <fullName>XaaS - PAM</fullName>
+                <default>false</default>
+                <label>XaaS - PAM</label>
+            </value>
+            <value>
+                <fullName>Outro</fullName>
+                <default>false</default>
+                <label>Outro</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>9</visibleLines>
+</CustomField>

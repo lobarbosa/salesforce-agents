@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Impede_o_GP_de_editar_horas_de_analistas</fullName>
+    <active>true</active>
+    <description>Irá impedir o GP de editar as horas dos analistas.</description>
+    <errorConditionFormula>AND(
+    $Profile.Name = &quot;Gerente de Projetos&quot;,
+
+    OR(
+        AND(
+            OR(
+                ISCHANGED(Inicio_da_atividade_1__c),
+                ISCHANGED(Fim_da_atividade_1__c)
+            ),
+            
+            NOT(ISBLANK(Executor_da_atividade_1__c)),
+
+            NOT(
+                CONTAINS(
+                    LOWER(Executor_da_atividade_1__r.Title),
+                    &quot;projeto&quot;
+                )
+            )
+        ),
+
+        AND(
+            OR(
+                ISCHANGED(Inicio_da_atividade_2__c),
+                ISCHANGED(Fim_da_atividade_2__c)
+            ),
+            
+            NOT(ISBLANK(Executor_da_atividade_2__c)),
+
+            NOT(
+                CONTAINS(
+                    LOWER(Executor_da_atividade_2__r.Title),
+                    &quot;projeto&quot;
+                )
+            )
+        ),
+
+        AND(
+            OR(
+                ISCHANGED(Inicio_da_atividade_3__c),
+                ISCHANGED(Fim_da_atividade_3__c)
+            ),
+            
+            NOT(ISBLANK(Executor_da_atividade_3__c)),
+
+            NOT(
+                CONTAINS(
+                    LOWER(Executor_da_atividade_3__r.Title),
+                    &quot;projeto&quot;
+                )
+            )
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>Apenas os analistas podem fazer o devido lançamento das horas empenhadas em atividades.</errorMessage>
+</ValidationRule>

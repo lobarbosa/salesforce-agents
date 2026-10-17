@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contrato_de_Suporte_Novo</fullName>
+    <active>true</active>
+    <description>Regra Anterior: 
+
+AND(ISPICKVAL( Possui_Contrato_de_Suporte_Agility__c  , &quot;Novo&quot;),ISBLANK(TEXT(Inicio_de_Faturamento__c ))||AND(ISPICKVAL( Possui_Contrato_de_Suporte_Agility__c  , &quot;Novo&quot;),ISBLANK(  Data_de_Faturamento_Ativacao__c  )))</description>
+    <errorConditionFormula>AND(((ISPICKVAL(PRIORVALUE(Project_Status__c ),&quot;DSA em Análise&quot;)||ISPICKVAL(PRIORVALUE(Project_Status__c ),&quot;DSA Rejeitado&quot;)||ISPICKVAL(PRIORVALUE(Project_Status__c ),&quot;Em Planejamento&quot;))
+&amp;&amp;ISPICKVAL(Project_Status__c ,&quot;Dentro do prazo&quot;)&amp;&amp; ISPICKVAL( Possui_Contrato_de_Suporte_Agility__c,&quot;Novo&quot;)) ,ISBLANK(TEXT(Inicio_de_Faturamento__c))||AND(ISPICKVAL( Possui_Contrato_de_Suporte_Agility__c,&quot;Novo&quot;),ISBLANK(  Data_de_Faturamento_Ativacao__c)))</errorConditionFormula>
+    <errorMessage>Favor Preencher os Campos Início de Faturamento / Ativação e o campo Data de Faturamento / Ativação</errorMessage>
+</ValidationRule>

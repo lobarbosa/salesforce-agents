@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Somente_Financeiro_Altera_Fase_ERP</fullName>
+    <active>false</active>
+    <description>Somente o Financeiro pode Alterar para a Fase 7 - Processado ERP</description>
+    <errorConditionFormula>AND (ISPICKVAL( StageName , &quot;7 - Processado ERP&quot;) , TEXT($User.Centro_de_Custo__c) = &apos;Comercial&apos;)</errorConditionFormula>
+    <errorMessage>Somente o Financeiro pode Alterar para a Fase 7 - Processado ERP</errorMessage>
+</ValidationRule>

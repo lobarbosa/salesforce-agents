@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Project_Phase__c</fullName>
+    <inlineHelpText>Fase na qual se encontra o respectivo projeto.</inlineHelpText>
+    <label>Fase do projeto</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01 - DNP</fullName>
+                <default>true</default>
+                <label>01 - DNP</label>
+            </value>
+            <value>
+                <fullName>02 - Kick-Off cliente</fullName>
+                <default>false</default>
+                <label>02 - Kick-Off cliente</label>
+            </value>
+            <value>
+                <fullName>03 - Desenho de arquitetura</fullName>
+                <default>false</default>
+                <label>03 - Desenho de arquitetura</label>
+            </value>
+            <value>
+                <fullName>04 - Construção</fullName>
+                <default>false</default>
+                <label>04 - Construção</label>
+            </value>
+            <value>
+                <fullName>05 - Validação e teste</fullName>
+                <default>false</default>
+                <label>05 - Validação e teste</label>
+            </value>
+            <value>
+                <fullName>06 - Disponibilização</fullName>
+                <default>false</default>
+                <label>06 - Disponibilização</label>
+            </value>
+            <value>
+                <fullName>07 - Acompanhamento</fullName>
+                <default>false</default>
+                <label>07 - Acompanhamento</label>
+            </value>
+            <value>
+                <fullName>08 - Documentação</fullName>
+                <default>false</default>
+                <label>08 - Documentação</label>
+            </value>
+            <value>
+                <fullName>09 - Questionário de avaliação</fullName>
+                <default>false</default>
+                <label>09 - Questionário de avaliação</label>
+            </value>
+            <value>
+                <fullName>10 - Termo de aceite</fullName>
+                <default>false</default>
+                <label>10 - Termo de aceite</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

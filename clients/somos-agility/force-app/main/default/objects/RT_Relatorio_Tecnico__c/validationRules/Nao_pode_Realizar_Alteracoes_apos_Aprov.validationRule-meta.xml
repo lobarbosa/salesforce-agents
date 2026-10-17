@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_pode_Realizar_Alteracoes_apos_Aprov</fullName>
+    <active>true</active>
+    <description>Não é possível realizar alterações após aprovado</description>
+    <errorConditionFormula>AND(ISPICKVAL(Status__c,&quot;Aprovado&quot;)&amp;&amp; 
+RecordType.Id = &apos;01238000000RYHL&apos; &amp;&amp; ($User.Id =&apos;00550000001XZ6s&apos;|| $User.Id =&apos;00550000003KKJ0&apos;),ISCHANGED( Nome_da_Conta__c )||ISCHANGED( Status__c )||ISCHANGED( Pesquisa_de_Satisfaao__c ))</errorConditionFormula>
+    <errorMessage>Não é possível realizar alterações, pois o RT já está aprovado.</errorMessage>
+</ValidationRule>

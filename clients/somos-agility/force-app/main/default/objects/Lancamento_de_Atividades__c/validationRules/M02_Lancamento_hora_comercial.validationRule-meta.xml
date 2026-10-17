@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M02_Lancamento_hora_comercial</fullName>
+    <active>false</active>
+    <description>AM111118: lançamento entre 8 e 18</description>
+    <errorConditionFormula>AND(
+      ISPICKVAL(tipoHorario__c, &quot;Inválido&quot;) 
+)
+ 
+/*
+VERSÃO EM 231118
+AND(
+    Tipo_horario__c = &quot;Inválido&quot;,
+     $Profile.Name &lt;&gt; &quot;Administração&quot;
+    )
+    
+
+OR(
+Validacao_HC_HNC__c &lt;&gt; TEXT(Tipo_de_horario__c),
+Fim_da_atividade__c - Inicio_da_atividade__c &gt; 10/24,
+VALUE( MID( TEXT( Inicio_da_atividade__c - 2/24), 12, 2 ) ) &lt; 8,
+VALUE( MID( TEXT( Fim_da_atividade__c - 2/24), 12, 2 ) ) &gt; 18 
+)
+
+Validacao_HC_HNC__c &lt;&gt; TEXT(Tipo_de_horario__c)
+
+Fim_da_atividade__c - Inicio_da_atividade__c &gt; 10/24,
+
+AND( 
+Validacao_HC_HNC__c = &quot;Hora comercial&quot;,
+TEXT(Tipo_de_horario__c) = &quot;Hora não comercial&quot;
+)
+
+Fim_da_atividade__c - Inicio_da_atividade__c &gt; 10/24,
+
+*/</errorConditionFormula>
+    <errorMessage>Não é possível lançar hora comercial fora do intervalo entre 8:00 e 18:00 horas. Faça os lançamento da hora comercial e hora não comercial separadamente (Msg02)</errorMessage>
+</ValidationRule>

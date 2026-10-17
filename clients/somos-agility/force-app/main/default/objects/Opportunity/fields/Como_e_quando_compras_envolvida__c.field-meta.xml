@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Como_e_quando_compras_envolvida__c</fullName>
+    <inlineHelpText>Descreva COMO e QUANDO a área de Compras do Cliente deverá ser envolvida</inlineHelpText>
+    <label>Como e quando compras é envolvida?</label>
+    <length>7000</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

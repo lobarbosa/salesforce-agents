@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>snap_finan__indicador_inscricao_estadual__c</fullName>
+    <deprecated>false</deprecated>
+    <description>Identifica o enquadramento da conta como contribuinte do ICMS. As opções são: 1-Contribuinte ICMS; 2-Contribuinte isento de inscrição; 9-Não contribuinte.</description>
+    <inlineHelpText>Identifica o enquadramento da conta como contribuinte do ICMS. As opções são: 1-Contribuinte ICMS; 2-Contribuinte isento de inscrição; 9-Não contribuinte.</inlineHelpText>
+    <label>Indicador da IE</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1-Contribuinte ICMS</fullName>
+                <default>false</default>
+                <label>1-Contribuinte ICMS</label>
+            </value>
+            <value>
+                <fullName>2-Contribuinte isento de Inscrição no cadastro de Contribuintes do ICMS</fullName>
+                <default>false</default>
+                <label>2-Contribuinte isento de Inscrição no cadastro de Contribuintes do ICMS</label>
+            </value>
+            <value>
+                <fullName>9-Não contribuinte, que pode ou não possuir Inscrição Estadual no Cadastro de Contribuintes do ICMS</fullName>
+                <default>false</default>
+                <label>9-Não contribuinte, que pode ou não possuir Inscrição Estadual no Cadastro de Contribuintes do ICMS</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

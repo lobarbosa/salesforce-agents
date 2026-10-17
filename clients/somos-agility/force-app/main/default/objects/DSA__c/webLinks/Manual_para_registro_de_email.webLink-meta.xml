@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Manual_para_registro_de_email</fullName>
+    <availability>online</availability>
+    <description>MAN-003 - Manual para registro de e-mail - Salesforce - Backoffice.</description>
+    <displayType>link</displayType>
+    <encodingKey>UTF-8</encodingKey>
+    <hasMenubar>false</hasMenubar>
+    <hasScrollbars>true</hasScrollbars>
+    <hasToolbar>false</hasToolbar>
+    <height>600</height>
+    <isResizable>true</isResizable>
+    <linkType>url</linkType>
+    <masterLabel>Manual para registro de e-mail</masterLabel>
+    <openType>newWindow</openType>
+    <position>none</position>
+    <protected>false</protected>
+    <showsLocation>false</showsLocation>
+    <showsStatus>false</showsStatus>
+    <url>https://agilitynetworksbrazil-my.sharepoint.com/:b:/g/personal/lucas_ribeiro_somosagility_com_br/EbD_JTetWUFAi6mTM3CzSREBOBdkTX9FQEUgAqqP8I2pqw?e=flT2Ur</url>
+</WebLink>

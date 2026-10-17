@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Destino_Ida</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(   Para_Ida__c   ,&quot;Rio de Janeiro&quot;)
+||ISPICKVAL(   Para_Ida__c   ,&quot;Curitiba&quot;)
+||ISPICKVAL(  Para_Ida__c  ,&quot;Brasília&quot;)
+||ISPICKVAL(   Para_Ida__c    ,&quot;Porto Alegre&quot;)
+||ISPICKVAL(  Para_Ida__c    ,&quot;Nova York&quot;),ISBLANK(    Data_Destino_Ida__c  ))</errorConditionFormula>
+    <errorDisplayField>Data_Destino_Ida__c</errorDisplayField>
+    <errorMessage>Informar a Data de Destino da Ida</errorMessage>
+</ValidationRule>

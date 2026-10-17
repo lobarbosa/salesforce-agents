@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DATA_CENTER_CLOUD_GRAF__c</fullName>
+    <externalId>false</externalId>
+    <formula>IMAGE(&quot;http://chart.googleapis.com/chart?chxl=1:|AUTOM e IPAM|DC SRV|AI|VOG|TOTAL&amp;chxr=0,0,2000000&amp;chxt=x,y&amp;chbh=a&amp;chs=440x220&amp;cht=bhs&amp;chco=4D89F9,C6D9FD&amp;chds=0,2000000,-10,2000000&amp;chd=t:&quot;+SUBSTITUTE( TEXT(Total_DD_C__c), &quot;,&quot;, &quot;&quot;) +&quot;,&quot; 
++SUBSTITUTE( TEXT( VOG__c ), &quot;,&quot;, &quot;&quot;) +&quot;,&quot; 
++SUBSTITUTE( TEXT( AI__c ), &quot;,&quot;, &quot;&quot;) +&quot;,&quot; 
++SUBSTITUTE( TEXT( DC_SRV_Networks__c ), &quot;,&quot;, &quot;&quot;) +&quot;,&quot; 
++SUBSTITUTE( TEXT( AUTOM_IPAM__c), &quot;,&quot;, &quot;&quot;) 
++&quot;|2000000,2000000,2000000,2000000,2000000&amp;chg=-1,0&amp;chm=N,FF0000,0,-1,11&quot;,&quot;No image&quot;,220,380)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>DATA CENTER &amp; CLOUD GRAF</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

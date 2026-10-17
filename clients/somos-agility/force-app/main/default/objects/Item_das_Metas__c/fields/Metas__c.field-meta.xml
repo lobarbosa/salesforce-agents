@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Metas__c</fullName>
+    <label>Metas</label>
+    <referenceTo>Metas__c</referenceTo>
+    <relationshipLabel>Itens das Metas - Gerentes de Contas</relationshipLabel>
+    <relationshipName>Itens_das_Metas</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>true</reparentableMasterDetail>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

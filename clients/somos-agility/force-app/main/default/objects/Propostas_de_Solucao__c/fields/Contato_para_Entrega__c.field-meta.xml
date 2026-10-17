@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_para_Entrega__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>KB 15/01/20: Campo utilizado na fase Retorno Cliente para o Contato para Entrega</description>
+    <label>Contato para Entrega</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Propostas de Solução (Contato para Entrega)</relationshipLabel>
+    <relationshipName>Propostas_de_Solucao</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

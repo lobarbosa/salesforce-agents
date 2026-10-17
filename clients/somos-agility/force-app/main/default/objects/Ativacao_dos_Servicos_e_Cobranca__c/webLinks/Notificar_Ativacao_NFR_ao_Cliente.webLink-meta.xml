@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Notificar_Ativacao_NFR_ao_Cliente</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>Notificar Ativação NFR ao Cliente</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!Ativacao_dos_Servicos_e_Cobranca__c.Id}&amp;p3_lkid={!Ativacao_dos_Servicos_e_Cobranca__c.Id}&amp;rtype=003&amp;p2_lkid={!Contract.Contato_Principal_do_Service_DeliveryId__c}&amp;p24=contratos@somosagility.com.br;Geraldo.berghem@somosagility.com.br;mauricio.righini@somosagility.com.br;renovações@somosagility.com.br&amp;template_id=00X38000001gD7V&amp;new_template=true&apos;);</url>
+</WebLink>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FuncaoGC__c</fullName>
+    <label>Função GC</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Farmer SP</fullName>
+                <default>false</default>
+                <label>Farmer SP</label>
+            </value>
+            <value>
+                <fullName>Farmer Sul</fullName>
+                <default>false</default>
+                <label>Farmer Sul</label>
+            </value>
+            <value>
+                <fullName>Hunter DT</fullName>
+                <default>false</default>
+                <label>Hunter DT</label>
+            </value>
+            <value>
+                <fullName>Hunter SEC</fullName>
+                <default>false</default>
+                <label>Hunter SEC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

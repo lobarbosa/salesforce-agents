@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GerenciamentoCrises__c</fullName>
+    <label>Gerenciamento de crises</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Não aplicável</fullName>
+                <default>false</default>
+                <label>Não aplicável</label>
+            </value>
+            <value>
+                <fullName>Positivo</fullName>
+                <default>false</default>
+                <label>Positivo</label>
+            </value>
+            <value>
+                <fullName>Neutro</fullName>
+                <default>false</default>
+                <label>Neutro</label>
+            </value>
+            <value>
+                <fullName>Negativo</fullName>
+                <default>false</default>
+                <label>Negativo</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Email_PM__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(
+    TEXT(Projeto_Relacionado__r.PM__c),
+    &quot;Hugo Andre Tadeu Novo Saadi&quot;, &quot;hugo.saadi@somosagility.com.br&quot;,
+    &quot;José Helder Spínola Gouveia&quot;, &quot;jose.gouveia@somosagility.com.br&quot;,
+    &quot;Otoniel Luciano Ribeiro Junior&quot;, &quot;otoniel.luciano@somosagility.com.br&quot;,
+    &quot;Wanderley Gadioli&quot;, &quot;wanderley.gadioli@somosagility.com.br&quot;,
+    &quot;&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>E-mail PM</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

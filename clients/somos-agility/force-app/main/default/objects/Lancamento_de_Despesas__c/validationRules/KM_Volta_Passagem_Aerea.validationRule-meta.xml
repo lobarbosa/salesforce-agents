@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>KM_Volta_Passagem_Aerea</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Tipo_da_Despesa__c,&quot;Passagem Aérea&quot;),NOT(ISBLANK(  Kilometros_Percorridos_Volta__c  )))</errorConditionFormula>
+    <errorMessage>A Despesa é de Passagem Aérea, não devendo preencher o campo de KM Volta</errorMessage>
+</ValidationRule>

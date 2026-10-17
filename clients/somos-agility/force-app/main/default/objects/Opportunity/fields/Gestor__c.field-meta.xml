@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Gestor__c</fullName>
+    <description>AM 18062018: fórmula que traz a informação do gestor do proprietário da conta</description>
+    <externalId>false</externalId>
+    <formula>Owner.Manager.FirstName &amp;&apos; &apos;&amp; Owner.Manager.LastName</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Gestor Formula</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

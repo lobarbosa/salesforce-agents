@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_2_OEG__c</fullName>
+    <description>AM 15032018: campo que será pré preenchido com as informações do seu campo idêntico na fase OQF através do Process Builder &quot;Pre preenchimento OEG-OQF&quot;.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Confirme que é o contato na empresa afetado pela &quot;DOR&quot;.</inlineHelpText>
+    <label>Contato 2 OEG</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

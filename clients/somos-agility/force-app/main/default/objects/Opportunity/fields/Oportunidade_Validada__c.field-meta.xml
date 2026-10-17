@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade_Validada__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>A maioria dos Fabricantes tem uma política de preços diferenciada para as revendas que alavancarem novas oportunidades. Por este motivo, as oportunidades de F5, Symphoniq, RSA, Citrix, Wyse, Microsoft, Thinprint, Uniprint, Symantec, CA, Blue Coat, Enterasys, deverão ser submetidas a processos de mapeamento.</description>
+    <inlineHelpText>Selecionar o campo apenas se a oportunidade estiver aprovada pelo Fabricante</inlineHelpText>
+    <label>Mapeado</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

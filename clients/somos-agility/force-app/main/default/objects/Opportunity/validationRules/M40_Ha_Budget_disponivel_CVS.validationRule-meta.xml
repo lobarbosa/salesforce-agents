@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M40_Ha_Budget_disponivel_CVS</fullName>
+    <active>true</active>
+    <description>AM 01062018: classificação da mensagem / Para alterar a fase da oportunidade de CVS para OEG é obrigatório preencher o campo Há Budget Disponível</description>
+    <errorConditionFormula>AND(
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renvoações&quot;, 
+(ISPICKVAL(PRIORVALUE(StageName),&quot;CVS/RVS&quot;)
+&amp;&amp;ISPICKVAL(StageName,&quot;OEG&quot;)) ,ISBLANK(TEXT(     Ha_budget_disponivel__c  )))</errorConditionFormula>
+    <errorDisplayField>Ha_budget_disponivel_OEG__c</errorDisplayField>
+    <errorMessage>Para avançar para a fase seguinte é obrigatório o preenchimento do campo &quot;Há budget liberado?&quot; (Msg40)</errorMessage>
+</ValidationRule>

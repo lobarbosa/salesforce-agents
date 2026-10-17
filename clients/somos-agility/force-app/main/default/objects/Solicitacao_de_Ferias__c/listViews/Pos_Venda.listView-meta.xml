@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pos_Venda</fullName>
+    <columns>NAME</columns>
+    <columns>Colaborador__c</columns>
+    <columns>area__c</columns>
+    <columns>Inicio__c</columns>
+    <columns>Fim__c</columns>
+    <columns>Status_da_Qualificao__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Centro_de_Custo__c</field>
+        <operation>contains</operation>
+        <value>Pós-Venda</value>
+    </filters>
+    <label>Pós-Venda</label>
+    <sharedTo>
+        <role>ADM</role>
+        <role>Recursos_Humanos</role>
+    </sharedTo>
+</ListView>

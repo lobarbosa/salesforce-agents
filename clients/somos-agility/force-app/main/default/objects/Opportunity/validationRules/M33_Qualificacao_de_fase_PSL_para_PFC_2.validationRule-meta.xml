@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M33_Qualificacao_de_fase_PSL_para_PFC_2</fullName>
+    <active>false</active>
+    <description>AM 01062018: classificação da mensagem / AM 19052018: para avançar para a fase PFC é necessário que o valor do Sales In Net ou da Rentabilidade Prevista seja maior que 0.</description>
+    <errorConditionFormula>AND ( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;,
+$Profile.Name &lt;&gt; &quot;Gerente de renovações&quot;, 
+$Profile.Name &lt;&gt; &quot;Renovações&quot;,
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;PSL&quot;), 
+Rentabilidade_prevista_PSL__c + Sales_In_Net_previsto_PSL__c = 0
+)
+
+/*
+ORIGINAL:
+AND ( 
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+$Profile.Name &lt;&gt; &quot;Service Manager&quot;, 
+ISCHANGED(StageName), 
+ISPICKVAL(PRIORVALUE(StageName), &quot;CVS/RVS&quot;), 
+Blueprint_validado__c = 0 
+)
+
+Sales_In_Net_CVS__c
+
+$Profile.Name &lt;&gt; &quot;Administração&quot;, 
+ Sales_In_Net_previsto_CVS__c = 0,
+ Rentabilidade_prevista_CVS__c  = 0
+*/</errorConditionFormula>
+    <errorDisplayField>Cliente_ja_possui_visao_estabelecida__c</errorDisplayField>
+    <errorMessage>Para avançar para a fase PFC é necessário informar o valor do Sales In Net ou da Rentabilidade Prevista no objeto &quot;Previsão Financeira de Venda&quot; dentro do &quot;Proposta de Solução&quot; (Msg33)</errorMessage>
+</ValidationRule>

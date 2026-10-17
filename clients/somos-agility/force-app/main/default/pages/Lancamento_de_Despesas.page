@@ -1,0 +1,85 @@
+<apex:page standardController="Lancamento_de_Despesas__c" id="pageDespesa">
+<apex:pagemessages />
+   <apex:form id="frmPost">
+   <input type="hidden" name="URLSec" id="URLSec" value="" />
+     <apex:sectionHeader title="Lançamento de Despesas" subtitle="Novo Lançamento de Despesas" Description="{!$User.FirstName} {!$User.LastName}, Lance abaixo suas despesas"/>
+     <apex:pageBlock id="pbDespesa">
+     <apex:pageBlockButtons >
+      <apex:commandButton action="{!save}" value="Salvar"/>
+           <apex:commandButton value="Fechar" rerender="out,in" action="{!cancel}" id="cancelButton" />
+     </apex:pageBlockButtons>
+    <apex:pageblockSection title="Lançar Despesas" columns="2" id="pbsDespsas">
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Classe__c}" required="true"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Tipo_da_Despesa__c}" required="true" onchange="verificaDespesa(this.value)" />
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Outros_Especificar__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Tipo_Taxi__c}" required="true"/>
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_a_Conta__c}" required="true"/>
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Data_da_Despesa__c}" required="true"/> 
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_a_Oportunidade__c}"/> 
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_ao_Caso__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_ao_Job__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_ao_JST__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_ao_RO__c}"/>
+   <apex:inputField value="{!Lancamento_de_Despesas__c.Relacionado_ao_Projeto__c}"/>
+   
+    <apex:inputField value="{!Lancamento_de_Despesas__c.Kilometros_Percorridos_Ida__c}" id="txtKMPercorridosIda" style="disabled:true"/>
+     <apex:inputField value="{!Lancamento_de_Despesas__c.Kilometros_Percorridos_Volta__c}" id="txtKMPercorridosVolta" style="disabled:true"/>    
+      <apex:inputField value="{!Lancamento_de_Despesas__c.Valor_da_Despesa__c}" Label="Valor da Despesa R$" id="txtValordaDespesa" style="disabled:false"/>
+     <apex:inputField value="{!Lancamento_de_Despesas__c.Link_da_Distancia__c}"/>
+          <apex:inputField value="{!Lancamento_de_Despesas__c.Descricao_da_Despesa__c} " required="true"/>
+           <apex:inputField value="{!Lancamento_de_Despesas__c.Valor_da_Kilometragem__c}"/>
+             </apex:pageBlockSection>
+     </apex:pageBlock>
+    
+    <apex:pageBlock title="Arquivos">
+                     <apex:pageBlockTable value="{!Lancamento_de_Despesas__c.Attachments}" var="child">
+                                           <apex:column headervalue="Tipo"
+                                        value="{!child.ContentType}" />
+                        <apex:column headervalue="Título">
+                        <apex:outputLink value="/{!child.id}" >{!child.Name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column headervalue="Última modificação"
+                                        value="{!child.lastmodifieddate}" />
+                        <apex:column headervalue="Criado por"
+                                        value="{!child.CreatedBy.name}" />
+                        <apex:column headervalue="Modificado por"
+                                        value="{!child.LastModifiedBy.name}" />
+                        </apex:pageBlockTable>
+                    </apex:pageBlock> 
+    
+    
+     </apex:form>
+   
+   <script type="text/javascript">
+   function verificaDespesa(valor){
+          try{
+          if(valor=='Kilometragem (Analistas)'){  
+              document.getElementById('pageDespesa:frmPost:pbDespesa:pbsDespsas:txtValordaDespesa').disabled=true;
+              document.getElementById('pageDespesa:frmPost:pbDespesa:pbsDespsas:txtKMPercorridosIda').disabled=false;
+              document.getElementById('pageDespesa:frmPost:pbDespesa:pbsDespsas:txtKMPercorridosVolta').disabled=false;
+          }
+          else if(valor!='Kilometragem (Analistas)'){
+         document.getElementById('pageDespesa:frmPost:pbDespesa:pbsDespsas:txtValordaDespesa').disabled=false;
+              document.getElementById('pageDespesa:frmPost:pbDespesa:pbsDespsas:txtKMPercorridosIda').disabled=true;
+              document.getElementById('pageDespesa:frmPost:pbDespesa:pbsDespsas:txtKMPercorridosVolta').disabled=true;
+          
+          }
+          }
+          catch(err){
+    alert(err.message);
+}  
+
+   }
+   function AbreNovo(){
+   try{
+       var Nome=document.getElementById('pageDespesa:frmPost:pbDespesa:pbsDespsas:j_id5_lkold').value;
+       window.open("https://na3.salesforce.com/apex/Lancamento_de_Despesas?CF00N500000032ttl="+Nome+"&CF00N500000032ttl_lkid={!Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c}&scontrolCaching=1&retURL=%2F{!Lancamento_de_Despesas__c.Solicitacao_de_Reembolso__c}&sfdc.override=1","_top");
+       }
+       catch(err){
+    alert(err.message);
+}  
+   }
+          
+   </script>
+</apex:page>

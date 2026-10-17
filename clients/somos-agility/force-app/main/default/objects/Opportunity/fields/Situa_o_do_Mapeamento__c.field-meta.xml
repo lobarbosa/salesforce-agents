@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Situa_o_do_Mapeamento__c</fullName>
+    <label>Situação do Mapeamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Não Solicitado</fullName>
+                <default>true</default>
+                <label>Não Solicitado</label>
+            </value>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Negado</fullName>
+                <default>false</default>
+                <label>Negado</label>
+            </value>
+            <value>
+                <fullName>Pendente (Em Análise)</fullName>
+                <default>false</default>
+                <label>Pendente (Em Análise)</label>
+            </value>
+            <value>
+                <fullName>Não se aplica</fullName>
+                <default>false</default>
+                <label>Não se aplica</label>
+            </value>
+            <value>
+                <fullName>Rejeitado</fullName>
+                <default>false</default>
+                <label>Rejeitado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

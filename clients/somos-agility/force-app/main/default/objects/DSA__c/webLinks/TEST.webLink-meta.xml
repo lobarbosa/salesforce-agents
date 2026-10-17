@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<WebLink xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TEST</fullName>
+    <availability>online</availability>
+    <displayType>button</displayType>
+    <linkType>javascript</linkType>
+    <masterLabel>TEST</masterLabel>
+    <openType>onClickJavaScript</openType>
+    <protected>false</protected>
+    <url>if (&apos;{!DSA__c.Proposta_Final_de_Venda__c}&apos; ==0) 
+{ 
+alert(&apos;Para Enviar o DSA é necessário Anexar a Proposta Final de Venda. Revise todos os itens necessários na seção de Documentos&apos;);} 
+else if(&apos;{!DSA__c.Aceite_do_Cliente__c}&apos;==0) 
+{
+alert(&apos;Para Enviar o DSA é necessário Anexar o Aceite do Cliente. Revise todos os itens necessários na seção de Documentos&apos;);} 
+else if(&apos;{!DSA__c.Proposta_de_Compra__c}&apos;==0) 
+{ 
+alert(&apos;Para Enviar o DSA é necessário Anexar a Proposta de Compra. Revise todos os itens necessários na seção de Documentos&apos;);} 
+
+document.location=&apos;{!Case.Id}&apos;;}
+else { 
+location.replace(&apos;/email/author/emailauthor.jsp?retURL=/{!DSA__c.Id}&amp;p3_lkid={!DSA__c.Id}&amp;rtype=003&amp;p2_lkid= patrick.souza@agilitynetworks.com.br&amp;p24=patrick.souza@agilitynetworks.com.br;patrick.souza@agilitynetworks.com.br&amp;template_id=00X50000001NWa1&amp;p5=&apos;); 
+}</url>
+</WebLink>

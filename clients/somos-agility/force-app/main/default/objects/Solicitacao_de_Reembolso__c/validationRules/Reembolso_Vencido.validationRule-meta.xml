@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reembolso_Vencido</fullName>
+    <active>true</active>
+    <errorConditionFormula>And( Aprovado_Reembolso_Vencido__c = True, ISBLANK( Motivo__c ))</errorConditionFormula>
+    <errorDisplayField>Motivo__c</errorDisplayField>
+    <errorMessage>Favor informar o motivo</errorMessage>
+</ValidationRule>

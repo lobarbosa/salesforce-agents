@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Produto_Fabricante_Oportunidade__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    TEXT(DSA_1__r.Oportunidade__r.Produto_Fabricante__c) &lt;&gt; &quot;&quot;,
+    TEXT(DSA_1__r.Oportunidade__r.Produto_Fabricante__c),
+    TEXT(Produto_Fabricante__c)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Produto: Fabricante</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

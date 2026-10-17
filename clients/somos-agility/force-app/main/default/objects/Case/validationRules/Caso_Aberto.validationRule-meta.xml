@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Caso_Aberto</fullName>
+    <active>false</active>
+    <description>AM 05052018: oo criar um caso tem que ser com o Status &quot;Aberto&quot;</description>
+    <errorConditionFormula>ISNEW() &amp;&amp;
+TEXT(Status) &lt;&gt; &quot;Aberto&quot;</errorConditionFormula>
+    <errorDisplayField>Status</errorDisplayField>
+    <errorMessage>O Caso tem que ser criado com o Status &quot;Aberto&quot;</errorMessage>
+</ValidationRule>

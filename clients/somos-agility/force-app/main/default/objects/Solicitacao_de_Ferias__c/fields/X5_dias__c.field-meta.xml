@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>X5_dias__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>jn10042018 Criação do campo de 5 dias e alteração na regra de validação a pedido do RH.Miriam, pelo chamado 2018003996</description>
+    <label>5 dias</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

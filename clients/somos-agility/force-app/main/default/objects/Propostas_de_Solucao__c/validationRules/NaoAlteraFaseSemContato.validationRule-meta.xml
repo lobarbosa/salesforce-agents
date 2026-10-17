@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoAlteraFaseSemContato</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISPICKVAL(StatusPsl__c,&apos;Envio da Proposta ao Cliente&apos;),
+ISBLANK(Contato__c ),
+ISBLANK(Contato2__c ),
+ISBLANK(Contato2__c )
+)</errorConditionFormula>
+    <errorMessage>Para avançar à fase Envio da Proposta ao Cliente será necessário informar pelo menos um contato na Proposta de Solução</errorMessage>
+</ValidationRule>

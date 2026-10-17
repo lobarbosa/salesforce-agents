@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Razao_p_adotar_visao_Agility_vs_inicial__c</fullName>
+    <inlineHelpText>Descreva os motivos que levam o cliente a optar pela visão desenvolvida pela Agility e não a visão de solução estabelecida anteriormente seja pela concorrência ou pleo próprio cliente.</inlineHelpText>
+    <label>Razão p/ adotar visão Agility vs inicial</label>
+    <length>32768</length>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Situacao_NFR</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISPICKVAL( Situa_o_NFR__c, &quot;Fechado&quot;),
+OR(ISBLANK(Nota_Fiscal_NFR__c ),
+ISBLANK(Observa_o_NFR__c ))
+)</errorConditionFormula>
+    <errorMessage>Se o Situação NFR igual a Fechado, obrigatório preenchimento dos campos: Nota Fiscal NFR e Observação NFR.</errorMessage>
+</ValidationRule>

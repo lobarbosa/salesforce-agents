@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Hora_Inicial_da_Atividade__c</fullName>
+    <description>AM 05052018: indica a hora de início da atividade que só pode ser lançada no mesmo dia e até 23:59 com duração máxima de 8 horas. Caso exceda, deve ser criado um novo registro com início às 00:00.</description>
+    <inlineHelpText>Este campo indica a hora de início da atividade.</inlineHelpText>
+    <label>Hora Inicial da Atividade (HH:MM)</label>
+    <required>true</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Time</type>
+</CustomField>

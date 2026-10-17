@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nivel_do_Suporte__c</fullName>
+    <label>Nível do Suporte</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>N3 ( Suporte Avançado )</fullName>
+                <default>false</default>
+                <label>N3 ( Suporte Avançado )</label>
+            </value>
+            <value>
+                <fullName>N2 ( Administração e Operação )</fullName>
+                <default>false</default>
+                <label>N2 ( Administração e Operação )</label>
+            </value>
+            <value>
+                <fullName>N1 - STD ( Análise e Monitoramento )</fullName>
+                <default>false</default>
+                <label>N1 - STD ( Análise e Monitoramento )</label>
+            </value>
+            <value>
+                <fullName>N1 - PRE ( Análise e Monitoramento )</fullName>
+                <default>false</default>
+                <label>N1 - PRE ( Análise e Monitoramento )</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

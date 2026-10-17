@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Z_Contrato_de_Suporte_Sales_In_Zera_Novo</fullName>
+    <active>false</active>
+    <description>Quando o campo contrato de suporte for igual a Sim Renovação Sales In ou Não, não preencher o Novo Valor Sales Out</description>
+    <errorConditionFormula>AND( ISPICKVAL( Contrato_de_Suporte__c , &quot;Sim - Novo (Sales In)&quot;)||ISPICKVAL( Contrato_de_Suporte__c , &quot;Não&quot;), NOT(ISNULL(   Novo_Valor_Sales_Out__c  )))</errorConditionFormula>
+    <errorDisplayField>Novo_Valor_Sales_Out__c</errorDisplayField>
+    <errorMessage>Não é possível apontar o Novo Valor (Sales Out).</errorMessage>
+</ValidationRule>

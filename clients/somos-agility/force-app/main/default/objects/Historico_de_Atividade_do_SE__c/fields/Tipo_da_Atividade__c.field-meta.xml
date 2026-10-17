@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_da_Atividade__c</fullName>
+    <label>Tipo da Atividade</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>(Cliente) Apresentacao</fullName>
+                <default>false</default>
+                <label>(Cliente) Apresentacao</label>
+            </value>
+            <value>
+                <fullName>(Cliente) Configuracao</fullName>
+                <default>false</default>
+                <label>(Cliente) Configuracao</label>
+            </value>
+            <value>
+                <fullName>(Cliente) Demonstracao</fullName>
+                <default>false</default>
+                <label>(Cliente) Demonstracao</label>
+            </value>
+            <value>
+                <fullName>(Cliente) Documentacao</fullName>
+                <default>false</default>
+                <label>(Cliente) Documentacao</label>
+            </value>
+            <value>
+                <fullName>(Cliente) Prospeccao</fullName>
+                <default>false</default>
+                <label>(Cliente) Prospeccao</label>
+            </value>
+            <value>
+                <fullName>(Cliente) Reuniao</fullName>
+                <default>false</default>
+                <label>(Cliente) Reuniao</label>
+            </value>
+            <value>
+                <fullName>(Cliente) Treinamento/Workshop</fullName>
+                <default>false</default>
+                <label>(Cliente) Treinamento/Workshop</label>
+            </value>
+            <value>
+                <fullName>(Interno) Administrativo</fullName>
+                <default>false</default>
+                <label>(Interno) Administrativo</label>
+            </value>
+            <value>
+                <fullName>(Interno) Apresentacao</fullName>
+                <default>false</default>
+                <label>(Interno) Apresentacao</label>
+            </value>
+            <value>
+                <fullName>(Interno) Reunião</fullName>
+                <default>false</default>
+                <label>(Interno) Reunião</label>
+            </value>
+            <value>
+                <fullName>(Interno) Outros</fullName>
+                <default>false</default>
+                <label>(Interno) Outros</label>
+            </value>
+            <value>
+                <fullName>(Interno) Treinamento/Workshop</fullName>
+                <default>false</default>
+                <label>(Interno) Treinamento/Workshop</label>
+            </value>
+            <value>
+                <fullName>(Interno) Reuniao/outros *DESATIVADO</fullName>
+                <default>false</default>
+                <label>(Interno) Reuniao/outros *DESATIVADO</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

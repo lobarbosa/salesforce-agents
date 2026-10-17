@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Percentual_de_aderencia__c</fullName>
+    <formula>(
+    IF(ISPICKVAL(Estouro_de_horas__c, &quot;Não&quot;), 1, 0) +
+    IF(ISPICKVAL(Estouro_de_despesas__c, &quot;Não&quot;), 1, 0) +
+    IF(ISPICKVAL(Kickoff_interno_finalizado__c, &quot;Sim&quot;), 1, 0) +
+    IF(ISPICKVAL(Plano_de_implementacao_finalizado__c, &quot;Sim&quot;), 1, 0) +
+    IF(ISPICKVAL(Passagem_de_suporte_finalizada__c, &quot;Sim&quot;), 1, 0) +
+    IF(ISPICKVAL(Finalizacao_de_projeto_concluida__c, &quot;Sim&quot;), 1, 0) +
+    IF(ISPICKVAL(Licoes_Aprendidas_finalizado__c, &quot;Sim&quot;), 1, 0) +
+    IF(ISPICKVAL(Pesquisa_de_Satisfacao_Enviada__c, &quot;Sim&quot;), 1, 0) +
+    IF(ISNULL(Termo_de_Aceite_Enviado__c), 0, 1)
+) / (
+    9 -
+    (
+        IF(ISPICKVAL(Plano_de_implementacao_finalizado__c, &quot;Não se aplica&quot;), 1, 0) +
+        IF(ISPICKVAL(Passagem_de_suporte_finalizada__c, &quot;Não se aplica&quot;), 1, 0)
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Caso alguma das opções do checklist assuma o valor &quot;Não se aplica&quot;, a mesma será desconsiderada para no cálculo de aderência.</inlineHelpText>
+    <label>Percentual de aderência</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Acoes_Pre_Fechamento__c</fullName>
+    <label>Relacionado a Ação de Pré Fechamento</label>
+    <referenceTo>Acoes_Pre_Fechamento__c</referenceTo>
+    <relationshipLabel>Planos de Testes</relationshipLabel>
+    <relationshipName>Planos_de_Testes</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

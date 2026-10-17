@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidarNumeroChamadoEProjeto</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+				ISBLANK(Numero_do_Chamado_Interno__c), 
+				ISNULL(Projeto__c)
+)</errorConditionFormula>
+    <errorMessage>Preencha o número do chamado interno ou o projeto.</errorMessage>
+</ValidationRule>

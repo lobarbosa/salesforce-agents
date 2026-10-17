@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VerificaPreenchimentoTurno</fullName>
+    <active>true</active>
+    <description>Verifica se o campo &quot;turno&quot; foi preenchido quando o campo &quot;tipo&quot; é preenchido com a opção &quot;dedicado&quot;.</description>
+    <errorConditionFormula>AND(
+				ISPICKVAL(Tipo__c, &apos;Dedicado&apos;),
+				ISPICKVAL(Turno__c, &apos;&apos;)
+)</errorConditionFormula>
+    <errorMessage>Ao preencher o tipo como &quot;dedicado&quot; por favor preencha o turno do lançamento de crédito em suporte.</errorMessage>
+</ValidationRule>

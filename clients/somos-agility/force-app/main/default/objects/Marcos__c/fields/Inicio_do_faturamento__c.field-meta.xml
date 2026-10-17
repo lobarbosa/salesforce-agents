@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Inicio_do_faturamento__c</fullName>
+    <label>Início do faturamento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Início dos serviços</fullName>
+                <default>false</default>
+                <label>Início dos serviços</label>
+            </value>
+            <value>
+                <fullName>Término dos serviços</fullName>
+                <default>false</default>
+                <label>Término dos serviços</label>
+            </value>
+            <value>
+                <fullName>30 dias após o início</fullName>
+                <default>false</default>
+                <label>30 dias após o início</label>
+            </value>
+            <value>
+                <fullName>60 dias após o início</fullName>
+                <default>false</default>
+                <label>60 dias após o início</label>
+            </value>
+            <value>
+                <fullName>30 dias após parcela anterior</fullName>
+                <default>false</default>
+                <label>30 dias após parcela anterior</label>
+            </value>
+            <value>
+                <fullName>Time Material</fullName>
+                <default>false</default>
+                <label>Time Material</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

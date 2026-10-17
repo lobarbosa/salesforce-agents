@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Endere_o_de_Entrega__c</fullName>
+    <label>Endereço de Entrega</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Agility Networks - Av. das Nações Unidas, 4777 - 8 andar - Alto de Pinheiros, São Paulo - SP, 05477-000</fullName>
+                <default>true</default>
+                <label>Agility Networks - Av. das Nações Unidas, 4777 - 8 andar - Alto de Pinheiros, São Paulo - SP, 05477-000</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

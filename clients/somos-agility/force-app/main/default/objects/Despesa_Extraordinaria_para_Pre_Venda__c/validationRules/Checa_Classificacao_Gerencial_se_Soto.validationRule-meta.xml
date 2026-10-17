@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Checa_Classificacao_Gerencial_se_Soto</fullName>
+    <active>true</active>
+    <description>Checa o preenchimento do campo &quot;classificação gerencial&quot; se o editor for o Soto.</description>
+    <errorConditionFormula>AND(
+    ISPICKVAL(Classificacao_Gerencial__c, &apos;&apos;),
+    ISPICKVAL(Status_da_Qualificacao__c, &apos;Pendente&apos;),
+    $Profile.Name = &apos;Admin&apos;
+)</errorConditionFormula>
+    <errorMessage>O campo &quot;classificação gerencial&quot; deve ser preenchido.</errorMessage>
+</ValidationRule>

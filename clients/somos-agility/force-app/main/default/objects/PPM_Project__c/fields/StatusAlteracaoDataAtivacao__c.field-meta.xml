@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusAlteracaoDataAtivacao__c</fullName>
+    <defaultValue>&apos;Necessita Aprovação&apos;</defaultValue>
+    <label>Status - Alteração Data de Ativação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Necessita Aprovação</fullName>
+                <default>true</default>
+                <label>Necessita Aprovação</label>
+            </value>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Reprovado</fullName>
+                <default>false</default>
+                <label>Reprovado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CNPJ_de_Faturamento__c</fullName>
+    <deleteConstraint>Restrict</deleteConstraint>
+    <label>CNPJ de Faturamento</label>
+    <lookupFilter>
+        <active>true</active>
+        <filterItems>
+            <field>Account.Conta_de_Faturamento_Agility__c</field>
+            <operation>equals</operation>
+            <value>True</value>
+        </filterItems>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Locações x Pedido (CNPJ de Faturamento)</relationshipLabel>
+    <relationshipName>Locacoes_x_PedidoCNPJFat</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

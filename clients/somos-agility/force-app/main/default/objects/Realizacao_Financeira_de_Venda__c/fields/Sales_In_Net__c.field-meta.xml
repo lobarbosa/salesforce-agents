@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Sales_In_Net__c</fullName>
+    <description>jn02102018 adição do nome Realizado cfe pedido do CT em 02102018.</description>
+    <inlineHelpText>Antigo: Sales In (Net) Realizado</inlineHelpText>
+    <label>Z_Recorrente ajustado (Net) Realizado</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

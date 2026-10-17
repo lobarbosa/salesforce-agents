@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ofertas__c</fullName>
+    <label>Ofertas</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <controllingField>Unidade_de_Neg_cios__c</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cloud &amp; SDN</fullName>
+                <default>false</default>
+                <label>Cloud &amp; SDN</label>
+            </value>
+            <value>
+                <fullName>DHCP/IPAM</fullName>
+                <default>false</default>
+                <label>DHCP/IPAM</label>
+            </value>
+            <value>
+                <fullName>DNS</fullName>
+                <default>false</default>
+                <label>DNS</label>
+            </value>
+            <value>
+                <fullName>Gerenciamento Inteligente de Tráfego</fullName>
+                <default>false</default>
+                <label>Gerenciamento Inteligente de Tráfego</label>
+            </value>
+            <value>
+                <fullName>Sinalização e Roaming</fullName>
+                <default>false</default>
+                <label>Sinalização e Roaming</label>
+            </value>
+            <value>
+                <fullName>Transição para IPv6</fullName>
+                <default>false</default>
+                <label>Transição para IPv6</label>
+            </value>
+            <value>
+                <fullName>Visibilidade e Planejamento de Redes</fullName>
+                <default>false</default>
+                <label>Visibilidade e Planejamento de Redes</label>
+            </value>
+            <value>
+                <fullName>VoLTE</fullName>
+                <default>false</default>
+                <label>VoLTE</label>
+            </value>
+            <value>
+                <fullName>Segurança</fullName>
+                <default>false</default>
+                <label>Segurança</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>Cloud &amp; SDN</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>DHCP/IPAM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>DNS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>Gerenciamento Inteligente de Tráfego</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>Sinalização e Roaming</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>Transição para IPv6</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>Visibilidade e Planejamento de Redes</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>VoLTE</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Telecomunicações</controllingFieldValue>
+            <valueName>Segurança</valueName>
+        </valueSettings>
+    </valueSet>
+    <visibleLines>3</visibleLines>
+</CustomField>

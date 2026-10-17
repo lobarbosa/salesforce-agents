@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cota_de_Projetos_DC_C__c</fullName>
+    <label>Cota de Projetos DC&amp;C</label>
+    <summarizedField>Item_das_Metas_BDM_DC__c.Valor_da_Meta__c</summarizedField>
+    <summaryFilterItems>
+        <field>Item_das_Metas_BDM_DC__c.Atual__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Item_das_Metas_BDM_DC__c.Metas__c</summaryForeignKey>
+    <summaryOperation>max</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Summary</type>
+</CustomField>

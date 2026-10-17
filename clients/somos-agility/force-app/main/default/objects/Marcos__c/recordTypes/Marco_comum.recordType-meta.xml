@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Marco_comum</fullName>
+    <active>true</active>
+    <label>Marco comum</label>
+    <picklistValues>
+        <picklist>Classe__c</picklist>
+        <values>
+            <fullName>Ativação NOC</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ativação Suporte</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Atividade Técnica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cerimonial de Projeto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Outros</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Inicio_do_faturamento__c</picklist>
+        <values>
+            <fullName>30 dias após o início</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>30 dias após parcela anterior</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>60 dias após o início</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Início dos serviços</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Time Material</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Término dos serviços</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Z_Nome_Marco__c</picklist>
+        <values>
+            <fullName>Controle</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Encerramento do Projeto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Execução - Fase de entrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Hardware %2F Licenças</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Iniciação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Planejamento</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

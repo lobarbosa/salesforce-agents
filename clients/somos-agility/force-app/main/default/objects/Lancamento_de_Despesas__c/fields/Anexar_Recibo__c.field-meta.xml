@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Anexar_Recibo__c</fullName>
+    <externalId>false</externalId>
+    <formula>HYPERLINK(&quot;https://na3.salesforce.com/p/attach/NoteAttach?pid=&quot;&amp;Id&amp;&quot;&amp;parentname=&quot;&amp;Name&amp;&quot;&amp;retURL=%2F&quot;&amp;Id&amp;&quot;&quot;,&quot;Anexar Recibo&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Anexar Recibo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Obs_NFAP</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND (ISPICKVAL(  Faturamento__c , &quot;NFAP&quot;),
+OR(ISBLANK( Obs_faturamento__c )
+)
+)</errorConditionFormula>
+    <errorMessage>Se o Status do Faturamento é NFAP, obrigatoriamente preencha o campo de Obs.</errorMessage>
+</ValidationRule>

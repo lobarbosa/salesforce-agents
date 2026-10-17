@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_de_Destino_Volta</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(  Para_Volta__c  ,&quot;São Paulo&quot;),ISBLANK(  Data_Destino_Volta__c ))</errorConditionFormula>
+    <errorDisplayField>Data_Destino_Volta__c</errorDisplayField>
+    <errorMessage>Informar a Data de Destino da Volta.</errorMessage>
+</ValidationRule>

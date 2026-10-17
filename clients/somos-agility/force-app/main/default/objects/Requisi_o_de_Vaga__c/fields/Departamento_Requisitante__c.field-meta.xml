@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Departamento_Requisitante__c</fullName>
+    <label>Departamento Requisitante</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>ADM</fullName>
+                <default>false</default>
+                <label>ADM</label>
+            </value>
+            <value>
+                <fullName>COMERCIAL</fullName>
+                <default>false</default>
+                <label>COMERCIAL</label>
+            </value>
+            <value>
+                <fullName>DD&amp;C</fullName>
+                <default>false</default>
+                <label>DD&amp;C</label>
+            </value>
+            <value>
+                <fullName>EA</fullName>
+                <default>false</default>
+                <label>EA</label>
+            </value>
+            <value>
+                <fullName>NOC</fullName>
+                <default>false</default>
+                <label>NOC</label>
+            </value>
+            <value>
+                <fullName>RH</fullName>
+                <default>false</default>
+                <label>RH</label>
+            </value>
+            <value>
+                <fullName>RJ</fullName>
+                <default>false</default>
+                <label>RJ</label>
+            </value>
+            <value>
+                <fullName>SEG</fullName>
+                <default>false</default>
+                <label>SEG</label>
+            </value>
+            <value>
+                <fullName>TECH CENTER</fullName>
+                <default>false</default>
+                <label>TECH CENTER</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

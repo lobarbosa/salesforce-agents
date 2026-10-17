@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Contato_para_entrega__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>AM 23032018: nome do responsável</description>
+    <label>Contato para entrega</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Aviso de Renovação</relationshipLabel>
+    <relationshipName>Aviso_de_Renovacao</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

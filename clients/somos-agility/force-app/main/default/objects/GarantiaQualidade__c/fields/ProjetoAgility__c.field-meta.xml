@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProjetoAgility__c</fullName>
+    <label>Projeto Agility</label>
+    <referenceTo>PPM_Project__c</referenceTo>
+    <relationshipLabel>Garantia de Qualidade</relationshipLabel>
+    <relationshipName>GarantiaQualidade</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

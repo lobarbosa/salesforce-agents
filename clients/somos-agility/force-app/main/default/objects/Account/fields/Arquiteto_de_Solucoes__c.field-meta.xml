@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Arquiteto_de_Solucoes__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>jn10092018 criar campo Arquiteto de solucoes na Conta de acordo com as demandas do carlos teixeira em 06092018.</description>
+    <inlineHelpText>O &quot;Arquiteto de Soluções&quot; será definido apenas  pelo perfil de Diretor.</inlineHelpText>
+    <label>Arquiteto de Soluções</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Contas (Contato)</relationshipLabel>
+    <relationshipName>Contas3</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

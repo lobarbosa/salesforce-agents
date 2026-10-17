@@ -1,0 +1,13 @@
+<apex:page controller="clsListaMarcos" readonly="true">
+    <apex:pageBlock >
+        <apex:pageBlockTable value="{!marcos_acts}" var="a">
+          <apex:column >
+            <apex:facet name="header">Marco ID</apex:facet>
+            <apex:outputLink value="/{!URLFOR(a.Id)}">{!a.Name} </apex:outputLink>
+            </apex:column> 
+            <apex:column value="{!a.Nome_do_Marco__c}"/>       
+            <apex:column value="{!a.Classe__c}"/>       
+            <apex:column value="{!a.ID_do_Projeto__c}"/>                  
+        </apex:pageBlockTable>
+    </apex:pageBlock>
+</apex:page>

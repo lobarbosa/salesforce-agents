@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Classifica_o_Gerencial_5__c</fullName>
+    <label>Classificação Gerencial 5</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Aquisição destinada a Insumos de Contratos</fullName>
+                <default>false</default>
+                <label>Aquisição destinada a Insumos de Contratos</label>
+            </value>
+            <value>
+                <fullName>Despesa Mês Corrente</fullName>
+                <default>false</default>
+                <label>Despesa Mês Corrente</label>
+            </value>
+            <value>
+                <fullName>Investimento 2020</fullName>
+                <default>false</default>
+                <label>Investimento 2020</label>
+            </value>
+            <value>
+                <fullName>Investimento 2021</fullName>
+                <default>false</default>
+                <label>Investimento 2021</label>
+            </value>
+            <value>
+                <fullName>Investimento 2022</fullName>
+                <default>false</default>
+                <label>Investimento 2022</label>
+            </value>
+            <value>
+                <fullName>Investimento 2023</fullName>
+                <default>false</default>
+                <label>Investimento 2023</label>
+            </value>
+            <value>
+                <fullName>Investimento 2024</fullName>
+                <default>false</default>
+                <label>Investimento 2024</label>
+            </value>
+            <value>
+                <fullName>Investimento 2025</fullName>
+                <default>false</default>
+                <label>Investimento 2025</label>
+            </value>
+            <value>
+                <fullName>Investimento 2026</fullName>
+                <default>false</default>
+                <label>Investimento 2026</label>
+            </value>
+            <value>
+                <fullName>Investimento 2027</fullName>
+                <default>false</default>
+                <label>Investimento 2027</label>
+            </value>
+            <value>
+                <fullName>Investimento 2028</fullName>
+                <default>false</default>
+                <label>Investimento 2028</label>
+            </value>
+            <value>
+                <fullName>Insumo de Serviços</fullName>
+                <default>false</default>
+                <label>Insumo de Serviços</label>
+            </value>
+            <value>
+                <fullName>Investimento 2017</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Investimento 2017</label>
+            </value>
+            <value>
+                <fullName>Investimento 2018</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Investimento 2018</label>
+            </value>
+            <value>
+                <fullName>Investimento 2019</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Investimento 2019</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

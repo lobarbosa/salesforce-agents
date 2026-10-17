@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Servico_Recorrente_Previsto__c</fullName>
+    <inlineHelpText>Informar valor total do serviço recorrente em R$.</inlineHelpText>
+    <label>Serviço Recorrente Previsto</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Currency</type>
+</CustomField>

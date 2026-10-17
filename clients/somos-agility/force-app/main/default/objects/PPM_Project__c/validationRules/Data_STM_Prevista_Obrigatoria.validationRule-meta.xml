@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Data_STM_Prevista_Obrigatoria</fullName>
+    <active>false</active>
+    <description>Data_STM_Prevista_Obrigatória quando projeto possui contrato</description>
+    <errorConditionFormula>AND((ISPICKVAL(Possui_Contrato_de_Suporte_Agility__c,&quot;Novo&quot;)|| ISPICKVAL(Possui_Contrato_de_Suporte_Agility__c,&quot;Existente&quot;)),ISBLANK( STM_Previsto__c ))</errorConditionFormula>
+    <errorDisplayField>STM_Previsto__c</errorDisplayField>
+    <errorMessage>Favor informar a data prevista do STM</errorMessage>
+</ValidationRule>

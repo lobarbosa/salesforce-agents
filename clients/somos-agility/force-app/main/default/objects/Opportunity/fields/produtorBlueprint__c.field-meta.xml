@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>produtorBlueprint__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Este campo será preenchido na fase CVS/RVS na oportunidade.</description>
+    <inlineHelpText>Referente ao objeto anteriormente chamado de Blueprint, agora chamado de Previsão de Investimento.</inlineHelpText>
+    <label>Produtor da Previsão de Investimento</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Oportunidades (Produtor do Blueprint)</relationshipLabel>
+    <relationshipName>OportunidadesContato</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

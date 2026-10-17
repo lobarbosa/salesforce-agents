@@ -1,0 +1,325 @@
+<apex:page extensions="clsCadOportunidade"
+    StandardController="Opportunity" showHeader="true"
+    tabStyle="Opportunity" sidebar="false">
+    <!--Bibliotecas Jquery-->
+    <apex:includeScript value="{!URLFOR($Resource.Jquery, 'jquery-1.9.1.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.JqueryUI, '/ui/jquery-ui.js')}" />
+    <!--Bibliotecas PrimeUI-->
+    <apex:includeScript value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.js')}" />
+    <!---------------------->
+    <!--CSS do PrimeUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/primeui-0.9.6.css')}" />
+    <!--CSS do JqueryUI-->
+    <apex:stylesheet value="{!URLFOR($Resource.JqueryUI, '/themes/base/jquery-ui.css')}" />
+    <!---------------------->
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/themes/smoothness/theme.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.PrimeUI, '/development/css/tabview/tabview.css')}" />
+    <!---------------------->
+    <script type="text/javascript">
+        var URLT = window.location + "";
+          $(document).ready(function(){ 
+          $('#default').puitabview({
+            orientation: 'top',
+            activeIndex:(URLT.indexOf('idPedido')>0?1:0)}  
+           ); 
+           
+           /*$('#external').puilightbox({  
+            iframe: true,
+            iframeWidth:1100,
+           
+        });*/
+           }); 
+    </script>
+    <style>
+.ui-state-default,.ui-widget-content .ui-state-default,.ui-widget-header .ui-state-default
+    {
+    border: 0px solid #d3d3d3;
+    background: #CDE8F0 url(images/ui-bg_glass_75_e6e6e6_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #555555;
+}
+
+.ui-state-default a,.ui-state-default a:link,.ui-state-default a:visited
+    {
+    color: #555555;
+    text-decoration: none;
+}
+
+.ui-state-hover,.ui-widget-content .ui-state-hover,.ui-widget-header .ui-state-hover,.ui-state-focus,.ui-widget-content .ui-state-focus,.ui-widget-header .ui-state-focus
+    {
+    border: 1px solid #999999;
+    background: #dadada url(images/ui-bg_glass_75_dadada_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-hover a,.ui-state-hover a:hover {
+    color: #212121;
+    text-decoration: none;
+}
+
+.ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active
+    {
+    border: 1px solid #aaaaaa;
+    background: #e5c130 url(images/ui-bg_glass_65_ffffff_1x400.png) 50% 50%
+        repeat-x;
+    font-weight: normal;
+    color: #212121;
+}
+
+.ui-state-active a,.ui-state-active a:link,.ui-state-active a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+.ui-widget :active {
+    outline: none;
+}
+
+.ui-widget-content {
+    border: 1px solid #aaaaaa;
+    background: #ffffff url(images/ui-bg_flat_75_ffffff_40x100.png) 50% 50%
+        repeat-x;
+    color: #222222;
+}
+
+.ui-widget-content a {
+    color: #222222;
+}
+
+.ui-widget-header {
+    border: 1px solid #aaaaaa;
+    background: #CDE8F0 url(images/ui-bg_highlight-soft_75_cccccc_1x100.png)
+        50% 50% repeat-x;
+    color: black;
+    font-weight: bold;
+}
+
+.ui-widget-header a {
+    color: #CDE8F0;
+    font-weight: bold;
+}
+</style>
+    <div id="default" style="width: 100%;">
+        <ul>
+            <li><a href="#tab1">Detalhes</a></li>
+            <li><a href="#tab2">Negociações Comerciais</a></li>
+            <!--<li><a href="#tab3">Pedidos</a></li>-->
+            
+        </ul>
+        <div style="width: 90%; height: 100%">
+            <div id="tab1"
+                style="width: 80%; height: auto; background-color: white;">
+                <apex:form id="frmPost">
+                    <input type="hidden" id="idOportunidade" name="idOportunidade"
+                        value="{!idOportunidade}" />
+                    <input type="hidden" id="idProduto" name="idProduto"
+                        value="{!idProduto}" />
+                    <input type="hidden" id="idPedido" name="idPedido"
+                        value="{!idPedido}" />
+                    <apex:pageBlock >
+                        <hr />
+                        <table width="100%">
+                            <tr class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações da
+                                    oportunidade</td>
+                            </tr>
+                            <tr>
+                                <td>Nome da Oportunidade</td>
+                                <td><apex:inputfield id="txtNomeOportunidade"
+                                        required="true" value="{!Opportunity.name}" /></td>
+
+                                <td>Fase</td>
+                                <td><apex:inputfield id="txtFase"
+                                        value="{!opportunity.stageName}" /></td>
+                            </tr>
+                            <tr>
+                                <td>Nome da Conta</td>
+                                <td><apex:inputfield id="txtNomeConta"
+                                        value="{!opportunity.Accountid}" /></td>
+                                <td>Probabilidade</td>
+                                <td><apex:inputfield id="txtProbabilidade"
+                                        value="{!opportunity.Probability}" /></td>
+                            </tr>
+                            <tr>
+                                <td>Contato</td>
+                                <td><apex:inputfield id="txtContato" required="false"
+                                        value="{!opportunity.Contato__c}" /></td>
+
+                                <td>Motivo:</td>
+                                <td><apex:inputfield id="txtMotivo" required="false"
+                                        value="{!opportunity.Motivo__c}" /></td>
+                            </tr>
+                            <tr>
+                                <td>Renovação Ano Anterior:</td>
+                                <td colspan="2"><apex:inputfield id="txtRenovacaoAnoAnt"
+                                        required="false"
+                                        value="{!opportunity.Renova_ao_ano_anterior__c}" /></td>
+                            </tr>
+                            <tr class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                <td colspan="4">&nbsp;&nbsp;&nbsp;Previsão Financeira da
+                                    Venda</td>
+                            </tr>
+                            <tr>
+                                <td>Data de fechamento</td>
+                                <td><apex:inputfield id="txtDtFechamento" required="true"
+                                        value="{!opportunity.CloseDate}" /></td>
+
+                                <td>Opp Qualifica para KPI de Pipe</td>
+                                <td><apex:inputfield id="txtOppQualiKPIPIPE"
+                                        required="false"
+                                        value="{!opportunity.Opp_Qualifica_para_KPI_de_Pipe__c}" /></td>
+                            </tr>
+                            <tr>
+
+
+                                <td>Probabilidade do Fechamento</td>
+                                <td><apex:inputfield id="txtProbFechamento"
+                                        required="false"
+                                        value="{!opportunity.Certeza_do_Fechamento__c}" /></td>
+                            </tr>
+                            <tr class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                <td colspan="4">&nbsp;&nbsp;&nbsp;Desenvolvimento da
+                                    Oportunidade</td>
+                            </tr>
+                            <tr>
+                                <td>Próximo Passo</td>
+                                <td><apex:inputfield id="txtProximoPasso" required="true"
+                                        value="{!opportunity.Pr_ximo_Passo__c}" /></td>
+
+                                <td>Data Limite</td>
+                                <td><apex:inputfield id="txtDtLimite" required="true"
+                                        value="{!opportunity.Data_Limite__c}" /></td>
+                            </tr>
+                            <tr>
+                                <td>Responsável pelo Próximo Passo</td>
+                                <td colspan="2"><apex:inputfield id="txtRerspProximoPasso"
+                                        required="false"
+                                        value="{!opportunity.Respons_vel_pelo_Pr_ximo_Passo__c}" /></td>
+                            </tr>
+                            <tr class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações de Marketing
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Origem do lead</td>
+                                <td><apex:inputfield id="txtOrigemLead"
+                                        value="{!opportunity.LeadSource}" /></td>
+
+                                <td>Origem da campanha principal</td>
+                                <td><apex:inputfield id="txtOrigemCampanhaPrin"
+                                        required="false" value="{!opportunity.CampaignId}" /></td>
+                            </tr>
+                            <tr>
+                                <td>Contrato</td>
+                                <td colspan="2"><apex:inputfield id="txtContrato"
+                                        required="false" value="{!opportunity.Contrato__c}" /></td>
+                            </tr>
+                            <tr class="pbSubheader brandTertiaryBgr first tertiaryPalette">
+                                <td colspan="4">&nbsp;&nbsp;&nbsp;Informações de descrição
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Descrição</td>
+                                <td><apex:inputfield id="txtDescricao"
+                                        value="{!opportunity.Description}"
+                                        style="width:350px;height:150px;" /></td>
+                            </tr>
+                        </table>
+                        <hr />
+                        <center>
+                            <apex:commandButton action="{!SalvarOportunidade}"
+                                id="btnSalvarOpt" value="Salvar" />
+                        </center>
+
+                        </apex:pageblock>
+                </apex:form>
+            </div>
+            <div id="tab2" style="width: 90%; background-color: white;">
+                <iframe src="" name="frmNegociacaoComercial" id="frmNegociacaoComercial"
+                            style="display: none; width: auto; height: auto; border: 0"
+                            iframeborder="0"></iframe>
+                        <hr />
+            </div>
+            <!--<div id="tab3" style="width: 90%; background-color: white;">
+                <apex:form id="frmPedido">
+                    <apex:pageBlock >
+                        <input type="button" value="Novo Pedido / Ocultar"
+                            onclick="AbreNovoPedido()" id="btnNovoPedido" class="btn" />
+
+                        <br />
+
+                        <iframe src="" name="frmPedido" id="frmPedido"
+                            style="display: none; width: auto; height: auto; border: 0"
+                            iframeborder="0"></iframe>
+                        <hr />
+                    </apex:pageBlock>
+                </apex:form>
+                <apex:pageBlock title="Pedidos Cadastrados">
+                    <apex:pageBlockTable value="{!Opportunity.PedidosOportunidade__r}"
+                        var="child">
+                        <apex:column headervalue="Nome">
+                            <apex:outputLink value="/{!child.id}">{!child.name}</apex:outputLink>
+                        </apex:column>
+                        <apex:column value="{!child.Comissao_de_Terceiros__c}" />
+                        <apex:column value="{!child.Valor_Reais__c}" />
+                        <apex:column value="{!child.CNPJ_ENTREGA__c}" />
+                        <apex:column value="{!child.CNPJ_de_Faturamento__c}" />
+                        <apex:column value="{!child.Tipo_de_Contrato__c}" />
+                    </apex:pageBlockTable>
+                </apex:pageBlock>
+            </div>-->
+        </div>
+    </div>
+    <script type="text/javascript">
+       /* function AbreNovoPedido(){
+            if(document.getElementById('frmPedido').style.display=='none'){
+                var idP = document.getElementById('idPedido').value;
+                document.getElementById('frmPedido').style.display='block';
+                document.getElementById('frmPedido').style.width='100%';
+                document.getElementById('frmPedido').style.height='2050px';
+                document.getElementById('frmPedido').iframeborder='0';
+                if(idP!=null && idP!= ""){
+                    window.open('https://cs13.salesforce.com/apex/cadPedido?id=' + idP + 
+                                '&idProduto=' + document.getElementById('idProduto').value,'frmPedido');
+                }
+                else{
+                    window.open('https://cs13.salesforce.com/apex/cadPedido?id=a0gW0000000FONk','frmPedido');
+                }
+                
+            }
+            else{
+                window.open('','frmPedido');
+                document.getElementById('frmPedido').style.display='none';
+                
+            }
+        }
+        AbreNovoPedido();*/
+        
+        function AbreNovaNegociacao(){
+            if(document.getElementById('frmNegociacaoComercial').style.display=='none'){
+                var idP ="";
+                document.getElementById('frmNegociacaoComercial').style.display='block';
+                document.getElementById('frmNegociacaoComercial').style.width='1355px';
+                document.getElementById('frmNegociacaoComercial').style.height='2050px';
+                document.getElementById('frmNegociacaoComercial').iframeborder='0';
+                if(idP!=null && idP!= ""){
+                    window.open('https://cs13.salesforce.com/apex/CadNegociacaoComercial?id=' + idP + 
+                                '&idProduto=' + document.getElementById('idProduto').value,'frmNegociacaoComercial');
+                }
+                else{
+                    window.open('https://cs13.salesforce.com/apex/CadNegociacaoComercial?id=a0pW0000000NP3g','frmNegociacaoComercial');
+                }
+                
+            }
+            else{
+                window.open('','frmNegociacaoComercial');
+                document.getElementById('frmNegociacaoComercial').style.display='none';
+                
+            }
+        }
+        AbreNovaNegociacao();
+    </script>
+</apex:page>

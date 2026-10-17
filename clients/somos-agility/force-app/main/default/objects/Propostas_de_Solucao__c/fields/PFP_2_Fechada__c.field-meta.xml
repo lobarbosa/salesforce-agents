@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PFP_2_Fechada__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>jn18102018 Criar campo de caixa de seleção PFP2 Validada</description>
+    <inlineHelpText>Favor marcar se esta PFP foi fechada pelo cliente. 
+Para avanço de fase, 1 única  PSL deverá estar marcada como &quot;Fechada pelo Cliente&quot; e, no mínimo 1 PFP pertencente exclusivamente a esta PSL &quot;Fechada pelo Cliente  deverá esta marcada como &quot;PFP Fechada&quot;.</inlineHelpText>
+    <label>*PFP 2 Fechada</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
