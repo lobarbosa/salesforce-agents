@@ -1,0 +1,37 @@
+.container {
+    overflow: hidden;
+    border-radius: 0.25rem;
+}
+ 
+.loading {
+    margin: 0;
+    padding: 0;
+    height: inherit;
+    overflow: hidden;
+    position: relative;
+    /*background-color: #ccc;*/
+    width:100%;
+    font-size:30px;
+    background: linear-gradient(-45deg, #ECEBEA 48%, #FFF 50%, #ECEBEA 52%);
+    background-size: 200% 200%;
+ 
+    -webkit-animation: Animation 2s ease infinite;
+    -moz-animation: Animation 2s ease infinite;
+    animation: Animation 2s ease infinite;
+}
+ 
+@-webkit-keyframes Animation {
+    0%{background-position:0% 10%}
+    25%{background-position:120% 130%}
+    100%{background-position:120% 130%}
+}
+@-moz-keyframes Animation {
+    0%{background-position:0% 10%}
+    25%{background-position:120% 130%}
+    100%{background-position:120% 130%}
+}
+@keyframes Animation {
+    0%{background-position:0% 10%}
+    25%{background-position:120% 130%}
+    100%{background-position:120% 130%}
+}

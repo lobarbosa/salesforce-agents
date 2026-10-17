@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Layout_Resumo_Solicita_o</fullName>
+    <fields>Nome_da_Conta__c</fields>
+    <fields>Primeiro_Produto_Solicitado__c</fields>
+    <fields>X1_Produto_Ativo__c</fields>
+    <label>Layout Resumo Solicitação</label>
+</CompactLayout>

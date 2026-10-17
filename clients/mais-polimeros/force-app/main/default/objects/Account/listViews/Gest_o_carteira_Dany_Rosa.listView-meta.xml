@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Gest_o_carteira_Dany_Rosa</fullName>
+    <booleanFilter>1 or 2</booleanFilter>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Apagar_conta__c</columns>
+    <columns>Prospec_o__c</columns>
+    <columns>Motivo_ltima_Altera_o_de_conta__c</columns>
+    <columns>Informa_o_Extra__c</columns>
+    <columns>FarolGrupoEconomico__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Informa_o_Extra__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <filters>
+        <field>Motivo_ltima_Altera_o_de_conta__c</field>
+        <operation>notEqual</operation>
+    </filters>
+    <label>(Gestão) carteira Dany Rosa</label>
+</ListView>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_TES__c</fullName>
+    <label>Tipo de TES</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Normal</fullName>
+                <default>true</default>
+                <label>Normal</label>
+            </value>
+            <value>
+                <fullName>Triangular</fullName>
+                <default>false</default>
+                <label>Triangular</label>
+            </value>
+            <value>
+                <fullName>Amostra</fullName>
+                <default>false</default>
+                <label>Amostra</label>
+            </value>
+            <value>
+                <fullName>Operações Especiais</fullName>
+                <default>false</default>
+                <label>Operações Especiais</label>
+            </value>
+            <value>
+                <fullName>Consumidor Final</fullName>
+                <default>false</default>
+                <label>Consumidor Final</label>
+            </value>
+            <value>
+                <fullName>Suframa</fullName>
+                <default>false</default>
+                <label>Suframa</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

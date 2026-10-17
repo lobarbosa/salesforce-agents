@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AtuacaoEmpresa__c</fullName>
+    <inlineHelpText>Campo controle para atividades de Injeção / Extrusão e Sopro.</inlineHelpText>
+    <label>Atuação empresa</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Injeção</fullName>
+                <default>false</default>
+                <label>Injeção</label>
+            </value>
+            <value>
+                <fullName>Extrusão</fullName>
+                <default>false</default>
+                <label>Extrusão</label>
+            </value>
+            <value>
+                <fullName>Sopro</fullName>
+                <default>false</default>
+                <label>Sopro</label>
+            </value>
+            <value>
+                <fullName>Outro</fullName>
+                <default>false</default>
+                <label>Outro</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

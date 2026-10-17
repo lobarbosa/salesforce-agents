@@ -1,0 +1,1001 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubSegmento__c</fullName>
+    <label>Sub segmento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Segmento__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AGRO INDUSTRIA</fullName>
+                <default>false</default>
+                <label>AGRO INDUSTRIA</label>
+            </value>
+            <value>
+                <fullName>ALIMENTÍCIO</fullName>
+                <default>false</default>
+                <label>ALIMENTÍCIO</label>
+            </value>
+            <value>
+                <fullName>ALIMENTÍCIO E BEBIDAS</fullName>
+                <default>false</default>
+                <label>ALIMENTÍCIO E BEBIDAS</label>
+            </value>
+            <value>
+                <fullName>ALTO TEOR</fullName>
+                <default>false</default>
+                <label>ALTO TEOR</label>
+            </value>
+            <value>
+                <fullName>ARLA 32</fullName>
+                <default>false</default>
+                <label>ARLA 32</label>
+            </value>
+            <value>
+                <fullName>AUTOMOTIVO</fullName>
+                <default>false</default>
+                <label>AUTOMOTIVO</label>
+            </value>
+            <value>
+                <fullName>BAIXO TEOR</fullName>
+                <default>false</default>
+                <label>BAIXO TEOR</label>
+            </value>
+            <value>
+                <fullName>BALDES</fullName>
+                <default>false</default>
+                <label>BALDES</label>
+            </value>
+            <value>
+                <fullName>BANNER</fullName>
+                <default>false</default>
+                <label>BANNER</label>
+            </value>
+            <value>
+                <fullName>BEBIDAS LÁCTEAS</fullName>
+                <default>false</default>
+                <label>BEBIDAS LÁCTEAS</label>
+            </value>
+            <value>
+                <fullName>BED LINERS</fullName>
+                <default>false</default>
+                <label>BED LINERS</label>
+            </value>
+            <value>
+                <fullName>BOBINAS PICOTADAS E SACOS BLOC</fullName>
+                <default>false</default>
+                <label>BOBINAS PICOTADAS E SACOS BLOC</label>
+            </value>
+            <value>
+                <fullName>BOBINA TÉCNICA E SACOS</fullName>
+                <default>false</default>
+                <label>BOBINA TÉCNICA E SACOS</label>
+            </value>
+            <value>
+                <fullName>BOPP</fullName>
+                <default>false</default>
+                <label>BOPP</label>
+            </value>
+            <value>
+                <fullName>BRINQUEDOS</fullName>
+                <default>false</default>
+                <label>BRINQUEDOS</label>
+            </value>
+            <value>
+                <fullName>CAIXA DVD</fullName>
+                <default>false</default>
+                <label>CAIXA DVD</label>
+            </value>
+            <value>
+                <fullName>CAIXARIA &amp; GARRAFEIRA</fullName>
+                <default>false</default>
+                <label>CAIXARIA &amp; GARRAFEIRA</label>
+            </value>
+            <value>
+                <fullName>CAIXAS PARA REFRIGERADOS</fullName>
+                <default>false</default>
+                <label>CAIXAS PARA REFRIGERADOS</label>
+            </value>
+            <value>
+                <fullName>CERA</fullName>
+                <default>false</default>
+                <label>CERA</label>
+            </value>
+            <value>
+                <fullName>CHAPAS</fullName>
+                <default>false</default>
+                <label>CHAPAS</label>
+            </value>
+            <value>
+                <fullName>CHAPAS/PERFIS</fullName>
+                <default>false</default>
+                <label>CHAPAS/PERFIS</label>
+            </value>
+            <value>
+                <fullName>CHUVEIROS</fullName>
+                <default>false</default>
+                <label>CHUVEIROS</label>
+            </value>
+            <value>
+                <fullName>CISTERNAS</fullName>
+                <default>false</default>
+                <label>CISTERNAS</label>
+            </value>
+            <value>
+                <fullName>COMMODITY</fullName>
+                <default>false</default>
+                <label>COMMODITY</label>
+            </value>
+            <value>
+                <fullName>COMPOSTOS</fullName>
+                <default>false</default>
+                <label>COMPOSTOS</label>
+            </value>
+            <value>
+                <fullName>CONSTRUÇÃO CIVIL</fullName>
+                <default>false</default>
+                <label>CONSTRUÇÃO CIVIL</label>
+            </value>
+            <value>
+                <fullName>COPOS</fullName>
+                <default>false</default>
+                <label>COPOS</label>
+            </value>
+            <value>
+                <fullName>CORRUGADOS</fullName>
+                <default>false</default>
+                <label>CORRUGADOS</label>
+            </value>
+            <value>
+                <fullName>DEFENSIVOS AGRÍCOLAS</fullName>
+                <default>false</default>
+                <label>DEFENSIVOS AGRÍCOLAS</label>
+            </value>
+            <value>
+                <fullName>DESCARTAVEIS</fullName>
+                <default>false</default>
+                <label>DESCARTAVEIS</label>
+            </value>
+            <value>
+                <fullName>DVD MANAUS</fullName>
+                <default>false</default>
+                <label>DVD MANAUS</label>
+            </value>
+            <value>
+                <fullName>ELETRICOS</fullName>
+                <default>false</default>
+                <label>ELETRICOS</label>
+            </value>
+            <value>
+                <fullName>ELETRODOMESTICOS</fullName>
+                <default>false</default>
+                <label>ELETRODOMESTICOS</label>
+            </value>
+            <value>
+                <fullName>ELETRO PORTATEIS</fullName>
+                <default>false</default>
+                <label>ELETRO PORTATEIS</label>
+            </value>
+            <value>
+                <fullName>EMBALAGEM CARTONADA ASSÉPTICA</fullName>
+                <default>false</default>
+                <label>EMBALAGEM CARTONADA ASSÉPTICA</label>
+            </value>
+            <value>
+                <fullName>EMBALAGEM CARTONADA NÃO ASSÉPT</fullName>
+                <default>false</default>
+                <label>EMBALAGEM CARTONADA NÃO ASSÉPT</label>
+            </value>
+            <value>
+                <fullName>EMBALAGENS PARA SOLUÇÃO PARENT</fullName>
+                <default>false</default>
+                <label>EMBALAGENS PARA SOLUÇÃO PARENT</label>
+            </value>
+            <value>
+                <fullName>EMBALAGENS RÍGIDAS</fullName>
+                <default>false</default>
+                <label>EMBALAGENS RÍGIDAS</label>
+            </value>
+            <value>
+                <fullName>ENERGIA</fullName>
+                <default>false</default>
+                <label>ENERGIA</label>
+            </value>
+            <value>
+                <fullName>EXPANDIDO</fullName>
+                <default>false</default>
+                <label>EXPANDIDO</label>
+            </value>
+            <value>
+                <fullName>EXTRUSÃO (NICHOS)</fullName>
+                <default>false</default>
+                <label>EXTRUSÃO (NICHOS)</label>
+            </value>
+            <value>
+                <fullName>FARMACÊUTICOS</fullName>
+                <default>false</default>
+                <label>FARMACÊUTICOS</label>
+            </value>
+            <value>
+                <fullName>FARMACÊUTICOS E COSMETICOS</fullName>
+                <default>false</default>
+                <label>FARMACÊUTICOS E COSMETICOS</label>
+            </value>
+            <value>
+                <fullName>FARMACOS</fullName>
+                <default>false</default>
+                <label>FARMACOS</label>
+            </value>
+            <value>
+                <fullName>FIBRAS</fullName>
+                <default>false</default>
+                <label>FIBRAS</label>
+            </value>
+            <value>
+                <fullName>FIBRAS, TELAS &amp; RASCHEL</fullName>
+                <default>false</default>
+                <label>FIBRAS, TELAS &amp; RASCHEL</label>
+            </value>
+            <value>
+                <fullName>FIBROCIMENTO</fullName>
+                <default>false</default>
+                <label>FIBROCIMENTO</label>
+            </value>
+            <value>
+                <fullName>FILMES</fullName>
+                <default>false</default>
+                <label>FILMES</label>
+            </value>
+            <value>
+                <fullName>FILMES ADESIVADOS</fullName>
+                <default>false</default>
+                <label>FILMES ADESIVADOS</label>
+            </value>
+            <value>
+                <fullName>FILMES AGRÍCOLAS</fullName>
+                <default>false</default>
+                <label>FILMES AGRÍCOLAS</label>
+            </value>
+            <value>
+                <fullName>FILMES HIGIÊNICOS</fullName>
+                <default>false</default>
+                <label>FILMES HIGIÊNICOS</label>
+            </value>
+            <value>
+                <fullName>FÔRMAS PARA CONSTRUÇÃO CIVIL</fullName>
+                <default>false</default>
+                <label>FÔRMAS PARA CONSTRUÇÃO CIVIL</label>
+            </value>
+            <value>
+                <fullName>FRIGORÍFICOS/BARREIRA</fullName>
+                <default>false</default>
+                <label>FRIGORÍFICOS/BARREIRA</label>
+            </value>
+            <value>
+                <fullName>GARRAFAO</fullName>
+                <default>false</default>
+                <label>GARRAFAO</label>
+            </value>
+            <value>
+                <fullName>GAS</fullName>
+                <default>false</default>
+                <label>GAS</label>
+            </value>
+            <value>
+                <fullName>GENERAL PURPOSE</fullName>
+                <default>false</default>
+                <label>GENERAL PURPOSE</label>
+            </value>
+            <value>
+                <fullName>GEOMEMBRANAS &amp; GEOGRELHAS</fullName>
+                <default>false</default>
+                <label>GEOMEMBRANAS &amp; GEOGRELHAS</label>
+            </value>
+            <value>
+                <fullName>GEOSSINTÉTICOS</fullName>
+                <default>false</default>
+                <label>GEOSSINTÉTICOS</label>
+            </value>
+            <value>
+                <fullName>GOFRADOS</fullName>
+                <default>false</default>
+                <label>GOFRADOS</label>
+            </value>
+            <value>
+                <fullName>HIGIENE &amp; LIMPEZA</fullName>
+                <default>false</default>
+                <label>HIGIENE &amp; LIMPEZA</label>
+            </value>
+            <value>
+                <fullName>HIGIENE PESSOAL</fullName>
+                <default>false</default>
+                <label>HIGIENE PESSOAL</label>
+            </value>
+            <value>
+                <fullName>HOME/FOOD &amp; PERSONAL CARE</fullName>
+                <default>false</default>
+                <label>HOME/FOOD &amp; PERSONAL CARE</label>
+            </value>
+            <value>
+                <fullName>INJEÇÃO</fullName>
+                <default>false</default>
+                <label>INJEÇÃO</label>
+            </value>
+            <value>
+                <fullName>IRRIGAÇÃO</fullName>
+                <default>false</default>
+                <label>IRRIGAÇÃO</label>
+            </value>
+            <value>
+                <fullName>LAMINADOS/PET FOOD</fullName>
+                <default>false</default>
+                <label>LAMINADOS/PET FOOD</label>
+            </value>
+            <value>
+                <fullName>LINER</fullName>
+                <default>false</default>
+                <label>LINER</label>
+            </value>
+            <value>
+                <fullName>LINHA BRANCA</fullName>
+                <default>false</default>
+                <label>LINHA BRANCA</label>
+            </value>
+            <value>
+                <fullName>LONAS</fullName>
+                <default>false</default>
+                <label>LONAS</label>
+            </value>
+            <value>
+                <fullName>MANTAS</fullName>
+                <default>false</default>
+                <label>MANTAS</label>
+            </value>
+            <value>
+                <fullName>MASTER</fullName>
+                <default>false</default>
+                <label>MASTER</label>
+            </value>
+            <value>
+                <fullName>MASTERBATCHES</fullName>
+                <default>false</default>
+                <label>MASTERBATCHES</label>
+            </value>
+            <value>
+                <fullName>MOVEIS</fullName>
+                <default>false</default>
+                <label>MOVEIS</label>
+            </value>
+            <value>
+                <fullName>NÃO TECIDO</fullName>
+                <default>false</default>
+                <label>NÃO TECIDO</label>
+            </value>
+            <value>
+                <fullName>OIL &amp; GAS</fullName>
+                <default>false</default>
+                <label>OIL &amp; GAS</label>
+            </value>
+            <value>
+                <fullName>ÓLEOS LUBRIFICANTES</fullName>
+                <default>false</default>
+                <label>ÓLEOS LUBRIFICANTES</label>
+            </value>
+            <value>
+                <fullName>OUTROS</fullName>
+                <default>false</default>
+                <label>OUTROS</label>
+            </value>
+            <value>
+                <fullName>PEÇAS AGRÍCOLAS</fullName>
+                <default>false</default>
+                <label>PEÇAS AGRÍCOLAS</label>
+            </value>
+            <value>
+                <fullName>PERSONAL CARE</fullName>
+                <default>false</default>
+                <label>PERSONAL CARE</label>
+            </value>
+            <value>
+                <fullName>PLÁSTICO BOLHA</fullName>
+                <default>false</default>
+                <label>PLÁSTICO BOLHA</label>
+            </value>
+            <value>
+                <fullName>PRODUTOS QUÍMICOS</fullName>
+                <default>false</default>
+                <label>PRODUTOS QUÍMICOS</label>
+            </value>
+            <value>
+                <fullName>RAFIA</fullName>
+                <default>false</default>
+                <label>RAFIA</label>
+            </value>
+            <value>
+                <fullName>RESERVATÓRIOS &amp; DUCTOS</fullName>
+                <default>false</default>
+                <label>RESERVATÓRIOS &amp; DUCTOS</label>
+            </value>
+            <value>
+                <fullName>RESERVATÓRIOS &amp; TANQUES</fullName>
+                <default>false</default>
+                <label>RESERVATÓRIOS &amp; TANQUES</label>
+            </value>
+            <value>
+                <fullName>SACARIA INDUSTRIAL</fullName>
+                <default>false</default>
+                <label>SACARIA INDUSTRIAL</label>
+            </value>
+            <value>
+                <fullName>SACARIA RÁFIA</fullName>
+                <default>false</default>
+                <label>SACARIA RÁFIA</label>
+            </value>
+            <value>
+                <fullName>SACOLAS</fullName>
+                <default>false</default>
+                <label>SACOLAS</label>
+            </value>
+            <value>
+                <fullName>SACOS PARA LIXO</fullName>
+                <default>false</default>
+                <label>SACOS PARA LIXO</label>
+            </value>
+            <value>
+                <fullName>SHRINK</fullName>
+                <default>false</default>
+                <label>SHRINK</label>
+            </value>
+            <value>
+                <fullName>SILO BOLSA</fullName>
+                <default>false</default>
+                <label>SILO BOLSA</label>
+            </value>
+            <value>
+                <fullName>SOPRO</fullName>
+                <default>false</default>
+                <label>SOPRO</label>
+            </value>
+            <value>
+                <fullName>STRETCH</fullName>
+                <default>false</default>
+                <label>STRETCH</label>
+            </value>
+            <value>
+                <fullName>TAMPAS/FARMA/COSMETICOS</fullName>
+                <default>false</default>
+                <label>TAMPAS/FARMA/COSMETICOS</label>
+            </value>
+            <value>
+                <fullName>TAMPAS ÁGUAS/CARBONATADOS</fullName>
+                <default>false</default>
+                <label>TAMPAS ÁGUAS/CARBONATADOS</label>
+            </value>
+            <value>
+                <fullName>TAMPAS BEBIDAS</fullName>
+                <default>false</default>
+                <label>TAMPAS BEBIDAS</label>
+            </value>
+            <value>
+                <fullName>TAMPAS BEBIDAS QUENTES</fullName>
+                <default>false</default>
+                <label>TAMPAS BEBIDAS QUENTES</label>
+            </value>
+            <value>
+                <fullName>TAMPAS GERAL</fullName>
+                <default>false</default>
+                <label>TAMPAS GERAL</label>
+            </value>
+            <value>
+                <fullName>TAMPAS OUTROS</fullName>
+                <default>false</default>
+                <label>TAMPAS OUTROS</label>
+            </value>
+            <value>
+                <fullName>TANQUES</fullName>
+                <default>false</default>
+                <label>TANQUES</label>
+            </value>
+            <value>
+                <fullName>TELECOM</fullName>
+                <default>false</default>
+                <label>TELECOM</label>
+            </value>
+            <value>
+                <fullName>TERMOFORMAGEM</fullName>
+                <default>false</default>
+                <label>TERMOFORMAGEM</label>
+            </value>
+            <value>
+                <fullName>TUBOS</fullName>
+                <default>false</default>
+                <label>TUBOS</label>
+            </value>
+            <value>
+                <fullName>TUBOS DE PRESSÃO</fullName>
+                <default>false</default>
+                <label>TUBOS DE PRESSÃO</label>
+            </value>
+            <value>
+                <fullName>TUBOS E CONEXÕES</fullName>
+                <default>false</default>
+                <label>TUBOS E CONEXÕES</label>
+            </value>
+            <value>
+                <fullName>UD</fullName>
+                <default>false</default>
+                <label>UD</label>
+            </value>
+            <value>
+                <fullName>UTEC</fullName>
+                <default>false</default>
+                <label>UTEC</label>
+            </value>
+            <value>
+                <fullName>UTILIDADES</fullName>
+                <default>false</default>
+                <label>UTILIDADES</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>MASTERBATCHES</controllingFieldValue>
+            <controllingFieldValue>ROTOMOLDAGEM</controllingFieldValue>
+            <controllingFieldValue>COMPOSTOS</controllingFieldValue>
+            <valueName>COMPOSTOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>MASTERBATCHES</controllingFieldValue>
+            <valueName>MASTERBATCHES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>NÃO TECIDO</controllingFieldValue>
+            <valueName>NÃO TECIDO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PIPES</controllingFieldValue>
+            <valueName>CORRUGADOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PIPES</controllingFieldValue>
+            <valueName>GAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PIPES</controllingFieldValue>
+            <valueName>IRRIGAÇÃO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PIPES</controllingFieldValue>
+            <valueName>OIL &amp; GAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PIPES</controllingFieldValue>
+            <valueName>TUBOS DE PRESSÃO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>QUIMICOS E H&amp;L</controllingFieldValue>
+            <valueName>DEFENSIVOS AGRÍCOLAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>QUIMICOS E H&amp;L</controllingFieldValue>
+            <controllingFieldValue>ROTOMOLDAGEM</controllingFieldValue>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <valueName>GENERAL PURPOSE</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>QUIMICOS E H&amp;L</controllingFieldValue>
+            <controllingFieldValue>EXTRUSÃO</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>HIGIENE &amp; LIMPEZA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>QUIMICOS E H&amp;L</controllingFieldValue>
+            <valueName>PRODUTOS QUÍMICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RAFIA</controllingFieldValue>
+            <valueName>RAFIA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ROTOMOLDAGEM</controllingFieldValue>
+            <valueName>CISTERNAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ROTOMOLDAGEM</controllingFieldValue>
+            <valueName>PEÇAS AGRÍCOLAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ROTOMOLDAGEM</controllingFieldValue>
+            <valueName>RESERVATÓRIOS &amp; TANQUES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SACOLAS E BOBINAS PICOTADAS</controllingFieldValue>
+            <valueName>BOBINAS PICOTADAS E SACOS BLOC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SACOLAS E BOBINAS PICOTADAS</controllingFieldValue>
+            <valueName>SACOLAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SACOLAS E BOBINAS PICOTADAS</controllingFieldValue>
+            <valueName>SACOS PARA LIXO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SORO</controllingFieldValue>
+            <valueName>EMBALAGENS PARA SOLUÇÃO PARENT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SUBPRODUTOS</controllingFieldValue>
+            <valueName>CERA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>SUBPRODUTOS</controllingFieldValue>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <controllingFieldValue>EVA</controllingFieldValue>
+            <controllingFieldValue>EXTRUSÃO</controllingFieldValue>
+            <controllingFieldValue>AUTOMOTIVO</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>OUTROS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <valueName>COMMODITY</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <valueName>FARMACOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <valueName>GARRAFAO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>HIGIENE PESSOAL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <valueName>HOME/FOOD &amp; PERSONAL CARE</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <valueName>INJEÇÃO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <valueName>SOPRO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <valueName>TAMPAS/FARMA/COSMETICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <valueName>TAMPAS BEBIDAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>TAMPAS/FARMA/COSMETICOS</controllingFieldValue>
+            <valueName>TAMPAS OUTROS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>ALIMENTÍCIO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <valueName>ALIMENTÍCIO E BEBIDAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <valueName>ARLA 32</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <valueName>BEBIDAS LÁCTEAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>BRINQUEDOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>FARMACÊUTICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <valueName>ÓLEOS LUBRIFICANTES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS DE CONSUMO</controllingFieldValue>
+            <valueName>PERSONAL CARE</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UTEC</controllingFieldValue>
+            <valueName>UTEC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <controllingFieldValue>BALDES</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>BALDES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <valueName>DVD MANAUS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <valueName>EMBALAGENS RÍGIDAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <valueName>TERMOFORMAGEM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EMBALAGENS RÍGIDAS</controllingFieldValue>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <valueName>UD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <valueName>AGRO INDUSTRIA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <valueName>CONSTRUÇÃO CIVIL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>UTILIDADES E ACESSÓRIOS</controllingFieldValue>
+            <valueName>MOVEIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ENGENHARIA E CONSTRUÇÃO</controllingFieldValue>
+            <controllingFieldValue>CHAPAS</controllingFieldValue>
+            <valueName>CHAPAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ENGENHARIA E CONSTRUÇÃO</controllingFieldValue>
+            <valueName>FÔRMAS PARA CONSTRUÇÃO CIVIL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ENGENHARIA E CONSTRUÇÃO</controllingFieldValue>
+            <valueName>GEOSSINTÉTICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ENGENHARIA E CONSTRUÇÃO</controllingFieldValue>
+            <valueName>MANTAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ENGENHARIA E CONSTRUÇÃO</controllingFieldValue>
+            <valueName>TUBOS E CONEXÕES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EVA</controllingFieldValue>
+            <valueName>ALTO TEOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EVA</controllingFieldValue>
+            <valueName>BAIXO TEOR</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EXTRUSÃO</controllingFieldValue>
+            <controllingFieldValue>COMPOSTOS</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>AUTOMOTIVO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EXTRUSÃO</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>COPOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EXTRUSÃO</controllingFieldValue>
+            <controllingFieldValue>DESCARTÁVEIS</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>DESCARTAVEIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>EXTRUSÃO</controllingFieldValue>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>FARMACÊUTICOS E COSMETICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FIBRAS</controllingFieldValue>
+            <valueName>FIBRAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FIBRAS</controllingFieldValue>
+            <valueName>FIBROCIMENTO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES</controllingFieldValue>
+            <valueName>FILMES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES ESPECIAIS</controllingFieldValue>
+            <valueName>FILMES ADESIVADOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES ESPECIAIS</controllingFieldValue>
+            <valueName>FILMES HIGIÊNICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES ESPECIAIS</controllingFieldValue>
+            <valueName>FRIGORÍFICOS/BARREIRA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES ESPECIAIS</controllingFieldValue>
+            <valueName>GOFRADOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES ESPECIAIS</controllingFieldValue>
+            <valueName>LAMINADOS/PET FOOD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES INDUSTRIAIS</controllingFieldValue>
+            <valueName>BANNER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES INDUSTRIAIS</controllingFieldValue>
+            <valueName>EXPANDIDO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES INDUSTRIAIS</controllingFieldValue>
+            <valueName>LINER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES INDUSTRIAIS</controllingFieldValue>
+            <valueName>PLÁSTICO BOLHA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES INDUSTRIAIS</controllingFieldValue>
+            <valueName>SACARIA INDUSTRIAL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES INDUSTRIAIS</controllingFieldValue>
+            <valueName>SHRINK</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FILMES INDUSTRIAIS</controllingFieldValue>
+            <valueName>STRETCH</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FIOS &amp; CABOS</controllingFieldValue>
+            <valueName>ENERGIA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FIOS &amp; CABOS</controllingFieldValue>
+            <valueName>TELECOM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AUTOMOTIVO</controllingFieldValue>
+            <valueName>BED LINERS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AUTOMOTIVO</controllingFieldValue>
+            <valueName>RESERVATÓRIOS &amp; DUCTOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>AUTOMOTIVO</controllingFieldValue>
+            <valueName>TANQUES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>BOBINA TÉCNICA E SACOS</controllingFieldValue>
+            <valueName>BOBINA TÉCNICA E SACOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>BOPP</controllingFieldValue>
+            <valueName>BOPP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>BOPP</controllingFieldValue>
+            <valueName>CAIXA DVD</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>CHAPAS</controllingFieldValue>
+            <valueName>CHAPAS/PERFIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>COATING</controllingFieldValue>
+            <valueName>EMBALAGEM CARTONADA ASSÉPTICA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>COATING</controllingFieldValue>
+            <valueName>EMBALAGEM CARTONADA NÃO ASSÉPT</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>COATING</controllingFieldValue>
+            <valueName>SACARIA RÁFIA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>COMPOSTOS</controllingFieldValue>
+            <valueName>MASTER</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>COMPOSTOS</controllingFieldValue>
+            <valueName>TUBOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ELETRODOMÉSTICOS</controllingFieldValue>
+            <valueName>CHUVEIROS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ELETRODOMÉSTICOS</controllingFieldValue>
+            <valueName>ELETRICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ELETRODOMÉSTICOS</controllingFieldValue>
+            <valueName>ELETRODOMESTICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ELETRODOMÉSTICOS</controllingFieldValue>
+            <valueName>ELETRO PORTATEIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>ELETRODOMÉSTICOS</controllingFieldValue>
+            <valueName>LINHA BRANCA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</controllingFieldValue>
+            <valueName>EXTRUSÃO (NICHOS)</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</controllingFieldValue>
+            <valueName>FIBRAS, TELAS &amp; RASCHEL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</controllingFieldValue>
+            <valueName>FILMES AGRÍCOLAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</controllingFieldValue>
+            <valueName>GEOMEMBRANAS &amp; GEOGRELHAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</controllingFieldValue>
+            <valueName>LONAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</controllingFieldValue>
+            <valueName>SILO BOLSA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>CAIXARIA &amp; GARRAFEIRA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>CAIXAS PARA REFRIGERADOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>TAMPAS ÁGUAS/CARBONATADOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>TAMPAS BEBIDAS QUENTES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>TAMPAS GERAL</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>INJEÇÃO</controllingFieldValue>
+            <valueName>UTILIDADES</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campanhas_Ativas</fullName>
+    <columns>NAME</columns>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status_da_Campanha__c</field>
+        <operation>equals</operation>
+        <value>Ativa</value>
+    </filters>
+    <label>Campanhas Ativas</label>
+</ListView>

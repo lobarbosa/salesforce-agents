@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cor__c</fullName>
+    <label>Cor</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Amarelo</fullName>
+                <default>false</default>
+                <label>Amarelo</label>
+            </value>
+            <value>
+                <fullName>Amarelo Canário</fullName>
+                <default>false</default>
+                <label>Amarelo Canário</label>
+            </value>
+            <value>
+                <fullName>Amarelo Fluorescente</fullName>
+                <default>false</default>
+                <label>Amarelo Fluorescente</label>
+            </value>
+            <value>
+                <fullName>Amarelo Gema</fullName>
+                <default>false</default>
+                <label>Amarelo Gema</label>
+            </value>
+            <value>
+                <fullName>Azul Claro</fullName>
+                <default>false</default>
+                <label>Azul Claro</label>
+            </value>
+            <value>
+                <fullName>Azul Escuro</fullName>
+                <default>false</default>
+                <label>Azul Escuro</label>
+            </value>
+            <value>
+                <fullName>Branco Fraldinha</fullName>
+                <default>false</default>
+                <label>Branco Fraldinha</label>
+            </value>
+            <value>
+                <fullName>Branco Gelo</fullName>
+                <default>false</default>
+                <label>Branco Gelo</label>
+            </value>
+            <value>
+                <fullName>Cinza</fullName>
+                <default>false</default>
+                <label>Cinza</label>
+            </value>
+            <value>
+                <fullName>Laranja</fullName>
+                <default>false</default>
+                <label>Laranja</label>
+            </value>
+            <value>
+                <fullName>Laranja Fluorescente</fullName>
+                <default>false</default>
+                <label>Laranja Fluorescente</label>
+            </value>
+            <value>
+                <fullName>Marrom</fullName>
+                <default>false</default>
+                <label>Marrom</label>
+            </value>
+            <value>
+                <fullName>Prata</fullName>
+                <default>false</default>
+                <label>Prata</label>
+            </value>
+            <value>
+                <fullName>Preto</fullName>
+                <default>false</default>
+                <label>Preto</label>
+            </value>
+            <value>
+                <fullName>Rosa</fullName>
+                <default>false</default>
+                <label>Rosa</label>
+            </value>
+            <value>
+                <fullName>Roxo</fullName>
+                <default>false</default>
+                <label>Roxo</label>
+            </value>
+            <value>
+                <fullName>Roxo Fluorescente</fullName>
+                <default>false</default>
+                <label>Roxo Fluorescente</label>
+            </value>
+            <value>
+                <fullName>Terra Cota</fullName>
+                <default>false</default>
+                <label>Terra Cota</label>
+            </value>
+            <value>
+                <fullName>Verde Botânico</fullName>
+                <default>false</default>
+                <label>Verde Botânico</label>
+            </value>
+            <value>
+                <fullName>Verde Claro</fullName>
+                <default>false</default>
+                <label>Verde Claro</label>
+            </value>
+            <value>
+                <fullName>Verde Escuro</fullName>
+                <default>false</default>
+                <label>Verde Escuro</label>
+            </value>
+            <value>
+                <fullName>Vermelho</fullName>
+                <default>false</default>
+                <label>Vermelho</label>
+            </value>
+            <value>
+                <fullName>Vermelho Ferrari</fullName>
+                <default>false</default>
+                <label>Vermelho Ferrari</label>
+            </value>
+            <value>
+                <fullName>Vermelho Pipoca</fullName>
+                <default>false</default>
+                <label>Vermelho Pipoca</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>3</visibleLines>
+</CustomField>

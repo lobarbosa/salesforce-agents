@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <masterLabel>B2B Recent Order Products Carousel</masterLabel>
+    <description>Component used on a page for the B2B Site</description>
+    <targets>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+
+    <targetConfigs>
+
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="quantidade" type="Integer" label="Quantidade de Produtos" description="Quantidade de produtos para aparecer no componente"/>
+            <property name="orderBy" type="String" label="Critério de Seleção" description="Escolher critério para selecionar os produtos" datasource="Mais Recente,Maior Quantidade,Mais Pedidos" default="Mais Recente"/>
+            <property name="mesesIntervalo" type="Integer" label="Intervalo em Meses" description="Quantidade de meses entre hoje e a data limite para buscar os produtos"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

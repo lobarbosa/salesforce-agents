@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conta_Solicitada_no_projeto__c</fullName>
+    <formula>OR(
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;JANEIRO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;JANEIRO&quot;)), MONTH(TODAY())=01),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;FEVEREIRO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;FEVEREIRO&quot;)), MONTH(TODAY())=02),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;MARÇO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;MARÇO&quot;)), MONTH(TODAY())=03),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;ABRIL&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;ABRIL&quot;)), MONTH(TODAY())=04),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;MAIO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;MAIO&quot;)), MONTH(TODAY())=05),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;JUNHO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;JUNHO&quot;)), MONTH(TODAY())=06),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;JULHO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;JULHO&quot;)), MONTH(TODAY())=07),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;AGOSTO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;AGOSTO&quot;)), MONTH(TODAY())=08),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;SETEMBRO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;SETEMBRO&quot;)), MONTH(TODAY())=09),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;OUTUBRO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;OUTUBRO&quot;)), MONTH(TODAY())=10),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;NOVEMBRO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;NOVEMBRO&quot;)), MONTH(TODAY())=11),
+AND(OR(INCLUDES(NAOELEGIVELVENEZA__c , &quot;DEZEMBRO&quot;),INCLUDES(ELEGIVEL_VENEZA__c, &quot;DEZEMBRO&quot;)), MONTH(TODAY())=12))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Conta Solicitada no projeto?</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

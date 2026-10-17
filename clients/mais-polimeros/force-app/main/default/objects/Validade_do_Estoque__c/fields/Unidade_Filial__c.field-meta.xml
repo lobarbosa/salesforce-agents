@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Unidade_Filial__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Unidade Filial</label>
+    <referenceTo>UnidadeFilial__c</referenceTo>
+    <relationshipLabel>Validades do Estoque</relationshipLabel>
+    <relationshipName>Validades_do_Estoque</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

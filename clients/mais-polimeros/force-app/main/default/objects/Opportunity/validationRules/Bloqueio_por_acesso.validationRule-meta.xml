@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloqueio_por_acesso</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT($User.ByPassVR__c),
+    BloqueioAcesso__c,
+NOT(ISCHANGED(OwnerId)),
+OR($Profile.Name = &quot;Representante de Vendas&quot;,
+$Profile.Name = &quot;Vendedor interno&quot;),
+
+OR(ISNEW(),ISCHANGED(Divis_o_de_neg_cios__c))
+
+)</errorConditionFormula>
+    <errorMessage>Operação não permitida por não possuir acesso à Conta e à Divisão de Negócio</errorMessage>
+</ValidationRule>

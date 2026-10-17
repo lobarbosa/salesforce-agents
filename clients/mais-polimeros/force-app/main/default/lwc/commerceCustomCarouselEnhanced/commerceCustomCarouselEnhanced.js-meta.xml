@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <masterLabel>Commerce Custom Carousel Enhaced</masterLabel>
+    <description>Component used on a page for the B2B Site</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightningCommunity__Page</target>
+        <target>lightningCommunity__Default</target>
+    </targets>
+
+    <targetConfigs>
+        <targetConfig targets="lightningCommunity__Default">
+            <property name="titulo" type="String" label="Título" description="Texto que será exibido acima do carrossel"/>
+            <property name="exibirTitulo" type="Boolean" label="Exibir título?" description="Exibe o título acima do carrossel" default="true"/>
+            <property name="storeName" type="String" label="Nome da Loja" description="O nome precisa ser exatamente da forma que foi definida na url do E-commerce."/>
+            <property name="contentKeys" type="String" label="Chaves dos Conteúdos" description="Adicione as chaves separadas por vírgulas (,) e sem espaços. Ex: chave1,chave2..."/>
+            <property name="contentRedirectURL" type="String" label="URL de Redirecionamento dos Conteúdos" description="Adicione as URL's de redirecionamento separadas por vírgulas (,) e sem espaços. Ex: http://url1.com,http://url2.com..."/>
+            <property name="channelName" type="String" label="Nome do Canal" />
+            <property name="slideTime" type="String" label="Tempo de espera" description="Define o tempo de espera até o próximo slide. O valor precisa está no formato XXXX, ex: 3000 é igual 3 segundos, 5000 é igual 5 segundos, ..."/>
+            <property name="trocaAutomatica" type="Boolean" label="Alterar slides de forma automática?" description="O carrossel irá alterar entre os slides de forma automática." default="true"/>
+            <property name="trocaManual" type="Boolean" label="Alterar slides de forma manual?" description="Permite que o usuário consiga alterar entre os slides clicando nas setas e círculos." default="true"/>
+            <property name="exibirSetas" type="Boolean" label="Exibir setas ao lado do carrossel?" description="Exibe as setas que ficam ao lado do carrossel para que o usuário consiga alterar entre os slides." default="true"/>
+            <property name="exibirCirculos" type="Boolean" label="Exibir círculos abaixo do carrossel?" description="Exibe os círculos que ficam abaixo do carrossel para que o usuário consiga alterar entre os slides, além de informar a quantidade de slides e a posição do slide exibido no momento." default="true"/>
+            <property name="altTextHyperLink" type="Boolean" label="Habilitar redirecionamento?" description="Ao clicar na imagem do carrossel o usuário será redirecionado para a url cadastrado no campo de URL de Redirecionamento dos Conteúdos."/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Apagar_contas</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Apagar_conta__c</columns>
+    <columns>Prospec_o__c</columns>
+    <columns>Motivo_ltima_Altera_o_de_conta__c</columns>
+    <columns>Informa_o_Extra__c</columns>
+    <columns>FarolGrupoEconomico__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Apagar_conta__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>(Gestão) Apagar contas</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>Global</roleAndSubordinatesInternal>
+        <roleAndSubordinatesInternal>Rotatividade</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

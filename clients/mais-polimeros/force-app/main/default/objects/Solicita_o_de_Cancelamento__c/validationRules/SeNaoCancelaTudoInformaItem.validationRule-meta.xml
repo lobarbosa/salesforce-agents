@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SeNaoCancelaTudoInformaItem</fullName>
+    <active>true</active>
+    <errorConditionFormula>And(Cancelar_tudo__c = False, IsBlank(Item_do_Pedido__c)=True)</errorConditionFormula>
+    <errorMessage>É necessário informar o item que deseja cancelar.</errorMessage>
+</ValidationRule>

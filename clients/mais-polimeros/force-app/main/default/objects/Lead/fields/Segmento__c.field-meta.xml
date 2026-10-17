@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Segmento__c</fullName>
+    <label>Segmento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>LiderSegmento__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>AUTOMOTIVO</fullName>
+                <default>false</default>
+                <label>AUTOMOTIVO</label>
+            </value>
+            <value>
+                <fullName>BALDES</fullName>
+                <default>false</default>
+                <label>BALDES</label>
+            </value>
+            <value>
+                <fullName>BOBINA TÉCNICA E SACOS</fullName>
+                <default>false</default>
+                <label>BOBINA TÉCNICA E SACOS</label>
+            </value>
+            <value>
+                <fullName>BOPP</fullName>
+                <default>false</default>
+                <label>BOPP</label>
+            </value>
+            <value>
+                <fullName>CHAPAS</fullName>
+                <default>false</default>
+                <label>CHAPAS</label>
+            </value>
+            <value>
+                <fullName>COATING</fullName>
+                <default>false</default>
+                <label>COATING</label>
+            </value>
+            <value>
+                <fullName>COMPOSTOS</fullName>
+                <default>false</default>
+                <label>COMPOSTOS</label>
+            </value>
+            <value>
+                <fullName>DESCARTÁVEIS</fullName>
+                <default>false</default>
+                <label>DESCARTÁVEIS</label>
+            </value>
+            <value>
+                <fullName>ELETRODOMÉSTICOS</fullName>
+                <default>false</default>
+                <label>ELETRODOMÉSTICOS</label>
+            </value>
+            <value>
+                <fullName>EMBALAGENS DE CONSUMO</fullName>
+                <default>false</default>
+                <label>EMBALAGENS DE CONSUMO</label>
+            </value>
+            <value>
+                <fullName>EMBALAGENS RÍGIDAS</fullName>
+                <default>false</default>
+                <label>EMBALAGENS RÍGIDAS</label>
+            </value>
+            <value>
+                <fullName>ENGENHARIA E CONSTRUÇÃO</fullName>
+                <default>false</default>
+                <label>ENGENHARIA E CONSTRUÇÃO</label>
+            </value>
+            <value>
+                <fullName>EVA</fullName>
+                <default>false</default>
+                <label>EVA</label>
+            </value>
+            <value>
+                <fullName>EXTRUSÃO</fullName>
+                <default>false</default>
+                <label>EXTRUSÃO</label>
+            </value>
+            <value>
+                <fullName>FIBRAS</fullName>
+                <default>false</default>
+                <label>FIBRAS</label>
+            </value>
+            <value>
+                <fullName>FILMES</fullName>
+                <default>false</default>
+                <label>FILMES</label>
+            </value>
+            <value>
+                <fullName>FILMES ESPECIAIS</fullName>
+                <default>false</default>
+                <label>FILMES ESPECIAIS</label>
+            </value>
+            <value>
+                <fullName>FILMES INDUSTRIAIS</fullName>
+                <default>false</default>
+                <label>FILMES INDUSTRIAIS</label>
+            </value>
+            <value>
+                <fullName>FIOS &amp; CABOS</fullName>
+                <default>false</default>
+                <label>FIOS &amp; CABOS</label>
+            </value>
+            <value>
+                <fullName>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</fullName>
+                <default>false</default>
+                <label>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</label>
+            </value>
+            <value>
+                <fullName>INJEÇÃO</fullName>
+                <default>false</default>
+                <label>INJEÇÃO</label>
+            </value>
+            <value>
+                <fullName>MASTERBATCHES</fullName>
+                <default>false</default>
+                <label>MASTERBATCHES</label>
+            </value>
+            <value>
+                <fullName>NÃO TECIDO</fullName>
+                <default>false</default>
+                <label>NÃO TECIDO</label>
+            </value>
+            <value>
+                <fullName>PIPES</fullName>
+                <default>false</default>
+                <label>PIPES</label>
+            </value>
+            <value>
+                <fullName>QUIMICOS E H&amp;L</fullName>
+                <default>false</default>
+                <label>QUIMICOS E H&amp;L</label>
+            </value>
+            <value>
+                <fullName>RAFIA</fullName>
+                <default>false</default>
+                <label>RAFIA</label>
+            </value>
+            <value>
+                <fullName>ROTOMOLDAGEM</fullName>
+                <default>false</default>
+                <label>ROTOMOLDAGEM</label>
+            </value>
+            <value>
+                <fullName>SACOLAS E BOBINAS PICOTADAS</fullName>
+                <default>false</default>
+                <label>SACOLAS E BOBINAS PICOTADAS</label>
+            </value>
+            <value>
+                <fullName>SORO</fullName>
+                <default>false</default>
+                <label>SORO</label>
+            </value>
+            <value>
+                <fullName>SUBPRODUTOS</fullName>
+                <default>false</default>
+                <label>SUBPRODUTOS</label>
+            </value>
+            <value>
+                <fullName>TAMPAS/FARMA/COSMETICOS</fullName>
+                <default>false</default>
+                <label>TAMPAS/FARMA/COSMETICOS</label>
+            </value>
+            <value>
+                <fullName>UTEC</fullName>
+                <default>false</default>
+                <label>UTEC</label>
+            </value>
+            <value>
+                <fullName>UTILIDADES E ACESSÓRIOS</fullName>
+                <default>false</default>
+                <label>UTILIDADES E ACESSÓRIOS</label>
+            </value>
+            <value>
+                <fullName>FIBRAS ESPECIAIS</fullName>
+                <default>false</default>
+                <label>FIBRAS ESPECIAIS</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>FLEXÍVEIS</controllingFieldValue>
+            <valueName>BOBINA TÉCNICA E SACOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FLEXÍVEIS</controllingFieldValue>
+            <valueName>FILMES ESPECIAIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FLEXÍVEIS</controllingFieldValue>
+            <valueName>FILMES INDUSTRIAIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FLEXÍVEIS</controllingFieldValue>
+            <valueName>GEOSSINTÉTICOS E FILMES AGRÍCOLAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FLEXÍVEIS</controllingFieldValue>
+            <valueName>SACOLAS E BOBINAS PICOTADAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>FLEXÍVEIS</controllingFieldValue>
+            <valueName>SUBPRODUTOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>AUTOMOTIVO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>BOPP</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>COATING</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>COMPOSTOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>ELETRODOMÉSTICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>ENGENHARIA E CONSTRUÇÃO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>EVA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <controllingFieldValue>RÍGIDOS</controllingFieldValue>
+            <valueName>EXTRUSÃO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>FIOS &amp; CABOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <controllingFieldValue>RÍGIDOS</controllingFieldValue>
+            <valueName>INJEÇÃO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>NÃO TECIDO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>PIPES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>SORO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>TAMPAS/FARMA/COSMETICOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>PERFORMANCE</controllingFieldValue>
+            <valueName>UTEC</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS</controllingFieldValue>
+            <valueName>EMBALAGENS DE CONSUMO</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS</controllingFieldValue>
+            <valueName>MASTERBATCHES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS</controllingFieldValue>
+            <valueName>QUIMICOS E H&amp;L</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS</controllingFieldValue>
+            <valueName>ROTOMOLDAGEM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>BALDES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>CHAPAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>DESCARTÁVEIS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>EMBALAGENS RÍGIDAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>FIBRAS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>FILMES</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>RAFIA</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>UTILIDADES E ACESSÓRIOS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>RÍGIDOS E FLEXÍVEIS</controllingFieldValue>
+            <valueName>FIBRAS ESPECIAIS</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

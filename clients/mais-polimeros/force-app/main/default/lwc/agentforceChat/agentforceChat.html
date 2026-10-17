@@ -1,0 +1,82 @@
+<template>
+    <div class="chat-wrapper">
+        <!-- Header -->
+        <template if:true={sessionId}>
+            <div class="chat-header-slim">
+                <button class="icon-btn-slim" onclick={handleEndSession} title="Encerrar conversa">
+                    <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                </button>
+            </div>
+        </template>
+
+        <!-- Messages -->
+        <div class="chat-messages" lwc:ref="messagesContainer">
+            <template if:false={sessionId}>
+                <div class="empty-state">
+                    <div class="empty-icon">
+                        <lightning-icon icon-name="utility:einstein" size="large" alternative-text="Einstein"></lightning-icon>
+                    </div>
+                    <p class="empty-title">Olá, {userName}!</p>
+                    <p class="empty-subtitle">Como posso te ajudar hoje?</p>
+                    <button class="start-btn" onclick={handleStartSession} disabled={isLoading}>
+                        <template if:false={isLoading}>
+                            Iniciar conversa
+                        </template>
+                        <template if:true={isLoading}>
+                            <lightning-spinner alternative-text="Carregando" size="small"></lightning-spinner>
+                        </template>
+                    </button>
+                </div>
+            </template>
+
+            <template if:true={sessionId}>
+                <template for:each={messages} for:item="msg">
+                    <div key={msg.id} class={msg.wrapperClass}>
+                        <template if:true={msg.isAgent}>
+                            <div class="msg-avatar">
+                                <lightning-icon icon-name="utility:einstein" size="x-small"></lightning-icon>
+                            </div>
+                        </template>
+                        <div class={msg.bubbleClass}>
+                            <p class="msg-text">{msg.text}</p>
+                            <span class="msg-time">{msg.time}</span>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={isLoading}>
+                    <div class="msg-wrapper agent">
+                        <div class="msg-avatar">
+                            <lightning-icon icon-name="utility:einstein" size="x-small"></lightning-icon>
+                        </div>
+                        <div class="msg-bubble agent typing-bubble">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                        </div>
+                    </div>
+                </template>
+            </template>
+        </div>
+
+        <!-- Input -->
+        <template if:true={sessionId}>
+            <div class="chat-input-area">
+                <div class="input-wrapper">
+                    <textarea
+                        class="chat-input"
+                        placeholder="Digite sua mensagem..."
+                        value={inputText}
+                        oninput={handleInput}
+                        onkeydown={handleKeyDown}
+                        disabled={isLoading}
+                        rows="1"
+                    ></textarea>
+                    <button class="send-btn" onclick={handleSend} disabled={isSendDisabled}>
+                        <lightning-icon icon-name="utility:send" size="small" alternative-text="Enviar"></lightning-icon>
+                    </button>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

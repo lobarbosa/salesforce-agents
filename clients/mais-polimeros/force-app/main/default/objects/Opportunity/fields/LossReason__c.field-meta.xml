@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LossReason__c</fullName>
+    <label>Motivo de Perda</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>StageName</controllingField>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Cliente Cancelou a cotação</fullName>
+                <default>false</default>
+                <label>Cliente Cancelou a cotação</label>
+            </value>
+            <value>
+                <fullName>Cliente não retornou</fullName>
+                <default>false</default>
+                <label>Cliente não retornou</label>
+            </value>
+            <value>
+                <fullName>Consulta</fullName>
+                <default>false</default>
+                <label>Consulta</label>
+            </value>
+            <value>
+                <fullName>Crédito</fullName>
+                <default>false</default>
+                <label>Crédito</label>
+            </value>
+            <value>
+                <fullName>Erro no cadastro da cotação</fullName>
+                <default>false</default>
+                <label>Erro no cadastro da cotação</label>
+            </value>
+            <value>
+                <fullName>Estoque</fullName>
+                <default>false</default>
+                <label>Estoque</label>
+            </value>
+            <value>
+                <fullName>Gerou pedido por outra cotação</fullName>
+                <default>false</default>
+                <label>Gerou pedido por outra cotação</label>
+            </value>
+            <value>
+                <fullName>Logistica</fullName>
+                <default>false</default>
+                <label>Logistica</label>
+            </value>
+            <value>
+                <fullName>Petroquímica</fullName>
+                <default>false</default>
+                <label>Petroquímica</label>
+            </value>
+            <value>
+                <fullName>Prazo Expirado</fullName>
+                <default>false</default>
+                <label>Prazo Expirado</label>
+            </value>
+            <value>
+                <fullName>Preço</fullName>
+                <default>false</default>
+                <label>Preço</label>
+            </value>
+            <value>
+                <fullName>Teste OFF Recusado</fullName>
+                <default>false</default>
+                <label>Teste OFF Recusado</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Cliente Cancelou a cotação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Cliente não retornou</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Consulta</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Crédito</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Erro no cadastro da cotação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Estoque</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Gerou pedido por outra cotação</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Logistica</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Prazo Expirado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Preço</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Fechado Perdido</controllingFieldValue>
+            <valueName>Teste OFF Recusado</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

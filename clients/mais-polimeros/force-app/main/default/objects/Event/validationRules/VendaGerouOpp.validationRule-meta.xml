@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VendaGerouOpp</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+OR(
+Subject =&quot;Venda&quot;,
+Subject = &quot;Pós venda&quot;
+),
+ISPICKVAL( GerouOportunidade__c ,&quot;&quot;),
+NOT(ISBLANK( DataFinalizacaoVisita__c ))
+)</errorConditionFormula>
+    <errorDisplayField>GerouOportunidade__c</errorDisplayField>
+    <errorMessage>Informe se a venda gerou ou não uma oportunidade</errorMessage>
+</ValidationRule>

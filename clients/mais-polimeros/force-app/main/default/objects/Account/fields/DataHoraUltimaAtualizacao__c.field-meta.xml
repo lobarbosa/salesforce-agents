@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DataHoraUltimaAtualizacao__c</fullName>
+    <inlineHelpText>Instante que foi realizada a última consulta de status de Atualiza Financeiro no TOTVS</inlineHelpText>
+    <label>Data/hora da última atualização</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>DateTime</type>
+</CustomField>

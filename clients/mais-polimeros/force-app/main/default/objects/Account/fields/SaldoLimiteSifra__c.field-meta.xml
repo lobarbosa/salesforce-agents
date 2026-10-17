@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SaldoLimiteSifra__c</fullName>
+    <externalId>false</externalId>
+    <formula>LimiteTotalSifra__c - (
+IF(Total_aberto_SIFRA_R__c &gt; 0,Total_aberto_SIFRA_R__c,-Total_aberto_SIFRA_R__c) + ValorPedidoAbertoSIFRA__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Limite total SIFRA - (Total a vencer SIFRA R$ + Valor de pedido a faturar Sifra)</inlineHelpText>
+    <label>Saldo Final Disponível SIFRA</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

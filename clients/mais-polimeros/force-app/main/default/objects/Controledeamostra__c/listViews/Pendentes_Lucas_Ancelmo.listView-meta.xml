@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pendentes_Lucas_Ancelmo</fullName>
+    <columns>NAME</columns>
+    <columns>Conta__c</columns>
+    <columns>Produto__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>ResponsaveldaConta__c</columns>
+    <columns>Statusdaamostra__c</columns>
+    <columns>Responsaveldaautorizacao__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Statusdaamostra__c</field>
+        <operation>equals</operation>
+        <value>Pendente</value>
+    </filters>
+    <filters>
+        <field>Fabricante__c</field>
+        <operation>equals</operation>
+        <value>BRASKEM</value>
+    </filters>
+    <label>Meu controle</label>
+</ListView>

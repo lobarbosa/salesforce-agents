@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BloqueioCondicaoEFormaDePagamentoDistint</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND(
+OR(
+CONTAINS(UPPER(CondicaoPagamento__r.descricao__c), &quot;MAIS PAY&quot;),
+CONTAINS(TEXT(FormaDePagamento__c), &quot;MP - MPAY&quot;)
+),
+OR(
+NOT(CONTAINS(UPPER(CondicaoPagamento__r.descricao__c), &quot;MAIS PAY&quot;)),
+NOT(CONTAINS(TEXT(FormaDePagamento__c), &quot;MP - MPAY&quot;))
+)
+
+,OR(ISNEW(),ISCHANGED(CondicaoPagamento__c),
+ISCHANGED(FormaDePagamento__c))
+
+)</errorConditionFormula>
+    <errorMessage>A Condição de Pagamento selecionada não corresponde à Forma de Pagamento. Verifique e ajuste antes de continuar.</errorMessage>
+</ValidationRule>

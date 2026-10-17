@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BloqueioNaoRecorrente</fullName>
+    <active>false</active>
+    <description>Bloqueia a alteração da cotação caso o produto não seja recorrente</description>
+    <errorConditionFormula>And(
+Recorrente__c &gt; 0,
+Not(Confirmar_produtos__c),
+Not(IsChanged(Confirmar_produtos__c)),
+IsChanged(StageName)
+)</errorConditionFormula>
+    <errorMessage>Essa cotação possui produtos não recorrentes a esse cliente, para dar continuidade por favor confirme os produtos.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Novo_Reativado</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Analiseconta__c</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>Atualmente_Elegivel__c</columns>
+    <columns>beeCnpj__CNPJ__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Analiseconta__c</field>
+        <operation>equals</operation>
+        <value>Novo,Reativado</value>
+    </filters>
+    <label>(Gestão) Novo e Reativado</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>Global</roleAndSubordinatesInternal>
+        <roleAndSubordinatesInternal>Rotatividade</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>

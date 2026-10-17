@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Situacao_Cadastral__c</fullName>
+    <label>Situação Cadastral - Comercial</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Problema de crédito</fullName>
+                <default>false</default>
+                <label>Problema de crédito</label>
+            </value>
+            <value>
+                <fullName>Utiliza ABS</fullName>
+                <default>false</default>
+                <label>Utiliza ABS</label>
+            </value>
+            <value>
+                <fullName>Compra importado</fullName>
+                <default>false</default>
+                <label>Compra importado</label>
+            </value>
+            <value>
+                <fullName>Consome material de engenharia</fullName>
+                <default>false</default>
+                <label>Consome material de engenharia</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

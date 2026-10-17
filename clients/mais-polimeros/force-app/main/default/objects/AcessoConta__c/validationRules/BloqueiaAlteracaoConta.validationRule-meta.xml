@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BloqueiaAlteracaoConta</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(!ISNEW(),
+     Conta__c &lt;&gt; PRIORVALUE(Conta__c) 
+)</errorConditionFormula>
+    <errorDisplayField>Conta__c</errorDisplayField>
+    <errorMessage>Alteração do campo de Conta não é permitida</errorMessage>
+</ValidationRule>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FormaDePagamento__c</fullName>
+    <label>Forma de pagamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>DH- Dinheiro</fullName>
+                <default>false</default>
+                <label>DH- Dinheiro</label>
+            </value>
+            <value>
+                <fullName>DP - Duplicata</fullName>
+                <default>false</default>
+                <label>DP - Duplicata</label>
+            </value>
+            <value>
+                <fullName>DE- Depósito</fullName>
+                <default>false</default>
+                <label>DE- Depósito</label>
+            </value>
+            <value>
+                <fullName>AM - AMostra</fullName>
+                <default>false</default>
+                <label>AM - AMostra</label>
+            </value>
+            <value>
+                <fullName>BN - BNDS</fullName>
+                <default>false</default>
+                <label>BN - BNDS</label>
+            </value>
+            <value>
+                <fullName>IC- ICMS</fullName>
+                <default>false</default>
+                <label>IC- ICMS</label>
+            </value>
+            <value>
+                <fullName>RS - Risco sacado</fullName>
+                <default>false</default>
+                <label>RS - Risco sacado</label>
+            </value>
+            <value>
+                <fullName>SF-Suframa</fullName>
+                <default>false</default>
+                <label>SF-Suframa</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

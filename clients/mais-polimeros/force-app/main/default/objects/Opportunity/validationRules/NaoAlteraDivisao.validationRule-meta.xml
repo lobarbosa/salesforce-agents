@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoAlteraDivisao</fullName>
+    <active>true</active>
+    <description>Não é permitido alterar a divisão de negócios.</description>
+    <errorConditionFormula>AND(
+NOT($User.ByPassVR__c),
+ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+NOT(ISNEW()),
+ISCHANGED (DivisaoNegocio__c),
+NOT($Profile.Name = &quot;Integrador&quot;),
+NOT($Profile.Name = &quot;Mais Polimeros Admin&quot;),
+NOT($Profile.Name = &quot;Mais Polimeros Admin - sMFA&quot;)
+)</errorConditionFormula>
+    <errorMessage>Não é permitido alterar a divisão de negócios.</errorMessage>
+</ValidationRule>

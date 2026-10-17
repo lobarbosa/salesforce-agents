@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ATIVIDADE_DE_DESENVOLVIMENTO_R_FIA</fullName>
+    <columns>CORE.USERS.FULL_NAME</columns>
+    <columns>SUBJECT</columns>
+    <columns>WHAT_NAME</columns>
+    <columns>DUE_DATE</columns>
+    <columns>LAST_UPDATE</columns>
+    <columns>PRIORITY</columns>
+    <columns>STATUS</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>SUBJECT</field>
+        <operation>contains</operation>
+        <value>ATIVIDADE DE DESENVOLVIMENTO - RÁFIA</value>
+    </filters>
+    <label>ATIVIDADE DE DESENVOLVIMENTO - RÁFIA</label>
+    <sharedTo>
+        <role>Global</role>
+    </sharedTo>
+</ListView>

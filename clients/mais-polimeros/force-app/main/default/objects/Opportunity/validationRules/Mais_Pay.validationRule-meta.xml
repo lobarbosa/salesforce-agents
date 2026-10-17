@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mais_Pay</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR( AND(
+    OR(
+        CONTAINS(CondicaoPagamento__r.descricao__c, &quot;MAIS&quot;),
+        CONTAINS(CondicaoPagamento__r.descricao__c, &quot;PAY&quot;),
+        CONTAINS(CondicaoPagamento__r.descricao__c, &quot;MAIS PAY&quot;)
+    ),
+    NOT(ISPICKVAL(FormaDePagamento__c, &quot;MP - MPAY&quot;))
+    ),
+    AND(
+    OR(
+        NOT(CONTAINS(CondicaoPagamento__r.descricao__c, &quot;MAIS&quot;)),
+        NOT(CONTAINS(CondicaoPagamento__r.descricao__c, &quot;PAY&quot;)),
+        NOT(CONTAINS(CondicaoPagamento__r.descricao__c, &quot;MAIS PAY&quot;))
+    ),
+    ISPICKVAL(FormaDePagamento__c, &quot;MP - MPAY&quot;)
+    ))</errorConditionFormula>
+    <errorDisplayField>CondicaoPagamento__c</errorDisplayField>
+    <errorMessage>SELECIONE CONDIÇÃO DE PAGAMENTO E FORMA DE PAGAMENTO MAIS PAY</errorMessage>
+</ValidationRule>

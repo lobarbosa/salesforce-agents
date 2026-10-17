@@ -1,0 +1,6 @@
+<apex:page controller="IntegrProtheusEstoqueController" action="{!buscaEstoque}" showQuickActionVfHeader="false">
+    <h1>Saldos em estoque atualizados!</h1>
+    <script>
+        // window.history.back();
+    </script>
+</apex:page>

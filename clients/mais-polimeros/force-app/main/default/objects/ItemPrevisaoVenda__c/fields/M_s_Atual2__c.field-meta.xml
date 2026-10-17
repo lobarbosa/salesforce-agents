@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M_s_Atual2__c</fullName>
+    <formula>Or(
+And(Month(Today()) = 1,  CONTAINS(PrevisaoVenda__r.Name, &quot;Janeiro&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 2,  CONTAINS(PrevisaoVenda__r.Name, &quot;Fevereiro&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 3,  CONTAINS(PrevisaoVenda__r.Name, &quot;Março&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 4,  CONTAINS(PrevisaoVenda__r.Name, &quot;Abril&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 5,  CONTAINS(PrevisaoVenda__r.Name, &quot;Maio&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 6,  CONTAINS(PrevisaoVenda__r.Name, &quot;Junho&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 7,  CONTAINS(PrevisaoVenda__r.Name, &quot;Julho&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 8,  CONTAINS(PrevisaoVenda__r.Name, &quot;Agosto&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 9,  CONTAINS(PrevisaoVenda__r.Name, &quot;Setembro&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 10,  CONTAINS(PrevisaoVenda__r.Name, &quot;Outubro&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 11,  CONTAINS(PrevisaoVenda__r.Name, &quot;Novembro&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today())))),
+And(Month(Today()) = 12,  CONTAINS(PrevisaoVenda__r.Name, &quot;Dezembro&quot;),
+CONTAINS(PrevisaoVenda__r.Name, Text(Year(Today()))))
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Mês Atual</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

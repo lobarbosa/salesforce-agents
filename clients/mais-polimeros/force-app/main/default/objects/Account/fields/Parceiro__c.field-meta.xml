@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parceiro__c</fullName>
+    <label>Parceiro</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>ACTIVAS</fullName>
+                <default>false</default>
+                <label>ACTIVAS</label>
+            </value>
+            <value>
+                <fullName>ECOLÓGICO</fullName>
+                <default>false</default>
+                <label>ECOLÓGICO</label>
+            </value>
+            <value>
+                <fullName>ETENO</fullName>
+                <default>false</default>
+                <label>ETENO</label>
+            </value>
+            <value>
+                <fullName>FF</fullName>
+                <default>false</default>
+                <label>FF</label>
+            </value>
+            <value>
+                <fullName>FORTYMIL</fullName>
+                <default>false</default>
+                <label>FORTYMIL</label>
+            </value>
+            <value>
+                <fullName>MAIS POLIMEROS</fullName>
+                <default>false</default>
+                <label>MAIS POLIMEROS</label>
+            </value>
+            <value>
+                <fullName>PIRAMIDAL</fullName>
+                <default>false</default>
+                <label>PIRAMIDAL</label>
+            </value>
+            <value>
+                <fullName>REVENDA</fullName>
+                <default>false</default>
+                <label>REVENDA</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

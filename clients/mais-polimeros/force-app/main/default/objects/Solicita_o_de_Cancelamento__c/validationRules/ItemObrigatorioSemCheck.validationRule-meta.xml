@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ItemObrigatorioSemCheck</fullName>
+    <active>true</active>
+    <errorConditionFormula>And(Cancelar_tudo__c = True, IsBlank(Item_do_Pedido__c)=False)</errorConditionFormula>
+    <errorMessage>Se for solicitado cancelar todos os produtos não informar o item do pedido.</errorMessage>
+</ValidationRule>

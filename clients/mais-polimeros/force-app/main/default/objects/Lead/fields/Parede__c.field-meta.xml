@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Parede__c</fullName>
+    <label>Parede</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>AtuacaoEmpresa__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Fina</fullName>
+                <default>false</default>
+                <label>Fina</label>
+            </value>
+            <value>
+                <fullName>Grossa</fullName>
+                <default>false</default>
+                <label>Grossa</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Injeção</controllingFieldValue>
+            <valueName>Fina</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Injeção</controllingFieldValue>
+            <valueName>Grossa</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

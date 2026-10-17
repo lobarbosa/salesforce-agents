@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FasesFichaCadastralEnviada</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+Text(PRIORVALUE(Status)) == &apos;Ficha cadastral enviada&apos;,  
+NOT(ISPICKVAL(Status,&quot;Ficha cadastral enviada&quot;)),
+NOT(  FichaCadastralRecebida__c )
+)</errorConditionFormula>
+    <errorMessage>Lead em FICHA CADASTRAL ENVIADA não pode pular ou voltar fases e a ficha cadastral deve ter sido recebida para alterar as fases</errorMessage>
+</ValidationRule>

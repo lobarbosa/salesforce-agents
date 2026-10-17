@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_ltima_Altera_o_de_conta__c</fullName>
+    <label>Motivo Última Alteração de conta</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>BAIXO VOLUME</fullName>
+                <default>false</default>
+                <label>BAIXO VOLUME</label>
+            </value>
+            <value>
+                <fullName>COTAÇÕES ESPORÁDICAS</fullName>
+                <default>false</default>
+                <label>COTAÇÕES ESPORÁDICAS</label>
+            </value>
+            <value>
+                <fullName>RECUPERAÇÃO JUDICIAL</fullName>
+                <default>false</default>
+                <label>RECUPERAÇÃO JUDICIAL</label>
+            </value>
+            <value>
+                <fullName>REVENDA</fullName>
+                <default>false</default>
+                <label>REVENDA</label>
+            </value>
+            <value>
+                <fullName>NÃO COMPRA/NÃO USA</fullName>
+                <default>false</default>
+                <label>NÃO COMPRA/NÃO USA</label>
+            </value>
+            <value>
+                <fullName>PENDÊNCIA FINANCEIRA</fullName>
+                <default>false</default>
+                <label>PENDÊNCIA FINANCEIRA</label>
+            </value>
+            <value>
+                <fullName>OUTRO</fullName>
+                <default>false</default>
+                <label>OUTRO</label>
+            </value>
+            <value>
+                <fullName>DISTRIBUIÇÃO</fullName>
+                <default>false</default>
+                <label>DISTRIBUIÇÃO</label>
+            </value>
+            <value>
+                <fullName>TRANSPORTADORA</fullName>
+                <default>false</default>
+                <label>TRANSPORTADORA</label>
+            </value>
+            <value>
+                <fullName>FERRAMENTARIA / METALÚRGICA</fullName>
+                <default>false</default>
+                <label>FERRAMENTARIA / METALÚRGICA</label>
+            </value>
+            <value>
+                <fullName>PETROQUIMICA</fullName>
+                <default>false</default>
+                <label>PETROQUIMICA</label>
+            </value>
+            <value>
+                <fullName>MÃO DE OBRA (TRIANGULAR)</fullName>
+                <default>false</default>
+                <label>MÃO DE OBRA (TRIANGULAR)</label>
+            </value>
+            <value>
+                <fullName>PERFIL LOJA</fullName>
+                <default>false</default>
+                <label>PERFIL LOJA</label>
+            </value>
+            <value>
+                <fullName>CLIENTE SEM INTERESSE</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>CLIENTE SEM INTERESSE</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>10</visibleLines>
+</CustomField>

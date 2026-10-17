@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conta_Mobile</fullName>
+    <fields>beeCnpj__CNPJ__c</fields>
+    <fields>Veneza_m_s_atual__c</fields>
+    <fields>FarolGrupoEconomico__c</fields>
+    <label>Conta_Mobile</label>
+</CompactLayout>

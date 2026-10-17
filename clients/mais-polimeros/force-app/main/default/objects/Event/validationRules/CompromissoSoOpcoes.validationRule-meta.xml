@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CompromissoSoOpcoes</fullName>
+    <active>true</active>
+    <errorConditionFormula>NOT(
+OR(
+Subject = &quot;Relacionamento&quot;,
+Subject =&quot;Venda&quot;,
+Subject = &quot;Pós venda&quot;,
+Subject = &quot;Visita técnica&quot;
+)
+)</errorConditionFormula>
+    <errorDisplayField>Subject</errorDisplayField>
+    <errorMessage>Selecione RELACIONAMENTO,VISITA TÉCNICA, VENDA ou PÓS VENDA</errorMessage>
+</ValidationRule>

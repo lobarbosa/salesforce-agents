@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Content__c</fullName>
+    <inlineHelpText>Indique quais informações são fornecidas em artigos básicos. Você pode criar campos adicionais para estruturar ainda mais o conteúdo do artigo.</inlineHelpText>
+    <label>Conteúdo</label>
+    <length>32768</length>
+    <type>Html</type>
+    <visibleLines>20</visibleLines>
+</CustomField>

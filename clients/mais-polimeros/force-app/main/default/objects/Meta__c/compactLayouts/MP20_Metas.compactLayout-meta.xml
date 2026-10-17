@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MP20_Metas</fullName>
+    <fields>Name</fields>
+    <fields>MesMeta__c</fields>
+    <fields>VendasPlano__c</fields>
+    <fields>VendasReal__c</fields>
+    <fields>Status__c</fields>
+    <fields>Vendedor__c</fields>
+    <label>MP20-Metas</label>
+</CompactLayout>

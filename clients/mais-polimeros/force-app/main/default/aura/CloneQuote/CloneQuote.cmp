@@ -1,0 +1,4 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:lightningQuickAction,force:hasRecordId" controller="CloneQuote" access="global" >
+    <aura:attribute name="recordId" type="String" />
+	<button class="slds-button slds-button_success" aura:id="btnClone" onclick="{!c.handleClick}" style="width: -webkit-fill-available">Clonar cotação</button>	
+</aura:component>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>StatusCredito__c</fullName>
+    <externalId>false</externalId>
+    <formula>/*
+Objetivo:
+Retornar a situação de crédito do cliente considerando aprovação,
+rejeição financeira, forma de pagamento, condição de pagamento
+e bloqueios de crédito.
+
+As condições de pagamento 000 e 001 são desconsideradas
+nas regras específicas de Suframa e Depósito.
+*/
+
+IF(
+    /*
+    1. Se o crédito já estiver aprovado,
+    retorna &quot;Crédito aprovado&quot;.
+    */
+    AprovaCredito__c,
+
+    &quot;Crédito aprovado&quot;,
+
+    /*
+    2. Caso não esteja aprovado, verifica se a forma de pagamento
+    exige análise ou bloqueio financeiro.
+    */
+    IF(
+        OR(
+            TEXT(FormaDePagamento__c) = &quot;BN - BNDS&quot;,
+            TEXT(FormaDePagamento__c) = &quot;SI - SIFRA&quot;,
+            TEXT(FormaDePagamento__c) = &quot;BV - BV&quot;,
+            TEXT(FormaDePagamento__c) = &quot;MP - MPAY&quot;,
+            TEXT(FormaDePagamento__c) = &quot;IC- ICMS&quot;,
+            TEXT(FormaDePagamento__c) = &quot;RS - Risco sacado&quot;,
+
+            /*
+            Suframa só será considerada bloqueada quando
+            a condição de pagamento NÃO for 000 nem 001.
+            */
+            AND(
+                TEXT(FormaDePagamento__c) = &quot;SF-Suframa&quot;,
+                NOT(
+                    OR(
+                        CondicaoPagamento__r.codigo__c = &quot;002&quot;,
+                        CondicaoPagamento__r.codigo__c = &quot;001&quot;
+                    )
+                )
+            ),
+
+            TEXT(FormaDePagamento__c) = &quot;DP - Duplicata&quot;,
+
+            /*
+            Depósito só será considerado bloqueado quando
+            a condição de pagamento NÃO for 000 nem 001.
+            */
+            AND(
+                TEXT(FormaDePagamento__c) = &quot;DE- Depósito&quot;,
+                NOT(
+                    OR(
+                        CondicaoPagamento__r.codigo__c = &quot;002&quot;,
+                        CondicaoPagamento__r.codigo__c = &quot;001&quot;
+                    )
+                )
+            ),
+
+            TEXT(FormaDePagamento__c) = &quot;ID - ICMS/DUPLICATA&quot;
+        ),
+
+        /*
+        3. Para formas de pagamento com regra de bloqueio:
+        se foi rejeitada pelo financeiro, retorna rejeição.
+        Caso contrário, retorna bloqueio de crédito.
+        */
+        IF(
+            RejeitadaCredito__c,
+            &quot;Rejeitada Financeiro&quot;,
+            &quot;Cliente com bloqueio de crédito&quot;
+        ),
+
+        /*
+        4. Para as demais formas de pagamento,
+        verifica se o cliente pode seguir sem bloqueio.
+        */
+        IF(
+            OR(
+                AND(
+                    NOT(BloqueioFinanceiro__c),
+                    CreditodisponivelMaisPolimeros__c &gt; 0
+                ),
+
+                NOT(IsBloqueioCreditoCondPag__c),
+
+                NOT(IsBloqueioCreditoTES__c)
+            ),
+
+            &quot;Cliente sem bloqueio&quot;,
+
+            /*
+            5. Caso não tenha liberação, valida se foi rejeitado.
+            */
+            IF(
+                RejeitadaCredito__c,
+                &quot;Rejeitada Financeiro&quot;,
+                &quot;Cliente com bloqueio de crédito&quot;
+            )
+        )
+    )
+)
+
+/*
+Regra antiga ou futura:
+Account.ValorOportunidadesAbertas__c &lt;= LimiteCreditoConta__c
+*/</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Status do crédito</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

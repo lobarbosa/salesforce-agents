@@ -1,0 +1,212 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <lightning-quick-action-panel header="Consultar CNPJ">
+    <div class="slds-form">  
+ 
+      <div class="slds-section slds-is-open slds-m-bottom_x-large">
+        <h3 class="slds-section__title slds-theme_shade">
+          <span class="slds-truncate slds-p-horizontal_small" title="Section Title">CNPJ</span>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content">
+          <div class="slds-form__row slds-p-horizontal_medium">
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2" >
+                <lightning-input  label="CNPJ PESQUISA" 
+                                  value={CNPJ}
+                                  maxlength = "18"
+                                  minlength = "14"
+                                  onchange={handleChangeCNPJ}>
+                </lightning-input>
+              </div>
+            </div>
+            <div class="slds-form__item slds-p-top_large">
+              <div class="slds-size_2-of-2 ">
+                <lightning-button label="OK"
+                                  onclick={handleClickBuscaDados}>
+                </lightning-button>
+              </div>
+            </div>
+          </div>  
+        </div>
+      </div>   
+
+      <div class="slds-section slds-is-open slds-m-bottom_x-large">
+        <h3 class="slds-section__title slds-theme_shade">
+          <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Informações de pesquisa</span>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content">
+          <div class="slds-form__row slds-p-horizontal_medium ">
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2" >
+                <lightning-input  label="Razão Social"  
+                                  value={razaoSocial} 
+                                  onchange={handleChangeRazaoSocial}>
+                </lightning-input>
+              </div>
+            </div>
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2">
+                <lightning-input  label="Natureza Jurídica" 
+                                  type=" " 
+                                  value={naturezaJuridica} 
+                                  onchange={handleChangeNaturezaJuridica}>
+                </lightning-input>
+              </div>
+            </div>
+          </div>  
+          <div class="slds-form__row slds-p-horizontal_medium ">
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2" >
+                <lightning-input  label="Tipo" 
+                                  value={tipo} 
+                                  onchange={handleChangeTipo}>
+                </lightning-input>
+              </div>
+            </div>
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2">
+                <lightning-input  label="Telefone"  
+                                  value={telefone} 
+                                  onchange={handleChangeTelefone}>
+                </lightning-input>
+              </div>
+            </div>
+          </div> 
+
+          <div class="slds-form__row slds-p-horizontal_medium ">
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2" >
+                <lightning-input  label="Data de abertura" 
+                                  value={dataAbertura} 
+                                  type="date"
+                                  onchange={handleChangeDataAbertura}>
+                </lightning-input>
+              </div>
+            </div>
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2">
+                <lightning-input  label="Situação Cadastral" 
+                                  value={situacaoCadastral}
+                                  onchange={handleChangeSituacaoCadastral}>
+                </lightning-input>
+              </div>
+            </div>
+          </div> 
+
+          <div class="slds-form__row slds-p-horizontal_medium ">
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2"> 
+                <lightning-input  label="Data da Situação" 
+                                  value={dataSituacao} 
+                                  type="date"
+                                  onchange={handleChangeDataSituacao}>
+                </lightning-input>
+              </div>
+            </div>
+            <div class="slds-form__item ">
+              <div class="slds-size_2-of-2" >
+                <lightning-input  label="Motivo Situação Cadastral"  
+                                  value={motivoSituacaoCadastral} 
+                                  onchange={handleChangeMotivoSituacaoCadastral}>
+                </lightning-input>
+              </div>
+            </div>
+          </div> 
+        </div>
+      </div>
+      
+      <div class="slds-section slds-is-open slds-m-bottom_x-large">
+        <h3 class="slds-section__title slds-theme_shade">
+          <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Informações endereço</span>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content">
+          <fieldset class=" slds-form-element slds-form-element_compound "> 
+            <div class="slds-form-element__control"> 
+              <div class="slds-form__row slds-p-horizontal_medium">
+                <div class="slds-form__item">
+                  <div class="slds-size_1-of-1">
+                    <lightning-textarea label="Rua de cobrança" 
+                                        value={ruaCobranca} 
+                                        onchange={handleChangeRuaCobranca}>
+                    </lightning-textarea> 
+                  </div>
+                </div>
+              </div>  
+
+              <div class="slds-form__row slds-p-horizontal_medium ">
+                <div class="slds-form__item">
+                  <div class="slds-size_4-of-6" >
+                    <lightning-input  label="Cidade de cobrança"
+                                      value={cidadeCobranca} 
+                                      onchange={handleChangeCidadeCobranca}>
+                    </lightning-input>
+                  </div>
+                  
+                  <div class="slds-size_2-of-6">
+                    <lightning-input  label="Estado/Província de cobrança" 
+                                      value={estadoCobranca} 
+                                      onchange={handleChangeEstadoCobranca}>
+                    </lightning-input>
+                  </div>
+                </div>
+              </div> 
+
+              <div class="slds-form__row slds-p-horizontal_medium">
+                <div class="slds-form__item">
+                  <div class="slds-size_4-of-6" >
+                    <lightning-input  label="CEP de cobrança" 
+                                      value={cepCobranca} 
+                                      onchange={handleChangeCepCobranca}>
+                    </lightning-input>  
+                  </div>
+                 
+                  <div class="slds-size_2-of-6" >
+                    <lightning-input  label="País de cobrança" 
+                                      value={paisCobranca} 
+                                      onchange={handleChangePaisCobranca}>
+                    </lightning-input>
+                  </div>
+                </div>
+              </div>
+            </div> 
+          </fieldset>
+        </div>
+      </div>
+
+      <div class="slds-section slds-is-open ">
+        <h3 class="slds-section__title slds-theme_shade">
+          <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Informações econômicas</span>
+        </h3>
+        <div aria-hidden="false" class="slds-section__content">
+          <div class="slds-form__row slds-p-horizontal_medium">
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2" >
+                <lightning-textarea   label="Atividade Econômica principal"
+                                      value={atvEconomicaPrincipal} 
+                                      onchange={handleChangeAtvEconomicaPrincipal}>
+                </lightning-textarea>
+              </div>
+            </div>
+          </div> 
+
+          <div class="slds-form__row slds-p-horizontal_medium">
+            <div class="slds-form__item">
+              <div class="slds-size_2-of-2" >
+                <lightning-textarea   label="Atividade Econômica secundária"
+                                      value={atvEconomicaSecundaria} 
+                                      onchange={handleChangeAtvEconomicaSecundaria}>
+                </lightning-textarea>
+              </div>
+            </div>
+          </div> 
+        </div> 
+      </div>
+   
+ 
+      <div class="slds-align_absolute-center" slot="footer">
+        <lightning-button variant="neutral" label="Cancelar" onclick={handleClickClose}></lightning-button>
+        <lightning-button variant="brand" label="Salvar" onclick={handleClickSave} class="slds-m-left_x-small"></lightning-button>
+      </div>
+    </div>
+  </lightning-quick-action-panel>
+</template>

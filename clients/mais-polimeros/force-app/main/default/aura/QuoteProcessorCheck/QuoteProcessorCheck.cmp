@@ -1,0 +1,9 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes" controller="QuoteProcessorController" access="global" >	
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <lightning:button class="slds-button slds-button_success slds-button_stretch" aura:id="btnSync" onclick="{!c.handleClick}" label="Checar Cliente" />
+    <aura:if isTrue="{!v.showSpinner}">
+        <div style="width: 250px; height: auto; margin: 0 auto; position: absolute; left: 50%; top: 34%; margin-left: -110px; z-index: 9999; margin-top: -40px;">
+            <img style="border-radius: 23px;box-shadow: 4px 2px 4px 0px #fff;" src="{!$Resource.Einstein}" />
+        </div>
+    </aura:if>
+</aura:component>

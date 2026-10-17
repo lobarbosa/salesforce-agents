@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoCriaSemDataVencimento</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+OR(ISNEW(),ISCHANGED(ActivityDate)),
+IsBlank(ActivityDate))</errorConditionFormula>
+    <errorDisplayField>ActivityDate</errorDisplayField>
+    <errorMessage>Para salvar, preencha a data de vencimento.</errorMessage>
+</ValidationRule>

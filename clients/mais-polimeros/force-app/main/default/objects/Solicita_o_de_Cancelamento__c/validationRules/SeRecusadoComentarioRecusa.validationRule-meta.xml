@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SeRecusadoComentarioRecusa</fullName>
+    <active>true</active>
+    <errorConditionFormula>And(
+Text(Status_da_Solicita_o__c) = &quot;Recusado&quot;,
+Comentario_Recusa__c = &quot;&quot;
+)</errorConditionFormula>
+    <errorMessage>Para recusar um cancelamento é necessário informar o motivo.</errorMessage>
+</ValidationRule>

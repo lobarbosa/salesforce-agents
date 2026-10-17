@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DiaDaSemana__c</fullName>
+    <label>Dia da semana</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Seg</fullName>
+                <default>false</default>
+                <label>Seg</label>
+            </value>
+            <value>
+                <fullName>Ter</fullName>
+                <default>false</default>
+                <label>Ter</label>
+            </value>
+            <value>
+                <fullName>Qua</fullName>
+                <default>false</default>
+                <label>Qua</label>
+            </value>
+            <value>
+                <fullName>Qui</fullName>
+                <default>false</default>
+                <label>Qui</label>
+            </value>
+            <value>
+                <fullName>Sex</fullName>
+                <default>false</default>
+                <label>Sex</label>
+            </value>
+            <value>
+                <fullName>Sab</fullName>
+                <default>false</default>
+                <label>Sab</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

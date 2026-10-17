@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Receber_Notificacoes_Loja__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Se verdadeiro, o usuário recebe as notificações de controle da loja.</description>
+    <inlineHelpText>Marque se quiser acompanhar as notificações de controle da loja.</inlineHelpText>
+    <label>Receber Notificações Loja</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

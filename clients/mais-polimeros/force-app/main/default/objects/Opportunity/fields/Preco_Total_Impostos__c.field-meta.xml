@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Preco_Total_Impostos__c</fullName>
+    <label>Preço Total + Impostos</label>
+    <summarizedField>OpportunityLineItem.SubtotalCimpostos__c</summarizedField>
+    <summaryFilterItems>
+        <field>OpportunityLineItem.Status__c</field>
+        <operation>notEqual</operation>
+        <value>Cancelado</value>
+    </summaryFilterItems>
+    <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

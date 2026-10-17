@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Indicador_Ultima_Atividade_GE__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(UltimaAtividadeGrupoEconomico__c  &gt; TODAY() - 31, &quot;Verde&quot;,
+IF(UltimaAtividadeGrupoEconomico__c &gt;= TODAY() - 90, &quot;Amarelo&quot;, &quot;Vermelho&quot;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Indicador Ultima Atividade GE</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

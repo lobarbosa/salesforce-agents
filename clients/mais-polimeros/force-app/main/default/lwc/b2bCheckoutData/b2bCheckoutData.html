@@ -1,0 +1,36 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters_direct-medium slds-grid_vertical-stretch address-stretch">
+        <div class="slds-col slds-size_1-of-3 slds-m-top_medium">
+            <lightning-combobox options={condicaoPagamentoList} label="Condição de Pagamento" name="condicaoPagamento"  value={condicaoPagamento} lwc:ref="condicaoPagamento" onchange={handleUpdateCart} required></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-m-top_medium">
+            <lightning-combobox options={formaPagamentoList} label="Forma de Pagamento" name="formaPagamento"  value={formaPagamento} lwc:ref="formaPagamento" onchange={handleUpdateCart} required></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-m-top_medium">
+            <lightning-input type="date" label="Data de retirada" name="dataEntrega"  value={dataEntrega} lwc:ref="dataEntrega" onchange={handleUpdateCart} required></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-m-top_medium">
+            <lightning-input type="text" label="Placa do veículo" name="placaVeiculo" value={placaVeiculo} lwc:ref="placaVeiculo" max-length="10" ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-m-top_medium">
+            <lightning-input type="text" label="Nome do motorista" name="nomeMotorista" value={nomeMotorista} lwc:ref="nomeMotorista" max-length="40" ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-m-top_medium">
+            <lightning-input type="text" label="Transportadora/CNPJ" name="observacaoRetirada" value={observacaoRetirada} lwc:ref="observacaoRetirada" max-length="255" placeholder="Nome e CNPJ da transportadora, comentários adicionais, etc"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_3-of-3 slds-m-top_xx-large">
+            <lightning-button label="Confirmar solicitação" variant="brand" lwc:ref="btnConfirmar" onclick={handleConfirmar} disabled={disableConfirm} stretch> </lightning-button>
+        </div>
+
+        <div class="slds-col slds-size_3-of-3 slds-m-top_xx-large slds-align_absolute-center">
+            <span style="font-size: 14pt; font-weight:bold">*Sujeito à disponibilidade de Estoque e Limite de Crédito</span>
+        </div>
+
+        <template if:true={showMsgAvista}>
+            <div class="slds-col slds-size_3-of-3 slds-m-top_medium slds-align_absolute-center">
+                <span style="font-size: 12pt; font-weight:bold">Após análise da solicitação os dados para pagamento serão encaminhados pelo WhatsApp disponibilizado na loja</span>
+            </div>
+        </template>
+
+    </div>
+</template>

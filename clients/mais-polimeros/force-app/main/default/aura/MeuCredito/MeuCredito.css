@@ -1,0 +1,34 @@
+.THIS .meus-creditos-container {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+}
+
+.THIS .titulo {
+    color: rgb(40, 38, 89);
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.THIS .tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.THIS .tabela th, .THIS .tabela td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+.THIS .tabela th {
+    background-color: rgb(40, 38, 89);
+    color: white;
+    font-weight: bold;
+}

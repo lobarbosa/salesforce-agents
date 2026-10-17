@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previsao_Assertividade_Total__c</fullName>
+    <formula>IF(IF(ISNULL( Volume_total_previsto__c) , 0 , Volume_de_Venda_Commodities__c / Volume_total_previsto__c   ) &lt; 0.6 , 0,
+IF(IF(ISNULL( Volume_total_previsto__c) , 0 , Volume_de_Venda_Commodities__c / Volume_total_previsto__c  ) &gt; 1.4 ,0 , 
+IF(ISNULL( Volume_total_previsto__c) , 0 , Volume_de_Venda_Commodities__c / Volume_total_previsto__c  )))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>1) 100% da nota para ao menos 10 previsões e assertividade igual ou superior a 60% e inferior a 140%;
+
+2) A nota deste item será 0% (Zero) para caso o item “a1” não seja observado;</inlineHelpText>
+    <label>Previsão Assertividade: Total</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

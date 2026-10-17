@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VolumeCompraMultiplo25</fullName>
+    <active>true</active>
+    <errorConditionFormula>MOD( VolumeDeCompra__c,25) &lt;&gt; 0</errorConditionFormula>
+    <errorDisplayField>VolumeDeCompra__c</errorDisplayField>
+    <errorMessage>O volume da compra deve ser um múltiplo de 25</errorMessage>
+</ValidationRule>

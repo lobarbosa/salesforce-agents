@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>cnpjEMBARQUE__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( TEXT(UnidadeFilialLista__c) == &quot;01&quot;,&quot;CNPJ 07228128000156&quot;,
+    IF( TEXT(UnidadeFilialLista__c) == &quot;02&quot;,&quot;CNPJ 072281280000237&quot;,
+        IF( TEXT(UnidadeFilialLista__c) == &quot;04&quot;,&quot;CNPJ 072228128000407&quot;,
+            IF( TEXT(UnidadeFilialLista__c) == &quot;06&quot;,&quot;CNPJ 072228128000660&quot;,
+                IF( TEXT(UnidadeFilialLista__c) == &quot;07&quot;,&quot;CNPJ 072228128000741&quot;,
+                    IF( TEXT(UnidadeFilialLista__c) == &quot;08&quot;,&quot;CNPJ 072228128000822&quot;,&quot;indeterminado&quot;)
+                )   
+            )
+        )
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>CNPJ EMBARQUE</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

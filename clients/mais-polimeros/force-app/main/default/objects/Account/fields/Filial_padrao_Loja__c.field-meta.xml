@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Filial_padrao_Loja__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Filial padrão Loja</label>
+    <lookupFilter>
+        <active>true</active>
+        <errorMessage>A filial selecionada não é permitida.</errorMessage>
+        <filterItems>
+            <field>UnidadeFilial__c.Codigo__c</field>
+            <operation>notEqual</operation>
+            <value>07</value>
+        </filterItems>
+        <infoMessage>A filial selecionada aqui, será definida como padrão para compras realizadas pela loja.</infoMessage>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>UnidadeFilial__c</referenceTo>
+    <relationshipLabel>Contas</relationshipLabel>
+    <relationshipName>Contas</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

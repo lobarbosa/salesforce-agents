@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FaturamentoDetalhadoIncorreto</fullName>
+    <active>true</active>
+    <errorConditionFormula>And(
+Includes( FaturamentoDetalhado__c , &quot;Não Informado&quot;),
+Or(
+Includes(FaturamentoDetalhado__c, &quot;Domingo&quot;), Includes(FaturamentoDetalhado__c, &quot;Segunda-Feira&quot;),
+Includes(FaturamentoDetalhado__c, &quot;Terça-Feira&quot;),
+Includes(FaturamentoDetalhado__c, &quot;Quarta-Feira&quot;),
+Includes(FaturamentoDetalhado__c, &quot;Quinta-Feira&quot;),
+Includes(FaturamentoDetalhado__c, &quot;Sexta-Feira&quot;),
+Includes(FaturamentoDetalhado__c, &quot;Sabado&quot;)
+))</errorConditionFormula>
+    <errorMessage>Retire o &quot;Não Informado&quot; do faturamento detalhado.</errorMessage>
+</ValidationRule>

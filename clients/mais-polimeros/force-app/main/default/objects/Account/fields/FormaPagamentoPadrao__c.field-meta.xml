@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FormaPagamentoPadrao__c</fullName>
+    <label>Forma Pagamento Padrão</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>A Vista</fullName>
+                <default>false</default>
+                <label>A Vista</label>
+            </value>
+            <value>
+                <fullName>Duplicata</fullName>
+                <default>false</default>
+                <label>Duplicata</label>
+            </value>
+            <value>
+                <fullName>BNDS</fullName>
+                <default>false</default>
+                <label>BNDS</label>
+            </value>
+            <value>
+                <fullName>Crédito de ICMS</fullName>
+                <default>false</default>
+                <label>Crédito de ICMS</label>
+            </value>
+            <value>
+                <fullName>Depósito</fullName>
+                <default>false</default>
+                <label>Depósito</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

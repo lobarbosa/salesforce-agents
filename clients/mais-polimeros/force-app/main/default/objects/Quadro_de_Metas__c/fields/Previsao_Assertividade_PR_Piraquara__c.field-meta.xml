@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previsao_Assertividade_PR_Piraquara__c</fullName>
+    <formula>If(Or(IsNull(Previsao_Mensal_PR_Piraquara__c), Previsao_Mensal_PR_Piraquara__c= 0), 0,
+Previsao_Mensal_Concluida_PR_Piraquara__c / Previsao_Mensal_PR_Piraquara__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Previsão Assertividade: PR - Piraquara</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previsao</fullName>
+    <fields>Name</fields>
+    <fields>Mes__c</fields>
+    <fields>Ano__c</fields>
+    <fields>InicioPrenchimento__c</fields>
+    <fields>FimPreenchimento__c</fields>
+    <fields>Aberto__c</fields>
+    <label>Previsao</label>
+</CompactLayout>

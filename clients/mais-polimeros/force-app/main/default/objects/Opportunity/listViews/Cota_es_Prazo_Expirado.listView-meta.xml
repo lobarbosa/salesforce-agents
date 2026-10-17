@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Cota_es_Prazo_Expirado</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>OPPORTUNITY.AMOUNT</columns>
+    <columns>LossReason__c</columns>
+    <columns>OPPORTUNITY.LAST_UPDATE</columns>
+    <columns>Vendedor__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>LossReason__c</field>
+        <operation>equals</operation>
+        <value>Prazo Expirado</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.CREATED_DATE</field>
+        <operation>greaterOrEqual</operation>
+        <value>THIS_YEAR</value>
+    </filters>
+    <label>Minhas Cotações Prazo Expirado</label>
+</ListView>

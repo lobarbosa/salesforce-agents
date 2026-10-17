@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estoques_Consultados_esse_mes</fullName>
+    <columns>Produto__c</columns>
+    <columns>UnidadeFilial__c</columns>
+    <columns>QAtual__c</columns>
+    <columns>QDisponivel__c</columns>
+    <columns>QCompras__c</columns>
+    <columns>QReserva__c</columns>
+    <columns>CREATEDBY_USER</columns>
+    <columns>horarioConsulta__c</columns>
+    <columns>NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>THIS_MONTH</value>
+    </filters>
+    <filters>
+        <field>Produto__c</field>
+        <operation>equals</operation>
+        <value>BD-TX7003</value>
+    </filters>
+    <label>Estoques Consultados esse mes</label>
+</ListView>

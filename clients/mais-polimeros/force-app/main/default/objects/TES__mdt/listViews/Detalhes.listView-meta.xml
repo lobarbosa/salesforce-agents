@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Detalhes</fullName>
+    <columns>MasterLabel</columns>
+    <columns>Filial__c</columns>
+    <columns>Fabricante__c</columns>
+    <columns>TES__c</columns>
+    <columns>ForaEstado__c</columns>
+    <columns>VendaDireta__c</columns>
+    <columns>VendaTriangular__c</columns>
+    <columns>ConsumidorFinal__c</columns>
+    <columns>SUFRAMA__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Detalhes</label>
+    <language>en_US</language>
+</ListView>

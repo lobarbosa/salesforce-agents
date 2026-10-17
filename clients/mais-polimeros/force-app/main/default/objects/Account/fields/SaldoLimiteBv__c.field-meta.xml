@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SaldoLimiteBv__c</fullName>
+    <externalId>false</externalId>
+    <formula>LimiteTotalBv__c - (ValorPedidoAbertoBV__c + TotalabertoBV__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Limite total Mais Pay - (Total a vencer Mais Pay R$ + Pedidos a faturar Mais Pay R$)</inlineHelpText>
+    <label>Saldo Final Disponível Mais Pay</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

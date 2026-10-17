@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Situacao_Atual__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(OR(Text(StageName) = &quot;Fechado Ganho&quot;,Text(StageName) = &quot;Fechado Perdido&quot;),
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739211331000/Opp_Finalizada?&quot;, &quot;Tudo_Certo&quot;, 50, 125),
+
+IF(Text(StageName) = &quot;Enviada para aprovação&quot;,
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739392207000/Opp_em_Aprovacao?&quot;, &quot;Aguardando Aprovação&quot;, 50, 125),
+
+IF(AND( Liberar_recorrencia_de_produtos__c = false , Recorrente__c &gt; 0),
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739211382000/Verificar_Recorrencia?&quot;, &quot;Alerta_recorrencia&quot;, 50, 125),
+
+IF( Menor_data_de_entrega__c &lt; Today(),
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739211551000/Data_Retroativa?&quot;, &quot;Alerta_data_retroativa&quot;, 50, 125),
+
+IF(StatusFrete__c &lt;&gt; &quot;Frete ok&quot; , 
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739211753000/Verificar_Frete?&quot;, &quot;Alerta_frete&quot;, 50, 125),
+
+IF(StatusPreco__c = &quot;Preço não aprovado&quot;,
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739211630000/Verificar_Preco?&quot;, &quot;Alerta_Preco&quot;, 50, 125),
+
+IF(StatusCredito__c = &quot;Cliente com bloqueio de crédito&quot; ,
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739211663000/Verificar_Credito?&quot;, &quot;Alerta_Credito&quot;, 50, 125),
+
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739211434000/Tudo_Certo?&quot;, &quot;Tudo_Certo&quot;, 50, 125))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Situação Atual</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValordecotacoesemnegociacaoBV__c</fullName>
+    <label>Cotações em negociação - Mais Pay R$</label>
+    <summarizedField>Opportunity.PrecoTotal_ICMS_IPI__c</summarizedField>
+    <summaryFilterItems>
+        <field>Opportunity.IsClosed</field>
+        <operation>equals</operation>
+        <value>False</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Opportunity.IsBloqueioCreditoTES__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Opportunity.IsBloqueioCreditoCondPagId__c</field>
+        <operation>equals</operation>
+        <value>True</value>
+    </summaryFilterItems>
+    <summaryFilterItems>
+        <field>Opportunity.FormaDePagamento__c</field>
+        <operation>equals</operation>
+        <value>MP - MPAY</value>
+    </summaryFilterItems>
+    <summaryForeignKey>Opportunity.AccountId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

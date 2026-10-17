@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProdutosCancelados__c</fullName>
+    <label>Produtos Cancelados</label>
+    <summaryFilterItems>
+        <field>OpportunityLineItem.StatusExibi__c</field>
+        <operation>equals</operation>
+        <value>Cancelado</value>
+    </summaryFilterItems>
+    <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+    <summaryOperation>count</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

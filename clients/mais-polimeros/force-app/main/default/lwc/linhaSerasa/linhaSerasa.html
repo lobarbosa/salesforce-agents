@@ -1,0 +1,93 @@
+<!--
+  @description       : Componente para representar linha do relatório do serasa.
+  @author            : Ríad Nassiffe
+  @group             : 
+  @last modified on  : 11-04-2023
+  @last modified by  : José Mateus Amaral
+-->
+<template>
+  <lightning-accordion-section name={title} label={title}>
+    <div class="slds-box slds-grid slds-wrap">
+      <template if:false={isFieldEmpty}>
+              <template for:each={info} for:item="map">
+                <div class="slds-col slds-size_1-of-2" style="height:2;" key={map.key}>
+                    <span class="slds-form-element__label slds-text-title_bold"> {map.key}: </span>
+                    {map.value}   
+                </div>
+              </template>
+            {isTb1}
+      </template>
+      
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela1" >
+      </div>
+      <table name="tab1" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+      
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela2">
+      </div>
+      <table name="tab2" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+      
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela3">
+      </div>
+      <table name="tab3" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+      
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela4">
+      </div>
+      <table name="tab4" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+      
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela5">
+      </div>
+      <table name="tab5" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela6">
+      </div>
+      <table name="tab6" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+      
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela7">
+      </div>
+      <table name="tab7" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+      
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela8">
+      </div>
+      <table name="tab8" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela9">
+      </div>
+      <table name="tab9" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela10">
+      </div>
+      <table name="tab10" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela11">
+      </div>
+      <table name="tab11" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela12">
+      </div>
+      <table name="tab12" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela13">
+      </div>
+      <table name="tab13" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+      <div class="slds-col slds-size_2-of-2 titulo" name="tituloTabela14">
+      </div>
+      <table name="tab14" class="slds-table slds-table_cell-buffer slds-table_fixed-layout tabela" aria-labelledby="element-with-table-label other-element-with-table-label" lwc:dom="manual">
+      </table>
+
+    </div>
+</lightning-accordion-section>
+</template>

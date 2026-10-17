@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M_s_atual__c</fullName>
+    <formula>Or(
+And(Month(Today()) = 1,  CONTAINS(Name, &quot;Janeiro&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 2,  CONTAINS(Name, &quot;Fevereiro&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 3,  CONTAINS(Name, &quot;Março&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 4,  CONTAINS(Name, &quot;Abril&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 5,  CONTAINS(Name, &quot;Maio&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 6,  CONTAINS(Name, &quot;Junho&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 7,  CONTAINS(Name, &quot;Julho&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 8,  CONTAINS(Name, &quot;Agosto&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 9,  CONTAINS(Name, &quot;Setembro&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 10,  CONTAINS(Name, &quot;Outubro&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 11,  CONTAINS(Name, &quot;Novembro&quot;), CONTAINS(Name, Text(Year(Today())))),
+And(Month(Today()) = 12,  CONTAINS(Name, &quot;Dezembro&quot;), CONTAINS(Name, Text(Year(Today()))))
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Mês atual</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

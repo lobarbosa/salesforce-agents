@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>data_de_fechamento</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+OR(ISNEW(), ISCHANGED(CloseDate)),
+CloseDate &lt; today())</errorConditionFormula>
+    <errorDisplayField>CloseDate</errorDisplayField>
+    <errorMessage>A data de fechamento deve ser maior ou igual ao dia de hoje</errorMessage>
+</ValidationRule>

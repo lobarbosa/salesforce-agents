@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Categoria__c</fullName>
+    <inlineHelpText>(Média dos últimos 6 meses)
+
+Diamond - Vendas acima de 50 ton, Platinum - Vendas entre 20 e 50 ton, Gold - Vendas entre 10 e 20 ton, Silver - Vendas entre 5 e 10 ton, Bronze - Vendas entre 2,5 e 5 ton, Standard - Vendas abaixo 2,5 ton</inlineHelpText>
+    <label>Categoria</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Diamond</fullName>
+                <default>false</default>
+                <label>Diamond</label>
+            </value>
+            <value>
+                <fullName>Platinum</fullName>
+                <default>false</default>
+                <label>Platinum</label>
+            </value>
+            <value>
+                <fullName>Gold</fullName>
+                <default>false</default>
+                <label>Gold</label>
+            </value>
+            <value>
+                <fullName>Silver</fullName>
+                <default>false</default>
+                <label>Silver</label>
+            </value>
+            <value>
+                <fullName>Bronze</fullName>
+                <default>false</default>
+                <label>Bronze</label>
+            </value>
+            <value>
+                <fullName>Standard</fullName>
+                <default>false</default>
+                <label>Standard</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OportunidadesExternos</fullName>
+    <columns>OPPORTUNITY.NAME</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>OPPORTUNITY.STAGE_NAME</columns>
+    <columns>QuantidadeTotal__c</columns>
+    <columns>OPPORTUNITY.AMOUNT</columns>
+    <columns>TipoDeFrete__c</columns>
+    <columns>Unidade_Filial__c</columns>
+    <columns>OPPORTUNITY.CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Sougerente__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.CREATED_DATE</field>
+        <operation>equals</operation>
+        <value>THIS_MONTH</value>
+    </filters>
+    <filters>
+        <field>OPPORTUNITY.STAGE_NAME</field>
+        <operation>notEqual</operation>
+        <value>Fechado Ganho,Fechado Perdido</value>
+    </filters>
+    <label>Cotação dos meus representantes</label>
+    <sharedTo>
+        <role>Backoffice</role>
+    </sharedTo>
+</ListView>

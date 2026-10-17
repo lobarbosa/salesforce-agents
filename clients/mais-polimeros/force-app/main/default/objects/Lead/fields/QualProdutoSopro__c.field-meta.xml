@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QualProdutoSopro__c</fullName>
+    <label>Qual produto sopro?</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>AtuacaoEmpresa__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Frasco</fullName>
+                <default>false</default>
+                <label>Frasco</label>
+            </value>
+            <value>
+                <fullName>Garrafões</fullName>
+                <default>false</default>
+                <label>Garrafões</label>
+            </value>
+            <value>
+                <fullName>Bombonas</fullName>
+                <default>false</default>
+                <label>Bombonas</label>
+            </value>
+            <value>
+                <fullName>Pre forma</fullName>
+                <default>false</default>
+                <label>Pre forma</label>
+            </value>
+            <value>
+                <fullName>Outros</fullName>
+                <default>false</default>
+                <label>Outros</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Sopro</controllingFieldValue>
+            <valueName>Frasco</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sopro</controllingFieldValue>
+            <valueName>Garrafões</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sopro</controllingFieldValue>
+            <valueName>Bombonas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sopro</controllingFieldValue>
+            <valueName>Pre forma</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Sopro</controllingFieldValue>
+            <valueName>Outros</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

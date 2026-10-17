@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>An_lise_da_Conta_Projeto__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  ISBLANK(ltimoFaturamentoProjeto_GrupoEcon_mico__c), &quot;&quot;,
+
+  IF(
+    And(Year(ltimoFaturamentoProjeto_GrupoEcon_mico__c) = Year(TODAY()),
+    MONTH(ltimoFaturamentoProjeto_GrupoEcon_mico__c) = MONTH(TODAY())),
+    &quot;Elegível&quot;,
+
+    IF(
+      And(Year(ltimoFaturamentoProjeto_GrupoEcon_mico__c) = If(MONTH(TODAY()) - 1 &lt;= 0,
+          Year(Today()) - 1, Year( Today())),
+      MONTH(ltimoFaturamentoProjeto_GrupoEcon_mico__c) =
+           If(MONTH(TODAY()) - 1 &lt;= 0,
+             12 + MONTH(TODAY()) - 1, MONTH(TODAY()) - 1)), &quot;Atenção&quot;,
+
+      IF(
+        And(Year(ltimoFaturamentoProjeto_GrupoEcon_mico__c) = If(MONTH(TODAY()) - 2 &lt;= 0,
+            Year(Today())-1,Year(Today())),
+        MONTH(ltimoFaturamentoProjeto_GrupoEcon_mico__c) =
+           If(MONTH(TODAY()) - 2 &lt;= 0, 12 + MONTH(TODAY()) - 2, MONTH(TODAY()) - 2)), &quot;Crítico&quot;,
+        &quot;&quot;
+      )
+    )
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Análise da Conta - Projeto</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

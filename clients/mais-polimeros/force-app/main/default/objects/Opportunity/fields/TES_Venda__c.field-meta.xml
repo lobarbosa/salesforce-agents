@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TES_Venda__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>TES</label>
+    <lookupFilter>
+        <active>false</active>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <filterItems>
+            <field>$Source.TipoTES__c</field>
+            <operation>equals</operation>
+            <value>Operações Especiais</value>
+        </filterItems>
+        <filterItems>
+            <field>Tipo_de_Entrada_Saida__c.Tipo_de_TES__c</field>
+            <operation>equals</operation>
+            <valueField>$Source.TipoTES__c</valueField>
+        </filterItems>
+        <infoMessage>Serão permitidas apenas TES do tipo de TES selecionado.</infoMessage>
+        <isOptional>false</isOptional>
+    </lookupFilter>
+    <referenceTo>Tipo_de_Entrada_Saida__c</referenceTo>
+    <relationshipLabel>Cotações de Preço</relationshipLabel>
+    <relationshipName>Cota_es_de_Pre_o</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

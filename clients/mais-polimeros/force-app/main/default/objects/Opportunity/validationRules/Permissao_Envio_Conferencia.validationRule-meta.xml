@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Permissao_Envio_Conferencia</fullName>
+    <active>true</active>
+    <description>Permite alterar para &quot;Conferência&quot; apenas se a Oportunidade atender os pré requisiti</description>
+    <errorConditionFormula>AND(
+    NOT($User.ByPassVR__c),
+
+    NOT(ByPassVR__c),
+    NOT(ISCHANGED(ByPassVR__c)),
+
+    NOT(ISCHANGED(StageName)),
+    ISPICKVAL(StageName, &quot;Conferência&quot;),
+
+    $UserRole.Name &lt;&gt; &quot;Coordenador de Vendas&quot;,
+    $UserRole.Name &lt;&gt; &quot;Gerente comercial&quot;,
+    $Profile.Name &lt;&gt; &quot;Crédito e Cadastro&quot;,
+
+    OR(
+        StatusCredito__c = &quot;Cliente com bloqueio de crédito&quot;,
+        StatusFrete__c &lt;&gt; &quot;Frete ok&quot;,
+        StatusPreco__c &lt;&gt; &quot;Preço aprovado&quot;,
+        CONTAINS(StatusCredito__c, &quot;Rejeitad&quot;)
+    )
+)</errorConditionFormula>
+    <errorMessage>Conferência não permitida antes de Crédito, Preço e Frete estarem Ok.</errorMessage>
+</ValidationRule>

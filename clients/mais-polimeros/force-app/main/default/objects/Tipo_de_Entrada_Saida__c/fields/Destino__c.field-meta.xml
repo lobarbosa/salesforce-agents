@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Destino__c</fullName>
+    <description>Campo que define se a TES pode ser utilizada para operações estaduais ou interestaduais.</description>
+    <label>Destino</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Estadual</fullName>
+                <default>false</default>
+                <label>Estadual</label>
+            </value>
+            <value>
+                <fullName>Interestadual</fullName>
+                <default>false</default>
+                <label>Interestadual</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

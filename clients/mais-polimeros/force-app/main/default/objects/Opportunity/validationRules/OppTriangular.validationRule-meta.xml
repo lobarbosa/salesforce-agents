@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>OppTriangular</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT($User.ByPassVR__c),
+    ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+    RecordType.DeveloperName = &quot;Oportunidade&quot;,
+    ISPICKVAL(TipoTES__c,&quot;Triangular&quot;)
+)</errorConditionFormula>
+    <errorDisplayField>TipoTES__c</errorDisplayField>
+    <errorMessage>Não usar um tipo de TES triangular para uma oportunidade normal</errorMessage>
+</ValidationRule>

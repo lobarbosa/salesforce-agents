@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TES_Remessa__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>TES Remessa</label>
+    <lookupFilter>
+        <active>false</active>
+        <filterItems>
+            <field>Tipo_de_Entrada_Saida__c.Venda_ou_Remessa__c</field>
+            <operation>equals</operation>
+            <value>Remessa</value>
+        </filterItems>
+        <isOptional>true</isOptional>
+    </lookupFilter>
+    <referenceTo>Tipo_de_Entrada_Saida__c</referenceTo>
+    <relationshipLabel>Cotações de Preço (TES Remessa)</relationshipLabel>
+    <relationshipName>Cotacoes_de_Preco</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

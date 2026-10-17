@@ -1,0 +1,6 @@
+<apex:page standardController="EstoqueFilial__c" extensions="EstoqueFilialCallout" action="{!botaoAtualizar}"  recordSetVar="Records">
+    <h1>Atualizando Saldos em estoque (1)...</h1>
+    <script>
+        window.history.back();
+    </script>
+</apex:page>

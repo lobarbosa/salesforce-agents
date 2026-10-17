@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Solicita_es_para_Aprova_o</fullName>
+    <columns>NAME</columns>
+    <columns>Item_do_Pedido__c</columns>
+    <columns>Cancelar_tudo__c</columns>
+    <columns>Motivo_do_Cancelamento__c</columns>
+    <columns>Coment_rio_do_Cancelamento__c</columns>
+    <columns>Status_da_Solicita_o__c</columns>
+    <columns>OWNER.ALIAS</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Status_da_Solicita_o__c</field>
+        <operation>equals</operation>
+        <value>Aguardando</value>
+    </filters>
+    <filters>
+        <field>Pedido__c</field>
+        <operation>notEqual</operation>
+        <value>,00177540</value>
+    </filters>
+    <label>Solicitações para Aprovação</label>
+</ListView>

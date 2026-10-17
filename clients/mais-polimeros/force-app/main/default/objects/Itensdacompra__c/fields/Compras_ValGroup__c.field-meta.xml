@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Compras_ValGroup__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Compras ValGroup</label>
+    <referenceTo>ComprasValGroup__c</referenceTo>
+    <relationshipLabel>Itens da compra</relationshipLabel>
+    <relationshipName>Itensdacompra</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

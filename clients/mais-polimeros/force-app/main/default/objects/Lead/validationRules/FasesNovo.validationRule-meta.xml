@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FasesNovo</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+Text(PRIORVALUE(Status)) == &apos;Novo&apos;, 
+AND( 
+NOT(ISPICKVAL(Status,&quot;Novo&quot;)),
+NOT( FichaCadastralEnviada__c)
+) 
+)</errorConditionFormula>
+    <errorMessage>Lead NOVO não pode pular fases e a ficha cadastral deve ser enviada ao Lead
+Se já enviou marque a caixa de seleção FICHA CADASTRAL ENVIADA</errorMessage>
+</ValidationRule>

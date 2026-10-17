@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Analiseconta__c</fullName>
+    <label>Análise Conta</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pendente</fullName>
+                <default>true</default>
+                <label>Pendente</label>
+            </value>
+            <value>
+                <fullName>Novo</fullName>
+                <default>false</default>
+                <label>Novo</label>
+            </value>
+            <value>
+                <fullName>Reativado</fullName>
+                <default>false</default>
+                <label>Reativado</label>
+            </value>
+            <value>
+                <fullName>Desconsiderar</fullName>
+                <default>false</default>
+                <label>Desconsiderar</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VRItemPrevisao01_Multiplo25</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(MOD(QuantidadeGO__c  ,25) != 0,
+   MOD(QuantidadeSP__c  ,25) != 0,
+   MOD(QuantidadePR__c  ,25) != 0,
+   MOD(QuantidadeSC__c  ,25) != 0,
+   MOD(QuantidadeRS__c  ,25) != 0,
+   MOD(QuantidadeRS08__c  ,25) != 0
+)</errorConditionFormula>
+    <errorMessage>VRItemPrevisao01 - Os valores devem ser múltiplos de 25</errorMessage>
+</ValidationRule>

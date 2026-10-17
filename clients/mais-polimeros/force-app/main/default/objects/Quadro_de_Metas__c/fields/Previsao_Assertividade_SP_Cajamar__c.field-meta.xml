@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Previsao_Assertividade_SP_Cajamar__c</fullName>
+    <formula>If(Or(IsNull(Previsao_Mensal_SP_Cajamar__c), Previsao_Mensal_SP_Cajamar__c = 0), 0,
+Previsao_Mensal_Concluida_SP_Cajamar__c / Previsao_Mensal_SP_Cajamar__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Previsão Assertividade: SP - Cajamar</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

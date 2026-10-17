@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Aberto__c</fullName>
+    <formula>AND(InicioPrenchimento__c &lt;= TODAY(), FimPreenchimento__c &gt;= TODAY())</formula>
+    <label>Aberto</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

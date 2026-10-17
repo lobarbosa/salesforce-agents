@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DATA_LIMITE_TESTE__c</fullName>
+    <formula>IF( AND( WEEKDAY(TODAY()) &lt;= 5 , WEEKDAY(TODAY()) &gt;= 2) ,TODAY()-6, TODAY()-4)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>DATA LIMITE TESTE</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Date</type>
+</CustomField>

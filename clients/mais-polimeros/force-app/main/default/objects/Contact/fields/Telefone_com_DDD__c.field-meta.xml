@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Telefone_com_DDD__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+ISBLANK(Phone),
+/* Se Phone está em branco, usa Account.Phone */
+IF(
+LEFT(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Account.Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;),
+2) = &quot;11&quot;,
+/* Se começa com 11, remove os dois primeiros caracteres */
+RIGHT(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Account.Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;),
+LEN(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Account.Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;)
+) - 2),
+/* Se não começa com 11, retorna o número limpo */
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Account.Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;)
+),
+
+/* Se Phone não está em branco */
+IF(
+LEFT(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;),
+2) = &quot;11&quot;,
+RIGHT(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;),
+LEN(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;)
+) - 2),
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(
+SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+&quot;-&quot;, &quot;&quot;),
+&quot;/&quot;, &quot;&quot;),
+&quot;(&quot;, &quot;&quot;),
+&quot;)&quot;, &quot;&quot;),
+&quot; &quot;, &quot;&quot;)
+)
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Telefone com DDD</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

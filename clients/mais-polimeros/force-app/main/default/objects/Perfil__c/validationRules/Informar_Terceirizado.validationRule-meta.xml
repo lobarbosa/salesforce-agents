@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Informar_Terceirizado</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( Text(Terceirizamaodeobra__c) = &quot;Sim&quot;, 
+ OR(Informe_o_Terceirizado__c = &quot;&quot;,
+ Informe_o_CNPJ_do_Terceiro__c = null,
+ Telefone_M_o_de_Obra__c = &quot;&quot;))</errorConditionFormula>
+    <errorMessage>Favor informar  Industrializador, CNPJ e Telefone para contato.</errorMessage>
+</ValidationRule>

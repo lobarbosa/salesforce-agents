@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Concorrente__c</fullName>
+    <label>Concorrente</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>MotivoCancelamentoPedido__c</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01 – Activas</fullName>
+                <default>false</default>
+                <label>01 – Activas</label>
+            </value>
+            <value>
+                <fullName>02 – Fortymil</fullName>
+                <default>false</default>
+                <label>02 – Fortymil</label>
+            </value>
+            <value>
+                <fullName>03 – Compolimeros / Policom</fullName>
+                <default>false</default>
+                <label>03 – Compolimeros / Policom</label>
+            </value>
+            <value>
+                <fullName>04 – Importado</fullName>
+                <default>false</default>
+                <label>04 – Importado</label>
+            </value>
+            <value>
+                <fullName>05 – Não Informado</fullName>
+                <default>false</default>
+                <label>05 – Não Informado</label>
+            </value>
+            <value>
+                <fullName>06 – Petroquímica</fullName>
+                <default>false</default>
+                <label>06 – Petroquímica</label>
+            </value>
+            <value>
+                <fullName>07 – Piramidal</fullName>
+                <default>false</default>
+                <label>07 – Piramidal</label>
+            </value>
+            <value>
+                <fullName>08 – Premix</fullName>
+                <default>false</default>
+                <label>08 – Premix</label>
+            </value>
+            <value>
+                <fullName>09 – Entec</fullName>
+                <default>false</default>
+                <label>09 – Entec</label>
+            </value>
+            <value>
+                <fullName>10 – Replas</fullName>
+                <default>false</default>
+                <label>10 – Replas</label>
+            </value>
+            <value>
+                <fullName>11 – Aptar</fullName>
+                <default>false</default>
+                <label>11 – Aptar</label>
+            </value>
+            <value>
+                <fullName>12 – Revenda</fullName>
+                <default>false</default>
+                <label>12 – Revenda</label>
+            </value>
+            <value>
+                <fullName>13 – SM</fullName>
+                <default>false</default>
+                <label>13 – SM</label>
+            </value>
+            <value>
+                <fullName>14 – Jaguar</fullName>
+                <default>false</default>
+                <label>14 – Jaguar</label>
+            </value>
+            <value>
+                <fullName>15 – NewPoli</fullName>
+                <default>false</default>
+                <label>15 – NewPoli</label>
+            </value>
+            <value>
+                <fullName>16 – MMS</fullName>
+                <default>false</default>
+                <label>16 – MMS</label>
+            </value>
+            <value>
+                <fullName>17 – Nova Trigo</fullName>
+                <default>false</default>
+                <label>17 – Nova Trigo</label>
+            </value>
+            <value>
+                <fullName>18 – Polibalbino</fullName>
+                <default>false</default>
+                <label>18 – Polibalbino</label>
+            </value>
+            <value>
+                <fullName>19 – Guanapack</fullName>
+                <default>false</default>
+                <label>19 – Guanapack</label>
+            </value>
+            <value>
+                <fullName>20 – Eteno</fullName>
+                <default>false</default>
+                <label>20 – Eteno</label>
+            </value>
+            <value>
+                <fullName>21 – Safer</fullName>
+                <default>false</default>
+                <label>21 – Safer</label>
+            </value>
+            <value>
+                <fullName>22 – Mix Resinas</fullName>
+                <default>false</default>
+                <label>22 – Mix Resinas</label>
+            </value>
+            <value>
+                <fullName>23 – Plaster</fullName>
+                <default>false</default>
+                <label>23 – Plaster</label>
+            </value>
+            <value>
+                <fullName>24 – Boraplast</fullName>
+                <default>false</default>
+                <label>24 – Boraplast</label>
+            </value>
+            <value>
+                <fullName>25 – Cadoro</fullName>
+                <default>false</default>
+                <label>25 – Cadoro</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>01 – Activas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>02 – Fortymil</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>03 – Compolimeros / Policom</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>04 – Importado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>05 – Não Informado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>06 – Petroquímica</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>07 – Piramidal</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>08 – Premix</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>09 – Entec</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>10 – Replas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>11 – Aptar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>12 – Revenda</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>13 – SM</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>14 – Jaguar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>15 – NewPoli</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>16 – MMS</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>17 – Nova Trigo</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>18 – Polibalbino</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>19 – Guanapack</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>20 – Eteno</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>21 – Safer</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>22 – Mix Resinas</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>23 – Plaster</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>24 – Boraplast</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Preço</controllingFieldValue>
+            <controllingFieldValue>Estoque</controllingFieldValue>
+            <controllingFieldValue>Crédito</controllingFieldValue>
+            <controllingFieldValue>Entrega</controllingFieldValue>
+            <controllingFieldValue>Vencimento</controllingFieldValue>
+            <valueName>25 – Cadoro</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

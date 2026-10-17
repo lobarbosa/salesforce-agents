@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CadastroNAprovadoObgMotivoNAprovado</fullName>
+    <active>true</active>
+    <description>A condição é: 
+
+Se o campo &quot;Status&quot; for igual a &quot;Congelado&quot; e
+O campo motivo Congelamento for igual a &quot;Cadastro não aprovado&quot; é necessário obrigar o preenchimento do campo  &quot;Motivo não aprovação&quot;.</description>
+    <errorConditionFormula>AND(
+ISPICKVAL ( Status , &quot;Congelado&quot;),
+ISPICKVAL ( MotivoCongelado__c , &quot;Cadastro não aprovado&quot;),
+ISBLANK (MotivoNaoAprovacao__c )
+)</errorConditionFormula>
+    <errorDisplayField>MotivoNaoAprovacao__c</errorDisplayField>
+    <errorMessage>Quando o Status for &quot;Congelado&quot; e Motivo do congelamento &quot; Cadastro não aprovado&quot; é necessário preencher este campo.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DocumentosRecebidos__c</fullName>
+    <label>Documentos recebidos</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Lista maquinário recebido</fullName>
+                <default>false</default>
+                <label>Lista maquinário recebido</label>
+            </value>
+            <value>
+                <fullName>Faturamento recebido</fullName>
+                <default>false</default>
+                <label>Faturamento recebido</label>
+            </value>
+            <value>
+                <fullName>Nome indicação</fullName>
+                <default>false</default>
+                <label>Nome indicação</label>
+            </value>
+            <value>
+                <fullName>Telefone indicação</fullName>
+                <default>false</default>
+                <label>Telefone indicação</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>4</visibleLines>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IsBloqueioCreditoCondPagId__c</fullName>
+    <formula>CASE( LEFT(CondicaoPagamento__c, 15),
+     &apos;a02f400000HPkYo&apos;, 0,
+     &apos;a02f400000HPkYp&apos;, 0,
+     1
+) = 1</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Bloqueio de Crédito por Cond. Pagto. ID</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

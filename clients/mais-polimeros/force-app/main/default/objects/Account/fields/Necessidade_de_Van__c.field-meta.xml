@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Necessidade_de_Van__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Cliente com necessidade de entrega com van,  veiculo especifico</description>
+    <label>Necessidade de Van</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,170 @@
+<!--
+  @description       : Componente para gerar a consulta ao serasa
+  @author            : Ríad Nassiffe
+  @group             : 
+  @last modified on  : 05-06-2023
+  @last modified by  : José Mateus Amaral
+-->
+
+<!-- sldsValidatorIgnore -->
+
+<template>
+  <template if:false={confirmaConsulta}>
+
+    
+
+    <div class="slds-m-around_medium">
+      <h1 class="slds-text-heading_large slds-align_absolute-center" >Informações Adicionais</h1>
+      <h2 class="slds-text-heading_medium slds-align_absolute-center">Complemente sua consulta com as informações abaixo e obtenha uma análise com mais segurança</h2>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre Informações Positivas</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Histórico Pagamento Financeiro – Avançado" name="PagamentoFinanceiroAvancado"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Pontualidade de Pagamentos PJ" name="PontualidadePagamentoPJ"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Faturamento Estimado com Positivo" name="FaturamentoEstimadoPositivo"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Gasto Estimado PJ com Positivo" name="GastoEstimadoPJPositivo"></lightning-input>
+        </div>
+      </div>
+    </div>
+ 
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre o Risco de Crédito</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Serasa Score Atacadista" name="SerasaScoreAtacadista"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small ">Sobre Sócios e Administradores</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Quadro Social e Administração Mais Completo" name="QuadroSocialAdministracaoMaisCompleto"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Anotações e Consultas SPC Sócios"              name="AnotacoesConsultasSPCSocios"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Participações"                                 name="Participacoes"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Alerta Cadastral dos Sócios e Administradores" name="AlertaCadastralSociosEAdministradores"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Renda Estimada-Sócios e Administrador PF"         name="RendaProSociosEAdministradoresPF"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Serasa Score – Socios PF"                      name="SerasaScoreSociosPF"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre a Capacidade de Pagamento</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Índice Relacionamento Mercado e Setor" name="IndiceRelacionamentoMercadoSetor"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Comportamento de Pagamento do Setor"   name="ComportamentoPagamentoSetor"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Consultas Detalhadas à Serasa"         name="ConsultasDetalhadasSerasa"></lightning-input>
+        </div>
+      </div>
+    </div>
+ 
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre o Cadastro e Perfil</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Situação Fiscal"             name="SituacaoFiscal"></lightning-input> 
+        </div>
+        <!--div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Alerta de Identidade PJ" disabled="true" name="AlertaIdentidadePJ"></lightning-input>
+        </div-->
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Alerta Cadastral da Empresa" name="AlertaCadastralEmpresa"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Vendas com Cartão"           name="VendasCartao"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Mosaic Business"             name="MosaicBusiness"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre a Recuperação de Crédito</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Indicador de Recuperação de Crédito" name="IndicadorRecuperacaoCredito" ></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Endereços e Telefones Adicionais"    name="EnderecosTelefonesAdicionais" ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Indicador de Recuperação de Dívidas" name="IndicadorRecuperacaoDividas"></lightning-input>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre Anotações Negativas Adicionais</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Anotações e Consultas SPC" name="AnotacoesConsultasSPC"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Mais Anotações"                        name="MaisAnotacoes"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Dívidas com Órgãos Públicos - Empresa" name="DividasOrgãosPublicosEmpresa"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div class="slds-align_absolute-center">
+      <lightning-button label = 'Consultar' name = 'Confirmar' variant="brand" onclick ={handleClickConfirmar}> </lightning-button>
+    </div>
+    
+
+  </template>
+
+  <template if:true={confirmaConsulta}>
+    <div class="slds-m-around_medium">
+      <h1 class="slds-text-heading_large slds-align_absolute-center" >Informações Serasa</h1> 
+    </div>
+    
+    
+  </template>
+  <template if:true={isLoading}>
+      <div>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+      </div>
+  </template>
+</template>

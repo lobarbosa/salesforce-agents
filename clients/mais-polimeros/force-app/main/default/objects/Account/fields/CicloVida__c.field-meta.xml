@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CicloVida__c</fullName>
+    <label>Ciclo de Vida</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Novo</fullName>
+                <default>true</default>
+                <label>Novo</label>
+            </value>
+            <value>
+                <fullName>Reativado</fullName>
+                <default>false</default>
+                <label>Reativado</label>
+            </value>
+            <value>
+                <fullName>Regular crescente</fullName>
+                <default>false</default>
+                <label>Regular crescente</label>
+            </value>
+            <value>
+                <fullName>Regular decrescente</fullName>
+                <default>false</default>
+                <label>Regular decrescente</label>
+            </value>
+            <value>
+                <fullName>Não regular</fullName>
+                <default>false</default>
+                <label>Não regular</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

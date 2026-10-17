@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Caso</fullName>
+    <active>true</active>
+    <businessProcess>Caso</businessProcess>
+    <label>Caso</label>
+    <picklistValues>
+        <picklist>Concorrente__c</picklist>
+        <values>
+            <fullName>01 %E2%80%93 Activas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>02 %E2%80%93 Fortymil</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>03 %E2%80%93 Compolimeros %2F Policom</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>04 %E2%80%93 Importado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>05 %E2%80%93 Não Informado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>06 %E2%80%93 Petroquímica</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>07 %E2%80%93 Piramidal</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>08 %E2%80%93 Premix</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>09 %E2%80%93 Entec</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>10 %E2%80%93 Replas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>11 %E2%80%93 Aptar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>12 %E2%80%93 Revenda</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>13 %E2%80%93 SM</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>14 %E2%80%93 Jaguar</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>15 %E2%80%93 NewPoli</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>16 %E2%80%93 MMS</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>17 %E2%80%93 Nova Trigo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>18 %E2%80%93 Polibalbino</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>19 %E2%80%93 Guanapack</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>20 %E2%80%93 Eteno</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>21 %E2%80%93 Safer</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>22 %E2%80%93 Mix Resinas</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>23 %E2%80%93 Plaster</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>24 %E2%80%93 Boraplast</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>25 %E2%80%93 Cadoro</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>MotivoCancelamentoPedido__c</picklist>
+        <values>
+            <fullName>Crédito</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Entrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Estoque</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Preço</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Vencimento</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Motivo__c</picklist>
+        <values>
+            <fullName>Aumentar Limite</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente Inativo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cliente Novo</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Origin</picklist>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Phone</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Web</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Priority</picklist>
+        <values>
+            <fullName>Alta</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Baixa</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Medium</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Média</fullName>
+            <default>true</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RNC_Acao_Corretiva__c</picklist>
+        <values>
+            <fullName>Não</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sim</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RNC_Departamento_Emitente__c</picklist>
+        <values>
+            <fullName>Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Crédito%2FCadastro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supply Chain</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tecnologia</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RNC_Departamento_Processo__c</picklist>
+        <values>
+            <fullName>Comercial</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Crédito%2FCadastro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Financeiro</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Logística</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Supply Chain</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Tecnologia</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>RNC_Procedencia__c</picklist>
+        <values>
+            <fullName>Improcedente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Procedente</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Reason</picklist>
+        <values>
+            <fullName>Informação anterior não clara</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Novo</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Problema não resolvido</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_MaisPay__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em análise</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Mais_Polimeros__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em análise</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Status_Sifra__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em análise</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Pendente</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>SubTipo__c</picklist>
+        <values>
+            <fullName>Contato</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Email</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Endereço</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Telefone</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Type</picklist>
+        <values>
+            <fullName>Alteração cadastral</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Cancelamento pedido</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>DANFE %282 %C2%B0%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Documentos administrativos MP</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Ficha técnica produto</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Laudo material %282%C2%B0 via%29</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Previsão entrega</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação boleto</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

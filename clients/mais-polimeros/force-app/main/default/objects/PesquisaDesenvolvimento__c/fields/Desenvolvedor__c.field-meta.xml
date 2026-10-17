@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Desenvolvedor__c</fullName>
+    <label>Desenvolvedor</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>PROCOLOR</fullName>
+                <default>false</default>
+                <label>PROCOLOR</label>
+            </value>
+            <value>
+                <fullName>VALMASTER</fullName>
+                <default>false</default>
+                <label>VALMASTER</label>
+            </value>
+            <value>
+                <fullName>EDDEM</fullName>
+                <default>false</default>
+                <label>EDEMM</label>
+            </value>
+            <value>
+                <fullName>PLAST LUCAS</fullName>
+                <default>false</default>
+                <label>PLAST LUCAS</label>
+            </value>
+            <value>
+                <fullName>DURAPLASTIC</fullName>
+                <default>false</default>
+                <label>DURAPLASTIC</label>
+            </value>
+            <value>
+                <fullName>KOLOR FRAKES</fullName>
+                <default>false</default>
+                <label>KOLOR FRAKES</label>
+            </value>
+            <value>
+                <fullName>ALLIANCE POLYMERS</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>ALLIANCE POLYMERS</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

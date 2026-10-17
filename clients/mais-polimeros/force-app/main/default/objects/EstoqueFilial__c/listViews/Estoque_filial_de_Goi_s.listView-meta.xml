@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estoque_filial_de_Goi_s</fullName>
+    <columns>NAME</columns>
+    <columns>Comprado04GO__c</columns>
+    <columns>Estoque04GO__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Ativo__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <filters>
+        <field>Estoque04GO__c</field>
+        <operation>notEqual</operation>
+        <value>0</value>
+    </filters>
+    <label>Estoque filial de Goiás</label>
+</ListView>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Follow_Up_Di_rio</fullName>
+    <columns>SUBJECT</columns>
+    <columns>WHO_NAME</columns>
+    <columns>WHAT_NAME</columns>
+    <columns>DUE_DATE</columns>
+    <columns>LAST_UPDATE</columns>
+    <columns>CORE.USERS.ALIAS</columns>
+    <columns>PRIORITY</columns>
+    <columns>STATUS</columns>
+    <columns>UPDATEDBY_USER.ALIAS</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>SUBJECT</field>
+        <operation>equals</operation>
+        <value>Follow Up</value>
+    </filters>
+    <filters>
+        <field>DUE_DATE</field>
+        <operation>equals</operation>
+        <value>TODAY</value>
+    </filters>
+    <filters>
+        <field>STATUS</field>
+        <operation>equals</operation>
+        <value>Aberto</value>
+    </filters>
+    <label>Follow Up - Diário</label>
+</ListView>

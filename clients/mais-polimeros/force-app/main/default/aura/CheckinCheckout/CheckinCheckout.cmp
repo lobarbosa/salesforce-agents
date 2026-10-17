@@ -1,0 +1,80 @@
+<aura:component controller="CheckinCheckoutController" access="global"
+                implements="flexipage:availableForAllPageTypes,force:hasRecordId,force:LightningQuickAction,force:LightningQuickActionWithoutHeader">
+
+    <aura:attribute name="showSpinner" type="Boolean" default="false" />
+    <aura:attribute name="disableSave" type="Boolean" default="true" />
+
+    <aura:attribute name="recordId" type="String" />
+
+    <!-- <aura:attribute name="searchName"  type="String" /> -->
+    <aura:attribute name="wrapperList" type="object"/>
+
+    <aura:attribute name="tipoOptions" type="List" access="PRIVATE"/>
+    <aura:attribute name="tipoSelectedValue" type="String" access="PRIVATE"/>
+    <!-- <aura:attribute name="tipoContatoOptions" type="List" access="PRIVATE"/> -->
+    <!-- <aura:attribute name="tipoContatoSelectedValue" type="String" access="PRIVATE"/> -->
+    <aura:attribute name="contatoSelectedValue" type="String" access="PRIVATE"/>
+    <aura:attribute name="lat" type="Double" default = "0" />
+    <aura:attribute name="lon" type="Double" default = "0" />
+    <aura:attribute name="comentario" type="String" default = ""/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+
+    <aura:if isTrue="{!v.showSpinner}"> <lightning:spinner /> </aura:if>
+
+    <div class="c-container">
+        <lightning:layout multipleRows="true">
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                <h1 style="font-size: large;"><center>Checkin</center></h1>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                <lightning:select name="tipo" label="Tipo do Checkin" aura:id="tipoId" value="{!v.tipoSelectedValue}">
+                    <aura:iteration items="{!v.tipoOptions}" var="option">
+                        <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}"/>
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem>
+
+            <!-- <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                <lightning:select name="tipoContato" label="Tipo do Contato" aura:id="tipoContatoId" value="{!v.tipoContatoSelectedValue}" onchange="{!c.limpaContato}">
+                    <aura:iteration items="{!v.tipoContatoOptions}" var="option">
+                        <option text="{!option.label}" value="{!option.id}" selected="{!option.selected}" />
+                    </aura:iteration>
+                </lightning:select>
+            </lightning:layoutItem> -->
+
+
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                <!-- <lightning:input type="search" label="Nome" name="search" value="{!v.searchName}" onkeyup="{!c.searchResult}"/> -->
+
+                <aura:if isTrue="{!v.wrapperList.length > 0}">
+                    <lightning:select name="contato" label="Contato" aura:id="contatoId" value="{!v.contatoSelectedValue}">
+                        <aura:iteration items="{!v.wrapperList}" var="option">
+                            <option text="{!option.Name}" value="{!option.Id}" selected=""/>
+                        </aura:iteration>
+                    </lightning:select>
+                </aura:if>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                <lightning:textarea name="comentario" label="Comentários" value="{! v.comentario}"/>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="12" smallDeviceSize="12" mediumDeviceSize="12" largeDeviceSize="12" padding="around-small">
+                <p><center>Latitude: <lightning:formattedNumber value="{! v.lat}" minimumIntegerDigits = "2" minimumFractionDigits="7"/>  /  
+                    Longitude: <lightning:formattedNumber value="{! v.lon}" minimumIntegerDigits = "2" minimumFractionDigits="7"/>
+                </center></p>
+            </lightning:layoutItem>
+
+            <lightning:layoutItem size="12" smallDeviceSize="4" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                <lightning:button class="slds-button slds-button_neutral slds-button_stretch" label="Salvar" title="Salvar" onclick="{! c.saveTask }" disabled="{! v.disableSave}"/>
+            </lightning:layoutItem>
+            <lightning:layoutItem size="12" smallDeviceSize="4" mediumDeviceSize="6" largeDeviceSize="6" padding="around-small">
+                <lightning:button class="slds-button slds-button_neutral slds-button_stretch" label="Cancelar" title="Cancelar" onclick="{! c.cancelTask }" />
+            </lightning:layoutItem>
+        </lightning:layout>
+
+    </div>
+
+</aura:component>

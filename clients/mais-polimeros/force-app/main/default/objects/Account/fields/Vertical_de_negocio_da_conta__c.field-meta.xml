@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Vertical_de_negocio_da_conta__c</fullName>
+    <description>Nova Segmentação Interna</description>
+    <label>Segmentação de negócio - MP</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Agricultura</fullName>
+                <default>false</default>
+                <label>Agricultura</label>
+            </value>
+            <value>
+                <fullName>Automotivo</fullName>
+                <default>false</default>
+                <label>Automotivo</label>
+            </value>
+            <value>
+                <fullName>Brinquedos</fullName>
+                <default>false</default>
+                <label>Brinquedos</label>
+            </value>
+            <value>
+                <fullName>Calçados</fullName>
+                <default>false</default>
+                <label>Calçados</label>
+            </value>
+            <value>
+                <fullName>Compostos &amp; Masterbatches</fullName>
+                <default>false</default>
+                <label>Compostos &amp; Masterbatches</label>
+            </value>
+            <value>
+                <fullName>Construção civil</fullName>
+                <default>false</default>
+                <label>Construção civil</label>
+            </value>
+            <value>
+                <fullName>Cosmético &amp; Personal Care</fullName>
+                <default>false</default>
+                <label>Cosmético &amp; Personal Care</label>
+            </value>
+            <value>
+                <fullName>Eletrodomésticos</fullName>
+                <default>false</default>
+                <label>Eletrodomésticos</label>
+            </value>
+            <value>
+                <fullName>Eletronicos</fullName>
+                <default>false</default>
+                <label>Eletronicos</label>
+            </value>
+            <value>
+                <fullName>Embalagens</fullName>
+                <default>false</default>
+                <label>Embalagens</label>
+            </value>
+            <value>
+                <fullName>Embalagens flexíveis</fullName>
+                <default>false</default>
+                <label>Embalagens flexíveis</label>
+            </value>
+            <value>
+                <fullName>Embalagens rígidas</fullName>
+                <default>false</default>
+                <label>Embalagens rígidas</label>
+            </value>
+            <value>
+                <fullName>Energia &amp; Telecom</fullName>
+                <default>false</default>
+                <label>Energia &amp; Telecom</label>
+            </value>
+            <value>
+                <fullName>Farmacêutico</fullName>
+                <default>false</default>
+                <label>Farmacêutico</label>
+            </value>
+            <value>
+                <fullName>Higiene &amp; Limpeza</fullName>
+                <default>false</default>
+                <label>Higiene &amp; Limpeza</label>
+            </value>
+            <value>
+                <fullName>Instituições de Educacao &amp; Pesquisa</fullName>
+                <default>false</default>
+                <label>Instituições de Educacao &amp; Pesquisa</label>
+            </value>
+            <value>
+                <fullName>Moveleiro</fullName>
+                <default>false</default>
+                <label>Moveleiro</label>
+            </value>
+            <value>
+                <fullName>ONGs</fullName>
+                <default>false</default>
+                <label>ONGs</label>
+            </value>
+            <value>
+                <fullName>Químicos</fullName>
+                <default>false</default>
+                <label>Químicos</label>
+            </value>
+            <value>
+                <fullName>Terceirização de mão de obra</fullName>
+                <default>false</default>
+                <label>Terceirização de mão de obra</label>
+            </value>
+            <value>
+                <fullName>Têxtil</fullName>
+                <default>false</default>
+                <label>Têxtil</label>
+            </value>
+            <value>
+                <fullName>Transportadoras</fullName>
+                <default>false</default>
+                <label>Transportadoras</label>
+            </value>
+            <value>
+                <fullName>Utilidades domesticas</fullName>
+                <default>false</default>
+                <label>Utilidades domesticas</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

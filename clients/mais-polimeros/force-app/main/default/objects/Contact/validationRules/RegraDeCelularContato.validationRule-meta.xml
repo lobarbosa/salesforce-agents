@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RegraDeCelularContato</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(OR(ISNEW(), ISCHANGED(MobilePhone)),
+NOT(ISBLANK(MobilePhone)),
+NOT(REGEX(MobilePhone, &quot;^(\\(?\\d{2}\\)?\\s?)?\\d{4,5}-?\\d{4}$&quot;)))</errorConditionFormula>
+    <errorMessage>CADASTRO DE CONTATO: Por favor, insira um número de celular válido. O formato deve ser: (XX) XXXX-XXXX ou (XX) XXXXX-XXXX, com ou sem DDD.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FasesCongelado</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+Text(PRIORVALUE(Status)) == &apos;Congelado&apos;,
+NOT(ISPICKVAL(Status,&apos;Congelado&apos;)),
+NOT ( FichaCadastralRecebida__c )
+)</errorConditionFormula>
+    <errorMessage>Um lead CONGELADO deve ter seus dados arrumados e a NOVA FICHA deve ser ENVIADA PARA ANALISE CADASTRAL novamente</errorMessage>
+</ValidationRule>

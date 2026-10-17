@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Risco_de_perda_de_carteira</fullName>
+    <columns>GrupoEconomico__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>Municipio__c</columns>
+    <columns>UF__c</columns>
+    <columns>FarolGrupoEconomico__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>FarolGrupoEconomico__c</field>
+        <operation>contains</operation>
+        <value>NovoFarolVermelho</value>
+    </filters>
+    <label>Minha Carteira Farol Vermelho</label>
+</ListView>

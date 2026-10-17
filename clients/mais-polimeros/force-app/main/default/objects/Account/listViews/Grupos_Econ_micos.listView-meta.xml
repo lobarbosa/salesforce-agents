@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grupos_Econ_micos</fullName>
+    <columns>GrupoEconomico__c</columns>
+    <columns>beeCnpj__CNPJ__c</columns>
+    <columns>NomeFantasia__c</columns>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>UltimoPedidoGrupoEconomico__c</columns>
+    <columns>UltimaCotacaoGrupoEconomico__c</columns>
+    <columns>UltimaAtividadeGrupoEconomico__c</columns>
+    <columns>FarolGrupoEconomico__c</columns>
+    <filterScope>Mine</filterScope>
+    <label>Meus Grupos Econômicos</label>
+</ListView>

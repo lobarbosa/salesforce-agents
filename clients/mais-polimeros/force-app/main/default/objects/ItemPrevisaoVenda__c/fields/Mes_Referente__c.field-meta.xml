@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Mes_Referente__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(  TEXT(PrevisaoVenda__r.Mes__c)  = &quot;Janeiro&quot;  , 1,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Fevereiro&quot;  , 2,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Março&quot;  , 3,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Abril&quot;  , 4,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Maio&quot;  , 5,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Junho&quot;  , 6,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Julho&quot;  , 7,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Agosto&quot;  , 8,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Setembro&quot;  , 9,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Outubro&quot;  , 10,
+ IF( TEXT(PrevisaoVenda__r.Mes__c) = &quot;Novembro&quot;  , 11,12
+)))))))))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Mes Referente</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackTrending>false</trackTrending>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>
