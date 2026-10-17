@@ -3,7 +3,11 @@ import type { NaturezaCusto, Periodicidade } from "@/lib/generated/prisma/client
 import { chaveDia } from "@/lib/horas";
 import {
   aGerar,
+  avulsaParaVincular,
   chaveOcorrencia,
+  MAX_POR_PASSADA,
+  somaMeses,
+  type AvulsaCandidata,
   EMAIL_RECORRENCIA,
   encerrado,
   equivalenteMensal,
@@ -46,7 +50,6 @@ function paraRegra(m: LinhaModelo): ModeloParaRegra {
     diaVencimento: m.diaVencimento,
     inicioEm: dia(m.inicioEm),
     fimEm: m.fimEm ? dia(m.fimEm) : null,
-    criadoEm: chaveDia(m.criadoEm),
   };
 }
 
@@ -87,43 +90,109 @@ function ehUnicaViolada(e: unknown): boolean {
   return !!e && typeof e === "object" && (e as { code?: unknown }).code === "P2002";
 }
 
+export interface ResultadoGeracao {
+  /** Contas novas criadas (inclui as retroativas). */
+  criadas: number;
+  /** Das criadas, quantas com vencimento já passado. */
+  retroativas: number;
+  /** Contas avulsas já lançadas que viraram a ocorrência da competência. */
+  vinculadas: number;
+  falhas: number;
+  /** Modelos que bateram no freio de MAX_POR_PASSADA (continuam na próxima passada). */
+  limitadas: { modeloId: string; faltando: number }[];
+}
+
 /**
- * Cria a ContaPagar de cada competência devida (lib/recorrencias.ts:
- * competenciasDevidas) dos modelos ativos que ainda não a têm. Idempotente:
- * o unique (recorrencia_id, competencia) do banco é quem garante — cron e
- * carga de página podem rodar ao mesmo tempo, e o perdedor recebe P2002, que
- * aqui só quer dizer "já existe".
+ * Garante uma conta por competência devida (lib/recorrencias.ts:
+ * competenciasDevidas — retroativo desde o início do modelo) dos modelos
+ * ativos. Para cada competência que falta: se existe conta AVULSA do mesmo
+ * fornecedor com vencimento naquele mês (lançada antes do modelo existir),
+ * ela é vinculada em vez de duplicada; senão a conta é criada, aguardando
+ * aprovação. Idempotente: o unique (recorrencia_id, competencia) do banco é
+ * quem garante — cron e carga de página podem rodar ao mesmo tempo, e o
+ * perdedor recebe P2002, que aqui só quer dizer "já existe".
  */
 export async function gerarContasRecorrentes(
   hoje = chaveDia(new Date()),
   filtro: { modeloId?: string } = {}
-): Promise<{ criadas: number; falhas: number }> {
+): Promise<ResultadoGeracao> {
+  const r: ResultadoGeracao = { criadas: 0, retroativas: 0, vinculadas: 0, falhas: 0, limitadas: [] };
   const linhas = await prisma.despesaRecorrente.findMany({
     where: { ativa: true, ...(filtro.modeloId ? { id: filtro.modeloId } : {}) },
   });
   const modelos = linhas.map((linha) => ({ ...paraRegra(linha), id: linha.id, ativa: linha.ativa, linha }));
-  const devidas = aGerar(modelos, new Set(), hoje);
-  if (!devidas.length) return { criadas: 0, falhas: 0 };
+  if (!aGerar(modelos, new Set(), hoje, Infinity).itens.length) return r;
 
-  // Uma consulta para saber o que já existe; o unique segura a corrida.
+  // O que já existe destes modelos (uma consulta); o unique segura a corrida.
   const existentes = await prisma.contaPagar.findMany({
-    where: {
-      recorrenciaId: { in: [...new Set(devidas.map((p) => p.modelo.id))] },
-      competencia: { in: [...new Set(devidas.map((p) => p.competencia))] },
-    },
+    where: { recorrenciaId: { in: modelos.map((m) => m.id) } },
     select: { recorrenciaId: true, competencia: true },
   });
-  const pendentes = aGerar(
+  const { itens, limitados } = aGerar(
     modelos,
     new Set(existentes.map((e) => chaveOcorrencia(e.recorrenciaId!, e.competencia!))),
     hoje
   );
+  r.limitadas = limitados;
+  for (const l of limitados) {
+    console.warn(`recorrências: ${l.modeloId} bateu no freio de ${MAX_POR_PASSADA}; faltam ${l.faltando} para a próxima passada`);
+  }
+  if (!itens.length) return r;
 
-  let criadas = 0;
-  let falhas = 0;
-  for (const { modelo, competencia, vencimento } of pendentes) {
+  // Avulsas que podem ser a ocorrência de alguma competência pendente.
+  const comps = itens.map((i) => i.competencia).sort();
+  const candidatas: AvulsaCandidata[] = (
+    await prisma.contaPagar.findMany({
+      where: {
+        recorrenciaId: null,
+        status: { notIn: ["cancelada", "recusada"] },
+        vencimento: {
+          gte: new Date(`${comps[0]}-01T00:00:00Z`),
+          lt: new Date(`${somaMeses(comps[comps.length - 1], 1)}-01T00:00:00Z`),
+        },
+      },
+      select: { id: true, fornecedor: true, vencimento: true, valor: true, status: true, natureza: true, clientId: true },
+    })
+  ).map((c) => ({ ...c, vencimento: dia(c.vencimento), valor: Number(c.valor) }));
+  const porId = new Map(candidatas.map((c) => [c.id, c]));
+  const usadas = new Set<string>();
+
+  for (const { modelo, competencia, vencimento } of itens) {
     const m = modelo.linha;
+    const avulsaId = avulsaParaVincular(candidatas, m.fornecedor, competencia, Number(m.valor), usadas);
     try {
+      if (avulsaId) {
+        usadas.add(avulsaId);
+        const a = porId.get(avulsaId) as (typeof candidatas)[number] & { natureza: NaturezaCusto | null; clientId: string | null };
+        const ligou = await prisma.$transaction(async (tx) => {
+          const { count } = await tx.contaPagar.updateMany({
+            where: { id: avulsaId, recorrenciaId: null },
+            data: {
+              recorrenciaId: m.id,
+              competencia,
+              // Classificação do modelo só onde a conta não tem a própria.
+              ...(a.natureza ? {} : { natureza: m.natureza }),
+              ...(a.clientId ? {} : { clientId: m.clientId }),
+            },
+          });
+          if (count === 0) return false;
+          await tx.eventoConta.create({
+            data: {
+              contaId: avulsaId,
+              acao: "recorrente",
+              porEmail: EMAIL_RECORRENCIA,
+              comentario: `vinculada à recorrência ${m.id} (competência ${competencia})`,
+            },
+          });
+          return true;
+        });
+        if (ligou) {
+          r.vinculadas++;
+          continue;
+        }
+        // Outra passada vinculou essa conta no meio do caminho: segue e cria.
+      }
+      const retroativa = vencimento < hoje;
       await prisma.$transaction(async (tx) => {
         const c = await tx.contaPagar.create({
           data: {
@@ -144,18 +213,22 @@ export async function gerarContasRecorrentes(
             contaId: c.id,
             acao: "lancada",
             porEmail: EMAIL_RECORRENCIA,
-            comentario: `gerada pela recorrência ${m.id}${m.valorVariavel ? " — valor estimado, confirmar" : ""}`,
+            comentario:
+              `gerada pela recorrência ${m.id}` +
+              (retroativa ? ` (retroativa, competência ${competencia})` : "") +
+              (m.valorVariavel ? " — valor estimado, confirmar" : ""),
           },
         });
       });
-      criadas++;
+      r.criadas++;
+      if (retroativa) r.retroativas++;
     } catch (e) {
       if (ehUnicaViolada(e)) continue;
-      falhas++;
+      r.falhas++;
       console.error(`recorrências: falha ao gerar ${m.id} ${competencia}`, e);
     }
   }
-  return { criadas, falhas };
+  return r;
 }
 
 // Na carga de /financeiro/contas e /financeiro/recorrentes: garante as contas
@@ -190,8 +263,8 @@ export async function criarModelo(
   dados: DadosModelo,
   porEmail: string,
   contaId?: string
-): Promise<{ id: string } | { erro: string; status: number }> {
-  const r = await prisma.$transaction(async (tx) => {
+): Promise<{ id: string; geracao?: ResultadoGeracao } | { erro: string; status: number }> {
+  const r: { id: string } | { erro: string; status: number } = await prisma.$transaction(async (tx) => {
     let competenciaConta: string | null = null;
     if (contaId) {
       const c = await tx.contaPagar.findUnique({ where: { id: contaId } });
@@ -235,7 +308,9 @@ export async function criarModelo(
     if (e instanceof ConflitoConta) return { erro: "outra pessoa mudou esta conta agora — recarregue", status: 409 };
     throw e;
   });
-  if ("id" in r) await gerarContasRecorrentes(undefined, { modeloId: r.id });
+  // Mesma passada do cron: competências passadas saem agora (ou viram as
+  // avulsas já lançadas do mesmo fornecedor, inclusive de meses seguintes à conta).
+  if ("id" in r) return { id: r.id, geracao: await gerarContasRecorrentes(undefined, { modeloId: r.id }) };
   return r;
 }
 
@@ -243,7 +318,7 @@ export async function criarModelo(
 export async function atualizarModelo(
   id: string,
   dados: Partial<DadosModelo> & { ativa?: boolean }
-): Promise<{ ok: true } | { erro: string; status: number }> {
+): Promise<{ ok: true; geracao: ResultadoGeracao } | { erro: string; status: number }> {
   const atual = await prisma.despesaRecorrente.findUnique({ where: { id } });
   if (!atual) return { erro: "recorrência não encontrada", status: 404 };
   const inicio = dados.inicio ?? dia(atual.inicioEm).slice(0, 7);
@@ -267,8 +342,7 @@ export async function atualizarModelo(
       ativa: dados.ativa,
     },
   });
-  await gerarContasRecorrentes(undefined, { modeloId: id });
-  return { ok: true };
+  return { ok: true, geracao: await gerarContasRecorrentes(undefined, { modeloId: id }) };
 }
 
 export async function clientesParaSelecao(): Promise<{ id: string; nome: string }[]> {

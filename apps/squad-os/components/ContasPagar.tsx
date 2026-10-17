@@ -13,6 +13,7 @@ import {
   corpoRecorrencia,
   enviarJson,
   FormRecorrencia,
+  textoGeracao,
   SeletorCliente,
   SeletorNatureza,
   valorParaCampo,
@@ -408,6 +409,7 @@ function DetalheConta({
   const [novoValor, setNovoValor] = useState("");
   const [natureza, setNatureza] = useState<NaturezaCusto | "">("");
   const [clientId, setClientId] = useState("");
+  const [resumoRecorrencia, setResumoRecorrencia] = useState("");
 
   useEffect(() => {
     let vivo = true;
@@ -553,6 +555,8 @@ function DetalheConta({
             </div>
           </dl>
 
+          {resumoRecorrencia && <div className="overview-empty ok">Recorrência criada: {resumoRecorrencia}.</div>}
+
           <div className="acoes-conta">
             {d.bloqueioValor === null && (
               <div className="acao">
@@ -653,10 +657,13 @@ function DetalheConta({
                 rotuloEnviar="Tornar recorrente"
                 onCancelar={() => setEditando(null)}
                 onEnviar={async (v) => {
-                  const e = await enviarJson("/api/financeiro/recorrentes", "POST", { ...corpoRecorrencia(v), contaId: c.id });
+                  const e = await enviarJson("/api/financeiro/recorrentes", "POST", { ...corpoRecorrencia(v), contaId: c.id }, (r) =>
+                    setResumoRecorrencia(textoGeracao(r.geracao))
+                  );
                   if (!e) {
                     setEditando(null);
                     setAviso("Conta tornada recorrente.");
+                    onMudou();
                     await recarregar();
                   }
                   return e;

@@ -55,8 +55,6 @@ export interface ModeloParaRegra {
   inicioEm: string;
   /** Última competência, "YYYY-MM-DD" ou null = sem fim. */
   fimEm: string | null;
-  /** Dia (SP) em que o modelo foi criado. */
-  criadoEm: string;
 }
 
 export function ehCompetencia(s: string): boolean {
@@ -111,19 +109,17 @@ function* competenciasDesde(m: ModeloParaRegra, desde: string): Generator<string
 }
 
 /**
- * Competências cuja conta já deve existir em `hoje`: vencimento até
- * hoje + HORIZONTE_DIAS, dentro de [inicio, fim].
- *
- * Nunca volta para trás do mês corrente (nem do mês de criação do modelo):
- * um modelo criado ou reativado hoje com início em janeiro não despeja dez
- * contas atrasadas de uma vez. O mês corrente entra mesmo que o vencimento já
- * tenha passado — a conta deste mês existe e precisa ser paga.
+ * Competências cuja conta já deve existir em `hoje`: todas desde o início do
+ * modelo (retroativo, decisão do CEO de 17/10/2026) até as que vencem em
+ * hoje + HORIZONTE_DIAS, sem passar do fim. Cobre modelo criado com início no
+ * passado, dia em que o cron não rodou e meses em que o modelo ficou pausado
+ * (ao retomar, os meses pausados também saem). Modelo pausado não gera nada
+ * enquanto estiver pausado — quem filtra é `aGerar`.
  */
 export function competenciasDevidas(m: ModeloParaRegra, hoje: string): { competencia: string; vencimento: string }[] {
-  const piso = maior(m.criadoEm.slice(0, 7), hoje.slice(0, 7));
   const limite = somaDias(hoje, HORIZONTE_DIAS);
   const devidas: { competencia: string; vencimento: string }[] = [];
-  for (const comp of competenciasDesde(m, piso)) {
+  for (const comp of competenciasDesde(m, m.inicioEm.slice(0, 7))) {
     const vencimento = vencimentoDa(comp, m.diaVencimento);
     if (vencimento > limite) break;
     devidas.push({ competencia: comp, vencimento });
@@ -131,24 +127,74 @@ export function competenciasDevidas(m: ModeloParaRegra, hoje: string): { compete
   return devidas;
 }
 
+/** Freio por modelo por passada: um início errado (ex.: 2016) não despeja 120 contas de uma vez. */
+export const MAX_POR_PASSADA = 24;
+
 /**
  * O que falta gerar: para cada modelo ativo, as competências devidas que ainda
- * não estão em `existentes` (chaves "modeloId|competencia"). Chamar de novo com
- * o resultado somado a `existentes` devolve vazio — a geração é idempotente.
+ * não estão em `existentes` (chaves "modeloId|competencia"), da mais antiga
+ * para a mais nova, no máximo MAX_POR_PASSADA por modelo — a passada seguinte
+ * continua de onde esta parou (`limitados` diz quem ficou com o quê faltando).
+ * Chamar de novo com o resultado somado a `existentes` não repete nada.
  */
 export function aGerar<M extends ModeloParaRegra & { id: string; ativa: boolean }>(
   modelos: M[],
   existentes: Set<string>,
-  hoje: string
-): { modelo: M; competencia: string; vencimento: string }[] {
-  const r: { modelo: M; competencia: string; vencimento: string }[] = [];
+  hoje: string,
+  maximo = MAX_POR_PASSADA
+): {
+  itens: { modelo: M; competencia: string; vencimento: string }[];
+  limitados: { modeloId: string; faltando: number }[];
+} {
+  const itens: { modelo: M; competencia: string; vencimento: string }[] = [];
+  const limitados: { modeloId: string; faltando: number }[] = [];
   for (const m of modelos) {
     if (!m.ativa) continue;
-    for (const d of competenciasDevidas(m, hoje)) {
-      if (!existentes.has(chaveOcorrencia(m.id, d.competencia))) r.push({ modelo: m, ...d });
-    }
+    const faltam = competenciasDevidas(m, hoje).filter((d) => !existentes.has(chaveOcorrencia(m.id, d.competencia)));
+    for (const d of faltam.slice(0, maximo)) itens.push({ modelo: m, ...d });
+    if (faltam.length > maximo) limitados.push({ modeloId: m.id, faltando: faltam.length - maximo });
   }
-  return r;
+  return { itens, limitados };
+}
+
+export interface AvulsaCandidata {
+  id: string;
+  fornecedor: string;
+  vencimento: string; // 'YYYY-MM-DD'
+  valor: number;
+  status: string;
+}
+
+/** Fornecedor comparável: sem diferença de caixa nem de espaços. */
+export function normalizarFornecedor(s: string): string {
+  return s.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+/**
+ * Conta avulsa já lançada que É a ocorrência desta competência: mesmo
+ * fornecedor (sem caixa/espaços), vencimento no mês da competência, não
+ * cancelada nem recusada, ainda não usada nesta passada. Mais de uma: a de
+ * valor mais próximo. Null = nenhuma; a ocorrência é criada.
+ */
+export function avulsaParaVincular(
+  candidatas: AvulsaCandidata[],
+  fornecedor: string,
+  competencia: string,
+  valor: number,
+  usadas: Set<string> = new Set()
+): string | null {
+  const alvo = normalizarFornecedor(fornecedor);
+  const ok = candidatas.filter(
+    (c) =>
+      !usadas.has(c.id) &&
+      c.status !== "cancelada" &&
+      c.status !== "recusada" &&
+      c.vencimento.slice(0, 7) === competencia &&
+      normalizarFornecedor(c.fornecedor) === alvo
+  );
+  if (!ok.length) return null;
+  ok.sort((a, b) => Math.abs(a.valor - valor) - Math.abs(b.valor - valor));
+  return ok[0].id;
 }
 
 export function chaveOcorrencia(modeloId: string, competencia: string): string {

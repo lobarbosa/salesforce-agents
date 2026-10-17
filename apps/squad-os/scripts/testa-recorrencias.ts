@@ -1,12 +1,17 @@
 // Despesas recorrentes (lib/recorrencias.ts): competências devidas, horizonte
-// de 30 dias, dia 31 em mês curto, início/fim, sem enxurrada retroativa,
-// idempotência, normalização mensal; a guarda da rota de cron
+// de 30 dias, dia 31 em mês curto, início/fim, geração retroativa (desde o
+// início, inclusive meses pausados) com freio de 24, vínculo da avulsa já
+// lançada, idempotência, normalização mensal; a guarda da rota de cron
 // (lib/cron-auth.ts); e a segregação com contas geradas pelo sistema.
 import assert from "node:assert/strict";
 import type { NextRequest } from "next/server";
 import {
   aGerar,
+  avulsaParaVincular,
   chaveOcorrencia,
+  MAX_POR_PASSADA,
+  normalizarFornecedor,
+  type AvulsaCandidata,
   competenciasDevidas,
   compromissoMensal,
   EMAIL_RECORRENCIA,
@@ -36,11 +41,11 @@ const modelo = (p: Partial<ModeloParaRegra> = {}): ModeloParaRegra => ({
   diaVencimento: 10,
   inicioEm: "2026-10-01",
   fimEm: null,
-  criadoEm: "2026-10-16",
   ...p,
 });
 const comps = (m: ModeloParaRegra, hoje: string) => competenciasDevidas(m, hoje).map((d) => d.vencimento);
 const HOJE = "2026-10-16"; // horizonte: até 2026-11-15
+const chaves = (r: ReturnType<typeof aGerar>) => r.itens.map((g) => chaveOcorrencia(g.modelo.id, g.competencia));
 
 caso("mensal: gera o mês corrente e o próximo que vence em até 30 dias", () => {
   assert.deepEqual(comps(modelo(), HOJE), ["2026-10-10", "2026-11-10"]);
@@ -57,31 +62,37 @@ caso("dia 31 vence no último dia do mês curto (inclusive fevereiro bissexto)",
   assert.equal(vencimentoDa("2027-02", 31), "2027-02-28");
   assert.equal(vencimentoDa("2028-02", 30), "2028-02-29");
   assert.equal(vencimentoDa("2026-12", 31), "2026-12-31");
-  assert.deepEqual(comps(modelo({ diaVencimento: 31 }), "2027-01-31"), ["2027-01-31", "2027-02-28"]);
+  assert.deepEqual(comps(modelo({ diaVencimento: 31 }), "2027-01-31"), [
+    "2026-10-31",
+    "2026-11-30",
+    "2026-12-31",
+    "2027-01-31",
+    "2027-02-28",
+  ]);
 });
 
 caso("trimestral: só as competências alinhadas ao início", () => {
-  const m = modelo({ periodicidade: "trimestral", inicioEm: "2026-08-01", diaVencimento: 5, criadoEm: "2026-08-01" });
-  assert.deepEqual(comps(m, HOJE), ["2026-11-05"]);
-  assert.deepEqual(comps(m, "2027-01-20"), ["2027-02-05"]);
-  assert.deepEqual(comps(m, "2026-12-20"), []);
+  const m = modelo({ periodicidade: "trimestral", inicioEm: "2026-08-01", diaVencimento: 5 });
+  assert.deepEqual(comps(m, HOJE), ["2026-08-05", "2026-11-05"]);
+  assert.deepEqual(comps(m, "2027-01-20"), ["2026-08-05", "2026-11-05", "2027-02-05"]);
+  assert.deepEqual(comps(m, "2026-06-20"), []);
 });
 
 caso("anual: uma conta por ano, no mês do início", () => {
-  const m = modelo({ periodicidade: "anual", inicioEm: "2026-03-01", diaVencimento: 1, criadoEm: "2026-03-01" });
-  assert.deepEqual(comps(m, HOJE), []);
-  assert.deepEqual(comps(m, "2027-02-20"), ["2027-03-01"]);
+  const m = modelo({ periodicidade: "anual", inicioEm: "2026-03-01", diaVencimento: 1 });
+  assert.deepEqual(comps(m, HOJE), ["2026-03-01"]);
+  assert.deepEqual(comps(m, "2027-02-20"), ["2026-03-01", "2027-03-01"]);
 });
 
 caso("semestral", () => {
   const m = modelo({ periodicidade: "semestral", inicioEm: "2026-10-01", diaVencimento: 10 });
   assert.deepEqual(comps(m, HOJE), ["2026-10-10"]);
-  assert.deepEqual(comps(m, "2027-03-20"), ["2027-04-10"]);
+  assert.deepEqual(comps(m, "2027-03-20"), ["2026-10-10", "2027-04-10"]);
 });
 
 caso("fimEm: nada depois da última competência", () => {
   assert.deepEqual(comps(modelo({ fimEm: "2026-10-01" }), HOJE), ["2026-10-10"]);
-  assert.deepEqual(comps(modelo({ fimEm: "2026-09-01", inicioEm: "2026-01-01" }), HOJE), []);
+  assert.deepEqual(comps(modelo({ fimEm: "2026-02-01", inicioEm: "2026-01-01" }), HOJE), ["2026-01-10", "2026-02-10"]);
 });
 
 caso("inicioEm no futuro: nada antes da primeira competência", () => {
@@ -89,12 +100,42 @@ caso("inicioEm no futuro: nada antes da primeira competência", () => {
   assert.deepEqual(comps(modelo({ inicioEm: "2026-11-01" }), HOJE), ["2026-11-10"]);
 });
 
-caso("sem enxurrada: início antigo não gera os meses anteriores à criação", () => {
-  assert.deepEqual(comps(modelo({ inicioEm: "2026-01-01" }), HOJE), ["2026-10-10", "2026-11-10"]);
+caso("retroativo: início no passado gera todos os meses desde o início", () => {
+  const ms = [{ ...modelo({ inicioEm: "2026-06-01" }), id: "a", ativa: true }];
+  assert.deepEqual(chaves(aGerar(ms, new Set(), HOJE)), [
+    "a|2026-06",
+    "a|2026-07",
+    "a|2026-08",
+    "a|2026-09",
+    "a|2026-10",
+    "a|2026-11",
+  ]);
 });
 
-caso("sem enxurrada: modelo antigo (ou retomado) não volta aos meses que passaram", () => {
-  assert.deepEqual(comps(modelo({ inicioEm: "2026-01-01", criadoEm: "2026-01-05" }), HOJE), ["2026-10-10", "2026-11-10"]);
+caso("pausado não gera; ao retomar, os meses pausados também saem", () => {
+  const m = { ...modelo({ inicioEm: "2026-06-01" }), id: "a" };
+  // Gerou junho e julho, foi pausado em agosto.
+  const ate = new Set(["a|2026-06", "a|2026-07"]);
+  assert.deepEqual(aGerar([{ ...m, ativa: false }], ate, HOJE).itens, []);
+  assert.deepEqual(chaves(aGerar([{ ...m, ativa: true }], ate, HOJE)), ["a|2026-08", "a|2026-09", "a|2026-10", "a|2026-11"]);
+});
+
+caso("freio: no máximo 24 competências por modelo por passada, das mais antigas", () => {
+  const m = { ...modelo({ inicioEm: "2023-01-01" }), id: "velho", ativa: true };
+  const outro = { ...modelo(), id: "novo", ativa: true };
+  const r = aGerar([m, outro], new Set(), HOJE);
+  const doVelho = r.itens.filter((i) => i.modelo.id === "velho");
+  assert.equal(doVelho.length, MAX_POR_PASSADA);
+  assert.equal(doVelho[0].competencia, "2023-01");
+  assert.equal(doVelho[23].competencia, "2024-12");
+  // 2023-01..2026-11 = 47 competências; 23 ficam para a próxima passada.
+  assert.deepEqual(r.limitados, [{ modeloId: "velho", faltando: 23 }]);
+  assert.equal(r.itens.filter((i) => i.modelo.id === "novo").length, 2);
+  // A passada seguinte continua de onde parou.
+  const r2 = aGerar([m], new Set(chaves(r)), HOJE);
+  assert.equal(r2.itens[0].competencia, "2025-01");
+  assert.equal(r2.itens.length, 23);
+  assert.deepEqual(r2.limitados, []);
 });
 
 caso("idempotente: o que já existe não é gerado de novo", () => {
@@ -104,17 +145,31 @@ caso("idempotente: o que já existe não é gerado de novo", () => {
     { ...modelo(), id: "pausado", ativa: false },
   ];
   const primeira = aGerar(ms, new Set(), HOJE);
-  assert.deepEqual(
-    primeira.map((g) => chaveOcorrencia(g.modelo.id, g.competencia)),
-    ["a|2026-10", "a|2026-11", "b|2026-10"]
-  );
-  const existentes = new Set(primeira.map((g) => chaveOcorrencia(g.modelo.id, g.competencia)));
-  assert.deepEqual(aGerar(ms, existentes, HOJE), []);
+  assert.deepEqual(chaves(primeira), ["a|2026-10", "a|2026-11", "b|2026-10"]);
+  assert.deepEqual(aGerar(ms, new Set(chaves(primeira)), HOJE).itens, []);
   // Conta ligada pelo "Tornar recorrente" ocupa a competência dela.
   assert.deepEqual(
-    aGerar([ms[0]], new Set(["a|2026-10"]), HOJE).map((g) => g.competencia),
+    aGerar([ms[0]], new Set(["a|2026-10"]), HOJE).itens.map((g) => g.competencia),
     ["2026-11"]
   );
+});
+
+caso("vínculo: avulsa do mesmo fornecedor no mês vira a ocorrência em vez de duplicar", () => {
+  const cands: AvulsaCandidata[] = [
+    { id: "ms-set", fornecedor: "  microsoft ", vencimento: "2026-09-12", valor: 310, status: "paga" },
+    { id: "ms-set-2", fornecedor: "Microsoft", vencimento: "2026-09-30", valor: 900, status: "aguardando_aprovacao" },
+    { id: "ms-out-canc", fornecedor: "Microsoft", vencimento: "2026-10-10", valor: 300, status: "cancelada" },
+    { id: "ms-out-rec", fornecedor: "Microsoft", vencimento: "2026-10-10", valor: 300, status: "recusada" },
+    { id: "outro", fornecedor: "Microsoft Brasil", vencimento: "2026-11-10", valor: 300, status: "aprovada" },
+  ];
+  // Fornecedor sem diferença de caixa/espaço; mais de uma no mês = valor mais próximo.
+  assert.equal(avulsaParaVincular(cands, "MICROSOFT", "2026-09", 300), "ms-set");
+  // Cancelada e recusada não contam; fornecedor diferente não conta.
+  assert.equal(avulsaParaVincular(cands, "Microsoft", "2026-10", 300), null);
+  assert.equal(avulsaParaVincular(cands, "Microsoft", "2026-11", 300), null);
+  // Já usada nesta passada: a próxima candidata.
+  assert.equal(avulsaParaVincular(cands, "Microsoft", "2026-09", 300, new Set(["ms-set"])), "ms-set-2");
+  assert.equal(normalizarFornecedor("  Stack   Force "), "stack force");
 });
 
 caso("próxima competência", () => {

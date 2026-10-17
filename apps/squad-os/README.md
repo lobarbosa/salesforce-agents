@@ -207,7 +207,9 @@ deixa de ser necessária.
 
 `vercel.json` declara um cron diário (`/api/cron/recorrencias`, 09:07 UTC =
 06:07 em São Paulo) que gera as contas a pagar das despesas recorrentes
-(`/financeiro/recorrentes`) com vencimento nos próximos 30 dias. A rota passa
+(`/financeiro/recorrentes`): retroativa desde o início do modelo até o que vence
+nos próximos 30 dias (no máximo 24 competências por modelo por passada), vinculando
+a conta avulsa já lançada do mesmo fornecedor no mês em vez de duplicar. A rota passa
 pelo `proxy.ts` sem sessão, mas exige `Authorization: Bearer $CRON_SECRET` —
 cabeçalho que a Vercel manda sozinha quando `CRON_SECRET` existe no projeto
 (`lib/cron-auth.ts`; sem a variável a rota responde 503). A geração é

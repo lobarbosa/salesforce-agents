@@ -215,7 +215,11 @@ export function FormRecorrencia({
             required
             disabled={inicioFixo}
           />
-          {inicioFixo && <span className="sub">O mês desta conta, que passa a ser a primeira ocorrência.</span>}
+          <span className="sub">
+            {inicioFixo ? "O mês desta conta, que passa a ser a primeira ocorrência. " : ""}
+            Ao salvar, os meses desde o início que ainda não têm conta são gerados (aguardando aprovação) — ou
+            vinculados à conta avulsa do mesmo fornecedor já lançada naquele mês, sem duplicar.
+          </span>
         </label>
         <label>
           Última competência
@@ -256,15 +260,44 @@ export function corpoRecorrencia(v: ValoresRecorrencia): Record<string, unknown>
   };
 }
 
-/** POST/PATCH com JSON; devolve a mensagem de erro ou null. */
-export async function enviarJson(url: string, metodo: "POST" | "PATCH", corpo: unknown): Promise<string | null> {
+export interface ResumoGeracao {
+  criadas: number;
+  retroativas: number;
+  vinculadas: number;
+  limitadas: { modeloId: string; faltando: number }[];
+}
+
+/** "2 contas retroativas geradas; 1 conta já lançada vinculada" — vazio se a passada não fez nada. */
+export function textoGeracao(g: ResumoGeracao | undefined): string {
+  if (!g) return "";
+  const p = (n: number, um: string, varios: string) => `${n} ${n === 1 ? um : varios}`;
+  const partes: string[] = [];
+  const novas = g.criadas - g.retroativas;
+  if (g.retroativas) partes.push(p(g.retroativas, "conta retroativa gerada", "contas retroativas geradas"));
+  if (novas) partes.push(p(novas, "conta gerada", "contas geradas"));
+  if (g.vinculadas) partes.push(p(g.vinculadas, "conta já lançada vinculada", "contas já lançadas vinculadas"));
+  const faltam = g.limitadas.reduce((s, l) => s + l.faltando, 0);
+  if (faltam) partes.push(`${faltam} competência${faltam === 1 ? "" : "s"} fica${faltam === 1 ? "" : "m"} para a próxima passada (limite de 24 por vez)`);
+  return partes.join("; ");
+}
+
+/** POST/PATCH com JSON; devolve a mensagem de erro ou null. `onOk` recebe o corpo da resposta. */
+export async function enviarJson(
+  url: string,
+  metodo: "POST" | "PATCH",
+  corpo: unknown,
+  onOk?: (resposta: { geracao?: ResumoGeracao }) => void
+): Promise<string | null> {
   const res = await fetch(url, {
     method: metodo,
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(corpo),
   }).catch(() => null);
   if (!res) return "Sem conexão com o servidor — tente de novo.";
-  if (res.ok) return null;
+  if (res.ok) {
+    onOk?.(await res.json().catch(() => ({})));
+    return null;
+  }
   const j = await res.json().catch(() => ({}));
   return j.error ?? "Não foi possível salvar — tente de novo.";
 }

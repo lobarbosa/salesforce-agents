@@ -8,6 +8,7 @@ import {
   corpoRecorrencia,
   enviarJson,
   FormRecorrencia,
+  textoGeracao,
   valorParaCampo,
   type ValoresRecorrencia,
 } from "@/components/FormRecorrencia";
@@ -44,6 +45,8 @@ export function DespesasRecorrentes({
   const router = useRouter();
   const [editando, setEditando] = useState<string | null>(modeloInicial ?? null);
   const [criando, setCriando] = useState(false);
+  const [resumo, setResumo] = useState("");
+  const aoGerar = (r: { geracao?: Parameters<typeof textoGeracao>[0] }) => setResumo(textoGeracao(r.geracao));
   const modelo = modelos.find((m) => m.id === editando) ?? null;
 
   const novo: ValoresRecorrencia = {
@@ -64,12 +67,18 @@ export function DespesasRecorrentes({
     <>
       <div className="board-toolbar">
         <span className="save-note">
-          a conta de cada competência aparece em contas a pagar 30 dias antes do vencimento, aguardando aprovação
+          a conta de cada competência aparece em contas a pagar 30 dias antes do vencimento, aguardando aprovação;
+          meses passados desde o início também são gerados (ou vinculados à conta avulsa já lançada)
         </span>
         <button className="btn-primary" type="button" onClick={() => setCriando(true)}>
           Nova despesa recorrente
         </button>
       </div>
+
+      <p className="sr-only" role="status" aria-live="polite">
+        {resumo}
+      </p>
+      {resumo && <div className="overview-empty ok">{resumo}.</div>}
 
       {modelos.length === 0 ? (
         <div className="overview-empty">
@@ -147,7 +156,7 @@ export function DespesasRecorrentes({
             rotuloEnviar="Criar despesa recorrente"
             onCancelar={() => setCriando(false)}
             onEnviar={async (v) => {
-              const erro = await enviarJson("/api/financeiro/recorrentes", "POST", corpoRecorrencia(v));
+              const erro = await enviarJson("/api/financeiro/recorrentes", "POST", corpoRecorrencia(v), aoGerar);
               if (!erro) {
                 setCriando(false);
                 router.refresh();
@@ -166,6 +175,7 @@ export function DespesasRecorrentes({
           hoje={hoje}
           onClose={() => setEditando(null)}
           onMudou={() => router.refresh()}
+          onGerou={aoGerar}
         />
       )}
     </>
@@ -179,6 +189,7 @@ function EditarModelo({
   hoje,
   onClose,
   onMudou,
+  onGerou,
 }: {
   modelo: ModeloVisto;
   clientes: { id: string; nome: string }[];
@@ -186,6 +197,7 @@ function EditarModelo({
   hoje: string;
   onClose: () => void;
   onMudou: () => void;
+  onGerou: (r: { geracao?: Parameters<typeof textoGeracao>[0] }) => void;
 }) {
   const [erro, setErro] = useState("");
   const [agindo, setAgindo] = useState(false);
@@ -196,7 +208,7 @@ function EditarModelo({
   async function patch(corpo: Record<string, unknown>) {
     setAgindo(true);
     setErro("");
-    const e = await enviarJson(url, "PATCH", corpo);
+    const e = await enviarJson(url, "PATCH", corpo, onGerou);
     setAgindo(false);
     if (e) {
       setErro(e);
@@ -246,7 +258,7 @@ function EditarModelo({
               >
                 {m.ativa ? "Pausar" : "Retomar"}
               </button>
-              {!m.ativa && <span className="sub">Retomar não gera as competências que passaram pausadas.</span>}
+              {!m.ativa && <span className="sub">Ao retomar, os meses que passaram pausados também são gerados.</span>}
             </div>
           )}
           {!m.encerrada && (
@@ -304,7 +316,7 @@ function EditarModelo({
           rotuloEnviar="Salvar alterações"
           onCancelar={onClose}
           onEnviar={async (v) => {
-            const e = await enviarJson(url, "PATCH", corpoRecorrencia(v));
+            const e = await enviarJson(url, "PATCH", corpoRecorrencia(v), onGerou);
             if (!e) {
               onMudou();
               onClose();
