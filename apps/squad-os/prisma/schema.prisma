@@ -319,6 +319,10 @@ model Demanda {
   estimativaHorasMin   Float? @map("estimativa_horas_min")
   estimativaHorasMax   Float? @map("estimativa_horas_max")
   estimativaHorasFonte String @default("") @map("estimativa_horas_fonte")
+  // Horas de agente: tempo de sessão já rodado (telemetria) + projeção do que
+  // falta. Somam com as de consultor para o total da demanda.
+  agenteHorasGasto     Float? @map("agente_horas_gasto")
+  agenteHorasRestante  Float? @map("agente_horas_restante")
   // Custo de agente em USD: gasto até aqui (telemetria) e projeção do que
   // falta (mediana por etapa). **Só admin vê** — a página recorta pros demais.
   custoAgenteGastoUsd    Float? @map("custo_agente_gasto_usd")

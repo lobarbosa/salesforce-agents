@@ -8,3 +8,5 @@ ALTER TABLE "demandas" ADD COLUMN "estimativa_horas_fonte" TEXT NOT NULL DEFAULT
 ALTER TABLE "demandas" ADD COLUMN "custo_agente_gasto_usd" DOUBLE PRECISION;
 ALTER TABLE "demandas" ADD COLUMN "custo_agente_restante_usd" DOUBLE PRECISION;
 ALTER TABLE "demandas" ADD COLUMN "custo_agente_amostras" INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE "demandas" ADD COLUMN "agente_horas_gasto" DOUBLE PRECISION;
+ALTER TABLE "demandas" ADD COLUMN "agente_horas_restante" DOUBLE PRECISION;

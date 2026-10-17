@@ -140,8 +140,18 @@ export async function POST(request: NextRequest) {
     est?.custoAgente && typeof est.custoAgente === "object"
       ? (est.custoAgente as Record<string, unknown>)
       : null;
+  const horasAgente =
+    est?.horasAgente && typeof est.horasAgente === "object"
+      ? (est.horasAgente as Record<string, unknown>)
+      : null;
   const dadosDaEstimativa = est
     ? {
+        ...(horasAgente
+          ? {
+              agenteHorasGasto: numOuNulo(horasAgente.gastoH),
+              agenteHorasRestante: numOuNulo(horasAgente.restanteH),
+            }
+          : {}),
         estimativaHorasMin: horas ? numOuNulo(horas.min) : null,
         estimativaHorasMax: horas ? numOuNulo(horas.max) : null,
         estimativaHorasFonte: horas ? String(horas.fonte ?? "").slice(0, 60) : "",

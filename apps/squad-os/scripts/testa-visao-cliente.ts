@@ -30,6 +30,8 @@ const base = {
   estimativaHorasMin: 4,
   estimativaHorasMax: 8,
   estimativaHorasFonte: "03-design.md",
+  agenteHorasGasto: 0.5,
+  agenteHorasRestante: 1.2,
   custoAgenteGastoUsd: 1.5,
   custoAgenteRestanteUsd: 3,
   custoAgenteAmostras: 5,
@@ -42,6 +44,8 @@ caso("cliente não recebe estimativa nem custo de agente", () => {
   const d = demandaParaCliente(base);
   assert.equal(d.estimativaHorasMin, null);
   assert.equal(d.estimativaHorasMax, null);
+  assert.equal(d.agenteHorasGasto, null);
+  assert.equal(d.agenteHorasRestante, null);
   assert.equal(d.custoAgenteGastoUsd, null);
   assert.equal(d.custoAgenteRestanteUsd, null);
 });
@@ -56,6 +60,7 @@ caso("recorte do cliente continua escondendo artefato e run", () => {
 caso("consultor mantém horas mas perde custo de agente", () => {
   const d = semCustoAgente(base);
   assert.equal(d.estimativaHorasMax, 8);
+  assert.equal(d.agenteHorasRestante, 1.2);
   assert.equal(d.custoAgenteGastoUsd, null);
   assert.equal(d.custoAgenteRestanteUsd, null);
   assert.equal(d.artefatoConteudo, "interno");

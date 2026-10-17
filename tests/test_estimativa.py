@@ -62,5 +62,24 @@ def test_custo_gasto_e_restante_com_historico(repo):
     r = estimativa.custo_agente(d, linhas)
     assert r["gastoUsd"] == 1.7  # assessment não conta
     # build: mediana de 3 amostras = 2.0; qa e release sem histórico → partida
-    assert r["restanteUsd"] == 2.0 + estimativa.PARTIDA_USD["qa"] + estimativa.PARTIDA_USD["release"]
+    assert r["restanteUsd"] == pytest.approx(
+        2.0 + estimativa.PARTIDA_USD["qa"] + estimativa.PARTIDA_USD["release"]
+    )
     assert r["amostras"] == 3
+
+
+def test_horas_de_agente_pela_duracao_das_sessoes(repo):
+    d = _demanda("aguardando_gate_design")
+    hora = 3_600_000
+    linhas = [
+        {"client": "acme", "demand_id": d.id, "etapa": "analise", "duration_ms": str(hora // 2)},
+        {"client": "acme", "demand_id": d.id, "etapa": "design", "duration_ms": str(hora)},
+    ] + [
+        {"client": "o", "demand_id": f"X-{i}", "etapa": "build", "duration_ms": str(hora * i)}
+        for i in (1, 2, 3)
+    ]
+    r = estimativa.horas_agente(d, linhas)
+    assert r["gastoH"] == 1.5
+    assert r["restanteH"] == pytest.approx(
+        2.0 + estimativa.PARTIDA_HORAS_AGENTE["qa"] + estimativa.PARTIDA_HORAS_AGENTE["release"]
+    )

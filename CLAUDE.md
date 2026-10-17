@@ -286,13 +286,16 @@ escrito, só lido. Quem precisa do agregado usa
 
 ### Estimativa por demanda
 
-Cada card mostra duas estimativas, de fontes diferentes de propósito
+Cada card mostra horas de consultor, horas de agente, o total das duas, e custo de agente — de fontes diferentes de propósito
 (`src/salesforce_agents/estimativa.py`, espelhadas pelo sync):
 
 - **Horas de esforço humano** — julgamento do agente: `ba-discovery` escreve
   `**Estimativa de esforço:** <min>–<max> h` na análise e o `arquiteto` refina no design
   (a do design vence). Sem a linha, não aparece — não se inventa número. Visível para
   delivery, nunca para o papel cliente.
+- **Horas de agente** — conta: tempo de sessão já rodado (`duration_ms` da telemetria) mais
+  a mediana por etapa do que falta. O card soma com as de consultor e mostra o **total
+  estimado** da demanda (consultor + agente). Delivery vê; cliente não.
 - **Custo de agente (USD)** — conta, não opinião: o gasto da demanda pela telemetria
   acima, mais a mediana por etapa do que ainda falta (valor de partida declarado enquanto
   não há 3 amostras). **Só admin vê**: a página recorta para os demais papéis

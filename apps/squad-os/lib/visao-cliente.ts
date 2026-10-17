@@ -65,6 +65,8 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     estimativaHorasMin: null,
     estimativaHorasMax: null,
     estimativaHorasFonte: "",
+    agenteHorasGasto: null,
+    agenteHorasRestante: null,
     ...SEM_CUSTO_AGENTE,
     subtarefas: [],
     checklist: [],

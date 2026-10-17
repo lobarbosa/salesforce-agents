@@ -402,28 +402,45 @@ export function DemandModal({
   );
 }
 
-// Horas: o que o agente estimou de esforço humano (análise → design) contra o
-// que já foi lançado. Custo de agente: só admin — e a página já zerou o campo
-// pros outros papéis, então isto é a segunda camada, não a única.
+// Total da demanda = horas de consultor (estimadas pelo agente na análise →
+// design) + horas de agente (tempo de sessão já rodado + projeção do que
+// falta, da telemetria). Custo de agente em USD: só admin — a página já zerou
+// o campo pros outros papéis, então isto é a segunda camada, não a única.
 function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isAdmin: boolean }) {
   const lancadoMin = demanda.tempos.reduce((soma, t) => soma + (t.fimEm ? (t.minutos ?? 0) : 0), 0);
-  const temHoras = demanda.estimativaHorasMin !== null && demanda.estimativaHorasMax !== null;
+  const temConsultor = demanda.estimativaHorasMin !== null && demanda.estimativaHorasMax !== null;
+  const temAgente = demanda.agenteHorasGasto !== null && demanda.agenteHorasRestante !== null;
   const temCusto = isAdmin && demanda.custoAgenteRestanteUsd !== null;
-  if (!temHoras && !temCusto) return null;
+  if (!temConsultor && !temAgente && !temCusto) return null;
 
   const fmtH = (h: number) => h.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+  const faixa = (lo: number, hi: number) => (Math.abs(hi - lo) < 0.05 ? fmtH(lo) : `${fmtH(lo)}–${fmtH(hi)}`);
   const fmtUsd = (v: number) =>
     v.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 });
   const fonte = demanda.estimativaHorasFonte.startsWith("03") ? "design" : "análise";
+  const agenteTotal = temAgente ? demanda.agenteHorasGasto! + demanda.agenteHorasRestante! : 0;
 
   return (
     <div className="estimativa-demanda meta" aria-label="Estimativa da demanda">
-      {temHoras && (
+      {temConsultor && (
         <span title={`Esforço humano estimado pelo agente na ${fonte} (${demanda.estimativaHorasFonte}).`}>
-          Estimativa: {fmtH(demanda.estimativaHorasMin!)}
-          {demanda.estimativaHorasMax !== demanda.estimativaHorasMin && `–${fmtH(demanda.estimativaHorasMax!)}`} h
-          {" "}({fonte}) · lançado {formatarMinutos(lancadoMin)}
+          Consultor: {faixa(demanda.estimativaHorasMin!, demanda.estimativaHorasMax!)} h ({fonte}) · lançado{" "}
+          {formatarMinutos(lancadoMin)}
         </span>
+      )}
+      {temAgente && (
+        <span title="Tempo de sessão dos agentes: já rodado + projeção das etapas que faltam (mediana da telemetria).">
+          Agente: {fmtH(demanda.agenteHorasGasto!)} h feitas + ~{fmtH(demanda.agenteHorasRestante!)} h
+        </span>
+      )}
+      {(temConsultor || temAgente) && (
+        <strong>
+          Total estimado:{" "}
+          {temConsultor
+            ? faixa(demanda.estimativaHorasMin! + agenteTotal, demanda.estimativaHorasMax! + agenteTotal)
+            : `${fmtH(agenteTotal)} (só agente — falta a estimativa do consultor)`}{" "}
+          h
+        </strong>
       )}
       {temCusto && (
         <span
@@ -433,7 +450,7 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
               : "Sem histórico suficiente: projeção pelo valor de partida de cada etapa."
           }
         >
-          Agente (admin): gasto {fmtUsd(demanda.custoAgenteGastoUsd ?? 0)} · falta ~
+          Custo agente (admin): gasto {fmtUsd(demanda.custoAgenteGastoUsd ?? 0)} · falta ~
           {fmtUsd(demanda.custoAgenteRestanteUsd!)}
           {demanda.custoAgenteAmostras === 0 && " (estimativa inicial)"}
         </span>
