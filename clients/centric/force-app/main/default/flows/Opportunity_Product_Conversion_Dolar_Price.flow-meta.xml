@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <description>Decisão verifica qual moeda é do Produto da Oportunidade.</description>
+        <name>Qual_moeda</name>
+        <label>Qual moeda?</label>
+        <locationX>314</locationX>
+        <locationY>431</locationY>
+        <defaultConnectorLabel>Outro</defaultConnectorLabel>
+        <rules>
+            <name>Real</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CurrencyIsoCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>BRL</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateSalesPriceOmie_Real</targetReference>
+            </connector>
+            <label>Real</label>
+        </rules>
+        <rules>
+            <name>Dolar</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.CurrencyIsoCode</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>USD</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>updateSalesPriceOmie_Dolar</targetReference>
+            </connector>
+            <label>Dólar</label>
+        </rules>
+    </decisions>
+    <description>Flow calcula o preço de venda de cada Produto da Oportunidade, para que valor seja passado corretamente para o Omie (considerando as casas decimais de dólar.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>TotalSalesPriceOmieDolar</name>
+        <dataType>Number</dataType>
+        <expression>{!conversionDolar} * {!$Record.UnitPrice}</expression>
+        <scale>6</scale>
+    </formulas>
+    <interviewLabel>[Opportunity Product] - Conversion Dolar Price {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>[Produto da Oportunidade] - Sales Price Omie</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>Busca a moeda tipo dolar, realiza a conversão e salva na variável conversionDolar</description>
+        <name>getDollar</name>
+        <label>getDollarConversion</label>
+        <locationX>314</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Qual_moeda</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsoCode</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>BRL</stringValue>
+            </value>
+        </filters>
+        <object>CurrencyType</object>
+        <outputAssignments>
+            <assignToReference>conversionDolar</assignToReference>
+            <field>ConversionRate</field>
+        </outputAssignments>
+    </recordLookups>
+    <recordUpdates>
+        <description>Após a conversão, irá atualizar o campo Sales Price Omie com a fórmula TotalSalesPriceOmie ( valor da conversão vezes o valor do produto)</description>
+        <name>updateSalesPriceOmie_Dolar</name>
+        <label>updateSalesPriceOmie Dolar</label>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Sales_Price_Omie__c</field>
+            <value>
+                <elementReference>TotalSalesPriceOmieDolar</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <description>Após a conversão, irá atualizar o campo Sales Price Omie com a fórmula TotalSalesPriceOmie ( valor da conversão vezes o valor do produto)</description>
+        <name>updateSalesPriceOmie_Real</name>
+        <label>updateSalesPriceOmie Real</label>
+        <locationX>50</locationX>
+        <locationY>539</locationY>
+        <inputAssignments>
+            <field>Sales_Price_Omie__c</field>
+            <value>
+                <elementReference>$Record.UnitPrice</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>getDollar</targetReference>
+        </connector>
+        <object>OpportunityLineItem</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>conversionDolar</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>6</scale>
+    </variables>
+</Flow>

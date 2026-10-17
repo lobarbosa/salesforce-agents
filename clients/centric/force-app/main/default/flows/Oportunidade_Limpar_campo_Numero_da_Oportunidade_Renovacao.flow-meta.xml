@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Flow limpa campo &quot;Número da Oportunidade (Renovação)&quot;, quando o campo “Condições Comerciais” tiver qualquer valor que não seja um de Renovação.</description>
+    <environments>Default</environments>
+    <interviewLabel>[Oportunidade] - Limpar campo &quot;Número da Oportunidade (Renovação)! {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>[Oportunidade] - Limpar campo &quot;Número da Oportunidade (Renovação)&quot;</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualizar Oportunidade que acionou o fluxo.</description>
+        <name>Atualizar_Oportunidade</name>
+        <label>Atualizar Oportunidade</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <inputAssignments>
+            <field>Numero_da_Oportunidade_Renovacao__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Atualizar_Oportunidade</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Condicoes_Comerciais__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>GO-Global Renovações</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Condicoes_Comerciais__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Manage Engine Renovações</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Condicoes_Comerciais__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>ESET Renovações</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Condicoes_Comerciais__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Suporte Premium Renovação</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Numero_da_Oportunidade_Renovacao__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue></stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

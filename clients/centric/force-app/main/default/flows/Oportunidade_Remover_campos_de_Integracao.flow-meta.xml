@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Flow com objetivo de remover campos de integração quando o Tipo de Registro da Oportunidade for alterado..</description>
+    <environments>Default</environments>
+    <interviewLabel>[Oportunidade] - Remover campos de Integração {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>[Oportunidade] - Remover campos de Integração</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualiza a Oportunidade que acionou o flow, removendo os campos referentes à informações de integração.</description>
+        <name>Atualizar_Oportunidade</name>
+        <label>Atualizar Oportunidade</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <inputAssignments>
+            <field>CodigoIntegracao__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Log_de_integra__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Omie_Data_da_ltima_Integra_o__c</field>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Omie_FlagIntegrado__c</field>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Atualizar_Oportunidade</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
