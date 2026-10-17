@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>Edit</contactAccessLevel>
+    <description>AQUADROP IND E COM DE PRODUTOS PARA AERACAO EIRELI Usuário de Cliente</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>AQUADROP IND E COM DE PRODUTOS PARA AERACAO EIRELI Usuário de Cliente</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>Backoffice</parentRole>
+</Role>

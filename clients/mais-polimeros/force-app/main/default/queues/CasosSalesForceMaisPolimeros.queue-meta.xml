@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesIncludeBosses>true</doesIncludeBosses>
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Casos Sales Force Mais Polimeros</name>
+    <queueMembers>
+        <users>
+            <user>adriana.ribeiro@maispolimeros.com.br</user>
+            <user>alissoncostabraz@gmail.com</user>
+            <user>anderson.rodrigues@maispolimeros.com.br</user>
+            <user>vieira@maispolimeros.com.br</user>
+            <user>daniely.rosa@maispolimeros.com.br</user>
+            <user>david.ferraz@maispolimeros.com.br</user>
+            <user>izabela@maispolimeros.com.br</user>
+            <user>lucas.clementee@maispolimeros.com.br</user>
+            <user>lucas.paiva@maispolimeros.com.br</user>
+            <user>lucas.souza@maispolimeros.com.br</user>
+            <user>magda@maispolimeros.com.br</user>
+            <user>marcus@maispolimeros.com.br</user>
+            <user>paulo.torres@maispolimeros.com.br</user>
+            <user>renata@maispolimeros.com.br</user>
+            <user>rosa.montero@maispolimeros.com.br</user>
+            <user>rosi@maispolimeros.com.br</user>
+            <user>thiago@maispolimeros.com.br</user>
+        </users>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>Case</sobjectType>
+    </queueSobject>
+</Queue>

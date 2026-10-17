@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>None</caseAccessLevel>
+    <contactAccessLevel>Edit</contactAccessLevel>
+    <description>SILBOSS INDUSTRIA E COMERCIO DE PRODUTOS DE HIGIENE PESSOAL  Usuário de Cliente</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>SILBOSS INDUSTRIA E COMERCIO DE PRODUTOS DE HIGIENE PESSOAL  Usuário de Cliente</name>
+    <opportunityAccessLevel>None</opportunityAccessLevel>
+    <parentRole>Backoffice</parentRole>
+</Role>
