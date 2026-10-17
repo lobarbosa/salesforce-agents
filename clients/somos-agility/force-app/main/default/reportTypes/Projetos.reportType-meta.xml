@@ -1,0 +1,1684 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>PPM_Project__c</baseObject>
+    <category>other</category>
+    <deployed>true</deployed>
+    <description>Projetos</description>
+    <join>
+        <outerJoin>true</outerJoin>
+        <relationship>GarantiaQualidade__r</relationship>
+    </join>
+    <label>Projetos</label>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Modelo_de_contrata_o__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>% Gastos</displayNameOverride>
+            <field>Porcentagem_Gastos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Aceite do Projeto</displayNameOverride>
+            <field>Aceite_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Actual Duration</displayNameOverride>
+            <field>Project_Duration__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Alternatives to Project</displayNameOverride>
+            <field>Alternatives_to_Project__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Budgeted Costs</displayNameOverride>
+            <field>Budgeted_Costs__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Budgeted Hours</displayNameOverride>
+            <field>Budgeted_Hours__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Business Need Definition</displayNameOverride>
+            <field>Business_Need_Definition__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Business Unit Sponsor</displayNameOverride>
+            <field>Business_Unit_Sponsor__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Change Management Process</displayNameOverride>
+            <field>Change_Management_Process__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Communication &amp; Reporting Process</displayNameOverride>
+            <field>Communication_Reporting_Process__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Conta</displayNameOverride>
+            <field>Conta__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato 1</displayNameOverride>
+            <field>Contato_1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato 2</displayNameOverride>
+            <field>Contato_2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato 3</displayNameOverride>
+            <field>Contato_3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato 4</displayNameOverride>
+            <field>Contato_4__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato 5</displayNameOverride>
+            <field>Contato_5__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato no Cliente - (Analista)</displayNameOverride>
+            <field>Contato_no_Cliente_Analista__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato no cliente - (Gerente)</displayNameOverride>
+            <field>Contato_no_Cliente_Gerente__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cost Meter</displayNameOverride>
+            <field>Cost_Meter__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cost Meter Percent Complete</displayNameOverride>
+            <field>Cost_Meter_Percent_Complete__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsão Entrega de Eqptos na Agility 2</displayNameOverride>
+            <field>Previsao_Entrega_de_Eqptos_na_Agility_2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsão Entrega de Eqptos na Agility 1</displayNameOverride>
+            <field>Previsao_Entrega_de_Eqptos_na_Agility_1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Created By</displayNameOverride>
+            <field>CreatedBy</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Consultor 1/Especialista 1</displayNameOverride>
+            <field>CTP1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Last Activity Date</displayNameOverride>
+            <field>LastActivityDate</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Last Modified Date</displayNameOverride>
+            <field>LastModifiedDate</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Número do Contrato</displayNameOverride>
+            <field>Numero_do_Contrato__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação</displayNameOverride>
+            <field>Observacao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data do Status NFAP</displayNameOverride>
+            <field>Data_do_Preenchimento_do_Status_NFAP__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Responsável Atraso</displayNameOverride>
+            <field>ResponsavelAtraso__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de retorno do Freezing</displayNameOverride>
+            <field>DataRetornoFreezing__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de início freezing</displayNameOverride>
+            <field>DataFreezing__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de Faturamento / Ativação</displayNameOverride>
+            <field>Data_de_Faturamento_Ativacao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Created Date</displayNameOverride>
+            <field>CreatedDate</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Delivered Business Asset</displayNameOverride>
+            <field>Delivered_Business_Asset__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto contém Equipamentos?</displayNameOverride>
+            <field>Projeto_cont_m_equipamentos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Objetivo do Projeto</displayNameOverride>
+            <field>Objetivo_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Deslocamento</displayNameOverride>
+            <field>Deslocamento__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Analista Agility 2</displayNameOverride>
+            <field>Analista_Agility_2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DSA 1</displayNameOverride>
+            <field>DSA_1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Início de Faturamento / Ativação</displayNameOverride>
+            <field>Inicio_de_Faturamento__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Equipamento Entregue</displayNameOverride>
+            <field>Equipamento_Entregue__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Percentual de Conclusão</displayNameOverride>
+            <field>Percentual_de_Conclusao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status do Contrato</displayNameOverride>
+            <field>Status_do_Contrato__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Escopo do projeto</displayNameOverride>
+            <field>Project_Scope__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>HC Não Consumidas</displayNameOverride>
+            <field>Resultado_HC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Estacionamento</displayNameOverride>
+            <field>Estacionamento__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Média Score Riscos</displayNameOverride>
+            <field>Media_Score_Riscos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Motivo Status Freezing</displayNameOverride>
+            <field>Motivo__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Possui Contrato de Suporte Agility?</displayNameOverride>
+            <field>Possui_Contrato_de_Suporte_Agility__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Ativado</displayNameOverride>
+            <field>Ativado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Analista Agility 3</displayNameOverride>
+            <field>Analista_Agility_3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Analista Agility 1</displayNameOverride>
+            <field>Analista_Agility_1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>ID SDP</displayNameOverride>
+            <field>ID_SDP__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Marco Financeiro</displayNameOverride>
+            <field>Marco_Financeiro__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Fase do projeto</displayNameOverride>
+            <field>Project_Phase__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Expectativa de Entrega dos Equipamentos</displayNameOverride>
+            <field>Expectativa_de_Entrega_dos_Equipamentos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsto Total - Teste</displayNameOverride>
+            <field>Teste__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Email GP</displayNameOverride>
+            <field>Email_GP__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Expectativa de Produção Parcial</displayNameOverride>
+            <field>Expectativa_de_Producao_Parcial__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Faturando Suporte</displayNameOverride>
+            <field>Faturando_Suporte__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsto Total x Realizado Total</displayNameOverride>
+            <field>Previsto_Total_x_Realizado_Total__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Fechamento</displayNameOverride>
+            <field>Fechamento__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Z_Gerente da Conta</displayNameOverride>
+            <field>Z_Gerente_da_Conta__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Valor Financeiro Aberto</displayNameOverride>
+            <field>Valor_Financeiro_Aberto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Consultor 2/Especialista 2</displayNameOverride>
+            <field>CTP2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Gerente do Projeto Old</displayNameOverride>
+            <field>Gerente_do_Projeto_old__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas do DSA</displayNameOverride>
+            <field>Horas_do_DSA__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Estimadas</displayNameOverride>
+            <field>Horas_Estimadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status Anterior do Projeto</displayNameOverride>
+            <field>Status_Anterior_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status Ante Anterior do Projeto</displayNameOverride>
+            <field>Status_Ante_Anterior_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de Faturamento - Ativação Anterior</displayNameOverride>
+            <field>Data_de_Faturamento_Ativacao_Anterior__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de Ativação dos Equipamentos</displayNameOverride>
+            <field>Data_de_Ativacao_dos_Equipamentos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status da Última Alteração de Status</displayNameOverride>
+            <field>Status_de_Altera_o_de_Status__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Extras do DSA</displayNameOverride>
+            <field>Horas_Extras_do_DSA__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Consultor 3/Especialista 3</displayNameOverride>
+            <field>CTP3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Extras Estimadas</displayNameOverride>
+            <field>Horas_Extras_Estimadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Extras Excedidas</displayNameOverride>
+            <field>Horas_Extras_Excedidas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação</displayNameOverride>
+            <field>Observacao_Ativacao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Extras Realizadas</displayNameOverride>
+            <field>Horas_Extras_Realizadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Realizadas</displayNameOverride>
+            <field>Horas_Realizadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Hours Meter</displayNameOverride>
+            <field>Hours__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsto – CR</displayNameOverride>
+            <field>Previsto_CR__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Hours Meter Percent Complete</displayNameOverride>
+            <field>Hours_Meter_Percent_Complete__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>ID do Projeto</displayNameOverride>
+            <field>Name</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Implementation Strategy</displayNameOverride>
+            <field>Implementation_Strategy__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Email GC</displayNameOverride>
+            <field>Email_GC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DSA 3</displayNameOverride>
+            <field>DSA_3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Infrastructure Requirements</displayNameOverride>
+            <field>Infrastructure_Requirements__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Início</displayNameOverride>
+            <field>In_cio__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Autorizar Notificação de Risco Suporte</displayNameOverride>
+            <field>Autorizar_Notificacao_de_Risco_Suporte__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Início da Construção</displayNameOverride>
+            <field>In_cio_da_Constru_o__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Início da Documentação</displayNameOverride>
+            <field>In_cio_da_Documenta_o__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Início da Validação</displayNameOverride>
+            <field>In_cio_da_Valida_o__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Despesas Previstas</displayNameOverride>
+            <field>Despesas_Previstas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Início efetivo</displayNameOverride>
+            <field>Project_Start_Date__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Investment Nature</displayNameOverride>
+            <field>Investment_Nature__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Key Constraints / Assumptions</displayNameOverride>
+            <field>Key_Constraints_Assumptions__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Nome da Conta</displayNameOverride>
+            <field>Nome_da_Conta__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Nome do Projeto</displayNameOverride>
+            <field>Nome_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Papel 1</displayNameOverride>
+            <field>Papel_1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Papel 2</displayNameOverride>
+            <field>Papel_2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Papel 3</displayNameOverride>
+            <field>Papel_3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Papel 4</displayNameOverride>
+            <field>Papel_4__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Papel 5</displayNameOverride>
+            <field>Papel_5__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Percent Complete (Costs)</displayNameOverride>
+            <field>Percent_Complete_Costs__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Total de Despesas Realizadas</displayNameOverride>
+            <field>Despesas_Realizadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Percent Complete (Hours)</displayNameOverride>
+            <field>Percent_Complete_Hours__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Planned Benefits</displayNameOverride>
+            <field>Planned_Benefits__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Planned Cost</displayNameOverride>
+            <field>Planned_Costs__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Portfolio</displayNameOverride>
+            <field>Portfolio__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Prazo de Entrega de Produtos</displayNameOverride>
+            <field>Prazo_de_Entrega_de_Produtos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Product Manager</displayNameOverride>
+            <field>Product_Manager__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto</displayNameOverride>
+            <field>Produto1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto</displayNameOverride>
+            <field>Produto2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto</displayNameOverride>
+            <field>Produto3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto</displayNameOverride>
+            <field>Produto4__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Project Goal</displayNameOverride>
+            <field>Project_Goal__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Project Sponsor</displayNameOverride>
+            <field>Project_Sponsor__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Project Success Criteria</displayNameOverride>
+            <field>Project_Success_Criteria__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto Contém Produtos?</displayNameOverride>
+            <field>Projeto_Cont_m_Produtos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto Entregue</displayNameOverride>
+            <field>Projeto_Entregue__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto Agility ID</displayNameOverride>
+            <field>Id</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto Iniciado</displayNameOverride>
+            <field>Projeto_Iniciado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto Parcialmente Entregue</displayNameOverride>
+            <field>Projeto_Parcialmente_Entregue__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Region</displayNameOverride>
+            <field>Region__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Remaining (Costs)</displayNameOverride>
+            <field>Remaing_Costs__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Remaining (Hours)</displayNameOverride>
+            <field>Remaining_Hours__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Remaining Budget</displayNameOverride>
+            <field>Remaining_budget__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Service Delivery</displayNameOverride>
+            <field>Service_Delivery__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status Atual do projeto</displayNameOverride>
+            <field>Project_Status__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status Icon</displayNameOverride>
+            <field>Status_Icon__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Termino da Construção</displayNameOverride>
+            <field>Termino_da_Constru_o__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Término efetivo</displayNameOverride>
+            <field>Project_End_Date__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Total Custos</displayNameOverride>
+            <field>Total_Custos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Last Modified By</displayNameOverride>
+            <field>LastModifiedBy</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Viagem</displayNameOverride>
+            <field>Viagem__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Work Request</displayNameOverride>
+            <field>Work_Request__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Início Planejado</displayNameOverride>
+            <field>In_cio_Planejado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Inicio Realizado</displayNameOverride>
+            <field>Inicio_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Término Realizado</displayNameOverride>
+            <field>T_rmino_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Término Planejado</displayNameOverride>
+            <field>Termino_planejado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DSA 2</displayNameOverride>
+            <field>DSA_2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsão de Data de Entrega do Projeto</displayNameOverride>
+            <field>Previsao_de_Data_de_Entrega_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsto – HE</displayNameOverride>
+            <field>Previsto_HE__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Z_Previsto – HC</displayNameOverride>
+            <field>Z_Previsto_HC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsão de Data de Entrega do Projeto</displayNameOverride>
+            <field>Previs_o_de_Data_de_Entrega_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsto - Total</displayNameOverride>
+            <field>Previsto_TOTAL__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Realizado – HE</displayNameOverride>
+            <field>Realizado_HE__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Z_Realizado – HC</displayNameOverride>
+            <field>Z_Realizado_HC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Total Realizado</displayNameOverride>
+            <field>Z_Realizado_TOTAL__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Gerente do Projeto</displayNameOverride>
+            <field>Gerente_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Total de Créditos de Despesas Previsto</displayNameOverride>
+            <field>Total_de_creditos_de_despesas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Término Planejado Anterior</displayNameOverride>
+            <field>Termino_Planejado_Anterior__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Variação Previsto x Realizado</displayNameOverride>
+            <field>Variacao_Previsto_x_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>Projeto Agility : Número do Contrato : Contract ID</displayNameOverride>
+            <field>Numero_do_Contrato__c.Id</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>Projeto Agility : Número do Contrato : Produto de Suporte Contratado</displayNameOverride>
+            <field>Numero_do_Contrato__c.Tipo_do_Contrato__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>Projeto Agility : Número do Contrato : Apelido do contrato</displayNameOverride>
+            <field>Numero_do_Contrato__c.Descri_ao_do_Contrato__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>Projeto Agility : Número do Contrato : Disponibilidade N3</displayNameOverride>
+            <field>Numero_do_Contrato__c.Disponibilidade_n3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <displayNameOverride>Projeto Agility : Conta : Service Delivery Manager:</displayNameOverride>
+            <field>Conta__c.Service_Delivery_Manager__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data da ultima atualização do Dashboard</displayNameOverride>
+            <field>Data_da_ultima_atualizacao_do_Dashboard__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DAC</displayNameOverride>
+            <field>DAC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>CPI</displayNameOverride>
+            <field>CPI__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Custo Final do Quando Concluído (ETC)</displayNameOverride>
+            <field>Custo_Final_do_Quando_Concluido_ETC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Dashboard (Realizado)</displayNameOverride>
+            <field>Dashboard_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cronograma (Realizado)</displayNameOverride>
+            <field>Cronograma_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Dashboard (Previsto)</displayNameOverride>
+            <field>Dashboard_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cronograma (Previsto)</displayNameOverride>
+            <field>Cronograma_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Canvas (Previsto)</displayNameOverride>
+            <field>Canvas_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Documentação Ambiente (Realizado)</displayNameOverride>
+            <field>Documentacao_Ambiente_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Duração Planejada (PAC)</displayNameOverride>
+            <field>Duracao_Planejada__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Documentação Ambiente (Previsto)</displayNameOverride>
+            <field>Documentacao_Ambiente_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Canvas (Realizado)</displayNameOverride>
+            <field>Canvas_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Planejadas (PV)</displayNameOverride>
+            <field>Horas_Planejadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Duração Projetada (dias) (TAC)</displayNameOverride>
+            <field>Duracao_Projetada_dias__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Aprovação Estágio (Previsto)</displayNameOverride>
+            <field>Aprovacao_Estagio_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Aprovação Estágio (Realizado)</displayNameOverride>
+            <field>Aprovacao_Estagio_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Lições Aprendidas (Previsto)</displayNameOverride>
+            <field>Licoes_Aprendidas_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Horas Utilizadas (AC)</displayNameOverride>
+            <field>Horas_Utilizadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Desempenho de Custo (CPI)</displayNameOverride>
+            <field>Desempenho_de_Custo__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Risco Status Freezing</displayNameOverride>
+            <field>Risco__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Desempenho de Prazo (SPI)</displayNameOverride>
+            <field>Desempenho_de_Prazo__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Orçamento Original (BAC)</displayNameOverride>
+            <field>Orcamento_Original__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação Dashboard</displayNameOverride>
+            <field>Observacao_Dashboard__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Lista de atividades (Previsto)</displayNameOverride>
+            <field>Lista_de_atividades_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Lições Aprendidas (Realizado)</displayNameOverride>
+            <field>Licoes_Aprendidas_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Previsão do Custo Total (EAC)</displayNameOverride>
+            <field>Previsao_do_Custo_Total_EAC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Plano de Implementação (Realizado)</displayNameOverride>
+            <field>Plano_de_Implementacao_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Pesquisa de Satisfação Enviada?</displayNameOverride>
+            <field>Pesquisa_de_Satisfacao_Enviada__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Lista de atividades (Realizado)</displayNameOverride>
+            <field>Lista_de_atividades_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Progresso</displayNameOverride>
+            <field>Progresso__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Plano de Implementação (Previsto)</displayNameOverride>
+            <field>Plano_de_Implementacao_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Média Score Riscos</displayNameOverride>
+            <field>Media_Score_Riscos_v2__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Realizado HC + HNC em atividades</displayNameOverride>
+            <field>Realizado_HC_HNC_debitaveis__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Quantidade de Riscos</displayNameOverride>
+            <field>Quantidade_de_Riscos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Seriam Gastos (EV)</displayNameOverride>
+            <field>Seriam_Gastos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>SPI</displayNameOverride>
+            <field>SPI__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>STM (Previsto)</displayNameOverride>
+            <field>STM_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Validado?</displayNameOverride>
+            <field>Lista_De_Atividades_Realizado_Validado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Soma Score Riscos</displayNameOverride>
+            <field>Soma_Score_Riscos__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Total de Créditos HC + HNC Previsto</displayNameOverride>
+            <field>TotalCreditosHC_HNC__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>STM (Realizado)</displayNameOverride>
+            <field>STM_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Termo de Aceite (Assinado)</displayNameOverride>
+            <field>Termo_de_Aceite_Realizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Variação de Prazo (SV)</displayNameOverride>
+            <field>Variacao_de_Prazo__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Variação do Custo (CV)</displayNameOverride>
+            <field>Variacao_do_Custo__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Variação do Atraso (dias) (DAC)</displayNameOverride>
+            <field>Variacao_do_Atraso_dias__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Variação do Custo Projetado (VAC)</displayNameOverride>
+            <field>Variacao_do_Custo_Projetado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Time Técnico do Consultor1</displayNameOverride>
+            <field>Time_Tecnico_do_Consultor1__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Validado?</displayNameOverride>
+            <field>Canvas_Realizado_Validado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Trabalho Real</displayNameOverride>
+            <field>Trabalho_Real__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Termo de Aceite (Previsto)</displayNameOverride>
+            <field>Termo_de_Aceite_Previsto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Record Type</displayNameOverride>
+            <field>RecordType</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Baseline</displayNameOverride>
+            <field>Baseline__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>CR</displayNameOverride>
+            <field>CR__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Cronograma</displayNameOverride>
+            <field>Cronograma__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Last Modified Date</displayNameOverride>
+            <field>LastModifiedDate</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>DLA</displayNameOverride>
+            <field>DLA__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Hora</displayNameOverride>
+            <field>Hora__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Nome de Garantia de Qualidade</displayNameOverride>
+            <field>Name</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Pasta de Rede</displayNameOverride>
+            <field>PastaRede__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto Agility</displayNameOverride>
+            <field>ProjetoAgility__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observações</displayNameOverride>
+            <field>Observacoes__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>KOF</displayNameOverride>
+            <field>KOF__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Garantia de Qualidade ID</displayNameOverride>
+            <field>Id</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Created Date</displayNameOverride>
+            <field>CreatedDate</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Last Activity Date</displayNameOverride>
+            <field>LastActivityDate</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Created By</displayNameOverride>
+            <field>CreatedBy</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato</displayNameOverride>
+            <field>Contato__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Recursos</displayNameOverride>
+            <field>Recursos__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Status</displayNameOverride>
+            <field>Status__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Last Modified By</displayNameOverride>
+            <field>LastModifiedBy</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Score</displayNameOverride>
+            <field>Score__c</field>
+            <table>PPM_Project__c.GarantiaQualidade__r</table>
+        </columns>
+        <masterLabel>Projetos</masterLabel>
+    </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Contato para Ativação Contrato</displayNameOverride>
+            <field>ContatoAtivacaoContrato__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Orçamentista Email Flow</displayNameOverride>
+            <field>Orcamentista_Email_Flow__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Gerente da Conta Email Flow</displayNameOverride>
+            <field>Gerente_da_Conta_Email_Flow__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Customer Success Report</displayNameOverride>
+            <field>Customer_Success_Report__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Projeto contém Licenças?</displayNameOverride>
+            <field>Projeto_contem_licencas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Linha de Negócios de Apoio</displayNameOverride>
+            <field>Linha_de_Negocios_de_Apoio__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Kickoff Interno</displayNameOverride>
+            <field>Kickoff_Interno__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Passagem de Suporte</displayNameOverride>
+            <field>Passagem_de_Suporte__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Finalização projeto/cliente</displayNameOverride>
+            <field>Finaliza_o_projeto_cliente__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Todos Documentos Anexados</displayNameOverride>
+            <field>Todos_Documentos_Anexados__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Termo de Aceite Enviado</displayNameOverride>
+            <field>Termo_de_Aceite_Enviado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Pesquisa Respondida?</displayNameOverride>
+            <field>Pesquisa_Respondida__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Conferência de Documentos Anexados</displayNameOverride>
+            <field>Conferencia_de_Documentos_Anexados__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Conferência de Finalização</displayNameOverride>
+            <field>Conferencia_de_Finalizacao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto: Fabricante</displayNameOverride>
+            <field>Produto_Fabricante__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto: OneTime</displayNameOverride>
+            <field>Produto_OneTime__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação PMO</displayNameOverride>
+            <field>Observacao_PMO__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Observação GP</displayNameOverride>
+            <field>Observacao_GP__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto: Fabricante</displayNameOverride>
+            <field>Produto_Fabricante_Oportunidade__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Produto: OneTime</displayNameOverride>
+            <field>Produto_OneTime_Oportunidade__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Kickoff interno finalizado?</displayNameOverride>
+            <field>Kickoff_interno_finalizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Plano de implementação finalizado?</displayNameOverride>
+            <field>Plano_de_implementacao_finalizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Passagem de suporte finalizada?</displayNameOverride>
+            <field>Passagem_de_suporte_finalizada__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Finalização de projeto concluída?</displayNameOverride>
+            <field>Finalizacao_de_projeto_concluida__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Termo de aceite finalizado?</displayNameOverride>
+            <field>Termo_de_aceite_finalizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Lições Aprendidas finalizado?</displayNameOverride>
+            <field>Licoes_Aprendidas_finalizado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Percentual de aderência</displayNameOverride>
+            <field>Percentual_de_aderencia__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Auditoria enviada?</displayNameOverride>
+            <field>Auditoria_enviada__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Motivo Status Suspenso</displayNameOverride>
+            <field>Motivo_Status_Suspenso__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Risco Status Suspenso</displayNameOverride>
+            <field>Risco_Status_Suspenso__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>PM__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de início suspensão</displayNameOverride>
+            <field>Data_de_inicio_suspensao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Data de término suspensão</displayNameOverride>
+            <field>Data_de_termino_suspensao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>E-mail Gerente do Projeto</displayNameOverride>
+            <field>E_mail_Gerente_do_Projeto__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Dia_da_semana_Freezing__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Dia_da_semana_Suspensao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <displayNameOverride>Tribo</displayNameOverride>
+            <field>Compet_ncias_Envolvidas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Controle_Termino_planejado__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Percentual_de_conclusao_v3__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Total_de_despesas_realizadas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Estouro_de_horas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Estouro_de_despesas__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Zenload_Nome_da_conta__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Realizado_HC_em_atividades_shadow__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Realizado_HC_HNC_shadow__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Realizado_HC_HNC_total_geral__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Data_de_envio_da_notificacao__c</field>
+            <table>PPM_Project__c</table>
+        </columns>
+        <masterLabel>Projetos Agility</masterLabel>
+    </sections>
+</ReportType>

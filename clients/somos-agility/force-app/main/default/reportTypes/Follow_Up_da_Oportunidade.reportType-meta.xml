@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ReportType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <baseObject>Follow_Up_da_Oportunidade__c</baseObject>
+    <category>other</category>
+    <deployed>true</deployed>
+    <description>Follow Up da Oportunidade</description>
+    <label>Follow Up da Oportunidade</label>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Id</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>true</checkedByDefault>
+            <field>Name</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CreatedDate</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>CreatedBy</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LastModifiedDate</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>LastModifiedBy</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Data__c</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Comentarios__c</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Oportunidade__c</field>
+            <table>Follow_Up_da_Oportunidade__c</table>
+        </columns>
+        <masterLabel>Follow Up da Oportunidade</masterLabel>
+    </sections>
+</ReportType>
