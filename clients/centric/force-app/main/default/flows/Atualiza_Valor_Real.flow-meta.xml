@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Atualiza a variável &quot;Valor Real&quot; da Oportunidade, quando o Valor (Amount) tiver um desconto.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>valorReal</name>
+        <dataType>Currency</dataType>
+        <expression>{!$Record.Amount} - {!$Record.Valor_de_Desconto_Aplicado__c}</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Atualiza Valor Real {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>[Oportunidade] - Atualiza Valor Real</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualiza Oportunidade, com Valor Real calculado por pela fórmula &quot;valorReal&quot;</description>
+        <name>Atualizar_Oportunidade</name>
+        <label>Atualizar Oportunidade</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <inputAssignments>
+            <field>Valor_Real__c</field>
+            <value>
+                <elementReference>valorReal</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Atualizar_Oportunidade</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Valor_de_Desconto_Aplicado__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Amount</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

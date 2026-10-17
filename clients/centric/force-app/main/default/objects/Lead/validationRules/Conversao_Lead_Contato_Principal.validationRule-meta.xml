@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Conversao_Lead_Contato_Principal</fullName>
+    <active>true</active>
+    <description>Para selecionar a fase “Convertido” no Objeto Lead, o campo CNPJ_CPF__c deve estar preenchido E o campo ContatoPrincipal__c deve estar marcado (True)</description>
+    <errorConditionFormula>AND(
+  TEXT(Status)=&quot;Converted&quot;,
+  NOT(ContatoPrincipal__c), 
+  cpfcnpj__c =&quot;&quot;
+)</errorConditionFormula>
+    <errorMessage>Por favor, preencha essa o &quot;Contato Principal&quot; e o &quot;CPF/CNPJ&quot; para prosseguir.</errorMessage>
+</ValidationRule>

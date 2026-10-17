@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Email de Boas-vindas</fullName>
+                <default>true</default>
+                <label>Email de Boas-vindas</label>
+            </value>
+            <value>
+                <fullName>Primeiro Follow Up</fullName>
+                <default>false</default>
+                <label>Primeiro Follow Up</label>
+            </value>
+            <value>
+                <fullName>Segundo Follow Up</fullName>
+                <default>false</default>
+                <label>Segundo Follow Up</label>
+            </value>
+            <value>
+                <fullName>Finalizada</fullName>
+                <default>false</default>
+                <label>Finalizada</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valor_de_Desconto_preenchido__c</fullName>
+    <formula>NOT(Valor_de_Desconto__c = 0)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Valor de Desconto preenchido?</label>
+    <type>Checkbox</type>
+</CustomField>

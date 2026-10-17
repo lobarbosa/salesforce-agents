@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campo_cidade_obrigatorio</fullName>
+    <active>true</active>
+    <description>Campo &quot;Cidade&quot; obrigatório.</description>
+    <errorConditionFormula>ISBLANK( BillingCity )</errorConditionFormula>
+    <errorDisplayField>BillingCity</errorDisplayField>
+    <errorMessage>Campo &quot;Cidade&quot; obrigatório.</errorMessage>
+</ValidationRule>

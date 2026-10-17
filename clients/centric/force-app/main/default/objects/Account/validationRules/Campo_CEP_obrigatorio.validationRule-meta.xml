@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campo_CEP_obrigatorio</fullName>
+    <active>true</active>
+    <description>Campo &quot;CEP&quot; obrigatório.</description>
+    <errorConditionFormula>ISBLANK( BillingPostalCode )</errorConditionFormula>
+    <errorDisplayField>BillingPostalCode</errorDisplayField>
+    <errorMessage>Campo &quot;CEP&quot; obrigatório.</errorMessage>
+</ValidationRule>

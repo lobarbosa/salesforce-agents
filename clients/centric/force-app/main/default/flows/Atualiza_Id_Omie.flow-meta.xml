@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Flow atualiza a Oportunidade (quando criada ou editada) com campos pré-setados necessários para integração com Omie.</description>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza Id Omie {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>[Oportunidade] - Passar variáveis obrigatórias do Omie</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualizar Oportunidade com variáveis padrão de integração com o Omie.</description>
+        <name>Atualizar_Oportunidade</name>
+        <label>Atualizar Oportunidade</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <inputAssignments>
+            <field>Cidade2__c</field>
+            <value>
+                <elementReference>$Record.Account.Cidade2__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Omie_Codigo_Cliente__c</field>
+            <value>
+                <elementReference>$Record.Account.Omie_Codigo_Cliente__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Omie_Codigo_Conta_Corrente__c</field>
+            <value>
+                <stringValue>4567808550</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Omie_Codigo_Parcela__c</field>
+            <value>
+                <stringValue>000</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Omie_Codigo_Vendedor__c</field>
+            <value>
+                <elementReference>$Record.Owner.Omie_idVendedor__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Atualizar_Oportunidade</targetReference>
+        </connector>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

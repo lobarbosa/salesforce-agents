@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Etiqueta__c</fullName>
+    <label>Etiqueta</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CUSTOMER</fullName>
+                <default>false</default>
+                <label>CUSTOMER</label>
+            </value>
+            <value>
+                <fullName>HOT LEAD</fullName>
+                <default>false</default>
+                <label>HOT LEAD</label>
+            </value>
+            <value>
+                <fullName>WARM LEAD</fullName>
+                <default>false</default>
+                <label>WARM LEAD</label>
+            </value>
+            <value>
+                <fullName>COLD LEAD</fullName>
+                <default>false</default>
+                <label>COLD LEAD</label>
+            </value>
+            <value>
+                <fullName>REVENDA ESET</fullName>
+                <default>false</default>
+                <label>REVENDA ESET</label>
+            </value>
+            <value>
+                <fullName>REVENDA GGW</fullName>
+                <default>false</default>
+                <label>REVENDA GGW</label>
+            </value>
+            <value>
+                <fullName>REVENDA MANAGEENGINE</fullName>
+                <default>false</default>
+                <label>REVENDA MANAGEENGINE</label>
+            </value>
+            <value>
+                <fullName>CLIENTE DE REVENDA ESET</fullName>
+                <default>false</default>
+                <label>CLIENTE DE REVENDA ESET</label>
+            </value>
+            <value>
+                <fullName>CLEINTE DE REVENDA GGW</fullName>
+                <default>false</default>
+                <label>CLEINTE DE REVENDA GGW</label>
+            </value>
+            <value>
+                <fullName>CLIENTE DE REVENDA MANAGEENGINE</fullName>
+                <default>false</default>
+                <label>CLIENTE DE REVENDA MANAGEENGINE</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

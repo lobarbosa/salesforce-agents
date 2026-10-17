@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_Perda</fullName>
+    <active>true</active>
+    <description>Motivo da Perda precisa ser inserido.</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(Status),
+  ISPICKVAL(Status, &quot;Não Tem Interesse&quot;),
+  ISPICKVAL(Motivo_da_Perda__c, &quot;&quot;)
+)</errorConditionFormula>
+    <errorDisplayField>Motivo_da_Perda__c</errorDisplayField>
+    <errorMessage>Motivo da Perda precisa ser inserido.</errorMessage>
+</ValidationRule>

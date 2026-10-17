@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Flow de tela pega a taxa de conversão do dólar para o real, e do real para o dólar. Flow é exibido nas record pages de Oportunidade e Cotação.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>realToDolar</name>
+        <dataType>Number</dataType>
+        <expression>1 / {!dolarToReal}</expression>
+        <scale>6</scale>
+    </formulas>
+    <interviewLabel>[All] - Show Conversion Rate {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>[Todos] - Apresentar Taxa de Conversão</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <description>Componente obtem a cotação do dólar e salva na variável &quot;dolarToReal&quot;.</description>
+        <name>Obter_Taxa_de_Conversao_do_Dolar</name>
+        <label>Obter Taxa de Conversão do Dólar</label>
+        <locationX>176</locationX>
+        <locationY>134</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Taxa_de_Conversao_Real_e_Dolar</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsoCode</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>BRL</stringValue>
+            </value>
+        </filters>
+        <object>CurrencyType</object>
+        <outputAssignments>
+            <assignToReference>dolarToReal</assignToReference>
+            <field>ConversionRate</field>
+        </outputAssignments>
+    </recordLookups>
+    <screens>
+        <description>Flow exibi as taxas de conversão calculadas.</description>
+        <name>Taxa_de_Conversao_Real_e_Dolar</name>
+        <label>Taxa de Conversão - Real e Dólar</label>
+        <locationX>176</locationX>
+        <locationY>242</locationY>
+        <allowBack>true</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <fields>
+            <name>header</name>
+            <fieldText>&lt;p&gt;&lt;strong style=&quot;font-size: 16px;&quot;&gt;Dólar PTAX&lt;/strong&gt;&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <fields>
+            <name>display_text</name>
+            <fieldText>&lt;p&gt;1 Dólar = {!dolarToReal}&lt;/p&gt;&lt;p&gt;1 Real = USD {!realToDolar}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>false</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Obter_Taxa_de_Conversao_do_Dolar</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>conversionRate</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>6</scale>
+    </variables>
+    <variables>
+        <name>dolarToReal</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>6</scale>
+    </variables>
+</Flow>

@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Assign_Anual</name>
+        <label>Assign Anual</label>
+        <locationX>528</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Anual</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Sobre__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sobre</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_ESET</name>
+        <label>Assign ESET</label>
+        <locationX>1848</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ESET</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Sobre__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sobre</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Manage_Engine</name>
+        <label>Assign Manage Engine</label>
+        <locationX>1584</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ManageEngine</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Sobre__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sobre</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Mensal</name>
+        <label>Assign Mensal</label>
+        <locationX>792</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Mensal</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Sobre__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sobre</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Perpetua</name>
+        <label>Assign Perpetua</label>
+        <locationX>264</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Perpetuo</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Sobre__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sobre</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Renovacoes</name>
+        <label>Assign Renovações</label>
+        <locationX>1320</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Renovacoes</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Sobre__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sobre</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Assign_Trienal</name>
+        <label>Assign Trienal</label>
+        <locationX>1056</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Trienal</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Sobre__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Sobre</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Texto_Todos2</name>
+        <label>Texto Todos</label>
+        <locationX>2112</locationX>
+        <locationY>647</locationY>
+        <assignmentItems>
+            <assignToReference>Loop_for_Quotes.Outros__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Todos</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Qual_Condicao_Comercial</name>
+        <label>Qual Condição Comercial é?</label>
+        <locationX>1320</locationX>
+        <locationY>539</locationY>
+        <defaultConnector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>GOGlobalPerpetua</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>GO-Global Perpetua</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Perpetua</targetReference>
+            </connector>
+            <label>GO-Global Perpetua</label>
+        </rules>
+        <rules>
+            <name>GOGlobalAnual</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>12</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Anual</targetReference>
+            </connector>
+            <label>GO-Global Anual</label>
+        </rules>
+        <rules>
+            <name>GO_Global_Mensal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>01</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Mensal</targetReference>
+            </connector>
+            <label>GO-Global Mensal</label>
+        </rules>
+        <rules>
+            <name>GO_Global_Trienal</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>GO-Global Trienal</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Trienal</targetReference>
+            </connector>
+            <label>GO-Global Trienal</label>
+        </rules>
+        <rules>
+            <name>GO_Global_Renovacoes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>GO-Global Renovações</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Renovacoes</targetReference>
+            </connector>
+            <label>GO-Global Renovações</label>
+        </rules>
+        <rules>
+            <name>Manage_Engine</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Manage Engine</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Manage Engine Renovações</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_Manage_Engine</targetReference>
+            </connector>
+            <label>Manage Engine</label>
+        </rules>
+        <rules>
+            <name>ESET2</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ESET</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>ESET Renovações</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Assign_ESET</targetReference>
+            </connector>
+            <label>ESET</label>
+        </rules>
+        <rules>
+            <name>Todos_Caminho</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Condicoes_Comerciais__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>GO-Global Todas</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Texto_Todos2</targetReference>
+            </connector>
+            <label>Todos</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza Textos de Cotação {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>[Oportunidade] - Atualiza Textos de Cotação</label>
+    <loops>
+        <name>Loop_for_Quotes</name>
+        <label>Loop for Quotes</label>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
+        <collectionReference>Get_Quotes</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Qual_Condicao_Comercial</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Update_Cotacao</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Quotes</name>
+        <label>Get Quotes</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_for_Quotes</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>OpportunityId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Quote</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Update_Cotacao</name>
+        <label>Update Cotação</label>
+        <locationX>176</locationX>
+        <locationY>923</locationY>
+        <inputReference>Get_Quotes</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Quotes</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Condicoes_Comerciais__c</field>
+            <operator>IsChanged</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>Anual</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Para solicitar uma ampliação, o cliente deve enviar uma formalização por e-mail indicando a quantidade desejada. Uma nova proposta será enviada para assinatura ou geração de Ordem de Compra (OC).
+
+Em casos de ampliação, os novos lotes estarão cobertos pela validade do primeiro. Os custos de ampliação serão calculados com base nos meses restantes até o vencimento do primeiro lote. Por exemplo, se passaram 4 meses desde a aquisição do primeiro lote, as novas licenças terão um custo equivalente aos 8 meses restantes.
+
+A cobrança ocorre anualmente, abrangendo o total de licenças. Reduções na quantidade de licenças são possíveis até 60 dias antes da renovação.
+
+Para cancelamentos, é necessário fazer a solicitação ao final do 12º mês de uso, sem cobranças adicionais, desde que notificado com no mínimo 60 dias de antecedência, indicando a data precisa para a baixa no sistema. Caso contrário, a renovação será automática, e a Nota Fiscal (NF) e Boleto serão emitidos.
+O pagamento será efetuado 10 dias após a emissão da NF e Boleto, por meio de boleto bancário. As licenças serão entregues mediante solicitação formal do responsável via e-mail.
+Ao aderir ao modelo de licenciamento anual, o cliente concorda em adquirir no mínimo 5 licenças no pedido inicial. Para pedidos subsequentes, é possível adquirir a partir de 1 licença. Os valores do licenciamento GO-Global nesta proposta estão expressos em Dólar (USD), com base no Dólar PTAX do dia do faturamento.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ESET</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Valores expressos em Reais (R$) com todos os impostos inclusos. Os valores mencionados nesta proposta, não incidem ICMS e IPI. A Centric  oferece suporte técnico exclusivo Pré e Pós Venda, através do e-mail HELPDESK@CENTRIC.COM.BR para todas as soluções apresentadas nessa proposta comercial. Os valores apresentados consideram as quantidades aqui mencionadas. No caso de alteração das quantidades, por favor, nos consultar sobre os possíveis novos valores. Todos os produtos aqui mencionados, possuem nacionalização e legalização total,para utilização das soluções no Brasil.
+
+*** Consulte valores para implantação, treinamento e suporte prioritário (NÃO INCLUSOS NESTA PROPOSTA)</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ManageEngine</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&gt;&gt;&gt;&gt;&gt;VALORES EXPRESSOS EM REAIS&gt;&gt;&gt;&gt;
+Os valores estão em Reais (R$) e poderão sofrer alteração conforme o valor do dólar comercial do dia da aprovação.
+
+Subscrição Anual – Licença anual, necessário fazer a renovação todo ano para que o software permaneça ativo no ambiente. A manutenção do produto já está inclusa no valor do licenciamento.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Mensal</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Para solicitar uma ampliação, o cliente deve enviar uma formalização por e-mail indicando a quantidade desejada para o lote atual. Dessa forma, enviaremos uma nova proposta para assinatura ou geração de Ordem de Compra (OC).
+A cobrança será mensal, realizada após o uso, abrangendo o total de licenças geradas. Portanto, caso haja a necessidade de ampliação, solicitamos que seja realizada antes do fechamento do fabricante, preferencialmente até o dia 20 de cada mês.
+Em caso de cancelamento ou redução do licenciamento, nenhum valor adicional será cobrado. No entanto, a solicitação deve ser feita com no mínimo 30 dias de antecedência. Se houver uso no mês de cancelamento ou redução, seguiremos o fluxo de cobrança tradicional, considerando o total de licenças e não os dias de uso.
+O pagamento será efetuado todo dia 10, posterior ao mês de utilização do produto, por meio de boleto bancário. As licenças serão entregues mediante solicitação formal por e-mail, feita pelo responsável pelo contrato.
+Ao aderir ao modelo de licenciamento mensal do GO-Global, o cliente se compromete a adquirir no pedido inicial um mínimo de 5 licenças. Para os pedidos subsequentes, o mínimo contratável é de 5 licenças. Os valores do licenciamento GO-Global nesta proposta estão expressos em Dólar (USD), com base no Dólar PTAX do dia do faturamento. A cobrança do licenciamento não é baseada na quantidade de dias utilizados no mês, mas sim no mês de ativação.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Perpetuo</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>1 - As licenças são perpétuas. A Manutenção para o primeiro ano, já está inclusa no preço proposto. A manutenção a partir do 2º ano, é opcional e equivalente 25% do valor vigente, em dólar, das licenças até a data de expiração, após ter sido expirada e não ter sido renovada, além da porcentagem de 25% da renovação, o fabricante cobra um acréscimo de 25% de taxa de reativação e um acréscimo diário pelo tempo retroativo em atraso (Após 1 mês sem contrato de manutenção, para reativá-lo será necessário pagamento dos valores retroativos). A renovação da Manutenção não é obrigatória, contudo a renovação dá direito à suporte do fabricante, correções, novas versões do software, e outros serviços prestados pela Graphon e pela Centric através de nossa central de chamados helpdesk@centric.com.br. 
+2 - Os serviços de Implantação e Treinamento são opcionais, porém altamente recomendáveis para um bom funcionamento do ambiente. Os valores são válidos para execução de segunda a sexta-feira, exceto feriados e emendas, em horário comercial.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Renovacoes</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>A renovação da manutenção dá direito a Upgrade, Correções, Rehost, Manutenção da licença, Suporte Graphon e Suporte Centric Solution através de nossa central de chamados helpdesk@centricsolution.com.br, com SLA de até 8 horas para resposta. Reforçamos os valores de renovação até a data de vencimento são diferenciados. A manutenção a partir do 2º ano, é de 25% do valor vigente das licenças até a data de expiração, após ter sido expirada e não ter sido renovada, além da porcentagem de 25% da renovação, o fabricante cobra um acréscimo de 25% de taxa de reativação e um acréscimo diário pelo tempo retroativo em atraso (Após 1 mês sem contrato de manutenção, para reativá-lo será necessário pagamento dos valores retroativos).</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Sobre</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>A Centric Solution oferece suporte técnico exclusivo Pré e Pós Venda, através do e-mail HELPDESK@CENTRIC.COM.BR para todas as soluções apresentadas nessa proposta comercial. Os valores apresentados consideram as quantidades aqui mencionadas. No caso de alteração das quantidades, por favor, nos consultar sobre os possíveis novos valores.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Todos</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>LICENÇA PERPÉTUA:
+Licenças perpétuas com manutenção no primeiro ano.
+Renovação da manutenção opcional.
+Suporte garantido no primeiro ano
+
+LICENÇA ANUAL:
+Flexibilidade para ampliar licenças a qualquer momento.
+Redução possível somente na renovação anual.
+Cancelamento automático sem resposta, inicia 30 dias antes do vencimento.
+
+LICENÇA TRIENAL:
+Ampliação flexível a qualquer momento.
+Redução possível com aviso prévio de 60 dias.
+Cancelamento automático sem resposta, inicia 30 dias antes do vencimento.
+
+LICENÇA MENSAL:
+Ampliação mensal, ideal para flexibilidade.
+Redução possível com aviso prévio de 30 dias.
+Cancelamento automático após 30 dias de atraso no pagamento.
+
+Para avançar com a escolha da modalidade que melhor atende às suas necessidades e dar início ao processo de assinatura de contrato e finalização do pedido, por favor, nos retorne com a sua escolha.  Para mais informações, basta responder a este email.</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Trienal</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Havendo necessidade de ampliação, o cliente deve enviar solicitação formal via e-mail, com a quantidade a ser contratada, desta maneira será enviado uma nova proposta para assinatura ou geração de OC;
+Em caso de ampliação, os novos lotes estarão cobertos pela validade do primeiro;
+Os custos de ampliação serão baseados nos meses restantes para o vencimento do primeiro lote;
+Ex: Se passaram-se 1 ano que o primeiro lote foi adquirido, então as novas licenças terão o custo equivalente aos 2 anos restantes;
+A cobrança é realizada de maneira trienal, sobre o total de licenças.
+A redução da quantidade de licenças é possível 60 dias antes da renovação.
+O pedido de cancelamento, deve ser solicitado ao final do 36º mês de uso, não possuindo qualquer cobrança adicional. Porém, deve ser notificado com antecedência mínima de 60 dias, informando a data exata para darmos baixa junto ao sistema, caso contrario, a renovação ocorrerá automáticamente e a NF e Boleto serão emitidos.</text>
+    </textTemplates>
+</Flow>

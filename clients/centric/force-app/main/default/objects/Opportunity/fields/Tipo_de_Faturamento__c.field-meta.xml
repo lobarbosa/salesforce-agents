@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Faturamento__c</fullName>
+    <label>Tipo de Faturamento</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>01</fullName>
+                <default>false</default>
+                <label>Todo Mês (mensal)</label>
+            </value>
+            <value>
+                <fullName>02</fullName>
+                <default>false</default>
+                <label>A cada 2 meses (bimestral)</label>
+            </value>
+            <value>
+                <fullName>03</fullName>
+                <default>false</default>
+                <label>A cada 3 meses (trimestral)</label>
+            </value>
+            <value>
+                <fullName>06</fullName>
+                <default>false</default>
+                <label>A cada 6 meses (semestral)</label>
+            </value>
+            <value>
+                <fullName>12</fullName>
+                <default>false</default>
+                <label>A cada 12 meses (anual)</label>
+            </value>
+            <value>
+                <fullName>REC</fullName>
+                <default>false</default>
+                <label>Recibo</label>
+            </value>
+            <value>
+                <fullName>NFS</fullName>
+                <default>false</default>
+                <label>NFS-e</label>
+            </value>
+            <value>
+                <fullName>VUF</fullName>
+                <default>false</default>
+                <label>Via única não autorizada</label>
+            </value>
+            <value>
+                <fullName>VUA</fullName>
+                <default>false</default>
+                <label>Via única autorizada</label>
+            </value>
+            <value>
+                <fullName>A cada 12 meses (anual)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>A cada 12 meses (anual)</label>
+            </value>
+            <value>
+                <fullName>24</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>A cada 24 meses</label>
+            </value>
+            <value>
+                <fullName>A cada 24 meses (bianual)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>A cada 24 meses (bianual)</label>
+            </value>
+            <value>
+                <fullName>36</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>A cada 36 meses</label>
+            </value>
+            <value>
+                <fullName>A cada 36 meses (trienal)</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>A cada 36 meses (trienal)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

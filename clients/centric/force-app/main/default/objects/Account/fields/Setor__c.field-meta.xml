@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Setor__c</fullName>
+    <label>Setor</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>N/D</fullName>
+                <default>true</default>
+                <label>N/D</label>
+            </value>
+            <value>
+                <fullName>Prestação de Serviços</fullName>
+                <default>false</default>
+                <label>Prestação de Serviços</label>
+            </value>
+            <value>
+                <fullName>Comercial (Atacadista)</fullName>
+                <default>false</default>
+                <label>Comercial (Atacadista)</label>
+            </value>
+            <value>
+                <fullName>Industrial, Associação</fullName>
+                <default>false</default>
+                <label>Industrial, Associação</label>
+            </value>
+            <value>
+                <fullName>Comercial (Varejista)</fullName>
+                <default>false</default>
+                <label>Comercial (Varejista)</label>
+            </value>
+            <value>
+                <fullName>Hoteleiro</fullName>
+                <default>false</default>
+                <label>Hoteleiro</label>
+            </value>
+            <value>
+                <fullName>Hospitalar</fullName>
+                <default>false</default>
+                <label>Hospitalar</label>
+            </value>
+            <value>
+                <fullName>Governamental</fullName>
+                <default>false</default>
+                <label>Governamental</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

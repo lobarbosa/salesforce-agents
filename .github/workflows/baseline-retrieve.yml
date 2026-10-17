@@ -76,6 +76,9 @@ jobs:
 
       - name: "Fase 1 — núcleo (dados e código)"
         run: |
+          # git não versiona pasta vazia: cliente sem baseline ainda não tem
+          # force-app/ no checkout, e o sf recusa (MissingPackageDirectoryError).
+          mkdir -p "$CLIENT_DIR/force-app"
           ( cd "$CLIENT_DIR" && sf project retrieve start --manifest manifest/package-01-core.xml --target-org "$TARGET_ORG" --wait 30 )
           git add "$CLIENT_DIR"
           git commit -m "${{ inputs.client }}: baseline fase 1 - núcleo (dados e código)" --allow-empty -q

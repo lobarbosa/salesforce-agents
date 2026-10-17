@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Motivo_da_Perda__c</fullName>
+    <label>Motivo da Perda</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cliente desistiu de Utilizar o Produto</fullName>
+                <default>false</default>
+                <label>Cliente desistiu de Utilizar o Produto</label>
+            </value>
+            <value>
+                <fullName>Demora no Followup</fullName>
+                <default>false</default>
+                <label>Demora no Followup</label>
+            </value>
+            <value>
+                <fullName>Falta de Retorno do Cliente</fullName>
+                <default>false</default>
+                <label>Falta de Retorno do Cliente</label>
+            </value>
+            <value>
+                <fullName>Insatisfação com o Atendimento</fullName>
+                <default>false</default>
+                <label>Insatisfação com o Atendimento</label>
+            </value>
+            <value>
+                <fullName>Mapeado para outro fornecedor</fullName>
+                <default>false</default>
+                <label>Mapeado para outro fornecedor</label>
+            </value>
+            <value>
+                <fullName>Não gostou do Produto/Serviço</fullName>
+                <default>false</default>
+                <label>Não gostou do Produto/Serviço</label>
+            </value>
+            <value>
+                <fullName>Preço</fullName>
+                <default>false</default>
+                <label>Preço</label>
+            </value>
+            <value>
+                <fullName>Problemas Técnicos</fullName>
+                <default>false</default>
+                <label>Problemas Técnicos</label>
+            </value>
+            <value>
+                <fullName>Produto não Atendeu os Requisitos Técnicos</fullName>
+                <default>false</default>
+                <label>Produto não Atendeu os Requisitos Técnicos</label>
+            </value>
+            <value>
+                <fullName>Lead Desqualificado (Outros)</fullName>
+                <default>false</default>
+                <label>Lead Desqualificado (Outros)</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

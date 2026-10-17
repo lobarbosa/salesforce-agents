@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Campo_Estado_obrigatorio</fullName>
+    <active>true</active>
+    <description>Campo &quot;Estado&quot; obrigatório.</description>
+    <errorConditionFormula>AND(
+  ISBLANK( State ),
+  TEXT(LeadSource) != &quot;RD Station&quot;
+)</errorConditionFormula>
+    <errorDisplayField>State</errorDisplayField>
+    <errorMessage>Campo &quot;Estado&quot; obrigatório.</errorMessage>
+</ValidationRule>

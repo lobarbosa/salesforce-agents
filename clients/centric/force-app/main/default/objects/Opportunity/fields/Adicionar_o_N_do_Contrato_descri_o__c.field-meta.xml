@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Adicionar_o_N_do_Contrato_descri_o__c</fullName>
+    <defaultValue>false</defaultValue>
+    <label>Adicionar o &quot;Nº do Contrato&quot; à descrição</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

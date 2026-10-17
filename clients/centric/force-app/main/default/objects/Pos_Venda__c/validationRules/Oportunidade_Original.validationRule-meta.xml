@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade_Original</fullName>
+    <active>true</active>
+    <description>Impedir que a Oportunidade Original seja alterada, se o valor anterior não for nulo.</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(  Oportunidade_Original__c  ),
+  PRIORVALUE( Oportunidade_Original__c ) != &apos;&apos;
+)</errorConditionFormula>
+    <errorDisplayField>Oportunidade_Original__c</errorDisplayField>
+    <errorMessage>Registro de Oportunidade Original não pode ser alterado.</errorMessage>
+</ValidationRule>

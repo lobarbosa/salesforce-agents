@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_Tributa_o_dos_Servi_os__c</fullName>
+    <defaultValue>&apos;1&apos;</defaultValue>
+    <externalId>false</externalId>
+    <label>Tipo de Tributação dos Serviços</label>
+    <length>255</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

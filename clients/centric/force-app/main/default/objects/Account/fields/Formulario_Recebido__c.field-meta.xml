@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Formulario_Recebido__c</fullName>
+    <businessStatus>Hidden</businessStatus>
+    <defaultValue>false</defaultValue>
+    <label>Formulário Recebido</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Omie_qntd_parcelas_obrigatorio_Contrato</fullName>
+    <active>false</active>
+    <description>Campo Omie Quantidade Parcelas obrigatório no record type Contrato.</description>
+    <errorConditionFormula>AND(
+ISPICKVAL( Omie_Quantidade_Parcelas__c , &quot;&quot; ),
+RecordType.Name = &quot;Proposta&quot;
+)</errorConditionFormula>
+    <errorDisplayField>Omie_Quantidade_Parcelas__c</errorDisplayField>
+    <errorMessage>Campo &quot;Omie Quantidade Parcelas&quot; obrigatório,</errorMessage>
+</ValidationRule>

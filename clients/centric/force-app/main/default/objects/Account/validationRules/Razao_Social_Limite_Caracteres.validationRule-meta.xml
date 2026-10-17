@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Razao_Social_Limite_Caracteres</fullName>
+    <active>true</active>
+    <description>O número máximo de caracteres permitido para o campo Razão Social é de 60.</description>
+    <errorConditionFormula>LEN( Raz_o_Social__c ) &gt; 60</errorConditionFormula>
+    <errorMessage>O número máximo de caracteres permitido para o campo Razão Social é de 60.</errorMessage>
+</ValidationRule>

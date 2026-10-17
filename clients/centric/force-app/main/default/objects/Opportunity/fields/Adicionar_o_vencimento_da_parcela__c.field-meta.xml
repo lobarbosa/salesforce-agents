@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Adicionar_o_vencimento_da_parcela__c</fullName>
+    <defaultValue>false</defaultValue>
+    <label>Adicionar o vencimento da parcela</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

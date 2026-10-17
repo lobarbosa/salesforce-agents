@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Porcentagem_de_Comissao_obrigatoria</fullName>
+    <active>true</active>
+    <description>Regra de validação para travar o fechamento da Oportunidade se o campo “Revenda” na Conta estiver preenchido E o campo em Oportunidade “Porcentagem de Comissão” não.</description>
+    <errorConditionFormula>AND(
+  TEXT(StageName) = &quot;Fechado&quot;,
+  Possui_parceiro_de_revenda__c,
+  ISBLANK( Porcentagem_de_Comissao__c)
+)</errorConditionFormula>
+    <errorDisplayField>Porcentagem_de_Comissao__c</errorDisplayField>
+    <errorMessage>Atribuir Porcentagem de Comissão!</errorMessage>
+</ValidationRule>

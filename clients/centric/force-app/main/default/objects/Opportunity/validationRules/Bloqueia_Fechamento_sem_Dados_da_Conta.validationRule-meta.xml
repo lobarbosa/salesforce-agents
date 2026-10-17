@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloqueia_Fechamento_sem_Dados_da_Conta</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+TEXT(StageName) = &quot;Fechado&quot;,
+OR(
+ISBLANK(Account.cpfcnpj__c),
+ISBLANK( Account.BillingStreet ),
+ISBLANK( Account.BillingPostalCode ),
+ISBLANK(Account.Bairro__c),
+ISBLANK(Account.BillingState ),
+ISBLANK( Account.N_mero__c ),
+ISBLANK(    Account.Cidade2__c  ),
+ ISBLANK(Account.Omie_Codigo_Cliente__c ),
+ISBLANK(Account.Raz_o_Social__c))
+)</errorConditionFormula>
+    <errorMessage>Verifique se a conta está integrada ao Omie por meio do campo &quot;Integrado com o Omie&quot;, caso não esteja integrado preencha os campos obrigatórios para integração no cadastro da conta.</errorMessage>
+</ValidationRule>
