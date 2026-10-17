@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Endere_o__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  ISBLANK(Account.Complemento__c), 
+  Account.BillingStreet + &quot;, &quot; +  Account.N_mero__c,
+  Account.BillingStreet  + &quot;, &quot; +  Account.N_mero__c + &quot;, &quot; +  Account.Complemento__c
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Endereço</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

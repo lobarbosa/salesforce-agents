@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Descricao_Perda</fullName>
+    <active>true</active>
+    <description>Sempre que um registro de Oportunidade passa para o estágio &quot;Perda&quot;, obriga o usuário a informar a Descrição de Perda</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(StageName),
+  ISPICKVAL(StageName, &quot;Perda&quot;),
+  ISBLANK(Descri_o_da_Perda__c)
+)</errorConditionFormula>
+    <errorDisplayField>Descri_o_da_Perda__c</errorDisplayField>
+    <errorMessage>Descrição da Perda precisa ser inserida.</errorMessage>
+</ValidationRule>

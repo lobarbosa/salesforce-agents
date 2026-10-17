@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Bloquear_Criacao_de_Novos_Prazos</fullName>
+    <active>true</active>
+    <description>Regra prevê qualquer usuário do sistema (incluindo Administradores) de criarem novos registros de Prazo de Pagamento.</description>
+    <errorConditionFormula>isnew()</errorConditionFormula>
+    <errorMessage>Por favor, utilizar Prazos de Pagamentos já criados.</errorMessage>
+</ValidationRule>

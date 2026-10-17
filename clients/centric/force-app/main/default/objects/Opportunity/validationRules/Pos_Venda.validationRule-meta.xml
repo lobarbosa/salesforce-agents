@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pos_Venda</fullName>
+    <active>true</active>
+    <description>Impedir que o Pós-Venda seja alterado, se o valor anterior não for nulo.</description>
+    <errorConditionFormula>AND(
+  ISCHANGED( Pos_Venda__c ),
+  PRIORVALUE( Pos_Venda__c ) != &apos;&apos;,
+  NOT(ISNEW())
+)</errorConditionFormula>
+    <errorDisplayField>Pos_Venda__c</errorDisplayField>
+    <errorMessage>Registro de Pós-Venda não pode ser alterado.</errorMessage>
+</ValidationRule>

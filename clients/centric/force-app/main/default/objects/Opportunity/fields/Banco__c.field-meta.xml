@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Banco__c</fullName>
+    <label>Banco</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>2250649647</fullName>
+                <default>false</default>
+                <label>Bradesco - 237</label>
+            </value>
+            <value>
+                <fullName>4819028332</fullName>
+                <default>false</default>
+                <label>Itaú - 341</label>
+            </value>
+            <value>
+                <fullName>4817495676</fullName>
+                <default>false</default>
+                <label>Caixa - 104</label>
+            </value>
+            <value>
+                <fullName>4845241812</fullName>
+                <default>false</default>
+                <label>Banco do Brasil</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

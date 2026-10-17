@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade_fechada_sem_produtos</fullName>
+    <active>true</active>
+    <description>Travar o fechamento de uma oportunidade sem produtos.</description>
+    <errorConditionFormula>AND(
+  ISCHANGED(StageName),
+  ISPICKVAL(StageName, &apos;Fechado&apos;),
+   Numero_de_Produtos__c = 0
+)</errorConditionFormula>
+    <errorMessage>Oportunidade não pode ser fechada sem produtos.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Condicoes_Comerciais__c</fullName>
+    <label>Condições Comerciais</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>GO-Global Mensal</fullName>
+                <default>false</default>
+                <label>GO-Global Mensal</label>
+            </value>
+            <value>
+                <fullName>GO-Global Anual</fullName>
+                <default>false</default>
+                <label>GO-Global Anual</label>
+            </value>
+            <value>
+                <fullName>GO-Global Trienal</fullName>
+                <default>false</default>
+                <label>GO-Global Trienal</label>
+            </value>
+            <value>
+                <fullName>GO-Global Perpetua</fullName>
+                <default>false</default>
+                <label>GO-Global Perpetua</label>
+            </value>
+            <value>
+                <fullName>GO-Global Todas</fullName>
+                <default>false</default>
+                <label>GO-Global Todas</label>
+            </value>
+            <value>
+                <fullName>GO-Global Renovações</fullName>
+                <default>false</default>
+                <label>GO-Global Renovações</label>
+            </value>
+            <value>
+                <fullName>Manage Engine</fullName>
+                <default>false</default>
+                <label>Manage Engine</label>
+            </value>
+            <value>
+                <fullName>ESET</fullName>
+                <default>false</default>
+                <label>ESET</label>
+            </value>
+            <value>
+                <fullName>Manage Engine Renovações</fullName>
+                <default>false</default>
+                <label>Manage Engine Renovações</label>
+            </value>
+            <value>
+                <fullName>ESET Renovações</fullName>
+                <default>false</default>
+                <label>ESET Renovações</label>
+            </value>
+            <value>
+                <fullName>Implantação</fullName>
+                <default>false</default>
+                <label>Implantação</label>
+            </value>
+            <value>
+                <fullName>Suporte Avulso</fullName>
+                <default>false</default>
+                <label>Suporte Avulso</label>
+            </value>
+            <value>
+                <fullName>Treinamento</fullName>
+                <default>false</default>
+                <label>Treinamento</label>
+            </value>
+            <value>
+                <fullName>Suporte Premium</fullName>
+                <default>false</default>
+                <label>Suporte Premium</label>
+            </value>
+            <value>
+                <fullName>Suporte Premium Renovação</fullName>
+                <default>false</default>
+                <label>Suporte Premium Renovação</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

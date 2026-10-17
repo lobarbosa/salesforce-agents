@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ClosedDate_menor_que_hoje</fullName>
+    <active>true</active>
+    <description>Ao tentar definir ou atualizar a data de fechamento de uma oportunidade, o sistema deve validar se a data é menor que a data atual. Se a data de fechamento for menor que a data atual, o sistema deve impedir a ação e exibir uma mensagem de erro.</description>
+    <errorConditionFormula>CloseDate &lt; TODAY()
+&amp;&amp;
+ ISPICKVAL(StageName,&apos;Fechado&apos;)</errorConditionFormula>
+    <errorDisplayField>CloseDate</errorDisplayField>
+    <errorMessage>Data de fechamento não pode ser menor do que o dia de hoje, pois o Omie não permite esse valor para integrar.</errorMessage>
+</ValidationRule>

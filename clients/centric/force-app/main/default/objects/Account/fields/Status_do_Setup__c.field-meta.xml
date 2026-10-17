@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status_do_Setup__c</fullName>
+    <label>Status do Setup</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>E-mail Boas Vindas</fullName>
+                <default>false</default>
+                <label>E-mail Boas Vindas</label>
+            </value>
+            <value>
+                <fullName>Formulário enviado</fullName>
+                <default>false</default>
+                <label>Formulário enviado</label>
+            </value>
+            <value>
+                <fullName>Kick-off Agendado</fullName>
+                <default>false</default>
+                <label>Kick-off Agendado</label>
+            </value>
+            <value>
+                <fullName>Em Andamento</fullName>
+                <default>false</default>
+                <label>Em Andamento</label>
+            </value>
+            <value>
+                <fullName>Finalizado</fullName>
+                <default>false</default>
+                <label>Finalizado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

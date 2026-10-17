@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_Permite_Alterar_Fechado_Ganho</fullName>
+    <active>false</active>
+    <description>Não Permite alterar a Fase Depois que der Fechado Ganho</description>
+    <errorConditionFormula>AND(
+ISPICKVAL(PRIORVALUE(StageName), &apos;Fechado&apos;),
+ISCHANGED(StageName)
+)</errorConditionFormula>
+    <errorMessage>Esta oportunidade foi marcada como Fechado Ganho, e não pode receber alterações.</errorMessage>
+</ValidationRule>

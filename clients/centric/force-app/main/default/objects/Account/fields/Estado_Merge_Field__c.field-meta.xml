@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Estado_Merge_Field__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(Estado__c,
+  &apos;AC&apos;, &apos;Acre&apos;,
+  &apos;AL&apos;, &apos;Alagoas&apos;,
+  &apos;AP&apos;, &apos;Amapá&apos;,
+  &apos;AM&apos;, &apos;Amazonas&apos;,
+  &apos;BA&apos;, &apos;Bahia&apos;,
+  &apos;CE&apos;, &apos;Ceará&apos;,
+  &apos;ES&apos;, &apos;Espírito Santo&apos;,
+  &apos;GO&apos;, &apos;Goiás&apos;,
+  &apos;MA&apos;, &apos;Maranhão&apos;,
+  &apos;MT&apos;, &apos;Mato Grosso&apos;,
+  &apos;MS&apos;, &apos;Mato Grosso do Sul&apos;,
+  &apos;MG&apos;, &apos;Minas Gerais&apos;,
+  &apos;PA&apos;, &apos;Pará&apos;,
+  &apos;PB&apos;, &apos;Paraíba&apos;,
+  &apos;PR&apos;, &apos;Paraná&apos;,
+  &apos;PE&apos;, &apos;Pernambuco&apos;,
+  &apos;PI&apos;, &apos;Piauí&apos;,
+  &apos;RJ&apos;, &apos;Rio de Janeiro&apos;,
+  &apos;RN&apos;, &apos;Rio Grande do Norte&apos;,
+  &apos;RS&apos;, &apos;Rio Grande do Sul&apos;,
+  &apos;RO&apos;, &apos;Rondônia&apos;,
+  &apos;RR&apos;, &apos;Roraima&apos;,
+  &apos;SC&apos;, &apos;Santa Catarina&apos;,
+  &apos;SP&apos;, &apos;São Paulo&apos;,
+  &apos;SE&apos;, &apos;Sergipe&apos;,
+  &apos;TO&apos;, &apos;Tocantins&apos;,
+  &apos;DF&apos;, &apos;Distrito Federal&apos;,
+  &apos;&apos;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Estado (Merge Field)</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

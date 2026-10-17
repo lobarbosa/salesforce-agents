@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>M_s_Atual_Merge_Field__c</fullName>
+    <externalId>false</externalId>
+    <formula>CASE(MONTH(TODAY()),
+  1, &apos;janeiro&apos;,
+  2, &apos;fevereiro&apos;,
+  3, &apos;março&apos;,
+  4, &apos;abril&apos;,
+  5, &apos;maio&apos;,
+  6, &apos;junho&apos;,
+  7, &apos;julho&apos;,
+  8, &apos;agosto&apos;,
+  9, &apos;setembro&apos;,
+  10, &apos;outubro&apos;,
+  11, &apos;novembro&apos;,
+  12, &apos;dezembro&apos;,
+  &apos;&apos;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Mês Atual (Merge Field)</label>
+    <required>false</required>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
