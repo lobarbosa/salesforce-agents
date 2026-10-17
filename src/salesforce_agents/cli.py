@@ -7,6 +7,7 @@ orientado a Jira: aqui a demanda é um registro no próprio repositório.
 from __future__ import annotations
 
 import json
+import sys
 import os
 import re
 from pathlib import Path
@@ -330,6 +331,29 @@ def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: 
             raise click.ClickException("--github-output pedido, mas $GITHUB_OUTPUT não existe.")
         with open(destino, "a", encoding="utf-8") as fh:
             fh.write(parada.as_github_output() + "\n")
+
+
+@demanda.command("comentarios-md")
+@click.option("--client", required=True)
+@click.argument("demand_id")
+def comentarios_md(client: str, demand_id: str) -> None:
+    """Lê do stdin o JSON de /api/sync/comentarios e grava comentarios-do-card.md.
+
+    Redige CPF/e-mail/telefone antes de gravar (ver comentarios.py). O arquivo
+    fica só no runner — está no .gitignore.
+    """
+    from . import comentarios as mod
+
+    try:
+        d = demands.Demand.load(client, demand_id)
+    except demands.DemandNotFoundError as exc:
+        raise click.ClickException(str(exc))
+    dados = json.loads(sys.stdin.read() or "{}")
+    destino, omitidos = mod.gravar(d.path, dados.get("comentarios") or [])
+    if destino is None:
+        click.echo("Nenhum comentário no card.")
+    else:
+        click.echo(f"{len(dados['comentarios'])} comentário(s) gravados em {destino} ({omitidos} dado(s) pessoal(is) omitido(s)).")
 
 
 @demanda.command("status-json")

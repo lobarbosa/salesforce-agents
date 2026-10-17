@@ -206,6 +206,27 @@ jobs:
       # anexo a sessão roda só com o texto do card, como sempre rodou.
       # A URL deriva de SQUAD_OS_SYNC_URL (…/api/sync/demanda → …/anexos)
       # pra não exigir secret novo; SQUAD_OS_SYNC_ANEXOS_URL sobrepõe.
+      # Comentários do card (respostas de cliente/equipe às dúvidas da análise)
+      # chegam à sessão como demandas/<ID>/comentarios-do-card.md — só lado,
+      # data e texto, com CPF/e-mail/telefone omitidos (comentarios.py), e só
+      # no runner (.gitignore). Não fatal: sem eles a sessão roda como sempre.
+      - name: Baixar comentários do card para o agente
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::Sync não configurado — a sessão roda sem os comentários do card."
+            exit 0
+          fi
+          jq -nc --arg c "$CLIENT" --arg d "$DEMAND_ID" '{clientSlug: $c, demandaId: $d}' \
+            | curl -fsS -X POST "${SYNC_URL%/demanda}/comentarios" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @- \
+            | sfagents demanda comentarios-md --client "$CLIENT" "$DEMAND_ID" \
+            || echo "::warning::Não consegui trazer os comentários do card — a sessão roda sem eles."
+
       - name: Baixar anexos liberados para o agente
         env:
           SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}

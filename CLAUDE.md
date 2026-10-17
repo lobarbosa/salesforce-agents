@@ -175,6 +175,12 @@ Vale para o assessment e para as 7 etapas de demanda.
    "segue anexo o print do erro" e o agente só via o texto. A liberação humana é a única
    camada para imagem — `ci-pii-scan` lê texto, não pixel.
 
+   **Comentários do card** também chegam à sessão (`/api/sync/comentarios` →
+   `demandas/<ID>/comentarios-do-card.md`, só no runner, `.gitignore`): é onde cliente e
+   consultor respondem as dúvidas da análise. Vai só o lado (cliente/equipe), a data e o
+   texto — nunca nome ou e-mail de quem escreveu — e `comentarios.py` troca CPF/e-mail/
+   telefone por marcador com os mesmos padrões do scanner de PII antes de gravar.
+
    Curadoria desse corpus por Obsidian (local, opcional, pra gente — nunca pro pipeline
    de agentes) é `.mcp.json` + `docs/obsidian.md`.
 3. **Não invente metadata.** Antes de referenciar qualquer objeto, campo, Flow ou classe,
