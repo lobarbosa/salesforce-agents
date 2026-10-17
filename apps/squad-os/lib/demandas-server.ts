@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { criarComCodigoUnico } from "@/lib/slug";
 import { canAccessClient } from "@/lib/auth";
+import { bloqueioPorEncerramento } from "@/lib/encerramento";
 import type { CurrentUsuario } from "@/lib/current-user";
 
 /**
@@ -34,6 +35,12 @@ export async function criarDemanda({
   const client = await prisma.client.findUnique({ where: { id: clientId } });
   if (!client) {
     return { ok: false as const, status: 404, error: "cliente não encontrado" };
+  }
+  // Vale para a API, o copiloto (criar_demanda) e qualquer caminho futuro:
+  // todos passam por aqui.
+  const encerrado = bloqueioPorEncerramento(client, "demanda");
+  if (encerrado) {
+    return { ok: false as const, status: 409, error: encerrado };
   }
 
   const autor = usuario.nome.trim() || usuario.email;

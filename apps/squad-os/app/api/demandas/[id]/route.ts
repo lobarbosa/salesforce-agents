@@ -3,6 +3,8 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma, StatusDemanda } from "@/lib/generated/prisma/client";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canAccessClient, canManageClientData } from "@/lib/auth";
+import { enxergaCliente } from "@/lib/encerramento";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { GATE_DO_CLIENTE, mesclarRespostas, montarAprovacao } from "@/lib/demandas";
 
 // Status de triagem que o próprio card pode mover (dropdown no board) —
@@ -33,12 +35,20 @@ export async function PATCH(
     return NextResponse.json({ error: "corpo inválido" }, { status: 400 });
   }
 
-  const demanda = await prisma.demanda.findUnique({ where: { id } });
+  const demanda = await prisma.demanda.findUnique({
+    where: { id },
+    include: { client: { select: { nome: true, encerradoEm: true } } },
+  });
   if (!demanda) {
     return NextResponse.json({ error: "demanda não encontrada" }, { status: 404 });
   }
   if (!canAccessClient(usuario.role, usuario.clientId, demanda.clientId)) {
     return NextResponse.json({ error: "sem permissão" }, { status: 403 });
+  }
+  // Cliente encerrado: só o admin ainda mexe no histórico (lib/encerramento.ts).
+  if (!enxergaCliente(usuario.role, demanda.client)) {
+    const encerrado = recusaSeEncerrado(demanda.client, "demanda");
+    if (encerrado) return encerrado;
   }
 
   const permitidos = canManageClientData(usuario.role) ? CAMPOS_DELIVERY : CAMPOS_CLIENTE;

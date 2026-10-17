@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import type { Role, Usuario } from "@/lib/generated/prisma/client";
+import { usuarioPerdeAcesso } from "@/lib/encerramento";
 
 // Quem pode logar no Squad OS é decidido pela tabela `usuarios` (papel +
 // cliente), não mais por domínio/lista de e-mail — ver Usuario em
@@ -17,8 +18,19 @@ function bootstrapAdminEmails(): string[] {
 
 export async function resolveUsuario(email: string): Promise<Usuario | null> {
   const normalized = email.toLowerCase().trim();
-  const existing = await prisma.usuario.findUnique({ where: { email: normalized } });
-  if (existing) return existing;
+  const existing = await prisma.usuario.findUnique({
+    where: { email: normalized },
+    include: { client: { select: { encerradoEm: true } } },
+  });
+  if (existing) {
+    // Cliente encerrado: o usuário `cliente` dele deixa de ter acesso — o
+    // proxy chama isto a cada requisição, então a sessão aberta cai junto.
+    // A linha em `usuarios` fica (reativar o cliente devolve o acesso).
+    if (usuarioPerdeAcesso(existing.role, existing.client)) return null;
+    const { client: _client, ...usuario } = existing;
+    void _client;
+    return usuario;
+  }
 
   if (bootstrapAdminEmails().includes(normalized)) {
     return prisma.usuario.create({

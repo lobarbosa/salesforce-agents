@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
+import { recusaSeEncerradoPorId } from "@/lib/encerramento-server";
 import { BUCKET_ANEXOS, createServiceClient, serviceRoleConfigurado } from "@/lib/supabase/storage";
 import { chaveSegura } from "@/lib/arquivo";
 
@@ -32,6 +33,9 @@ export async function POST(request: NextRequest) {
   if (!serviceRoleConfigurado()) {
     return NextResponse.json({ error: "anexos ainda não configurados" }, { status: 503 });
   }
+
+  const encerrado = await recusaSeEncerradoPorId({ slug: clientSlug }, "sync");
+  if (encerrado) return encerrado;
 
   const demanda = await prisma.demanda.findFirst({
     where: { code, client: { slug: clientSlug } },

@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canAccessClient } from "@/lib/auth";
+import { enxergaCliente } from "@/lib/encerramento";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
 const TEXTO_MAX = 4000;
 
@@ -20,13 +22,17 @@ export async function POST(
   const { id } = await params;
   const demanda = await prisma.demanda.findUnique({
     where: { id },
-    select: { id: true, clientId: true },
+    select: { id: true, clientId: true, client: { select: { nome: true, encerradoEm: true } } },
   });
   if (!demanda) {
     return NextResponse.json({ error: "demanda não encontrada" }, { status: 404 });
   }
   if (!canAccessClient(usuario.role, usuario.clientId, demanda.clientId)) {
     return NextResponse.json({ error: "sem permissão" }, { status: 403 });
+  }
+  if (!enxergaCliente(usuario.role, demanda.client)) {
+    const encerrado = recusaSeEncerrado(demanda.client, "demanda");
+    if (encerrado) return encerrado;
   }
 
   const body = await request.json();

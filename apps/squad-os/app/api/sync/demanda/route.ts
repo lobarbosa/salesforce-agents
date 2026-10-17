@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
 
 // Fecha o laço na direção git → app. `status.yaml` no repositório é a fonte de
@@ -90,11 +91,13 @@ export async function POST(request: NextRequest) {
 
   const client = await prisma.client.findUnique({
     where: { slug: clientSlug },
-    select: { id: true },
+    select: { id: true, nome: true, encerradoEm: true },
   });
   if (!client) {
     return NextResponse.json({ error: `cliente '${clientSlug}' não encontrado` }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "sync");
+  if (encerrado) return encerrado;
 
   const demanda = await prisma.demanda.findUnique({
     where: { clientId_code: { clientId: client.id, code } },

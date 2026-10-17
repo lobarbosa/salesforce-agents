@@ -119,6 +119,16 @@ model Client {
   // que é justamente quando alguém vai querer abrir o log.
   assessmentRunUrl        String          @default("") @map("assessment_run_url")
 
+  // Encerramento (2026-10-17): o cliente que saiu é **encerrado**, não
+  // apagado. Some das listas e seletores, o usuário `cliente` perde o acesso e
+  // nada novo nasce para ele (demanda, hora, run de agente) — mas demandas,
+  // horas e contrato continuam no banco, porque são histórico de trabalho e
+  // de faturamento. Excluir de verdade só existe para cliente encerrado e
+  // sem histórico nenhum (ver lib/encerramento.ts). Nulo = ativo.
+  encerradoEm        DateTime? @map("encerrado_em")
+  encerradoPorEmail  String?   @map("encerrado_por_email")
+  motivoEncerramento String    @default("") @map("motivo_encerramento")
+
   ambientes AmbienteOrg[]
   contrato  Contrato?
   demandas  Demanda[]

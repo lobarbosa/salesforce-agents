@@ -1,4 +1,4 @@
-import { getClients, getClientById } from "@/lib/data";
+import { getClients, getClientById, getClientesEncerrados } from "@/lib/data";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { Sidebar } from "@/components/Sidebar";
 import { Copiloto } from "@/components/Copiloto";
@@ -31,12 +31,19 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       : usuario.role === "financeiro"
         ? []
         : await getClients();
+  // Encerrados: fora da lista principal, numa seção à parte só para o admin.
+  const encerrados = usuario.role === "admin" ? await getClientesEncerrados() : [];
 
   return (
     <div className="shell">
       {/* Só id/nome/saúde de cada cliente: o objeto inteiro (ambientes,
           briefing, assessment) ia no payload RSC pra qualquer papel. */}
-      <Sidebar marcaSrc={marcaUrl()} clients={clients.map(clienteDaSidebar)} usuario={usuario} />
+      <Sidebar
+        marcaSrc={marcaUrl()}
+        clients={clients.map(clienteDaSidebar)}
+        encerrados={encerrados.map((c) => ({ id: c.id, nome: c.nome }))}
+        usuario={usuario}
+      />
       <main>{children}</main>
       {/* Montada uma vez pra todo papel; em páginas de cliente ela se anula
           sozinha (ver Copiloto.tsx) porque ClientDetail.tsx já monta a

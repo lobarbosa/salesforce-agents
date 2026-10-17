@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
 import { triggerTestConnection } from "@/lib/github";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import type { TipoAmbiente } from "@/lib/generated/prisma/client";
 
 const TIPOS: TipoAmbiente[] = ["dev", "qa"];
@@ -25,10 +26,12 @@ export async function POST(
   }
   const tipo = tipoRaw as TipoAmbiente;
 
-  const client = await prisma.client.findUnique({ where: { id }, select: { slug: true } });
+  const client = await prisma.client.findUnique({ where: { id }, select: { slug: true, nome: true, encerradoEm: true } });
   if (!client) {
     return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "agente");
+  if (encerrado) return encerrado;
 
   const existente = await prisma.ambienteOrg.findUnique({
     where: { clientId_tipo: { clientId: id, tipo } },

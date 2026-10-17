@@ -4,6 +4,7 @@ import { resolverDemanda } from "@/lib/demanda-access";
 import { triggerRunDemand } from "@/lib/github";
 import { GATE_DO_CLIENTE } from "@/lib/demandas";
 import { travar } from "@/lib/trava";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
 // O gate humano deixa de ser "aprova aqui e alguém dispara o pipeline lá":
 // aprovar no card move a demanda e acende a próxima sessão de agente.
@@ -26,11 +27,14 @@ export async function POST(
 
   const demanda = await prisma.demanda.findUnique({
     where: { id },
-    include: { client: { select: { slug: true } } },
+    include: { client: { select: { slug: true, nome: true, encerradoEm: true } } },
   });
   if (!demanda) {
     return NextResponse.json({ error: "demanda não encontrada" }, { status: 404 });
   }
+  // Aprovar gate dispara a próxima sessão de agente.
+  const encerrado = recusaSeEncerrado(demanda.client, "agente");
+  if (encerrado) return encerrado;
 
   if (!demanda.status.startsWith("aguardando_")) {
     return NextResponse.json(

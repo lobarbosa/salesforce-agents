@@ -1243,3 +1243,25 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .sf-aviso a { color: var(--accent); }
 .sf-insights .secao-titulo { margin-top: 0.8rem; }
 .sf-fontes { list-style: none; margin: 0.8rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.35rem; font-size: 0.85rem; }
+
+/* ── Encerrar / excluir cliente (EncerramentoCliente.tsx) ────────────────── */
+.badge.encerrado { background: var(--danger-soft); color: var(--danger); font-weight: 600; font-size: 0.7rem; margin-left: 0.6rem; vertical-align: middle; font-family: var(--sans); }
+.client-header-acoes { display: flex; gap: 0.5rem; align-items: center; }
+.encerrado-banner {
+  max-width: 980px; display: flex; flex-wrap: wrap; gap: 0.6rem 1rem; align-items: flex-start; justify-content: space-between;
+  background: var(--danger-soft); border: 1px solid var(--danger); border-radius: 9px; padding: 0.7rem 0.9rem;
+  font-size: 0.82rem; margin-bottom: 1.2rem; overflow-wrap: anywhere;
+}
+.encerrado-banner > div:first-child { flex: 1 1 280px; min-width: 0; }
+.encerrado-acoes { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.encerrado-banner > .save-note, .encerrado-banner > .form-erro { flex-basis: 100%; margin: 0; }
+.encerramento-form { display: flex; flex-direction: column; gap: 0.7rem; }
+.encerramento-lista { margin: 0; padding-left: 1.1rem; font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.btn-perigo {
+  background: var(--danger); color: #fff; border: none; border-radius: 7px;
+  padding: 0.5rem 0.9rem; font-size: 0.82rem; cursor: pointer; font-weight: 500;
+}
+.btn-perigo:disabled, .btn-ghost:disabled { opacity: 0.55; cursor: default; }
+.clientes-encerrados { margin: 0.4rem 0.8rem 0; font-size: 0.78rem; color: var(--text-muted); }
+.clientes-encerrados summary { cursor: pointer; padding: 0.3rem 0.3rem; }
+.clientes-encerrados .client-item { opacity: 0.75; }

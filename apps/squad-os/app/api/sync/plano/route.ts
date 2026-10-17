@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { criarComCodigoUnico } from "@/lib/slug";
 
 // As demandas propostas pelo planejador entrando no quadro, em `backlog`.
@@ -71,11 +72,13 @@ export async function POST(request: NextRequest) {
 
   const client = await prisma.client.findUnique({
     where: { slug: clientSlug },
-    select: { id: true, slug: true, contrato: { select: { entregaveis: { select: { id: true } } } } },
+    select: { id: true, slug: true, nome: true, encerradoEm: true, contrato: { select: { entregaveis: { select: { id: true } } } } },
   });
   if (!client) {
     return NextResponse.json({ error: `cliente '${clientSlug}' não encontrado` }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "sync");
+  if (encerrado) return encerrado;
 
   const validos = new Set(client.contrato?.entregaveis.map((e) => e.id) ?? []);
   const invalidas = propostas.filter((d) => !validos.has(String(d.entregavelId)));

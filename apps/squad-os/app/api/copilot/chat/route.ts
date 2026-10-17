@@ -3,6 +3,7 @@ import { ToolLoopAgent, createAgentUIStreamResponse, stepCountIs } from "ai";
 import { getCurrentUsuario, type CurrentUsuario } from "@/lib/current-user";
 import { prisma } from "@/lib/prisma";
 import { canAccessClient } from "@/lib/auth";
+import { enxergaCliente } from "@/lib/encerramento";
 import { criarFerramentasCliente } from "@/lib/copilot/ferramentas";
 import { criarFerramentasFinanceiro } from "@/lib/copilot/ferramentas-financeiro";
 import { dentroDoLimiteDeRequisicoes, validarMensagens } from "@/lib/copilot/limites";
@@ -83,14 +84,23 @@ async function resolverClienteEmEscopo(
 ): Promise<{ id: string; nome: string } | null> {
   if (usuario.role === "cliente") {
     if (!usuario.clientId) return null;
-    const client = await prisma.client.findUnique({ where: { id: usuario.clientId }, select: { id: true, nome: true } });
-    return client;
+    const client = await prisma.client.findUnique({
+      where: { id: usuario.clientId },
+      select: { id: true, nome: true, encerradoEm: true },
+    });
+    // O proxy já barra o usuário de cliente encerrado; isto é a segunda camada.
+    return client && enxergaCliente(usuario.role, client) ? { id: client.id, nome: client.nome } : null;
   }
   if (usuario.role === "admin" || usuario.role === "consultor") {
     const clientId = typeof clientIdDoCorpo === "string" ? clientIdDoCorpo : "";
     if (!clientId || !canAccessClient(usuario.role, usuario.clientId, clientId)) return null;
-    const client = await prisma.client.findUnique({ where: { id: clientId }, select: { id: true, nome: true } });
-    return client;
+    const client = await prisma.client.findUnique({
+      where: { id: clientId },
+      select: { id: true, nome: true, encerradoEm: true },
+    });
+    // Encerrado: só o admin ainda consulta (histórico); criar_demanda recusa
+    // em criarDemanda() para todo mundo.
+    return client && enxergaCliente(usuario.role, client) ? { id: client.id, nome: client.nome } : null;
   }
   // financeiro: nunca vê cliente/demanda (fora da área dele, ver lib/permissoes.ts).
   return null;

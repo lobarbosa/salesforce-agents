@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
 import { materializeContrato, triggerPlanejamento } from "@/lib/github";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
 // Materializa o contrato no repositório e dispara o planejador. Dois passos e
 // não um: o agente roda no repo e não enxerga o Postgres, então o contrato
@@ -22,12 +23,15 @@ export async function POST(
     select: {
       slug: true,
       nome: true,
+      encerradoEm: true,
       contrato: { include: { entregaveis: { orderBy: { ordem: "asc" } } } },
     },
   });
   if (!client) {
     return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "agente");
+  if (encerrado) return encerrado;
 
   const contrato = client.contrato;
   if (!contrato || contrato.tipo !== "projeto") {

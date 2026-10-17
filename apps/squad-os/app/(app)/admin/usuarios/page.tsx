@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { getClients } from "@/lib/data";
+import { getClients, getClientesEncerrados } from "@/lib/data";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { UsuariosAdmin } from "@/components/UsuariosAdmin";
 
@@ -9,9 +9,10 @@ export default async function UsuariosPage() {
   // proxy.ts já bloqueia /admin pra quem não é admin — defesa em profundidade.
   if (!usuario || usuario.role !== "admin") notFound();
 
-  const [usuarios, clients] = await Promise.all([
+  const [usuarios, clients, encerrados] = await Promise.all([
     prisma.usuario.findMany({ orderBy: { criadoEm: "asc" } }),
     getClients(),
+    getClientesEncerrados(),
   ]);
 
   return (
@@ -23,7 +24,7 @@ export default async function UsuariosPage() {
           conceder acesso aqui não envia nada, a pessoa só entra normalmente em <code className="mono">/login</code>.
         </p>
       </div>
-      <UsuariosAdmin usuarios={usuarios} clients={clients} currentUsuarioId={usuario.id} />
+      <UsuariosAdmin usuarios={usuarios} clients={clients} encerrados={encerrados} currentUsuarioId={usuario.id} />
     </>
   );
 }

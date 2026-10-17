@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
 import { dispararAssessment } from "@/lib/assessment";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
 // Refazer o assessment sob demanda. O primeiro roda sozinho quando a org de dev
 // conecta (ver /api/sync/conexao); este é pro caso de a org ter mudado muito
@@ -20,11 +21,13 @@ export async function POST(
   const { id } = await params;
   const client = await prisma.client.findUnique({
     where: { id },
-    select: { slug: true, ambientes: { where: { tipo: "dev" }, select: { statusConexao: true } } },
+    select: { slug: true, nome: true, encerradoEm: true, ambientes: { where: { tipo: "dev" }, select: { statusConexao: true } } },
   });
   if (!client) {
     return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "agente");
+  if (encerrado) return encerrado;
 
   // Sem org de dev conectada o agente não tem o que auditar — falharia lá na
   // frente, no runner, com uma mensagem bem menos clara que esta.

@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { ingerirDocumentos } from "@/lib/rag";
 
 // Reingestão do RAG interno de um cliente — chamada por run-demand.yml depois
@@ -45,10 +46,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "clientSlug e documents são obrigatórios" }, { status: 400 });
   }
 
-  const client = await prisma.client.findUnique({ where: { slug: clientSlug }, select: { id: true } });
+  const client = await prisma.client.findUnique({ where: { slug: clientSlug }, select: { id: true, nome: true, encerradoEm: true } });
   if (!client) {
     return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "sync");
+  if (encerrado) return encerrado;
 
   const resultado = await ingerirDocumentos(
     client.id,

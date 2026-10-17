@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
 // Recebe o resultado do assessment de org (run-assessment.yml) e o grava no
 // perfil do cliente. O relatório longo continua em clients/<slug>/assessment.md
@@ -68,11 +69,13 @@ export async function POST(request: NextRequest) {
 
   const client = await prisma.client.findUnique({
     where: { slug: clientSlug },
-    select: { id: true, ambienteSalesforce: true, integracoes: true },
+    select: { id: true, nome: true, encerradoEm: true, ambienteSalesforce: true, integracoes: true },
   });
   if (!client) {
     return NextResponse.json({ error: `cliente '${clientSlug}' não encontrado` }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "sync");
+  if (encerrado) return encerrado;
 
   const runUrl = urlDeRunValida(body.runUrl);
 

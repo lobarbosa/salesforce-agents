@@ -28,7 +28,7 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json({ error: "não dá para lançar hora num dia que ainda não chegou" }, { status: 400 });
   }
 
-  const acesso = await resolverDemanda(demandaId, { somenteDelivery: true });
+  const acesso = await resolverDemanda(demandaId, { somenteDelivery: true, clienteAtivo: "tempo" });
   if (acesso.erro) return acesso.erro;
   const { usuario } = acesso;
 

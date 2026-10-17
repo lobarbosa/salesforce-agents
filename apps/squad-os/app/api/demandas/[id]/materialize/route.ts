@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { CodigoOcupadoNoGitError, materializeDemanda, triggerRunDemand } from "@/lib/github";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
 // Materializa a demanda em clients/<slug>/demandas/<code>/ neste repo e
 // dispara run-demand.yml. Chamado a partir do card (ver componentes/DemandModal)
@@ -24,6 +25,8 @@ export async function POST(
   if (!demanda) {
     return NextResponse.json({ error: "demanda não encontrada" }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(demanda.client, "agente");
+  if (encerrado) return encerrado;
 
   if (demanda.materializadoEm) {
     return NextResponse.json({ error: "esta demanda já foi materializada" }, { status: 409 });
