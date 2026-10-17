@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Role xmlns="http://soap.sforce.com/2006/04/metadata">
+    <caseAccessLevel>Edit</caseAccessLevel>
+    <contactAccessLevel>Edit</contactAccessLevel>
+    <description>Analista Suporte DC&amp;C</description>
+    <mayForecastManagerShare>false</mayForecastManagerShare>
+    <name>Analista Suporte DC&amp;C</name>
+    <opportunityAccessLevel>Edit</opportunityAccessLevel>
+    <parentRole>Coordenador_DC_C</parentRole>
+</Role>

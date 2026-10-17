@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>jn12092018 criar a possibilidade do GC desbloquear a oportunidade.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>GC desbloqueia objeto oportunidade</label>
+    <license>Salesforce</license>
+</PermissionSet>

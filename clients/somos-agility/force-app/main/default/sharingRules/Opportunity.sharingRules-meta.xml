@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SharingRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <sharingOwnerRules>
+        <fullName>Compartilhamento_de_todas_oportunidades_com_o_time_de_IA</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Compartilhamento de todas oportunidades com o time de IA.</description>
+        <label>Compartilhamento de todas oportunidades com o time de IA</label>
+        <sharedTo>
+            <group>AI_team</group>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers></allInternalUsers>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Compartilhamento_de_todas_oportunidades_com_o_usuario_de_Sales_Operations</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Compartilha todas as oportunidades criadas com o usuário de Sales Operations.</description>
+        <label>Compartilhamento de todas oportunidades com o usuário de Sales Operations</label>
+        <sharedTo>
+            <role>SalesOperations</role>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers></allInternalUsers>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Compartilhamento_de_todas_oportunidades_com_os_analistas_de_renovacoes</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Compartilha todas as oportunidades criadas com os analistas de renovações.</description>
+        <label>Compartilhamento de todas oportunidades com os analistas de renovações (BDR&apos;s)</label>
+        <sharedTo>
+            <role>Renova_es</role>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers></allInternalUsers>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Compartilhamento_de_todas_oportunidades_com_os_engenheiros_de_sistemas_BDR_s</fullName>
+        <accessLevel>Edit</accessLevel>
+        <description>Compartilha todas as oportunidades criadas com os engenheiros de sistemas (BDR&apos;s).</description>
+        <label>Compartilhamento de todas oportunidades com os engenheiros de sistemas (BDR&apos;s)</label>
+        <sharedTo>
+            <role>System_Engineer_BDR</role>
+        </sharedTo>
+        <sharedFrom>
+            <allInternalUsers></allInternalUsers>
+        </sharedFrom>
+    </sharingOwnerRules>
+    <sharingOwnerRules>
+        <fullName>Compartilhamento_de_todas_oportunidades_criadas_por_Sales_Operations</fullName>
+        <accessLevel>Read</accessLevel>
+        <description>Compartilha todas as oportunidades criadas por Sales Operations com os demais usuários.</description>
+        <label>Compartilhamento de todas oportunidades criadas por Sales Operations</label>
+        <sharedTo>
+            <allInternalUsers></allInternalUsers>
+        </sharedTo>
+        <sharedFrom>
+            <role>SalesOperations</role>
+        </sharedFrom>
+    </sharingOwnerRules>
+</SharingRules>
