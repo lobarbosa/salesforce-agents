@@ -336,6 +336,12 @@ model Demanda {
   estimativaHorasFonte String @default("") @map("estimativa_horas_fonte")
   // Horas de agente: tempo de sessão já rodado (telemetria) + projeção do que
   // falta. Somam com as de consultor para o total da demanda.
+  // Estimativa OFICIAL do consultor, lançada no card (pré-preenchida com a
+  // sugestão do agente). Sem ela o apontamento de horas fica bloqueado —
+  // é o número contra o qual o timesheet é medido e o que o cliente vê.
+  estimativaConsultorHoras Float?    @map("estimativa_consultor_horas")
+  estimativaConsultorPor   String    @default("") @map("estimativa_consultor_por")
+  estimativaConsultorEm    DateTime? @map("estimativa_consultor_em")
   agenteHorasGasto     Float? @map("agente_horas_gasto")
   agenteHorasRestante  Float? @map("agente_horas_restante")
   // Custo de agente em USD: gasto até aqui (telemetria) e projeção do que

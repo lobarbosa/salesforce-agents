@@ -40,6 +40,12 @@ export async function PUT(request: NextRequest) {
     autorEmail: usuario.email,
   });
 
+  if ("semEstimativa" in resultado) {
+    return NextResponse.json(
+      { error: "esta demanda ainda não tem estimativa de horas — lance no card antes de apontar", semEstimativa: true },
+      { status: 409 }
+    );
+  }
   if ("conflito" in resultado) {
     return NextResponse.json(
       {

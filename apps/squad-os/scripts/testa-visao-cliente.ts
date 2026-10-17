@@ -30,6 +30,9 @@ const base = {
   estimativaHorasMin: 4,
   estimativaHorasMax: 8,
   estimativaHorasFonte: "03-design.md",
+  estimativaConsultorHoras: 10,
+  estimativaConsultorPor: "Consultora",
+  sugestaoConsultorHoras: 9,
   agenteHorasGasto: 0.5,
   agenteHorasRestante: 1.2,
   custoAgenteGastoUsd: 1.5,
@@ -46,6 +49,9 @@ caso("cliente não recebe estimativa nem custo de agente", () => {
   assert.equal(d.estimativaHorasMin, null);
   assert.equal(d.estimativaHorasMax, null);
   assert.equal(d.agenteHorasGasto, null);
+  assert.equal(d.estimativaConsultorHoras, null);
+  assert.equal(d.sugestaoConsultorHoras, null);
+  assert.equal(d.estimativaConsultorPor, "");
   assert.equal(d.agenteHorasRestante, null);
   assert.equal(d.custoAgenteGastoUsd, null);
   assert.equal(d.custoAgenteRestanteUsd, null);

@@ -1,6 +1,6 @@
 // Calibração da estimativa pelo timesheet (lib/estimativa.ts) — puro.
 import assert from "node:assert/strict";
-import { calibracaoPara, clienteVeEstimativa, estimativaCalibrada } from "@/lib/estimativa";
+import { calibracaoPara, clienteVeEstimativa, estimativaCalibrada, sugestaoParaConsultor } from "@/lib/estimativa";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -52,6 +52,28 @@ caso("sem estimativa do consultor não há número pro cliente", () => {
     { fator: 1, amostras: 0, escopo: "nenhum" }
   );
   assert.equal(e, null);
+});
+
+caso("estimativa do consultor vence e não é recalibrada", () => {
+  const e = estimativaCalibrada(
+    { estimativaHorasMin: 4, estimativaHorasMax: 8, estimativaConsultorHoras: 10, agenteHorasGasto: 0.5, agenteHorasRestante: 1.5 },
+    { fator: 1.5, amostras: 3, escopo: "cliente" }
+  );
+  assert.deepEqual([e!.min, e!.max], [12, 12]);
+});
+
+caso("consultor sem sugestão do agente ainda gera número", () => {
+  const e = estimativaCalibrada(
+    { estimativaHorasMin: null, estimativaHorasMax: null, estimativaConsultorHoras: 6, agenteHorasGasto: null, agenteHorasRestante: null },
+    { fator: 1, amostras: 0, escopo: "nenhum" }
+  );
+  assert.deepEqual([e!.min, e!.max], [6, 6]);
+});
+
+caso("sugestão pré-preenchida = ponto médio calibrado, meia hora", () => {
+  assert.equal(sugestaoParaConsultor({ estimativaHorasMin: 4, estimativaHorasMax: 8 }, { fator: 1.5, amostras: 3, escopo: "cliente" }), 9);
+  assert.equal(sugestaoParaConsultor({ estimativaHorasMin: 1, estimativaHorasMax: 2 }, { fator: 1, amostras: 0, escopo: "nenhum" }), 1.5);
+  assert.equal(sugestaoParaConsultor({ estimativaHorasMin: null, estimativaHorasMax: null }, { fator: 1, amostras: 0, escopo: "nenhum" }), null);
 });
 
 caso("cliente vê a partir do gate da análise", () => {

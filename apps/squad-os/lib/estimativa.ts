@@ -67,18 +67,37 @@ export function estimativaCalibrada(
   d: {
     estimativaHorasMin: number | null;
     estimativaHorasMax: number | null;
+    estimativaConsultorHoras?: number | null;
     agenteHorasGasto: number | null;
     agenteHorasRestante: number | null;
   },
   calibracao: Calibracao
 ): EstimativaCalibrada | null {
-  if (d.estimativaHorasMin === null || d.estimativaHorasMax === null) return null;
   const agente = (d.agenteHorasGasto ?? 0) + (d.agenteHorasRestante ?? 0);
+  // A estimativa lançada pelo consultor é a oficial: já é o julgamento de
+  // quem vai fazer, com a sugestão calibrada na frente dele. Não se calibra
+  // de novo por cima.
+  if (d.estimativaConsultorHoras != null) {
+    const h = d.estimativaConsultorHoras + agente;
+    return { min: h, max: h, calibracao: { fator: 1, amostras: 0, escopo: "nenhum" } };
+  }
+  if (d.estimativaHorasMin === null || d.estimativaHorasMax === null) return null;
   return {
     min: d.estimativaHorasMin * calibracao.fator + agente,
     max: d.estimativaHorasMax * calibracao.fator + agente,
     calibracao,
   };
+}
+
+/** Número que vai pré-preenchido no campo do consultor: ponto médio da
+ * sugestão do agente, calibrada pelo timesheet, arredondado a meia hora. */
+export function sugestaoParaConsultor(
+  d: { estimativaHorasMin: number | null; estimativaHorasMax: number | null },
+  calibracao: Calibracao
+): number | null {
+  if (d.estimativaHorasMin === null || d.estimativaHorasMax === null) return null;
+  const meio = ((d.estimativaHorasMin + d.estimativaHorasMax) / 2) * calibracao.fator;
+  return Math.max(0.5, Math.round(meio * 2) / 2);
 }
 
 // O cliente vê a estimativa a partir do momento em que a análise existe
