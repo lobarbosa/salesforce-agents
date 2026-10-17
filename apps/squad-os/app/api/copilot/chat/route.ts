@@ -6,7 +6,8 @@ import { canAccessClient } from "@/lib/auth";
 import { enxergaCliente } from "@/lib/encerramento";
 import { criarFerramentasCliente } from "@/lib/copilot/ferramentas";
 import { criarFerramentasFinanceiro } from "@/lib/copilot/ferramentas-financeiro";
-import { dentroDoLimiteDeRequisicoes, validarMensagens } from "@/lib/copilot/limites";
+import { dentroDoLimiteDeRequisicoes, MAX_REQUISICOES_POR_DIA, validarMensagens } from "@/lib/copilot/limites";
+import { consumirLimite } from "@/lib/limite-uso";
 
 // Modelo via AI Gateway (padrão da skill vercel:ai-sdk — string "provider/modelo",
 // sem pacote de provider dedicado). Sonnet: mesma faixa de custo/julgamento que
@@ -114,6 +115,12 @@ export async function POST(request: NextRequest) {
 
   if (!dentroDoLimiteDeRequisicoes(usuario.id)) {
     return NextResponse.json({ error: "muitas mensagens em pouco tempo — espere um minuto" }, { status: 429 });
+  }
+  if (!(await consumirLimite(`copiloto:${usuario.id}`, MAX_REQUISICOES_POR_DIA))) {
+    return NextResponse.json(
+      { error: `limite diário de ${MAX_REQUISICOES_POR_DIA} mensagens do copiloto atingido — volta amanhã` },
+      { status: 429 }
+    );
   }
 
   const corpo = await request.json().catch(() => null);

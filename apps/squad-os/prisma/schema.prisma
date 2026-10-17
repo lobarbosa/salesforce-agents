@@ -248,6 +248,7 @@ model ExecucaoAgente {
 
   @@index([clientId, concluidoEm])
   @@index([resultado, concluidoEm])
+  @@index([demandaId])
   @@map("execucoes_agente")
 }
 
@@ -588,6 +589,7 @@ model ContaPagar {
 
   @@unique([recorrenciaId, competencia])
   @@index([status, vencimento])
+  @@index([clientId])
   @@map("contas_pagar")
 }
 
@@ -638,6 +640,7 @@ model DespesaRecorrente {
   contas ContaPagar[]
 
   @@index([ativa])
+  @@index([clientId])
   @@map("despesas_recorrentes")
 }
 
@@ -678,4 +681,19 @@ model DocumentoContabil {
 
   @@index([competencia])
   @@map("documentos_contabeis")
+}
+
+// Contador durável de uso (2026-10-17). O limite por minuto do copiloto
+// (lib/copilot/limites.ts) vive em memória — cada instância serverless tem o
+// seu e zera no cold start, então não é teto de verdade. Este é: uma linha
+// por chave+janela, incrementada atomicamente (lib/limite-uso.ts).
+model LimiteUso {
+  chave    String
+  janela   String
+  contagem Int      @default(0)
+  criadoEm DateTime @default(now()) @map("criado_em")
+
+  @@id([chave, janela])
+  @@index([criadoEm])
+  @@map("limites_uso")
 }
