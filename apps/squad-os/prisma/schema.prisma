@@ -312,6 +312,19 @@ model Demanda {
   artefatoConteudo String  @default("") @map("artefato_conteudo")
   artefatoTruncado Boolean @default(false) @map("artefato_truncado")
 
+  // Estimativa (2026-10-17), espelhada pelo mesmo sync (estimativa.py).
+  // Horas: esforço humano estimado pelo agente na análise, refinado no
+  // design — nulo até alguma etapa escrever a linha. Visível pra delivery,
+  // nunca pro papel cliente (visao-cliente.ts).
+  estimativaHorasMin   Float? @map("estimativa_horas_min")
+  estimativaHorasMax   Float? @map("estimativa_horas_max")
+  estimativaHorasFonte String @default("") @map("estimativa_horas_fonte")
+  // Custo de agente em USD: gasto até aqui (telemetria) e projeção do que
+  // falta (mediana por etapa). **Só admin vê** — a página recorta pros demais.
+  custoAgenteGastoUsd    Float? @map("custo_agente_gasto_usd")
+  custoAgenteRestanteUsd Float? @map("custo_agente_restante_usd")
+  custoAgenteAmostras    Int    @default(0) @map("custo_agente_amostras")
+
   comentarios Comentario[]
   subtarefas  Subtarefa[]
   checklist   ChecklistItem[]

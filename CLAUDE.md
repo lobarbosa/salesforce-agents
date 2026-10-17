@@ -284,6 +284,20 @@ escrito, só lido. Quem precisa do agregado usa
 `salesforce_agents.costs.ler_todas_as_linhas()`, que junta os dois (ver skill
 `revisar-custos`).
 
+### Estimativa por demanda
+
+Cada card mostra duas estimativas, de fontes diferentes de propósito
+(`src/salesforce_agents/estimativa.py`, espelhadas pelo sync):
+
+- **Horas de esforço humano** — julgamento do agente: `ba-discovery` escreve
+  `**Estimativa de esforço:** <min>–<max> h` na análise e o `arquiteto` refina no design
+  (a do design vence). Sem a linha, não aparece — não se inventa número. Visível para
+  delivery, nunca para o papel cliente.
+- **Custo de agente (USD)** — conta, não opinião: o gasto da demanda pela telemetria
+  acima, mais a mediana por etapa do que ainda falta (valor de partida declarado enquanto
+  não há 3 amostras). **Só admin vê**: a página recorta para os demais papéis
+  (`lib/visao-cliente.ts`) antes de virar prop.
+
 ## Estrutura de artefatos por demanda
 
 ```

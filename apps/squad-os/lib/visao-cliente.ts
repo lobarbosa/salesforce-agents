@@ -30,6 +30,17 @@ export function clienteParaCliente<T extends ClienteComRelacoes>(client: T): T {
   };
 }
 
+/** Custo de agente é só pra admin (decisão de 2026-10-17): zera pros demais papéis. */
+const SEM_CUSTO_AGENTE = {
+  custoAgenteGastoUsd: null,
+  custoAgenteRestanteUsd: null,
+  custoAgenteAmostras: 0,
+} as const;
+
+export function semCustoAgente<T extends DemandaCompleta>(d: T): T {
+  return { ...d, ...SEM_CUSTO_AGENTE };
+}
+
 /**
  * Demanda vista pelo cliente: artefato e perguntas só no gate que é dele
  * (a mesma regra de podeAprovarGate), sem histórico de esteira, sem link de
@@ -49,6 +60,12 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     historico: [],
     ultimoRunUrl: "",
     ultimoResultado: "",
+    // Estimativa é instrumento interno de delivery: nem horas nem custo de
+    // agente chegam ao navegador do cliente.
+    estimativaHorasMin: null,
+    estimativaHorasMax: null,
+    estimativaHorasFonte: "",
+    ...SEM_CUSTO_AGENTE,
     subtarefas: [],
     checklist: [],
     tempos: primeiro

@@ -119,7 +119,10 @@ def payload_de_sync(demanda: Demand) -> dict:
     artefato e perguntas são derivados, e gravá-los no `status.yaml` criaria
     uma segunda cópia do que já está no arquivo ao lado.
     """
+    from . import estimativa
+
     dados = demanda.to_dict()
+    dados["estimativa"] = estimativa.payload(demanda)
     artefato = artefato_em_revisao(demanda)
     if artefato:
         dados["artefato"] = artefato

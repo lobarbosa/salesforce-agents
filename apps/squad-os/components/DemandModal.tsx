@@ -15,6 +15,7 @@ import {
   podeAprovarGate,
   progressoDaDemanda,
   timeAgo,
+  formatarMinutos,
 } from "@/lib/demandas";
 
 export function DemandModal({
@@ -160,6 +161,8 @@ export function DemandModal({
       </div>
 
       <div className="demanda-texto">{demanda.texto || "(sem descrição)"}</div>
+
+      {!visaoCliente && <EstimativaDemanda demanda={demanda} isAdmin={isAdmin} />}
 
       {visaoCliente && !emGate && (
         <div className="estado-cliente">
@@ -396,5 +399,45 @@ export function DemandModal({
         )}
       </div>
     </Modal>
+  );
+}
+
+// Horas: o que o agente estimou de esforço humano (análise → design) contra o
+// que já foi lançado. Custo de agente: só admin — e a página já zerou o campo
+// pros outros papéis, então isto é a segunda camada, não a única.
+function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isAdmin: boolean }) {
+  const lancadoMin = demanda.tempos.reduce((soma, t) => soma + (t.fimEm ? (t.minutos ?? 0) : 0), 0);
+  const temHoras = demanda.estimativaHorasMin !== null && demanda.estimativaHorasMax !== null;
+  const temCusto = isAdmin && demanda.custoAgenteRestanteUsd !== null;
+  if (!temHoras && !temCusto) return null;
+
+  const fmtH = (h: number) => h.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+  const fmtUsd = (v: number) =>
+    v.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 });
+  const fonte = demanda.estimativaHorasFonte.startsWith("03") ? "design" : "análise";
+
+  return (
+    <div className="estimativa-demanda meta" aria-label="Estimativa da demanda">
+      {temHoras && (
+        <span title={`Esforço humano estimado pelo agente na ${fonte} (${demanda.estimativaHorasFonte}).`}>
+          Estimativa: {fmtH(demanda.estimativaHorasMin!)}
+          {demanda.estimativaHorasMax !== demanda.estimativaHorasMin && `–${fmtH(demanda.estimativaHorasMax!)}`} h
+          {" "}({fonte}) · lançado {formatarMinutos(lancadoMin)}
+        </span>
+      )}
+      {temCusto && (
+        <span
+          title={
+            demanda.custoAgenteAmostras > 0
+              ? `Projeção pela mediana de ${demanda.custoAgenteAmostras} sessões já registradas por etapa.`
+              : "Sem histórico suficiente: projeção pelo valor de partida de cada etapa."
+          }
+        >
+          Agente (admin): gasto {fmtUsd(demanda.custoAgenteGastoUsd ?? 0)} · falta ~
+          {fmtUsd(demanda.custoAgenteRestanteUsd!)}
+          {demanda.custoAgenteAmostras === 0 && " (estimativa inicial)"}
+        </span>
+      )}
+    </div>
   );
 }

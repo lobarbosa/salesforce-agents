@@ -3,7 +3,7 @@ import { getClientById, getDemandasByClient, demandasPorEntregavel, horasPorMes 
 import { getCurrentUsuario } from "@/lib/current-user";
 import { ClientDetail } from "@/components/ClientDetail";
 import { canAccessClient } from "@/lib/auth";
-import { clienteParaCliente, demandaParaCliente } from "@/lib/visao-cliente";
+import { clienteParaCliente, demandaParaCliente, semCustoAgente } from "@/lib/visao-cliente";
 
 export default async function ClientPage({
   params,
@@ -36,7 +36,13 @@ export default async function ClientPage({
   return (
     <ClientDetail
       client={ehCliente ? clienteParaCliente(client) : client}
-      demandas={ehCliente ? demandas.map(demandaParaCliente) : demandas}
+      demandas={
+        ehCliente
+          ? demandas.map(demandaParaCliente)
+          : usuario.role === "admin"
+            ? demandas
+            : demandas.map(semCustoAgente)
+      }
       usuario={usuario}
       horas={horas}
       demandasPorEntregavel={porEntregavel}
