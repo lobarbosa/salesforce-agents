@@ -163,6 +163,14 @@ export function DemandModal({
       <div className="demanda-texto">{demanda.texto || "(sem descrição)"}</div>
 
       {!visaoCliente && <EstimativaDemanda demanda={demanda} isAdmin={isAdmin} />}
+      {visaoCliente && demanda.estimativaCalibrada && (
+        <div className="estimativa-demanda meta" aria-label="Estimativa de horas">
+          <strong>
+            Estimativa de horas: {faixaH(demanda.estimativaCalibrada.min, demanda.estimativaCalibrada.max)} h
+          </strong>
+          <span>Feita após a análise, antes da construção; pode ser refinada no desenho da solução.</span>
+        </div>
+      )}
 
       {visaoCliente && !emGate && (
         <div className="estado-cliente">
@@ -414,11 +422,12 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
   if (!temConsultor && !temAgente && !temCusto) return null;
 
   const fmtH = (h: number) => h.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
-  const faixa = (lo: number, hi: number) => (Math.abs(hi - lo) < 0.05 ? fmtH(lo) : `${fmtH(lo)}–${fmtH(hi)}`);
+  const faixa = faixaH;
   const fmtUsd = (v: number) =>
     v.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 });
   const fonte = demanda.estimativaHorasFonte.startsWith("03") ? "design" : "análise";
   const agenteTotal = temAgente ? demanda.agenteHorasGasto! + demanda.agenteHorasRestante! : 0;
+  const cal = demanda.estimativaCalibrada ?? null;
 
   return (
     <div className="estimativa-demanda meta" aria-label="Estimativa da demanda">
@@ -442,6 +451,18 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
           h
         </strong>
       )}
+      {cal && cal.calibracao.escopo !== "nenhum" && (
+        <strong
+          title={`Consultor × ${cal.calibracao.fator.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}: mediana de lançado÷estimado em ${cal.calibracao.amostras} demandas entregues (${cal.calibracao.escopo === "cliente" ? "deste cliente" : "todos os clientes"}). É o número que o cliente vê.`}
+        >
+          Calibrado pelo timesheet: {faixa(cal.min, cal.max)} h
+        </strong>
+      )}
+      {cal && cal.calibracao.escopo === "nenhum" && (
+        <span title="Menos de 3 demandas entregues com estimativa e horas lançadas — o cliente vê o total sem calibração.">
+          Sem histórico de timesheet para calibrar ainda
+        </span>
+      )}
       {temCusto && (
         <span
           title={
@@ -457,4 +478,9 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
       )}
     </div>
   );
+}
+
+function faixaH(lo: number, hi: number): string {
+  const f = (h: number) => h.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
+  return Math.abs(hi - lo) < 0.05 ? f(lo) : `${f(lo)}–${f(hi)}`;
 }

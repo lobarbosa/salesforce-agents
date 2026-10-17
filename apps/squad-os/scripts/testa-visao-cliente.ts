@@ -35,6 +35,7 @@ const base = {
   custoAgenteGastoUsd: 1.5,
   custoAgenteRestanteUsd: 3,
   custoAgenteAmostras: 5,
+  estimativaCalibrada: { min: 8, max: 14, calibracao: { fator: 1.5, amostras: 4, escopo: "cliente" } },
   subtarefas: [],
   checklist: [],
   tempos: [],
@@ -48,6 +49,14 @@ caso("cliente não recebe estimativa nem custo de agente", () => {
   assert.equal(d.agenteHorasRestante, null);
   assert.equal(d.custoAgenteGastoUsd, null);
   assert.equal(d.custoAgenteRestanteUsd, null);
+});
+
+caso("cliente vê só a faixa calibrada depois da análise, sem o fator", () => {
+  const d = demandaParaCliente(base);
+  assert.deepEqual([d.estimativaCalibrada!.min, d.estimativaCalibrada!.max], [8, 14]);
+  assert.equal(d.estimativaCalibrada!.calibracao.amostras, 0);
+  const antes = demandaParaCliente({ ...base, status: "analise" } as DemandaCompleta);
+  assert.equal(antes.estimativaCalibrada, null);
 });
 
 caso("recorte do cliente continua escondendo artefato e run", () => {
