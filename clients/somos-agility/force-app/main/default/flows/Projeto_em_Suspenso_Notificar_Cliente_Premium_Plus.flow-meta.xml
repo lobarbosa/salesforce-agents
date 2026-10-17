@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notificacao_ao_Cliente_Premium_Plus_Tatiane_Paula_Papis_de_Projeto_em_Suspenso</name>
+        <label>PPM_Project__c.Notificacao_ao_Cliente_Premium_Plus_Tatiane_Paula_Papis_de_P</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>PPM_Project__c.Notificacao_ao_Cliente_Premium_Plus_Tatiane_Paula_Papis_de_Projeto_em_Suspenso</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>PPM_Project__c.Notificacao_ao_Cliente_Premium_Plus_Tatiane_Paula_Papis_de_Projeto_em_Suspenso</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Projeto em Suspenso - Notificar Cliente Premium Plus
+Descrição da regra de fluxo de trabalho: Notificar Cliente + Tatiane + GC + Paula Papis&quot;</description>
+    <label>Projeto em Suspenso - Notificar Cliente Premium Plus</label>
+    <migratedFromWorkflowRuleName>Projeto em Suspenso - Notificar Cliente Premium Plus</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notificacao_ao_Cliente_Premium_Plus_Tatiane_Paula_Papis_de_Projeto_em_Suspenso</targetReference>
+        </connector>
+        <filterFormula>(ISCHANGED( {!$Record.Project_Status__c} ) &amp;&amp; ISPICKVAL( {!$Record.Project_Status__c} ,&quot;Suspenso&quot;) &amp;&amp; PRIORVALUE({!$Record.Project_Status__c})&lt;&gt;&quot;Suspenso&quot; &amp;&amp; (TEXT(  {!$Record.Status_de_Qualificacao_Projeto_Suspenso__c}  )=&quot;Aprovado&quot; || TEXT( {!$Record.Status_de_Qualificacao_Projeto_Suspenso__c} )=&quot;&quot;)&amp;&amp;  {!$Record.Conta__r.Cliente_Vip__c} =True)</filterFormula>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

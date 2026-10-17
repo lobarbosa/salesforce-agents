@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Duração da atividade
+Descrição da regra de fluxo de trabalho: AM231118: atualiza o campo da duração&quot;</description>
+    <formulas>
+        <name>Duracao_da_atividadeFormula</name>
+        <dataType>Number</dataType>
+        <expression>IF( 
+($Record.Modelo_de_contaracao__c) = &apos;TK&apos; 
+,
+((((TIMEVALUE($Record.Fim_da_atividade__c) - 
+TIMEVALUE($Record.Inicio_da_atividade__c))/1000)/60)/60)
+,
+CEILING(((((TIMEVALUE($Record.Fim_da_atividade__c) - 
+TIMEVALUE($Record.Inicio_da_atividade__c))/60)/1000)/60)) 
+)
+
+
+/*
+FUNCIONA T&amp;M
+IF( 
+(Modelo_de_contaracao__c) = &apos;T&amp;M&apos; 
+, 
+CEILING(((((TIMEVALUE(Fim_da_atividade__c) - 
+TIMEVALUE(Inicio_da_atividade__c))/60)/1000)/60)) 
+, 5)
+
+
+(((((TIMEVALUE(Fim_da_atividade__c) - 
+TIMEVALUE(Inicio_da_atividade__c))/60)/1000)/60))
+
+*/</expression>
+        <scale>0</scale>
+    </formulas>
+    <label>Duração da atividade</label>
+    <migratedFromWorkflowRuleName>Duração da atividade</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>AM231118: campo de formula da duração da atividade</description>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Duracao_da_atividade__c</field>
+            <value>
+                <elementReference>Duracao_da_atividadeFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>CreatedById</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>&quot;&quot;</stringValue>
+            </value>
+        </filters>
+        <object>Lancamento_de_Atividades__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>InvalidDraft</status>
+</Flow>

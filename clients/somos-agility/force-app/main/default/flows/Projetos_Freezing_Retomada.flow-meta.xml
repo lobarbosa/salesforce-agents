@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notifica_o_ao_Cliente_Tatiane_de_Retomada_de_Projeto_Freezing</name>
+        <label>PPM_Project__c.Notifica_o_ao_Cliente_Tatiane_de_Retomada_de_Projeto_Freezing</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>PPM_Project__c.Notifica_o_ao_Cliente_Tatiane_de_Retomada_de_Projeto_Freezing</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>PPM_Project__c.Notifica_o_ao_Cliente_Tatiane_de_Retomada_de_Projeto_Freezing</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Projetos Freezing - Retomada
+Descrição da regra de fluxo de trabalho: jan09012020 ajuste no fluxo de trabalho .&quot;</description>
+    <label>Projetos Freezing - Retomada</label>
+    <migratedFromWorkflowRuleName>Projetos Freezing - Retomada</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notifica_o_ao_Cliente_Tatiane_de_Retomada_de_Projeto_Freezing</targetReference>
+        </connector>
+        <filterFormula>PRIORVALUE( {!$Record.Project_Status__c} )=&quot;Freezing&quot; &amp;&amp; ISPICKVAL({!$Record.Status_de_Altera_o_de_Status__c},&quot;Aprovado&quot;)</filterFormula>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Preenche compromisso de fechamento anterior
+Descrição da regra de fluxo de trabalho: Preenchimento do campo MCF Anterior com o valor antes da atualização para que seja possível ter um rastreamento no modelo de email.&quot;</description>
+    <formulas>
+        <name>AtualizaMCFAnteriorFormula</name>
+        <dataType>String</dataType>
+        <expression>PRIORVALUE($Record.Meu_Compromisso_de_Fechamento__c)</expression>
+    </formulas>
+    <label>Preenche compromisso de fechamento anterior</label>
+    <migratedFromWorkflowRuleName>Preenche compromisso de fechamento anterior</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualização do campo MCF Anterior com o valor do &quot;Meu compromisso de fechamento&quot; antes da atualização.</description>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>MCFValorAnterior__c</field>
+            <value>
+                <elementReference>AtualizaMCFAnteriorFormula</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>OR( 				ISCHANGED({!$Record.Certeza_de_Conclus_o__c}), 				ISCHANGED({!$Record.Certeza_de_Vit_ria__c}) )</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

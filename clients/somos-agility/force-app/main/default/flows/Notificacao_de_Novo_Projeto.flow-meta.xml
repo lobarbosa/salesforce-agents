@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Notificação de novo projeto, possuinte de Gerente de Projeto, Tribo e PM definidos.</description>
+        <name>Email_Novo_Projeto</name>
+        <label>Email Novo Projeto</label>
+        <locationX>1251</locationX>
+        <locationY>161</locationY>
+        <actionName>PPM_Project__c.Notificacao_de_Novo_Projeto</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>PPM_Project__c.Notificacao_de_Novo_Projeto</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Notificação de novo projeto, possuinte de Gerente de Projeto, Tribo e PM definidos.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Captura a data atual no sistema.</description>
+        <name>data_atual</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <interviewLabel>Notificacao de Novo Projeto {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Notificação de Novo Projeto</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualiza variável/campo &quot;Email Enviado&quot;, checkbox utilizado como controle.</description>
+        <name>Atualiza_Controle</name>
+        <label>Atualiza Controle</label>
+        <locationX>1089</locationX>
+        <locationY>161</locationY>
+        <connector>
+            <targetReference>Email_Novo_Projeto</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Data_de_envio_da_notificacao__c</field>
+            <value>
+                <elementReference>data_atual</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Email_Enviado__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Gerente_da_Conta_Email_Flow__c</field>
+            <value>
+                <elementReference>$Record.Gerente_da_Conta__r.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Orcamentista_Email_Flow__c</field>
+            <value>
+                <elementReference>$Record.Orcamentista__r.Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>630</locationX>
+        <locationY>56</locationY>
+        <connector>
+            <targetReference>Atualiza_Controle</targetReference>
+        </connector>
+        <filterLogic>1 AND 2 AND 3</filterLogic>
+        <filters>
+            <field>Gerente_do_Projeto__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Email_Enviado__c</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Project_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>DSA em Análise</stringValue>
+            </value>
+        </filters>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

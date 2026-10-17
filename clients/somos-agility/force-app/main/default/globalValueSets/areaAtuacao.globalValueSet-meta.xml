@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Atendimento</fullName>
+        <default>false</default>
+        <label>Atendimento</label>
+    </customValue>
+    <customValue>
+        <fullName>DEV</fullName>
+        <default>false</default>
+        <label>DEV</label>
+    </customValue>
+    <customValue>
+        <fullName>DevOps</fullName>
+        <default>false</default>
+        <label>DevOps</label>
+    </customValue>
+    <customValue>
+        <fullName>Digital</fullName>
+        <default>false</default>
+        <label>Digital</label>
+    </customValue>
+    <customValue>
+        <fullName>Financeiro</fullName>
+        <default>false</default>
+        <label>Financeiro</label>
+    </customValue>
+    <customValue>
+        <fullName>MKT</fullName>
+        <default>false</default>
+        <label>MKT</label>
+    </customValue>
+    <customValue>
+        <fullName>Outros</fullName>
+        <default>false</default>
+        <label>Outros</label>
+    </customValue>
+    <customValue>
+        <fullName>Segurança</fullName>
+        <default>false</default>
+        <label>Segurança</label>
+    </customValue>
+    <customValue>
+        <fullName>Sistemas</fullName>
+        <default>false</default>
+        <label>Sistemas</label>
+    </customValue>
+    <customValue>
+        <fullName>TI</fullName>
+        <default>false</default>
+        <label>TI</label>
+    </customValue>
+    <description>Utilizado no campo Area de Atuação customizado dentro do objeto padrão Contato.</description>
+    <masterLabel>Área de Atuação</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

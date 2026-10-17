@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notificacao_de_Alteracao_de_Requisitado_no_Caso_Pendencia_de_Contratos</name>
+        <label>Case.Notificacao_de_Alteracao_de_Requisitado_no_Caso_Pendencia_de_Contratos</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Case.Notificacao_de_Alteracao_de_Requisitado_no_Caso_Pendencia_de_Contratos</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Case.Notificacao_de_Alteracao_de_Requisitado_no_Caso_Pendencia_de_Contratos</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Caso Novo - Pendência de Contratos
+Descrição da regra de fluxo de trabalho: Quando um novo caso é criado um e-mail é enviado ao requisitado&quot;</description>
+    <label>Caso Novo - Pendência de Contratos</label>
+    <migratedFromWorkflowRuleName>Caso Novo - Pendência de Contratos</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notificacao_de_Alteracao_de_Requisitado_no_Caso_Pendencia_de_Contratos</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>RecordTypeId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendência de Contratos</stringValue>
+            </value>
+        </filters>
+        <object>Case</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

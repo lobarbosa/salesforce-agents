@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>sp1Data_do_Plano_de_A_o_Ultrapassada</name>
+        <label>Plano_de_Acao__c.Data_do_Plano_de_A_o_Ultrapassada</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Plano_de_Acao__c.Data_do_Plano_de_A_o_Ultrapassada</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Plano_de_Acao__c.Data_do_Plano_de_A_o_Ultrapassada</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Data de Finalizacao Vencida
+Descrição da regra de fluxo de trabalho: Data Quando será feito vencida&quot;</description>
+    <label>Data de Finalizacao Vencida</label>
+    <migratedFromWorkflowRuleName>Data de Finalizacao Vencida</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterFormula>IF(({!$Record.Quando_ser_feito__c} = TODAY())&amp;&amp;(ISPICKVAL( {!$Record.Status_da_Atividade_do_Plano_de_A_o__c} ,&quot;Aberta&quot;)||ISPICKVAL( {!$Record.Status_da_Atividade_do_Plano_de_A_o__c} ,&quot;Em Andamento&quot;)),True,False)</filterFormula>
+        <object>Plano_de_Acao__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>ScheduledPath1</name>
+            <connector>
+                <targetReference>sp1Data_do_Plano_de_A_o_Ultrapassada</targetReference>
+            </connector>
+            <label>ScheduledPath1</label>
+            <offsetNumber>0</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <timeSource>RecordTriggerEvent</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

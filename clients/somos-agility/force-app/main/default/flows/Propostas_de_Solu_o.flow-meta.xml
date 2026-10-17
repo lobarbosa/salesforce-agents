@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>EspecificacaoTecnica</name>
+        <label>Propostas_de_Solucao__c.EspecificacaoTecnica</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Propostas_de_Solucao__c.EspecificacaoTecnica</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Propostas_de_Solucao__c.EspecificacaoTecnica</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Propostas de Solução
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <label>Propostas de Solução</label>
+    <migratedFromWorkflowRuleName>Propostas de Solução</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>EspecificacaoTecnica</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>StatusPsl__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Margens e Condições Comerciais</stringValue>
+            </value>
+        </filters>
+        <object>Propostas_de_Solucao__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

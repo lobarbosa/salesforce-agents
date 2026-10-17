@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Acionamento de Terceiros</fullName>
+        <default>false</default>
+        <label>Acionamento de Terceiros</label>
+    </customValue>
+    <customValue>
+        <fullName>Customer Sucess</fullName>
+        <default>false</default>
+        <label>Customer Sucess</label>
+    </customValue>
+    <customValue>
+        <fullName>Entregáveis Adicionais</fullName>
+        <default>false</default>
+        <label>Entregáveis Adicionais</label>
+    </customValue>
+    <customValue>
+        <fullName>Incidente</fullName>
+        <default>false</default>
+        <label>Incidente</label>
+    </customValue>
+    <customValue>
+        <fullName>Monitoramento e Reporting</fullName>
+        <default>false</default>
+        <label>Monitoramento e Reporting</label>
+    </customValue>
+    <customValue>
+        <fullName>Operação</fullName>
+        <default>false</default>
+        <label>Operação</label>
+    </customValue>
+    <customValue>
+        <fullName>Outros</fullName>
+        <default>false</default>
+        <label>Outros</label>
+    </customValue>
+    <customValue>
+        <fullName>Relatório Executivo</fullName>
+        <default>false</default>
+        <label>Relatório Executivo</label>
+    </customValue>
+    <customValue>
+        <fullName>Requisição</fullName>
+        <default>false</default>
+        <label>Requisição</label>
+    </customValue>
+    <customValue>
+        <fullName>Requisição Consultiva</fullName>
+        <default>false</default>
+        <label>Requisição Consultiva</label>
+    </customValue>
+    <customValue>
+        <fullName>Gestão Premium Plus</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Gestão Premium Plus</label>
+    </customValue>
+    <customValue>
+        <fullName>Específico</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Específico</label>
+    </customValue>
+    <masterLabel>Tipo de Suporte</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

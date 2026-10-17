@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Preenche Certezas
+Descrição da regra de fluxo de trabalho: Preenchimento da flag &quot;Fechando&quot; quando o status for &quot;Encerrado Win&quot;.&quot;</description>
+    <label>Preenche Certezas</label>
+    <migratedFromWorkflowRuleName>Preenche Certezas</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Atualização da flag Fechado para true quando o status for &quot;Encerrado Win&quot;
+Atualização do campo &quot;certeza de conclusão&quot; para 100% quando o status da oportunidade for encerrado win e a certeza de vitória não for 100%.
+Atualização do campo &quot;certeza de vitória&quot; para 100% quando o status da oportunidade for encerrado win e a certeza de vitória não for 100%.</description>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Certeza_de_Conclus_o__c</field>
+            <value>
+                <stringValue>100</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Certeza_de_Vit_ria__c</field>
+            <value>
+                <stringValue>100</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Fechado__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Encerrado Win</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

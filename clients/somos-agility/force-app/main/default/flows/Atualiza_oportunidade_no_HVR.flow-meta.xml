@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Atualiza a trigger order para 1 - Atualizado em 28/07/2025.</description>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza oportunidade no HVR {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Atualiza oportunidade no HVR</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_oportunidade_no_campo_do_HVR</name>
+        <label>Atualiza oportunidade no campo do HVR</label>
+        <locationX>647</locationX>
+        <locationY>427</locationY>
+        <inputAssignments>
+            <field>Oportunidade_Referente_ao_Evento__c</field>
+            <value>
+                <elementReference>$Record.DsaHistorico__r.Oportunidade__r.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>520</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Atualiza_oportunidade_no_campo_do_HVR</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DsaHistorico__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Hist_rico_de_Venda_e_Renova_o__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <triggerOrder>1</triggerOrder>
+</Flow>

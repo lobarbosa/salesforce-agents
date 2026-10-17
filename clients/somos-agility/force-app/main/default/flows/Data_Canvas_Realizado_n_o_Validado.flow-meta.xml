@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notificacao_de_Data_Canvas_Realizado_N_o_Aprovada</name>
+        <label>PPM_Project__c.Notificacao_de_Data_Canvas_Realizado_N_o_Aprovada</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>PPM_Project__c.Notificacao_de_Data_Canvas_Realizado_N_o_Aprovada</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>PPM_Project__c.Notificacao_de_Data_Canvas_Realizado_N_o_Aprovada</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Data Canvas Realizado não Validado
+Descrição da regra de fluxo de trabalho: Quando a Data de Canvas informada não é aprovada o GP é notiicado para inserir uma nova e a data informada é limpada&quot;</description>
+    <label>Data Canvas Realizado não Validado</label>
+    <migratedFromWorkflowRuleName>Data Canvas Realizado não Validado</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notificacao_de_Data_Canvas_Realizado_N_o_Aprovada</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Canvas_Realizado__c</field>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Canvas_Realizado_Validado__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Não</stringValue>
+            </value>
+        </filters>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

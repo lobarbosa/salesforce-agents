@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Solicitar_Reserva</name>
+        <label>Solicitacao_de_Passagem_Aerea__c.Solicitar_Reserva</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Solicitacao_de_Passagem_Aerea__c.Solicitar_Reserva</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Solicitacao_de_Passagem_Aerea__c.Solicitar_Reserva</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Solicitar Orçamento
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <label>Solicitar Orçamento</label>
+    <migratedFromWorkflowRuleName>Solicitar Orçamento</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Solicitar_Reserva</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Cotação/Reserva Solicitada</stringValue>
+            </value>
+        </filters>
+        <object>Solicitacao_de_Passagem_Aerea__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

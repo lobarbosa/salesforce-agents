@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notifica_o_Respons_vel_pleo_Plano_de_Teste</name>
+        <label>Opportunity.Notifica_o_Respons_vel_pleo_Plano_de_Teste</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Opportunity.Notifica_o_Respons_vel_pleo_Plano_de_Teste</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Opportunity.Notifica_o_Respons_vel_pleo_Plano_de_Teste</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Notifica Responsável pelo Plano de Teste
+Descrição da regra de fluxo de trabalho: JN200918: notifica quando este campo é preenchido ou alterado&quot;</description>
+    <label>Notifica Responsável pelo Plano de Teste</label>
+    <migratedFromWorkflowRuleName>Notifica Responsável pelo Plano de Teste</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notifica_o_Respons_vel_pleo_Plano_de_Teste</targetReference>
+        </connector>
+        <filterFormula>OR(
+ISCHANGED({!$Record.Respons_vel_pelo_Plano_de_Teste__c})
+)</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

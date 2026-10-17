@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Verifica_Quantidade_de_Licoes_Aprendidas</name>
+        <label>Verifica Quantidade de Lições Aprendidas</label>
+        <locationX>1004</locationX>
+        <locationY>218</locationY>
+        <defaultConnectorLabel>Saída</defaultConnectorLabel>
+        <rules>
+            <name>Zero</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Quantidade_de_Fases_do_Projeto_NUMBER__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>0.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_Fase_1</targetReference>
+            </connector>
+            <label>Zero</label>
+        </rules>
+        <rules>
+            <name>Uma</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Quantidade_de_Fases_do_Projeto_NUMBER__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>1.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_Fase_2</targetReference>
+            </connector>
+            <label>Uma</label>
+        </rules>
+        <rules>
+            <name>Duas</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Quantidade_de_Fases_do_Projeto_NUMBER__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>2.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_Fase_3</targetReference>
+            </connector>
+            <label>Duas</label>
+        </rules>
+        <rules>
+            <name>Tr_s</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Quantidade_de_Fases_do_Projeto_NUMBER__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <numberValue>3.0</numberValue>
+                </rightValue>
+            </conditions>
+            <label>Três</label>
+        </rules>
+    </decisions>
+    <description>Atualiza campos do documento de lições aprendidas (fases 1, 2 e 3) para compor o corpo da notificação de novo DLA e permitir a aprovação.</description>
+    <environments>Default</environments>
+    <interviewLabel>Atualiza Lições Aprendidas Vazias {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Atualiza Lições Aprendidas Vazias</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_Fase_1</name>
+        <label>Atualiza Fase 1</label>
+        <locationX>1285</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Atualiza_Fase_2</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>X1_Fase_do_Projeto__c</field>
+            <value>
+                <stringValue>Projeto realizado de acordo com a contratação comercial e sem lições aprendidas.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X1_Impacto_Gerado__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X1_Licao_Aprendida__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X1_Observacao__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X1_Problema_Ocorrido__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_Fase_2</name>
+        <label>Atualiza Fase 2</label>
+        <locationX>1285</locationX>
+        <locationY>219</locationY>
+        <connector>
+            <targetReference>Atualiza_Fase_3</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>X2_Fase_do_Projeto__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X2_Impacto_Gerado__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X2_Licao_Aprendida__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X2_Observacao__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X2_Problema_Ocorrido__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_Fase_3</name>
+        <label>Atualiza Fase 3</label>
+        <locationX>1285</locationX>
+        <locationY>397</locationY>
+        <inputAssignments>
+            <field>X3_Fase_do_Projeto__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X3_Impacto_Gerado__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X3_Licao_Aprendida__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X3_Observacao__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>X3_Problema_Ocorrido__c</field>
+            <value>
+                <stringValue>Não se aplica.</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>551</locationX>
+        <locationY>105</locationY>
+        <connector>
+            <targetReference>Verifica_Quantidade_de_Licoes_Aprendidas</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Quantidade_de_Fases_do_Projeto_NUMBER__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Documento_de_Licoes_Aprendidas__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <triggerOrder>1</triggerOrder>
+</Flow>

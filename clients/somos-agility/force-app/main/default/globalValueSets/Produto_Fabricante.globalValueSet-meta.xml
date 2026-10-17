@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>BIG-IP iSeries Appliances</fullName>
+        <default>false</default>
+        <label>BIG-IP iSeries Appliances</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP VIPRION Chassis and Blades</fullName>
+        <default>false</default>
+        <label>BIG-IP VIPRION Chassis and Blades</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP Virtual Edition</fullName>
+        <default>false</default>
+        <label>BIG-IP Virtual Edition</label>
+    </customValue>
+    <customValue>
+        <fullName>F5 rSeries</fullName>
+        <default>false</default>
+        <label>F5 rSeries</label>
+    </customValue>
+    <customValue>
+        <fullName>VELOS Chassis and Blades</fullName>
+        <default>false</default>
+        <label>VELOS Chassis and Blades</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP Local Traffic Manager</fullName>
+        <default>false</default>
+        <label>BIG-IP Local Traffic Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP DNS</fullName>
+        <default>false</default>
+        <label>BIG-IP DNS</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP Advanced WAF</fullName>
+        <default>false</default>
+        <label>BIG-IP Advanced WAF</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP Advanced Firewall Manager</fullName>
+        <default>false</default>
+        <label>BIG-IP Advanced Firewall Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP Access Policy Manager</fullName>
+        <default>false</default>
+        <label>BIG-IP Access Policy Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP Policy Enforcement Manager</fullName>
+        <default>false</default>
+        <label>BIG-IP Policy Enforcement Manager</label>
+    </customValue>
+    <customValue>
+        <fullName>BIG-IP SSL Orchestrator</fullName>
+        <default>false</default>
+        <label>BIG-IP SSL Orchestrator</label>
+    </customValue>
+    <customValue>
+        <fullName>iRules</fullName>
+        <default>false</default>
+        <label>iRules</label>
+    </customValue>
+    <customValue>
+        <fullName>Distributed Cloud Services</fullName>
+        <default>false</default>
+        <label>Distributed Cloud Services</label>
+    </customValue>
+    <customValue>
+        <fullName>Cortex</fullName>
+        <default>false</default>
+        <label>Cortex</label>
+    </customValue>
+    <customValue>
+        <fullName>NGINX</fullName>
+        <default>false</default>
+        <label>NGINX</label>
+    </customValue>
+    <customValue>
+        <fullName>Shape Security</fullName>
+        <default>false</default>
+        <label>Shape Security</label>
+    </customValue>
+    <customValue>
+        <fullName>NGFW - Next-gen Firewall Hardware</fullName>
+        <default>false</default>
+        <label>NGFW - Next-gen Firewall Hardware</label>
+    </customValue>
+    <customValue>
+        <fullName>NGFW - Next-gen Firewall Virtual VM-Series</fullName>
+        <default>false</default>
+        <label>NGFW - Next-gen Firewall Virtual VM-Series</label>
+    </customValue>
+    <customValue>
+        <fullName>NGFW - Next-gen Firewall Contêiner CN-Series</fullName>
+        <default>false</default>
+        <label>NGFW - Next-gen Firewall Contêiner CN-Series</label>
+    </customValue>
+    <customValue>
+        <fullName>AIOps NGFW</fullName>
+        <default>false</default>
+        <label>AIOps NGFW</label>
+    </customValue>
+    <customValue>
+        <fullName>Panorama</fullName>
+        <default>false</default>
+        <label>Panorama</label>
+    </customValue>
+    <customValue>
+        <fullName>Advanced Threat Prevention</fullName>
+        <default>false</default>
+        <label>Advanced Threat Prevention</label>
+    </customValue>
+    <customValue>
+        <fullName>Advanced URL Filtering</fullName>
+        <default>false</default>
+        <label>Advanced URL Filtering</label>
+    </customValue>
+    <customValue>
+        <fullName>WildFire</fullName>
+        <default>false</default>
+        <label>WildFire</label>
+    </customValue>
+    <customValue>
+        <fullName>DNS Protection</fullName>
+        <default>false</default>
+        <label>DNS Protection</label>
+    </customValue>
+    <customValue>
+        <fullName>IoT Protection</fullName>
+        <default>false</default>
+        <label>IoT Protection</label>
+    </customValue>
+    <customValue>
+        <fullName>Enterprise Data loss Prevention (DLP)</fullName>
+        <default>false</default>
+        <label>Enterprise Data loss Prevention (DLP)</label>
+    </customValue>
+    <customValue>
+        <fullName>Prisma SASE (Access, SD-WAN &amp; ADEM)</fullName>
+        <default>false</default>
+        <label>Prisma SASE (Access, SD-WAN &amp; ADEM)</label>
+    </customValue>
+    <customValue>
+        <fullName>Prisma CLOUD</fullName>
+        <default>false</default>
+        <label>Prisma CLOUD</label>
+    </customValue>
+    <customValue>
+        <fullName>DHCP, DNS and IPAM (DDI)</fullName>
+        <default>false</default>
+        <label>DHCP, DNS and IPAM (DDI)</label>
+    </customValue>
+    <customValue>
+        <fullName>BloxOne (SaaS)</fullName>
+        <default>false</default>
+        <label>BloxOne (SaaS)</label>
+    </customValue>
+    <customValue>
+        <fullName>DNS Security</fullName>
+        <default>false</default>
+        <label>DNS Security</label>
+    </customValue>
+    <customValue>
+        <fullName>CNA - Cloud Network Automation</fullName>
+        <default>false</default>
+        <label>CNA - Cloud Network Automation</label>
+    </customValue>
+    <customValue>
+        <fullName>Privileged Access</fullName>
+        <default>false</default>
+        <label>Privileged Access</label>
+    </customValue>
+    <customValue>
+        <fullName>Workforce &amp; Custumer Access</fullName>
+        <default>false</default>
+        <label>Workforce &amp; Custumer Access</label>
+    </customValue>
+    <customValue>
+        <fullName>Indentity Management</fullName>
+        <default>false</default>
+        <label>Indentity Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Secret Management</fullName>
+        <default>false</default>
+        <label>Secret Management</label>
+    </customValue>
+    <customValue>
+        <fullName>Endpoint Privilege Security</fullName>
+        <default>false</default>
+        <label>Endpoint Privilege Security</label>
+    </customValue>
+    <customValue>
+        <fullName>Cloud Privilege Security</fullName>
+        <default>false</default>
+        <label>Cloud Privilege Security</label>
+    </customValue>
+    <customValue>
+        <fullName>Observer APEX</fullName>
+        <default>false</default>
+        <label>Observer APEX</label>
+    </customValue>
+    <customValue>
+        <fullName>Observer Analyzer</fullName>
+        <default>false</default>
+        <label>Observer Analyzer</label>
+    </customValue>
+    <customValue>
+        <fullName>Observer Management Server (OMS)</fullName>
+        <default>false</default>
+        <label>Observer Management Server (OMS)</label>
+    </customValue>
+    <customValue>
+        <fullName>Observer Gigaflow</fullName>
+        <default>false</default>
+        <label>Observer Gigaflow</label>
+    </customValue>
+    <customValue>
+        <fullName>Observer GigaStor</fullName>
+        <default>false</default>
+        <label>Observer GigaStor</label>
+    </customValue>
+    <customValue>
+        <fullName>Observer Taps</fullName>
+        <default>false</default>
+        <label>Observer Taps</label>
+    </customValue>
+    <customValue>
+        <fullName>ObserverONE</fullName>
+        <default>false</default>
+        <label>ObserverONE</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon Elastic Cloud Compute (EC2)</fullName>
+        <default>false</default>
+        <label>Amazon Elastic Cloud Compute (EC2)</label>
+    </customValue>
+    <customValue>
+        <fullName>EC2 AWS Auto Scaling</fullName>
+        <default>false</default>
+        <label>EC2 AWS Auto Scaling</label>
+    </customValue>
+    <customValue>
+        <fullName>Elastic Load Balancing (ELB)</fullName>
+        <default>false</default>
+        <label>Elastic Load Balancing (ELB)</label>
+    </customValue>
+    <customValue>
+        <fullName>AWS Trasit Gateway</fullName>
+        <default>false</default>
+        <label>AWS Trasit Gateway</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon CloudFront</fullName>
+        <default>false</default>
+        <label>Amazon CloudFront</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon Virtual Private Cloud (VPC)</fullName>
+        <default>false</default>
+        <label>Amazon Virtual Private Cloud (VPC)</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon Route 53</fullName>
+        <default>false</default>
+        <label>Amazon Route 53</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon Simple Storage Service (S3)</fullName>
+        <default>false</default>
+        <label>Amazon Simple Storage Service (S3)</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon Elastic Block Store (EBS)</fullName>
+        <default>false</default>
+        <label>Amazon Elastic Block Store (EBS)</label>
+    </customValue>
+    <customValue>
+        <fullName>AWS Fargate</fullName>
+        <default>false</default>
+        <label>AWS Fargate</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon Elastic Container Service (ECS)</fullName>
+        <default>false</default>
+        <label>Amazon Elastic Container Service (ECS)</label>
+    </customValue>
+    <customValue>
+        <fullName>Amazon Elastic Kubernetes Service (EKS)</fullName>
+        <default>false</default>
+        <label>Amazon Elastic Kubernetes Service (EKS)</label>
+    </customValue>
+    <customValue>
+        <fullName>AGILITY-AUT</fullName>
+        <default>false</default>
+        <label>AGILITY-AUT</label>
+    </customValue>
+    <customValue>
+        <fullName>AGILITY-SEG</fullName>
+        <default>false</default>
+        <label>AGILITY-SEG</label>
+    </customValue>
+    <customValue>
+        <fullName>ARMIS</fullName>
+        <default>false</default>
+        <label>ARMIS</label>
+    </customValue>
+    <customValue>
+        <fullName>BLACKBERRY CYLANCE</fullName>
+        <default>false</default>
+        <label>BLACKBERRY CYLANCE</label>
+    </customValue>
+    <customValue>
+        <fullName>CYMULATE</fullName>
+        <default>false</default>
+        <label>CYMULATE</label>
+    </customValue>
+    <customValue>
+        <fullName>DYANATRACE</fullName>
+        <default>false</default>
+        <label>DYANATRACE</label>
+    </customValue>
+    <customValue>
+        <fullName>FIREMON</fullName>
+        <default>false</default>
+        <label>FIREMON</label>
+    </customValue>
+    <customValue>
+        <fullName>FORESCOUT</fullName>
+        <default>false</default>
+        <label>FORESCOUT</label>
+    </customValue>
+    <customValue>
+        <fullName>GIGAMON</fullName>
+        <default>false</default>
+        <label>GIGAMON</label>
+    </customValue>
+    <customValue>
+        <fullName>HASHCORP</fullName>
+        <default>false</default>
+        <label>HASHCORP</label>
+    </customValue>
+    <customValue>
+        <fullName>INETCO</fullName>
+        <default>false</default>
+        <label>INETCO</label>
+    </customValue>
+    <customValue>
+        <fullName>NONAME</fullName>
+        <default>false</default>
+        <label>NONAME</label>
+    </customValue>
+    <customValue>
+        <fullName>OTHER</fullName>
+        <default>false</default>
+        <label>OTHER</label>
+    </customValue>
+    <customValue>
+        <fullName>PENTEST</fullName>
+        <default>false</default>
+        <label>PENTEST</label>
+    </customValue>
+    <customValue>
+        <fullName>QOMPLX</fullName>
+        <default>false</default>
+        <label>QOMPLX</label>
+    </customValue>
+    <customValue>
+        <fullName>QUALYS</fullName>
+        <default>false</default>
+        <label>QUALYS</label>
+    </customValue>
+    <customValue>
+        <fullName>SALT</fullName>
+        <default>false</default>
+        <label>SALT</label>
+    </customValue>
+    <customValue>
+        <fullName>SECURITY.AI</fullName>
+        <default>false</default>
+        <label>SECURITY.AI</label>
+    </customValue>
+    <customValue>
+        <fullName>VERACODE</fullName>
+        <default>false</default>
+        <label>VERACODE</label>
+    </customValue>
+    <customValue>
+        <fullName>AWS</fullName>
+        <default>false</default>
+        <label>AWS</label>
+    </customValue>
+    <customValue>
+        <fullName>Cyberark</fullName>
+        <default>false</default>
+        <label>Cyberark</label>
+    </customValue>
+    <customValue>
+        <fullName>Cylance</fullName>
+        <default>false</default>
+        <label>Cylance</label>
+    </customValue>
+    <customValue>
+        <fullName>Extrahop</fullName>
+        <default>false</default>
+        <label>Extrahop</label>
+    </customValue>
+    <customValue>
+        <fullName>f5</fullName>
+        <default>false</default>
+        <label>f5</label>
+    </customValue>
+    <customValue>
+        <fullName>Infoblox</fullName>
+        <default>false</default>
+        <label>Infoblox</label>
+    </customValue>
+    <customValue>
+        <fullName>PrivacyTools</fullName>
+        <default>false</default>
+        <label>PrivacyTools</label>
+    </customValue>
+    <customValue>
+        <fullName>Rainforest</fullName>
+        <default>false</default>
+        <label>Rainforest</label>
+    </customValue>
+    <customValue>
+        <fullName>Riverbed</fullName>
+        <default>false</default>
+        <label>Riverbed</label>
+    </customValue>
+    <customValue>
+        <fullName>Thales</fullName>
+        <default>false</default>
+        <label>Thales</label>
+    </customValue>
+    <customValue>
+        <fullName>Palo Alto </fullName>
+        <default>false</default>
+        <label>Palo Alto </label>
+    </customValue>
+    <customValue>
+        <fullName>Apptio</fullName>
+        <default>false</default>
+        <label>Apptio</label>
+    </customValue>
+    <customValue>
+        <fullName>Turbonomic</fullName>
+        <default>false</default>
+        <label>Turbonomic</label>
+    </customValue>
+    <customValue>
+        <fullName>VaultOne</fullName>
+        <default>true</default>
+        <label>VaultOne</label>
+    </customValue>
+    <customValue>
+        <fullName>Veeam</fullName>
+        <default>false</default>
+        <label>Veeam</label>
+    </customValue>
+    <customValue>
+        <fullName>Gremlin</fullName>
+        <default>false</default>
+        <label>Gremlin</label>
+    </customValue>
+    <customValue>
+        <fullName>Jumpad</fullName>
+        <default>false</default>
+        <label>Jumpad</label>
+    </customValue>
+    <description>VaultOne</description>
+    <masterLabel>Produto Fabricante</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

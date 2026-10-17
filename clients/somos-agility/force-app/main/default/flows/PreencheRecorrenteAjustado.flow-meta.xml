@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho PreencheRecorrenteAjustado
+Descrição da regra de fluxo de trabalho: Preenchimento do campo recorrente ajustado (NET) previsto CVS SUM, para que seja possível utilizar este campo no resumo de totalização para o objeto blueprint.&quot;</description>
+    <label>PreencheRecorrenteAjustado</label>
+    <migratedFromWorkflowRuleName>PreencheRecorrenteAjustado</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Utilização da atualização de campo para preencher o valor da fórmula no campo &quot;Recorrente ajustado previsto SUM&quot; para que seja possível a utilização do resumo de totalização.</description>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>recorrenteAjustadoSUM__c</field>
+            <value>
+                <elementReference>$Record.recorrenteAjustadoNETCVSPrevisto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterFormula>OR(     ISNEW(),     ISCHANGED({!$Record.RecorrenteNominalNetCVSPrevisto__c}),      ISCHANGED({!$Record.prazoContrato__c}),      ISCHANGED({!$Record.tipoPagamento__c})  )</filterFormula>
+        <object>Previsao_Financeira_de_Vendas_CVS__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

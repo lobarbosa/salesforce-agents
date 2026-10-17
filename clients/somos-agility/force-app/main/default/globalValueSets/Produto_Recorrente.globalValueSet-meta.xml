@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>3N</fullName>
+        <default>false</default>
+        <label>3N</label>
+    </customValue>
+    <customValue>
+        <fullName>MNG-DEVOPS/MCLOUD</fullName>
+        <default>false</default>
+        <label>MNG-DEVOPS/MCLOUD</label>
+    </customValue>
+    <customValue>
+        <fullName>MNG-DIGIEXP</fullName>
+        <default>false</default>
+        <label>MNG-DIGIEXP</label>
+    </customValue>
+    <customValue>
+        <fullName>GEST-VULNERB</fullName>
+        <default>false</default>
+        <label>GEST-VULNERB</label>
+    </customValue>
+    <customValue>
+        <fullName>IDENTITY-GOV</fullName>
+        <default>false</default>
+        <label>IDENTITY-GOV</label>
+    </customValue>
+    <customValue>
+        <fullName>TT-INTEL</fullName>
+        <default>false</default>
+        <label>TT-INTEL</label>
+    </customValue>
+    <customValue>
+        <fullName>APPSEC-LCYCLE</fullName>
+        <default>false</default>
+        <label>APPSEC-LCYCLE</label>
+    </customValue>
+    <masterLabel>Produto: Recorrente</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

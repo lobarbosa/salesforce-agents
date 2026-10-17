@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>66.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3</name>
+        <label>Verifica se o gerente de projetos é o executor 1, 2 ou 3</label>
+        <locationX>831</locationX>
+        <locationY>358</locationY>
+        <defaultConnector>
+            <targetReference>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Executor_1</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Perfil_do_executor_1__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Gerente de Projetos</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inicio_da_atividade_1__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Fim_da_atividade_1__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_o_status_de_aprovacao_do_1_executor</targetReference>
+            </connector>
+            <label>Executor 1</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3_0</name>
+        <label>Verifica se o gerente de projetos é o executor 1, 2 ou 3</label>
+        <locationX>952</locationX>
+        <locationY>591</locationY>
+        <defaultConnector>
+            <targetReference>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3_0_0</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Executor_2_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Perfil_do_executor_2__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Gerente de Projetos</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inicio_da_atividade_2__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Fim_da_atividade_2__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_o_status_de_aprovacao_do_2_executor</targetReference>
+            </connector>
+            <label>Executor 2</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3_0_0</name>
+        <label>Verifica se o gerente de projetos é o executor 1, 2 ou 3</label>
+        <locationX>1074</locationX>
+        <locationY>812</locationY>
+        <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
+        <rules>
+            <name>Executor_3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Perfil_do_executor_3__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <stringValue>Gerente de Projetos</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Inicio_da_atividade_3__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Fim_da_atividade_3__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_o_status_de_aprovacao_do_3_executor</targetReference>
+            </connector>
+            <label>Executor 3</label>
+        </rules>
+    </decisions>
+    <description>Fluxo de auto aprovação de atividades dos gerentes de projetos - v1.2 - Atualizado em 15/05/2026.</description>
+    <environments>Default</environments>
+    <interviewLabel>Fluxo de auto aprovação de atividades dos gerentes de projetos {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Fluxo de auto aprovação de atividades dos gerentes de projetos</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_o_status_de_aprovacao_do_1_executor</name>
+        <label>Atualiza o status de aprovação do 1 executor</label>
+        <locationX>1063</locationX>
+        <locationY>354</locationY>
+        <connector>
+            <targetReference>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3_0</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status_de_aprovacao_1__c</field>
+            <value>
+                <stringValue>Aprovado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_o_status_de_aprovacao_do_2_executor</name>
+        <label>Atualiza o status de aprovação do 2 executor</label>
+        <locationX>1190</locationX>
+        <locationY>589</locationY>
+        <connector>
+            <targetReference>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3_0_0</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Status_de_aprovacao_2__c</field>
+            <value>
+                <stringValue>Aprovado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_o_status_de_aprovacao_do_3_executor</name>
+        <label>Atualiza o status de aprovação do 3 executor</label>
+        <locationX>1300</locationX>
+        <locationY>811</locationY>
+        <inputAssignments>
+            <field>Status_de_aprovacao_3__c</field>
+            <value>
+                <stringValue>Aprovado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>713</locationX>
+        <locationY>50</locationY>
+        <connector>
+            <targetReference>Verifica_se_o_gerente_de_projetos_e_o_executor_1_2_ou_3</targetReference>
+        </connector>
+        <object>Lancamento_de_Atividades__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

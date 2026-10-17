@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Atualiza o nome do executor da atividade com base no contato atrelado ao card do executor.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Armazena first_name + last_name.</description>
+        <name>full_name</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.ContatoExecutor__r.FirstName} + &apos; &apos; + {!$Record.ContatoExecutor__r.LastName}</expression>
+    </formulas>
+    <interviewLabel>Atualiza nome completo do executor da atividade {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Atualiza nome completo do executor da atividade</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_o_nome_do_executor_com_base_no_contato_atrelado</name>
+        <label>Atualiza o nome do executor com base no contato atrelado</label>
+        <locationX>605</locationX>
+        <locationY>167</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ContatoExecutor__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>full_name</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>130</locationX>
+        <locationY>75</locationY>
+        <connector>
+            <targetReference>Atualiza_o_nome_do_executor_com_base_no_contato_atrelado</targetReference>
+        </connector>
+        <object>Executor_atividade__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

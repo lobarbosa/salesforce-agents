@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notificacao_de_Evento_para_o_Tech_Center_BDM_DC_C</name>
+        <label>Evento_Tech_Center__c.Notificacao_de_Evento_para_o_Tech_Center_BDM_DC_C</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Evento_Tech_Center__c.Notificacao_de_Evento_para_o_Tech_Center_BDM_DC_C</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Evento_Tech_Center__c.Notificacao_de_Evento_para_o_Tech_Center_BDM_DC_C</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Notificação de Novo Evento para BDM DC&amp;C
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <label>Notificação de Novo Evento para BDM DC&amp;C</label>
+    <migratedFromWorkflowRuleName>Notificação de Novo Evento para BDM DC&amp;C</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notificacao_de_Evento_para_o_Tech_Center_BDM_DC_C</targetReference>
+        </connector>
+        <filterLogic>(1 OR 2) AND 3</filterLogic>
+        <filters>
+            <field>Tipo_de_Evento__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Apresentação Técnica / EBC</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Tipo_de_Evento__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Teste Customizado</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>LN_Envolvida__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Data Center &amp; Cloud</stringValue>
+            </value>
+        </filters>
+        <object>Evento_Tech_Center__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

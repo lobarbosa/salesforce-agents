@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Rascunho</fullName>
+        <default>true</default>
+        <label>Rascunho</label>
+    </customValue>
+    <customValue>
+        <fullName>Pendente</fullName>
+        <default>false</default>
+        <label>Pendente</label>
+    </customValue>
+    <customValue>
+        <fullName>Aprovado</fullName>
+        <default>false</default>
+        <label>Aprovado</label>
+    </customValue>
+    <customValue>
+        <fullName>Rejeitado</fullName>
+        <default>false</default>
+        <label>Rejeitado</label>
+    </customValue>
+    <customValue>
+        <fullName>Recall</fullName>
+        <default>false</default>
+        <label>Recall</label>
+    </customValue>
+    <description>Status Pendente / Aprovado / Rejeitado</description>
+    <masterLabel>Status</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Alerta_Encerrar_Caso_SE</name>
+        <label>Atividade_do_Caso__c.Alerta_Encerrar_Caso_SE</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Atividade_do_Caso__c.Alerta_Encerrar_Caso_SE</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Atividade_do_Caso__c.Alerta_Encerrar_Caso_SE</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alerta de solicitação de encerramento do caso
+Descrição da regra de fluxo de trabalho: AM 05052018: notifica o GS quando o campo &quot;Solicitar encerramento do Caso&quot; for selecionado (TRUE).&quot;</description>
+    <label>Alerta de solicitação de encerramento do caso</label>
+    <migratedFromWorkflowRuleName>Alerta de solicitação de encerramento do caso</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Alerta_Encerrar_Caso_SE</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Solicitar_encerramento_do_Caso__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Atividade_do_Caso__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

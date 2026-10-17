@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>sp1Email_para_Aviso_da_Data_de_Faturamento_Ativacao_Contratos</name>
+        <label>PPM_Project__c.Email_para_Aviso_da_Data_de_Faturamento_Ativacao_Contratos</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>PPM_Project__c.Email_para_Aviso_da_Data_de_Faturamento_Ativacao_Contratos</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>PPM_Project__c.Email_para_Aviso_da_Data_de_Faturamento_Ativacao_Contratos</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Data de Faturamento - Ativação
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <label>Data de Faturamento - Ativação</label>
+    <migratedFromWorkflowRuleName>Data de Faturamento - Ativação</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterFormula>{!$Record.Data_de_Faturamento_Ativacao__c} &gt;= Today()</filterFormula>
+        <object>PPM_Project__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>ScheduledPath1</name>
+            <connector>
+                <targetReference>sp1Email_para_Aviso_da_Data_de_Faturamento_Ativacao_Contratos</targetReference>
+            </connector>
+            <label>ScheduledPath1</label>
+            <offsetNumber>0</offsetNumber>
+            <offsetUnit>Days</offsetUnit>
+            <recordField>Data_de_Faturamento_Ativacao__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

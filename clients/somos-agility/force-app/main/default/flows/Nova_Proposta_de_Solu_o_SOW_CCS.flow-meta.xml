@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Notifica_o_ao_SA_quando_uma_nova_proposta_SOW_ou_CCS</name>
+        <label>Propostas_de_Solucao__c.Notifica_o_ao_SA_quando_uma_nova_proposta_SOW_ou_CCS</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Propostas_de_Solucao__c.Notifica_o_ao_SA_quando_uma_nova_proposta_SOW_ou_CCS</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Propostas_de_Solucao__c.Notifica_o_ao_SA_quando_uma_nova_proposta_SOW_ou_CCS</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Nova Proposta de Solução SOW/CCS
+Descrição da regra de fluxo de trabalho: Notificação ao SA sobre a Proposta de Solução SOW ou CCS&quot;</description>
+    <label>Nova Proposta de Solução SOW/CCS</label>
+    <migratedFromWorkflowRuleName>Nova Proposta de Solução SOW/CCS</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Notifica_o_ao_SA_quando_uma_nova_proposta_SOW_ou_CCS</targetReference>
+        </connector>
+        <filterLogic>1 OR 2</filterLogic>
+        <filters>
+            <field>Projeto_customizado__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Servico_recorrente__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Propostas_de_Solucao__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>AM171218: subtituido o campo Z_Duração / AM131118: substituido o campo &quot;Tipo de horário&quot; pelo campo &quot;Validação HC HNC&quot;
+HR060519: Substituido o campo Tipo_de_Horario__c para TipoHorario__c
+HR230519: Criado novo fluxo para considerar LATs históricas que continham a informação de tipo de horario no campo Tipo_Horario__c</description>
+    <masterLabel>_Somatoria das atividades HNC no Marco - Tipo de Horario</masterLabel>
+</FlowDefinition>

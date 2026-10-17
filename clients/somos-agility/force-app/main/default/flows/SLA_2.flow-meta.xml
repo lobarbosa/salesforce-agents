@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>SLA_vencendo_Diretor_comercial</name>
+        <label>SLA vencendo - Diretor comercial</label>
+        <locationX>167</locationX>
+        <locationY>1148</locationY>
+        <actionName>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencendo_diretor</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencendo_diretor</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>SLA_vencendo_Diretor_financeiro</name>
+        <label>SLA vencendo - Diretor financeiro</label>
+        <locationX>407</locationX>
+        <locationY>908</locationY>
+        <actionName>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencendo_diretor_financeiro</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencendo_diretor_financeiro</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>SLA_vencido_Diretor_comercial</name>
+        <label>SLA vencido - Diretor comercial</label>
+        <locationX>1103</locationX>
+        <locationY>273</locationY>
+        <actionName>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencido_diretor</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencido_diretor</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>SLA_vencido_Diretor_financeiro</name>
+        <label>SLA vencido - Diretor financeiro</label>
+        <locationX>871</locationX>
+        <locationY>526</locationY>
+        <actionName>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencido_diretor_financeiro</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Excecao_Comercial_p_Atendimento_Tecnico__c.SLA_vencido_diretor_financeiro</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Gerente_de_servico_ou_diretor_comercial</name>
+        <label>Gerente de serviço ou diretor comercial?</label>
+        <locationX>399</locationX>
+        <locationY>1148</locationY>
+        <defaultConnectorLabel>Nenhum</defaultConnectorLabel>
+        <rules>
+            <name>Diretor_financeiro</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status_de_Aprovacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendente - Diretor financeiro</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SLA_vencendo_Diretor_financeiro</targetReference>
+            </connector>
+            <label>Diretor financeiro</label>
+        </rules>
+        <rules>
+            <name>Diretor_comercial</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status_de_Aprovacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendente - Diretor comercial</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SLA_vencendo_Diretor_comercial</targetReference>
+            </connector>
+            <label>Diretor comercial</label>
+        </rules>
+        <rules>
+            <name>Gerente_de_servico</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status_de_Aprovacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendente - Gerente de serviço</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Gerente de serviço</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Gerente_de_servico_ou_diretor_comercial_0</name>
+        <label>Gerente de serviço ou diretor comercial?</label>
+        <locationX>863</locationX>
+        <locationY>276</locationY>
+        <defaultConnectorLabel>Nenhum</defaultConnectorLabel>
+        <rules>
+            <name>Diretor_financeiro_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status_de_Aprovacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendente - Diretor financeiro</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SLA_vencido_Diretor_financeiro</targetReference>
+            </connector>
+            <label>Diretor financeiro</label>
+        </rules>
+        <rules>
+            <name>Diretor_comercial_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status_de_Aprovacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendente - Diretor comercial</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SLA_vencido_Diretor_comercial</targetReference>
+            </connector>
+            <label>Diretor comercial</label>
+        </rules>
+        <rules>
+            <name>Gerente_de_servico_0</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Status_de_Aprovacao__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Pendente - Gerente de serviço</stringValue>
+                </rightValue>
+            </conditions>
+            <label>Gerente de serviço</label>
+        </rules>
+    </decisions>
+    <description>Granulariza o envio de e-mails para os aprovadores com SLA próximo ao vencimento e após.</description>
+    <environments>Default</environments>
+    <interviewLabel>SLA_v1.1 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SLA_v1.3</label>
+    <migratedFromWorkflowRuleName>SLA</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>501</locationX>
+        <locationY>636</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Status_de_Aprovacao__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendente - Gerente de serviço</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status_de_Aprovacao__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendente - Diretor comercial</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status_de_Aprovacao__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendente - Diretor financeiro</stringValue>
+            </value>
+        </filters>
+        <object>Excecao_Comercial_p_Atendimento_Tecnico__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <scheduledPaths>
+            <name>X8_horas_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>8 horas antes</label>
+            <offsetNumber>-8</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>X7_horas_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>7 horas antes</label>
+            <offsetNumber>-7</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>X6_horas_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>6 horas antes</label>
+            <offsetNumber>-6</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>X5_horas_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>5 horas antes</label>
+            <offsetNumber>-5</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>X4_horas_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>4 horas antes</label>
+            <offsetNumber>-4</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>X3_horas_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>3 horas antes</label>
+            <offsetNumber>-3</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>X2_horas_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>2 horas antes</label>
+            <offsetNumber>-2</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>X1_hora_antes</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial</targetReference>
+            </connector>
+            <label>1 hora antes</label>
+            <offsetNumber>-1</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Vencido</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial_0</targetReference>
+            </connector>
+            <label>Vencido</label>
+            <offsetNumber>0</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Vencido_ha_2_horas</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial_0</targetReference>
+            </connector>
+            <label>Vencido há 2 horas</label>
+            <offsetNumber>2</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Vencido_ha_4_horas</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial_0</targetReference>
+            </connector>
+            <label>Vencido há 4 horas</label>
+            <offsetNumber>4</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Vencido_ha_6_horas</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial_0</targetReference>
+            </connector>
+            <label>Vencido há 6 horas</label>
+            <offsetNumber>6</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <scheduledPaths>
+            <name>Vencido_ha_8_horas</name>
+            <connector>
+                <targetReference>Gerente_de_servico_ou_diretor_comercial_0</targetReference>
+            </connector>
+            <label>Vencido há 8 horas</label>
+            <offsetNumber>8</offsetNumber>
+            <offsetUnit>Hours</offsetUnit>
+            <recordField>Data_Hora_do_SLA_Solicitado__c</recordField>
+            <timeSource>RecordField</timeSource>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

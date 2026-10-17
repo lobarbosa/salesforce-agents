@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Alerta_de_criacao_de_Mapeamento</name>
+        <label>Mapeamento__c.Alerta_de_criacao_de_Mapeamento</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Mapeamento__c.Alerta_de_criacao_de_Mapeamento</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Mapeamento__c.Alerta_de_criacao_de_Mapeamento</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Alerta de criação de Mapeamento
+Descrição da regra de fluxo de trabalho: AM 27042018: notifica o Sales Operation sobre a criação de Mapeamento&quot;</description>
+    <label>Alerta de criação de Mapeamento</label>
+    <migratedFromWorkflowRuleName>Alerta de criação de Mapeamento</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Alerta_de_criacao_de_Mapeamento</targetReference>
+        </connector>
+        <filterFormula>AND( ISNEW(), OR( ISCHANGED({!$Record.Resposta_do_Fabricante__c}), ISCHANGED( {!$Record.Data_de_Validade_do_Registro__c} ) ))</filterFormula>
+        <object>Mapeamento__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

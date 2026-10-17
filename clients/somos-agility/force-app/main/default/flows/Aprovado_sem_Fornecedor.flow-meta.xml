@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Solicitar_Coffe_para_Padaria_Merci</name>
+        <label>Solicita_o_de_Coffe__c.Solicitar_Coffe_para_Padaria_Merci</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>Solicita_o_de_Coffe__c.Solicitar_Coffe_para_Padaria_Merci</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Solicita_o_de_Coffe__c.Solicitar_Coffe_para_Padaria_Merci</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Migrado de: regra de fluxo de trabalho Aprovado sem Fornecedor?
+Descrição da regra de fluxo de trabalho: &quot;</description>
+    <label>Aprovado sem Fornecedor?</label>
+    <migratedFromWorkflowRuleName>Aprovado sem Fornecedor?</migratedFromWorkflowRuleName>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>mainUpdate</name>
+        <label>mainUpdate</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Solicitar_Coffe_para_Padaria_Merci</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Aprovado_sem_Fornecedor__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Fornecedor__c</field>
+            <value>
+                <stringValue>Padaria Merci</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>mainUpdate</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Fornecedor__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Aprovado e Pedido Enviado a Padaria</stringValue>
+            </value>
+        </filters>
+        <object>Solicita_o_de_Coffe__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

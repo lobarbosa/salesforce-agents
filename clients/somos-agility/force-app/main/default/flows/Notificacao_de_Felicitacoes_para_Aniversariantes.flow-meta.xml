@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Notifica via e-mail alert.</description>
+        <name>Notificacao_de_Felicitacoes</name>
+        <label>Notificação de Felicitações</label>
+        <locationX>550</locationX>
+        <locationY>482</locationY>
+        <actionName>Contact.Aniversariante_Mes</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Contact.Aniversariante_Mes</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>63.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>E_aniversariante</name>
+        <label>É aniversariante?</label>
+        <locationX>659</locationX>
+        <locationY>363</locationY>
+        <defaultConnectorLabel>Não</defaultConnectorLabel>
+        <rules>
+            <name>Sim</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Birthay_Date__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>data_atual</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Notificacao_de_Felicitacoes</targetReference>
+            </connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <description>Verifica diariamente os aniversariantes atualmente ativos na empresa e, envia uma notificação de felicitações separadamente.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>Captura a data atual.</description>
+        <name>data_atual</name>
+        <dataType>Date</dataType>
+        <expression>TODAY()</expression>
+    </formulas>
+    <interviewLabel>Notificação de Felicitações para Aniversariantes {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Notificação de Felicitações para Aniversariantes</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>541</locationX>
+        <locationY>106</locationY>
+        <connector>
+            <targetReference>E_aniversariante</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Contato_Trabalha_Atualmente_na_Empresa__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Sim</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Receber_e_mails_de_Aniversario__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Contact</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2025-03-10</startDate>
+            <startTime>09:45:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

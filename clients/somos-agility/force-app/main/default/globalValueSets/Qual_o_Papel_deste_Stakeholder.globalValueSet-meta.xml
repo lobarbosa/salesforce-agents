@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>PowerSponsor</fullName>
+        <default>false</default>
+        <label>PowerSponsor</label>
+    </customValue>
+    <customValue>
+        <fullName>Stakeholder</fullName>
+        <default>false</default>
+        <label>Stakeholder</label>
+    </customValue>
+    <customValue>
+        <fullName>Mobilizador</fullName>
+        <default>false</default>
+        <label>Mobilizador</label>
+    </customValue>
+    <masterLabel>Qual o Papel deste Stakeholder?</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

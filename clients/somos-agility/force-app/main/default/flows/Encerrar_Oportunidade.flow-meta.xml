@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>FO: Fluxo para encerrar a oportunidade</description>
+    <interviewLabel>Encerrar Oportunidade {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Encerrar Oportunidade</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Altera_Registro</name>
+        <label>Altera Registro</label>
+        <locationX>361</locationX>
+        <locationY>198</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>vOId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>RecordTypeId</field>
+            <value>
+                <elementReference>vOpRecordTypeId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>Encerrada</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
+    <startElementReference>Altera_Registro</startElementReference>
+    <status>Active</status>
+    <variables>
+        <description>variable Opportunity Id</description>
+        <name>vOId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>vOpRecordTypeId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>true</isOutput>
+        <value>
+            <stringValue>01238000000EAui</stringValue>
+        </value>
+    </variables>
+</Flow>
