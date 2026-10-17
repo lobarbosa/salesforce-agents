@@ -5,10 +5,24 @@ import { calibracaoPara, type Calibracao, type EstimativaCalibrada } from "@/lib
 
 // `ambientes` vem junto em ambas: a Visão Geral precisa dele pra listar
 // conexão pendente, e a aba Conexões renderiza um card por ambiente.
+//
+// Só clientes ativos: encerrado sai da sidebar, da Visão Geral e de todo
+// seletor (lib/encerramento.ts). Quem precisa dele é o admin, pela lista de
+// encerrados abaixo — e as telas de /financeiro, que leem o histórico direto.
 export function getClients() {
   return prisma.client.findMany({
+    where: { encerradoEm: null },
     orderBy: { nome: "asc" },
     include: { ambientes: true },
+  });
+}
+
+/** Encerrados, mais recente primeiro — só para o admin (seção "Encerrados"). */
+export function getClientesEncerrados() {
+  return prisma.client.findMany({
+    where: { encerradoEm: { not: null } },
+    orderBy: { encerradoEm: "desc" },
+    select: { id: true, nome: true, encerradoEm: true, encerradoPorEmail: true, motivoEncerramento: true },
   });
 }
 

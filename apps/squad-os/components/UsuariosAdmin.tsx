@@ -16,14 +16,18 @@ function gerarSenha(): string {
 export function UsuariosAdmin({
   usuarios,
   clients,
+  encerrados = [],
   currentUsuarioId,
 }: {
   usuarios: Usuario[];
   clients: Client[];
+  /** Clientes encerrados: não entram nos seletores, só dão nome a quem ainda aponta para eles. */
+  encerrados?: { id: string; nome: string }[];
   currentUsuarioId: string;
 }) {
   const router = useRouter();
   const clientNome = (id: string | null) => clients.find((c) => c.id === id)?.nome ?? "—";
+  const encerradoNome = (id: string | null) => encerrados.find((c) => c.id === id)?.nome ?? null;
 
   const [email, setEmail] = useState("");
   const [nome, setNome] = useState("");
@@ -169,6 +173,7 @@ export function UsuariosAdmin({
             usuario={u}
             clients={clients}
             clientNome={clientNome}
+            encerradoNome={encerradoNome}
             isSelf={u.id === currentUsuarioId}
             onUpdate={(data) => updateUsuario(u.id, data)}
             onSetSenha={(senha) => setSenhaDoUsuario(u.id, senha)}
@@ -184,6 +189,7 @@ function UsuarioRow({
   usuario,
   clients,
   clientNome,
+  encerradoNome,
   isSelf,
   onUpdate,
   onSetSenha,
@@ -192,6 +198,7 @@ function UsuarioRow({
   usuario: Usuario;
   clients: Client[];
   clientNome: (id: string | null) => string;
+  encerradoNome: (id: string | null) => string | null;
   isSelf: boolean;
   onUpdate: (data: Record<string, unknown>) => Promise<Response>;
   onSetSenha: (senha: string) => Promise<Response>;
@@ -284,6 +291,13 @@ function UsuarioRow({
           style={{ padding: "0.35rem 0.5rem", borderRadius: 6, border: "1px solid var(--border)", background: "var(--surface-alt)", fontSize: "0.8rem" }}
         >
           <option value="">selecione...</option>
+          {/* Cliente encerrado: aparece só para quem ainda aponta para ele, sem
+              poder ser escolhido — o acesso dessa pessoa já caiu. */}
+          {encerradoNome(usuario.clientId) && (
+            <option value={usuario.clientId ?? ""} disabled>
+              {encerradoNome(usuario.clientId)} (encerrado — sem acesso)
+            </option>
+          )}
           {clients.map((c) => (
             <option key={c.id} value={c.id}>
               {c.nome}

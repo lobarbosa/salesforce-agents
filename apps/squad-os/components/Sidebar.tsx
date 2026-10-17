@@ -235,10 +235,13 @@ function Casca({
 
 export function Sidebar({
   clients,
+  encerrados = [],
   usuario,
   marcaSrc,
 }: {
   clients: ClienteDaSidebar[];
+  /** Clientes encerrados — só chegam para o admin (layout.tsx). */
+  encerrados?: { id: string; nome: string }[];
   usuario: CurrentUsuario;
   marcaSrc: string | null;
 }) {
@@ -493,6 +496,27 @@ export function Sidebar({
               );
             })}
           </div>
+
+          {/* Encerrados ficam fora da lista e da busca, num filtro à parte —
+              para o admin consultar o histórico, reativar ou excluir. */}
+          {encerrados.length > 0 && (
+            <details className="clientes-encerrados" open={encerrados.some((c) => c.id === activeClientId)}>
+              <summary>Encerrados ({encerrados.length})</summary>
+              <div className="client-list">
+                {encerrados.map((c) => (
+                  <Link
+                    key={c.id}
+                    href={`/clients/${c.id}`}
+                    onClick={fecharMenu}
+                    className={`client-item${c.id === activeClientId ? " active" : ""}`}
+                  >
+                    <span className="cname">{c.nome}</span>
+                    <span className="sr-only"> — encerrado</span>
+                  </Link>
+                ))}
+              </div>
+            </details>
+          )}
 
           <div className="new-client">
             {formOpen ? (

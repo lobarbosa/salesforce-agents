@@ -4,6 +4,7 @@ import { getCurrentUsuario } from "@/lib/current-user";
 import type { Role } from "@/lib/generated/prisma/client";
 import { createServiceClient, serviceRoleConfigurado } from "@/lib/supabase/storage";
 import { definirSenha } from "@/lib/supabase/senha";
+import { bloqueioPorEncerramento } from "@/lib/encerramento";
 
 const ROLES: Role[] = ["admin", "consultor", "financeiro", "cliente"];
 
@@ -26,6 +27,12 @@ export async function POST(request: NextRequest) {
   }
   if (role === "cliente" && !clientId) {
     return NextResponse.json({ error: "role=cliente precisa de um cliente atribuído" }, { status: 400 });
+  }
+  if (role === "cliente" && clientId) {
+    const alvo = await prisma.client.findUnique({ where: { id: clientId }, select: { nome: true, encerradoEm: true } });
+    if (!alvo) return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
+    const encerrado = bloqueioPorEncerramento(alvo, "acesso");
+    if (encerrado) return NextResponse.json({ error: encerrado }, { status: 409 });
   }
   if (senha && senha.length < 8) {
     return NextResponse.json({ error: "senha precisa ter pelo menos 8 caracteres" }, { status: 400 });

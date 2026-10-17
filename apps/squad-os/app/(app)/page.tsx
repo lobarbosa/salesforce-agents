@@ -36,7 +36,11 @@ export default async function OverviewPage() {
   ]);
   const clientNome = (id: string) => clients.find((c) => c.id === id)?.nome ?? id;
 
+  // getClients() já vem sem os encerrados; as demandas deles saem junto —
+  // ninguém mais responde gate de cliente que saiu.
+  const ativos = new Set(clients.map((c) => c.id));
   const pendentes = demandas
+    .filter((d) => ativos.has(d.clientId))
     .filter((d) => {
       const perguntas = Array.isArray(d.perguntas) ? d.perguntas : [];
       const aprov = asAprovacao(d.aprovacao);

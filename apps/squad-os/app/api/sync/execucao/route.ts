@@ -12,6 +12,10 @@ import { autorizarSync } from "@/lib/sync-auth";
 // Nunca é fonte de verdade: o git continua sendo (guardrail #5). Isto é só
 // o espelho histórico — ExecucaoAgente nunca é lido por nada que decida
 // estado da demanda, só pelas telas de observabilidade.
+//
+// Única rota de sync que **aceita** cliente encerrado (lib/encerramento.ts):
+// ela não move nada, só registra que um run terminou — e um run que já estava
+// no ar quando o cliente foi encerrado é histórico como qualquer outro.
 
 const ORIGENS = new Set(["demanda", "assessment", "planejamento", "conexao"]);
 const RESULTADOS = new Set(["success", "failure", "cancelled"]);

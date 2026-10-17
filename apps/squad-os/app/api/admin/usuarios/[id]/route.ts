@@ -4,6 +4,7 @@ import { getCurrentUsuario } from "@/lib/current-user";
 import type { Role } from "@/lib/generated/prisma/client";
 import { serviceRoleConfigurado } from "@/lib/supabase/storage";
 import { definirSenha } from "@/lib/supabase/senha";
+import { bloqueioPorEncerramento } from "@/lib/encerramento";
 
 const ROLES: Role[] = ["admin", "consultor", "financeiro", "cliente"];
 
@@ -68,6 +69,15 @@ export async function PATCH(
 
   if ("clientId" in body) {
     data.clientId = body.clientId ? String(body.clientId) : null;
+    if (data.clientId) {
+      const alvo = await prisma.client.findUnique({
+        where: { id: data.clientId },
+        select: { nome: true, encerradoEm: true },
+      });
+      if (!alvo) return NextResponse.json({ error: "cliente não encontrado" }, { status: 404 });
+      const encerrado = bloqueioPorEncerramento(alvo, "acesso");
+      if (encerrado) return NextResponse.json({ error: encerrado }, { status: 409 });
+    }
   }
 
   if ("nome" in body) {

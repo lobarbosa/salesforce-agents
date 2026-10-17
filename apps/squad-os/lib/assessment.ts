@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { triggerAssessment } from "@/lib/github";
+import { bloqueioPorEncerramento } from "@/lib/encerramento";
 
 // Disparar o assessment são duas coisas que precisam andar juntas: acionar o
 // workflow e registrar que há um run em voo. Antes só a primeira acontecia, e
@@ -21,6 +22,11 @@ import { triggerAssessment } from "@/lib/github";
  * dizer que existe deixaria o card girando por um job que nunca nasceu.
  */
 export async function dispararAssessment(clientId: string, slug: string): Promise<void> {
+  // Os dois gatilhos passam por aqui — cliente encerrado não roda agente.
+  const c = await prisma.client.findUnique({ where: { id: clientId }, select: { nome: true, encerradoEm: true } });
+  const bloqueio = bloqueioPorEncerramento(c, "agente");
+  if (bloqueio) throw new Error(bloqueio);
+
   await triggerAssessment(slug);
 
   await prisma.client.update({

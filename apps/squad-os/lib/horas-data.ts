@@ -78,7 +78,8 @@ export async function minhaSemana(email: string, segunda: string): Promise<Seman
       select: { demanda: { select: SELECAO_DEMANDA } },
     }),
     prisma.demanda.findMany({
-      where: { status: { not: "entregue" } },
+      // Opções para linha nova da grade: cliente encerrado não recebe hora.
+      where: { status: { not: "entregue" }, client: { encerradoEm: null } },
       select: SELECAO_DEMANDA,
       orderBy: [{ client: { nome: "asc" } }, { criadoEm: "desc" }],
     }),

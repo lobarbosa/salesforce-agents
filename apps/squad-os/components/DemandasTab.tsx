@@ -162,9 +162,15 @@ export function DemandasTab({
     <>
       <div className="board-toolbar">
         <span className="save-note">demandas de {client.nome}</span>
-        <button className="btn-primary" type="button" onClick={() => setNewOpen(true)}>
-          + nova demanda
-        </button>
+        {/* Cliente encerrado não recebe demanda nova (a API recusa com 409);
+            o quadro fica como histórico. */}
+        {client.encerradoEm ? (
+          <span className="save-note">cliente encerrado — sem demandas novas</span>
+        ) : (
+          <button className="btn-primary" type="button" onClick={() => setNewOpen(true)}>
+            + nova demanda
+          </button>
+        )}
       </div>
 
       {paradas.length > 0 && (

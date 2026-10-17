@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
+import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { dispararAssessment } from "@/lib/assessment";
 import type { StatusConexao, TipoAmbiente } from "@/lib/generated/prisma/client";
 
@@ -35,11 +36,13 @@ export async function POST(request: NextRequest) {
 
   const client = await prisma.client.findUnique({
     where: { slug: clientSlug },
-    select: { id: true, assessmentEm: true },
+    select: { id: true, nome: true, encerradoEm: true, assessmentEm: true },
   });
   if (!client) {
     return NextResponse.json({ error: `cliente '${clientSlug}' não encontrado` }, { status: 404 });
   }
+  const encerrado = recusaSeEncerrado(client, "sync");
+  if (encerrado) return encerrado;
 
   const ambiente = await prisma.ambienteOrg.findUnique({
     where: { clientId_tipo: { clientId: client.id, tipo } },

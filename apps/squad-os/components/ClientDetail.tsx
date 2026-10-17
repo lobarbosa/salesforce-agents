@@ -10,6 +10,7 @@ import { ConexaoTab } from "@/components/ConexaoTab";
 import { ContratoTab } from "@/components/ContratoTab";
 import { DemandasTab } from "@/components/DemandasTab";
 import { Copiloto } from "@/components/Copiloto";
+import { EncerradoBadge, EncerramentoCliente } from "@/components/EncerramentoCliente";
 
 type Tab = "conhecimento" | "contrato" | "conexao" | "demandas";
 
@@ -21,6 +22,7 @@ export function ClientDetail({
   demandasPorEntregavel,
   initialTab,
   openDemandId,
+  bloqueiosExclusao = [],
 }: {
   client: Client & {
     ambientes: AmbienteOrg[];
@@ -32,6 +34,8 @@ export function ClientDetail({
   usuario: CurrentUsuario;
   initialTab?: Tab;
   openDemandId?: string;
+  /** Só para admin com cliente encerrado: o que impede a exclusão definitiva. */
+  bloqueiosExclusao?: string[];
 }) {
   const podeGerenciarClientes = usuario.role !== "cliente";
   const [tab, setTab] = useState<Tab>(initialTab ?? (openDemandId || !podeGerenciarClientes ? "demandas" : "conhecimento"));
@@ -151,8 +155,35 @@ export function ClientDetail({
         <h1>
           {client.nome}
           <span className="seg">{client.segmento || "sem segmento definido"}</span>
+          {client.encerradoEm && <EncerradoBadge encerradoEm={client.encerradoEm} />}
         </h1>
+        {/* Encerrar é decisão do admin (lib/encerramento.ts) — a API confere de novo. */}
+        {usuario.role === "admin" && !client.encerradoEm && (
+          <div className="client-header-acoes">
+            <EncerramentoCliente
+              clientId={client.id}
+              nome={client.nome}
+              slug={client.slug}
+              encerradoEm={null}
+              encerradoPorEmail={null}
+              motivoEncerramento=""
+              bloqueiosExclusao={[]}
+            />
+          </div>
+        )}
       </div>
+
+      {usuario.role === "admin" && client.encerradoEm && (
+        <EncerramentoCliente
+          clientId={client.id}
+          nome={client.nome}
+          slug={client.slug}
+          encerradoEm={client.encerradoEm}
+          encerradoPorEmail={client.encerradoPorEmail}
+          motivoEncerramento={client.motivoEncerramento}
+          bloqueiosExclusao={bloqueiosExclusao}
+        />
+      )}
 
       <div className="tabs" role="tablist" aria-label={`Seções de ${client.nome}`}>
         <button
