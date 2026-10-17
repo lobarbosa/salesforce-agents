@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>Envia um email com as informações do novo perfil criado para tais.credito@maispolimeros.com.br</description>
+        <name>AlertaNovoPerfil</name>
+        <label>Alerta de novo perfil</label>
+        <locationX>176</locationX>
+        <locationY>335</locationY>
+        <actionName>Perfil__c.AlertaNovoPerfil</actionName>
+        <actionType>emailAlert</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>SObjectRowId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>Perfil__c.AlertaNovoPerfil</nameSegment>
+    </actionCalls>
+    <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>Quando um novo perfil é criado, um email com suas informações é enviado para tais.credito@maispolimeros.com.br</description>
+    <environments>Default</environments>
+    <interviewLabel>Aviso de criação de perfil {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Aviso de novo de perfil</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>AlertaNovoPerfil</targetReference>
+        </connector>
+        <object>Perfil__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

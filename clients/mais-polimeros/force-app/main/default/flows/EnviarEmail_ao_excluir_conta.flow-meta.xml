@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Conta_Exclu_da</name>
+        <label>Conta Excluída</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <stringValue>daniely.rosa@maispolimeros.com.br, beatriz.santos@maispolimeros.com.br,tais.credito@maispolimeros.com.br, fernanda.natal@maispolimeros.com.br</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Conta Excluída</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>CorpoEmail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>useLineBreaks</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <interviewLabel>EnviarEmail  ao excluir conta {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>EnviarEmail  ao excluir conta</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Conta_Exclu_da</targetReference>
+        </connector>
+        <object>Account</object>
+        <recordTriggerType>Delete</recordTriggerType>
+        <triggerType>RecordBeforeDelete</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>CorpoEmail</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Conta excluída do sistema.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;O cliente&lt;span style=&quot;color: rgb(244, 11, 11);&quot;&gt; {!$Record.Name}&lt;/span&gt; foi excluído do SalesForce.&lt;/p&gt;&lt;p&gt;&lt;strong&gt;CNPJ:&lt;/strong&gt; {!$Record.beeCnpj__CNPJ__c}&lt;/p&gt;&lt;p&gt;&lt;strong&gt;ID Protheus: &lt;/strong&gt;{!$Record.Codigo__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;{!$Record.Motivo_ltima_Altera_o_de_conta__c}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!$Record.Informa_o_Extra__c}&lt;/p&gt;</text>
+    </textTemplates>
+</Flow>

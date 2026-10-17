@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <formulas>
+        <name>fDataAcimaDeTresMeses</name>
+        <dataType>Date</dataType>
+        <expression>If(Month(Today())-2&lt;1, Date(Year(Today())-1, 12 - Month(Today()) -2,01), Date(Year(Today()), Month(Today())-2,01))</expression>
+    </formulas>
+    <formulas>
+        <name>fDataMesAnterior</name>
+        <dataType>Date</dataType>
+        <expression>If(Month(Today())-1&lt;1, Date(Year(Today())-1, 12 - Month(Today()) -1,01), Date(Year(Today()), Month(Today())-1,01))</expression>
+    </formulas>
+    <formulas>
+        <name>fPrimeiroDiaMes</name>
+        <dataType>Date</dataType>
+        <expression>Date(Year(Today()),month(today()),01)</expression>
+    </formulas>
+    <interviewLabel>ProjetoReforçoIntegração {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>ProjetoReforçoIntegração</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Solicita_oProjeto</name>
+        <label>SolicitaçãoProjeto</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>X1_Produto_Ativo__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Name</field>
+        </inputAssignments>
+        <object>Solicitar_no_Projeto__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Solicita_oProjeto</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2024-07-17</startDate>
+            <startTime>17:01:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>tTextoAtencao</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong style=&quot;color: rgb(255, 182, 0); background-color: rgb(255, 255, 255);&quot;&gt;Atenção&lt;/strong&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>tTextoCritico</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong style=&quot;color: rgb(189, 4, 4); background-color: rgb(255, 255, 255);&quot;&gt;Crítico&lt;/strong&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>tTextoElegivel</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong style=&quot;color: rgb(57, 202, 9); background-color: rgb(255, 255, 255);&quot;&gt;Elegível&lt;/strong&gt;&lt;/p&gt;</text>
+    </textTemplates>
+</Flow>

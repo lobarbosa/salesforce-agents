@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <formulas>
+        <name>fDataAnalise</name>
+        <dataType>Boolean</dataType>
+        <expression>DAY(Today() )&lt;= 4</expression>
+    </formulas>
+    <formulas>
+        <name>fDataFim</name>
+        <dataType>Date</dataType>
+        <expression>Date(YEAR(TODAY()),MONTH(TODAY()),01)-1</expression>
+    </formulas>
+    <formulas>
+        <name>fDataInicio</name>
+        <dataType>Date</dataType>
+        <expression>DATE(YEAR(Date(YEAR(TODAY()),MONTH(TODAY()),01)-1),MONTH(Date(YEAR(TODAY()),MONTH(TODAY()),01)-1),01)</expression>
+    </formulas>
+    <formulas>
+        <name>fDataLimite</name>
+        <dataType>Date</dataType>
+        <expression>IF( AND( WEEKDAY(TODAY()) &lt;= 5 , WEEKDAY(TODAY()) &gt;= 2) ,TODAY()-6, TODAY()-4)</expression>
+    </formulas>
+    <interviewLabel>FecharTodasCotações {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>FecharTodasCotações - SEM RECORD</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>AtualizarCota_es</name>
+        <label>AtualizarCotações</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Fechado Ganho</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>NotEqualTo</operator>
+            <value>
+                <stringValue>Fechado Perdido</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CreatedDate</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <dateTimeValue>2025-01-01T03:00:00.000Z</dateTimeValue>
+            </value>
+        </filters>
+        <filters>
+            <field>CloseDate</field>
+            <operator>LessThan</operator>
+            <value>
+                <dateValue>2025-02-28</dateValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>LossReason__c</field>
+            <value>
+                <stringValue>Prazo Expirado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>Fechado Perdido</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>concorrente__c</field>
+            <value>
+                <stringValue>05 – Não Informado</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Opportunity</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>AtualizarCota_es</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Once</frequency>
+            <startDate>2025-03-06</startDate>
+            <startTime>15:52:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Obsolete</status>
+</Flow>

@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>email_em_verificacao</name>
+        <label>email_em_verificação</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Atualizar_Fase_Geral</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>recipientAddresses</name>
+            <value>
+                <collectionElements>
+                    <elementReference>email_gestor</elementReference>
+                </collectionElements>
+                <collectionElements>
+                    <elementReference>email_mediador</elementReference>
+                </collectionElements>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <inputConfiguratorMode>Custom</inputConfiguratorMode>
+                <stringValue>DefaultWorkflowUser</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>email_mediador</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>composeEmailContent</name>
+            <value>
+                <stringValue>True</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>OFF GRADE - Verificação de Disponibilidade</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>textoemail</elementReference>
+                <inputConfiguratorMode>Resource</inputConfiguratorMode>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>useLineBreaks</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+        <versionString>2.0.1</versionString>
+    </actionCalls>
+    <apiVersion>65.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Usuarios</name>
+        <label>Usuarios</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>email_gestor</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Gestor_Responsavel__r.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>email_mediador</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Record.Mediador__r.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>email_em_verificacao</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>Atualizar_Fase_Geral</name>
+        <label>Atualizar Fase Geral</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>C_pia_2_de_C_pia_1_de_Atualizar_registros_4</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>Atualizar_Primeira_Fase</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Segunda_Fase__c</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>C_pia_1_de_Atualizar_registros_4</targetReference>
+            </connector>
+            <label>Atualizar Primeira Fase</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Disparar_comunicado_verificacao</name>
+        <label>Disparar comunicado verificação</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Atualizar_Fase_Geral</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>Enviar_email</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Primeira_Fase__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Verificação</stringValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Primeira_Fase__c</leftValueReference>
+                <operator>IsChanged</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Usuarios</targetReference>
+            </connector>
+            <label>Enviar email</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Novo</name>
+        <label>Novo</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Disparar_comunicado_verificacao</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>Atualizar_Titulo</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsNew</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Disparar_comunicado_verificacao</targetReference>
+            </connector>
+            <label>Atualizar Titulo/Nome</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>IsNew</name>
+        <dataType>Boolean</dataType>
+        <expression>ISNEW()</expression>
+    </formulas>
+    <formulas>
+        <name>Nome_solicitacao</name>
+        <dataType>String</dataType>
+        <expression>IF ({!$Record.Grupo_Economico__r.GrupoEconomicoIdPesquisa__r.NomeFantasia__c} = &quot;&quot; ,{!$Record.Grupo_Economico__r.NomeFantasia__c},{!$Record.Grupo_Economico__r.GrupoEconomicoIdPesquisa__r.NomeFantasia__c}) + &quot; - OFF &quot; + TEXT({!$Record.Tipo_de_OFF__c}) + &quot; (&quot; + 
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 1, &quot;JAN&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate}))= 2, &quot;FEV&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate}))= 3, &quot;MAR&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 4, &quot;ABR&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 5, &quot;MAI&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 6, &quot;JUN&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 5, &quot;JUL&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 8, &quot;AGO&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 9, &quot;SET&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 10, &quot;OUT&quot;,
+IF(MONTH(DATEVALUE({!$Record.CreatedDate})) = 11, &quot;NOV&quot;, &quot;DEZ&quot;)))))))))))
++ &quot;/&quot; + TEXT(YEAR(DATEVALUE({!$Record.CreatedDate})))
++ &quot;)&quot;</expression>
+    </formulas>
+    <interviewLabel>MP - Criado/Atualizado OFF GRADE {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MP - Criado/Atualizado OFF GRADE</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>C_pia_1_de_Atualizar_registros_4</name>
+        <label>Atualizar registros</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Fase__c</field>
+            <value>
+                <elementReference>$Record.Primeira_Fase__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Nome_solicitacao</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>C_pia_2_de_C_pia_1_de_Atualizar_registros_4</name>
+        <label>Atualizar registros</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <inputAssignments>
+            <field>Fase__c</field>
+            <value>
+                <elementReference>$Record.Segunda_Fase__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Name</field>
+            <value>
+                <elementReference>Nome_solicitacao</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Novo</targetReference>
+        </connector>
+        <object>OFF_GRADE__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>textoemail</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p style=&quot;text-align: center;&quot;&gt;&lt;img src=&quot;https://maispolimeros.file.force.com/sfc/servlet.shepherd/version/download/068N500000XEQRB?asPdf=false&amp;amp;operationContext=CHATTER&quot; alt=&quot;off_grade.png&quot;&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Olá! Tudo bem?&lt;/span&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 14px;&quot;&gt;Informamos que existe uma solicitação de OFF GRADE aguardando verificação.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Solicitação: &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Vendedor: {!$Record.Vendedor_Solicitante__r.Name}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Grupo econômico: {!$Record.Grupo_Economico__r.NomeFantasia__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;Prazo de Vencimento: &lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Informações Técnicas do produto:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;Tipo de OFF: {!$Record.Tipo_de_OFF__c}&lt;/p&gt;&lt;p&gt;Fluidez: {!$Record.Fluidez__c}&lt;/p&gt;&lt;p&gt;Parâmetros: {!$Record.Parametros_da_Fluidez__c}&lt;/p&gt;&lt;p&gt;Grade de referência: {!$Record.Grade_de_Referencia__r.Name}&lt;/p&gt;&lt;p&gt;Aplicação: {!$Record.Aplicacao__c}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Observações:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;{!$Record.Observa_es_da_Solicita_o__c}&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 14px;&quot;&gt;Direcionamento:&lt;/strong&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;a href=&quot;https://maispolimeros.lightning.force.com/{!$Record.Id}&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot;&gt;https://maispolimeros.lightning.force.com/{!$Record.Id}&lt;/a&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;br&gt;&lt;/p&gt;&lt;p style=&quot;text-align: center;&quot;&gt;&lt;span style=&quot;font-size: 12px;&quot;&gt;﻿&lt;/span&gt;&lt;img src=&quot;https://maispolimeros.file.force.com/sfc/servlet.shepherd/version/download/068N500000XDAhn?asPdf=false&amp;amp;operationContext=CHATTER&quot; alt=&quot;off_grade.png&quot;&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>email_gestor</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>email_mediador</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

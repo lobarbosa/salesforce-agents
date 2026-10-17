@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>43</activeVersionNumber>
+    <description>Em desenvolvimento - Criar dois proprietários em uma conta (Commodities e Especialidades)</description>
+    <masterLabel>Atualizar Vendedor Process</masterLabel>
+</FlowDefinition>

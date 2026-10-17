@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>AtribuiCamposAutomaticos</name>
+        <label>Atribui campos automáticos</label>
+        <locationX>176</locationX>
+        <locationY>311</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.ChaveUnica__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>ChaveUnica</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>$Record.Name</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>NomePadrao</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <environments>Default</environments>
+    <formulas>
+        <name>ChaveUnica</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Representante__c} &amp; {!$Record.DivisaoNegocioId__c}</expression>
+    </formulas>
+    <formulas>
+        <name>NomePadrao</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.DivisaoNegocioId__r.Name} &amp; &quot; - &quot; &amp; {!$Record.Representante__r.FirstName} &amp; IF(ISBLANK({!$Record.Representante__r.LastName}), &quot;&quot;, &quot; &quot; &amp; {!$Record.Representante__r.LastName})</expression>
+    </formulas>
+    <interviewLabel>FL AcessoProduto 01 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>FL AcessoProduto 01 Before</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>AtribuiCamposAutomaticos</targetReference>
+        </connector>
+        <object>AcessoProduto__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+    <triggerOrder>1</triggerOrder>
+</Flow>

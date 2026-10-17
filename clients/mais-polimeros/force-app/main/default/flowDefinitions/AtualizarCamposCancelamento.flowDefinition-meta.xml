@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>3</activeVersionNumber>
+    <description>SOLICITAÇÃO DE CANCELAMENTO - Fluxo facilitador para cancelamentos,  acionado por registro</description>
+    <masterLabel>Atualizar Campos Cancelamento</masterLabel>
+</FlowDefinition>
