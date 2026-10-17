@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RNC_Procedencia__c</fullName>
+    <label>Procedência</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Procedente</fullName>
+                <default>false</default>
+                <label>Procedente</label>
+            </value>
+            <value>
+                <fullName>Improcedente</fullName>
+                <default>false</default>
+                <label>Improcedente</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

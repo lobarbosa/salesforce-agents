@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Atribui_o_1</name>
+        <label>Atribuição 1</label>
+        <locationX>440</locationX>
+        <locationY>684</locationY>
+        <assignmentItems>
+            <assignToReference>vElegibilidade</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>AdicionarMes</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>AtualizarEleg_vel</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Atribui_o_2</name>
+        <label>Atribuição 2</label>
+        <locationX>440</locationX>
+        <locationY>576</locationY>
+        <assignmentItems>
+            <assignToReference>vElegibilidade</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>Loop_1.ELEGIVEL_VENEZA__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Atribui_o_1</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <name>ContemAbril</name>
+        <label>ContemAbril?</label>
+        <locationX>352</locationX>
+        <locationY>468</locationY>
+        <defaultConnector>
+            <targetReference>Atribui_o_2</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>Sim</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Loop_1.ELEGIVEL_VENEZA__c</leftValueReference>
+                <operator>Contains</operator>
+                <rightValue>
+                    <elementReference>ESTEMES222</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Loop_1</targetReference>
+            </connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>AdicionarMes</name>
+        <dataType>String</dataType>
+        <expression>IF( CONTAINS({!vTextoElegibilidade} , 
+IF ( MONTH(TODAY()) = 2 , &quot;;FEVEREIRO&quot;,
+IF ( MONTH(TODAY()) = 3 , &quot;;MARÇO&quot;,
+IF ( MONTH(TODAY()) = 4 , &quot;;ABRIL&quot;,
+IF ( MONTH(TODAY()) = 5 , &quot; ;MAIO&quot;,
+IF ( MONTH(TODAY()) = 6 , &quot;;JUNHO&quot;,
+IF ( MONTH(TODAY()) = 7 , &quot;;JULHO&quot;,
+IF ( MONTH(TODAY()) = 8 , &quot;;AGOSTO&quot;,
+IF ( MONTH(TODAY()) = 9 , &quot;;SETEMBRO&quot;,
+IF ( MONTH(TODAY()) = 10 , &quot;;OUTUBRO&quot;,
+IF ( MONTH(TODAY()) = 11 ,&quot;;NOVEMBRO&quot;, 
+IF ( MONTH(TODAY()) = 12 ,&quot;;DEZEMBRO&quot;, &quot;&quot;)))))))))))) , &quot;&quot; ,
+IF ( MONTH(TODAY()) = 2, &quot;;FEVEREIRO&quot;,
+IF ( MONTH(TODAY()) = 3 , &quot;;MARÇO&quot;,
+IF ( MONTH(TODAY()) = 4 , &quot;;ABRIL&quot;,
+IF ( MONTH(TODAY()) = 5 , &quot; ;MAIO&quot;,
+IF ( MONTH(TODAY()) = 6 , &quot;;JUNHO&quot;,
+IF ( MONTH(TODAY()) = 7 , &quot;;JULHO&quot;,
+IF ( MONTH(TODAY()) = 8 , &quot;;AGOSTO&quot;,
+IF ( MONTH(TODAY()) = 9 , &quot;;SETEMBRO&quot;,
+IF ( MONTH(TODAY()) = 10 , &quot;;OUTUBRO&quot;,
+IF ( MONTH(TODAY()) = 11 ,&quot;;NOVEMBRO&quot;, 
+IF ( MONTH(TODAY()) = 12 ,&quot;;DEZEMBRO&quot;, &quot;&quot;)))))))))))
+)</expression>
+    </formulas>
+    <formulas>
+        <name>ESTEMES222</name>
+        <dataType>String</dataType>
+        <expression>IF ( MONTH(TODAY()) = 1 , &quot;JANEIRO&quot;,
+IF ( MONTH(TODAY()) = 2 , &quot;FEVEREIRO&quot;,
+IF ( MONTH(TODAY()) = 3, &quot;MARÇO&quot;,
+IF ( MONTH(TODAY()) = 4 , &quot;ABRIL&quot;,
+IF ( MONTH(TODAY()) = 5 , &quot;MAIO&quot;,
+IF ( MONTH(TODAY()) = 6 , &quot;JUNHO&quot;,
+IF ( MONTH(TODAY()) = 7 , &quot;JULHO&quot;,
+IF ( MONTH(TODAY()) = 8 , &quot;AGOSTO&quot;,
+IF ( MONTH(TODAY()) = 9 , &quot;SETEMBRO&quot;,
+IF ( MONTH(TODAY()) = 10 ,&quot;OUTUBRO&quot;,
+IF ( MONTH(TODAY()) = 11 ,&quot;NOVEMBRO&quot;, 
+IF ( MONTH(TODAY()) = 12 ,&quot;DEZEMBRO&quot;, &quot;&quot;))))))))))))</expression>
+    </formulas>
+    <formulas>
+        <name>Ultimos90dias</name>
+        <dataType>Date</dataType>
+        <expression>TODAY() - 20</expression>
+    </formulas>
+    <interviewLabel>AtualizarElegívelAgenda {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>AtualizarElegívelAgenda</label>
+    <loops>
+        <name>Loop_1</name>
+        <label>Loop 1</label>
+        <locationX>176</locationX>
+        <locationY>360</locationY>
+        <collectionReference>ObterContas</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>ContemAbril</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>ObterContas</name>
+        <label>ObterContas</label>
+        <locationX>176</locationX>
+        <locationY>252</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_1</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Data_ltimoPedidoProjeto__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>Ultimos90dias</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Data_ltimoPedidoProjeto__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>AtualizarEleg_vel</name>
+        <label>AtualizarElegível</label>
+        <locationX>440</locationX>
+        <locationY>792</locationY>
+        <connector>
+            <targetReference>Loop_1</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Loop_1.Id</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Data_ltimoPedidoProjeto__c</field>
+            <operator>GreaterThanOrEqualTo</operator>
+            <value>
+                <elementReference>Ultimos90dias</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Data_ltimoPedidoProjeto__c</field>
+            <operator>IsNull</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Atualmente_Elegivel__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Data_ltimoPedidoProjeto__c</field>
+            <operator>NotEqualTo</operator>
+        </filters>
+        <inputAssignments>
+            <field>ELEGIVEL_VENEZA__c</field>
+            <value>
+                <elementReference>vElegibilidade</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>ObterContas</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Once</frequency>
+            <startDate>2024-11-01</startDate>
+            <startTime>08:49:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Draft</status>
+    <variables>
+        <name>vConta</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>vElegibilidade</name>
+        <dataType>Multipicklist</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vID</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vTextoElegibilidade</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

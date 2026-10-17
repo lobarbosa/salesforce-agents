@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>UsuariosAprovadores</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+$Profile.Name = &quot;GAC - Comercial&quot;,
+$User.Alias &lt;&gt; &quot;gschi&quot;,
+Not(IsNew()),
+IsChanged( Status_da_Solicita_o__c )
+)</errorConditionFormula>
+    <errorMessage>Você não possuí acesso para liberar cancelamentos</errorMessage>
+</ValidationRule>

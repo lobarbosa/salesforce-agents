@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EconomiaCircular__c</fullName>
+    <description>Clientes que estão dentro da Economia Circular</description>
+    <label>Economia Circular</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>PCR</fullName>
+                <default>false</default>
+                <label>PCR</label>
+            </value>
+            <value>
+                <fullName>PE VERDE</fullName>
+                <default>false</default>
+                <label>PE VERDE</label>
+            </value>
+            <value>
+                <fullName>PCR + PE VERDE</fullName>
+                <default>false</default>
+                <label>PCR + PE VERDE</label>
+            </value>
+            <value>
+                <fullName>NENHUM</fullName>
+                <default>false</default>
+                <label>NENHUM</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

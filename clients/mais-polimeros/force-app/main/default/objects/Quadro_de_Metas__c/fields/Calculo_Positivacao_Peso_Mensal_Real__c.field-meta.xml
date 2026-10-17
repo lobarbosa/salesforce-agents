@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Calculo_Positivacao_Peso_Mensal_Real__c</fullName>
+    <formula>20/100 * ( Media_de_clientes_positivados_ao_ano__c / Media_da_carteira_ao_ano__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Volume mensal do campo &quot;Cálculo: Positivação - Peso Mensal&quot; na Perspectiva Anual (Máximo de 1,67% ao mês)</inlineHelpText>
+    <label>Cálculo: Positivação - Peso Mensal Real</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

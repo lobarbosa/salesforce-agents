@@ -1,0 +1,24 @@
+<!--
+  @description       : 
+  @author            : isan.nassiffe@sottama.com
+  @group             : 
+  @last modified on  : 03-25-2022
+  @last modified by  : isan.nassiffe@sottama.com
+-->
+<template>
+    <div class="slds-grid slds-gutters">
+        <template for:each={recentProducts} for:item="product">
+            <div class="slds-col" key={product.id} style="max-width: 200px;">
+                <span>
+                    <lightning-carousel-image
+                        src={product.smallPhotoUrl}
+                        header={product.name}
+                        description={product.sku}
+                        href={product.url}
+                        class = "customCarouselImage"
+                    ></lightning-carousel-image>
+                </span>
+            </div>
+        </template>
+    </div>
+</template>

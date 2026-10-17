@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FormaDePagamento__c</fullName>
+    <label>Forma de Pagamento</label>
+    <required>true</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>DP - Duplicata</fullName>
+                <default>true</default>
+                <label>DP - Duplicata</label>
+            </value>
+            <value>
+                <fullName>DE- Depósito</fullName>
+                <default>false</default>
+                <label>DE- Depósito</label>
+            </value>
+            <value>
+                <fullName>BN - BNDS</fullName>
+                <default>false</default>
+                <label>BN - BNDS</label>
+            </value>
+            <value>
+                <fullName>IC- ICMS</fullName>
+                <default>false</default>
+                <label>IC- ICMS</label>
+            </value>
+            <value>
+                <fullName>RS - Risco sacado</fullName>
+                <default>false</default>
+                <label>RS - Risco sacado</label>
+            </value>
+            <value>
+                <fullName>SF-Suframa</fullName>
+                <default>false</default>
+                <label>SF-Suframa</label>
+            </value>
+            <value>
+                <fullName>SI - SIFRA</fullName>
+                <default>false</default>
+                <label>SI - SIFRA</label>
+            </value>
+            <value>
+                <fullName>ID - ICMS/DUPLICATA</fullName>
+                <default>false</default>
+                <label>ID - ICMS/DUPLICATA</label>
+            </value>
+            <value>
+                <fullName>BV - BV</fullName>
+                <default>false</default>
+                <label>BV - BV</label>
+            </value>
+            <value>
+                <fullName>MP - MPAY</fullName>
+                <default>false</default>
+                <label>MP - MPAY</label>
+            </value>
+            <value>
+                <fullName>AM - AMostra</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>AM - AMostra</label>
+            </value>
+            <value>
+                <fullName>DH- Dinheiro</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>DH- Dinheiro</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

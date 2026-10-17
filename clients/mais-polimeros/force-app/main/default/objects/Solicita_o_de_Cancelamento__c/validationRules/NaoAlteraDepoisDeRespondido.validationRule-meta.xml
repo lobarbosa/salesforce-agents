@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoAlteraDepoisDeRespondido</fullName>
+    <active>true</active>
+    <description>Não é possível alterar nenhum campo após resposta.</description>
+    <errorConditionFormula>AND(
+OR(
+ISCHANGED(Pedido__c),
+ISCHANGED(Pedido_Novo__c),
+ISCHANGED(Cancelar_tudo__c),
+ISCHANGED(Item_do_Pedido__c), ISCHANGED(Motivo_do_Cancelamento__c),
+ISCHANGED(Coment_rio_do_Cancelamento__c),
+ISCHANGED(Status_da_Solicita_o__c)),
+
+NOT(
+OR(
+ISPICKVAL(PriorValue(Status_da_Solicita_o__c), &quot;Aguardando&quot;),
+ISPICKVAL(Status_da_Solicita_o__c, &quot;Aguardando&quot;)
+)))</errorConditionFormula>
+    <errorMessage>Não é permitido alterar a solicitação depois da aprovação ou recusa.</errorMessage>
+</ValidationRule>

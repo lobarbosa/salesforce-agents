@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Representante_Responsavel__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>Altera Proprietario da cotação e commodities</description>
+    <label>Representante Responsavel</label>
+    <referenceTo>User</referenceTo>
+    <relationshipName>Cota_es_de_Pre_o</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>

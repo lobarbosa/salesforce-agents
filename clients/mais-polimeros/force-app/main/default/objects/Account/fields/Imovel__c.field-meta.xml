@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Imovel__c</fullName>
+    <label>Imóvel</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Próprio</fullName>
+                <default>false</default>
+                <label>Próprio</label>
+            </value>
+            <value>
+                <fullName>Alugado</fullName>
+                <default>false</default>
+                <label>Alugado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_inscricao</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+    NOT(ISBLANK( InscricaoEstadual__c )),
+    NOT(
+        REGEX(
+             InscricaoEstadual__c ,
+            &quot;^[A-Za-zÀ-ÖØ-öø-ÿ0-9 ]+$&quot;
+        )
+    )
+)</errorConditionFormula>
+    <errorDisplayField>beeCnpj__AtividadeEconomicaPrincipal__c</errorDisplayField>
+    <errorMessage>Não utilize caracteres, apenas numeros.</errorMessage>
+</ValidationRule>

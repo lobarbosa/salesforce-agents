@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Org_Account_Hierarchy</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ACCOUNT.ADDRESS1_CITY</columns>
+    <columns>beeCnpj__CNPJ__c</columns>
+    <columns>VendasNoMes__c</columns>
+    <columns>DataUltimaOpp__c</columns>
+    <columns>DataUltimaCompra__c</columns>
+    <columns>UltimaCotacaoGrupoEconomico__c</columns>
+    <columns>UltimoPedidoGrupoEconomico__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Org_Account_Hierarchy</label>
+</ListView>

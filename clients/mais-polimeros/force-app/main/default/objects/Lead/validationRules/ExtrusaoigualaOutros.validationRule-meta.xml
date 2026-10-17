@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExtrusaoigualaOutros</fullName>
+    <active>false</active>
+    <description>Caso campo &quot;Qual processo de extrusão?&quot; for selecionado com opção &quot;Outros&quot;, obrigar preenchimento do campo &quot;Outros Extrusão&quot;.</description>
+    <errorConditionFormula>And(ispickval( QualProcessoDeExtrusao__c  , &quot;Outros&quot;), Isblank (  OutrosExtrusao__c ))</errorConditionFormula>
+    <errorDisplayField>OutrosExtrusao__c</errorDisplayField>
+    <errorMessage>É necessário especificar qual é a extrusão quando preenchido a opção &quot;Outros&quot;</errorMessage>
+</ValidationRule>

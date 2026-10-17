@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Paulo</fullName>
+    <columns>Conta__c</columns>
+    <columns>ContaPai__c</columns>
+    <columns>OwnerConta__c</columns>
+    <columns>CREATED_DATE</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>OwnerConta__c</field>
+        <operation>equals</operation>
+        <value>Andr</value>
+    </filters>
+    <label>Paulo</label>
+</ListView>

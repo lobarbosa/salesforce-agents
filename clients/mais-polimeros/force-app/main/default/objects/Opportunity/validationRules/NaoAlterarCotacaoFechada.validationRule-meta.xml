@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoAlterarCotacaoFechada</fullName>
+    <active>false</active>
+    <errorConditionFormula>AND(
+    /* Exceções de quem pode editar mesmo fechado */
+    NOT(
+        OR(
+            $Profile.Name = &quot;Mais Polimeros Admin&quot;,
+            $Profile.Name = &quot;Mais Polimeros Admin - sMFA&quot;,
+            $Profile.Name = &quot;Administrador do sistema&quot;,
+            $Profile.Name = &quot;Integrador&quot;
+        )
+    ),
+
+    NOT($User.ByPassVR__c),
+
+    ByPassVR__c = false,
+    NOT(ISCHANGED(ByPassVR__c)),
+
+    /* Deixa Flows/Processos automáticos passarem */
+    TEXT($User.UserType) &lt;&gt; &quot;AutomatedProcess&quot;,
+
+    /* Libera quando o status for alterado para Perdido */
+    NOT(
+        AND(
+            ISCHANGED(StageName),
+            OR(
+                TEXT(StageName) = &quot;Closed Lost&quot;,
+                TEXT(StageName) = &quot;Fechado Perdido&quot;
+            )
+        )
+    ),
+
+    /* Se o estágio ANTERIOR já era fechado */
+    OR(
+        TEXT(PRIORVALUE(StageName)) = &quot;Closed Won&quot;,
+        TEXT(PRIORVALUE(StageName)) = &quot;Closed Lost&quot;,
+        TEXT(PRIORVALUE(StageName)) = &quot;Fechado Ganho&quot;,
+        TEXT(PRIORVALUE(StageName)) = &quot;Fechado Perdido&quot;
+    ),
+
+    /* Libera se estiver alterando um dos campos permitidos */
+    NOT(
+        OR(
+            ISCHANGED(LossReason__c),
+            ISCHANGED(concorrente__c),
+            ISCHANGED(OwnerId),
+            ISCHANGED(Name),
+            ISCHANGED(StageName),
+            ISCHANGED(Analise_do_gestor__c)
+        )
+    )
+)</errorConditionFormula>
+    <errorMessage>Não é possivel alterar a cotação após fechamento</errorMessage>
+</ValidationRule>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_confere_sem_remessa</fullName>
+    <active>true</active>
+    <description>Não é possível marcar conferencia sem a remessa</description>
+    <errorConditionFormula>AND(
+ConferenciaOK__c = True,
+ContaReceptor__c = &quot;&quot;,
+TEXT( TipoTES__c ) = &quot;Triangular&quot;,
+Text(StageName) &lt;&gt; &quot;Fechado Ganho&quot;,
+Text(StageName) &lt;&gt; &quot;Fechado Perdido&quot;
+)</errorConditionFormula>
+    <errorMessage>Para checar é necessário informar o cliente de remessa.</errorMessage>
+</ValidationRule>

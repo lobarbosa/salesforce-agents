@@ -1,0 +1,20 @@
+<template>
+    <div class="slds-grid slds-wrap slds-gutters_direct-medium slds-grid_vertical-stretch address-stretch">
+        <div class="slds-col slds-size_1-of-2 slds-m-top_x-small">
+            <span style="font-size: 16px;">Valor original</span>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-m-top_x-small" style="text-align: right">
+            <span style="font-size: 18px;">
+                <lightning-formatted-number value={valorOriginal} format-style="currency" currency-code="BRL" minimum-fraction-digits="2"></lightning-formatted-number>
+            </span>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-m-top_x-small">
+            <span style="font-size: 16px;">Encargos financeiros</span>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-m-top_x-small" style="text-align: right">
+            <span style="font-size: 18px;">
+                <lightning-formatted-number value={valor} format-style="currency" currency-code="BRL" minimum-fraction-digits="2"></lightning-formatted-number>
+        </span>
+        </div>
+    </div>
+</template>

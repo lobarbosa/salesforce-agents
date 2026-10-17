@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MotivoCongelado__c</fullName>
+    <label>Motivo congelado</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Status</controllingField>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Cadastro não aprovado</fullName>
+                <default>false</default>
+                <label>Cadastro não aprovado</label>
+            </value>
+            <value>
+                <fullName>Não utiliza nosso produto</fullName>
+                <default>false</default>
+                <label>Não utiliza nosso produto</label>
+            </value>
+            <value>
+                <fullName>Recusou-se a falar</fullName>
+                <default>false</default>
+                <label>Recusou-se a falar</label>
+            </value>
+            <value>
+                <fullName>Sem interesse</fullName>
+                <default>false</default>
+                <label>Sem interesse</label>
+            </value>
+            <value>
+                <fullName>Telefone inválido</fullName>
+                <default>false</default>
+                <label>Telefone inválido</label>
+            </value>
+            <value>
+                <fullName>Trabalha com Petroquímica</fullName>
+                <default>false</default>
+                <label>Trabalha com Petroquímica</label>
+            </value>
+            <value>
+                <fullName>Lead indevido</fullName>
+                <default>false</default>
+                <label>Lead indevido</label>
+            </value>
+        </valueSetDefinition>
+        <valueSettings>
+            <controllingFieldValue>Congelado</controllingFieldValue>
+            <valueName>Cadastro não aprovado</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Congelado</controllingFieldValue>
+            <valueName>Não utiliza nosso produto</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Congelado</controllingFieldValue>
+            <valueName>Recusou-se a falar</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Congelado</controllingFieldValue>
+            <valueName>Sem interesse</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Congelado</controllingFieldValue>
+            <valueName>Telefone inválido</valueName>
+        </valueSettings>
+        <valueSettings>
+            <controllingFieldValue>Congelado</controllingFieldValue>
+            <valueName>Trabalha com Petroquímica</valueName>
+        </valueSettings>
+    </valueSet>
+</CustomField>

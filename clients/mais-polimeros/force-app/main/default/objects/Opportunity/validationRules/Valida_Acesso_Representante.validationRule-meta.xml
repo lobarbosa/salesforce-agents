@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Valida_Acesso_Representante</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISNEW(),
+     AcessoConta__r.Inativo__c = true
+)</errorConditionFormula>
+    <errorMessage>Acesso a essa conta não está liberado para novas cotações</errorMessage>
+</ValidationRule>

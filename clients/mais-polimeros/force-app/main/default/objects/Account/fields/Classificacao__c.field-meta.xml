@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Classificacao__c</fullName>
+    <inlineHelpText>Tipo A: Compra todo mês com volume estável
+Tipo B: Compra todo mês com oscilação de volume
+Tipo C: Compra em 4 ou 5 meses com oscilações de volume
+Tipo D: Compra em 2 ou 3 meses com oscilações de volume
+Tipo E: Compra em apenas 1 mês
+(Análise baseada nos últimos 6 meses)</inlineHelpText>
+    <label>Classificação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Tipo A</fullName>
+                <default>false</default>
+                <label>Tipo A</label>
+            </value>
+            <value>
+                <fullName>Tipo B</fullName>
+                <default>false</default>
+                <label>Tipo B</label>
+            </value>
+            <value>
+                <fullName>Tipo C</fullName>
+                <default>false</default>
+                <label>Tipo C</label>
+            </value>
+            <value>
+                <fullName>Tipo D</fullName>
+                <default>false</default>
+                <label>Tipo D</label>
+            </value>
+            <value>
+                <fullName>Tipo E</fullName>
+                <default>false</default>
+                <label>Tipo E</label>
+            </value>
+            <value>
+                <fullName>Tipo SC</fullName>
+                <default>true</default>
+                <label>Tipo SC</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

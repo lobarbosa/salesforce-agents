@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BairroObrigatorio</fullName>
+    <active>true</active>
+    <description>Bairro obrigatório ao criar novo lead;</description>
+    <errorConditionFormula>AND
+(
+ ISPICKVAL(Status,&apos;Novo&apos;),
+ ISBLANK(Bairro__c)
+)</errorConditionFormula>
+    <errorDisplayField>Bairro__c</errorDisplayField>
+    <errorMessage>Bairro deverá ser preenchido em fase de prospecção.</errorMessage>
+</ValidationRule>

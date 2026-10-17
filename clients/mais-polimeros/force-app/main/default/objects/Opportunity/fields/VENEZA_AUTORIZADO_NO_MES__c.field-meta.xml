@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VENEZA_AUTORIZADO_NO_MES__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(OR(
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Janeiro&quot;), MONTH( TODAY() ) = 1),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Fevereiro&quot;), MONTH( TODAY() ) = 2),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Março&quot;), MONTH( TODAY() ) = 3),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Abril&quot;), MONTH( TODAY() ) = 4),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Maio&quot;), MONTH( TODAY() ) = 5),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Junho&quot;), MONTH( TODAY() ) = 6),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Julho&quot;), MONTH( TODAY() ) = 7),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Agosto&quot;), MONTH( TODAY() ) = 8),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Setembro&quot;), MONTH( TODAY() ) = 9),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Outubro&quot;), MONTH( TODAY() ) = 10),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Novembro&quot;), MONTH( TODAY() ) = 11),
+AND(INCLUDES( Account.ELEGIVEL_VENEZA__c , &quot;Dezembro&quot;), MONTH( TODAY() ) = 12)
+),
+&quot;Autorizado&quot;,
+&quot;Não Autorizado&quot;
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Veneza Mês Atual</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

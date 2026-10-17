@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Minhas_consultas_de_estoque</fullName>
+    <columns>NAME</columns>
+    <columns>UnidadeFilial__c</columns>
+    <columns>Produto__c</columns>
+    <columns>QAtual__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>Minhas consultas de estoque</label>
+</ListView>

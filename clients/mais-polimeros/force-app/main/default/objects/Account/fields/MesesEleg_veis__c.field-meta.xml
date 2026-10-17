@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MesesEleg_veis__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+    AND(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Janeiro&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Fevereiro&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Março&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Abril&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Maio&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Junho&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Julho&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Agosto&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Setembro&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Outubro&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Novembro&quot;), INCLUDES(ELEGIVEL_VENEZA__c, &quot;Dezembro&quot;)),
+    &quot;Janeiro, Fevereiro, Março, Abril, Maio, Junho, Julho, Agosto, Setembro, Outubro, Novembro, Dezembro&quot;,
+    IF(
+        OR(
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Janeiro&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Fevereiro&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Março&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Abril&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Maio&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Junho&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Julho&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Agosto&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Setembro&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Outubro&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Novembro&quot;),
+            INCLUDES(ELEGIVEL_VENEZA__c, &quot;Dezembro&quot;)
+        ),
+        BLANKVALUE(
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Janeiro&quot;), &quot;Janeiro; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Fevereiro&quot;), &quot;Fevereiro; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Março&quot;), &quot;Março; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Abril&quot;), &quot;Abril; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Maio&quot;), &quot;Maio; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Junho&quot;), &quot;Junho; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Julho&quot;), &quot;Julho; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Agosto&quot;), &quot;Agosto; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Setembro&quot;), &quot;Setembro; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Outubro&quot;), &quot;Outubro; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Novembro&quot;), &quot;Novembro; &quot;, &quot;&quot;) &amp;
+            IF(INCLUDES(ELEGIVEL_VENEZA__c, &quot;Dezembro&quot;), &quot;Dezembro; &quot;, &quot;&quot;),
+            &quot;Nenhum&quot;
+        ),
+        &quot;Nenhum&quot;
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>MesesElegíveis</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

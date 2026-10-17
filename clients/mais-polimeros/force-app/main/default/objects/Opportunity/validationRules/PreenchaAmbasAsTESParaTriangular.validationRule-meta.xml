@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PreenchaAmbasAsTESParaTriangular</fullName>
+    <active>true</active>
+    <errorConditionFormula>And(
+
+Or(IsNew(), IsChanged(TES_Venda__c),IsChanged(TipoTES__c)),
+
+IsBlank(TES_Venda__c) &lt;&gt; IsBlank(TES_Remessa__c),
+Text(TipoTES__c) = &quot;Triangular&quot;
+)</errorConditionFormula>
+    <errorMessage>Em operações triangulares, preencha ambas as TES ou mantenha ambas vazias para analise automática.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>BloqueioAlteracaoInclusaoPorHorario</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(NOT($User.ByPassVR__c),
+    OR($Profile.Name = &quot;Vendedor interno&quot;,
+       $Profile.Name = &quot;Representante de Vendas&quot;,
+       $Profile.Name = &quot;Backoffice&quot;
+    ),
+    OR(TIMEVALUE(NOW() - (3/24)) &lt; TIMEVALUE(&quot;06:00:00.000&quot;),
+       TIMEVALUE(NOW() - (3/24)) &gt; TIMEVALUE(&quot;20:00:00.000&quot;),
+       WEEKDAY(TODAY()) = 1,
+       WEEKDAY(TODAY()) = 7
+    )
+)</errorConditionFormula>
+    <errorMessage>Criação/Alteração de cotação permitida apenas de segunda à sexta entre 06:00h e 20:00h</errorMessage>
+</ValidationRule>

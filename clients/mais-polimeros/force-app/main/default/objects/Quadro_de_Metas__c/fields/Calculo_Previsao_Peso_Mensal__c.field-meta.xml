@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Calculo_Previsao_Peso_Mensal__c</fullName>
+    <formula>Previsao_Assertividade_Total__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>1) 100% da nota para ao menos 11 previsões e assertividade igual ou superior a 60% (volume e filial);
+2) A nota deste item será 0% para caso o item “1” não seja observado;</inlineHelpText>
+    <label>Cálculo: Previsão - Peso Mensal</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

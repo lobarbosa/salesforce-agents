@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <description>Mostra a situação do pedido na VALGROUP</description>
+    <label>Status</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Pedido Enviado</fullName>
+                <default>false</default>
+                <label>Pedido Enviado</label>
+            </value>
+            <value>
+                <fullName>Pedido Confirmado</fullName>
+                <default>false</default>
+                <label>Pedido Confirmado</label>
+            </value>
+            <value>
+                <fullName>Pedido Faturado</fullName>
+                <default>false</default>
+                <label>Pedido Faturado</label>
+            </value>
+            <value>
+                <fullName>Pedido Entregue</fullName>
+                <default>false</default>
+                <label>Pedido Entregue</label>
+            </value>
+            <value>
+                <fullName>Pedido Cancelado</fullName>
+                <default>false</default>
+                <label>Pedido Cancelado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

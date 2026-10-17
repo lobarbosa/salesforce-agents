@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>TarefaEspecialidades</name>
+        <label>TarefaEspecialidades</label>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <stringValue>daniely.rosa@maispolimeros.com.br, elisangela.melo@maispolimeros.com.br, lucas.paiva@maispolimeros.com.br</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Assunto_tarefa</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>FinalEdition3</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <apiVersion>59.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <interviewLabel>TarefaEspecialidades {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>TarefaEspecialidades</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>TarefaEspecialidades</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Description</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Especialidades</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Especialidades</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Subject</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Especialidade</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Description</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Especialidades</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Especialidades</stringValue>
+            </value>
+        </filters>
+        <object>Task</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>Assunto_tarefa</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Atividade atualizada! {!$Record__Prior.Subject}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>corpo_Especialidades</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong&gt;Tarefa atualizada!&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;conta: {!$Record__Prior.Account.Name}.&lt;/p&gt;&lt;p&gt;Modificada pela última vez por: {!$Record__Prior.LastModifiedBy.Username} favor verificar:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Record__Prior.Subject}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Record__Prior.Description}&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Email_Especialidades</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong&gt;Tarefa atualizada!&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Conta: {!$Record__Prior.Account.Name}.&lt;/p&gt;&lt;p&gt;Modificada por: {!$User.Username}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;Favor verificar:&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Record__Prior.Subject}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!$Record__Prior.Description}&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Email_final_edition</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Tarefa atualizada!
+Conta: {!$Record__Prior.Account.Name}.
+Modificada por: {!$User.FirstName} {!$User.LastName}
+
+https://maispolimeros--qa.sandbox.lightning.force.com/lightning/r/Task/{!$Record.Id}/view</text>
+    </textTemplates>
+    <textTemplates>
+        <name>FinalEdition2</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Tarefa atualizada!
+Conta: {{!$Record.Account.Name}.
+Modificada por: {!$User.FirstName} {!$User.LastName}
+
+https://maispolimeros.lightning.force.com/lightning/r/Task/{!$Record.Id}/view</text>
+    </textTemplates>
+    <textTemplates>
+        <name>FinalEdition3</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Tarefa atualizada!
+Conta: {!$Record.Account.Name}.
+Modificada por: {!$User.FirstName} {!$User.LastName}
+
+https://maispolimeros.lightning.force.com/lightning/r/Task/{!$Record.Id}/view</text>
+    </textTemplates>
+    <textTemplates>
+        <name>ModeloFinal_Especialidades</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;strong&gt;Tarefa atualizada!&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 13px;&quot;&gt;Conta: {!$Record__Prior.Account.Name}.&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 13px;&quot;&gt;Modificada por: {!$User.FirstName} &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 13px;&quot;&gt;________&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;Favor verificar:&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;color: rgb(0, 0, 0);&quot;&gt;{!$Record__Prior.Subject}&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong style=&quot;font-size: 13px;&quot;&gt;{!$Record__Prior.Description}&lt;/strong&gt;&lt;/p&gt;</text>
+    </textTemplates>
+</Flow>

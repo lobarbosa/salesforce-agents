@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Frete__c</fullName>
+    <label>Frete</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>CCIF</fullName>
+                <default>false</default>
+                <label>C-CIF</label>
+            </value>
+            <value>
+                <fullName>FFOB</fullName>
+                <default>false</default>
+                <label>F-FOB</label>
+            </value>
+            <value>
+                <fullName>R- Redespacho</fullName>
+                <default>false</default>
+                <label>R- Redespacho</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

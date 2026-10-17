@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Criada_em_negociacao</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+        NOT($User.ByPassVR__c),
+        ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+        ISNEW(),
+        NOT(ISPICKVAL(StageName,&quot;Negociação&quot;)) 
+)</errorConditionFormula>
+    <errorDisplayField>StageName</errorDisplayField>
+    <errorMessage>Pode apenas se criar uma oportunidade na fase de negociação</errorMessage>
+</ValidationRule>

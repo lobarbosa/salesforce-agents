@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resumo__c</fullName>
+    <description>campo com regras para diferenciar o tipo de cliente para ser usada em relatório,</description>
+    <externalId>false</externalId>
+    <formula>IF( PositivadoGrupo__c , &quot;1-Positivado&quot;,
+IF( AND(YEAR( DataUltimaOpp__c )= YEAR(TODAY()), MONTH(DataUltimaOpp__c)= MONTH(TODAY())), &quot;2-Cotaram no mês&quot;,
+IF( AND(YEAR(  DataDoUltimoCheckin__c  )= YEAR(TODAY()), MONTH(DataDoUltimoCheckin__c)= MONTH(TODAY())),&quot;3-Com Check-in no mês&quot;,
+IF( AND(YEAR(   DataUltimaAtividade__c   )= YEAR(TODAY()), MONTH(DataUltimaAtividade__c)= MONTH(TODAY())),&quot;4-Com atividades no mês&quot;,&quot;5-Outros&quot;))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Resumo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

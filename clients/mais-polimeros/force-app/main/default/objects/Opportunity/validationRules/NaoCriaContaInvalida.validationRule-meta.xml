@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoCriaContaInvalida</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+   NOT($User.ByPassVR__c),
+   ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+   OR(
+      ISBLANK( Account.Codigo__c),
+      ISPICKVAL( Account.Type,&quot;&quot;)
+   )
+)</errorConditionFormula>
+    <errorDisplayField>AccountId</errorDisplayField>
+    <errorMessage>Você esta tentando usar uma conta invalida para integração, possíveis erros:
+-ID do proteus ausente
+-Tipo de conta ausente
+Favor entrar em contato com o administrador</errorMessage>
+</ValidationRule>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Queue xmlns="http://soap.sforce.com/2006/04/metadata">
+    <doesIncludeBosses>true</doesIncludeBosses>
+    <doesSendEmailToMembers>false</doesSendEmailToMembers>
+    <name>Leads Site</name>
+    <queueMembers>
+        <roles>
+            <role>CoordenadordeVendas</role>
+            <role>CreditoCobranca</role>
+            <role>GerenteComercial</role>
+            <role>Global</role>
+            <role>RepresentanteVendas</role>
+            <role>VendedorInterno</role>
+        </roles>
+    </queueMembers>
+    <queueSobject>
+        <sobjectType>Lead</sobjectType>
+    </queueSobject>
+</Queue>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Agentforce_Agent_Id</fullName>
+        <categories>Agentforce</categories>
+        <language>pt_BR</language>
+        <protected>false</protected>
+        <shortDescription>ID do Agente Agentforce</shortDescription>
+        <value>0XxN50000000J13KAE</value>
+    </labels>
+    <labels>
+        <fullName>Agentforce_Base_URL</fullName>
+        <categories>Agentforce</categories>
+        <language>pt_BR</language>
+        <protected>false</protected>
+        <shortDescription>Base URL da Einstein Agent API - altere para testar endpoints</shortDescription>
+        <value>/einstein/ai-agent/v1</value>
+    </labels>
+    <labels>
+        <fullName>Agentforce_Config</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Agentforce_Config</shortDescription>
+        <value>{
+  &quot;agentId&quot;: &quot;0XxN50000000FiDKAU&quot;,
+  &quot;baseUrl&quot;: &quot;/einstein/ai-agent/v1&quot;,
+  &quot;orgEndpoint&quot;: &quot;https://maispolimeros.my.salesforce.com&quot;,
+  &quot;consumerKey&quot;: &quot;3MVG9zlTNB8o8BA1crF1sWevLjz0LWKc.EMUhdOWS1WIBg9cUtA5m9G8xG0JNrFwil4dyQI_RWjeWD51.Aq7i&quot;,
+  &quot;consumerSecret&quot;: &quot;770393D8D343443B921C1C8BBCEC67F372C5AB847734105C6111386B4D311170&quot;
+}</value>
+    </labels>
+    <labels>
+        <fullName>Agentforce_Org_Endpoint</fullName>
+        <categories>Agentforce</categories>
+        <language>pt_BR</language>
+        <protected>false</protected>
+        <shortDescription>Endpoint da org - use maispolimeros.my.salesforce.com</shortDescription>
+        <value>https://maispolimeros.my.salesforce.com</value>
+    </labels>
+    <labels>
+        <fullName>Agentforce_Session_Path</fullName>
+        <categories>Agentforce</categories>
+        <language>pt_BR</language>
+        <protected>false</protected>
+        <shortDescription>Path de criacao de sessao. Opcoes: /sessions ou /agents/AGENT_ID/sessions</shortDescription>
+        <value>/sessions</value>
+    </labels>
+    <labels>
+        <fullName>Agentforce_Sessions_Endpoint</fullName>
+        <categories>Agentforce</categories>
+        <language>pt_BR</language>
+        <protected>false</protected>
+        <shortDescription>Endpoint de sessoes - use {agentId} se necessario ajustar path</shortDescription>
+        <value>/einstein/ai-agent/v1/agents/{agentId}/sessions</value>
+    </labels>
+    <labels>
+        <fullName>StandartEmails</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>StandartEmails</shortDescription>
+        <value>daniely.rosa@maispolimeros.com.br</value>
+    </labels>
+    <labels>
+        <fullName>agentforceclientCredential</fullName>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>agentforceclientCredential</shortDescription>
+        <value>callout:AgentforceApi</value>
+    </labels>
+</CustomLabels>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SaldoLimiteMaisPolimeros__c</fullName>
+    <externalId>false</externalId>
+    <formula>CreditoTotal__c - ( TotalAbertos__c + ValorPedidoAbertoMais__c )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Limite total MAIS - (Total a vencer MAIS R$ + Valor de pedidos a faturar Mais)</inlineHelpText>
+    <label>Saldo Final Disponível Mais Polímeros</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

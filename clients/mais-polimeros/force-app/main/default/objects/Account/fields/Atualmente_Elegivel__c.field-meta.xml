@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Atualmente_Elegivel__c</fullName>
+    <formula>Or (
+And( Month(Today()) = 1,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;JANEIRO&quot;)),
+And( Month(Today()) = 2,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;FEVEREIRO&quot;)),
+And( Month(Today()) = 3,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;MARÇO&quot;)),
+And( Month(Today()) = 4,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;ABRIL&quot;)),
+And( Month(Today()) = 5,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;MAIO&quot;)),
+And( Month(Today()) = 6,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;JUNHO&quot;)),
+And( Month(Today()) = 7,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;JULHO&quot;)),
+And( Month(Today()) = 8,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;AGOSTO&quot;)),
+And( Month(Today()) = 9,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;SETEMBRO&quot;)),
+And( Month(Today()) = 10,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;OUTUBRO&quot;)),
+And( Month(Today()) = 11,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;NOVEMBRO&quot;)),
+And( Month(Today()) = 12,   INCLUDES(ELEGIVEL_VENEZA__c , &quot;DEZEMBRO&quot;))
+
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Atualmente Elegivel</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

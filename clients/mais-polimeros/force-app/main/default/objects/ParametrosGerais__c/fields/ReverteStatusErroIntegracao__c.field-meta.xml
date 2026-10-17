@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ReverteStatusErroIntegracao__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Quando há erro de integração de cancelamento de item de pedido o status é revertido para o original</description>
+    <inlineHelpText>Quando há erro de integração de cancelamento de item de pedido o status é revertido para o original</inlineHelpText>
+    <label>Reverte status em erro de integração</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>

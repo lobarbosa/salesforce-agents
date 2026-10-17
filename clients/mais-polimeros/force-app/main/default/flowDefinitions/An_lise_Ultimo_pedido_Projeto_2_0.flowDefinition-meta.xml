@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>10</activeVersionNumber>
+    <description>PROJETO - Atualiza a Solicitação Projeto com novo pedido do Grupo Braskem Elegível e Data.</description>
+    <masterLabel>Análise Ultimo pedido Projeto 2.0</masterLabel>
+</FlowDefinition>

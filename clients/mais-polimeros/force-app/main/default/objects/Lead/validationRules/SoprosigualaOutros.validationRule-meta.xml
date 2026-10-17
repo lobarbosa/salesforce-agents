@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SoprosigualaOutros</fullName>
+    <active>false</active>
+    <description>Caso campo &quot;Qual processo de SOPRO?&quot; for selecionado com opção &quot;Outros&quot;, obrigar preenchimento do campo &quot;Outros SOPROo&quot;.</description>
+    <errorConditionFormula>And(ispickval(  QualProdutoSopro__c  , &quot;Outros&quot;), Isblank (  OutrosSopro__c  ))</errorConditionFormula>
+    <errorDisplayField>OutrosSopro__c</errorDisplayField>
+    <errorMessage>É necessário especificar qual é o Outros Sopros quando preenchido o produto Sopros igual a Outros.</errorMessage>
+</ValidationRule>

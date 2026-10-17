@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FasesDocumentosRecebidos</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+Text(PRIORVALUE(Status)) == &apos;Documentos recebidos&apos;, 
+NOT(ISPICKVAL(Status,&quot;Enviado análise cadastral&quot;)),
+NOT(ISPICKVAL(Status,&quot;Documentos recebidos&quot;))
+)</errorConditionFormula>
+    <errorMessage>Lead em DOCUMENTOS RECEBIDOS não pode pular ou voltar fases, apenas pode ir para ENVIADO ANÁLISE CADASTRAL</errorMessage>
+</ValidationRule>

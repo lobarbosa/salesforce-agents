@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fila_Notas_Fiscais</fullName>
+    <columns>NAME</columns>
+    <columns>EventName__c</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>Status__c</columns>
+    <columns>OWNER.FIRST_NAME</columns>
+    <columns>CREATEDBY_USER.ALIAS</columns>
+    <columns>OBJECT_ID</columns>
+    <columns>UPDATEDBY_USER</columns>
+    <columns>ExceptionStackTrace__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>EventName__c</field>
+        <operation>equals</operation>
+        <value>NF_TOTVS_TO_SALESFORCE</value>
+    </filters>
+    <label>Fila de Nota Fiscal</label>
+</ListView>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FrequenciaCompras__c</fullName>
+    <externalId>false</externalId>
+    <formula>FrequenciaMes1__c+FrequenciaMes2__c+ FrequenciaMes3__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Número de pedidos dos últimos 3 meses</inlineHelpText>
+    <label>Frequência de compras</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

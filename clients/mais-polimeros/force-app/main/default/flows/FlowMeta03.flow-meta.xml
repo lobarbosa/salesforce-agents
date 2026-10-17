@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>49.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>EDiaPrimeiro</name>
+        <label>É dia primeiro?</label>
+        <locationX>183</locationX>
+        <locationY>207</locationY>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>SimEhDiaPrimeiro</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>FormulaEhDiaPrimeiro</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_Para_Fechado</targetReference>
+            </connector>
+            <label>Sim, eh dia primeiro</label>
+        </rules>
+    </decisions>
+    <description>Flow disparado todo dia 01 após a atualização em massa das metas reais do mês passo. Esse fluxo irá atribuir o status das metas do mês passado para Fechada e as metas desse mês para Aberta</description>
+    <formulas>
+        <name>FormulaEhDiaPrimeiro</name>
+        <dataType>Boolean</dataType>
+        <expression>OR(DAY(TODAY()) = 01,DAY(TODAY()) = 1)</expression>
+    </formulas>
+    <formulas>
+        <name>FormulaMetaMesAtual</name>
+        <dataType>Date</dataType>
+        <expression>DATE(YEAR(TODAY()),MONTH(TODAY()),01 )</expression>
+    </formulas>
+    <formulas>
+        <name>FormulaMetaMesPassado</name>
+        <dataType>Date</dataType>
+        <expression>DATE( YEAR( TODAY() - 1 ) , MONTH( TODAY() - 1 ) , 01)</expression>
+    </formulas>
+    <interviewLabel>Flow Meta 02 {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Flow Meta 03</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_Aberto</name>
+        <label>Atualiza Futura para Aberta</label>
+        <locationX>561</locationX>
+        <locationY>205</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MesMeta__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>FormulaMetaMesAtual</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Futura</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Aberta</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Meta__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Atualiza_Para_Fechado</name>
+        <label>Atualiza Aberta Para Fechada</label>
+        <locationX>393</locationX>
+        <locationY>205</locationY>
+        <connector>
+            <targetReference>Atualiza_Aberto</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>MesMeta__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>FormulaMetaMesPassado</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Aberta</stringValue>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <stringValue>Fechada</stringValue>
+            </value>
+        </inputAssignments>
+        <object>Meta__c</object>
+    </recordUpdates>
+    <start>
+        <locationX>61</locationX>
+        <locationY>205</locationY>
+        <connector>
+            <targetReference>EDiaPrimeiro</targetReference>
+        </connector>
+        <schedule>
+            <frequency>Once</frequency>
+            <startDate>2020-02-01</startDate>
+            <startTime>04:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

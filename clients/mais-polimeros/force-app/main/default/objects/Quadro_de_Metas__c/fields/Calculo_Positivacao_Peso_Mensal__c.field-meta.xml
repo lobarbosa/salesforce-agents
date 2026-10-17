@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Calculo_Positivacao_Peso_Mensal__c</fullName>
+    <formula>Clientes_Positivados_Mes_Vigente__c / Carteira_Mes_Vigente__c</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>1) Em superando 60% do número de Clientes, seguirá a proporção atingida. Ex.: vendeu para 75%, a nota será 75%;
+2) Caso a positivação fique abaixo de 60%, a nota para o item será “0” (zero);</inlineHelpText>
+    <label>Cálculo: Positivação Peso Mensal</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>

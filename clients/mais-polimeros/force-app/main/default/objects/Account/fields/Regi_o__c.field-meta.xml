@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Regi_o__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( OR( 
+UF__c = &quot;SP&quot;, 
+UF__c = &quot;RJ&quot;,
+UF__c = &quot;ES&quot;,
+UF__c = &quot;MG&quot;), &quot;SUDESTE&quot;, 
+
+IF( OR(
+UF__c = &quot;PR&quot;,
+UF__c = &quot;RS&quot;,
+UF__c = &quot;SC&quot;), &quot;SUL&quot;,
+
+IF( OR(
+UF__c = &quot;MT&quot;,
+UF__c = &quot;MS&quot;,
+UF__c = &quot;GO&quot;), &quot;CENTRO OESTE&quot;,
+
+IF( OR(
+UF__c = &quot;MA&quot;,
+UF__c = &quot;PI&quot;,
+UF__c = &quot;CE&quot;,
+UF__c = &quot;RN&quot;,
+UF__c = &quot;PE&quot;,
+UF__c = &quot;PB&quot;,
+UF__c = &quot;SE&quot;,
+UF__c = &quot;AL&quot;,
+UF__c = &quot;BA&quot;), &quot;NORDESTE&quot;, &quot;NORTE&quot;))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Região</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

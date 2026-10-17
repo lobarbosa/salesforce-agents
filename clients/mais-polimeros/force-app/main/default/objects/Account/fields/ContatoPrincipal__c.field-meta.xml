@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ContatoPrincipal__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Cliente receptor de emails automáticos de pedido</inlineHelpText>
+    <label>Contato Principal</label>
+    <referenceTo>Contact</referenceTo>
+    <relationshipLabel>Contas</relationshipLabel>
+    <relationshipName>Contas</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>GrupoEconomicoIdPesquisa__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Grupo Econômico - ID Pesquisa</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Accounts (Grupo Econômico - ID Pesquisa)</relationshipLabel>
+    <relationshipName>Accounts</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>true</trackHistory>
+    <type>Lookup</type>
+</CustomField>

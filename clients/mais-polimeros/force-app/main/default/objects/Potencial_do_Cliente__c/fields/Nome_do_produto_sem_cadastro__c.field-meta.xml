@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nome_do_produto_sem_cadastro__c</fullName>
+    <inlineHelpText>Caso o produto não esteja disponível no cadastro, adicione a nomenclatura neste campo</inlineHelpText>
+    <label>Nome do produto sem cadastro</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>TextArea</type>
+</CustomField>

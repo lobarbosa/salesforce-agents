@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Status__c</fullName>
+    <label>Status</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>projeto Recebido</fullName>
+                <default>true</default>
+                <label>Aguardando envio p/ Fornecedor</label>
+            </value>
+            <value>
+                <fullName>Análise da Peça / Produto</fullName>
+                <default>false</default>
+                <label>Enviado ao Fornecedor</label>
+            </value>
+            <value>
+                <fullName>Preço enviado ao cliente</fullName>
+                <default>false</default>
+                <label>Negociação com o Cliente</label>
+            </value>
+            <value>
+                <fullName>Envio de amostra para Teste</fullName>
+                <default>false</default>
+                <label>Teste no cliente</label>
+            </value>
+            <value>
+                <fullName>Reanálise</fullName>
+                <default>false</default>
+                <label>Reanálise</label>
+            </value>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Reprovado</fullName>
+                <default>false</default>
+                <label>Reprovado</label>
+            </value>
+            <value>
+                <fullName>Projeto Encerrado</fullName>
+                <default>false</default>
+                <label>Projeto Encerrado</label>
+            </value>
+            <value>
+                <fullName>Recebido</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Recebido</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Imovel1__c</fullName>
+    <label>Imóvel</label>
+    <required>true</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Alugado</fullName>
+                <default>false</default>
+                <label>Alugado</label>
+            </value>
+            <value>
+                <fullName>Próprio</fullName>
+                <default>false</default>
+                <label>Próprio</label>
+            </value>
+            <value>
+                <fullName>Cliente não informa</fullName>
+                <default>false</default>
+                <label>Cliente não informa</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubTipo__c</fullName>
+    <label>Sub tipo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Type</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Endereço</fullName>
+                <default>false</default>
+                <label>Endereço</label>
+            </value>
+            <value>
+                <fullName>Telefone</fullName>
+                <default>false</default>
+                <label>Telefone</label>
+            </value>
+            <value>
+                <fullName>Email</fullName>
+                <default>false</default>
+                <label>Email</label>
+            </value>
+            <value>
+                <fullName>Contato</fullName>
+                <default>false</default>
+                <label>Contato</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

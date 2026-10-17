@@ -1,0 +1,100 @@
+<template>
+
+    <lightning-card title="" >
+
+        <div class="slds-m-small slds-m-bottom_medium">
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_2-of-12 slds-p-horizontal_small">
+                    <lightning-combobox
+                        name="meses"
+                        label="Mês de previsão"
+                        placeholder="Selecione o mês"
+                        options={listMeses}
+                        value={mesSelecionado}
+                        onchange={handleChangeMes}
+                        required >
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-horizontal_small">
+                    <lightning-combobox
+                        name="login"
+                        label="Representante"
+                        placeholder="Selecione o representante"
+                        value={loginSelecionado}
+                        options={listLogins}
+                        onchange={handleChangeLogin}
+                        required >
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_large slds-p-horizontal_small">
+                    <lightning-input label="Exibir todos produtos" type="checkbox" checked={checkboxVal} onchange={handleChangeTodosProdutos}></lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_large slds-p-horizontal_small">
+                    <lightning-input label="Exibir média" type="checkbox" lwc:ref="chkShowMedia" onchange={handleColVisibility}></lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_4-of-12 slds-p-top_x-small slds-p-horizontal_small">
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_x-small slds-p-horizontal_small">
+                    <lightning-input label="SP - Cajamar" type="checkbox" checked="true" lwc:ref="chkShowSP" onchange={handleColVisibility}></lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_x-small slds-p-horizontal_small">
+                    <lightning-input label="PR - Piraquara" type="checkbox" checked="true" lwc:ref="chkShowPR" onchange={handleColVisibility}></lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_x-small slds-p-horizontal_small">
+                    <lightning-input label="GO - Apar. de Goiânia" type="checkbox" checked="true" lwc:ref="chkShowGO" onchange={handleColVisibility}></lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_x-small slds-p-horizontal_small">
+                    <lightning-input label="RS - Caxias" type="checkbox" checked="true" lwc:ref="chkShowRSc" onchange={handleColVisibility}></lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_x-small slds-p-horizontal_small">
+                    <lightning-input label="RS - Sapucaia" type="checkbox" checked="true" lwc:ref="chkShowRSs" onchange={handleColVisibility}></lightning-input>
+                </div>
+
+                <div class="slds-col slds-size_2-of-12 slds-p-top_x-small slds-p-horizontal_small">
+                    <lightning-input label="SC - Itajai" type="checkbox" checked="true" lwc:ref="chkShowSC" onchange={handleColVisibility}></lightning-input>
+                </div>
+
+
+            </div>
+
+            <!-- <div class="slds-col slds-size_12-of-12 slds-p-vertical_medium slds-p-horizontal_medium"> -->
+                <div style="width: auto; height: 55vh; max-height: 55vh; margin: 20px;">
+                    <template if:true={listItens}>
+                        <lightning-datatable
+                            aura:id="dataTable"
+                            lwc:ref="dataTable"
+                            key-field="itemId"
+                            columns={columns}
+                            data={listItens}
+                            draft-values={draftValues}
+                            column-widths-mode="auto"
+                            hide-checkbox-column  
+                            is-loading={isLoading}
+                            onsave={handleSave} 
+                            default-sort-direction={defaultSortDirection}
+                            sorted-direction={sortDirection}
+                            sorted-by={sortedBy}
+                            onsort={onHandleSort}
+                            oncellchange={handleCellChange}>
+                        </lightning-datatable>
+                    </template>
+                </div>
+            <!-- </div> -->
+
+        </div>
+    </lightning-card>
+
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Carregando" variant="brand" size="large"></lightning-spinner>
+    </template>
+
+</template>

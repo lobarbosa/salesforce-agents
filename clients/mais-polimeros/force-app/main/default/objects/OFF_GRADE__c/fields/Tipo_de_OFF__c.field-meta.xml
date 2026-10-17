@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_OFF__c</fullName>
+    <label>Tipo de OFF</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>PEAD</fullName>
+                <default>false</default>
+                <label>PEAD</label>
+            </value>
+            <value>
+                <fullName>PEBD</fullName>
+                <default>false</default>
+                <label>PEBD</label>
+            </value>
+            <value>
+                <fullName>PEBDL</fullName>
+                <default>false</default>
+                <label>PEBDL</label>
+            </value>
+            <value>
+                <fullName>PP COPO</fullName>
+                <default>false</default>
+                <label>PP COPO</label>
+            </value>
+            <value>
+                <fullName>PP HOMO</fullName>
+                <default>false</default>
+                <label>PP HOMO</label>
+            </value>
+            <value>
+                <fullName>EVA HOT MELT</fullName>
+                <default>false</default>
+                <label>EVA HOT MELT</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

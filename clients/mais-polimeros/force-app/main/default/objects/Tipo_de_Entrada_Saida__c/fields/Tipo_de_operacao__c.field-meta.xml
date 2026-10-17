@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Tipo_de_operacao__c</fullName>
+    <description>Define se a TES pode ser utilizada em operação triangulares ou não triangulares.</description>
+    <label>Tipo de operação</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>true</sorted>
+            <value>
+                <fullName>Não Triangular</fullName>
+                <default>false</default>
+                <isActive>false</isActive>
+                <label>Não Triangular</label>
+            </value>
+            <value>
+                <fullName>Normal</fullName>
+                <default>false</default>
+                <label>Normal</label>
+            </value>
+            <value>
+                <fullName>Triangular</fullName>
+                <default>false</default>
+                <label>Triangular</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TESObrigatoriaOpEspeciais</fullName>
+    <active>true</active>
+    <errorConditionFormula>And(
+
+OR(IsNew(), IsChanged(TipoTES__c),IsChanged(TES_Venda__c)),
+
+Text(TipoTES__c) = &quot;Operações Especiais&quot;,
+IsBlank(TES_Venda__c)
+)</errorConditionFormula>
+    <errorMessage>Por favor, preencha a TES pois a automação não analisa operações especiais.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>standard-CollaborationGroup</defaultLandingTab>
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <tabs>standard-CollaborationGroup</tabs>
+    <tabs>standard-Chatter</tabs>
+    <tabs>TransferenciaConta__c</tabs>
+    <tabs>Controledeamostra__c</tabs>
+    <tabs>Perfil__c</tabs>
+    <tabs>PesquisaDesenvolvimento__c</tabs>
+    <tabs>ComprasValGroup__c</tabs>
+    <tabs>Solicitar_no_Projeto__c</tabs>
+    <tabs>Quadro_de_Metas__c</tabs>
+    <tabs>Tipo_de_Entrada_Saida__c</tabs>
+    <tabs>Segmentacao_Mais_Polimeros__c</tabs>
+    <tabs>Relacionamento_de_Campanha__c</tabs>
+    <tabs>Validade_do_Estoque__c</tabs>
+    <tabs>Limite_de_Credito__c</tabs>
+    <tabs>MP_Whatsapp_Code__c</tabs>
+    <tabs>MP_Whatsapp_Conversa__c</tabs>
+</CustomApplication>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EstoqueFilial__c</fullName>
+    <label>Estoque da Filial</label>
+    <referenceTo>EstoqueFilial__c</referenceTo>
+    <relationshipLabel>Itens de Estoque da Filial</relationshipLabel>
+    <relationshipName>ItensEstoqueFilial</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>

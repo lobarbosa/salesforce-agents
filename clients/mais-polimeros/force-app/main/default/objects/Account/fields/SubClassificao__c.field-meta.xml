@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SubClassificao__c</fullName>
+    <label>Sub Classificação</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Compra somente importado ou de Revenda</fullName>
+                <default>false</default>
+                <label>Compra somente importado ou de Revenda</label>
+            </value>
+            <value>
+                <fullName>Problemas de Credito</fullName>
+                <default>false</default>
+                <label>Problemas de Credito</label>
+            </value>
+            <value>
+                <fullName>Compra somente recuperado que não temos</fullName>
+                <default>false</default>
+                <label>Compra somente recuperado que não temos</label>
+            </value>
+            <value>
+                <fullName>Encerrou suas atividades</fullName>
+                <default>false</default>
+                <label>Encerrou suas atividades</label>
+            </value>
+            <value>
+                <fullName>Compra produtos que não temos no portfolio</fullName>
+                <default>false</default>
+                <label>Compra produtos que não temos no portfolio</label>
+            </value>
+            <value>
+                <fullName>Somente Cif abaixo de 1 pallet</fullName>
+                <default>false</default>
+                <label>Somente Cif abaixo de 1 pallet</label>
+            </value>
+            <value>
+                <fullName>Faz somente mão de Obra</fullName>
+                <default>false</default>
+                <label>Faz somente mão de Obra</label>
+            </value>
+            <value>
+                <fullName>Compra direto com Petroquímica</fullName>
+                <default>false</default>
+                <label>Compra direto com Petroquímica</label>
+            </value>
+            <value>
+                <fullName>Baixo Consumo</fullName>
+                <default>false</default>
+                <label>Baixo Consumo</label>
+            </value>
+            <value>
+                <fullName>Compra produto pronto</fullName>
+                <default>false</default>
+                <label>Compra produto pronto</label>
+            </value>
+            <value>
+                <fullName>Compra sem Nota Fiscal</fullName>
+                <default>false</default>
+                <label>Compra sem Nota Fiscal</label>
+            </value>
+            <value>
+                <fullName>Empresa não habilitada/inapta no sintegra</fullName>
+                <default>false</default>
+                <label>Empresa não habilitada/inapta no sintegra</label>
+            </value>
+            <value>
+                <fullName>Fundação / Escola</fullName>
+                <default>false</default>
+                <label>Fundação / Escola</label>
+            </value>
+            <value>
+                <fullName>Cliente PS-Innova</fullName>
+                <default>false</default>
+                <label>Cliente PS-Innova</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>10</visibleLines>
+</CustomField>

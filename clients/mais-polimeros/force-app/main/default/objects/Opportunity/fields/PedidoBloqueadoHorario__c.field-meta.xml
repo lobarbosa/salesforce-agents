@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PedidoBloqueadoHorario__c</fullName>
+    <formula>AND(NOT($User.ByPassVR__c),
+    $Setup.ParametrosGerais__c.BloqueioPedidoHorario__c = true,
+    TIMEVALUE(NOW()- (3/24)) &gt; TIMEVALUE($Setup.ParametrosGerais__c.HorarioLimitePedido__c &amp; &quot;:00.125&quot;),
+    OR($Profile.Name = &quot;Vendedor interno&quot;,
+       $Profile.Name = &quot;Representante de Vendas&quot;,
+       $Profile.Name = &quot;Backoffice&quot;
+    )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Pedido Bloqueado por Horário</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

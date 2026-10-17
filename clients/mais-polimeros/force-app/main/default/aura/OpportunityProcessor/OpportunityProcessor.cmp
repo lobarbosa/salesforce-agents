@@ -1,0 +1,38 @@
+<aura:component controller="OpportunityProcessor" access="global" implements="force:lightningQuickAction,flexipage:availableForAllPageTypes,force:hasRecordId,forceCommunity:availableForAllPageTypes">	
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    <aura:attribute name="showSpinner" type="boolean" default="false"/>
+    <aura:attribute name="disableBtnPreco" type="boolean" default="true"/>
+    <aura:attribute name="disableBtnEnviar" type="boolean" default="true"/>
+    <aura:attribute name="observacao" type="String" default=""/>
+    <aura:attribute name="observacaoHorario" type="String" default=""/>
+
+    <div class="slds-show" aura:id="newButtonDivPreco">
+        <lightning:button class="slds-button slds-button_success slds-button_stretch slds-m-vertical_small" aura:id="btnSyncPreco" onclick="{!c.handleClickSyncPreco}" label="Sincronizar preços" disabled="{!v.disableBtnPreco}"/>
+    </div>
+
+    <div class="slds-show" aura:id="newButtonDivEnviar">
+    	<lightning:button class="slds-button slds-button_success slds-button_stretch slds-m-vertical_small" aura:id="btnSyncOpp" onclick="{!c.handleClickSyncOpp}" label="Enviar Pedido"  disabled="{!v.disableBtnEnviar}"/>
+    </div>
+
+    <aura:renderIf isTrue="{! not(empty(v.observacao))}">
+        <div class="slds-show">
+            <p><strong>{!v.observacao}</strong></p>
+        </div>
+    </aura:renderIf>
+
+    <br/><br/>
+    <div class="slds-show">
+        <p><center><strong>{!v.observacaoHorario}</strong></center></p>
+    </div>
+
+    <aura:if isTrue="{!v.showSpinner}">
+        <div class="demo-only demo--inverse" style="height:6rem">
+            <div role="status" class="slds-spinner slds-spinner_medium">
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+</aura:component>

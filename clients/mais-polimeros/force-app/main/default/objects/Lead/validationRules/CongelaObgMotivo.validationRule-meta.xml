@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CongelaObgMotivo</fullName>
+    <active>true</active>
+    <description>quando o status for congelado, obriga o motivo do congelamento</description>
+    <errorConditionFormula>AND(
+ISPICKVAL( Status ,&quot;Congelado&quot;),
+ISPICKVAL( MotivoCongelado__c  ,&quot;&quot;)
+)</errorConditionFormula>
+    <errorDisplayField>MotivoCongelado__c</errorDisplayField>
+    <errorMessage>Se CONGELADO o MOTIVO é obrigatório</errorMessage>
+</ValidationRule>

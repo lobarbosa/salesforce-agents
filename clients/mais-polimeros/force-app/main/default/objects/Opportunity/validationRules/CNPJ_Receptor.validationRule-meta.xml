@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CNPJ_Receptor</fullName>
+    <active>false</active>
+    <description>O CNPJ da venda não pode ser igual ao da remessa.</description>
+    <errorConditionFormula>Account.beeCnpj__CNPJ__c = ContaReceptor__r.beeCnpj__CNPJ__c</errorConditionFormula>
+    <errorMessage>O CNPJ da venda não pode ser igual ao da remessa.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Confirmar_produtos__c</fullName>
+    <defaultValue>false</defaultValue>
+    <inlineHelpText>Se a cotação possui produtos não recorrentes para este cliente confirme aqui para dar continuidade.</inlineHelpText>
+    <label>Confirmar produtos</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

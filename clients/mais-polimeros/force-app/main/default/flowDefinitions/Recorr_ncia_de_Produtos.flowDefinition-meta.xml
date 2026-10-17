@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>41</activeVersionNumber>
+    <description>COTAÇÃO - Notificação - Fluxo responsavel por notificar o proprietario da cotação caso o cliente nunca tenha comprado o produto selecionado.</description>
+    <masterLabel>Recorrência de Produtos</masterLabel>
+</FlowDefinition>

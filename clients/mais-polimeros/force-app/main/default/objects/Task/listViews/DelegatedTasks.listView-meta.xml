@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DelegatedTasks</fullName>
+    <columns>SUBJECT</columns>
+    <columns>WHO_NAME</columns>
+    <columns>WHAT_NAME</columns>
+    <columns>PRIORITY</columns>
+    <columns>CREATED_DATE</columns>
+    <columns>DUE_DATE</columns>
+    <filterScope>Delegated</filterScope>
+    <label>Tarefas delegadas</label>
+</ListView>

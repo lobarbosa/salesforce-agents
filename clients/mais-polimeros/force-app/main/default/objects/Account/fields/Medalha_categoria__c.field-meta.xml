@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Medalha_categoria__c</fullName>
+    <externalId>false</externalId>
+    <formula>If( 
+Text( Categoria_Cliente__c ) = &quot;Bronze&quot;, Image( &quot;/resource/1715355353000/Medalha_Bronze?&quot;, &quot;Medalha de Bronze&quot;, 50, 50), 
+If( 
+Text( Categoria_Cliente__c ) = &quot;Prata&quot;, Image( &quot;/resource/1715355379000/Medalha_Prata?&quot;, &quot;Medalha de Prata&quot;, 50, 50), 
+If( 
+Text( Categoria_Cliente__c ) = &quot;Ouro&quot;, Image( &quot;/resource/1715355408000/Medalha_Ouro?&quot;, &quot;Medalha de Ouro&quot;, 50, 50), 
+&quot;&quot;
+)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Medalha categoria</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

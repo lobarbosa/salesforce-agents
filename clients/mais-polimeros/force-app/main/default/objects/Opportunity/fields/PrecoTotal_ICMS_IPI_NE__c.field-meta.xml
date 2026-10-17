@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrecoTotal_ICMS_IPI_NE__c</fullName>
+    <label>Preço total com ICMS e IPI (Não edit)</label>
+    <summarizedField>OpportunityLineItem.Subtotal_IPI_NE__c</summarizedField>
+    <summaryFilterItems>
+        <field>OpportunityLineItem.Status__c</field>
+        <operation>notEqual</operation>
+        <value>Cancelado</value>
+    </summaryFilterItems>
+    <summaryForeignKey>OpportunityLineItem.OpportunityId</summaryForeignKey>
+    <summaryOperation>sum</summaryOperation>
+    <trackHistory>false</trackHistory>
+    <type>Summary</type>
+</CustomField>

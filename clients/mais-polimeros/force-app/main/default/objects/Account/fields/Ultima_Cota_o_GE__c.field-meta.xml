@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ultima_Cota_o_GE__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(Indicador_Ultima_Cota_o__c = &quot;Verde&quot;, IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1724678205000/icone_bom?&quot;, &quot;Verde&quot;, 25, 25),
+IF(Indicador_Ultima_Cota_o__c = &quot;Amarelo&quot;, IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1724678225000/icone_medio?&quot;, &quot;Amarelo&quot;, 25, 25),IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1724681176000/icone_ruim?&quot;, &quot;Vermelho&quot;, 25, 25)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Ultima Cotação GE</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

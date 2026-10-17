@@ -1,0 +1,8 @@
+.THIS .spinnerHolder{
+    position:       relative;
+    display:        inline-block;
+    width:          55px;
+    padding-top:    50px;
+    vertical-align: middle;
+    white-space:    nowrap;
+}

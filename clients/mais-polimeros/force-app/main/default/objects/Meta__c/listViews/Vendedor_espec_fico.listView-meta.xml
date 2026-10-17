@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Vendedor_espec_fico</fullName>
+    <columns>NAME</columns>
+    <columns>MesMeta__c</columns>
+    <columns>Status__c</columns>
+    <columns>VendasPlano__c</columns>
+    <columns>VendasReal__c</columns>
+    <columns>Vendedor__c</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>Vendedor__c</field>
+        <operation>startsWith</operation>
+        <value>ANDRE VIEIR</value>
+    </filters>
+    <label>Vendedor específico</label>
+</ListView>

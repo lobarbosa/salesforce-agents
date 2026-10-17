@@ -1,0 +1,132 @@
+<!--
+  @description       : Componente para representar os dados do serasa.
+  @author            : Ríad Nassiffe
+  @group             : 
+  @last modified on  : 28-04-2023
+  @last modified by  : José Mateus Amaral
+-->
+
+<template>
+    
+    <div class="slds-m-around_medium">
+        <h1 class="slds-text-heading_large slds-align_absolute-center" >Informações Serasa</h1> 
+    </div>
+
+    <!--button onclick={gerarPDF} title="Gerar um pdf da consulta para analizes posteriores ou compartilhamento">Gerar PDF</button>
+    <button onclick={abrirTodos} title="abrir todas as linhas do componente">Abrir Todos</button-->
+
+    <lightning-accordion allow-multiple-sections-open active-sections={todosAbertos}>
+
+        <c-linha-serasa
+            title="Visão Geral"
+            info={informacoesPadrao}
+            table1={tbDetalhesConsulta} tab1-titulo={tbDetalhesConsultaTITULO}
+            table2={tbAlertaEmNegocios} tab2-titulo={tbAlertaEmNegociosTITULO}
+            table3={tbSerasaScore} tab3-titulo={tbSerasaScoreTITULO}
+            table4={tbSerasaScoreSetorial} tab4-titulo={tbSerasaScoreSetorialTITULO}
+            table5={tbSerasaScoreAtacadista} tab5-titulo={tbSerasaScoreAtacadistaTITULO}
+            table6={tbPontualidadePagamentoPJ} tab6-titulo={tbPontualidadePagamentoPJTITULO}
+            table7={tbAlertaIdentidadePJ} tab7-titulo={tbAlertaIdentidadePJTITULO}
+            table8={tbFaturamentoEstimadoComPositivo} tab8-titulo={tbFaturamentoEstimadoComPositivoTITULO}
+            table9={tbGastoEstimadoPJComPositivo} tab9-titulo={tbGastoEstimadoPJComPositivoTITULO}
+            table10={tbLimiteCreditoPJ} tab10-titulo={tbLimiteCreditoPJTITULO}
+        ></c-linha-serasa>
+
+        <template if:true={showDadosCadEmp}> 
+          <c-linha-serasa 
+              title="Informações Cadastrais da Empresa" 
+              info={dadosCadEmp}
+              table1={tbAlertaCadastral} tab1-titulo={tbAlertaCadastralTITULO}
+              table2={tbDadosCadastrais} tab2-titulo={tbDadosCadastraisTITULO}
+              table3={tbGrafias} tab3-titulo={tbGrafiasTITULO}
+              table4={tbVendasCartao} tab4-titulo={tbVendasCartaoTITULO}
+              table5={tbMosaic} tab5-titulo={tbMosaicTITULO}
+              table6={tbSituacaoFiscal} tab6-titulo={tbSituacaoFiscalTITULO}
+              table7={tbObservacoesDadosCad} tab7-titulo={tbObservacoesDadosCadTITULO}
+              table8={tbTelefonesEnderecosAdicionais} tab8-titulo={tbTelefonesEnderecosAdicionaisTITULO}
+          ></c-linha-serasa>
+        </template>
+
+        <c-linha-serasa 
+            title="Informações sobre Sócios e Administradores" 
+            info={dadosInformacoesSobreSociosAdministradores} 
+            table1={tbAlertaCadSociosAdms} tab1-titulo={tbAlertaCadSociosAdmsTITULO}
+            table2={tbQuadroSocial} tab2-titulo={tbQuadroSocialTITULO} 
+            table3={tbAdministracao} tab3-titulo={tbAdministracaoTITULO} 
+            table4={tbQuadroSocialMaisCompleto} tab4-titulo={tbQuadroSocialMaisCompletoTITULO}
+            table5={tbAnotacoesSpcSociosAdministradores} tab5-titulo={tbAnotacoesSpcSociosAdministradoresTITULO}
+            table6={tbConsultasSpcSociosAdministradores} tab6-titulo={tbConsultasSpcSociosAdministradoresTITULO} 
+            table7={tbRendaProSociosEAdministradoresPF} tab7-titulo={tbRendaProSociosEAdministradoresPFTITULO}
+            table8={tbParticipacoes} tab8-titulo={tbParticipacoesTITULO}
+            table9={tbScoreSociosPF} tab9-titulo={tbScoreSociosPFTITULO}
+        ></c-linha-serasa>
+
+        <template if:true={showInformacoesSobreConsultas}>
+          <c-linha-serasa
+            title="Informações sobre consultas"
+            info={dadosInformacoesSobreConsultas}
+            table1={tbUltimasConsultas} tab1-titulo={tbUltimasConsultasTITULO}
+            table2={tbConsultasDetalhadas} tab2-titulo={tbConsultasDetalhadasTITULO}
+            table3={tbConsultasSPC} tab3-titulo={tbConsultasSPCTITULO}
+            table4={tbIndiceRelacMercadoSetor} tab4-titulo={tbIndiceRelacMercadoSetorTITULO}
+          ></c-linha-serasa>
+        </template>
+
+        <template if:true={showPerfilFinanceiro}>
+            <c-linha-serasa 
+                title="Perfil Financeiro" 
+                info={dadosPerfilFinanceiro} 
+                table1={tbPerfilFinanceiro} tab1-titulo={tbPerfilFinanceiroTITULO} 
+                table2={tbIndicesEconomicos} tab2-titulo={tbIndicesEconomicosTITULO}
+            ></c-linha-serasa>
+        </template>
+      
+        <template if:true={showHistoricoPositivo}>
+            <c-linha-serasa 
+                title="Dados Histórico Positivo Comercial" 
+                info={dadosHistoricoPositivoComercial}
+            ></c-linha-serasa>
+        </template>
+        
+        <template if:true={showHistoricoPagamentoFinanceiroAvancado}>
+            <c-linha-serasa 
+                title="Historico de Pagamento Financeiro - Avançado" 
+                info={dadosPagamentoFinanceiroAvancado}
+                table1={tbCompromissos} tab1-titulo={tbCompromissosTITULO}
+                table2={tbComportamentoDePagamento} tab2-titulo={tbComportamentoDePagamentoTITULO}
+                table3={tbContratosAtivos} tab3-titulo={tbContratosAtivosTITULO}
+                table4={tbComportamentoContratosAtivos} tab4-titulo={tbComportamentoContratosAtivosTITULO}
+                table5={tbComportamentoPagamentoSetor} tab5-titulo={tbComportamentoPagamentoSetorTITULO}
+            ></c-linha-serasa>
+        </template>
+
+        <c-linha-serasa 
+            title="Informações sobre Anotações Negativas"
+            info={informacoesAnotacoesNegativas}
+            table1={tbResumoConcentre} tab1-titulo={tbResumoConcentreTITULO}
+            table2={tbPendenciasFinanceirasRefin} tab2-titulo={tbPendenciasFinanceirasRefinTITULO}
+            table3={tbPendenciasFinanceirasPefin} tab3-titulo={tbPendenciasFinanceirasPefinTITULO}
+            table4={tbDividasVencidas} tab4-titulo={tbDividasVencidasTITULO}
+            table5={tbFalenciaErecuperacao} tab5-titulo={tbFalenciaErecuperacaoTITULO}
+            table6={tbAcoesJudiciais} tab6-titulo={tbAcoesJudiciaisTITULO}
+            table7={tbProtestos} tab7-titulo={tbProtestosTITULO}
+            table8={tbCheques} tab8-titulo={tbChequesTITULO}
+            table9={tbRecheques} tab9-titulo={tbRechequesTITULO}
+            table10={tbDividasOrgaosPublicosEmpresa} tab10-titulo={tbDividasOrgaosPublicosEmpresaTITULO}
+            table11={tbAnotacoesSPC} tab11-titulo={tbAnotacoesSPCTITULO}
+            table12={tbIndicadorRecuperacaoDivida} tab12-titulo={tbIndicadorRecuperacaoDividaTITULO}
+            table13={tbIndicadorRecuperacaoCredito} tab13-titulo={tbIndicadorRecuperacaoCreditoTITULO}
+        ></c-linha-serasa>
+        
+      </lightning-accordion>
+      
+      <template if:true={isLoading}>
+          <div>
+              <lightning-spinner 
+                alternative-text="Loading" 
+                size="large"
+              ></lightning-spinner>
+          </div>
+      </template>
+
+  </template>

@@ -1,0 +1,40 @@
+<apex:page lightningStylesheets="true" standardController="Account" extensions="AccountTaskGPSController">
+    <script>
+    var previousOnload = window.onload;        
+    window.onload = function() { 
+        if (previousOnload) { 
+            previousOnload();
+        }
+        getLocation();
+    }
+    function getLocation() {
+        if (navigator.geolocation){
+            navigator.geolocation.watchPosition(
+                    function(position) {save(position.coords.latitude,position.coords.longitude);});
+        } else {
+                alert ("Geolocalização não é suportado neste browser.");
+        }
+    }
+    </script>
+    <apex:form id="form">
+        <apex:pageBlock mode="Edit">
+            <apex:pageBlockSection title="Atividade" columns="1">
+                <apex:inputField value="{!newTask.Tipo__c}" />
+                <apex:inputField value="{!newTask.WhoId}" />
+                <apex:inputField value="{!newTask.Description}" />
+				
+					<apex:actionFunction name="save" action="{!save}" rerender="jsvalues">
+						<apex:param name="lat" value="" assignTo="{!valueLat}"/>
+						<apex:param name="long" value="" assignTo="{!valueLong}" />
+					</apex:actionFunction>
+					<apex:outputPanel id="jsvalues">
+                        <apex:outputText value="Latitude atual: {!valueLat}" /><br/>
+						<apex:outputText value="Longitude atual: {!valueLong}" /><br />
+					</apex:outputPanel>
+				
+			<apex:commandButton value="Salvar atividade" action="{!salvaAtividade}" />
+            
+        	</apex:pageBlockSection>
+        </apex:pageBlock>
+    </apex:form>            
+</apex:page>

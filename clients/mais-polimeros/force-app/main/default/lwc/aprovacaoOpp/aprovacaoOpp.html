@@ -1,0 +1,46 @@
+<template>
+    <lightning-quick-action-panel > 
+        <div style="text-align: right;width: 100%;padding-bottom:16px;">
+            <lightning-button  label="Atualizar" title="Atualizar registros" onclick={recarregarLista} icon-name="utility:rotate" ></lightning-button>
+            <br>
+        </div>
+        <div >
+            <lightning-datatable
+                key-field="id"
+                columns={columns}
+                data={data}
+                hide-checkbox-column="true"
+                enable-infinite-loading
+                default-sort-direction={defaultSortDirection}
+                sorted-direction={sortDirection}
+                sorted-by={sortedBy}
+                onsort={onHandleSort}
+                onrowaction={handleRowAction}>
+            </lightning-datatable>
+
+            <div if:true={showComentario}>
+                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open slds-modal_small" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1">
+                    <div class="slds-modal__container" >
+                    <header class="slds-modal__header" >
+                        <h2 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Digite um comentário.</h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_small" id="modal-content-id-2" style="display: flex; justify-content: center;min-height: 20%;">
+                        <div class="slds-size_9-of-12">
+                        
+                        <lightning-textarea
+                           onchange={digitarComentario}
+                        ></lightning-textarea>
+                        </div>
+                    </div>
+                        <footer class="slds-modal__footer">
+                            <lightning-button label="Cancelar" title="Cancelar" onclick={cancelarAcao} class="slds-m-left_x-small" ></lightning-button>
+                            <lightning-button label="Confirmar" title="Confirmar" variant="brand" onclick={alterarProcesso} class="slds-m-left_x-small" disabled={disableConfirmar} ></lightning-button>
+                        </footer>
+                    </div>
+                    
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </div>
+    </lightning-quick-action-panel>
+</template>

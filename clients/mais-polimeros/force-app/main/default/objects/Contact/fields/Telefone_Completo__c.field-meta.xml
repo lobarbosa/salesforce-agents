@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Telefone_Completo__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+  ISBLANK(Phone),
+  &quot;&quot;,
+  
+  IF(
+    LEFT(
+      SUBSTITUTE(
+        SUBSTITUTE(
+          SUBSTITUTE(
+            SUBSTITUTE(
+              SUBSTITUTE(
+                SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+                &quot;-&quot;,
+                &quot;&quot;
+              ),
+              &quot;/&quot;,
+              &quot;&quot;
+            ),
+            &quot;(&quot;,
+            &quot;&quot;
+          ),
+          &quot;)&quot;,
+          &quot;&quot;
+        ),
+        &quot; &quot;,
+        &quot;&quot;
+      ),
+      2
+    ) = &quot;55&quot;,
+
+    SUBSTITUTE(
+      SUBSTITUTE(
+        SUBSTITUTE(
+          SUBSTITUTE(
+            SUBSTITUTE(
+              SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+              &quot;-&quot;,
+              &quot;&quot;
+            ),
+            &quot;/&quot;,
+            &quot;&quot;
+          ),
+          &quot;(&quot;,
+          &quot;&quot;
+        ),
+        &quot;)&quot;,
+        &quot;&quot;
+      ),
+      &quot; &quot;,
+      &quot;&quot;
+    ),
+
+    IF(
+      LEN(
+        SUBSTITUTE(
+          SUBSTITUTE(
+            SUBSTITUTE(
+              SUBSTITUTE(
+                SUBSTITUTE(
+                  SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+                  &quot;-&quot;,
+                  &quot;&quot;
+                ),
+                &quot;/&quot;,
+                &quot;&quot;
+              ),
+              &quot;(&quot;,
+              &quot;&quot;
+            ),
+            &quot;)&quot;,
+            &quot;&quot;
+          ),
+          &quot; &quot;,
+          &quot;&quot;
+        )
+      ) &lt;= 9,
+
+      &quot;55&quot; &amp; TEXT(Account.DDD__c) &amp;
+      SUBSTITUTE(
+        SUBSTITUTE(
+          SUBSTITUTE(
+            SUBSTITUTE(
+              SUBSTITUTE(
+                SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+                &quot;-&quot;,
+                &quot;&quot;
+              ),
+              &quot;/&quot;,
+              &quot;&quot;
+            ),
+            &quot;(&quot;,
+            &quot;&quot;
+          ),
+          &quot;)&quot;,
+          &quot;&quot;
+        ),
+        &quot; &quot;,
+        &quot;&quot;
+      ),
+
+      &quot;55&quot; &amp;
+      SUBSTITUTE(
+        SUBSTITUTE(
+          SUBSTITUTE(
+            SUBSTITUTE(
+              SUBSTITUTE(
+                SUBSTITUTE(Phone, &quot;—&quot;, &quot;&quot;),
+                &quot;-&quot;,
+                &quot;&quot;
+              ),
+              &quot;/&quot;,
+              &quot;&quot;
+            ),
+            &quot;(&quot;,
+            &quot;&quot;
+          ),
+          &quot;)&quot;,
+          &quot;&quot;
+        ),
+        &quot; &quot;,
+        &quot;&quot;
+      )
+    )
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Telefone Completo</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

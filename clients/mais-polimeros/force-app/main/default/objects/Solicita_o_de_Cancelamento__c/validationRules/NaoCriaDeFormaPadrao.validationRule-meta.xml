@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoCriaDeFormaPadrao</fullName>
+    <active>false</active>
+    <description>Obriga que a solicitação seja criada pelo botão que está no pedido.</description>
+    <errorConditionFormula>AND(
+    ISNEW(),
+    NOT($Profile.Id = &quot;005N500000MFUvaIAH&quot;),
+    PermiteCriar__c = FALSE
+)</errorConditionFormula>
+    <errorMessage>Para solicitar um cancelamento, por favor, utilize o botão que se encontra no pedido.</errorMessage>
+</ValidationRule>

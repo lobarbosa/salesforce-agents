@@ -1,0 +1,21 @@
+<aura:component controller="MeusCreditosController" implements="force:hasRecordId,force:appHostable,forceCommunity:availableForAllPageTypes" access="global">
+ <aura:attribute name="accountData" type="Object"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <div class="meus-creditos-container">
+        <h2 class="titulo">Meus créditos</h2>
+        <table class="tabela">
+            <tr>
+                <th>Saldo Mais Polímeros</th>
+                <th>Mais Pay</th>
+                <th>Saldo Sifra</th>
+            </tr>
+            <tr>
+                <td>{!v.accountData.formattedPolimeros}</td>
+                <td>{!v.accountData.formattedBv}</td>
+                <td>{!v.accountData.formattedSifra}</td>
+            </tr>
+        </table>
+    </div>
+</aura:component>

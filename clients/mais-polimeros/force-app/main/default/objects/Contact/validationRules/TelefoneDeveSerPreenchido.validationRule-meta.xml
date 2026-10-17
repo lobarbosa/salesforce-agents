@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TelefoneDeveSerPreenchido</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISNEW(),ISBLANK(Phone), OR( $User.ProfileId = &quot;00ef4000000vsvVAAQ&quot; , $User.ProfileId = &quot;00ef4000000SmbaAAC&quot;))</errorConditionFormula>
+    <errorMessage>O número de telefone deve ser informado.</errorMessage>
+</ValidationRule>

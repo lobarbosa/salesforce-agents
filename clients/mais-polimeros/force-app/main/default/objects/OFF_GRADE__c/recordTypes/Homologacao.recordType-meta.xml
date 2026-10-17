@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RecordType xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Homologacao</fullName>
+    <active>true</active>
+    <compactLayoutAssignment>Layout_compacto</compactLayoutAssignment>
+    <description>Solicitação em homologação</description>
+    <label>Homologação</label>
+    <picklistValues>
+        <picklist>Aplicacao__c</picklist>
+        <values>
+            <fullName>Filme</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Injeção</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Sopro</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Fase__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conclusão%3A Material Disponível</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conclusão%3A Material Indisponível</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Negociação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Teste</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verificação</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Parametros_da_Fluidez__c</picklist>
+        <values>
+            <fullName>190%C2%B0 %2F 2%2C16kg</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>190%C2%B0 %2F 21%2C6kKg</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>190%C2%B0 %2F 5%2C00kg</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>230%C2%B0 %2F 2%2C16kg</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Primeira_Fase__c</picklist>
+        <values>
+            <fullName>Conclusão%3A Material Disponível</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Conclusão%3A Material Indisponível</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Solicitação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Verificação</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Segunda_Fase__c</picklist>
+        <values>
+            <fullName>Aprovado</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Negociação</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Em Teste</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>Reprovado</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+    <picklistValues>
+        <picklist>Tipo_de_OFF__c</picklist>
+        <values>
+            <fullName>EVA HOT MELT</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PEAD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PEBD</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PEBDL</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PP COPO</fullName>
+            <default>false</default>
+        </values>
+        <values>
+            <fullName>PP HOMO</fullName>
+            <default>false</default>
+        </values>
+    </picklistValues>
+</RecordType>

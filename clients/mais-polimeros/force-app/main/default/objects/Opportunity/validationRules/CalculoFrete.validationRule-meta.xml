@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CalculoFrete</fullName>
+    <active>false</active>
+    <description>Erro no calculo de frete</description>
+    <errorConditionFormula>AND(
+NOT($User.ByPassVR__c),
+ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+OR(StatusFrete__c  = &quot;Erro no calculo do frete&quot;))</errorConditionFormula>
+    <errorMessage>Erro no calculo de frete, favor solicitar cadastro.</errorMessage>
+</ValidationRule>

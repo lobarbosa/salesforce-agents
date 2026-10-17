@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Faturamento_Detalhado__c</fullName>
+    <externalId>false</externalId>
+    <formula>LEFT(
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Domingo&quot;), &quot;Domingo, &quot;,&quot;&quot;)+ 
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Segunda-Feira&quot;), &quot;Segunda-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Terça-Feira&quot;), &quot;Terça-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Quarta-Feira&quot;), &quot;Quarta-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Quinta-Feira&quot;), &quot;Quinta-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Sexta-Feira&quot;), &quot;Sexta-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Sabado&quot;), &quot;Sabado, &quot;,&quot;&quot;),
+
+LEN(
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Domingo&quot;), &quot;Domingo, &quot;,&quot;&quot;)+ 
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Segunda-Feira&quot;), &quot;Segunda-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Terça-Feira&quot;), &quot;Terça-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Quarta-Feira&quot;), &quot;Quarta-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Quinta-Feira&quot;), &quot;Quinta-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Sexta-Feira&quot;), &quot;Sexta-Feira, &quot;,&quot;&quot;)+
+IF( INCLUDES( Account.FaturamentoDetalhado__c , &quot;Sabado&quot;), &quot;Sabado, &quot;,&quot;&quot;))-2)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Faturamento Detalhado</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

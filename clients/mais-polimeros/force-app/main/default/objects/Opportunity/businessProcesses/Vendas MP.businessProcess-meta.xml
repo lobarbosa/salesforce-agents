@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BusinessProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Vendas MP</fullName>
+    <isActive>true</isActive>
+    <values>
+        <fullName>Aguardando cliente</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Aprovação de Crédito</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Aprovação de Preço</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Conferência</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Fechado Ganho</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Fechado Perdido</fullName>
+        <default>false</default>
+    </values>
+    <values>
+        <fullName>Negociação</fullName>
+        <default>false</default>
+    </values>
+</BusinessProcess>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Potencial_do_Cliente__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Potencial do Cliente</label>
+    <referenceTo>Potencial_do_Cliente__c</referenceTo>
+    <relationshipLabel>Produtos em potencial</relationshipLabel>
+    <relationshipName>Produtos_em_potencial</relationshipName>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

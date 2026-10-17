@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DataDeFechamento</fullName>
+    <active>true</active>
+    <description>Regra não deixa alterar o mês da data de fechamento da oportunidade se Status != de (Fechado Ganho ou Fechado Perdido)</description>
+    <errorConditionFormula>AND(
+    NOT($User.ByPassVR__c),
+    ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+    NOT(ISNEW())&amp;&amp;(NOT(ISPICKVAL(StageName ,&apos;Fechado Ganho&apos;))&amp;&amp; NOT(ISPICKVAL(StageName,&apos;Fechado Perdido&apos;))) &amp;&amp; (ISCHANGED(CloseDate) &amp;&amp; MONTH(PRIORVALUE(CloseDate))!= MONTH(CloseDate)),
+NOT(ISPICKVAL(StageName,&apos;Negociação&apos;))
+)</errorConditionFormula>
+    <errorMessage>Não é possível alterar o mês da Data de fechamento.</errorMessage>
+</ValidationRule>

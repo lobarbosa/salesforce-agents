@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>1</activeVersionNumber>
+    <description>Alinhar com Sellmer - Depois que trocar no botão pelo FlowEstoque01 desativar e deletar esse aqui</description>
+    <masterLabel>Flow - Consulta Estoque Filial</masterLabel>
+</FlowDefinition>

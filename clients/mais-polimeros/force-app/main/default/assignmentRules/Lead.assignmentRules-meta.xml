@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<AssignmentRules xmlns="http://soap.sforce.com/2006/04/metadata">
+    <assignmentRule>
+        <fullName>AtribuirPorEstado</fullName>
+        <active>true</active>
+        <ruleEntry>
+            <assignedTo>daniely.rosa@maispolimeros.com.br</assignedTo>
+            <assignedToType>User</assignedToType>
+            <formula>AND( 
+CONTAINS(TEXT(LeadSource),&quot;RD Station&quot;), 
+OR( 
+State = &quot;AM&quot; 
+) 
+)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>rosa.montero@maispolimeros.com.br</assignedTo>
+            <assignedToType>User</assignedToType>
+            <formula>AND( 
+CONTAINS(TEXT(LeadSource),&quot;RD Station&quot;), 
+OR( 
+State = &quot;AL&quot;, 
+State = &quot;AP&quot;, 
+State = &quot;ES&quot;, 
+State = &quot;RJ&quot;, 
+State = &quot;SE&quot;,
+State = &quot;MT&quot;, 
+State = &quot;MS&quot;, 
+State = &quot;TO&quot;,
+State = &quot;PR&quot; 
+) 
+)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <assignedTo>rosi@maispolimeros.com.br</assignedTo>
+            <assignedToType>User</assignedToType>
+            <formula>AND( 
+CONTAINS(TEXT(LeadSource),&quot;RD Station&quot;), 
+OR( 
+State = &quot;AM&quot;, 
+State = &quot;BA&quot;, 
+State = &quot;CE&quot;, 
+State = &quot;MA&quot;,  
+State = &quot;MG&quot;, 
+State = &quot;RO&quot;, 
+State = &quot;RR&quot;,
+State = &quot;SC&quot;
+) 
+)</formula>
+        </ruleEntry>
+        <ruleEntry>
+            <formula>AND( 
+CONTAINS(TEXT(LeadSource),&quot;RD Station&quot;), 
+OR( 
+State = &quot;AC&quot;, 
+State = &quot;DF&quot;, 
+State = &quot;GO&quot;, 
+State = &quot;PA&quot;, 
+State = &quot;PB&quot;, 
+State = &quot;PI&quot;, 
+State = &quot;RN&quot;, 
+State = &quot;SP&quot;, 
+State = &quot;PE&quot;,
+State = &quot;RS&quot;,
+State = &quot;  &quot;
+
+) 
+)</formula>
+        </ruleEntry>
+    </assignmentRule>
+</AssignmentRules>

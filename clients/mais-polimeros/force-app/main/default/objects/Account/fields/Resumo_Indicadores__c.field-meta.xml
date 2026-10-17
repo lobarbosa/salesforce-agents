@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Resumo_Indicadores__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(AND(Indicador_Ultima_Atividade_GE__c = &quot;Verde&quot;,Indicador_Ultima_Cota_o__c = &quot;Verde&quot; ),&quot;Cotação e Atividade&quot;,
+IF(AND(Indicador_Ultima_Atividade_GE__c &lt;&gt; &quot;Verde&quot;,Indicador_Ultima_Cota_o__c = &quot;Verde&quot; ),&quot;Cotação sem Atividade&quot;,
+IF(AND(Indicador_Ultima_Atividade_GE__c = &quot;Verde&quot;,Indicador_Ultima_Cota_o__c &lt;&gt; &quot;Verde&quot; ),&quot;Sem cotacão com Atividade&quot;, &quot;Sem cotação e sem Atividade&quot;)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Resumo Indicadores</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

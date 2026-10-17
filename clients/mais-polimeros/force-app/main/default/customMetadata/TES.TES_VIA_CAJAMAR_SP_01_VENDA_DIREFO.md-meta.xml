@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>TES VIA CAJAMAR - SP - 01	- VENDA DIREFO</label>
+    <protected>false</protected>
+    <values>
+        <field>ConsumidorFinal__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>Fabricante__c</field>
+        <value xsi:type="xsd:string">BRASKEM UNIGEL</value>
+    </values>
+    <values>
+        <field>Filial__c</field>
+        <value xsi:type="xsd:string">01</value>
+    </values>
+    <values>
+        <field>ForaEstado__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>SUFRAMA__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>TES__c</field>
+        <value xsi:type="xsd:string">521</value>
+    </values>
+    <values>
+        <field>VendaDireta__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>VendaTriangular__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+</CustomMetadata>

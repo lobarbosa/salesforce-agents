@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Normal</fullName>
+        <default>false</default>
+        <label>Normal</label>
+    </customValue>
+    <customValue>
+        <fullName>Triangular</fullName>
+        <default>false</default>
+        <label>Triangular</label>
+    </customValue>
+    <customValue>
+        <fullName>Operações Especiais</fullName>
+        <default>false</default>
+        <label>Operações Especiais</label>
+    </customValue>
+    <masterLabel>Tipo de TES</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

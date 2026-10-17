@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NaoMudaConta</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+   NOT($User.ByPassVR__c),
+   ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+   NOT(ISNEW()),
+   ISCHANGED (AccountId)
+)</errorConditionFormula>
+    <errorMessage>A conta não pode ser alterada após a criação da oportunidade</errorMessage>
+</ValidationRule>

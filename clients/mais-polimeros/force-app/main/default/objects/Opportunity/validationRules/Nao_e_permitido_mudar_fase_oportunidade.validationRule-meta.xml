@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_e_permitido_mudar_fase_oportunidade</fullName>
+    <active>true</active>
+    <description>Não é permitido mudar fase oportunidade Aguardando Cliente não aprovada por preço</description>
+    <errorConditionFormula>AND( ISCHANGED(  StageName ), ISPICKVAL( StageName,&quot;Aguardando Cliente&quot;),  ISPICKVAL(PRIORVALUE(StageName),&quot;Negociação&quot;) ,  StatusPreco__c &lt;&gt; &quot;Preço aprovado&quot;)</errorConditionFormula>
+    <errorMessage>Não é permitido mudar fase oportunidade Aguardando Cliente não aprovada por preço</errorMessage>
+</ValidationRule>

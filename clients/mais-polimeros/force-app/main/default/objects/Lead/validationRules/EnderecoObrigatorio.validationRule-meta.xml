@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>EnderecoObrigatorio</fullName>
+    <active>true</active>
+    <description>Endereço obrigatório ao criar novo lead;</description>
+    <errorConditionFormula>AND
+(
+ ISPICKVAL(Status,&apos;Novo&apos;),
+ ISBLANK(Address)
+)</errorConditionFormula>
+    <errorMessage>Endereço deverá ser preenchido em fase de prospecção.</errorMessage>
+</ValidationRule>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MP_MENSAGENS</fullName>
+    <fields>Name</fields>
+    <fields>Hora_de_envio_da_mensagem__c</fields>
+    <fields>Telefone_do_cliente__c</fields>
+    <fields>Conversa__c</fields>
+    <label>MP MENSAGENS</label>
+</CompactLayout>

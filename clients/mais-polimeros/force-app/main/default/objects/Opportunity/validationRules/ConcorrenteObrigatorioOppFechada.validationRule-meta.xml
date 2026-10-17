@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ConcorrenteObrigatorioOppFechada</fullName>
+    <active>true</active>
+    <description>Informar o concorrente é obrigatório para oportunidade Perdida</description>
+    <errorConditionFormula>AND(NOT($User.ByPassVR__c),
+    ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+    ISBLANK(TEXT(concorrente__c)),
+    IsClosed = true,
+    IsWon = false,
+NOT(ISCHANGED(OwnerId)),
+Year(DateValue(CreatedDate)) = Year(Today())
+
+,OR(ISCHANGED(StageName),ISCHANGED(concorrente__c),ISCHANGED(LossReason__c))
+
+)</errorConditionFormula>
+    <errorDisplayField>concorrente__c</errorDisplayField>
+    <errorMessage>Informe o concorrente em cotação perdida</errorMessage>
+</ValidationRule>

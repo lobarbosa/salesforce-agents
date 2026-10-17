@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pesquisa_por_produtos</fullName>
+    <columns>NAME</columns>
+    <columns>Comprado01SP__c</columns>
+    <columns>Estoque01SP__c</columns>
+    <columns>Comprado04GO__c</columns>
+    <columns>Estoque04GO__c</columns>
+    <columns>Comprado02PR__c</columns>
+    <columns>Estoque02PR__c</columns>
+    <columns>Comprado08RS__c</columns>
+    <columns>Estoque08RS__c</columns>
+    <columns>Comprado07SC__c</columns>
+    <columns>Estoque07SC__c</columns>
+    <filterScope>Mine</filterScope>
+    <filters>
+        <field>NAME</field>
+        <operation>contains</operation>
+        <value>gf4950</value>
+    </filters>
+    <label>Pesquisa por produtos</label>
+</ListView>

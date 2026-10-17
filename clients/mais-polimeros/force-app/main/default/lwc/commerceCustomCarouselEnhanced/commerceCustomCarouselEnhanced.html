@@ -1,0 +1,56 @@
+<template>
+    <div class="container">
+        <template if:true={conteudo}>
+            <div class="container-slider slds-m-bottom_x-small">
+                <template for:each={colecoes} for:item="colecao">
+                    <div key={colecao.id} class={colecao.cardClass}>
+                        <template if:true={exibirTitulo}>
+                            <h1 class="slds-text-align_center slds-m-vertical_x-large titulo">{titulo}</h1>
+                        </template>
+                        <div class="container-style">
+                            <template if:true={trocaManual}>
+                                <template if:true={exibirBotoes}>
+                                    <template if:true={exibirSetas}>
+                                        <lightning-icon class="prev" icon-name="utility:chevronleft" onclick={prevCard}></lightning-icon>
+                                    </template>
+                                </template>
+                            </template>
+                            <div class="card-background-style">
+                                <div class="card-style">
+                                    <template if:true={altTextHyperLink}>
+                                        <a href={colecao.redirectUrl} target="_self">
+                                            <div style="text-align: center;">
+                                                <img  class="img-style" src={colecao.url}>
+                                            </div>
+                                        </a>
+                                    </template>
+                                    <template if:false={altTextHyperLink}>
+                                        <div style="text-align: center;">
+                                            <img  class="img-style" src={colecao.url}>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                            <template if:true={trocaManual}>
+                                <template if:true={exibirBotoes}>
+                                    <template if:true={exibirSetas}>
+                                        <lightning-icon class="next" icon-name="utility:chevronright" alternative-text="Next" onclick={nextCard}></lightning-icon>
+                                    </template>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            <template if:true={exibirCirculos}>
+                <template if:true={exibirBotoes}>
+                    <div class="slds-text-align_center custom-card-selector">
+                        <template for:each={colecoes} for:item="colecao">
+                            <span class={colecao.dotClass} data-id={colecao.slideIndex} onclick={selectCard} key={colecao.id}></span>
+                        </template>
+                    </div>
+                </template>
+            </template>
+        </template>
+    </div>
+</template>

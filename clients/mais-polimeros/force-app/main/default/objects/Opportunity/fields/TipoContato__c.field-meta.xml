@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>TipoContato__c</fullName>
+    <label>Tipo Contato</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>1 - Receptivo</fullName>
+                <default>false</default>
+                <label>1 - Receptivo</label>
+            </value>
+            <value>
+                <fullName>2- Ativo</fullName>
+                <default>false</default>
+                <label>2- Ativo</label>
+            </value>
+            <value>
+                <fullName>3- Email</fullName>
+                <default>false</default>
+                <label>3- Email</label>
+            </value>
+            <value>
+                <fullName>4- Representante</fullName>
+                <default>false</default>
+                <label>4- Representante</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FrequenciaObgVolume</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+NOT(ISPICKVAL(  FrequenciaCompra__c  ,&quot;&quot;)),
+ISBLANK( VolumeDeCompra__c )
+)</errorConditionFormula>
+    <errorDisplayField>VolumeDeCompra__c</errorDisplayField>
+    <errorMessage>Se declarado a FREQUÊNCIA DA COMPRA o VOLUME deve ser informado</errorMessage>
+</ValidationRule>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FasesEnviadoAnaliseCadastral</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND( 
+Text(PRIORVALUE(Status)) == &apos;Enviado análise cadastral&apos;,
+NOT(ISPICKVAL(Status,&apos;Aprovado&apos;)),
+NOT(ISPICKVAL(Status,&apos;Congelado&apos;)),
+NOT(ISPICKVAL(Status,&apos;Enviado análise cadastral&apos;))
+)</errorConditionFormula>
+    <errorMessage>Pode-se apenas APROVAR ou CONGELAR um LEAD nessa fase</errorMessage>
+</ValidationRule>

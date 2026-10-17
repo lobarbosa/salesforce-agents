@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <formFactors>Large</formFactors>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
+    <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
+    <label>FlowsApp</label>
+    <navType>Standard</navType>
+    <tabs>standard-home</tabs>
+    <tabs>standard-FlowRecord</tabs>
+    <tabs>Quadro_de_Metas__c</tabs>
+    <tabs>standard-Monitor</tabs>
+    <tabs>Tipo_de_Entrada_Saida__c</tabs>
+    <tabs>Segmentacao_Mais_Polimeros__c</tabs>
+    <tabs>Relacionamento_de_Campanha__c</tabs>
+    <tabs>standard-ActionHub</tabs>
+    <tabs>Validade_do_Estoque__c</tabs>
+    <tabs>standard-FlowLogs</tabs>
+    <tabs>Limite_de_Credito__c</tabs>
+    <tabs>standard-GlobalFlowResources</tabs>
+    <tabs>MP_Whatsapp_Code__c</tabs>
+    <tabs>MP_Whatsapp_Conversa__c</tabs>
+    <tabs>standard-Tags</tabs>
+    <uiType>Lightning</uiType>
+    <utilityBar>FlowsApp_UtilityBar</utilityBar>
+</CustomApplication>

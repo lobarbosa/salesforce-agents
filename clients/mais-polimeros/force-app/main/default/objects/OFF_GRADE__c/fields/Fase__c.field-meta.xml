@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fase__c</fullName>
+    <label>Fase</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Solicitação</fullName>
+                <default>false</default>
+                <label>Solicitação</label>
+            </value>
+            <value>
+                <fullName>Verificação</fullName>
+                <default>false</default>
+                <label>Verificação</label>
+            </value>
+            <value>
+                <fullName>Conclusão: Material Indisponível</fullName>
+                <default>false</default>
+                <label>Conclusão: Material Indisponível</label>
+            </value>
+            <value>
+                <fullName>Conclusão: Material Disponível</fullName>
+                <default>false</default>
+                <label>Conclusão: Material Disponível</label>
+            </value>
+            <value>
+                <fullName>Em Negociação</fullName>
+                <default>false</default>
+                <label>Em Negociação</label>
+            </value>
+            <value>
+                <fullName>Em Teste</fullName>
+                <default>false</default>
+                <label>Em Teste</label>
+            </value>
+            <value>
+                <fullName>Aprovado</fullName>
+                <default>false</default>
+                <label>Aprovado</label>
+            </value>
+            <value>
+                <fullName>Reprovado</fullName>
+                <default>false</default>
+                <label>Reprovado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

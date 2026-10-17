@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Enviar_email</name>
+        <label>Enviar email</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Email_enviado2</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>vEmailsDestino</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddressesArray</name>
+        </inputParameters>
+        <inputParameters>
+            <name>ccRecipientAddressList</name>
+            <value>
+                <elementReference>vEmaisCC</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>ccRecipientAddressCollection</name>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+        </inputParameters>
+        <inputParameters>
+            <name>composeEmailContent</name>
+            <value>
+                <stringValue>True</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>AssuntodoEmail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>corpodoemail</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>relatedRecordId</name>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
+        <versionString>1.0.1</versionString>
+    </actionCalls>
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>Atribuir_emails_de_destino</name>
+        <label>Atribuir emails de destino</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>vEmailsDestino</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>VendaInterna@maispolimeros.com.br,</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vEmailsDestino</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>VendasExterna@maispolimeros.com.br,</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vEmaisCC</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>danivalerio@maispolimeros.com.br,</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vEmaisCC</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>thiago@maispolimeros.com.br,</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vEmaisCC</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>lucas.paiva@maispolimeros.com.br,</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vEmaisCC</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>fernanda.natal@maispolimeros.com.br,</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vEmaisCC</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>daniely.rosa@maispolimeros.com.br,</stringValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>vEmaisCC</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>$User.Email</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Previs_o_de_vendas</targetReference>
+        </connector>
+    </assignments>
+    <customProperties>
+        <name>ScreenProgressIndicator</name>
+        <value>
+            <stringValue>{&quot;location&quot;:&quot;top&quot;,&quot;type&quot;:&quot;path&quot;}</stringValue>
+        </value>
+    </customProperties>
+    <decisions>
+        <name>Email_disparado</name>
+        <label>Email disparado</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <defaultConnector>
+            <targetReference>Email_Enviado</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <rules>
+            <name>enviar_email3</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Previs_o_de_vendas.Email_Disparado__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>email</targetReference>
+            </connector>
+            <label>enviar email</label>
+        </rules>
+        <rules>
+            <name>email_enviado4</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Previs_o_de_vendas.Email_Disparado__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>C_pia_1_de_Email_Enviado</targetReference>
+            </connector>
+            <label>email enviado</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <formulas>
+        <name>dia_ou_tarde</name>
+        <dataType>String</dataType>
+        <expression>IF(
+  HOUR(TIMENOW()) &lt;= 15,
+  &quot;Bom dia!&quot;,
+  &quot;Boa tarde!&quot;
+)</expression>
+    </formulas>
+    <formulas>
+        <name>textoMes</name>
+        <dataType>String</dataType>
+        <expression>IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;1&quot;, &quot;Janeiro&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;2&quot;, &quot;Fevereiro&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;3&quot;, &quot;Março&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;4&quot;, &quot;Abril&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;5&quot;, &quot;Maio&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;6&quot;, &quot;Junho&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;7&quot;, &quot;Julho&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;8&quot;, &quot;Agosto&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;9&quot;, &quot;Setembro&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;10&quot;, &quot;Outubro&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;11&quot;, &quot;Novembro&quot;,
+IF(TEXT({!Previs_o_de_vendas.Mes__c} )=&quot;12&quot;, &quot;Dezembro&quot;,
+
+
+&quot;&quot;))))))))))))</expression>
+    </formulas>
+    <interviewLabel>MP - Email Previsao de Vendas {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>MP - Email Previsao de Vendas</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>Flow</processType>
+    <recordLookups>
+        <name>Previs_o_de_vendas</name>
+        <label>Previsão de vendas</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Email_disparado</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>C_pia_2_de_Email_Enviado</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Aberto__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>PrevisaoVenda__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Email_enviado2</name>
+        <label>Email enviado</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>Previs_o_de_vendas.Id</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>Email_Disparado__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <object>PrevisaoVenda__c</object>
+    </recordUpdates>
+    <screens>
+        <name>C_pia_1_de_Email_Enviado</name>
+        <label>Cópia 1 de Email Enviado</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>C_pia_1_de_EmailEviado</name>
+            <fieldText>&lt;p&gt;✉ O Email referente a previsão de &lt;strong&gt;{!textoMes}&lt;/strong&gt; já foi disparado.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>C_pia_2_de_Email_Enviado</name>
+        <label>Cópia 2 de Email Enviado</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>C_pia_2_de_EmailEviado</name>
+            <fieldText>&lt;p&gt;✉ Não foi encontrada nenhuma previsão aberta 🥺.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>email</name>
+        <label>email</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>true</allowPause>
+        <connector>
+            <targetReference>Enviar_email</targetReference>
+        </connector>
+        <fields>
+            <name>Email_criado_automaticamente</name>
+            <fieldText>&lt;p&gt;✉ &lt;strong&gt;Email criado automaticamente: &lt;/strong&gt;&lt;/p&gt;&lt;p&gt;&lt;strong&gt;&lt;span class=&quot;ql-cursor&quot;&gt;﻿&lt;/span&gt;&lt;/strong&gt;&lt;/p&gt;&lt;p&gt;{!AssuntodoEmail}&lt;/p&gt;&lt;p&gt;&lt;br&gt;&lt;/p&gt;&lt;p&gt;{!corpodoemail}&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <nextOrFinishButtonLabel>Enviar Email</nextOrFinishButtonLabel>
+        <pausedText>&lt;p&gt;Cancelar&lt;/p&gt;</pausedText>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <screens>
+        <name>Email_Enviado</name>
+        <label>Email Enviado</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>EmailEviado</name>
+            <fieldText>&lt;p&gt;✉ Não foi encontrada nenhuma previsão aberta 🥺.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <styleProperties>
+                <verticalAlignment>
+                    <stringValue>top</stringValue>
+                </verticalAlignment>
+                <width>
+                    <stringValue>12</stringValue>
+                </width>
+            </styleProperties>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>false</showHeader>
+    </screens>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Atribuir_emails_de_destino</targetReference>
+        </connector>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>AssuntodoEmail</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Previsão de Vendas - {!textoMes} {!Previs_o_de_vendas.Ano__c}</text>
+    </textTemplates>
+    <textTemplates>
+        <name>corpodoemail</name>
+        <isViewedAsPlainText>false</isViewedAsPlainText>
+        <text>&lt;p&gt;&lt;span style=&quot;font-family: sans-serif; color: rgb(40, 34, 79); font-size: 12px;&quot;&gt; {!dia_ou_tarde} Tudo bem?&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(40, 34, 79); font-family: sans-serif; font-size: 12px;&quot;&gt;A previsão&amp;nbsp;de&amp;nbsp;vendas&amp;nbsp;referente ao mês&amp;nbsp;de&amp;nbsp;{!textoMes}&amp;nbsp;de&amp;nbsp;{!Previs_o_de_vendas.Ano__c} estará disponível para preenchimento a partir do dia {!Previs_o_de_vendas.InicioPrenchimento__c} até o dia {!Previs_o_de_vendas.FimPreenchimento__c}.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(40, 34, 79); font-family: sans-serif; font-size: 12px;&quot;&gt;Conto com a colaboração&amp;nbsp;de&amp;nbsp;todos.&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(40, 34, 79); font-family: sans-serif; font-size: 12px;&quot;&gt;Att,&lt;/span&gt;&lt;/p&gt;&lt;p&gt;&lt;span style=&quot;color: rgb(40, 34, 79); font-family: sans-serif; font-size: 12px;&quot;&gt;{!$User.FirstName}.&lt;/span&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <variables>
+        <name>EmailsDescinoCC</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>EmailsDestino</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vEmailsDestino</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>vEmaisCC</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

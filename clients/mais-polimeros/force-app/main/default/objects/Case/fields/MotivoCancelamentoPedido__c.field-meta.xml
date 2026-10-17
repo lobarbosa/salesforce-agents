@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MotivoCancelamentoPedido__c</fullName>
+    <label>Motivo cancelamento pedido</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Picklist</type>
+    <valueSet>
+        <controllingField>Type</controllingField>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Preço</fullName>
+                <default>false</default>
+                <label>Preço</label>
+            </value>
+            <value>
+                <fullName>Estoque</fullName>
+                <default>false</default>
+                <label>Estoque</label>
+            </value>
+            <value>
+                <fullName>Crédito</fullName>
+                <default>false</default>
+                <label>Crédito</label>
+            </value>
+            <value>
+                <fullName>Entrega</fullName>
+                <default>false</default>
+                <label>Entrega</label>
+            </value>
+            <value>
+                <fullName>Vencimento</fullName>
+                <default>false</default>
+                <label>Vencimento</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

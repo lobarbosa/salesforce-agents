@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ValidaEstado_ICMS</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+ISPICKVAL ( FormaPagamentoPadrao__c,&quot;Crédito de ICMS&quot;),
+NOT(OR(
+State =&quot;SP&quot;,
+State =&quot;Sp&quot;,
+State =&quot;sp&quot;)
+)
+)</errorConditionFormula>
+    <errorDisplayField>FormaPagamentoPadrao__c</errorDisplayField>
+    <errorMessage>Apenas Leads de SP podem usar o CRÉDITO DE ICMS como FORMA DE PAGAMENTO</errorMessage>
+</ValidationRule>

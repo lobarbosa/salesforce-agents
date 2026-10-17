@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Grupo_Economico__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <inlineHelpText>Selecione qualquer conta do grupo</inlineHelpText>
+    <label>Grupo Econômico</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>OFF GRADE</relationshipLabel>
+    <relationshipName>OFF_GRADE</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

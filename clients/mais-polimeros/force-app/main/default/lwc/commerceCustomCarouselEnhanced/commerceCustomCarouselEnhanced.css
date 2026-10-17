@@ -1,0 +1,79 @@
+.titulo {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.container-style {
+    width: 100%;
+}
+
+.card-style {
+    width: 100%;
+}
+
+.img-style {
+    width: 100%;
+}
+
+.card-background-style {
+    background-color: transparent;
+    box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+}
+
+.div-all-data {
+    padding: 3%;
+}
+
+
+.prev, .next {
+    cursor: pointer;
+    background: rgb(228 220 220 / 52%);
+    border-radius: 50%;
+    color: #fff;
+    font-size: 40px;
+    height: 40px;
+    line-height: 35px;
+    position: absolute;
+    transform: translate(0, -50%);
+    text-align: center;
+    width: 40px;
+    z-index: 10;
+}
+
+.prev {
+    position: absolute;
+    left: 5%;
+    bottom: 45%;
+    /*border-radius: 0 3px 3px 0;*/
+}
+
+.next {
+    position: absolute;
+    right: 5%;
+    bottom: 45%;
+    /*border-radius: 3px 0 0 3px;*/
+}
+
+.circulo-style {
+    display: inline-block;
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    background-color: #bbb;
+    margin: 0 2px;
+}
+
+.exibir-circulo-style, .circulo-style:hover {
+    background-color: #717171;
+}
+
+.container {
+    min-height: 380px;
+}
+
+.custom-card-selector {
+    bottom: 16px;
+    position: absolute;
+    right: 50%;
+}

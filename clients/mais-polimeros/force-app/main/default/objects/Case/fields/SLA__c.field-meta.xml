@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SLA__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( text(Status) = &apos;Fechado&apos;,&quot;&quot;,
+IF(
+    AND(
+        ISBLANK(NUM_Limite_Mais_Pol_meros__c),
+        ISBLANK(Limite_Sifra__c),
+        ISBLANK(Limite_MaisPay__c)
+    ),
+    &quot;&quot;,
+    IF(
+        NOW() &gt;
+        IF(
+            (
+                BLANKVALUE(NUM_Limite_Mais_Pol_meros__c, 0) +
+                BLANKVALUE(Limite_Sifra__c, 0) +
+                BLANKVALUE(Limite_MaisPay__c, 0)
+            ) &lt;= 150000,
+            CreatedDate + 2,
+            IF(
+                (
+                    BLANKVALUE(NUM_Limite_Mais_Pol_meros__c, 0) +
+                    BLANKVALUE(Limite_Sifra__c, 0) +
+                    BLANKVALUE(Limite_MaisPay__c, 0)
+                ) &lt;= 500000,
+                CreatedDate +
+                CASE(
+                    WEEKDAY(DATEVALUE(CreatedDate)),
+                    1, 3,
+                    2, 3,
+                    3, 3,
+                    4, 5,
+                    5, 5,
+                    6, 5,
+                    7, 4,
+                    3
+                ),
+                CreatedDate +
+                CASE(
+                    WEEKDAY(DATEVALUE(CreatedDate)),
+                    1, 5,
+                    2, 7,
+                    3, 7,
+                    4, 7,
+                    5, 7,
+                    6, 7,
+                    7, 6,
+                    5
+                )
+            )
+        ),
+        &quot;🔴 Atrasado&quot;,
+        IF(
+            NOW() &gt;=
+            (
+                IF(
+                    (
+                        BLANKVALUE(NUM_Limite_Mais_Pol_meros__c, 0) +
+                        BLANKVALUE(Limite_Sifra__c, 0) +
+                        BLANKVALUE(Limite_MaisPay__c, 0)
+                    ) &lt;= 150000,
+                    CreatedDate + 2,
+                    IF(
+                        (
+                            BLANKVALUE(NUM_Limite_Mais_Pol_meros__c, 0) +
+                            BLANKVALUE(Limite_Sifra__c, 0) +
+                            BLANKVALUE(Limite_MaisPay__c, 0)
+                        ) &lt;= 500000,
+                        CreatedDate +
+                        CASE(
+                            WEEKDAY(DATEVALUE(CreatedDate)),
+                            1, 3,
+                            2, 3,
+                            3, 3,
+                            4, 5,
+                            5, 5,
+                            6, 5,
+                            7, 4,
+                            3
+                        ),
+                        CreatedDate +
+                        CASE(
+                            WEEKDAY(DATEVALUE(CreatedDate)),
+                            1, 5,
+                            2, 7,
+                            3, 7,
+                            4, 7,
+                            5, 7,
+                            6, 7,
+                            7, 6,
+                            5
+                        )
+                    )
+                ) - (6/24)
+            ),
+            &quot;🟡 Próximo do vencimento&quot;,
+            &quot;🟢 No prazo&quot;
+        )
+    )
+))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>SLA</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

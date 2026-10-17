@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VR01_AnoValido</fullName>
+    <active>true</active>
+    <description>Certifica que foi informado um ano válido</description>
+    <errorConditionFormula>OR(LEN(Ano__c) &lt; 4,
+   VALUE(Ano__c) &lt; YEAR(TODAY())
+)</errorConditionFormula>
+    <errorDisplayField>Ano__c</errorDisplayField>
+    <errorMessage>Informe um ano válido e que não esteja no passado</errorMessage>
+</ValidationRule>

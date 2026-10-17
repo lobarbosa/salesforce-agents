@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Texto_Destino__c</fullName>
+    <externalId>false</externalId>
+    <formula>If( Includes( Destino__c , &quot;Estadual&quot;), &quot;Dentro;&quot;, &quot;&quot;)
++
+If( Includes( Destino__c , &quot;Interestadual&quot;), &quot;Fora;&quot;, &quot;&quot;)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Texto Destino</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

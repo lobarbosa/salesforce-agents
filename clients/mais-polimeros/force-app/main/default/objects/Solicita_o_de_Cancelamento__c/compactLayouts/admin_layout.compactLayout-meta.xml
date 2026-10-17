@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CompactLayout xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>admin_layout</fullName>
+    <fields>Name</fields>
+    <fields>Motivo_do_Cancelamento__c</fields>
+    <fields>Item_do_Pedido__c</fields>
+    <fields>Cancelar_tudo__c</fields>
+    <fields>Pedido__c</fields>
+    <fields>OwnerId</fields>
+    <label>admin layout</label>
+</CompactLayout>

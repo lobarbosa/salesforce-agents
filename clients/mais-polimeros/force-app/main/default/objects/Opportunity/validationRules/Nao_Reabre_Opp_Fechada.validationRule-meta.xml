@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Nao_Reabre_Opp_Fechada</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+IF(OR($Profile.Name =&apos;Mais Polimeros Admin&apos;,$Profile.Name=&apos;Mais Polimeros Admin - sMFA&apos;),FALSE,TRUE),
+IF(OR($User.Id=&apos;0052T00000C9OwKQAV&apos;,$User.Id=&apos;0052T00000C9QvYQAV&apos;,$User.Id=&apos;005f4000003igqfAAA&apos;,$User.Id=&apos;005f40000045rd5AAA&apos;), FALSE, TRUE),
+NOT($User.ByPassVR__c),  
+ByPassVR__c = false &amp;&amp; NOT(ISCHANGED(ByPassVR__c)),
+ISCHANGED(StageName),
+OR
+(ISPICKVAL(PRIORVALUE(StageName),&quot;Fechado Perdido&quot;),
+ISPICKVAL(PRIORVALUE(StageName),&quot;Fechado Ganho&quot;))
+)</errorConditionFormula>
+    <errorMessage>Não é permitido reabrir cotação fechada.</errorMessage>
+</ValidationRule>

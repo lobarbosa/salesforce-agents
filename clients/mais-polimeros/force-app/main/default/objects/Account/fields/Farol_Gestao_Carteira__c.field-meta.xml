@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Farol_Gestao_Carteira__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(
+
+OR(
+AND(UltimaCotacaoGrupoEconomico__c &gt; TODAY() - 31, TEXT(UltimaCotacaoGrupoEconomico__c) &lt;&gt; &quot;&quot;),
+AND(UltimoPedidoGrupoEconomico__c &gt; TODAY() - 31 , TEXT(UltimoPedidoGrupoEconomico__c) &lt;&gt; &quot;&quot;)),
+
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739478568000/FarolAtivacaoVerde?&quot;, &quot;Verde&quot;, 40, 40),
+
+IF( UltimaAtividadeGrupoEconomico__c &gt; TODAY() - 31  , 
+
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739531979000/FarolAtivacaoAmarelo?&quot;, &quot;Amarelo&quot;, 40, 40) ,
+
+IMAGE(LEFT($Api.Partner_Server_URL_260, FIND(&apos;/services&apos;,$Api.Partner_Server_URL_260) - 1) &amp; &quot;/resource/1739531939000/FarolAtivacaoVermelho?&quot;, &quot;Vermelho&quot;, 40, 40)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Farol Gestão Carteira</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

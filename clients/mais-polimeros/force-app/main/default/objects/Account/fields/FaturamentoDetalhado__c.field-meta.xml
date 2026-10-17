@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FaturamentoDetalhado__c</fullName>
+    <label>Faturamento Detalhado</label>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>MultiselectPicklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Não Informado</fullName>
+                <default>true</default>
+                <label>Não Informado</label>
+            </value>
+            <value>
+                <fullName>Domingo</fullName>
+                <default>false</default>
+                <label>Domingo</label>
+            </value>
+            <value>
+                <fullName>Segunda-Feira</fullName>
+                <default>false</default>
+                <label>Segunda-Feira</label>
+            </value>
+            <value>
+                <fullName>Terça-Feira</fullName>
+                <default>false</default>
+                <label>Terça-Feira</label>
+            </value>
+            <value>
+                <fullName>Quarta-Feira</fullName>
+                <default>false</default>
+                <label>Quarta-Feira</label>
+            </value>
+            <value>
+                <fullName>Quinta-Feira</fullName>
+                <default>false</default>
+                <label>Quinta-Feira</label>
+            </value>
+            <value>
+                <fullName>Sexta-Feira</fullName>
+                <default>false</default>
+                <label>Sexta-Feira</label>
+            </value>
+            <value>
+                <fullName>Sabado</fullName>
+                <default>false</default>
+                <label>Sabado</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+    <visibleLines>7</visibleLines>
+</CustomField>

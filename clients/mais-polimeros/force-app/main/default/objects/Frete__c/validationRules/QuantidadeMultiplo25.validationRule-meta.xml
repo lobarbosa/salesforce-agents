@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>QuantidadeMultiplo25</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+NOT(ISBLANK(Quantidade__c)),
+MOD(Quantidade__c,25) &lt;&gt; 0
+)</errorConditionFormula>
+    <errorDisplayField>Quantidade__c</errorDisplayField>
+    <errorMessage>Quantidade inválida
+Quantidade deve ser um múltiplo de 25</errorMessage>
+</ValidationRule>

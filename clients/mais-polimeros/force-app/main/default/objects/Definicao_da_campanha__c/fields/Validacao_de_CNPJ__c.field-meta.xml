@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Validacao_de_CNPJ__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF ( Cliente__r.beeCnpj__CNPJ__c = &apos;&apos; ,  CNPJ__c  , Cliente__r.beeCnpj__CNPJ__c)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Validação de CNPJ</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

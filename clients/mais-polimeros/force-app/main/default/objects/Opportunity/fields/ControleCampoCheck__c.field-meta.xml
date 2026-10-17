@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ControleCampoCheck__c</fullName>
+    <formula>OR( 
+AND( 
+ISPICKVAL(Coleta__c,&quot;&quot;), 
+ISPICKVAL(TipoDeFrete__c,&quot;F - FOB&quot;) 
+), 
+ISPICKVAL(TipoDeFrete__c,&quot;&quot;), 
+ISBLANK( Transportadora__c )
+)</formula>
+    <label>Controle Campo Check</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

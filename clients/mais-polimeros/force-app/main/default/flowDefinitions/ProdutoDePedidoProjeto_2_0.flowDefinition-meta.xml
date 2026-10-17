@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FlowDefinition xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionNumber>4</activeVersionNumber>
+    <description>PROJETO - Fluxo responsavel por atualizar o Produto do Pedido elegível no Projeto</description>
+    <masterLabel>ProdutoDePedidoProjeto 2.0</masterLabel>
+</FlowDefinition>

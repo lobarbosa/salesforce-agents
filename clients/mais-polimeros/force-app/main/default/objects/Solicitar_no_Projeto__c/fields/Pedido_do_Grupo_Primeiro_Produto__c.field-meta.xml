@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Pedido_do_Grupo_Primeiro_Produto__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Último Pedido do Grupo Braskem</label>
+    <referenceTo>Order</referenceTo>
+    <relationshipLabel>Solicitações Projeto</relationshipLabel>
+    <relationshipName>Solicita_es_Projeto</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

@@ -1,0 +1,1890 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <template if:false={confirmaConsulta}>
+
+    <div class="slds-m-around_medium">
+      <h1 class="slds-text-heading_large slds-align_absolute-center" >Informações Adicionais</h1>
+      <h2 class="slds-text-heading_medium slds-align_absolute-center">Complemente sua consulta com as informações abaixo e obtenha uma análise com mais segurança</h2>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre Informações Positivas</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label="Serasa Score 2.0"              name="serasaScore20"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Histórico Pagamento Financeiro – Avançado" name="PagamentoFinanceiroAvancado"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Pontualidade de Pagamentos PJ"             name="PontualidadePagamentoPJ"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Faturamento Estimado com Positivo"         name="FaturamentoEstimadoPositivo"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Gasto Estimado PJ com Positivo"            name="GastoEstimadoPJPositivo"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Limite de Crédito PJ" disabled="true"                      name="LimiteCreditoPJ"></lightning-input>
+        </div>
+      </div>
+    </div>
+ 
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre o Risco de Crédito</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Serasa Score Setorial"   name="SerasaScoreSetorial" disabled="true"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Serasa Score Atacadista" name="SerasaScoreAtacadista"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small ">Sobre Sócios e Administradores</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Quadro Social e Administração Mais Completo"   name="QuadroSocialAdministracaoMaisCompleto"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Anotações e Consultas SPC Sócios"              name="AnotacoesConsultasSPCSocios"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Participações"                                 name="Participacoes"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Alerta Cadastral dos Sócios e Administradores" name="AlertaCadastralSociosEAdministradores"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Renda Pró Socios e Administradores PF"         name="RendaProSociosEAdministradoresPF"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Serasa Score – Socios PF"                      name="SerasaScoreSociosPF"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre a Capacidade de Pagamento</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Índice Relacionamento Mercado e Setor" name="IndiceRelacionamentoMercadoSetor"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Comportamento de Pagamento do Setor"   name="ComportamentoPagamentoSetor"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Consultas Detalhadas à Serasa"         name="ConsultasDetalhadasSerasa"></lightning-input>
+        </div>
+      </div>
+    </div>
+ 
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre o Cadastro e Perfil</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Situação Fiscal"             name="SituacaoFiscal"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Alerta de Identidade PJ"     name="AlertaIdentidadePJ"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Alerta Cadastral da Empresa" name="AlertaCadastralEmpresa"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Vendas com Cartão"           name="VendasCartao"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Mosaic Business"             name="MosaicBusiness"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre a Recuperação de Crédito</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Indicador de Recuperação de Crédito" name="IndicadorRecuperacaoCredito" disabled="true"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Endereços e Telefones Adicionais"    name="EnderecosTelefonesAdicionais" disabled="true"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Indicador de Recuperação de Dívidas" name="IndicadorRecuperacaoDividas"></lightning-input>
+        </div>
+      </div>
+    </div>
+     
+    <div>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+        <div class="slds-col slds-size_1-of-1 ">
+          <h2 class="slds-text-title_bold slds-m-bottom_x-small">Sobre Anotações Negativas Adicionais</h2>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Anotações e Consultas SPC"             name="AnotacoesConsultasSPC"></lightning-input> 
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Mais Anotações"                        name="MaisAnotacoes"></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 ">
+          <lightning-input type="checkbox" label=" Dívidas com Órgãos Públicos - Empresa" name="DividasOrgãosPublicosEmpresa"></lightning-input>
+        </div>
+      </div>
+    </div>
+
+    <div class="slds-align_absolute-center">
+      <lightning-button label = 'Confirmar' name = 'Confirmar' variant="brand" onclick ={handleClickConfirmar} > </lightning-button>
+    </div>
+
+  </template>
+
+  <template if:true={confirmaConsulta}>
+    <div class="slds-m-around_medium">
+      <h1 class="slds-text-heading_large slds-align_absolute-center" >Informações Serasa</h1> 
+    </div>
+    
+    <div class="slds-box slds-m-around_medium slds-p-around_medium">
+      <h2 class="slds-text-heading_medium slds-m-around_medium">Visão Geral</h2>
+      <!-- <h3 class="slds-text-body_small slds-m-left_medium slds-text-font_monospace">{consulta.informacoesPadrao['Nome Fantasia']}   </h3>
+      <h3 class="slds-text-body_small slds-m-left_medium slds-text-font_monospace">{consulta.informacoesPadrao['CNPJ']CNPJ}           </h3>
+      <h3 class="slds-text-body_small slds-m-left_medium slds-text-font_monospace">{consulta.informacoesPadrao['Razao Social']}    </h3>
+      <h3 class="slds-text-body_small slds-m-left_medium slds-text-font_monospace">{consulta.informacoesPadrao['Data e hora da consulta']} </h3> -->
+
+      <template for:each={informacoesPadrao} for:item="keyValue">
+        <tr key={keyValue.key}>
+            <th scope="col">
+                <div>{keyValue.key}</div>
+            </th>
+            <th scope="col">
+                <div>{keyValue.value}</div>
+            </th>
+        </tr>
+    </template>
+
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+
+        <template if:true={AlertaIdentidadePJ}>
+          <!--p/ receber precisa arrumar a request-->
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-p-around_small">Alerta de Identidade PJ</h2> 
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <span class="slds-form-element__label slds-text-title_bold">Mensagem</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">***</div>
+              </div>
+            </div>
+          </div>
+
+        </template>
+
+        <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-p-around_small">Serasa score 2.0</h2> 
+        <div class="slds-col slds-size_1-of-2 slds-text-heading_small slds-p-around_small slds-text-align_right">{consulta.SerasaScoreDataHr}</div>
+ 
+        
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold"> Score </span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.SerasaScore}</div>
+            </div>
+          </div>
+        </div>
+        <!--não consegui identificar na resposta a interpretação-->
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold"> Interpretação </span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold"> Probabilidade de inadimplência </span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.ProbabilidadeDeInadimplencia}</div>
+            </div>
+          </div>
+        </div>
+        <!--p/ receber precisa arrumar a request-->
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold"> Risco de crédito</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{}</div>
+            </div>
+          </div>
+        </div>
+        <!--p/ receber precisa arrumar a request-->
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold"> Prática de mercado</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{}</div>
+            </div>
+          </div>
+        </div>
+
+        <template if:true={SerasaScoreSetorial}> 
+        <!--p/ receber precisa arrumar a request-->
+          <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Serasa Score Setorial </h2>
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <span class="slds-form-element__label slds-text-title_bold">Mensagem</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">***</div>
+              </div>
+            </div>
+          </div>
+
+        </template>
+
+        <template if:true={PagamentoFinanceiroAvancado}>
+          <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Histórico de Pagamento Financeiro - Avançado</h2>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <span class="slds-form-element__label slds-text-title_bold"> Percentual Linha de Crédito Financiamento </span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{consulta.percentLinhaDeCredFinanciamento}</div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <span class="slds-form-element__label slds-text-title_bold"> Percentual Linha de Crédito Empréstimo </span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{consulta.percentLinhaDeCredEmprestimo}</div>
+              </div>
+            </div>
+          </div>
+        </template> 
+
+        <template if:true={SerasaScoreAtacadista}> 
+          <!--p/ receber precisa arrumar a request-->
+          <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Serasa Score Atacadista </h2>
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <span class="slds-form-element__label slds-text-title_bold">Mensagem</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">***</div>
+              </div>
+            </div>
+          </div>
+
+        </template>  
+
+        <template if:true={PontualidadePagamentoPJ}> 
+          <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Pontualidade de Pagamentos PJ OK</h2>
+
+          <template if:false={consulta.MensagemPontualidadePagamentosPJ}>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">Pontualidade de pagamento</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.PontualidadePagamentosPJ}%</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">Interpretação</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.PontualidadePagamentosPJMensagem}</div>
+                </div>
+              </div>
+            </div>
+
+          </template>
+
+          <template if:true={consulta.MensagemPontualidadePagamentosPJ}>
+            
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-m-around_medium">
+              <div class="slds-form-element slds-form-element_readonly"> 
+                  <div class="slds-form-element__static">{consulta.MensagemPontualidadePagamentosPJ}</div> 
+              </div>
+            </div>
+
+          </template>
+        </template>
+
+        <template if:true={LimiteCreditoPJ}>
+
+          <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-m-vertical_medium">Limite de Crédito PJ OK</h2> 
+          <div class="slds-col slds-size_1-of-2 slds-p-around_small slds-text-body_small slds-text-align_right">{consulta.LimiteCreditoPJ.DataHr}</div> 
+
+          <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <span class="slds-form-element__label slds-text-title_bold">Limite de crédito</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{consulta.LimiteCreditoPJ.Limite} {consulta.LimiteCreditoPJ.Complemento}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+              <span class="slds-form-element__label slds-text-title_bold">Mensagem</span>
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{consulta.LimiteCreditoPJ.Mensagem}</div>
+              </div>
+            </div>
+          </div>
+
+        </template>
+
+        <template if:true={GastoEstimadoPJPositivo}> 
+
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-around_medium">Gasto Estimado com positivo OK</h2> 
+          <template if:false={consulta.MensagemGastoEstimado}>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">Valor</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.GastoEstimadoValor}</div>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">Mensagem</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.GastoEstimadoMensagem}</div>
+                </div>
+              </div>
+            </div>
+
+          </template>
+
+          <template if:true={consulta.MensagemGastoEstimado}>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly">
+                  <div class="slds-form-element__static">{consulta.MensagemGastoEstimado}</div>
+              </div>
+            </div>
+            
+          </template>
+
+
+        </template>
+      </div>
+
+      <template if:true={FaturamentoEstimadoPositivo}>
+
+        <h2 class="slds-text-heading_medium slds-m-around_medium">Faturamento Estimado com Positivo OK</h2>
+        <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">
+
+          <template if:false={consulta.MensagemFaturamentoEstPositivo}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-body_small slds-text-align_right">{consulta.FaturamentoEstimadoComPositivo.Data}</div> 
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold"> Estimativa </span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.FaturamentoEstimadoComPositivo.Valor}</div>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold"> Metodologia utilizada </span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.FaturamentoEstimadoComPositivo.Mensagem}</div>
+                </div>
+              </div>
+            </div>
+            
+          </template>
+
+          <template if:true={consulta.MensagemFaturamentoEstPositivo}>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal"> 
+                  <div class="slds-form-element__static">{consulta.MensagemFaturamentoEstPositivo}</div> 
+              </div>
+            </div>
+            
+          </template>
+        </div>
+      </template>
+      
+    </div>
+
+    <div class="slds-box slds-m-around_medium slds-p-around_medium">
+      <h2 class="slds-text-heading_medium slds-m-around_medium">Dados Cadastrais da Empresa </h2>
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+        <template if:true={AlertaCadastralEmpresa}>
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Alerta Cadastral da Empresa OK</h2>
+          
+          <template if:false={consulta.MensagemGeralAlertaEmp}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertaRazaoSoc}>
+  
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Razão Social ok</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaRazaoSocial.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaRazaoSocial.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div>
+  
+              </template>
+  
+              <template if:true={consulta.MensagemAlertaRazaoSoc}>
+  
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Razão Social</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.MensagemAlertaRazaoSoc}</div>
+                  </div>
+                </div>
+  
+              </template>
+            </div>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertaRamoAtv}>
+  
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Ramo de Atividade</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaRamoAtividade.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaRamoAtividade.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div>
+                
+              </template>
+  
+              <template if:true={consulta.MensagemAlertaRamoAtv}>
+  
+                  <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                    <span class="slds-form-element__label slds-text-title_bold">Ramo de Atividade</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">{consulta.MensagemAlertaRamoAtv}</div>
+                    </div>
+                  </div>
+              
+              </template>
+            </div>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small"> 
+              <template if:false={consulta.MensagemAlertaEndereco}>
+   
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Endereço</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaEndereco.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaEndereco.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div> 
+               
+              </template>
+  
+              <template if:true={consulta.MensagemAlertaEndereco}> 
+  
+                  <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                    <span class="slds-form-element__label slds-text-title_bold">Endereço</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">{consulta.MensagemAlertaEndereco}</div>
+                    </div>
+                  </div>
+                  
+              </template>  
+            </div>  
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertaPresencaCGU}>
+   
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Presença de cadastro na CGU</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaPresencaCadastroCGU.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaPresencaCadastroCGU.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div> 
+  
+              </template>
+  
+              <template if:true={consulta.MensagemAlertaPresencaCGU}>
+   
+                  <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                    <span class="slds-form-element__label slds-text-title_bold">Presença de cadastro na CGU</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">{consulta.MensagemAlertaPresencaCGU}</div>
+                    </div>
+                  </div> 
+  
+              </template>
+            </div>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertaTipoSoc}>
+   
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Tipo Societário</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaTipoSocietario.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaTipoSocietario.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div> 
+  
+              </template>
+  
+              <template if:true={consulta.MensagemAlertaTipoSoc}>
+   
+                  <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                    <span class="slds-form-element__label slds-text-title_bold">Tipo Societário</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">{consulta.MensagemAlertaTipoSoc}</div>
+                    </div>
+                  </div> 
+  
+              </template>
+            </div>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertaInconsistCom}>
+   
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Inconsistências Comerciaisok</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaInconsistenciasComerciais.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaInconsistenciasComerciais.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div>
+  
+              </template>
+  
+              <template if:true={consulta.MensagemAlertaInconsistCom}>
+   
+                  <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                    <span class="slds-form-element__label slds-text-title_bold">Inconsistências Comerciais ok</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">{consulta.MensagemAlertaInconsistCom}</div>
+                    </div>
+                  </div> 
+            
+              </template>
+            </div>
+ 
+          </template> 
+
+          <template if:true={consulta.MensagemGeralAlertaEmp}>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly "> 
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.MensagemGeralAlertaEmp}</div>
+                </div>
+              </div> 
+            </div>
+
+          </template>
+        </template>
+ 
+        <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Dados Cadastrais OK</h2> 
+        <div class="slds-col slds-size_1-of-2 slds-m-vertical_medium slds-p-around_small slds-text-align_right">{consulta.UltimaAttDadosCadastrais}</div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold"> CNPJ </span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.CNPJ}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Situação CNPJ</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.SituacaoCNPJ}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Razão Social</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.RazaoSocial}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Nome Fantasia</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.NomeFantasia}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Endereço Completo</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.EnderecoCompleto}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Telefone</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.Telefone}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Site</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.Site}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Tipo de Sociedade</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.TipoSociedade}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Registro</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.Registro}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Registro realizado em</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.RegistroRealizadoEm}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">NIRE</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.NIRE}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Fundação</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.Fundacao}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">N° Funcionários</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.NumeroDeFuncionarios}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Opção Tributária</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.OpcaoTributaria}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Inscrição Estadual</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.InscricaoEstadual}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Ramo de atividade econômica</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.RamoAtividadeEconomica}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Código de atividade Serasa</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.CodigoAtividadeSerasa} </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Importação sobre Compras</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.ImportacaoSobreCompras}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold"> Exportação sobre Vendas </span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.ExportacaoSobreVendas}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">CNAE</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.CNAE}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+          <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+            <span class="slds-form-element__label slds-text-title_bold">Filiais</span>
+            <div class="slds-form-element__control">
+              <div class="slds-form-element__static">{consulta.NumeroDeFiliais}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+          <h2 class="slds-text-heading_medium slds-m-vertical_medium">Grafias semelhantes ao CNPJ</h2>
+          <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-3 slds-box slds-theme_default caixaContainer" >
+                  <p style="font-size:15px; ">{numeroDeGrafias}</p> 
+                  <p style="font-size:15px; ">grafias</p> 
+                  <p style="font-size:15px; ">semelhantes encontradas.</p> 
+            </div>
+            <div class="slds-col slds-size_2-of-3 slds-align_absolute-center" >
+              <ul>
+                <template for:each={consulta.Grafias} for:item="grafia">
+                  <li key={grafia}>
+                    {grafia} 
+                  </li> 
+                </template>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <template if:true={VendasCartao}>
+          
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-around_medium">Vendas Cartão </h2>
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal"> 
+                <div class="slds-form-element__static">O usuário [36117489] não está autorizado a consultar este serviço//VERIFICAR</div>
+            </div>
+          </div>
+ 
+        </template>
+
+        <template if:true={MosaicBusiness}>
+
+          <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Mosaic Business  OK</h2> 
+
+          <template if:false={consulta.MensagemMosaicPJ}>
+          <div class="slds-col slds-size_2-of-2 slds-m-vertical_medium slds-p-around_small slds-text-align_right">{consulta.MosaicPJ.DataMosaic}</div>
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">Mensagem</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.MosaicPJ.CodigoMosaic}</div>
+                </div>
+              </div>
+            </div>
+
+          </template>
+
+          <template if:true={consulta.MensagemMosaicPJ}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly"> 
+                  <div class="slds-form-element__static">{consulta.MensagemMosaicPJ}</div>
+              </div>
+            </div>
+          </template>
+        </template>
+
+        <template if:true={SituacaoFiscal}>
+
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Situação Fiscal OK</h2> 
+
+          <template if:false={consulta.MensagensReceitaFederal}>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">{consulta.SitFiscalReceitaFederal.Data}</div>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold ">CNPJ</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.SitFiscalReceitaFederal.CNPJ}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold ">SIMPLES Nacional</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.SitFiscalReceitaFederal.SIMPLESNacional}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold ">Situação Cadastral do CNPJ</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.SitFiscalReceitaFederal.SituacaoCadastral}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold"> Razão Social </span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.SitFiscalReceitaFederal.RazaoSocial}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">CNAE Primário</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.SitFiscalReceitaFederal.CNAEPrimario}</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">CNAEs Secundários</span>
+                <div class="slds-form-element__control">
+                  <ul>
+                    <template for:each={consulta.SitFiscalReceitaFederal.CNAEsSecundarios} for:item="cnae">
+                      <li key={cnae}>{cnae}</li> 
+                    </template>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+          </template>
+          <template if:true={consulta.MensagensReceitaFederal}>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly"> 
+                  <div class="slds-form-element__static">{consulta.MensagensReceitaFederal}</div>
+              </div>
+            </div>
+
+          </template>
+          <template if:false={consulta.MensagensReceitaFederal}>
+            <template if:false={consulta.MensagemSefaz}>  
+  
+              <div class="slds-col slds-size_2-of-2 slds-p-around_small">{consulta.SitFiscalSefaz.Data}</div>
+
+              <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Inscrição Estadual</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.SitFiscalSefaz.InscricaoEstadual}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Situação Cadastral do CNPJ:</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.SitFiscalSefaz.SituacaoCadastral}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Razão Social</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.SitFiscalSefaz.RazaoSocial}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Atividade Principal</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.SitFiscalSefaz.AtividadePrincipal}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">N° Consultas</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.SitFiscalSefaz.NumeroConsulta}</div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Observação</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.SitFiscalSefaz.Observacao}</div>
+                  </div>
+                </div>
+              </div>
+              
+            </template>
+          </template>
+
+          <template if:true={consulta.MensagemSefaz}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly"> 
+                  <div class="slds-form-element__static">{consulta.MensagemSefaz}</div>
+              </div>
+            </div>
+          </template>
+        </template>
+
+        <template if:true={EnderecosTelefonesAdicionais}>
+
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Endereços Adicionais OK</h2> 
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small"> 
+            <template if:false={consulta.MensagemEndereco}>
+              <lightning-datatable  key-field="Endereco"
+                                    data={consulta.EnderecosAlternativos}
+                                    columns={columnsEnderecosAltern}  
+                                    hide-checkbox-column> 
+              </lightning-datatable> 
+            </template>
+            <template if:true={consulta.MensagemEndereco}>
+              <div class="slds-form-element slds-form-element_readonly ">
+                <div class="slds-form-element__static">{consulta.MensagemEndereco}</div>
+              </div>
+            </template>
+          </div>
+
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Telefones Adicionais OK</h2> 
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default" >
+            <template if:false={consulta.MensagemTelefone}>
+              <lightning-datatable  key-field="TelefonesAlt"
+                                    data={consulta.TelefonesAlternativos}
+                                    columns={columnsTelefonesAltern}  
+                                    hide-checkbox-column> 
+              </lightning-datatable>
+            </template>
+            <template if:true={consulta.MensagemTelefone}>
+              <div class="slds-form-element slds-form-element_readonly">  
+                <div class="slds-form-element__static">{consulta.MensagemTelefone}</div> 
+              </div>
+            </template>
+          </div>
+
+        </template>
+      </div>
+    </div>
+    
+    <div class="slds-box slds-m-around_medium slds-p-around_medium">
+      <h2 class="slds-text-heading_medium slds-m-vertical_medium">Informações sobre Sócios e Administradores</h2>
+
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+          
+        <template if:true={AlertaCadastralSociosEAdministradores}>
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Alerta Cadastral dos Sócios e Administradores OK</h2> 
+          <template if:false={consulta.MensagemGeralAlertaSoc}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small"> 
+              <template if:false={consulta.MensagemAlertAltSoc}>
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Quadro Societário ok</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaAlteracaoSocios.QuantidadeOuData}</h1>
+                      <ul>
+                        <template for:each={consulta.AlertaAlteracaoSocios.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia}</li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div>
+              </template>
+              <template if:true ={consulta.MensagemAlertAltSoc}>
+                  <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                    <span class="slds-form-element__label slds-text-title_bold">Quadro Societário</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">{consulta.MensagemAlertAltSoc}</div> 
+                    </div>
+                  </div>
+              </template>
+            </div>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small"> 
+              <template if:false={consulta.MensagemAlertAltAdm}>
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Quadro Administrativo ok</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaAlteracaoAdmin.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaAlteracaoAdmin.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div>
+              </template>
+              <template if:true ={consulta.MensagemAlertAltAdm}>
+                  <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                    <span class="slds-form-element__label slds-text-title_bold">Quadro Administrativo</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">{consulta.MensagemAlertAltAdm}</div> 
+                    </div>
+                  </div>
+              </template>
+            </div>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertInconsSocPJ}>
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Inconsistências Societárias ok</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      <h1>{consulta.AlertaInconsistSocietariasPJ.QuantidadeOuData} </h1>
+                      <ul>
+                        <template for:each={consulta.AlertaInconsistSocietariasPJ.FraseAlerta} for:item="inconsistencia">
+                          <li key={inconsistencia}>{inconsistencia} </li> 
+                        </template>
+                      </ul>
+                    </div> 
+                  </div>
+                </div>
+              </template>
+              <template if:true ={consulta.MensagemAlertInconsSocPJ}>
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Inconsistências Societárias</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.MensagemAlertInconsSocPJ}</div> 
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- s/ exemplo-->
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertInconsAdmPJ}></template>
+              <template if:true ={consulta.MensagemAlertInconsAdmPJ}>
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Inconsistências Administrativas</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.MensagemAlertInconsAdmPJ}</div> 
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- s/ exemplo-->
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertObitoSocPF}></template>
+              <template if:true ={consulta.MensagemAlertObitoSocPF}>
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Alerta de Óbito dos Sócios</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.MensagemAlertObitoSocPF}</div> 
+                  </div>
+                </div>
+              </template>
+            </div>
+
+            <!-- s/ exemplo-->
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <template if:false={consulta.MensagemAlertObitoAdmPF}></template>
+              <template if:true ={consulta.MensagemAlertObitoAdmPF}>
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label slds-text-title_bold">Alerta de Óbito dos Administradores</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{consulta.MensagemAlertObitoAdmPF}</div> 
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+
+          <template if:true={consulta.MensagemGeralAlertaSoc}>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly">
+                <div class="slds-form-element__static">{consulta.MensagemGeralAlertaSoc}</div> 
+              </div>
+            </div>
+
+          </template>
+
+        </template>
+
+        <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Quadro Social</h2> 
+        <div class="slds-col slds-size_1-of-2 slds-text-heading_small slds-m-vertical_medium slds-p-around_small slds-text-align_right ">{consulta.DataAttQuadroSoc}</div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small caixaContainer" >
+          Capital Social
+          <div class="caixa">
+            {consulta.CapitalSocial}
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small caixaContainer" >
+          Realizado
+          <div class="caixa">
+            {consulta.Realizado}
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-3 slds-p-around_small caixaContainer" >
+          Origem 
+          <div class="caixa">
+            {consulta.Origem}
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small caixaContainer" >
+          Controle 
+          <div class="caixa">
+            {consulta.Controle}
+          </div>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small caixaContainer" >
+          Natureza 
+          <div class="caixa">
+            {consulta.Natureza}
+          </div>
+        </div>
+
+
+        <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Sócios</h2>
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default" >
+          <lightning-datatable  key-field="id"
+                                data={consulta.QuadroSocial}
+                                columns={columnsSocios} 
+                                column-widths-mode="auto"
+                                hide-checkbox-column> 
+                               
+          </lightning-datatable>
+        </div>
+
+        <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Administradores</h2>
+        <div class="slds-col slds-size_1-of-2 slds-text-heading_small slds-p-around_small slds-text-align_right ">{consulta.DataAttQuadroAdm}</div>
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default" >
+          <lightning-datatable  key-field="id"
+                                data={consulta.QuadroAdministrativo}
+                                columns={columnsAdms} 
+                                column-widths-mode="auto"
+                                hide-checkbox-column> 
+          </lightning-datatable>
+        </div>
+ 
+        <template if:true={QuadroSocialAdministracaoMaisCompleto}>
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Quadro Social mais completo</h2> 
+          <div class="slds-col slds-size_2-of-2 slds-box slds-theme_default slds-p-around_small" > 
+            <template for:each={consulta.QuadroSocial} for:item="socio">
+              <div class="slds-box slds-theme_default slds-m-vertical_medium" key={socio}>
+                <p class="slds-text-font_monospace ">{socio.nomeAcionistaOuSocioOuAdministrador}</p>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                  <thead>
+                    <tr class="slds-line-height_reset">
+                      <th scope="col">
+                        <div class="slds-truncate" title="CPFCNPJ">CPF/CNPJ</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="Entrada">Entrada</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="Fundacao">Fundação</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="Telefone">Telefone</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="Vinculo">Vínculo</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="CapitalVotante">Capital Votante</div>
+                      </th>
+                      <th scope="col">
+                        <div class="slds-truncate" title="CapitalTotal">Capital Total</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="slds-hint-parent">
+                      <th data-label="CPFCNPJ" scope="row">
+                        <div class="slds-truncate" title="CPFCNPJ">{socio.cnpjOuCpf}</div>
+                      </th>
+                      <td data-label="Entrada">
+                        <div class="slds-truncate" title="Entrada">{socio.dataDeEntrada}</div>
+                      </td>
+                      <td data-label="Fundacao">
+                        <div class="slds-truncate" title="Fundação">{socio.fundacao}</div>
+                      </td>
+                      <td data-label="Telefone">
+                        <div class="slds-truncate" title="Telefone">{socio.telefone}</div>
+                      </td>
+                      <td data-label="Vinculo">
+                        <div class="slds-truncate" title="Vínculo">{socio.vinculo}</div>
+                      </td>
+                      <td data-label="CapitalVotante">
+                        <div class="slds-truncate" title="Capital Votante">{socio.percentualCapitalVolante}</div>
+                      </td>
+                      <td data-label="CapitalTotal">
+                        <div class="slds-truncate" title="Capital Total">{socio.percentualDoCapital}</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                  <thead>
+                    <tr class="slds-line-height_reset">
+                      <th scope="col">
+                        <div class="slds-truncate" title="Endereco">Endereço</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th data-label="Endereco" scope="row">
+                        <div class="slds-truncate" title="Endereco">{socio.endereco}</div>
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="slds-grid slds-wrap"> 
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer" >
+                      PEFIN
+                    <div class="caixa">
+                      <p>{socio.pefin}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer">
+                      Protesto
+                    <div class="caixa">
+                      <p>{socio.protesto}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer">
+                      Cheque sustado/cancelado
+                    <div class="caixa">
+                      <p>{socio.chequeSustado}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer">
+                      Participação em falência
+                    <div class="caixa">
+                      <p>{socio.participacaoFalencia}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer">
+                      REFIN
+                    <div class="caixa">
+                      <p>{socio.refin}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer">
+                      Ação judicial
+                    <div class="caixa">
+                      <p>{socio.acaoJudicial}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer">
+                      Cheque sem fundo
+                    <div class="caixa">
+                      <p>{socio.cheque}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                  <div class="slds-col slds-size_1-of-4 slds-p-around_small caixaContainer">
+                      Dívida vencida
+                    <div class="caixa">
+                      <p>{socio.dividaVencida}</p>
+                      <p>-</p>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+            </template>
+          </div>
+        </template>
+
+        <template if:true={AnotacoesConsultasSPCSocios}>
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Anotações SPC Sócios e Administradores</h2> 
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-theme_default">
+            <template for:each={consulta.AnotacoesSociosAdmSPC} for:item="anotacao">
+              <div class="slds-col slds-size_2-of-2 slds-m-vertical_medium " key={anotacao}>
+                <div class="slds-box slds-theme_default">
+                  <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                      <tr class="slds-line-height_reset">
+                        <th scope="col">
+                          <div class="slds-truncate">CPF/CNPJ</div>
+                        </th>
+                        <th scope="col">
+                          <div class="slds-truncate">Nome</div>
+                        </th>
+                        <th scope="col">
+                          <div class="slds-truncate">Quantidade</div>
+                        </th>
+                        <th scope="col">
+                          <div class="slds-truncate">Total</div>
+                        </th>
+                        <th scope="col">
+                          <div class="slds-truncate">Ultima anotação</div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="slds-hint-parent">
+                        <th data-label="Nome" scope="row">
+                          <div class="slds-truncate">{anotacao.CpfCnpjAnotacao}</div>
+                        </th>
+                        <td data-label="Nome">
+                          <div class="slds-truncate">{anotacao.NomeRazaoSocial}</div>
+                        </td>
+                        <td data-label="Quantidade">
+                          <div class="slds-truncate">{anotacao.QuantidadeAnotacao}</div>
+                        </td>
+                        <td data-label="Total">
+                          <div class="slds-truncate">{anotacao.ValorAnotacao}</div>
+                        </td>
+                        <td data-label="Ultima anotação">
+                          <div class="slds-truncate">{anotacao.UltimaAnotacao}</div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <template if:true={anotacao.PossuiAnot}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                      <thead>
+                        <tr class="slds-line-height_reset">
+                          <th scope="col">
+                            <div class="slds-truncate">Inclusão</div>
+                          </th>
+                          <th scope="col">
+                            <div class="slds-truncate">Vencimento</div>
+                          </th>
+                          <th scope="col">
+                            <div class="slds-truncate">Contrato</div>
+                          </th>
+                          <th scope="col">
+                            <div class="slds-truncate">Tipo</div>
+                          </th>
+                          <th scope="col">
+                            <div class="slds-truncate">Valor</div>
+                          </th>
+                          <th scope="col">
+                            <div class="slds-truncate">Cidade/UF</div>
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <th data-label="Inclusão" scope="row">
+                            <div class="slds-truncate">{anotacao.DataInclusao}</div>
+                          </th>
+                          <td data-label="Vencimento">
+                            <div class="slds-truncate">{anotacao.DataVencimento}</div>
+                          </td>
+                          <td data-label="Contrato">
+                            <div class="slds-truncate">{anotacao.NumeroContrato}</div>
+                          </td>
+                          <td data-label="Tipo">
+                            <div class="slds-truncate">{anotacao.TipoOperacao}</div>
+                          </td>
+                          <td data-label="Valor">
+                            <div class="slds-truncate">{anotacao.ValorDebito}</div>
+                          </td>
+                          <td data-label="Cidade/UF">
+                            <div class="slds-truncate">{anotacao.CidadeUF}</div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <div class="slds-m-vertical_small">
+                      <p class="slds-text-font_monospace ">Associado Credor: {anotacao.NomeAssociado} </p>
+                      <p class="slds-text-font_monospace ">Origem: {anotacao.Origem}</p>  
+                    </div>
+                  </template>
+                </div>
+              </div>
+            </template> 
+          </div>
+        </template>
+
+        <!--Consultas realizadas para o CPF/CNPJ dos sócios e administradores no SPC-->
+
+        <!--Renda Pró Sócios e Administradores PF-->
+        <template if:true={RendaProSociosEAdministradoresPF}>
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Renda Estimada-Sócios e Administrador PF</h2>
+          <div class="slds-col slds-size_2-of-2 slds-box slds-theme_default">
+            <lightning-datatable  key-field="id"
+                                  data={consulta.QuadroSocial}
+                                  columns={columnsRenda} 
+                                  column-widths-mode="auto"
+                                  hide-checkbox-column> 
+            </lightning-datatable> 
+          </div>
+        </template>
+
+        <template if:true={Participacoes}>
+
+          <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Participações</h2>
+          <h2 class="slds-col slds-size_1-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small slds-text-align_right ">{consulta.DataAttParticipacoes}</h2>
+
+          <div class="slds-col slds-size_2-of-2 slds-box slds-theme_default slds-m-top_x-small" >
+            <template for:each={consulta.Participacoes} for:item="participacao">
+              <div class= "slds-grid slds-wrap slds-box slds-m-vertical_medium" key={participacao.CNPJParticipada}> 
+                <div class="slds-col slds-size_2-of-2 slds-p-around_xx-small"> 
+                  <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-3 slds-text-font_monospace slds-text-align_left slds-p-around_xx-small">CNPJ: {participacao.CNPJParticipada}</div>
+                    <div class="slds-col slds-size_1-of-3 slds-text-font_monospace slds-text-align_center slds-p-around_xx-small">Razão Social: {participacao.RazaoSocial}</div>
+                    <div class="slds-col slds-size_1-of-3 slds-text-font_monospace slds-text-align_center slds-p-around_xx-small">Cidade/UF: </div>
+                  </div>
+                </div>
+                <div class="slds-col slds-size_2-of-2">
+                  <lightning-datatable  key-field="id"
+                                        data={participacao.Participante}
+                                        columns={columnsPartic} 
+                                        column-widths-mode="auto"
+                                        hide-checkbox-column> 
+                  </lightning-datatable> 
+                </div>
+              </div> 
+            </template>
+          </div>
+        </template>
+
+        <template if:true={SerasaScoreSociosPF}>
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Serasa Score - Sócios PF </h2> 
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+            <template if:false={consulta.ScoreSociosPf}>
+              <div class="slds-form-element slds-form-element_readonly "> 
+                <div class="slds-form-element__static"> Score não calculado </div>
+              </div> 
+            </template>
+            <template if:true={consulta.ScoreSociosPf}>
+              <ul class="slds-has-dividers_bottom-space">
+                <template for:each={consulta.ScoreSociosPf} for:item="score">
+                  <li class="slds-item slds-theme_default" key={score.Nome}> 
+                    <div class="slds-grid slds-wrap">
+                      <div class="slds-col slds-size_1-of-3">
+                        <dl>
+                          <dt class="slds-text-title_bold">CPF: </dt>
+                          <dd>{score.CPF} </dd>
+                        </dl>
+                      </div>
+                      <div class="slds-col slds-size_1-of-3">
+                        <dl>
+                          <dt class="slds-text-title_bold">Nome: </dt>
+                          <dd>{score.Nome} </dd>
+                        </dl>
+                      </div>
+                      <div class="slds-col slds-size_1-of-3">
+                        <dl>
+                          <dt class="slds-text-title_bold">Score: </dt>
+                          <dd>{score.Score} </dd>
+                        </dl>
+                      </div>
+                    </div>
+                  </li> 
+                </template>
+              </ul> 
+            </template>
+          </div>
+        </template>
+       </div>
+    </div>
+    
+    <div class="slds-box slds-m-around_medium slds-p-around_medium">
+      
+      <h2 class="slds-text-heading_medium slds-m-around_medium">Informações sobre Consultas</h2>
+
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+        <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Consultas à Serasa </h2> 
+           
+        <div class="slds-col slds-size_1-of-2 slds-p-around_small"> 
+            <ul class="slds-list_horizontal">
+              <template for:each={consulta.ConsultasMapaAnual} for:item="consulta">
+
+                <li class="slds-m-around_medium" key={consulta.Data}> 
+                  <div class="slds-box" style ="border-radius: 4px; background-color:rgb(201, 199, 197);">{consulta.NumeroConsultas}</div>
+                  <div>{consulta.Data}</div>
+                </li> 
+
+              </template>
+            </ul> 
+        </div>
+
+        <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Últimas 5 realizadas </h2> 
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default"> 
+            <lightning-datatable  key-field="id"
+                                  data={consulta.UltimasCincoConsultas}
+                                  columns={columnsUltimasConsultas} 
+                                  column-widths-mode="auto"
+                                  hide-checkbox-column> 
+            </lightning-datatable> 
+        </div> 
+
+        <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Últimas consultas completo </h2> 
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default"> 
+            <lightning-datatable  key-field="id"
+                                  data={consulta.UltimasConsultasCompleto}
+                                  columns={columnsUltimasConsultas} 
+                                  column-widths-mode="auto"
+                                  hide-checkbox-column> 
+            </lightning-datatable> 
+        </div> 
+        <!-- s/ exemplo-->
+        <template if:true={IndiceRelacionamentoMercadoSetor}>
+          <h2 class="slds-col slds-size_2-of-2 slds-text-heading_medium slds-m-vertical_medium slds-p-around_small">Índice de relacionamento Mercado e Setor </h2> 
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+            <template if:false={consulta.MensagemIRM}>Dados</template>
+            <template if:true={consulta.MensagemIRM}>
+                <div class="slds-form-element slds-form-element_readonly">  
+                  <div class="slds-form-element__static">{consulta.MensagemIRM}</div> 
+                </div>
+            </template>
+          </div>
+        </template>
+      </div>
+    </div>
+    <!-- s/ exemplo-->
+    <template if:true={HistoricoPositivoComercial}>
+      <div class="slds-box slds-m-around_medium slds-p-around_medium">
+        <h2 class="slds-text-heading_medium slds-m-around_medium">Histórico Positivo Comercial</h2>
+        <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+            <div class="slds-col slds-size_1-of-2 "> </div>
+        </div>
+      </div>
+    </template>
+
+    <template if:true={ComportamentoPagamentoSetor}>
+
+      <div class="slds-box slds-m-around_medium slds-p-around_medium">
+        <h2 class="slds-text-heading_medium slds-m-around_medium">Comportamento de Pagamento do Setor</h2> 
+        <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium">      
+
+          <template if:false={consulta.MensagemComportamentoPagamentoSetor}>
+            <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+              <div class="slds-col slds-size_1-of-2 ">DADOS</div> <!-- s/ exemplo-->
+            </div>
+          </template>
+
+          <template if:true={consulta.MensagemComportamentoPagamentoSetor}>
+
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly">
+                  <div class="slds-form-element__static">{consulta.MensagemComportamentoPagamentoSetor}</div>
+              </div>
+            </div>
+
+          </template>
+
+        </div>
+      </div>
+
+    </template>
+
+    <div class="slds-box slds-m-around_medium slds-p-around_medium">
+      <h2 class="slds-text-heading_medium slds-m-around_medium">Informações sobre Anotações Negativas</h2>
+
+      <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+        <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Resumo Ocorrências mais recentes</h2>
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default">
+          <lightning-datatable  key-field="id"
+                                data={consulta.OcorrenciasRecentes}
+                                columns={columnsOcorrenciasRecentes} 
+                                column-widths-mode="auto"
+                                hide-checkbox-column> 
+          </lightning-datatable>
+        </div>
+
+        <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Dívidas em outros segmentos</h2>
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default">
+          <lightning-datatable  key-field="Data"
+                                data={consulta.DividasVencidas}
+                                columns={columnsDividasVencidas} 
+                                column-widths-mode="auto"
+                                hide-checkbox-column> 
+          </lightning-datatable>
+        </div>
+
+        <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Ações judiciais</h2>
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default">
+          <lightning-datatable  key-field="Data"
+                                data={consulta.AcoesJudiciais}
+                                columns={columnsAcoesJudiciais} 
+                                column-widths-mode="auto"
+                                hide-checkbox-column> 
+          </lightning-datatable>
+        </div>
+
+        <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Protestos</h2>
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default">
+          <lightning-datatable  key-field="Data"
+                                data={consulta.Protestos}
+                                columns={columnsProtestos} 
+                                column-widths-mode="auto"
+                                hide-checkbox-column> 
+          </lightning-datatable>
+        </div>
+
+        <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Cheques</h2>   
+        <div class="slds-col slds-size_2-of-2 slds-p-around_small"> 
+          <template if:false={consulta.MensagemCheque}></template> <!--s/ tratamento-->
+          <template if:true={consulta.MensagemCheque}>
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <div class="slds-form-element__static">{consulta.MensagemCheque}</div>
+              </div>
+          </template>
+        </div>
+
+        <template if:true={DividasOrgaosPublicosEmpresa}>
+
+          <h2 class="slds-col slds-size_2-of-2 slds-p-around_small slds-text-heading_medium slds-m-vertical_medium">Dívidas com Órgãos públicos - Empresa OK</h2>
+          <template if:false={consulta.MensagemOrgaosPublicos}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default">
+              <lightning-datatable  key-field="OrigemAnotacao"
+                                    data={consulta.OrgaosPublicosDados}
+                                    columns={columnsOrgaosPublicos} 
+                                    column-widths-mode="auto"
+                                    hide-checkbox-column> 
+              </lightning-datatable>
+              <p class="slds-col slds-size_2-of-2 slds-text-align_right">Total de ocorrências: {consulta.OrgaosPublicosTotais.TotalOcorrencias}</p>
+              <p class="slds-col slds-size_2-of-2 slds-text-align_right">Total das dívidas: R$ {consulta.OrgaosPublicosTotais.TotalAnotacoes}  </p> 
+            </div>
+          </template>
+
+          <template if:true={consulta.MensagemOrgaosPublicos}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly">
+                  <div class="slds-form-element__static">{consulta.MensagemOrgaosPublicos}</div>
+              </div>
+            </div>
+          </template>
+
+        </template>
+ 
+        <template if:true={AnotacoesConsultasSPC}>
+          <h2 class="slds-text-heading_medium slds-m-around_medium">Anotações SPC OK</h2>
+          <template if:false={consulta.MensagemAnotacoesSPC}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small slds-box slds-theme_default">
+              <lightning-datatable  key-field="DataDeInclusao"
+                                    data={consulta.AnotacoesSPC.Informacoes}
+                                    columns={columnsInfoAnotacoesSpc}  
+                                    hide-checkbox-column> 
+              </lightning-datatable>
+              <p class="slds-col slds-size_2-of-2 slds-text-align_right">Total ocorrências: {consulta.AnotacoesSPC.Ocorrencias}</p>
+              <p class="slds-col slds-size_2-of-2 slds-text-align_right">Total em reais: R$ {consulta.AnotacoesSPC.TotalDebito}</p>
+            </div>  
+          </template>
+
+          <template if:true={consulta.MensagemAnotacoesSPC}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly"> 
+                <div class="slds-form-element__static">{consulta.MensagemAnotacoesSPC}</div>
+              </div>
+            </div>
+          </template>
+        </template> 
+      </div>
+    </div>
+
+    <template if:true={IndicadorRecuperacaoDividas}>
+
+      <div class="slds-box slds-m-around_medium slds-p-around_medium">
+        
+        <h2 class="slds-text-heading_medium slds-m-around_medium">Indicador de recuperação de dívidas OK</h2>
+        <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+
+          <template if:false={consulta.MensagemIndicadorRecDivida}>
+
+            <div class="slds-col slds-size_1-of-3 slds-p-around_small caixaContainer">
+              <div class="caixa">
+                {consulta.IndicadorUmASete}
+              </div>
+              0 - 7 Dias
+            </div>
+            <div class="slds-col slds-size_1-of-3 slds-p-around_small caixaContainer">
+              <div class="caixa">
+                {consulta.IndicadorOitoATrinta}
+              </div>
+              8 - 30 Dias
+            </div>
+            <div class="slds-col slds-size_1-of-3 slds-p-around_small caixaContainer">
+              <div class="caixa">
+                {consulta.IndicadorTrintaEUmACentoEOitenta}
+              </div>
+              30 - 180 Dias
+            </div>
+
+            <template if:true={consulta.IndicadorMensagem}>
+              <div class="slds-col slds-size_3-of-3 slds-p-around_small">
+                <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                  <div class="slds-form-element__static">{consulta.IndicadorMensagem}</div>
+                </div>
+              </div>
+            </template>
+          </template>
+
+          <template if:true={consulta.MensagemIndicadorRecDivida}>
+            <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly"> 
+                <div class="slds-form-element__static">{consulta.MensagemIndicadorRecDivida}</div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+    </template>
+
+    <template if:true={IndicadorRecuperacaoCredito}>
+
+      <div class="slds-box slds-m-around_medium slds-p-around_medium">
+        
+        <h2 class="slds-text-heading_medium slds-m-around_medium">Indicador de recuperação de crédito OK</h2>
+        <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+
+        <template if:false={consulta.MensagemIndRecCredito}>
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">Classe de recuperação</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.IndicadorRecupCredito}</div>
+                </div>
+              </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+              <div class="slds-form-element slds-form-element_readonly slds-form-element_horizontal">
+                <span class="slds-form-element__label slds-text-title_bold">Mensagem</span>
+                <div class="slds-form-element__control">
+                  <div class="slds-form-element__static">{consulta.MensagemRecupCredito}</div>
+                </div>
+              </div>
+            </div>
+        </template>
+
+        <template if:true={consulta.MensagemIndRecCredito}>
+          <div class="slds-col slds-size_2-of-2 slds-p-around_small">
+            <div class="slds-form-element slds-form-element_readonly"> 
+              <div class="slds-form-element__control">
+                <div class="slds-form-element__static">{consulta.MensagemIndRecCredito}</div>
+              </div>
+            </div>
+          </div>
+        </template>
+        </div>
+      </div> 
+    </template>
+
+    <!-- s/ exemplo-->
+    <div class="slds-box slds-m-around_medium slds-p-around_medium">
+      <h2 class="slds-text-heading_medium slds-m-around_medium">Inadimplência Setorial das Empresas</h2>
+       <div class="slds-grid slds-wrap slds-m-around_medium slds-theme_shade slds-p-around_medium"> 
+          <div class="slds-col slds-size_1-of-2 "></div>
+       </div>
+    </div> 
+  </template>
+
+  <template if:true={isLoading}>
+      <div>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+      </div>
+  </template>
+</template>

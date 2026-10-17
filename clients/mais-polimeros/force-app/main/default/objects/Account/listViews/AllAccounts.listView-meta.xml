@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>AllAccounts</fullName>
+    <columns>ACCOUNT.NAME</columns>
+    <columns>ACCOUNT.PHONE1</columns>
+    <columns>ACCOUNT.CREATED_DATE</columns>
+    <columns>FarolGrupoEconomico__c</columns>
+    <columns>MunicipioEntrega__c</columns>
+    <columns>UF__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>(Gestão) Todas as Contas</label>
+    <sharedTo>
+        <roleAndSubordinatesInternal>Global</roleAndSubordinatesInternal>
+        <roleAndSubordinatesInternal>Rotatividade</roleAndSubordinatesInternal>
+    </sharedTo>
+</ListView>
