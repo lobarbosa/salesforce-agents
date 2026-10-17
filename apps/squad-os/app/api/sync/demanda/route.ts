@@ -128,6 +128,43 @@ export async function POST(request: NextRequest) {
       }
     : {};
 
+  // Estimativa (estimativa.py): só sobrescreve o que veio. Payload antigo,
+  // sem o campo, não apaga uma estimativa já gravada.
+  const est =
+    body.estimativa && typeof body.estimativa === "object"
+      ? (body.estimativa as Record<string, unknown>)
+      : null;
+  const numOuNulo = (v: unknown) => (typeof v === "number" && Number.isFinite(v) ? v : null);
+  const horas = est?.horas && typeof est.horas === "object" ? (est.horas as Record<string, unknown>) : null;
+  const custo =
+    est?.custoAgente && typeof est.custoAgente === "object"
+      ? (est.custoAgente as Record<string, unknown>)
+      : null;
+  const horasAgente =
+    est?.horasAgente && typeof est.horasAgente === "object"
+      ? (est.horasAgente as Record<string, unknown>)
+      : null;
+  const dadosDaEstimativa = est
+    ? {
+        ...(horasAgente
+          ? {
+              agenteHorasGasto: numOuNulo(horasAgente.gastoH),
+              agenteHorasRestante: numOuNulo(horasAgente.restanteH),
+            }
+          : {}),
+        estimativaHorasMin: horas ? numOuNulo(horas.min) : null,
+        estimativaHorasMax: horas ? numOuNulo(horas.max) : null,
+        estimativaHorasFonte: horas ? String(horas.fonte ?? "").slice(0, 60) : "",
+        ...(custo
+          ? {
+              custoAgenteGastoUsd: numOuNulo(custo.gastoUsd),
+              custoAgenteRestanteUsd: numOuNulo(custo.restanteUsd),
+              custoAgenteAmostras: Math.max(0, Math.trunc(Number(custo.amostras) || 0)),
+            }
+          : {}),
+      }
+    : {};
+
   const atualizada = await prisma.demanda.update({
     where: { id: demanda.id },
     data: {
@@ -139,6 +176,7 @@ export async function POST(request: NextRequest) {
       ultimoResultado: String(body.resultado ?? "").slice(0, 40),
       ultimoRunUrl: String(body.run_url ?? "").slice(0, 500),
       ...dadosDoArtefato,
+      ...dadosDaEstimativa,
     },
   });
 

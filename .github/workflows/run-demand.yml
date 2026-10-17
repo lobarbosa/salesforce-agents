@@ -1,4 +1,7 @@
 name: Rodar demanda (agentes)
+# Cliente e demanda no título do run: é o que deixa `varrer-demandas.yml` (e
+# quem olha o Actions) saber o que já está na fila sem abrir log.
+run-name: "Rodar demanda ${{ inputs.client }} ${{ inputs.demand_id }}"
 
 # Aciona o orquestrador de verdade (Claude Agent SDK + .claude/agents) para uma
 # demanda de um cliente. Diferente do smoke test e do baseline retrieve (que só
@@ -196,6 +199,45 @@ jobs:
             git checkout -b "$DEMAND_BRANCH"
           fi
 
+      # Anexos do card que alguém de delivery liberou pro agente (declarando que
+      # não têm dado pessoal — guardrail #2). Vão pra demandas/<ID>/anexos/ só
+      # no runner: a pasta está no .gitignore, então nunca viram commit, PR ou
+      # RAG. Anexo não liberado nem vem na resposta da rota. Não fatal: sem
+      # anexo a sessão roda só com o texto do card, como sempre rodou.
+      # A URL deriva de SQUAD_OS_SYNC_URL (…/api/sync/demanda → …/anexos)
+      # pra não exigir secret novo; SQUAD_OS_SYNC_ANEXOS_URL sobrepõe.
+      - name: Baixar anexos liberados para o agente
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          ANEXOS_URL: ${{ secrets.SQUAD_OS_SYNC_ANEXOS_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          URL="${ANEXOS_URL:-${SYNC_URL%/demanda}/anexos}"
+          if [ -z "$SYNC_URL$ANEXOS_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::Sync não configurado — a sessão roda sem os anexos do card."
+            exit 0
+          fi
+          DESTINO="clients/$CLIENT/demandas/$DEMAND_ID/anexos"
+          RESPOSTA=$(jq -nc --arg c "$CLIENT" --arg d "$DEMAND_ID" '{clientSlug: $c, demandaId: $d}' \
+            | curl -fsS -X POST "$URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @-) \
+            || { echo "::warning::Não consegui listar os anexos liberados — a sessão roda sem eles."; exit 0; }
+          N=$(echo "$RESPOSTA" | jq '.anexos | length')
+          if [ "$N" = "0" ]; then
+            echo "Nenhum anexo liberado para o agente nesta demanda."
+            exit 0
+          fi
+          mkdir -p "$DESTINO"
+          echo "$RESPOSTA" | jq -r '.anexos[] | [.arquivo, .url] | @tsv' \
+            | while IFS=$'\t' read -r ARQ LINK; do
+                case "$ARQ" in */*|.*) echo "::warning::nome de anexo recusado: $ARQ"; continue;; esac
+                curl -fsS -o "$DESTINO/$ARQ" "$LINK" \
+                  && echo "anexo baixado: $ARQ" \
+                  || echo "::warning::falha ao baixar o anexo $ARQ"
+              done
+
       # Aqui mora o auto-avanço: o comando lê status.yaml, roda a etapa atual,
       # avança até o próximo gate humano e escreve o motivo da parada no
       # $GITHUB_OUTPUT. Se o agente não produzir o artefato da etapa,
@@ -235,6 +277,29 @@ jobs:
             sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" --github-output
           fi
 
+      # Guardrail #2 antes do push, não depois. `ci-pii-scan.yml` roda no PR,
+      # mas PR aberto pelo bot da esteira fica em `action_required` (o GitHub
+      # pede aprovação manual pra rodar workflow nele) ou falha sem rodar job
+      # nenhum — achado real (2026-10-16): o scan nunca rodou de verdade nos PRs
+      # de SOMOSAGILITY-2/3/4/7/11/12/14, e #44/#61 foram mesclados assim. E
+      # mesmo quando roda, o dado já está no remoto: o scan do PR só impede o
+      # merge, não o push. Aqui ele roda no runner, sobre os .md que a sessão
+      # escreveu ou alterou, e falha o job antes do commit — o passo de falha
+      # abaixo descarta o não commitado, então nada com PII chega ao GitHub.
+      # Anexos (gitignored) ficam fora: `ls-files --exclude-standard` respeita
+      # o .gitignore.
+      - name: Verificar PII nos artefatos antes do push
+        run: |
+          ARQUIVOS=$(git ls-files -m -o --exclude-standard -- "clients/$CLIENT/demandas/$DEMAND_ID" | grep '\.md$' || true)
+          if [ -z "$ARQUIVOS" ]; then
+            echo "nenhum .md novo ou alterado nesta etapa."
+            exit 0
+          fi
+          if ! python3 scripts/verificar_pii.py $ARQUIVOS; then
+            echo "::error::Possível dado pessoal nos artefatos desta etapa (guardrail #2). Nada foi commitado nem enviado ao GitHub. Ajuste a demanda/anexo e rode a etapa de novo."
+            exit 1
+          fi
+
       - name: Commit e push dos artefatos gerados
         run: |
           git add "clients/$CLIENT"
@@ -246,6 +311,24 @@ jobs:
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$DEMAND_ID: ${{ steps.fluxo.outputs.etapas_rodadas || 'sessão' }} via CI ($AMBIENTE)" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
+
+      # Se o job falhou antes do commit acima, o disco do runner tem um estado
+      # que nunca foi pro git — tipicamente o gate aprovado em memória e a
+      # etapa seguinte que morreu no meio. Os passos `if: always()` abaixo
+      # (RAG, sync) leriam esse estado e o publicariam como verdade. Achado
+      # real (SOMOSAGILITY-2, 2026-10-16): crédito da API acabou logo depois
+      # da aprovação do gate de análise; o git ficou em
+      # `aguardando_gate_analise`, sem o registro em gates.md, e o quadro
+      # passou a mostrar `design` — uma etapa que não aconteceu, aprovada por
+      # um gate que não existe em lugar nenhum. O git é a fonte de verdade
+      # (guardrail #5): na falha, a pasta da demanda volta pro último commit.
+      - name: Descartar estado não commitado (falha)
+        if: failure()
+        run: |
+          git checkout HEAD -- "clients/$CLIENT/demandas/$DEMAND_ID" 2>/dev/null || true
+          git clean -fdq -- "clients/$CLIENT/demandas/$DEMAND_ID"
+          echo "Status em disco após descartar o não commitado:"
+          grep -m1 '^status:' "clients/$CLIENT/demandas/$DEMAND_ID/status.yaml" || true
 
       # Reingestão do RAG interno deste cliente (nunca o copiloto do cliente
       # em Squad OS — CLAUDE.md guardrail #2). Roda depois do commit, com o

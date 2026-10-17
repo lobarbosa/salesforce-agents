@@ -13,7 +13,7 @@ from pathlib import Path
 import anyio
 from claude_agent_sdk import ClaudeAgentOptions
 
-from . import demands, sessao
+from . import anexos, demands, sessao
 from .costs import log_usage
 from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
@@ -86,6 +86,7 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         f"demandas/{demand_id}/status.yaml. Siga o fluxo canônico descrito em CLAUDE.md "
         f"a partir do estágio atual, acionando o subagente correspondente via Task e "
         f"**esperando ele terminar**, e pare no próximo gate humano.\n\n"
+        f"{anexos.nota_para_o_prompt(client, demand_id)}"
         f"{sessao.CONTRATO_DA_SESSAO}"
     )
 

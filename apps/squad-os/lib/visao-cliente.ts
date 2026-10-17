@@ -1,6 +1,7 @@
 import type { AmbienteOrg, Client, Contrato, Entregavel } from "@/lib/generated/prisma/client";
 import type { DemandaCompleta } from "@/lib/data";
 import { GATE_DO_CLIENTE } from "@/lib/demandas";
+import { clienteVeEstimativa } from "@/lib/estimativa";
 
 // O que desce pra um Client Component vai inteiro no payload RSC — esconder
 // na tela não é esconder do navegador (basta abrir o DevTools). Para o papel
@@ -30,6 +31,17 @@ export function clienteParaCliente<T extends ClienteComRelacoes>(client: T): T {
   };
 }
 
+/** Custo de agente é só pra admin (decisão de 2026-10-17): zera pros demais papéis. */
+const SEM_CUSTO_AGENTE = {
+  custoAgenteGastoUsd: null,
+  custoAgenteRestanteUsd: null,
+  custoAgenteAmostras: 0,
+} as const;
+
+export function semCustoAgente<T extends DemandaCompleta>(d: T): T {
+  return { ...d, ...SEM_CUSTO_AGENTE };
+}
+
 /**
  * Demanda vista pelo cliente: artefato e perguntas só no gate que é dele
  * (a mesma regra de podeAprovarGate), sem histórico de esteira, sem link de
@@ -49,6 +61,19 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     historico: [],
     ultimoRunUrl: "",
     ultimoResultado: "",
+    // O cliente vê só a faixa total calibrada, e só depois da análise (é
+    // quando ele decide se segue, antes da construção). Os insumos — faixa
+    // crua do agente, horas de agente, custo — ficam em delivery.
+    estimativaCalibrada:
+      clienteVeEstimativa(d.status) && d.estimativaCalibrada
+        ? { min: d.estimativaCalibrada.min, max: d.estimativaCalibrada.max, calibracao: { fator: 1, amostras: 0, escopo: "nenhum" } }
+        : null,
+    estimativaHorasMin: null,
+    estimativaHorasMax: null,
+    estimativaHorasFonte: "",
+    agenteHorasGasto: null,
+    agenteHorasRestante: null,
+    ...SEM_CUSTO_AGENTE,
     subtarefas: [],
     checklist: [],
     tempos: primeiro

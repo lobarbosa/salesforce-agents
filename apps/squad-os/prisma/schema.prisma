@@ -316,6 +316,23 @@ model Demanda {
   artefatoConteudo String  @default("") @map("artefato_conteudo")
   artefatoTruncado Boolean @default(false) @map("artefato_truncado")
 
+  // Estimativa (2026-10-17), espelhada pelo mesmo sync (estimativa.py).
+  // Horas: esforço humano estimado pelo agente na análise, refinado no
+  // design — nulo até alguma etapa escrever a linha. Visível pra delivery,
+  // nunca pro papel cliente (visao-cliente.ts).
+  estimativaHorasMin   Float? @map("estimativa_horas_min")
+  estimativaHorasMax   Float? @map("estimativa_horas_max")
+  estimativaHorasFonte String @default("") @map("estimativa_horas_fonte")
+  // Horas de agente: tempo de sessão já rodado (telemetria) + projeção do que
+  // falta. Somam com as de consultor para o total da demanda.
+  agenteHorasGasto     Float? @map("agente_horas_gasto")
+  agenteHorasRestante  Float? @map("agente_horas_restante")
+  // Custo de agente em USD: gasto até aqui (telemetria) e projeção do que
+  // falta (mediana por etapa). **Só admin vê** — a página recorta pros demais.
+  custoAgenteGastoUsd    Float? @map("custo_agente_gasto_usd")
+  custoAgenteRestanteUsd Float? @map("custo_agente_restante_usd")
+  custoAgenteAmostras    Int    @default(0) @map("custo_agente_amostras")
+
   comentarios Comentario[]
   subtarefas  Subtarefa[]
   checklist   ChecklistItem[]
@@ -434,6 +451,13 @@ model Anexo {
 
   autor      String
   autorEmail String @map("autor_email")
+
+  // Liberação pro agente (2026-10-16): só anexo com isto preenchido é
+  // baixado pelo run-demand.yml pra sessão. Quem libera é delivery
+  // (consultor/admin), declarando que o arquivo não tem dado pessoal de
+  // cliente — guardrail #2. Nulo = só gente vê.
+  liberadoPorEmail String?   @map("liberado_por_email")
+  liberadoEm       DateTime? @map("liberado_em")
 
   criadoEm DateTime @default(now()) @map("criado_em")
 

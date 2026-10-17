@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
-import { getClientById, getDemandasByClient, demandasPorEntregavel, horasPorMes } from "@/lib/data";
+import { getClientById, getDemandasByClient, demandasPorEntregavel, horasPorMes, fatorDeCalibracao } from "@/lib/data";
+import { estimativaCalibrada } from "@/lib/estimativa";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { ClientDetail } from "@/components/ClientDetail";
 import { canAccessClient } from "@/lib/auth";
-import { clienteParaCliente, demandaParaCliente } from "@/lib/visao-cliente";
+import { clienteParaCliente, demandaParaCliente, semCustoAgente } from "@/lib/visao-cliente";
 
 export default async function ClientPage({
   params,
@@ -23,11 +24,13 @@ export default async function ClientPage({
   const client = await getClientById(id);
   if (!client) notFound();
 
-  const [demandas, horas, porEntregavel] = await Promise.all([
+  const [brutas, horas, porEntregavel, calibracao] = await Promise.all([
     getDemandasByClient(id),
     horasPorMes(id),
     demandasPorEntregavel(id),
+    fatorDeCalibracao(id),
   ]);
+  const demandas = brutas.map((d) => ({ ...d, estimativaCalibrada: estimativaCalibrada(d, calibracao) }));
 
   // Tudo o que vai como prop pro ClientDetail (Client Component) chega ao
   // navegador. Pro cliente, o recorte é feito aqui — ver lib/visao-cliente.ts.
@@ -36,7 +39,13 @@ export default async function ClientPage({
   return (
     <ClientDetail
       client={ehCliente ? clienteParaCliente(client) : client}
-      demandas={ehCliente ? demandas.map(demandaParaCliente) : demandas}
+      demandas={
+        ehCliente
+          ? demandas.map(demandaParaCliente)
+          : usuario.role === "admin"
+            ? demandas
+            : demandas.map(semCustoAgente)
+      }
       usuario={usuario}
       horas={horas}
       demandasPorEntregavel={porEntregavel}

@@ -1,0 +1,69 @@
+name: Varrer demandas com disparo perdido
+
+# Rede de segurança da fila do run-demand.yml. A fila é por cliente
+# (guardrail #6) e o GitHub guarda um único run pendente por fila — disparo
+# novo substitui o pendente, que some como `cancelled` sem rodar. Achado real
+# (2026-10-16, SOMOSAGILITY-9/-10): demanda materializada que nunca andou.
+#
+# Esta varredura acha demanda materializada nas últimas 72h, em `backlog` e
+# sem `feature/<ID>` (scripts/demandas_sem_run.py), e dispara **uma por
+# cliente**, só se aquele cliente não tiver run-demand na fila ou rodando —
+# senão ela mesma substituiria o pendente de alguém. O que sobrar entra na
+# próxima rodada.
+#
+# Não aprova gate nenhum e não recupera aprovação perdida: só dá o primeiro
+# empurrão que a materialização já pediu (a etapa de análise, que para no
+# gate humano). Aprovação perdida na fila continua precisando de quem aprovou.
+
+on:
+  schedule:
+    - cron: "17 * * * *"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: varrer-demandas
+  cancel-in-progress: false
+
+jobs:
+  varrer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pyyaml
+
+      - name: Disparar o que ficou para trás
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        run: |
+          CANDIDATAS=$(python3 scripts/demandas_sem_run.py --horas 72)
+          if [ -z "$CANDIDATAS" ]; then
+            echo "Nenhuma demanda materializada esperando o primeiro run."
+            exit 0
+          fi
+          ATIVOS=$(gh api "repos/$REPO/actions/workflows/run-demand.yml/runs?per_page=50" \
+            --jq '.workflow_runs[] | select(.status != "completed") | .display_title')
+          JA=" "
+          echo "$CANDIDATAS" | while read -r CLIENTE DEMANDA; do
+            case "$JA" in *" $CLIENTE "*) continue;; esac
+            if echo "$ATIVOS" | grep -q "^Rodar demanda $CLIENTE "; then
+              echo "$CLIENTE: já tem run na fila — $DEMANDA fica para a próxima varredura."
+              JA="$JA$CLIENTE "
+              continue
+            fi
+            echo "Disparando $CLIENTE $DEMANDA (materializada sem run)."
+            gh api -X POST "repos/$REPO/actions/workflows/run-demand.yml/dispatches" \
+              -f ref=main -f "inputs[client]=$CLIENTE" -f "inputs[demand_id]=$DEMANDA"
+            JA="$JA$CLIENTE "
+          done

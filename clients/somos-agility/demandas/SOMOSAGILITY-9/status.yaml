@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-9
+client: somos-agility
+titulo: Erro na ECT - Exceção Comercial p/ Atendimento Técnico
+tipo: sustentacao
+status: backlog
+criado_em: '2026-10-14T22:30:10.948Z'
+historico:
+  - de: null
+    em: '2026-10-14T22:30:10.948Z'
+    para: backlog
+    autor: Juliana Mendes
