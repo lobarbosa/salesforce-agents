@@ -419,7 +419,6 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
   const temConsultor = demanda.estimativaHorasMin !== null && demanda.estimativaHorasMax !== null;
   const temAgente = demanda.agenteHorasGasto !== null && demanda.agenteHorasRestante !== null;
   const temCusto = isAdmin && demanda.custoAgenteRestanteUsd !== null;
-  if (!temConsultor && !temAgente && !temCusto) return null;
 
   const fmtH = (h: number) => h.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
   const faixa = faixaH;
@@ -431,9 +430,10 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
 
   return (
     <div className="estimativa-demanda meta" aria-label="Estimativa da demanda">
+      <EstimativaConsultor demanda={demanda} />
       {temConsultor && (
         <span title={`Esforço humano estimado pelo agente na ${fonte} (${demanda.estimativaHorasFonte}).`}>
-          Consultor: {faixa(demanda.estimativaHorasMin!, demanda.estimativaHorasMax!)} h ({fonte}) · lançado{" "}
+          Sugestão do agente: {faixa(demanda.estimativaHorasMin!, demanda.estimativaHorasMax!)} h ({fonte}) · lançado{" "}
           {formatarMinutos(lancadoMin)}
         </span>
       )}
@@ -442,23 +442,25 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
           Agente: {fmtH(demanda.agenteHorasGasto!)} h feitas + ~{fmtH(demanda.agenteHorasRestante!)} h
         </span>
       )}
-      {(temConsultor || temAgente) && (
+      {(temConsultor || temAgente || demanda.estimativaConsultorHoras != null) && (
         <strong>
           Total estimado:{" "}
-          {temConsultor
+          {demanda.estimativaConsultorHoras != null
+            ? `${fmtH(demanda.estimativaConsultorHoras + agenteTotal)}`
+            : temConsultor
             ? faixa(demanda.estimativaHorasMin! + agenteTotal, demanda.estimativaHorasMax! + agenteTotal)
             : `${fmtH(agenteTotal)} (só agente — falta a estimativa do consultor)`}{" "}
           h
         </strong>
       )}
-      {cal && cal.calibracao.escopo !== "nenhum" && (
+      {cal && demanda.estimativaConsultorHoras == null && cal.calibracao.escopo !== "nenhum" && (
         <strong
           title={`Consultor × ${cal.calibracao.fator.toLocaleString("pt-BR", { maximumFractionDigits: 2 })}: mediana de lançado÷estimado em ${cal.calibracao.amostras} demandas entregues (${cal.calibracao.escopo === "cliente" ? "deste cliente" : "todos os clientes"}). É o número que o cliente vê.`}
         >
           Calibrado pelo timesheet: {faixa(cal.min, cal.max)} h
         </strong>
       )}
-      {cal && cal.calibracao.escopo === "nenhum" && (
+      {cal && demanda.estimativaConsultorHoras == null && demanda.estimativaHorasMin !== null && cal.calibracao.escopo === "nenhum" && (
         <span title="Menos de 3 demandas entregues com estimativa e horas lançadas — o cliente vê o total sem calibração.">
           Sem histórico de timesheet para calibrar ainda
         </span>
@@ -483,4 +485,72 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
 function faixaH(lo: number, hi: number): string {
   const f = (h: number) => h.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
   return Math.abs(hi - lo) < 0.05 ? f(lo) : `${f(lo)}–${f(hi)}`;
+}
+
+// O consultor lança a estimativa oficial aqui, antes de apontar qualquer hora
+// (a API recusa o apontamento sem ela). O campo vem pré-preenchido com a
+// sugestão do agente já calibrada pelo timesheet — é ponto de partida, não
+// resposta: quem vai fazer é quem assina o número.
+function EstimativaConsultor({ demanda }: { demanda: DemandaCompleta }) {
+  const router = useRouter();
+  const atual = demanda.estimativaConsultorHoras;
+  const [valor, setValor] = useState(String(atual ?? demanda.sugestaoConsultorHoras ?? ""));
+  const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
+
+  async function salvar() {
+    setSalvando(true);
+    setErro(null);
+    try {
+      const res = await fetch(`/api/demandas/${demanda.id}/estimativa`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ horas: Number(valor.replace(",", ".")) }),
+      });
+      if (!res.ok) {
+        const corpo = await res.json().catch(() => null);
+        setErro(corpo?.error ?? `não consegui salvar (HTTP ${res.status})`);
+        return;
+      }
+      router.refresh();
+    } catch {
+      setErro("sem conexão com o servidor — tente de novo");
+    } finally {
+      setSalvando(false);
+    }
+  }
+
+  return (
+    <div className="field" style={{ width: "100%" }}>
+      <label htmlFor={`estimativa-${demanda.id}`}>
+        {atual == null ? "Estimativa de horas (obrigatória antes de apontar tempo)" : "Estimativa de horas do consultor"}
+      </label>
+      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+        <input
+          id={`estimativa-${demanda.id}`}
+          inputMode="decimal"
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+          style={{ maxWidth: "7rem" }}
+          aria-describedby={`estimativa-ajuda-${demanda.id}`}
+        />
+        <span>h</span>
+        <button type="button" onClick={salvar} disabled={salvando || !valor.trim()}>
+          {atual == null ? "Lançar estimativa" : "Atualizar"}
+        </button>
+      </div>
+      <p id={`estimativa-ajuda-${demanda.id}`} className="painel-vazio">
+        {atual != null
+          ? `Lançada por ${demanda.estimativaConsultorPor || "—"}${demanda.estimativaConsultorEm ? " " + timeAgo(demanda.estimativaConsultorEm) : ""}.`
+          : demanda.sugestaoConsultorHoras != null
+            ? `Pré-preenchida com a sugestão do agente (calibrada pelo timesheet). Ajuste se precisar.`
+            : "O agente ainda não sugeriu — informe a sua estimativa."}
+      </p>
+      {erro && (
+        <p className="auth-note error" role="alert">
+          {erro}
+        </p>
+      )}
+    </div>
+  );
 }

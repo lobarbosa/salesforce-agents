@@ -23,6 +23,16 @@ export async function POST(
   if (acesso.erro) return acesso.erro;
   const { usuario } = acesso;
 
+  // Sem estimativa do consultor não se aponta hora: é ela que dá sentido ao
+  // número lançado (lançado ÷ estimado é a calibração), e é o que o cliente vê.
+  const est = await prisma.demanda.findUnique({ where: { id }, select: { estimativaConsultorHoras: true } });
+  if (est?.estimativaConsultorHoras == null) {
+    return NextResponse.json(
+      { error: "lance a estimativa de horas no card antes de apontar tempo nesta demanda", semEstimativa: true },
+      { status: 409 }
+    );
+  }
+
   const body = await request.json();
   const descricao = String(body.descricao ?? "").trim().slice(0, DESCRICAO_MAX);
   const autor = usuario.nome.trim() || usuario.email;

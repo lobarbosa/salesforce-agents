@@ -302,6 +302,12 @@ Cada card mostra horas de consultor, horas de agente, o total das duas, e custo 
   amostras, senão o geral, senão 1; preso entre 0,5 e 3. O **cliente vê só a faixa total
   calibrada** (consultor calibrado + agente), e só a partir do gate da análise — é quando
   ele decide se segue, antes da construção. Delivery vê bruta e calibrada lado a lado.
+- **Estimativa oficial do consultor** — lançada no card (`PATCH /api/demandas/<id>/estimativa`,
+  só delivery), **pré-preenchida com a sugestão do agente já calibrada** (ponto médio,
+  meia hora). Sem ela o apontamento de horas é recusado — card, cronômetro e grade de
+  Minhas horas (reduzir/zerar continua livre). Quando existe, é o número oficial: o
+  cliente vê ela + horas de agente, sem recalibrar. A calibração continua medindo a
+  sugestão do agente contra o lançado — é a sugestão que ela corrige.
 - **Custo de agente (USD)** — conta, não opinião: o gasto da demanda pela telemetria
   acima, mais a mediana por etapa do que ainda falta (valor de partida declarado enquanto
   não há 3 amostras). **Só admin vê**: a página recorta para os demais papéis

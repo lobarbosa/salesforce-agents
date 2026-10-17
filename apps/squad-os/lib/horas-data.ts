@@ -138,7 +138,7 @@ export async function gravarCelula(p: {
   minutos: number;
   autor: string;
   autorEmail: string;
-}): Promise<{ total: number } | { conflito: number }> {
+}): Promise<{ total: number } | { conflito: number } | { semEstimativa: true }> {
   const inicio = new Date(`${p.dia}T00:00:00${FUSO}`);
   const fim = new Date(inicio.getTime() + 24 * 60 * 60_000);
 
@@ -160,6 +160,16 @@ export async function gravarCelula(p: {
     const fora = doDia.filter((r) => r.origem !== "grade").reduce((s, r) => s + (r.minutos ?? 0), 0);
     const parcela = parcelaDaGrade(p.minutos, fora);
     if (parcela < 0) return { conflito: fora };
+    // Mesma trava do card: aumentar o apontamento exige a estimativa do
+    // consultor. Reduzir ou zerar continua livre — corrigir não pode travar.
+    const anterior = daGrade.reduce((s, r) => s + (r.minutos ?? 0), 0);
+    if (parcela > anterior) {
+      const est = await tx.demanda.findUnique({
+        where: { id: p.demandaId },
+        select: { estimativaConsultorHoras: true },
+      });
+      if (est?.estimativaConsultorHoras == null) return { semEstimativa: true as const };
+    }
 
     // Mais de uma linha de grade no mesmo dia só acontece por corrida entre
     // duas abas; consolida numa só.

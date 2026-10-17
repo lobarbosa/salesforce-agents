@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getClientById, getDemandasByClient, demandasPorEntregavel, horasPorMes, fatorDeCalibracao } from "@/lib/data";
-import { estimativaCalibrada } from "@/lib/estimativa";
+import { estimativaCalibrada, sugestaoParaConsultor } from "@/lib/estimativa";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { ClientDetail } from "@/components/ClientDetail";
 import { canAccessClient } from "@/lib/auth";
@@ -30,7 +30,11 @@ export default async function ClientPage({
     demandasPorEntregavel(id),
     fatorDeCalibracao(id),
   ]);
-  const demandas = brutas.map((d) => ({ ...d, estimativaCalibrada: estimativaCalibrada(d, calibracao) }));
+  const demandas = brutas.map((d) => ({
+    ...d,
+    estimativaCalibrada: estimativaCalibrada(d, calibracao),
+    sugestaoConsultorHoras: sugestaoParaConsultor(d, calibracao),
+  }));
 
   // Tudo o que vai como prop pro ClientDetail (Client Component) chega ao
   // navegador. Pro cliente, o recorte é feito aqui — ver lib/visao-cliente.ts.

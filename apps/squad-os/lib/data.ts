@@ -66,6 +66,8 @@ export function getAllDemandas() {
 export type DemandaCompleta = Awaited<ReturnType<typeof getDemandasByClient>>[number] & {
   /** Calculada na página (consultor calibrado pelo timesheet + agente). */
   estimativaCalibrada?: EstimativaCalibrada | null;
+  /** Pré-preenchimento do campo do consultor (sugestão do agente calibrada). */
+  sugestaoConsultorHoras?: number | null;
 };
 
 /**
@@ -76,6 +78,9 @@ export type DemandaCompleta = Awaited<ReturnType<typeof getDemandasByClient>>[nu
  * chega à tela (guardrail #7).
  */
 export async function fatorDeCalibracao(clientId: string): Promise<Calibracao> {
+  // Mede o que o agente SUGERIU contra o que se lançou: é a sugestão que a
+  // calibração corrige. A estimativa do consultor fica fora da régua — ela já
+  // é a correção humana, e calibrar com ela o fator se anularia.
   const entregues = await prisma.demanda.findMany({
     where: { status: "entregue", estimativaHorasMin: { not: null }, estimativaHorasMax: { not: null } },
     select: {
