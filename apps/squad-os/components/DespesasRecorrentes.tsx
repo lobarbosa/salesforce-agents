@@ -201,7 +201,7 @@ function EditarModelo({
 }) {
   const [erro, setErro] = useState("");
   const [agindo, setAgindo] = useState(false);
-  const [confirmando, setConfirmando] = useState<"pausar" | "encerrar" | null>(null);
+  const [confirmando, setConfirmando] = useState<"pausar" | "retomar" | "encerrar" | null>(null);
   const [fimEncerrar, setFimEncerrar] = useState(hoje.slice(0, 7));
   const url = `/api/financeiro/recorrentes/${m.id}`;
 
@@ -254,7 +254,7 @@ function EditarModelo({
                 type="button"
                 className="btn-ghost"
                 disabled={agindo}
-                onClick={() => (m.ativa ? setConfirmando("pausar") : patch({ ativa: true }))}
+                onClick={() => setConfirmando(m.ativa ? "pausar" : "retomar")}
               >
                 {m.ativa ? "Pausar" : "Retomar"}
               </button>
@@ -280,7 +280,23 @@ function EditarModelo({
                 Voltar
               </button>
               <button type="button" className="btn-primary" disabled={agindo} onClick={() => patch({ ativa: false })}>
-                Confirmar: pausar
+                {agindo ? "Salvando…" : "Confirmar: pausar"}
+              </button>
+            </div>
+          </div>
+        )}
+        {/* Retomar gera as contas dos meses pausados: pede confirmação como o pausar. */}
+        {confirmando === "retomar" && (
+          <div className="confirmar" role="group" aria-label="Confirmar retomada">
+            <p>
+              Retomar <strong>{m.fornecedor}</strong>? As contas dos meses em que esteve pausada também são geradas.
+            </p>
+            <div className="form-acoes">
+              <button type="button" className="btn-ghost" onClick={() => setConfirmando(null)}>
+                Voltar
+              </button>
+              <button type="button" className="btn-primary" disabled={agindo} onClick={() => patch({ ativa: true })}>
+                {agindo ? "Salvando…" : "Confirmar: retomar"}
               </button>
             </div>
           </div>
@@ -301,7 +317,7 @@ function EditarModelo({
                 disabled={agindo || !fimEncerrar}
                 onClick={() => patch({ fim: fimEncerrar })}
               >
-                Confirmar: encerrar após {fimEncerrar ? rotuloCompetencia(fimEncerrar) : "…"}
+                {agindo ? "Salvando…" : `Confirmar: encerrar após ${fimEncerrar ? rotuloCompetencia(fimEncerrar) : "…"}`}
               </button>
             </div>
           </div>

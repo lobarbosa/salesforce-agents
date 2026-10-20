@@ -36,6 +36,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="shell">
+      {/* Primeiro item focável: pula a sidebar (itens + todos os clientes) a cada página. */}
+      <a href="#conteudo" className="skip-link">
+        Pular para o conteúdo
+      </a>
       {/* Só id/nome/saúde de cada cliente: o objeto inteiro (ambientes,
           briefing, assessment) ia no payload RSC pra qualquer papel. */}
       <Sidebar
@@ -44,7 +48,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         encerrados={encerrados.map((c) => ({ id: c.id, nome: c.nome }))}
         usuario={usuario}
       />
-      <main>{children}</main>
+      <main id="conteudo" tabIndex={-1}>
+        {children}
+      </main>
       {/* Montada uma vez pra todo papel; em páginas de cliente ela se anula
           sozinha (ver Copiloto.tsx) porque ClientDetail.tsx já monta a
           própria instância, com o clientId e o nome do cliente à mão. */}

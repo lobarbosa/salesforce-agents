@@ -41,11 +41,12 @@ export function DemandModal({
   const [respostas, setRespostas] = useState(
     perguntasIniciais.map((p) => ({ ...p, resposta: p.resposta ?? "" }))
   );
-  const [notes, setNotes] = useState<Record<string, "" | "salvo">>({});
+  const [notes, setNotes] = useState<Record<string, string>>({});
   const [aprovador, setAprovador] = useState("");
   const [observacao, setObservacao] = useState("");
   const [aprovando, setAprovando] = useState(false);
   const [aprovarMsg, setAprovarMsg] = useState("");
+  const [aprovarErro, setAprovarErro] = useState("");
   const [materializando, setMaterializando] = useState(demanda.materializadoEm != null);
   const [materializeErro, setMaterializeErro] = useState("");
   const [confirmandoGate, setConfirmandoGate] = useState(false);
@@ -71,6 +72,8 @@ export function DemandModal({
   // responder mesmo fora de gate (adiantar resposta enquanto o agente roda).
   const mostrarPerguntas = respostas.length > 0 && (!visaoCliente || podeAprovarEsteGate);
 
+  const [confirmarMaterializar, setConfirmarMaterializar] = useState(false);
+
   async function salvarResposta(id: string, valor: string) {
     const atualizadas = respostas.map((p) => (p.id === id ? { ...p, resposta: valor } : p));
     setRespostas(atualizadas);
@@ -78,10 +81,13 @@ export function DemandModal({
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ perguntas: atualizadas }),
-    });
-    setNotes((n) => ({ ...n, [id]: res.ok ? "salvo" : "" }));
-    if (res.ok) setTimeout(() => setNotes((n) => ({ ...n, [id]: "" })), 1400);
-    router.refresh();
+    }).catch(() => null);
+    // Falha precisa aparecer: antes virava "" e a pessoa achava que a resposta ficou salva.
+    setNotes((n) => ({ ...n, [id]: res?.ok ? "salvo" : "erro ao salvar — tente de novo" }));
+    if (res?.ok) {
+      setTimeout(() => setNotes((n) => ({ ...n, [id]: "" })), 1400);
+      router.refresh();
+    }
   }
 
   async function aprovarEAvancar() {
@@ -90,8 +96,13 @@ export function DemandModal({
       setTimeout(() => setAprovarMsg(""), 2000);
       return;
     }
-    if (!aprovador.trim() || emVoo.current) return;
+    if (emVoo.current) return;
+    if (!aprovador.trim()) {
+      setAprovarErro("Informe seu nome para registrar a aprovação.");
+      return;
+    }
     emVoo.current = true;
+    setAprovarErro("");
     setAprovando(true);
     const res = await fetch(`/api/demandas/${demanda.id}`, {
       method: "PATCH",
@@ -111,6 +122,8 @@ export function DemandModal({
     if (res?.ok) {
       router.refresh();
       onClose();
+    } else {
+      setAprovarErro("Não consegui registrar a aprovação — tente de novo.");
     }
   }
 
@@ -326,10 +339,11 @@ export function DemandModal({
         <div className="pergunta-list">
           {respostas.map((p, i) => (
             <div className="pergunta-item" key={p.id}>
-              <div className="texto">
+              <div className="texto" id={`pergunta-${p.id}`}>
                 {i + 1}. {p.texto}
               </div>
               <textarea
+                aria-labelledby={`pergunta-${p.id}`}
                 defaultValue={p.resposta}
                 placeholder="sua resposta... (salva sozinho ao sair do campo)"
                 onBlur={(e) => salvarResposta(p.id, e.target.value)}
@@ -368,15 +382,27 @@ export function DemandModal({
 
       {canManage && demanda.status === "backlog" && (
         <div className="approval-banner pendente">
-          {materializeErro && <div style={{ marginBottom: "0.4rem" }}>{materializeErro}</div>}
+          {materializeErro && <div role="alert" style={{ marginBottom: "0.4rem" }}>{materializeErro}</div>}
           {demanda.materializadoEm
             ? "Já materializada — os agentes assumem a partir daqui (acompanhe via sfagents / GitHub Actions)."
             : "Pronta pra virar execução? Isso commita demanda.md + status.yaml em clients/<cliente>/demandas/ e dispara os agentes no CI."}
           {!demanda.materializadoEm && (
             <div style={{ marginTop: "0.5rem" }}>
-              <button className="btn-secondary" type="button" onClick={materializar} disabled={materializando}>
-                {materializando ? "Materializando..." : "Materializar e disparar agentes"}
-              </button>
+              {/* Commita no repositório e dispara o CI: dois passos, como a aprovação do gate. */}
+              {confirmarMaterializar ? (
+                <span className="confirmar-inline" role="group" aria-label="Confirmar materialização">
+                  <button type="button" className="btn-ghost" autoFocus onClick={() => setConfirmarMaterializar(false)} disabled={materializando}>
+                    Ainda não
+                  </button>
+                  <button className="btn-secondary" type="button" onClick={materializar} disabled={materializando}>
+                    {materializando ? "Materializando..." : "Confirmar: materializar e disparar"}
+                  </button>
+                </span>
+              ) : (
+                <button className="btn-secondary" type="button" onClick={() => setConfirmarMaterializar(true)}>
+                  Materializar e disparar agentes
+                </button>
+              )}
             </div>
           )}
         </div>
@@ -396,6 +422,11 @@ export function DemandModal({
         }}
       />
 
+      {aprovarErro && (
+        <p className="auth-note error" role="alert">
+          {aprovarErro}
+        </p>
+      )}
       <div className="modal-actions">
         <button className="btn-ghost" type="button" onClick={onClose}>
           Fechar

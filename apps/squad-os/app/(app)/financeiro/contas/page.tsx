@@ -14,6 +14,11 @@ import { ROTULO_NATUREZA } from "@/lib/recorrencias";
 
 const FILTROS = {
   abertas: { rotulo: "Em aberto", vale: (c: ContaVista) => c.status === "aguardando_aprovacao" || c.status === "aprovada" },
+  // O cartão "Vencidas e não pagas" e a pendência do Painel abriam "Em aberto" (todas as abertas).
+  vencidas: {
+    rotulo: "Vencidas",
+    vale: (c: ContaVista, hoje: string) => (c.status === "aguardando_aprovacao" || c.status === "aprovada") && c.vencimento < hoje,
+  },
   aguardando: { rotulo: "Aguardando aprovação", vale: (c: ContaVista) => c.status === "aguardando_aprovacao" },
   a_pagar: { rotulo: "Aprovadas, a pagar", vale: (c: ContaVista) => c.status === "aprovada" },
   pagas: { rotulo: "Pagas", vale: (c: ContaVista) => c.status === "paga" },
@@ -71,7 +76,7 @@ export default async function ContasPage({
   const categorias = [...new Set(todas.map((c) => c.categoria).filter(Boolean))].sort();
   const lista = todas.filter(
     (c) =>
-      FILTROS[filtro].vale(c) &&
+      FILTROS[filtro].vale(c, hoje) &&
       TIPOS[tipo].vale(c) &&
       NATUREZAS_FILTRO[natureza].vale(c) &&
       (!recorrencia || tipo !== "recorrentes" || c.recorrenciaId === recorrencia)
@@ -104,7 +109,7 @@ export default async function ContasPage({
       <div className="kpis">
         {kpi("/financeiro/contas?ver=aguardando", "Aguardando aprovação", aguardando)}
         {kpi("/financeiro/contas?ver=a_pagar", "Aprovadas, a pagar", aPagar)}
-        {kpi("/financeiro/contas?ver=abertas", "Vencidas e não pagas", vencidas, true)}
+        {kpi("/financeiro/contas?ver=vencidas", "Vencidas e não pagas", vencidas, true)}
         {kpi("/financeiro/contas?ver=pagas", `Pagas em ${mes.slice(5)}/${mes.slice(0, 4)}`, pagasMes)}
       </div>
 

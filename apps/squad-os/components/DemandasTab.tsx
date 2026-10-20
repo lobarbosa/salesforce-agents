@@ -55,10 +55,12 @@ export function DemandasTab({
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
-    });
+    }).catch(() => null);
     // 409 = a demanda saiu da triagem por baixo (o pipeline moveu): o
     // refresh mostra onde ela está de verdade.
-    if (!res.ok) {
+    if (!res) {
+      window.alert("sem conexão com o servidor — a demanda não foi movida");
+    } else if (!res.ok) {
       const corpo = await res.json().catch(() => ({}));
       window.alert(corpo.error || "não consegui mover a demanda");
     }

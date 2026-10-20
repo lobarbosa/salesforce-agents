@@ -20,20 +20,50 @@ export function Modal({
   const titleId = useId();
   const dialogRef = useRef<HTMLDivElement>(null);
 
+  // `onClose` costuma ser uma função nova a cada render do pai; com ela na lista
+  // de dependências o efeito rodava a cada tecla digitada num campo do modal e
+  // devolvia o foco ao diálogo (achado da revisão UI/UX: no Encerrar cliente só
+  // dava para digitar um caractere). A ref guarda a mais recente; o efeito roda
+  // uma vez: foca ao abrir, prende o Tab dentro do diálogo e devolve o foco a
+  // quem abriu ao fechar.
+  const onCloseRef = useRef(onClose);
   useEffect(() => {
+    onCloseRef.current = onClose;
+  });
+
+  useEffect(() => {
+    const anterior = document.activeElement as HTMLElement | null;
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onCloseRef.current();
+      if (e.key !== "Tab" || !dialogRef.current) return;
+      const focaveis = dialogRef.current.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      );
+      if (focaveis.length === 0) return;
+      const primeiro = focaveis[0];
+      const ultimo = focaveis[focaveis.length - 1];
+      if (e.shiftKey && (document.activeElement === primeiro || document.activeElement === dialogRef.current)) {
+        e.preventDefault();
+        ultimo.focus();
+      } else if (!e.shiftKey && document.activeElement === ultimo) {
+        e.preventDefault();
+        primeiro.focus();
+      }
     }
     document.addEventListener("keydown", onKey);
-    dialogRef.current?.focus();
-    return () => document.removeEventListener("keydown", onKey);
-  }, [onClose]);
+    // Campo com autoFocus dentro do modal já recebeu o foco: não roubar.
+    if (!dialogRef.current?.contains(document.activeElement)) dialogRef.current?.focus();
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      if (anterior?.isConnected) anterior.focus();
+    };
+  }, []);
 
   return (
     <div
       className="modal-backdrop"
       onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) onCloseRef.current();
       }}
     >
       <div

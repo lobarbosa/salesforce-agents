@@ -1,5 +1,6 @@
 "use client";
 
+import { BotaoRemover } from "@/components/BotaoRemover";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Contrato, Entregavel, TipoContrato } from "@/lib/generated/prisma/client";
@@ -74,6 +75,8 @@ export function ContratoTab({
 
   function salvarCampo(campo: string, valor: unknown) {
     if (!contrato) return;
+    // Sair do campo sem mudar nada não deve gerar um PUT (achado da revisão UI/UX).
+    if ((contrato as unknown as Record<string, unknown>)[campo] === valor) return;
     chamar(
       `/api/clients/${clientId}/contrato`,
       json("PUT", {
@@ -109,7 +112,14 @@ export function ContratoTab({
     setGerando(true);
     setGerouMsg("");
     setErro("");
-    const res = await fetch(`/api/clients/${clientId}/contrato/plano`, { method: "POST" });
+    let res: Response;
+    try {
+      res = await fetch(`/api/clients/${clientId}/contrato/plano`, { method: "POST" });
+    } catch {
+      setGerando(false);
+      setErro("sem conexão com o servidor — tente de novo");
+      return;
+    }
     setGerando(false);
     if (!res.ok) {
       const b = await res.json().catch(() => ({}));
@@ -188,7 +198,11 @@ export function ContratoTab({
                     max={10000}
                     inputMode="numeric"
                     defaultValue={contrato.horasContratadas}
-                    onBlur={(e) => salvarCampo("horasContratadas", Number(e.target.value))}
+                    onBlur={(e) => {
+                      // Campo apagado não vira "0 horas contratadas" em silêncio.
+                      if (e.target.value.trim() === "") return;
+                      salvarCampo("horasContratadas", Number(e.target.value));
+                    }}
                   />
                 </div>
                 <div className="field">
@@ -427,17 +441,12 @@ export function ContratoTab({
                         {d.total > 0 && ` · ${d.entregues}/${d.total} demandas`}
                       </span>
                       {canManage && (
-                        <button
-                          type="button"
-                          className="btn-remover"
+                        <BotaoRemover
+                          nome={`entregável ${e.titulo}`}
+                          aviso="O planejador deixa de considerá-lo."
                           disabled={salvando}
-                          aria-label={`Remover entregável ${e.titulo}`}
-                          onClick={() =>
-                            chamar(`/api/clients/${clientId}/contrato/entregaveis/${e.id}`, { method: "DELETE" })
-                          }
-                        >
-                          remover
-                        </button>
+                          onRemover={() => chamar(`/api/clients/${clientId}/contrato/entregaveis/${e.id}`, { method: "DELETE" })}
+                        />
                       )}
                     </li>
                   );
@@ -447,11 +456,6 @@ export function ContratoTab({
 
             {canManage && (
               <>
-                {erro && (
-                  <div className="auth-note error" role="alert" style={{ marginBottom: "0.6rem" }}>
-                    {erro}
-                  </div>
-                )}
                 <div className="linha-nova">
                   <label className="sr-only" htmlFor="novo-entregavel">Novo entregável</label>
                   <input
@@ -459,7 +463,7 @@ export function ContratoTab({
                     type="text"
                     value={novoEntregavel}
                     onChange={(ev) => setNovoEntregavel(ev.target.value)}
-                    onKeyDown={(ev) => ev.key === "Enter" && criarEntregavel()}
+                    onKeyDown={(ev) => ev.key === "Enter" && !salvando && criarEntregavel()}
                     placeholder="o que foi vendido"
                   />
                   <button type="button" className="btn-secondary" onClick={criarEntregavel}

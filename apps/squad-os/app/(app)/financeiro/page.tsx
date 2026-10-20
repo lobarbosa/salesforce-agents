@@ -62,7 +62,7 @@ export default async function PainelFinanceiroPage() {
   if (decidir.length)
     pendencias.push({ href: "/financeiro/aprovacoes", titulo: `${decidir.length} conta${decidir.length > 1 ? "s" : ""} para você aprovar`, detalhe: soma(decidir), tag: "aprovação" });
   if (vencidas.length)
-    pendencias.push({ href: "/financeiro/contas?ver=abertas", titulo: `${vencidas.length} conta${vencidas.length > 1 ? "s vencidas" : " vencida"} sem pagamento`, detalhe: soma(vencidas), tag: "vencida" });
+    pendencias.push({ href: "/financeiro/contas?ver=vencidas", titulo: `${vencidas.length} conta${vencidas.length > 1 ? "s vencidas" : " vencida"} sem pagamento`, detalhe: soma(vencidas), tag: "vencida" });
   if (pagarLogo.length)
     pendencias.push({ href: "/financeiro/contas?ver=a_pagar", titulo: `${pagarLogo.length} conta${pagarLogo.length > 1 ? "s aprovadas vencem" : " aprovada vence"} em até 3 dias`, detalhe: soma(pagarLogo), tag: "pagar" });
   for (const d of divergencias ?? [])

@@ -232,7 +232,7 @@ export function DocumentosContabeis({ competencia, documentos }: { competencia: 
                     {removendo === d.id ? (
                       <span className="confirmar-inline" role="group" aria-label={`Confirmar remoção de ${d.nome}`}>
                         <span className="sub">A conciliação deixa de usar este arquivo.</span>
-                        <button type="button" className="btn-ghost" onClick={() => setRemovendo(null)}>
+                        <button type="button" className="btn-ghost" autoFocus onClick={() => setRemovendo(null)}>
                           Manter
                         </button>
                         <button type="button" className="btn-perigo" onClick={() => remover(d.id)}>

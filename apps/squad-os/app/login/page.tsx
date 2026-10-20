@@ -123,10 +123,10 @@ function LoginForm() {
   const pedeSenha = modo === "senha";
 
   return (
-    <div className="auth-shell">
+    <main className="auth-shell">
       <div className="auth-card">
         <div>
-          <div className="name">Squad OS</div>
+          <h1 className="name">Squad OS</h1>
           <div className="sub">gestão de demandas Salesforce</div>
         </div>
 
@@ -136,11 +136,10 @@ function LoginForm() {
           </div>
         )}
 
-        <div className="auth-switch" role="tablist">
+        <div className="auth-switch" role="group" aria-label="Forma de entrar">
           <button
             type="button"
-            role="tab"
-            aria-selected={modo === "link"}
+            aria-pressed={modo === "link"}
             className={modo === "link" ? "active" : ""}
             onClick={() => trocarModo("link")}
           >
@@ -148,8 +147,7 @@ function LoginForm() {
           </button>
           <button
             type="button"
-            role="tab"
-            aria-selected={modo === "senha"}
+            aria-pressed={modo === "senha"}
             className={modo === "senha" ? "active" : ""}
             onClick={() => trocarModo("senha")}
           >
@@ -220,6 +218,6 @@ function LoginForm() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

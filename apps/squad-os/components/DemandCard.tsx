@@ -174,12 +174,16 @@ export function DemandCard({
   onOpen: () => void;
   onMove?: (status: string) => void;
 }) {
+  // O aria-label vira o nome inteiro do card; sem a descrição, o leitor de
+  // tela não ouvia o estado (gate, perguntas pendentes) que o card mostra.
+  const metaId = `card-meta-${demanda.id}`;
   return (
     <div
       className="card"
       tabIndex={0}
       role="button"
       aria-label={`Abrir demanda ${demanda.titulo}`}
+      aria-describedby={metaId}
       onClick={onOpen}
       onKeyDown={(e) => {
         if (e.target !== e.currentTarget) return;
@@ -190,7 +194,7 @@ export function DemandCard({
       }}
     >
       <div className="titulo">{demanda.titulo}</div>
-      <div className="meta">
+      <div className="meta" id={metaId}>
         <span className={`badge ${demanda.tipo === "projeto" ? "projeto" : "sustentacao"}`}>
           {demanda.tipo === "projeto" ? "projeto" : "sustentação"}
         </span>
@@ -210,6 +214,7 @@ export function DemandCard({
         <>
           <select
             className="move"
+            aria-label={`Mover "${demanda.titulo}" na triagem`}
             value={demanda.status}
             onClick={(e) => e.stopPropagation()}
             onPointerDown={(e) => e.stopPropagation()}

@@ -49,6 +49,10 @@ export function ExecucoesChart({ dados }: { dados: DiaExecucoes[] }) {
         </title>
 
         <line x1={L} y1={T + plotH} x2={L + plotW} y2={T + plotH} className="eixo" />
+        {/* Escala mínima: sem ela dava para ver a tendência, mas não se a barra era 3 ou 300. */}
+        <line x1={L} y1={T} x2={L + plotW} y2={T} className="limite" opacity="0.35" />
+        <text x={L - 4} y={T + 4} className="rot-y">{max}</text>
+        <text x={L - 4} y={T + plotH + 4} className="rot-y">0</text>
 
         {dados.map((d, i) => {
           const x = L + i * passo + (passo - barraW) / 2;

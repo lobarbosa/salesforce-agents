@@ -29,9 +29,19 @@ export function SaveField({
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const fieldId = useId();
 
+  // Compara com o último valor SALVO, não com o da primeira renderização: sem
+  // isso, editar A→B (salvo) e voltar B→A não salvava nada e o servidor ficava com B.
+  const salvo = useRef(initialValue);
+
   async function handleBlur() {
-    if (value === initialValue) return;
-    const ok = await onSave(value);
+    if (value === salvo.current) return;
+    let ok = false;
+    try {
+      ok = await onSave(value);
+    } catch {
+      ok = false; // erro de rede também aparece como "erro ao salvar"
+    }
+    if (ok) salvo.current = value;
     setNote(ok ? "salvo" : "erro ao salvar");
     if (timer.current) clearTimeout(timer.current);
     if (ok) timer.current = setTimeout(() => setNote(""), 1600);

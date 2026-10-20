@@ -175,7 +175,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 }
 .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
 
-.save-note { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
+.save-note { font-size: 0.75rem; color: var(--text-muted); font-family: var(--mono); }
 .save-note.saved { color: var(--success); }
 .save-note.error { color: var(--danger); }
 
@@ -184,7 +184,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 @media (max-width: 760px) { .brief-grid { grid-template-columns: 1fr; } }
 .brief-field { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.9rem 1rem; display: flex; flex-direction: column; gap: 0.4rem; }
 .brief-field.full { grid-column: 1 / -1; }
-.brief-field label { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+.brief-field label { font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
 .brief-field textarea, .brief-field input {
   border: none; background: none; resize: vertical; font-size: 0.87rem; padding: 0;
   min-height: 2.4rem; font-family: var(--sans); line-height: 1.5; width: 100%;
@@ -262,8 +262,8 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
   .column { transition: background-color 0.12s ease, border-color 0.12s ease; }
 }
 .card .titulo { font-weight: 600; }
-.meta { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; font-size: 0.68rem; color: var(--text-muted); font-family: var(--mono); }
-.badge { padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.65rem; }
+.meta { display: flex; gap: 0.35rem; align-items: center; flex-wrap: wrap; font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); }
+.badge { padding: 0.1rem 0.4rem; border-radius: 999px; font-size: 0.72rem; }
 .badge.projeto { background: var(--accent-soft); color: var(--accent); }
 .badge.sustentacao { background: var(--surface-alt); border: 1px solid var(--border-strong); color: var(--text-muted); }
 .badge.stage { background: var(--accent-soft); color: var(--accent); }
@@ -275,7 +275,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
   border-radius: 5px; border: 1px solid var(--border); background: var(--surface-alt); color: var(--text);
   cursor: default;
 }
-.card .readonly-note { font-size: 0.68rem; color: var(--text-muted); font-style: italic; }
+.card .readonly-note { font-size: 0.72rem; color: var(--text-muted); font-style: italic; }
 .empty-col { font-size: 0.72rem; color: var(--text-muted); padding: 0.4rem 0.1rem; }
 
 /* modal */
@@ -357,7 +357,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .copiloto-msg { display: flex; flex-direction: column; gap: 0.15rem; max-width: 85%; }
 .copiloto-msg.user { align-self: flex-end; align-items: flex-end; }
 .copiloto-msg.assistant { align-self: flex-start; }
-.copiloto-autor { font-size: 0.65rem; color: var(--text-muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.03em; }
+.copiloto-autor { font-size: 0.72rem; color: var(--text-muted); font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.03em; }
 .copiloto-msg p {
   margin: 0; padding: 0.5rem 0.7rem; border-radius: 10px; font-size: 0.85rem; white-space: pre-wrap;
   background: var(--surface); border: 1px solid var(--border);
@@ -423,7 +423,7 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .auth-card::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gradient);
 }
-.auth-card .name { font-family: var(--display); font-weight: 600; font-size: 1rem; }
+.auth-card .name { font-family: var(--display); font-weight: 600; font-size: 1rem; margin: 0; }
 .auth-card .sub { font-size: 0.8rem; color: var(--text-muted); margin-top: -0.6rem; }
 .auth-card .field input { padding: 0.55rem 0.7rem; border: 1px solid var(--border); border-radius: 7px; background: var(--surface-alt); font-size: 0.88rem; width: 100%; }
 .auth-note { font-size: 0.78rem; border-radius: 8px; padding: 0.6rem 0.8rem; }
@@ -504,13 +504,13 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 /* gráfico de execuções/agentes — barras empilhadas por status (ok/erro/pulado) */
 .chart .seg-ok { fill: var(--success); }
 .chart .seg-erro { fill: var(--danger); }
-.chart .seg-pulado { fill: var(--border-strong); }
+.chart .seg-pulado { fill: var(--text-muted); } /* --border-strong dava ~1,9:1 (precisa de 3:1) */
 .chart .rot-y { fill: var(--text-muted); font-size: 10px; font-family: var(--mono); text-anchor: end; }
 .chart-legenda { display: flex; gap: 1rem; flex-wrap: wrap; font-size: 0.76rem; color: var(--text-muted); }
 .chart-legenda .ponto { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 0.35em; }
 .chart-legenda .ponto.ok { background: var(--success); }
 .chart-legenda .ponto.erro { background: var(--danger); }
-.chart-legenda .ponto.cancelada { background: var(--border-strong); }
+.chart-legenda .ponto.cancelada { background: var(--text-muted); }
 
 /* gráfico de conciliação — duas fontes nomeadas (contábil × gerencial), hue fixo cada uma */
 .chart .barra-contabil { fill: var(--accent); }
@@ -813,7 +813,7 @@ table.sla input {
 /* indicadores no card do quadro */
 .card-indicadores { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.35rem; }
 .indicador {
-  font-family: var(--mono); font-size: 0.68rem; color: var(--text-muted);
+  font-family: var(--mono); font-size: 0.72rem; color: var(--text-muted);
   background: var(--surface-alt); border-radius: 6px; padding: 0.1rem 0.35rem;
 }
 
@@ -879,6 +879,10 @@ table.sla input {
     box-shadow: 0 0 24px rgb(0 0 0 / 0.25);
   }
   .sidebar.aberta { transform: none; }
+  /* Fechada, a gaveta fica fora da tela mas continuava no Tab e no leitor de
+     tela (15–40 links invisíveis antes do conteúdo). visibility a tira dos
+     dois; o atraso deixa a animação de saída terminar antes de esconder. */
+  .sidebar:not(.aberta) { visibility: hidden; }
 
   .menu-fundo {
     display: block; position: fixed; inset: 0; z-index: 35;
@@ -894,8 +898,17 @@ table.sla input {
 }
 
 @media (max-width: 860px) and (prefers-reduced-motion: no-preference) {
-  .sidebar { transition: transform 0.18s ease; }
+  .sidebar { transition: transform 0.18s ease, visibility 0s linear 0.18s; }
+  .sidebar.aberta { transition-delay: 0s; }
 }
+
+.skip-link {
+  position: absolute; left: -9999px; top: 0.5rem; z-index: 60;
+  background: var(--surface); color: var(--text); border: 1px solid var(--accent);
+  border-radius: 8px; padding: 0.5rem 0.8rem; font-size: 0.85rem;
+}
+.skip-link:focus { left: 0.8rem; }
+main:focus { outline: none; }
 
 /* Dedo, não mouse. A regra WCAG 2.2 AA pra web é 24x24 CSS px (que os botões
    daqui já passavam); 44px é a recomendação nativa de iOS, e vale aplicar
@@ -960,7 +973,7 @@ table.sla input {
 .grade-horas .gh-celula.erro input { border-color: var(--danger); background: var(--danger-soft); }
 .grade-horas .gh-ok { position: absolute; top: 2px; right: 4px; color: var(--success); font-size: 0.7rem; }
 .grade-horas .gh-erro {
-  display: block; margin-top: 0.2rem; color: var(--danger); font-size: 0.68rem;
+  display: block; margin-top: 0.2rem; color: var(--danger); font-size: 0.75rem;
   text-align: left; max-width: 180px; white-space: normal;
 }
 .grade-horas .gh-vazio { color: var(--text-muted); padding: 1.5rem; }
@@ -1269,11 +1282,22 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .encerrado-banner > .save-note, .encerrado-banner > .form-erro { flex-basis: 100%; margin: 0; }
 .encerramento-form { display: flex; flex-direction: column; gap: 0.7rem; }
 .encerramento-lista { margin: 0; padding-left: 1.1rem; font-size: 0.82rem; display: flex; flex-direction: column; gap: 0.3rem; }
-.btn-perigo {
-  background: var(--danger); color: #fff; border: none; border-radius: 7px;
-  padding: 0.5rem 0.9rem; font-size: 0.82rem; cursor: pointer; font-weight: 500;
-}
+/* Uma definição só de .btn-perigo (acima). A segunda usava #fff: em dark o
+   --danger clareia (#E7796F) e branco em cima dava 2,85:1 — --surface dá 6,45:1. */
+.btn-perigo { font-weight: 500; }
 .btn-perigo:disabled, .btn-ghost:disabled { opacity: 0.55; cursor: default; }
 .clientes-encerrados { margin: 0.4rem 0.8rem 0; font-size: 0.78rem; color: var(--text-muted); }
 .clientes-encerrados summary { cursor: pointer; padding: 0.3rem 0.3rem; }
 .clientes-encerrados .client-item { opacity: 0.75; }
+
+/* Revisão UI/UX (20/10/2026) ─────────────────────────────────────────────── */
+/* Texto de gráfico: o SVG escala com a largura; num telefone o rótulo de 10px
+   chegava a ~8px. Sobe o corpo só em tela estreita. */
+@media (max-width: 560px) {
+  .chart .rot-x, .chart .rot-y, .chart .rot-limite { font-size: 12px; }
+  .chart .valor { font-size: 13px; }
+  /* Início: coluna fixa do cliente + selo deixavam poucos caracteres do título. */
+  .overview-row { flex-wrap: wrap; }
+  .overview-row .oc-client { width: auto; }
+  .overview-row .oc-title { flex-basis: 100%; white-space: normal; order: 3; }
+}
