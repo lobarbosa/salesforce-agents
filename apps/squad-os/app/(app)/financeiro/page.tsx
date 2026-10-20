@@ -3,7 +3,7 @@ import { usuarioDaArea } from "@/lib/area";
 import { listarContas } from "@/lib/contas-data";
 import { bloqueio, formatarReais } from "@/lib/contas";
 import { contarDivergenciasAbertas, kpisAtuais, type Kpi } from "@/lib/ops";
-import { defKpi, tendencia } from "@/lib/kpis";
+import { defKpi, rotuloReferencia, tendencia } from "@/lib/kpis";
 import { rotuloOrigem } from "@/lib/divergencias";
 import { checklist, competenciaPadrao, rotuloMes } from "@/lib/contabilidade";
 import { horasPorCliente } from "@/lib/horas-data";
@@ -22,10 +22,6 @@ import { listarModelos } from "@/lib/recorrencias-data";
 // Painel financeiro: a porta de entrada do papel financeiro. Primeiro o que
 // precisa de alguém (cada linha leva à tela onde se resolve); depois os números
 // que os agentes calculam (caixa e resultado).
-
-function dataBr(iso: string) {
-  return `${iso.slice(8, 10)}/${iso.slice(5, 7)}/${iso.slice(0, 4)}`;
-}
 
 function somaDias(dia: string, n: number) {
   const d = new Date(`${dia}T00:00:00Z`);
@@ -86,7 +82,7 @@ export default async function PainelFinanceiroPage() {
         <span className="kpi-rotulo">{def.rotulo}</span>
         <span className="kpi-valor num">{formatarReais(k.valor)}</span>
         <span className="kpi-nota">
-          {t ? `${t} · ` : ""}ref. {dataBr(k.referencia)}
+          {t ? `${t} · ` : ""}ref. {rotuloReferencia(k.metrica, k.referencia)}
         </span>
       </div>
     );

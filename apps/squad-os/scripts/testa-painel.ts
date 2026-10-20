@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { defKpi, tendencia } from "../lib/kpis";
+import { defKpi, rotuloReferencia, tendencia } from "../lib/kpis";
 import { formatarPct, normalizarMargem, porContrato, rotuloMesCurto } from "../lib/margem";
 
 function caso(nome: string, fn: () => void) {
@@ -22,6 +22,17 @@ caso("sem base não inventa tendência", () => {
 caso("métrica nova aparece com nome cru", () => {
   assert.equal(defKpi("margem_bruta").rotulo, "margem bruta");
   assert.equal(defKpi("caixa_30d").rotulo, "Caixa projetado em 30 dias");
+});
+caso("cartões do resultado: contábil e gerencial rotulados, Asaas parcial fora do painel", () => {
+  assert.equal(defKpi("resultado").rotulo, "Resultado do mês (contábil)");
+  assert.equal(defKpi("resultado_gerencial").grupo, "resultado");
+  assert.equal(defKpi("deducoes_receita").subirEhRuim, true);
+  assert.equal(defKpi("taxas_asaas").grupo, "oculto");
+  assert.equal(defKpi("recebido_asaas").grupo, "oculto");
+});
+caso("referência mensal mostra o mês; diária mostra o dia", () => {
+  assert.equal(rotuloReferencia("resultado", "2026-09-01"), "set/2026");
+  assert.equal(rotuloReferencia("caixa_30d", "2026-10-18"), "18/10/2026");
 });
 const linha = (cliente: string, mes: string, margem: number | null, situacao: string) =>
   normalizarMargem({ client_id: cliente, cliente, mes, receita: "50005.0", custo_direto: "46720.00",
