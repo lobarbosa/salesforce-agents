@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { normalizarMargem, porContrato, type MargemContrato } from "@/lib/margem";
 import {
   normalizarFontes,
   normalizarIndicadores,
@@ -210,6 +211,22 @@ export function resultadoPorMes(meses = 6): Promise<ResultadoMes[] | null> {
       order by mes desc
       limit ${meses}`;
     return r.map((x) => ({ mes: x.mes, valor: Number(x.valor) })).reverse();
+  });
+}
+
+// ── Margem por contrato ────────────────────────────────────────────────────
+
+/**
+ * Margem por contrato e mês (view `ops.margem_contratos`). [] enquanto a view
+ * não existe (migration do konecta-agents ainda não aplicada); null sem `ops`.
+ */
+export function margemPorContrato(): Promise<MargemContrato[] | null> {
+  return ler(async () => {
+    const v = await prisma.$queryRaw<{ ok: boolean }[]>`select to_regclass('ops.margem_contratos') is not null as ok`;
+    if (!v[0]?.ok) return [];
+    const r = await prisma.$queryRaw<Record<string, unknown>[]>`
+      select * from ops.margem_contratos order by cliente, mes`;
+    return porContrato(r.map(normalizarMargem));
   });
 }
 

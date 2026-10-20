@@ -20,8 +20,9 @@ export default async function UsuariosPage() {
       <div className="overview-header">
         <h1>Administração — acessos</h1>
         <p>
-          Quem entra no Squad OS e com que papel. Login continua sendo link mágico por e-mail —
-          conceder acesso aqui não envia nada, a pessoa só entra normalmente em <code className="mono">/login</code>.
+          Quem entra no Squad OS e com que papel. Com a senha em branco, a pessoa recebe um convite por e-mail;
+          com senha definida, nada é enviado e você repassa a senha por fora. Ela entra em{" "}
+          <code className="mono">/login</code>.
         </p>
       </div>
       <UsuariosAdmin usuarios={usuarios} clients={clients} encerrados={encerrados} currentUsuarioId={usuario.id} />

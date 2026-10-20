@@ -44,6 +44,22 @@ export function EncerramentoCliente({
   const [erro, setErro] = useState("");
   const [enviando, setEnviando] = useState(false);
 
+  // Erro de rede não pode deixar o modal travado em "enviando" (Cancelar fica desabilitado).
+  async function enviar(req: () => Promise<Response>): Promise<Response | null> {
+    setEnviando(true);
+    setErro("");
+    try {
+      const res = await req();
+      if (!res.ok) setErro(await erroDe(res));
+      return res.ok ? res : null;
+    } catch {
+      setErro("sem conexão com o servidor — tente de novo");
+      return null;
+    } finally {
+      setEnviando(false);
+    }
+  }
+
   function fechar() {
     if (enviando) return;
     setAberto(null);
@@ -54,40 +70,35 @@ export function EncerramentoCliente({
 
   async function encerrar(e: FormEvent) {
     e.preventDefault();
-    setEnviando(true);
-    setErro("");
-    const res = await fetch(`/api/clients/${clientId}/encerramento`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ motivo }),
-    });
-    setEnviando(false);
-    if (!res.ok) return setErro(await erroDe(res));
+    const res = await enviar(() =>
+      fetch(`/api/clients/${clientId}/encerramento`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ motivo }),
+      })
+    );
+    if (!res) return;
     setAberto(null);
     setMotivo("");
     router.refresh();
   }
 
   async function reativar() {
-    setEnviando(true);
-    setErro("");
-    const res = await fetch(`/api/clients/${clientId}/encerramento`, { method: "DELETE" });
-    setEnviando(false);
-    if (!res.ok) return setErro(await erroDe(res));
+    const res = await enviar(() => fetch(`/api/clients/${clientId}/encerramento`, { method: "DELETE" }));
+    if (!res) return;
     router.refresh();
   }
 
   async function excluir(e: FormEvent) {
     e.preventDefault();
-    setEnviando(true);
-    setErro("");
-    const res = await fetch(`/api/clients/${clientId}`, {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ confirmacaoNome: confirmacao }),
-    });
-    setEnviando(false);
-    if (!res.ok) return setErro(await erroDe(res));
+    const res = await enviar(() =>
+      fetch(`/api/clients/${clientId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ confirmacaoNome: confirmacao }),
+      })
+    );
+    if (!res) return;
     router.push("/");
     router.refresh();
   }

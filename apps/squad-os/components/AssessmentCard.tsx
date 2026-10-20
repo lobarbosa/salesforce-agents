@@ -56,14 +56,19 @@ export function AssessmentCard({ client, canManage }: { client: Client; canManag
   async function rodar() {
     setErro("");
     setRodando(true);
-    const res = await fetch(`/api/clients/${client.id}/assessment`, { method: "POST" });
-    setRodando(false);
-    if (!res.ok) {
-      const body = await res.json().catch(() => ({}));
-      setErro(body.error || "não consegui disparar o assessment");
-      return;
+    try {
+      const res = await fetch(`/api/clients/${client.id}/assessment`, { method: "POST" });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        setErro(body.error || "não consegui disparar o assessment");
+        return;
+      }
+      router.refresh();
+    } catch {
+      setErro("sem conexão com o servidor — tente de novo");
+    } finally {
+      setRodando(false);
     }
-    router.refresh();
   }
 
   return (

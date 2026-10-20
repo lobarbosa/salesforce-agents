@@ -235,6 +235,8 @@ function UsuarioRow({
   }
 
   async function handleRoleChange(role: Role) {
+    // Um clique errado na própria linha tirava o acesso de admin de quem está usando.
+    if (isSelf && usuario.role === "admin" && role !== "admin" && !window.confirm("Você vai perder o acesso de administração. Continuar?")) return;
     setErro("");
     const res = await onUpdate({ role, clientId: role === "cliente" ? usuario.clientId : null });
     if (!res.ok) {
@@ -308,9 +310,13 @@ function UsuarioRow({
         <span className="save-note">{clientNome(usuario.clientId)}</span>
       )}
 
-      {erro && <span className="save-note error">{erro}</span>}
+      {erro && (
+        <span className="save-note error" role="alert">
+          {erro}
+        </span>
+      )}
 
-      <div style={{ marginLeft: "auto", display: "flex", gap: "0.4rem" }}>
+      <div style={{ marginLeft: "auto", display: "flex", flexWrap: "wrap", gap: "0.4rem" }}>
         {trocandoSenha ? (
           <>
             <label className="sr-only" htmlFor={`nova-senha-${usuario.id}`}>
@@ -322,7 +328,7 @@ function UsuarioRow({
               value={novaSenha}
               onChange={(e) => setNovaSenha(e.target.value)}
               placeholder="nova senha"
-              style={{ width: 140, padding: "0.3rem 0.5rem", borderRadius: 6, border: "1px solid var(--border)", fontSize: "0.8rem" }}
+              style={{ flex: "1 1 140px", minWidth: 0, padding: "0.3rem 0.5rem", borderRadius: 6, border: "1px solid var(--border)", fontSize: "0.8rem" }}
             />
             <button className="btn-ghost" type="button" onClick={() => setNovaSenha(gerarSenha())}>
               Gerar

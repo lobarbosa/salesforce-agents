@@ -28,8 +28,12 @@ export function NewDemandModal({
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ clientId, titulo: titulo.trim(), tipo, texto }),
-    });
+    }).catch(() => null);
     setSaving(false);
+    if (!res) {
+      setErro("sem conexão com o servidor — tente de novo");
+      return;
+    }
     if (res.ok) {
       router.refresh();
       onClose();
@@ -84,7 +88,7 @@ export function NewDemandModal({
         <button className="btn-ghost" type="button" onClick={onClose}>
           Cancelar
         </button>
-        <button className="btn-primary" type="button" onClick={handleSave} disabled={saving}>
+        <button className="btn-primary" type="button" onClick={handleSave} disabled={saving || !titulo.trim()}>
           {saving ? "Criando..." : "Criar demanda"}
         </button>
       </div>

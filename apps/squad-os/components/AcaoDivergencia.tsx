@@ -21,11 +21,11 @@ export function AcaoDivergencia({ id, status, resumo }: { id: string; status: St
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: escolha, nota }),
-    });
+    }).catch(() => null);
     setEnviando(false);
-    if (!r.ok) {
-      const j = await r.json().catch(() => ({}));
-      setErro(j.error ?? "não foi possível registrar");
+    if (!r || !r.ok) {
+      const j = r ? await r.json().catch(() => ({})) : {};
+      setErro((j as { error?: string }).error ?? (r ? "não foi possível registrar" : "sem conexão — tente de novo"));
       return;
     }
     setEscolha(null);
@@ -56,7 +56,7 @@ export function AcaoDivergencia({ id, status, resumo }: { id: string; status: St
     <div className="confirmar confirmar-div" role="group" aria-label={`${verbo}: ${resumo}`}>
       <label>
         {obrigatoria ? "Por que pode ser ignorada? *" : "Nota (opcional)"}
-        <textarea rows={2} value={nota} onChange={(e) => setNota(e.target.value)} />
+        <textarea rows={2} autoFocus value={nota} onChange={(e) => setNota(e.target.value)} />
       </label>
       {erro && (
         <span className="campo-erro" role="alert">

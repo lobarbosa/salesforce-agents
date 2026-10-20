@@ -493,7 +493,8 @@ function DetalheConta({
   return (
     <Modal title={c ? `${c.fornecedor} — ${formatarReais(c.valor)}` : "Conta a pagar"} onClose={onClose} wide>
       {!d && !erro && <p className="save-note">Carregando…</p>}
-      {erro && (
+      {/* Com a confirmação aberta, o erro aparece junto do botão (lá embaixo no modal), não aqui. */}
+      {erro && !confirmando && (
         <p className="form-erro" role="alert">
           {erro}
         </p>
@@ -711,6 +712,11 @@ function DetalheConta({
                 {confirmando === "recusar" ? "Motivo da recusa *" : "Comentário (opcional)"}
                 <textarea value={comentario} onChange={(e) => setComentario(e.target.value)} rows={2} />
               </label>
+              {erro && (
+                <p className="form-erro" role="alert">
+                  {erro}
+                </p>
+              )}
               <div className="form-acoes">
                 <button type="button" className="btn-ghost" onClick={() => setConfirmando(null)}>
                   Voltar

@@ -123,14 +123,19 @@ function AmbienteCard({
   async function handleTestRequest() {
     setRequesting(true);
     setErro(null);
-    const res = await fetch(`${base}/test-connection`, { method: "POST" });
-    setRequesting(false);
-    if (res.ok) {
-      router.refresh();
-      return;
+    try {
+      const res = await fetch(`${base}/test-connection`, { method: "POST" });
+      if (res.ok) {
+        router.refresh();
+        return;
+      }
+      const body = await res.json().catch(() => null);
+      setErro(body?.error ?? `não consegui solicitar o teste (HTTP ${res.status})`);
+    } catch {
+      setErro("sem conexão com o servidor — tente de novo");
+    } finally {
+      setRequesting(false);
     }
-    const body = await res.json().catch(() => null);
-    setErro(body?.error ?? `não consegui solicitar o teste (HTTP ${res.status})`);
   }
 
   return (
@@ -151,12 +156,7 @@ function AmbienteCard({
           <div className="label">{CONN_STATUS_LABEL[status] ?? status}</div>
           <div className="sub">
             {ambiente?.testeSolicitadoEm
-              ? `solicitado por ${ambiente.testeSolicitadoPor ?? "?"} em ${new Date(
-                  ambiente.testeSolicitadoEm
-                )
-                  .toISOString()
-                  .slice(0, 16)
-                  .replace("T", " ")}`
+              ? `solicitado por ${ambiente.testeSolicitadoPor ?? "?"} em ${new Date(ambiente.testeSolicitadoEm).toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo" })}`
               : "nenhum teste solicitado ainda"}
           </div>
         </div>

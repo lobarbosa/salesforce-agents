@@ -46,10 +46,10 @@ export default function NovaSenhaPage() {
   }
 
   return (
-    <div className="auth-shell">
+    <main className="auth-shell">
       <div className="auth-card">
         <div>
-          <div className="name">Squad OS</div>
+          <h1 className="name">Squad OS</h1>
           <div className="sub">definir nova senha</div>
         </div>
 
@@ -101,6 +101,6 @@ export default function NovaSenhaPage() {
           <Link href="/">Voltar sem alterar</Link>
         </div>
       </div>
-    </div>
+    </main>
   );
 }

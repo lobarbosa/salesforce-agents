@@ -21,9 +21,16 @@ export function AgentesChart({ agentes }: { agentes: SaudeAgente[] }) {
   const ordenados = [...agentes].sort((a, b) => b.execucoes24h - a.execucoes24h);
   const max = Math.max(...ordenados.map((a) => a.execucoes24h), 1);
 
-  const L = 110, R = 36, T = 8, B = 8;
+  // A coluna do nome cresce com o maior nome (mono 10px ≈ 6,2 unidades por
+  // caractere): com L fixo em 110, "accounting_reconciliation_agent" saía do
+  // gráfico pela esquerda. Até 32 caracteres; além disso corta com "…" e o
+  // nome inteiro fica no <title>.
+  const MAX_NOME = 32;
+  const curto = (n: string) => (n.length > MAX_NOME ? `${n.slice(0, MAX_NOME - 1)}…` : n);
+  const L = Math.max(110, 16 + 6.2 * Math.max(...ordenados.map((a) => curto(a.agente).length)));
+  const R = 36, T = 8, B = 8;
   const linhaH = 26;
-  const larg = 420;
+  const larg = L + 310;
   const alt = T + B + ordenados.length * linhaH;
   const plotW = larg - L - R;
   const x = (v: number) => (v / max) * plotW;
@@ -48,7 +55,8 @@ export function AgentesChart({ agentes }: { agentes: SaudeAgente[] }) {
           return (
             <g key={a.agente}>
               <text x={L - 8} y={y + linhaH / 2 + 4} className="rot-y">
-                {a.agente}
+                <title>{a.agente}</title>
+                {curto(a.agente)}
               </text>
               {a.execucoes24h === 0 ? (
                 <text x={L} y={y + linhaH / 2 + 4} className="rot-limite">

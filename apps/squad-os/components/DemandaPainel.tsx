@@ -1,5 +1,7 @@
 "use client";
 
+import { navegarAbas } from "@/lib/abas";
+import { BotaoRemover } from "@/components/BotaoRemover";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type {
@@ -317,7 +319,7 @@ export function DemandaPainel({
 
   return (
     <section className="painel">
-      <div className="painel-abas" role="tablist" aria-label="Detalhes da demanda">
+      <div className="painel-abas" role="tablist" onKeyDown={navegarAbas} aria-label="Detalhes da demanda">
         {abas.map((a) => (
           <button
             key={a.id}
@@ -325,7 +327,8 @@ export function DemandaPainel({
             role="tab"
             id={`painel-aba-${a.id}`}
             aria-selected={aba === a.id}
-            aria-controls={`painel-pane-${a.id}`}
+            tabIndex={aba === a.id ? 0 : -1}
+            aria-controls={aba === a.id ? `painel-pane-${a.id}` : undefined}
             className={`painel-aba${aba === a.id ? " active" : ""}`}
             onClick={() => setAba(a.id)}
           >
@@ -410,15 +413,7 @@ export function DemandaPainel({
                       />
                       <span>{s.titulo}</span>
                     </label>
-                    <button
-                      type="button"
-                      className="btn-remover"
-                      onClick={() => removerSubtarefa(s.id)}
-                      disabled={ocupado}
-                      aria-label={`Remover subtarefa ${s.titulo}`}
-                    >
-                      remover
-                    </button>
+                    <BotaoRemover nome={`subtarefa ${s.titulo}`} disabled={ocupado} onRemover={() => removerSubtarefa(s.id)} />
                   </li>
                 ))}
               </ul>
@@ -469,15 +464,7 @@ export function DemandaPainel({
                       />
                       <span>{i.texto}</span>
                     </label>
-                    <button
-                      type="button"
-                      className="btn-remover"
-                      onClick={() => removerItem(i.id)}
-                      disabled={ocupado}
-                      aria-label={`Remover item ${i.texto}`}
-                    >
-                      remover
-                    </button>
+                    <BotaoRemover nome={`item ${i.texto}`} disabled={ocupado} onRemover={() => removerItem(i.id)} />
                   </li>
                 ))}
               </ul>
@@ -602,15 +589,7 @@ export function DemandaPainel({
                       <div className="tempo-linha-acoes">
                         <span className="mono">{timeAgo(t.inicioEm)}</span>
                         {(meu || isAdmin) && (
-                          <button
-                            type="button"
-                            className="btn-remover"
-                            onClick={() => removerTempo(t.id)}
-                            disabled={ocupado}
-                            aria-label={`Remover lançamento de ${t.autor}`}
-                          >
-                            remover
-                          </button>
+                          <BotaoRemover nome={`lançamento de ${t.autor}`} disabled={ocupado} onRemover={() => removerTempo(t.id)} />
                         )}
                       </div>
                     </li>
@@ -653,15 +632,7 @@ export function DemandaPainel({
                       </button>
                     )}
                     {(a.autorEmail === usuarioEmail || isAdmin) && (
-                      <button
-                        type="button"
-                        className="btn-remover"
-                        onClick={() => removerAnexo(a.id)}
-                        disabled={ocupado}
-                        aria-label={`Remover anexo ${a.nome}`}
-                      >
-                        remover
-                      </button>
+                      <BotaoRemover nome={`anexo ${a.nome}`} disabled={ocupado} onRemover={() => removerAnexo(a.id)} />
                     )}
                   </li>
                 ))}

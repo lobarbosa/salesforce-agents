@@ -1,5 +1,6 @@
 "use client";
 
+import { navegarAbas } from "@/lib/abas";
 import { useState } from "react";
 import type { AmbienteOrg, Client, Contrato, Entregavel } from "@/lib/generated/prisma/client";
 import type { MesDeHoras } from "@/lib/contrato";
@@ -52,7 +53,7 @@ export function ClientDetail({
           <h1>{client.nome}</h1>
         </div>
 
-        <div className="tabs" role="tablist" aria-label={`Seções de ${client.nome}`}>
+        <div className="tabs" role="tablist" onKeyDown={navegarAbas} aria-label={`Seções de ${client.nome}`}>
           <button
             className={`tab-btn${tab === "demandas" ? " active" : ""}`}
             onClick={() => setTab("demandas")}
@@ -60,6 +61,7 @@ export function ClientDetail({
             role="tab"
             id="tab-demandas"
             aria-selected={tab === "demandas"}
+            tabIndex={tab === "demandas" ? 0 : -1}
             aria-controls="painel-demandas"
           >
             Demandas
@@ -71,6 +73,7 @@ export function ClientDetail({
             role="tab"
             id="tab-contrato"
             aria-selected={tab === "contrato"}
+            tabIndex={tab === "contrato" ? 0 : -1}
             aria-controls="painel-contrato"
           >
             Contrato
@@ -82,6 +85,7 @@ export function ClientDetail({
             role="tab"
             id="tab-conhecimento"
             aria-selected={tab === "conhecimento"}
+            tabIndex={tab === "conhecimento" ? 0 : -1}
             aria-controls="painel-conhecimento"
           >
             Assessment e conhecimento
@@ -93,6 +97,7 @@ export function ClientDetail({
             role="tab"
             id="tab-conexao"
             aria-selected={tab === "conexao"}
+            tabIndex={tab === "conexao" ? 0 : -1}
             aria-controls="painel-conexao"
           >
             Conexão Salesforce
@@ -185,7 +190,7 @@ export function ClientDetail({
         />
       )}
 
-      <div className="tabs" role="tablist" aria-label={`Seções de ${client.nome}`}>
+      <div className="tabs" role="tablist" onKeyDown={navegarAbas} aria-label={`Seções de ${client.nome}`}>
         <button
           className={`tab-btn${tab === "conhecimento" ? " active" : ""}`}
           onClick={() => setTab("conhecimento")}
@@ -193,6 +198,7 @@ export function ClientDetail({
           role="tab"
           id="tab-conhecimento"
           aria-selected={tab === "conhecimento"}
+            tabIndex={tab === "conhecimento" ? 0 : -1}
           aria-controls="painel-conhecimento"
         >
           Conhecimento do Cliente
@@ -204,6 +210,7 @@ export function ClientDetail({
           role="tab"
           id="tab-contrato"
           aria-selected={tab === "contrato"}
+            tabIndex={tab === "contrato" ? 0 : -1}
           aria-controls="painel-contrato"
         >
           Contrato
@@ -215,6 +222,7 @@ export function ClientDetail({
           role="tab"
           id="tab-conexao"
           aria-selected={tab === "conexao"}
+            tabIndex={tab === "conexao" ? 0 : -1}
           aria-controls="painel-conexao"
         >
           Conexão Salesforce
@@ -226,6 +234,7 @@ export function ClientDetail({
           role="tab"
           id="tab-demandas"
           aria-selected={tab === "demandas"}
+            tabIndex={tab === "demandas" ? 0 : -1}
           aria-controls="painel-demandas"
         >
           Demandas

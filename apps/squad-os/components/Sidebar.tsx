@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type FormEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { ClienteDaSidebar } from "@/lib/visao-cliente";
@@ -204,10 +204,24 @@ function Casca({
     return () => document.removeEventListener("keydown", aoTeclar);
   }, [aberta, aoAlternar]);
 
+  // Abriu a gaveta: o foco entra nela. Fechou: volta ao botão Menu, em vez de
+  // cair no <body> (achado da revisão UI/UX). Só quando houve abertura antes.
+  const botaoMenu = useRef<HTMLButtonElement>(null);
+  const jaAbriu = useRef(false);
+  useEffect(() => {
+    if (aberta) {
+      jaAbriu.current = true;
+      document.querySelector<HTMLElement>("#nav-lateral a, #nav-lateral button")?.focus();
+    } else if (jaAbriu.current) {
+      botaoMenu.current?.focus();
+    }
+  }, [aberta]);
+
   return (
     <>
       <div className="topbar">
         <button
+          ref={botaoMenu}
           className="menu-btn"
           type="button"
           aria-expanded={aberta}
@@ -254,6 +268,7 @@ export function Sidebar({
   const [nome, setNome] = useState("");
   const [segmento, setSegmento] = useState("");
   const [saving, setSaving] = useState(false);
+  const [erroCriar, setErroCriar] = useState("");
   // {} até o efeito rodar no cliente (SSR não tem localStorage): cada NavArea
   // cai no próprio padrão por rota enquanto isso, sem piscar — o padrão e a
   // preferência salva raramente divergem no primeiro quadro.
@@ -298,13 +313,18 @@ export function Sidebar({
     e.preventDefault();
     if (!nome.trim()) return;
     setSaving(true);
-    const res = await fetch("/api/clients", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nome: nome.trim(), segmento: segmento.trim() }),
-    });
-    setSaving(false);
-    if (res.ok) {
+    setErroCriar("");
+    try {
+      const res = await fetch("/api/clients", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ nome: nome.trim(), segmento: segmento.trim() }),
+      });
+      if (!res.ok) {
+        const corpo = await res.json().catch(() => ({}));
+        setErroCriar((corpo as { error?: string }).error ?? "Não consegui criar o cliente.");
+        return;
+      }
       const created = await res.json();
       setNome("");
       setSegmento("");
@@ -312,6 +332,10 @@ export function Sidebar({
       setMenuAberto(false);
       router.push(`/clients/${created.id}`);
       router.refresh();
+    } catch {
+      setErroCriar("Sem conexão com o servidor — tente de novo.");
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -388,6 +412,7 @@ export function Sidebar({
         href="/"
         onClick={fecharMenu}
         className={`nav-item${!activeClientId && pathname === "/" ? " active" : ""}`}
+        aria-current={!activeClientId && pathname === "/" ? "page" : undefined}
       >
         <span className="icon" />
         Visão Geral
@@ -442,6 +467,7 @@ export function Sidebar({
           href="/admin/usuarios"
           onClick={fecharMenu}
           className={`nav-item${pathname?.startsWith("/admin") ? " active" : ""}`}
+          aria-current={pathname?.startsWith("/admin") ? "page" : undefined}
         >
           <span className="icon" />
           Administração
@@ -540,6 +566,11 @@ export function Sidebar({
                   value={segmento}
                   onChange={(e) => setSegmento(e.target.value)}
                 />
+                {erroCriar && (
+                  <div className="save-note error" role="alert">
+                    {erroCriar}
+                  </div>
+                )}
                 <div className="row">
                   <button type="submit" disabled={saving}>
                     {saving ? "Criando..." : "Criar"}
