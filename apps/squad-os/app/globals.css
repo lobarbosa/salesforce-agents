@@ -518,6 +518,18 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .chart-legenda .ponto.contabil { background: var(--accent); }
 .chart-legenda .ponto.gerencial { background: var(--accent2); }
 
+/* gráfico de margem por contrato — receita e custo (fontes nomeadas) + margem divergente */
+.chart .barra-receita { fill: var(--accent); }
+.chart .barra-custo { fill: var(--border-strong); }
+.chart-legenda .ponto.receita { background: var(--accent); }
+.chart-legenda .ponto.custo { background: var(--border-strong); }
+.chart-legenda .ponto.margem { background: var(--success); }
+.chart-seletor { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; color: var(--text-muted); }
+.chart-seletor select { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 0.25rem 0.5rem; }
+.kpi-negativo { border-color: var(--danger); background: var(--danger-soft); }
+.kpi-negativo .kpi-valor { color: var(--danger); }
+.tabela td.negativo { color: var(--danger); }
+
 /* SLA */
 table.sla { border-collapse: collapse; width: 100%; font-size: 0.86rem; }
 table.sla th, table.sla td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border); }
