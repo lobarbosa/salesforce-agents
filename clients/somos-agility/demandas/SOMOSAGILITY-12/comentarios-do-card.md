@@ -24,3 +24,11 @@ Favor preencher os campos antes de enviar para aprovação
 ## Equipe — 2026-10-20 12:51
 
 Aprovou o gate "aguardando_gate_analise". A próxima etapa foi disparada.
+
+## Equipe — 2026-10-21 01:19
+
+Aprovou o gate "aguardando_gate_design". A próxima etapa foi disparada.
+
+## Equipe — 2026-10-21 01:46
+
+Aprovou o gate "aguardando_gate_design". Entrou na fila da esteira.

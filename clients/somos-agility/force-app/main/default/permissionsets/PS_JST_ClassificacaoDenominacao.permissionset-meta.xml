@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>PS_JST_ClassificacaoDenominacao</label>
+    <description>SOMOSAGILITY-12: FLS de leitura/edição em Classificação Gerencial e Denominação do Treinamento (JOB de Solicitação de Treinamentos), agora obrigatórios. Atribuição ao usuário é tarefa do admin do cliente.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <fieldPermissions>
+        <field>JOB_de_Solicitacao_de_Treinamentos__c.Classificacao_Gerencial__c</field>
+        <readable>true</readable>
+        <editable>true</editable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>JOB_de_Solicitacao_de_Treinamentos__c.Denomina_o_do_Treinamento__c</field>
+        <readable>true</readable>
+        <editable>true</editable>
+    </fieldPermissions>
+</PermissionSet>

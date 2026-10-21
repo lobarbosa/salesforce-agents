@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>JST_Classif_Denominacao_Obrigatorias</fullName>
+    <active>true</active>
+    <description>SOMOSAGILITY-12: bloqueia o save de JST criado a partir do go-live sem Classificação Gerencial e/ou Denominação do Treinamento. Recorte por CreatedDate (ISNEW/go-live) para não bloquear registros legados nem o recálculo de roll-up de filhos.</description>
+    <errorConditionFormula>AND(
+  OR( ISNEW(), CreatedDate &gt;= DATETIMEVALUE(&quot;2026-10-21 00:00:00&quot;) ),
+  OR( ISBLANK( TEXT( Classificacao_Gerencial__c ) ),
+      ISBLANK( Denomina_o_do_Treinamento__c ) )
+)</errorConditionFormula>
+    <errorMessage>Favor preencher os campos antes de enviar para aprovação</errorMessage>
+</ValidationRule>
