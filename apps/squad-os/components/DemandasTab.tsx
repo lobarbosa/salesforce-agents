@@ -12,7 +12,9 @@ import {
   estaEmGate,
   estadoDoCliente,
   quemDestrava,
+  motivoSemDrop,
 } from "@/lib/demandas";
+import { Modal } from "@/components/Modal";
 import { useAutoRefresh } from "@/lib/auto-refresh";
 import { DemandCard } from "@/components/DemandCard";
 import { DemandModal } from "@/components/DemandModal";
@@ -49,6 +51,28 @@ export function DemandasTab({
   // esperando o gate aparecer fica dando F5 (ou, pior, conclui que travou).
   // Parado em gate não recarrega: ali não vem nada, quem tem que agir é gente.
   useAutoRefresh(demandas.some((d) => agenteRodando(d.status)));
+
+  // Arrastar (2026-10-21) é atalho com confirmação, não um jeito de mover a
+  // esteira: Backlog → Análise = enviar para a esteira; qualquer card parado
+  // → Entregue/cancelada = cancelar. As outras colunas só andam por gate.
+  const [arrastandoId, setArrastandoId] = useState<string | null>(null);
+  const [alvo, setAlvo] = useState<string | null>(null);
+  const [aviso, setAviso] = useState("");
+  const [pendente, setPendente] = useState<{ id: string; acao: "enviar" | "cancelar" } | null>(null);
+  const arrastando = arrastandoId ? byId.get(arrastandoId) : null;
+
+  function soltar(fase: string) {
+    const d = arrastando;
+    setArrastandoId(null);
+    setAlvo(null);
+    if (!d || fase === FASES.find((f) => f.estagios.includes(d.status))?.chave) return;
+    const motivo = motivoSemDrop(d, fase);
+    if (motivo) {
+      setAviso(motivo);
+      return;
+    }
+    setPendente({ id: d.id, acao: fase === "analise" ? "enviar" : "cancelar" });
+  }
 
   async function handleMove(id: string, status: string) {
     const res = await fetch(`/api/demandas/${id}`, {
@@ -186,6 +210,14 @@ export function DemandasTab({
         </div>
       )}
 
+      {aviso && (
+        <p className="auth-note error drop-aviso" role="alert">
+          {aviso}
+          <button type="button" className="btn-ghost" onClick={() => setAviso("")} aria-label="Fechar aviso">
+            ×
+          </button>
+        </p>
+      )}
       <div className="board board-fases">
         {FASES.map((fase) => {
           const items = demandas.filter((d) => fase.estagios.includes(d.status));
@@ -193,8 +225,31 @@ export function DemandasTab({
           const ehTriagem = fase.chave === "triagem";
           return (
             <div
-              className={`column fase-${fase.chave}${parados > 0 ? " tem-parada" : ""}`}
+              className={`column fase-${fase.chave}${parados > 0 ? " tem-parada" : ""}${
+                arrastando && alvo === fase.chave && !fase.estagios.includes(arrastando.status)
+                  ? motivoSemDrop(arrastando, fase.chave) ? " drop-recusado" : " drop-alvo"
+                  : ""
+              }`}
               key={fase.chave}
+              onDragOver={
+                arrastando
+                  ? (e) => {
+                      e.preventDefault();
+                      if (alvo !== fase.chave) setAlvo(fase.chave);
+                    }
+                  : undefined
+              }
+              onDragLeave={(e) => {
+                if (!e.currentTarget.contains(e.relatedTarget as Node | null)) setAlvo(null);
+              }}
+              onDrop={
+                arrastando
+                  ? (e) => {
+                      e.preventDefault();
+                      soltar(fase.chave);
+                    }
+                  : undefined
+              }
             >
               <h3>
                 {fase.titulo}
@@ -219,6 +274,15 @@ export function DemandasTab({
                     canMove={canManage && ehTriagem}
                     onOpen={() => setOpenId(d.id)}
                     onMove={(status) => handleMove(d.id, status)}
+                    arrastavel={canManage}
+                    onDragStart={() => {
+                      setAviso("");
+                      setArrastandoId(d.id);
+                    }}
+                    onDragEnd={() => {
+                      setArrastandoId(null);
+                      setAlvo(null);
+                    }}
                   />
                 ))
               )}
@@ -236,7 +300,87 @@ export function DemandasTab({
           onClose={() => setOpenId(null)}
         />
       )}
+      {pendente && byId.get(pendente.id) && (
+        <ConfirmarDrop
+          demanda={byId.get(pendente.id)!}
+          acao={pendente.acao}
+          onClose={() => setPendente(null)}
+        />
+      )}
       {newOpen && <NewDemandModal clientId={client.id} clientNome={client.nome} onClose={() => setNewOpen(false)} />}
     </>
+  );
+}
+
+function ConfirmarDrop({
+  demanda,
+  acao,
+  onClose,
+}: {
+  demanda: DemandaCompleta;
+  acao: "enviar" | "cancelar";
+  onClose: () => void;
+}) {
+  const router = useRouter();
+  const [motivo, setMotivo] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState("");
+
+  async function confirmar() {
+    setEnviando(true);
+    setErro("");
+    const res =
+      acao === "enviar"
+        ? await fetch(`/api/demandas/${demanda.id}/materialize`, { method: "POST" }).catch(() => null)
+        : await fetch(`/api/demandas/${demanda.id}/ciclo`, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ acao: "cancelar", motivo }),
+          }).catch(() => null);
+    if (!res?.ok) {
+      const body = res ? await res.json().catch(() => ({})) : {};
+      setErro(body.error || "não deu certo — tente de novo");
+      setEnviando(false);
+      return;
+    }
+    router.refresh();
+    onClose();
+  }
+
+  return (
+    <Modal title={acao === "enviar" ? "Enviar para a esteira?" : "Cancelar demanda?"} onClose={onClose}>
+      <p>
+        <strong>{demanda.code}</strong> — {demanda.titulo}
+      </p>
+      {acao === "enviar" ? (
+        <p>A demanda vai para o repositório e o agente de análise começa. Depois disso ela não pode mais ser excluída, só cancelada.</p>
+      ) : (
+        <>
+          <p>Cancelar encerra a demanda sem entregar. Não tem volta pela tela.</p>
+          <label className="field">
+            Motivo
+            <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} rows={2} autoFocus />
+          </label>
+        </>
+      )}
+      {erro && (
+        <p className="auth-note error" role="alert">
+          {erro}
+        </p>
+      )}
+      <div className="modal-actions">
+        <button type="button" className="btn-ghost" onClick={onClose} disabled={enviando}>
+          Voltar
+        </button>
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={confirmar}
+          disabled={enviando || (acao === "cancelar" && !motivo.trim())}
+        >
+          {enviando ? "Enviando..." : acao === "enviar" ? "Enviar para a esteira" : "Cancelar demanda"}
+        </button>
+      </div>
+    </Modal>
   );
 }

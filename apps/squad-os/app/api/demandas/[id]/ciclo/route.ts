@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import type { Prisma, StatusDemanda } from "@/lib/generated/prisma/client";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { registrarStatusNoGit } from "@/lib/github";
+import { ESTAGIOS_PARAVEIS, podeCancelar } from "@/lib/demandas";
 
 // Congelar, descongelar e cancelar (2026-10-21). Só delivery.
 //
@@ -13,15 +14,6 @@ import { registrarStatusNoGit } from "@/lib/github";
 // Demanda materializada muda o status.yaml no git primeiro (fonte de
 // verdade; fluxo.py recusa rodar standby/cancelada) e só então o Postgres.
 // Se o git falhar, nada muda aqui.
-const PARAVEIS: StatusDemanda[] = [
-  "backlog",
-  "planejada",
-  "recorrente",
-  "aguardando_gate_analise",
-  "aguardando_gate_design",
-  "aguardando_gate_build",
-  "aguardando_homologacao",
-];
 
 type Acao = "congelar" | "descongelar" | "cancelar";
 
@@ -53,7 +45,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     }
     para = demanda.congeladaDe ?? "backlog";
   } else {
-    const podeParar = PARAVEIS.includes(demanda.status) || (acao === "cancelar" && demanda.status === "standby");
+    const podeParar = acao === "cancelar" ? podeCancelar(demanda.status) : ESTAGIOS_PARAVEIS.includes(demanda.status);
     if (!podeParar) {
       return NextResponse.json(
         {

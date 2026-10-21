@@ -16,6 +16,7 @@ import {
   progressoDaDemanda,
   timeAgo,
   formatarMinutos,
+  ESTAGIOS_PARAVEIS,
 } from "@/lib/demandas";
 
 export function DemandModal({
@@ -618,15 +619,6 @@ function EstimativaConsultor({ demanda }: { demanda: DemandaCompleta }) {
 // Congelar / descongelar / cancelar / excluir (2026-10-21). Só delivery.
 // Parar só vale fora de etapa rodando (triagem ou gate) — a API confere de
 // novo; aqui é só pra não oferecer o botão que vai ser recusado.
-const PARAVEIS = new Set([
-  "backlog",
-  "planejada",
-  "recorrente",
-  "aguardando_gate_analise",
-  "aguardando_gate_design",
-  "aguardando_gate_build",
-  "aguardando_homologacao",
-]);
 
 function CicloDemanda({ demanda, onClose }: { demanda: DemandaCompleta; onClose: () => void }) {
   const router = useRouter();
@@ -636,7 +628,7 @@ function CicloDemanda({ demanda, onClose }: { demanda: DemandaCompleta; onClose:
   const [erro, setErro] = useState("");
 
   const congelada = demanda.status === "standby";
-  const podeParar = PARAVEIS.has(demanda.status);
+  const podeParar = ESTAGIOS_PARAVEIS.includes(demanda.status);
   const podeExcluir = !demanda.materializadoEm;
   if (!podeParar && !congelada) return null;
 
