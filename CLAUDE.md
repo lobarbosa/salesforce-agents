@@ -73,6 +73,14 @@ gate humano bloqueante — essa invariante tem teste (`tests/test_fluxo.py`). O 
 automático é a borda: agente→humano (o gate aparece pra quem precisa ver) e humano→agente
 (aprovar aciona). O que era manual antes era o transporte, não a decisão.
 
+**Esteira ao vivo** (`/esteira` no Squad OS, 2026-10-21): durante a sessão,
+`src/salesforce_agents/ao_vivo.py` manda eventos para `/api/sync/evento` — começou,
+qual subagente entrou, que ferramenta chamou (nome do arquivo sem caminho, as três
+primeiras palavras de um comando), custo do turno, terminou. **Só metadata**
+(guardrail #2): nunca texto do modelo, conteúdo de arquivo, padrão de busca ou
+argumento de SOQL. Best-effort: sem URL/token vira no-op e falha de rede nunca derruba
+a sessão. Eventos ficam 7 dias; o histórico durável é `ExecucaoAgente` (/falhas).
+
 O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
 (`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.
 

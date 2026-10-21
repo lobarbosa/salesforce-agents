@@ -134,6 +134,7 @@ async def rodar(
     ao_terminar: Callable[[object], None] | None = None,
     escrever: Callable[[str], None] = print,
     tentativas: int = MAX_TENTATIVAS,
+    ao_usar_ferramenta: Callable[[str, str, dict, str | None], None] | None = None,
 ) -> None:
     """Roda a sessão e só volta quando `conferir()` não achar mais pendência.
 
@@ -147,6 +148,10 @@ async def rodar(
     cobrança. Contar só o primeiro faria a telemetria de custo mentir por baixo
     justamente nos ciclos que custaram mais caro — e "esta etapa precisou de três
     turnos" é, ela mesma, o sinal de que algo naquele agente merece atenção.
+
+    `ao_usar_ferramenta(id, nome, entrada, pai)` vê cada chamada de ferramenta
+    (inclusive as de dentro de subagente, com `pai` = o id da chamada Task) —
+    é o que alimenta a esteira ao vivo (ao_vivo.py).
     """
     # Import tardio, mesma disciplina de `orchestrator` e `assessment`: o SDK só
     # é necessário para rodar de verdade, e as funções puras acima precisam ser
@@ -168,10 +173,17 @@ async def rodar(
                     erro_sdk = getattr(message, "error", None)
                     if erro_sdk:
                         textos_do_turno.append(str(erro_sdk))
+                    pai = getattr(message, "parent_tool_use_id", None)
                     for block in message.content:
                         if isinstance(block, TextBlock):
                             escrever(block.text)
                             textos_do_turno.append(block.text)
+                        elif ao_usar_ferramenta is not None and hasattr(block, "name") and hasattr(block, "input"):
+                            # ToolUseBlock, por forma — o stub dos testes não o define.
+                            try:
+                                ao_usar_ferramenta(block.id, block.name, block.input, pai)
+                            except Exception as exc:  # observabilidade nunca derruba a sessão
+                                escrever(f"(esteira ao vivo: {exc})")
                 elif isinstance(message, ResultMessage):
                     if ao_terminar is not None:
                         ao_terminar(message)
