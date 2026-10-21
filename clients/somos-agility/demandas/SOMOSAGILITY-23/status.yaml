@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-23
+client: somos-agility
+titulo: Erro ao alterar valor emResultado financeiro
+tipo: sustentacao
+status: backlog
+criado_em: '2026-10-20T15:07:38.235Z'
+historico:
+- de: null
+  em: '2026-10-20T15:07:38.224Z'
+  para: backlog
+  autor: Juliana Mendes
