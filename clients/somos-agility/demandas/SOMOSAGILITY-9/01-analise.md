@@ -136,3 +136,11 @@ Nenhuma destas premissas está aceita. Cada uma precisa de confirmação humana 
 Esta análise não fecha os critérios de aceite nem libera o arquiteto. As perguntas Q1 a Q6 são bloqueantes e precisam de resposta do consultor ou do negócio. A pedido da validação, peço também a liberação do anexo (Q7) ou o detalhamento em texto.
 
 Análise pronta. Preciso da sua validação antes de acionar o arquiteto.
+
+## Estimativa de esforço
+
+**Estimativa de esforço:** 10–20 h
+
+Esforço humano (consultor configurando, revisando, testando e homologando — não o tempo do agente). M com risco de G: três frentes (aprovação, campo obrigatório, lançamento) num processo ainda não descrito e com automação acoplada.
+
+_Estimativa acrescentada em 2026-10-21 a pedido de Leonardo, a partir do que este artefato já registra (o artefato foi gerado antes de a esteira pedir esta linha). É faixa provisória: o consultor lança a estimativa oficial no card._
