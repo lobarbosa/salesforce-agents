@@ -2,10 +2,22 @@ id: SOMOSAGILITY-18
 client: somos-agility
 titulo: Erro na somatório de HNC - Marco Execução - Fase de entrega -  PRJ 1384
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-19T16:33:22.730Z'
 historico:
-  - de: null
-    em: '2026-10-19T16:33:22.719Z'
-    para: backlog
-    autor: Juliana Mendes
+- de: null
+  em: '2026-10-19T16:33:22.719Z'
+  para: backlog
+  autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T00:52:33.158223+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:54:26.106591+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:54:40.847731+00:00'
