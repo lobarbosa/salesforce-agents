@@ -2,10 +2,26 @@ id: SOMOSAGILITY-14
 client: somos-agility
 titulo: Erro fluxo de reembolso - Usuario Simone
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_design
 criado_em: '2026-10-15T19:58:57.878Z'
 historico:
-  - de: null
-    em: '2026-10-15T19:58:57.865Z'
-    para: backlog
-    autor: Juliana Mendes
+- de: null
+  em: '2026-10-15T19:58:57.865Z'
+  para: backlog
+  autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-16T11:38:01.054145+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-16T11:40:21.501460+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Carlos Sordi
+  em: '2026-10-19T23:30:13.193830+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-19T23:38:08.634483+00:00'
