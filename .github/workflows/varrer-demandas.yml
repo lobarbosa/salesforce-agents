@@ -42,6 +42,21 @@ jobs:
 
       - run: pip install pyyaml
 
+      # Fila de disparo do Squad OS (lib/fila-esteira.ts): manda o próximo de
+      # cada cliente livre e devolve à fila o que o Actions cancelou antes de
+      # rodar. Antes da varredura abaixo, que respeita run já na fila.
+      - name: Processar a fila de disparo do Squad OS
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::SQUAD_OS_SYNC_URL/SQUAD_OS_SYNC_TOKEN não configurados — fila de disparo não processada."
+            exit 0
+          fi
+          curl -fsS -X POST "${SYNC_URL%/demanda}/fila" -H "Authorization: Bearer $SYNC_TOKEN" \
+            || echo "::warning::Falha ao processar a fila de disparo do Squad OS."
+
       - name: Disparar o que ficou para trás
         env:
           GH_TOKEN: ${{ github.token }}

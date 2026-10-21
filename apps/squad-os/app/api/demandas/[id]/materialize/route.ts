@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
-import { CodigoOcupadoNoGitError, materializeDemanda, triggerRunDemand } from "@/lib/github";
+import { CodigoOcupadoNoGitError, materializeDemanda } from "@/lib/github";
+import { enfileirar, processarFila } from "@/lib/fila-esteira";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
@@ -55,7 +56,8 @@ export async function POST(
       criadoEm: demanda.criadoEm,
       historico: demanda.historico,
     });
-    await triggerRunDemand(demanda.client.slug, demanda.code);
+    // Pela fila do cliente, nunca direto (ver lib/fila-esteira.ts).
+    await enfileirar({ clientId: demanda.clientId, demandaId: demanda.id, tipo: "rodar" });
   } catch (err) {
     // Desfaz a reivindicação (só a nossa) pra poder tentar de novo. Reexecutar
     // é seguro: materializeDemanda aceita reescrever o próprio demanda.md.
@@ -68,6 +70,7 @@ export async function POST(
     );
   }
 
+  await processarFila(demanda.clientId).catch((e) => console.error("materialize: processarFila", e));
   const updated = await prisma.demanda.findUnique({ where: { id } });
   return NextResponse.json(updated);
 }

@@ -68,7 +68,7 @@ export function DemandModal({
   // status só muda quando a execução sincroniza. Sem isto, reabrir o card
   // nesse meio-tempo mostrava o botão de novo.
   const [liberadoAgora, setLiberadoAgora] = useState(false);
-  const liberadoPor = gateLiberadoPor(demanda) ?? (liberadoAgora ? "você" : null);
+  const liberado = gateLiberadoPor(demanda) ?? (liberadoAgora ? { autor: "você", naFila: false } : null);
 
   const jaAprovada = !!aprovacao?.aprovado;
   const faltandoResposta = respostas.filter((p) => !p.resposta.trim()).length;
@@ -268,9 +268,12 @@ export function DemandModal({
                   ? "Revise o que foi entregue e aprove quando estiver de acordo. Seu nome e a data ficam registrados, junto com a versão exata do que você aprovou."
                   : "A esteira parou aqui esperando aprovação. Ao liberar, a próxima etapa dispara sozinha na sandbox correspondente — e o seu nome fica registrado como quem aprovou."}
               </p>
-              {liberadoPor ? (
+              {liberado ? (
                 <p className="gate-liberado" role="status">
-                  Liberado por {liberadoPor}. A próxima etapa está rodando — o card avança sozinho quando terminar.
+                  Liberado por {liberado.autor}.{" "}
+                  {liberado.naFila
+                    ? "Na fila da esteira: este cliente já tem uma execução rodando, e esta sai assim que ela terminar."
+                    : "A próxima etapa está rodando — o card avança sozinho quando terminar."}
                 </p>
               ) : !confirmandoGate ? (
                 <button

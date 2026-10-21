@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
+import { concluirEmVoo, processarFila } from "@/lib/fila-esteira";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
 
@@ -182,6 +183,14 @@ export async function POST(request: NextRequest) {
       ...dadosDaEstimativa,
     },
   });
+
+  // Fim de execução desta demanda: libera a fila do cliente e manda o
+  // próximo (lib/fila-esteira.ts). A execução que chama ainda aparece ativa
+  // no Actions — por isso é excluída pela URL.
+  await concluirEmVoo(demanda.id);
+  await processarFila(client.id, { excetoRunUrl: atualizada.ultimoRunUrl }).catch((e) =>
+    console.error("sync/demanda: processarFila", e)
+  );
 
   return NextResponse.json({ id: atualizada.id, status: atualizada.status });
 }
