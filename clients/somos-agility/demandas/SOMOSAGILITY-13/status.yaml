@@ -2,10 +2,18 @@ id: SOMOSAGILITY-13
 client: somos-agility
 titulo: Criação esteira de venda - Renovação
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-14T22:53:44.897Z'
 historico:
 - de: null
   em: '2026-10-14T22:53:44.895Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T10:11:37.782214+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T10:13:55.090540+00:00'
