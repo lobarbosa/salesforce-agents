@@ -167,3 +167,11 @@ sênior.** Eu não a tomo aqui.
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Estimativa de esforço
+
+**Estimativa de esforço:** 6–10 h
+
+Esforço humano (consultor configurando, revisando, testando e homologando — não o tempo do agente). Validation rule + layout + FLS (e permission set opcional), com teste dos 13 perfis que criam JOB.
+
+_Estimativa acrescentada em 2026-10-21 a pedido de Leonardo, a partir do que este artefato já registra (o artefato foi gerado antes de a esteira pedir esta linha). É faixa provisória: o consultor lança a estimativa oficial no card._
