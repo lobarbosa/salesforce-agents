@@ -290,6 +290,11 @@ jobs:
           # (RAG não configurado nesta sessão) em vez de falhar a sessão.
           SQUAD_OS_RAG_QUERY_URL: ${{ secrets.SQUAD_OS_RAG_QUERY_URL }}
           SQUAD_OS_SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+          # Esteira ao vivo (ao_vivo.py): eventos de metadata durante a sessão.
+          # A URL deriva de SQUAD_OS_SYNC_URL (…/demanda → …/evento);
+          # SQUAD_OS_SYNC_EVENTO_URL sobrepõe. Sem elas, vira no-op.
+          SQUAD_OS_SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          SQUAD_OS_SYNC_EVENTO_URL: ${{ secrets.SQUAD_OS_SYNC_EVENTO_URL }}
           # Por env, não interpolados no script: o nome de quem aprovou é texto
           # que vem do app.
           APROVAR_GATE: ${{ inputs.aprovar_gate }}

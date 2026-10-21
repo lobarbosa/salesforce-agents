@@ -1335,3 +1335,34 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .column.drop-recusado { outline: 2px dashed var(--danger); outline-offset: -2px; opacity: 0.7; }
 .drop-aviso { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
 .gate-liberado { margin: 0; font-weight: 600; color: var(--accent3); }
+
+/* Esteira ao vivo (/esteira) */
+.esteira-resumo { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 1rem; font-weight: 600; }
+.esteira-pulso { width: 10px; height: 10px; border-radius: 50%; background: var(--border-strong); flex-shrink: 0; }
+.esteira-pulso.ativo { background: var(--success); animation: esteira-pulsar 1.6s ease-in-out infinite; }
+@keyframes esteira-pulsar { 0%, 100% { box-shadow: 0 0 0 0 var(--success-soft); } 50% { box-shadow: 0 0 0 6px var(--success-soft); } }
+@media (prefers-reduced-motion: reduce) { .esteira-pulso.ativo { animation: none; } }
+.esteira-offline { color: var(--danger); font-weight: 400; }
+.esteira-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.6rem; }
+.esteira-run { background: var(--surface); border: 1px solid var(--border); border-left: 4px solid var(--border-strong); border-radius: 8px; }
+.esteira-run.estado-rodando { border-left-color: var(--success); }
+.esteira-run.estado-sem_sinal { border-left-color: var(--gate); }
+.esteira-run.estado-erro { border-left-color: var(--danger); }
+.esteira-cabeca { all: unset; box-sizing: border-box; width: 100%; cursor: pointer; display: grid; grid-template-columns: auto 1fr 2fr auto; gap: 0.75rem; align-items: center; padding: 0.7rem 0.9rem; min-height: 44px; }
+.esteira-cabeca:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; border-radius: 8px; }
+.esteira-cabeca .sub, .esteira-detalhe .sub { display: block; font-size: 0.75rem; color: var(--text-muted); font-weight: 400; }
+.esteira-estado { font-size: 0.72rem; font-weight: 700; padding: 0.15rem 0.5rem; border-radius: 999px; background: var(--surface-alt); color: var(--text-muted); white-space: nowrap; }
+.esteira-estado.estado-rodando { background: var(--success-soft); color: var(--success); }
+.esteira-estado.estado-sem_sinal { background: var(--gate-soft); color: var(--gate-strong); }
+.esteira-estado.estado-erro { background: var(--danger-soft); color: var(--danger); }
+.esteira-tempo { text-align: right; font-variant-numeric: tabular-nums; }
+.esteira-detalhe { border-top: 1px solid var(--border); padding: 0.7rem 0.9rem 0.9rem; }
+.esteira-eventos { list-style: none; margin: 0.4rem 0; padding: 0; font-size: 0.8rem; max-height: 320px; overflow-y: auto; }
+.esteira-eventos li { display: flex; gap: 0.6rem; padding: 0.2rem 0; border-bottom: 1px dashed var(--border); }
+.esteira-eventos .mono { font-family: var(--mono); color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.esteira-agente { font-size: 0.7rem; padding: 0 0.4rem; border-radius: 4px; background: var(--accent-soft); color: var(--accent); white-space: nowrap; }
+.esteira-links { display: flex; gap: 1rem; margin: 0.5rem 0 0; font-size: 0.85rem; }
+@media (max-width: 720px) {
+  .esteira-cabeca { grid-template-columns: auto 1fr; }
+  .esteira-onde, .esteira-tempo { grid-column: 1 / -1; text-align: left; }
+}

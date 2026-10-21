@@ -427,6 +427,15 @@ export function Sidebar({
         Minhas horas
       </Link>
       <Link
+        href="/esteira"
+        onClick={fecharMenu}
+        className={`nav-item${pathname?.startsWith("/esteira") ? " active" : ""}`}
+        aria-current={pathname?.startsWith("/esteira") ? "page" : undefined}
+      >
+        <span className="icon" />
+        Esteira ao vivo
+      </Link>
+      <Link
         href="/falhas"
         onClick={fecharMenu}
         className={`nav-item${pathname?.startsWith("/falhas") ? " active" : ""}`}

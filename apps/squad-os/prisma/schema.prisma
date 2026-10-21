@@ -137,6 +137,7 @@ model Client {
   usuarios  Usuario[]
   ragChunks RagChunk[]
   execucoes ExecucaoAgente[]
+  eventosEsteira EventoEsteira[]
 
   // Custo alocado ao cliente (margem de contribuição por cliente).
   contasPagar         ContaPagar[]
@@ -252,6 +253,35 @@ model ExecucaoAgente {
   @@index([resultado, concluidoEm])
   @@index([demandaId])
   @@map("execucoes_agente")
+}
+
+// Esteira ao vivo (2026-10-21): eventos que a sessão de agente manda
+// ENQUANTO roda (src/salesforce_agents/ao_vivo.py → /api/sync/evento) —
+// começou, qual subagente entrou, que ferramenta chamou, custo do turno,
+// terminou. Só metadata (guardrail #2): nunca texto do modelo nem conteúdo.
+// Efêmero: a rota apaga o que tem mais de 7 dias; o histórico durável é
+// ExecucaoAgente acima.
+model EventoEsteira {
+  id       String @id @default(cuid())
+  clientId String @map("client_id")
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+
+  runId       String  @map("run_id")
+  runUrl      String  @default("") @map("run_url")
+  demandaCode String  @default("") @map("demanda_code")
+  etapa       String  @default("")
+  // inicio | agente | ferramenta | turno | fim
+  tipo        String
+  agente      String  @default("")
+  ferramenta  String  @default("")
+  detalhe     String  @default("")
+  custoUsd    Float?  @map("custo_usd")
+  em          DateTime @default(now())
+
+  @@index([em])
+  @@index([runId, em])
+  @@index([clientId])
+  @@map("eventos_esteira")
 }
 
 // Quem pode entrar no Squad OS e com que escopo — substitui a allowlist por
