@@ -174,7 +174,7 @@ export function DemandModal({
   }
 
   return (
-    <Modal title={demanda.titulo} onClose={onClose} wide>
+    <Modal title={`${demanda.code} · ${demanda.titulo}`} onClose={onClose} wide>
       <div className="meta">
         <span className={`badge ${demanda.tipo === "projeto" ? "projeto" : "sustentacao"}`}>
           {demanda.tipo === "projeto" ? "projeto" : "sustentação"}

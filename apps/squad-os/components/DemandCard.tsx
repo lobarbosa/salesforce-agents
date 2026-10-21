@@ -197,7 +197,7 @@ export function DemandCard({
       className="card"
       tabIndex={0}
       role="button"
-      aria-label={`Abrir demanda ${demanda.titulo}`}
+      aria-label={`Abrir demanda ${demanda.code}: ${demanda.titulo}`}
       aria-describedby={metaId}
       onClick={onOpen}
       draggable={arrastavel}
@@ -219,6 +219,10 @@ export function DemandCard({
         }
       }}
     >
+      {/* O código (SOMOSAGILITY-18) é como a demanda é chamada em todo lugar —
+          PR, branch, conversa com o cliente. Sem ele no card, achar a certa
+          no quadro era ler título por título. */}
+      <div className="card-codigo">{demanda.code}</div>
       <div className="titulo">{demanda.titulo}</div>
       <div className="meta" id={metaId}>
         <span className={`badge ${demanda.tipo === "projeto" ? "projeto" : "sustentacao"}`}>
