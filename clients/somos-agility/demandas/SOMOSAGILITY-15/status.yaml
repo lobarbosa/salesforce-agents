@@ -2,10 +2,22 @@ id: SOMOSAGILITY-15
 client: somos-agility
 titulo: Layout de pagina inicial
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-19T16:17:14.279Z'
 historico:
 - de: null
   em: '2026-10-19T16:17:14.268Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T10:16:06.173281+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T10:18:18.550416+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T10:18:29.786183+00:00'
