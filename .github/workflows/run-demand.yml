@@ -198,6 +198,21 @@ jobs:
           else
             git checkout -b "$DEMAND_BRANCH"
           fi
+          # A branch da demanda vive semanas e traz consigo a foto do código
+          # de quando nasceu. Sem isto, a etapa rodava com o pipeline antigo:
+          # achado real (2026-10-21) — as branches da Somos Agility, criadas
+          # antes de estimativa.py existir, sincronizavam sem estimativa, e
+          # também sem scan de PII pré-push, anexos e comentários do card.
+          # Ferramental, doutrina, agentes e o briefing/assessment do cliente
+          # vêm sempre do commit que disparou o workflow (main). O resto da
+          # pasta do cliente — demandas e force-app, onde o build escreve —
+          # continua sendo o da branch. Entra no commit da etapa, o que só
+          # aproxima a branch da main (o diff do PR encolhe, não cresce).
+          for caminho in src scripts .claude CLAUDE.md pyproject.toml \
+                         "clients/$CLIENT/CLAUDE.md" "clients/$CLIENT/assessment.md" \
+                         "clients/$CLIENT/assessment.json"; do
+            git checkout "$GITHUB_SHA" -- "$caminho" 2>/dev/null || true
+          done
 
       # Anexos do card que alguém de delivery liberou pro agente (declarando que
       # não têm dado pessoal — guardrail #2). Vão pra demandas/<ID>/anexos/ só
