@@ -331,6 +331,15 @@ Cada card mostra horas de consultor, horas de agente, o total das duas, e custo 
   Minhas horas (reduzir/zerar continua livre). Quando existe, é o número oficial: o
   cliente vê ela + horas de agente, sem recalibrar. A calibração continua medindo a
   sugestão do agente contra o lançado — é a sugestão que ela corrige.
+- **Aprovação do cliente e débito no contrato** (2026-10-21) — o cliente aprova ou
+  **segura** a estimativa oficial na aba Aprovações (ou no card), depois da análise e antes
+  do build. O gate de design **não libera o build** sem aprovação válida (a do número que
+  está no card agora — se o consultor muda a estimativa, o cliente aprova de novo); uma
+  aprovação de gate já na fila espera por ela. Segurar congela a demanda com o motivo do
+  cliente; aprovar depois descongela. Quando a demanda entra em build, a estimativa aprovada
+  **vira o consumo do contrato** naquele mês (`horasPorMes`), uma vez só; o timesheet dela
+  deixa de debitar e passa a medir o desvio (excedente aparece no card, não debita).
+  Demandas sem aprovação (anteriores à regra) seguem debitando pelo timesheet.
 - **Custo de agente (USD)** — conta, não opinião: o gasto da demanda pela telemetria
   acima, mais a mediana por etapa do que ainda falta (valor de partida declarado enquanto
   não há 3 amostras). **Só admin vê**: a página recorta para os demais papéis

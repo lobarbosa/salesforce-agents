@@ -1371,3 +1371,17 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .esteira-estado.estado-sem_detalhe { background: var(--success-soft); color: var(--success); }
 .esteira-estado.estado-na_fila { background: var(--accent-soft); color: var(--accent); }
 .esteira-fila { font-weight: 400; color: var(--text-muted); }
+
+/* Aprovação da estimativa pelo cliente */
+.aprovacao-estimativa { display: flex; flex-direction: column; gap: 0.35rem; padding: 0.7rem 0.85rem; border-radius: 8px; border: 1px solid var(--border); background: var(--surface-alt); margin: 0.6rem 0; font-size: 0.85rem; }
+.aprovacao-estimativa.pendente { border-color: var(--gate); background: var(--gate-soft); }
+.aprovacao-estimativa.segurada { border-color: var(--danger); background: var(--danger-soft); }
+.aprovacao-estimativa.aprovada { border-color: var(--success); background: var(--success-soft); }
+.aprovacao-botoes { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; margin-top: 0.25rem; }
+.aprovacao-segurar { display: flex; flex-direction: column; gap: 0.4rem; }
+.aprovacoes-intro { color: var(--text-muted); margin: 0 0 1rem; max-width: 70ch; }
+.aprovacoes-lista { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.75rem; }
+.aprovacoes-item { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 0.9rem; }
+.aprovacoes-titulo { display: flex; gap: 0.6rem; align-items: baseline; font-weight: 600; }
+.aprovacoes-titulo .mono { font-family: var(--mono); color: var(--text-muted); font-weight: 400; font-size: 0.8rem; }
+.aprovacoes-sub { margin: 1.5rem 0 0.6rem; font-size: 0.95rem; }

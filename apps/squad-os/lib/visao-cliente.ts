@@ -71,7 +71,9 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     estimativaHorasMin: null,
     estimativaHorasMax: null,
     estimativaHorasFonte: "",
-    estimativaConsultorHoras: null,
+    // O número oficial é o que o cliente aprova (e o que debita do contrato
+    // quando a construção começa) — ver components/AprovacaoEstimativa.tsx.
+    estimativaConsultorHoras: clienteVeEstimativa(d.status) || d.status === "standby" ? d.estimativaConsultorHoras : null,
     estimativaConsultorPor: "",
     sugestaoConsultorHoras: null,
     agenteHorasGasto: null,

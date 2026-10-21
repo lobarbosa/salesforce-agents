@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { processarFila } from "@/lib/fila-esteira";
-import { GATE_DO_CLIENTE, marcadorDeGate } from "@/lib/demandas";
+import { GATE_DO_CLIENTE, estimativaAprovada, marcadorDeGate } from "@/lib/demandas";
 import { travar } from "@/lib/trava";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
@@ -57,6 +57,19 @@ export async function POST(
     );
   }
 
+  // Build só com a estimativa aprovada pelo cliente (2026-10-21): é o número
+  // que vai debitar do contrato quando a construção começar.
+  if (demanda.status === "aguardando_gate_design" && !estimativaAprovada(demanda)) {
+    return NextResponse.json(
+      {
+        error:
+          demanda.estimativaConsultorHoras == null
+            ? "lance a estimativa oficial no card — o cliente precisa aprová-la antes do build"
+            : "o cliente ainda não aprovou a estimativa de horas — o build só sai depois disso",
+      },
+      { status: 409 }
+    );
+  }
   const autor = usuario.nome.trim() || usuario.email;
   const gate = demanda.status;
   const marcador = marcadorDeGate(gate);

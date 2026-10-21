@@ -346,3 +346,32 @@ export function gateLiberadoPor(d: {
   const aberto = (d.disparos ?? []).find((x) => x.tipo === "aprovar" && x.gate === d.status && !x.concluidoEm);
   return aberto ? { autor: aberto.autor, naFila: !aberto.disparadoEm } : null;
 }
+
+// Aprovação da estimativa pelo cliente (2026-10-21). O cliente aprova (ou
+// segura) a estimativa oficial do consultor depois da análise e antes do
+// build; sem aprovação válida o gate de design não libera o build.
+export const ESTAGIOS_APROVACAO_ESTIMATIVA: readonly string[] = [
+  "aguardando_gate_analise",
+  "design",
+  "aguardando_gate_design",
+];
+
+/** A aprovação existe e é do número que está no card agora. */
+export function estimativaAprovada(d: {
+  estimativaConsultorHoras: number | null;
+  estimativaAprovadaHoras: number | null;
+}): boolean {
+  return d.estimativaConsultorHoras != null && d.estimativaAprovadaHoras === d.estimativaConsultorHoras;
+}
+
+/** O cliente pode decidir sobre a estimativa agora? (inclui a segurada por ele) */
+export function aguardaAprovacaoEstimativa(d: {
+  status: string;
+  congeladaDe?: string | null;
+  estimativaConsultorHoras: number | null;
+  estimativaAprovadaHoras: number | null;
+}): boolean {
+  if (d.estimativaConsultorHoras == null || estimativaAprovada(d)) return false;
+  const etapa = d.status === "standby" ? d.congeladaDe ?? "" : d.status;
+  return ESTAGIOS_APROVACAO_ESTIMATIVA.includes(etapa);
+}

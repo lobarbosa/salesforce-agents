@@ -10,10 +10,12 @@ import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
 import { ContratoTab } from "@/components/ContratoTab";
 import { DemandasTab } from "@/components/DemandasTab";
+import { AprovacoesTab } from "@/components/AprovacaoEstimativa";
+import { aguardaAprovacaoEstimativa } from "@/lib/demandas";
 import { Copiloto } from "@/components/Copiloto";
 import { EncerradoBadge, EncerramentoCliente } from "@/components/EncerramentoCliente";
 
-type Tab = "conhecimento" | "contrato" | "conexao" | "demandas";
+type Tab = "conhecimento" | "contrato" | "conexao" | "demandas" | "aprovacoes";
 
 export function ClientDetail({
   client,
@@ -47,6 +49,7 @@ export function ClientDetail({
   // de escrita recusam o papel cliente (canManageClientData); aqui só não
   // mostramos controle que ele não pode usar.
   if (!podeGerenciarClientes) {
+    const aAprovar = demandas.filter(aguardaAprovacaoEstimativa).length;
     return (
       <>
         <div className="client-header">
@@ -65,6 +68,19 @@ export function ClientDetail({
             aria-controls="painel-demandas"
           >
             Demandas
+          </button>
+          <button
+            className={`tab-btn${tab === "aprovacoes" ? " active" : ""}`}
+            onClick={() => setTab("aprovacoes")}
+            type="button"
+            role="tab"
+            id="tab-aprovacoes"
+            aria-selected={tab === "aprovacoes"}
+            tabIndex={tab === "aprovacoes" ? 0 : -1}
+            aria-controls="painel-aprovacoes"
+          >
+            Aprovações
+            {aAprovar > 0 && <span className="count" aria-label={`${aAprovar} esperando`}>{aAprovar}</span>}
           </button>
           <button
             className={`tab-btn${tab === "contrato" ? " active" : ""}`}
@@ -115,6 +131,11 @@ export function ClientDetail({
               isAdmin={false}
               visaoCliente
             />
+          </div>
+        )}
+        {tab === "aprovacoes" && (
+          <div role="tabpanel" id="painel-aprovacoes" aria-labelledby="tab-aprovacoes">
+            <AprovacoesTab demandas={demandas} />
           </div>
         )}
         {tab === "contrato" && (

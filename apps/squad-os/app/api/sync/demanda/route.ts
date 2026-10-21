@@ -2,6 +2,9 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
 import { concluirEmVoo, processarFila } from "@/lib/fila-esteira";
+import { estimativaAprovada } from "@/lib/demandas";
+
+const ESTAGIOS_DE_DEBITO = new Set(["build", "aguardando_gate_build", "qa", "aguardando_homologacao", "release", "entregue"]);
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
 
@@ -102,7 +105,7 @@ export async function POST(request: NextRequest) {
 
   const demanda = await prisma.demanda.findUnique({
     where: { clientId_code: { clientId: client.id, code } },
-    select: { id: true, perguntas: true },
+    select: { id: true, perguntas: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true, estimativaDebitadaEm: true },
   });
   if (!demanda) {
     // Acontece quando a demanda nasceu pela CLI (`sfagents demanda nova`) e
@@ -181,6 +184,11 @@ export async function POST(request: NextRequest) {
       ultimoRunUrl: String(body.run_url ?? "").slice(0, 500),
       ...dadosDoArtefato,
       ...dadosDaEstimativa,
+      // Entrou em build com estimativa aprovada pelo cliente: ela vira o
+      // consumo do contrato agora (uma vez só). Ver horasPorMes em lib/data.ts.
+      ...(ESTAGIOS_DE_DEBITO.has(status) && !demanda.estimativaDebitadaEm && estimativaAprovada(demanda)
+        ? { estimativaDebitadaHoras: demanda.estimativaAprovadaHoras, estimativaDebitadaEm: new Date() }
+        : {}),
     },
   });
 

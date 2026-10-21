@@ -144,14 +144,25 @@ export async function horasPorMes(clientId: string, meses = 6): Promise<MesDeHor
   const primeiroMes = mesAnterior(chaveDia(agora).slice(0, 7), meses - 1);
   const desde = cicloDoMes(primeiroMes, ciclo).desde;
 
+  // Demanda que entrou em build com estimativa aprovada debita a ESTIMATIVA,
+  // no mês em que entrou (2026-10-21) — o timesheet dela mede desvio, não
+  // debita de novo. As demais (sem aprovação, anteriores à regra) seguem pelo
+  // timesheet, como sempre.
   const registros = await prisma.registroTempo.findMany({
     where: {
-      demanda: { clientId },
+      demanda: { clientId, estimativaDebitadaEm: null },
       fimEm: { not: null },
       inicioEm: { gte: desde },
     },
     select: { inicioEm: true, minutos: true },
   });
+  const debitos = await prisma.demanda.findMany({
+    where: { clientId, estimativaDebitadaEm: { gte: desde }, estimativaDebitadaHoras: { not: null } },
+    select: { estimativaDebitadaEm: true, estimativaDebitadaHoras: true },
+  });
+  for (const d of debitos) {
+    registros.push({ inicioEm: d.estimativaDebitadaEm!, minutos: Math.round(d.estimativaDebitadaHoras! * 60) });
+  }
 
   return montarHorasPorMes(registros, contrato?.horasContratadas ?? 0, ciclo, agora, meses);
 }

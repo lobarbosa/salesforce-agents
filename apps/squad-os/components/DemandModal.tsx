@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
+import { DecisaoEstimativa } from "@/components/AprovacaoEstimativa";
 import { Modal } from "@/components/Modal";
 import { Artefato } from "@/components/Artefato";
 import { DemandaPainel } from "@/components/DemandaPainel";
@@ -18,6 +19,7 @@ import {
   formatarMinutos,
   ESTAGIOS_PARAVEIS,
   gateLiberadoPor,
+  estimativaAprovada,
 } from "@/lib/demandas";
 
 export function DemandModal({
@@ -227,6 +229,8 @@ export function DemandModal({
 
 
       {!visaoCliente && <EstimativaDemanda demanda={demanda} isAdmin={isAdmin} />}
+      <DecisaoEstimativa demanda={demanda} podeDecidir={visaoCliente || isAdmin} />
+
       {visaoCliente && demanda.estimativaCalibrada && (
         <div className="estimativa-demanda" aria-label="Estimativa de horas">
           <strong>
@@ -271,7 +275,9 @@ export function DemandModal({
               {liberado ? (
                 <p className="gate-liberado" role="status">
                   Liberado por {liberado.autor}.{" "}
-                  {liberado.naFila
+                  {liberado.naFila && demanda.status === "aguardando_gate_design" && !estimativaAprovada(demanda)
+                    ? "O build sai assim que o cliente aprovar a estimativa de horas."
+                    : liberado.naFila
                     ? "Na fila da esteira: este cliente já tem uma execução rodando, e esta sai assim que ela terminar."
                     : "A próxima etapa está rodando — o card avança sozinho quando terminar."}
                 </p>
