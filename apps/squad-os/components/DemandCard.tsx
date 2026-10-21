@@ -224,7 +224,8 @@ export function DemandCard({
             }}
           >
             {TRIAGE.map((s) => (
-              <option key={s} value={s}>
+              // Congelar pede motivo — é ação do card, não do dropdown.
+              <option key={s} value={s} disabled={s === "standby" && demanda.status !== "standby"}>
                 {TRIAGE_LABEL[s]}
               </option>
             ))}

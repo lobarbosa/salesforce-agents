@@ -7,8 +7,11 @@ export const TRIAGE_LABEL: Record<string, string> = {
   backlog: "Backlog",
   planejada: "Planejada",
   recorrente: "Recorrente",
-  standby: "Standby",
+  standby: "Congelada",
 };
+
+// Encerrada sem entrega (src/salesforce_agents/demands.py STAGES_ENCERRADOS).
+export const ENCERRADOS = ["cancelada"] as const;
 
 export const EXEC_STAGES = [
   "analise",
@@ -65,7 +68,9 @@ export const FASES: readonly FaseDoQuadro[] = [
   { chave: "design", titulo: "Design", estagios: ["design", "aguardando_gate_design"] },
   { chave: "build", titulo: "Build", estagios: ["build", "aguardando_gate_build"] },
   { chave: "qa", titulo: "QA e entrega", estagios: ["qa", "aguardando_homologacao", "release"] },
-  { chave: "entregue", titulo: "Entregue", estagios: ["entregue"] },
+  // Cancelada fica junto da entregue: as duas saíram da esteira. Coluna
+  // própria alargaria o quadro para uma exceção.
+  { chave: "entregue", titulo: "Entregue / cancelada", estagios: ["entregue", ...ENCERRADOS] },
 ];
 
 export function faseDoEstagio(status: string): FaseDoQuadro | null {
@@ -119,15 +124,17 @@ export function agenteRodando(status: string): boolean {
 // Não é simplificação por estética: um cliente que não distingue "esperando a
 // Acxya" de "esperando você" ou não age quando devia, ou cobra o que não é seu.
 
-export type EstadoCliente = "recebida" | "andamento" | "voce" | "entregue";
+export type EstadoCliente = "recebida" | "andamento" | "voce" | "entregue" | "pausada" | "cancelada";
 
-export const ESTADOS_CLIENTE = ["recebida", "andamento", "voce", "entregue"] as const;
+export const ESTADOS_CLIENTE = ["recebida", "andamento", "voce", "entregue", "pausada", "cancelada"] as const;
 
 export const ESTADO_CLIENTE_LABEL: Record<EstadoCliente, string> = {
   recebida: "Recebida",
   andamento: "Em andamento",
   voce: "Precisa da sua aprovação",
   entregue: "Entregue",
+  pausada: "Pausada",
+  cancelada: "Cancelada",
 };
 
 // O único gate da esteira que o papel `cliente` aprova.
@@ -155,6 +162,8 @@ export function podeAprovarGate(podeGerenciar: boolean, status: string): boolean
 export function estadoDoCliente(status: string): EstadoCliente {
   if (status === GATE_DO_CLIENTE) return "voce";
   if (status === "entregue") return "entregue";
+  if (status === "cancelada") return "cancelada";
+  if (status === "standby") return "pausada";
   if ((TRIAGE as readonly string[]).includes(status)) return "recebida";
   return "andamento";
 }

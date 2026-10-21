@@ -39,6 +39,11 @@ from . import ambientes, demands, gates
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
 DISPARA_SESSAO = frozenset({"analise", "design", "build", "qa", "release"})
 
+# Demanda congelada (standby) ou cancelada não roda nada, mesmo disparada —
+# por botão, varredura ou disparo duplicado na fila. Sem isto, standby caía
+# na regra de triagem abaixo e a análise começava (achado de 2026-10-21).
+PARADOS = frozenset({"standby", "cancelada"})
+
 # Autor registrado no histórico quando quem avança é o próprio pipeline. Fica
 # distinguível de uma transição humana ao ler `status.yaml` depois.
 AUTOR_PIPELINE = "pipeline"
@@ -148,6 +153,9 @@ def rodar(
 
     rodadas: list[str] = []
     d = demands.Demand.load(client, demand_id)
+
+    if d.status in PARADOS:
+        return Parada("fim", d.status, ambientes.ambiente_do_estagio(d.status), ())
 
     # Demanda em triagem entra na execução aqui. Ter sido disparada já é a
     # decisão de executá-la — no Squad OS é o botão "Materializar", que só

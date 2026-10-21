@@ -70,6 +70,8 @@ enum StatusDemanda {
   aguardando_homologacao
   release
   entregue
+  // encerrada sem entregar — terminal, a esteira recusa rodar
+  cancelada
 }
 
 model Client {
@@ -301,6 +303,13 @@ model Demanda {
   historico Json  @default("[]")
 
   materializadoEm DateTime? @map("materializado_em")
+
+  // Congelar / cancelar (2026-10-21). `congeladaDe` guarda a etapa em que a
+  // demanda estava quando congelou (standby), pra descongelar voltar pra ela
+  // e não pro backlog. `motivoParada` é obrigatório nas duas ações — parar
+  // sem dizer por quê é o que vira card esquecido.
+  congeladaDe  StatusDemanda? @map("congelada_de")
+  motivoParada String         @default("") @map("motivo_parada")
 
   // De qual entregável contratado esta demanda nasceu, quando nasceu de um.
   // Opcional porque demanda de AMS não tem entregável, e porque mesmo em

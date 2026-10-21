@@ -175,6 +175,20 @@ export function DemandModal({
 
       <div className="demanda-texto">{demanda.texto || "(sem descrição)"}</div>
 
+      {demanda.status === "standby" && (
+        <div className="approval-banner pendente" role="status">
+          <strong>Congelada</strong>
+          {demanda.congeladaDe && !visaoCliente && <> — estava em {demanda.congeladaDe}</>}
+          {demanda.motivoParada && <div>Motivo: {demanda.motivoParada}</div>}
+        </div>
+      )}
+      {demanda.status === "cancelada" && (
+        <div className="approval-banner" role="status">
+          <strong>Cancelada</strong>
+          {demanda.motivoParada && <div>Motivo: {demanda.motivoParada}</div>}
+        </div>
+      )}
+
       {canManage && demanda.status === "backlog" && (
         <div className="approval-banner pendente">
           {materializeErro && <div role="alert" style={{ marginBottom: "0.4rem" }}>{materializeErro}</div>}
@@ -428,6 +442,7 @@ export function DemandModal({
           {aprovarErro}
         </p>
       )}
+      {canManage && <CicloDemanda demanda={demanda} onClose={onClose} />}
       <div className="modal-actions">
         <button className="btn-ghost" type="button" onClick={onClose}>
           Fechar
@@ -596,6 +611,110 @@ function EstimativaConsultor({ demanda }: { demanda: DemandaCompleta }) {
           {erro}
         </p>
       )}
+    </div>
+  );
+}
+
+// Congelar / descongelar / cancelar / excluir (2026-10-21). Só delivery.
+// Parar só vale fora de etapa rodando (triagem ou gate) — a API confere de
+// novo; aqui é só pra não oferecer o botão que vai ser recusado.
+const PARAVEIS = new Set([
+  "backlog",
+  "planejada",
+  "recorrente",
+  "aguardando_gate_analise",
+  "aguardando_gate_design",
+  "aguardando_gate_build",
+  "aguardando_homologacao",
+]);
+
+function CicloDemanda({ demanda, onClose }: { demanda: DemandaCompleta; onClose: () => void }) {
+  const router = useRouter();
+  const [acao, setAcao] = useState<"" | "congelar" | "cancelar" | "excluir">("");
+  const [motivo, setMotivo] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState("");
+
+  const congelada = demanda.status === "standby";
+  const podeParar = PARAVEIS.has(demanda.status);
+  const podeExcluir = !demanda.materializadoEm;
+  if (!podeParar && !congelada) return null;
+
+  async function enviar(qual: "congelar" | "descongelar" | "cancelar" | "excluir") {
+    setEnviando(true);
+    setErro("");
+    const res =
+      qual === "excluir"
+        ? await fetch(`/api/demandas/${demanda.id}`, { method: "DELETE" }).catch(() => null)
+        : await fetch(`/api/demandas/${demanda.id}/ciclo`, {
+            method: "POST",
+            headers: { "content-type": "application/json" },
+            body: JSON.stringify({ acao: qual, motivo }),
+          }).catch(() => null);
+    setEnviando(false);
+    if (!res?.ok) {
+      const body = await res?.json().catch(() => ({}));
+      setErro(body?.error || "não deu certo — tente de novo");
+      return;
+    }
+    router.refresh();
+    onClose();
+  }
+
+  const exigeMotivo = acao === "congelar" || acao === "cancelar";
+  return (
+    <div className="ciclo-demanda">
+      {!acao && (
+        <div className="ciclo-botoes">
+          {congelada ? (
+            <button type="button" className="btn-secondary" onClick={() => enviar("descongelar")} disabled={enviando}>
+              {enviando ? "Descongelando..." : "Descongelar"}
+            </button>
+          ) : (
+            <button type="button" className="btn-ghost" onClick={() => setAcao("congelar")}>
+              Congelar
+            </button>
+          )}
+          <button type="button" className="btn-ghost" onClick={() => setAcao("cancelar")}>
+            Cancelar demanda
+          </button>
+          {podeExcluir && (
+            <button type="button" className="btn-ghost perigo" onClick={() => setAcao("excluir")}>
+              Excluir
+            </button>
+          )}
+        </div>
+      )}
+      {acao && (
+        <div className="approval-banner pendente" role="group" aria-label="Confirmar">
+          <div>
+            {acao === "congelar" && "Congelar pausa a demanda onde está; descongelar volta para a mesma etapa."}
+            {acao === "cancelar" && "Cancelar encerra a demanda sem entregar. Não tem volta pela tela."}
+            {acao === "excluir" && "Excluir apaga a demanda, com subtarefas, comentários e horas. Não tem volta."}
+          </div>
+          {exigeMotivo && (
+            <label className="field">
+              Motivo
+              <textarea value={motivo} onChange={(e) => setMotivo(e.target.value)} rows={2} autoFocus />
+            </label>
+          )}
+          {erro && <p className="auth-note error" role="alert">{erro}</p>}
+          <span className="confirmar-inline">
+            <button type="button" className="btn-ghost" onClick={() => { setAcao(""); setErro(""); }} disabled={enviando}>
+              Voltar
+            </button>
+            <button
+              type="button"
+              className="btn-secondary"
+              onClick={() => enviar(acao)}
+              disabled={enviando || (exigeMotivo && !motivo.trim())}
+            >
+              {enviando ? "Enviando..." : `Confirmar: ${acao === "cancelar" ? "cancelar demanda" : acao}`}
+            </button>
+          </span>
+        </div>
+      )}
+      {!acao && erro && <p className="auth-note error" role="alert">{erro}</p>}
     </div>
   );
 }

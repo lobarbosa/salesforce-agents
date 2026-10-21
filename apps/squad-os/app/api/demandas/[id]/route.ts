@@ -5,6 +5,7 @@ import { getCurrentUsuario } from "@/lib/current-user";
 import { canAccessClient, canManageClientData } from "@/lib/auth";
 import { enxergaCliente } from "@/lib/encerramento";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
+import { resolverDemanda } from "@/lib/demanda-access";
 import { GATE_DO_CLIENTE, mesclarRespostas, montarAprovacao } from "@/lib/demandas";
 
 // Status de triagem que o próprio card pode mover (dropdown no board) —
@@ -62,6 +63,13 @@ export async function PATCH(
 
   if ("status" in body) {
     const status = String(body.status) as StatusDemanda;
+    // Congelar exige motivo e guarda a etapa de origem — é /ciclo, não o dropdown.
+    if (status === "standby") {
+      return NextResponse.json({ error: "para congelar use a ação Congelar do card" }, { status: 400 });
+    }
+    if (demanda.status === "standby" && (demanda.congeladaDe || demanda.materializadoEm)) {
+      return NextResponse.json({ error: "para tirar do congelamento use Descongelar no card" }, { status: 400 });
+    }
     if (!TRIAGE_STATUSES.includes(status)) {
       return NextResponse.json(
         { error: "esse status só avança via sfagents (fora da triagem)" },
@@ -125,4 +133,23 @@ export async function PATCH(
   }
   const updated = await prisma.demanda.findUnique({ where: { id } });
   return NextResponse.json(updated);
+}
+
+// Excluir de verdade só o que nunca foi materializado: depois disso existe
+// pasta no git, branch, PR e telemetria apontando pro código — apagar a linha
+// deixaria tudo isso órfão e o número livre pra ser reusado. Para essas, o
+// caminho é cancelar (/api/demandas/[id]/ciclo).
+export async function DELETE(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const acesso = await resolverDemanda(id, { somenteDelivery: true });
+  if (acesso.erro) return acesso.erro;
+
+  const { count } = await prisma.demanda.deleteMany({ where: { id, materializadoEm: null } });
+  if (count === 0) {
+    return NextResponse.json(
+      { error: "demanda já foi para a esteira — cancele em vez de excluir" },
+      { status: 409 }
+    );
+  }
+  return NextResponse.json({ ok: true });
 }
