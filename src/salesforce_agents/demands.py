@@ -33,7 +33,11 @@ STAGES_EXECUCAO = (
     "entregue",
 )
 
-STAGES = STAGES_TRIAGEM + STAGES_EXECUCAO
+# Encerradas sem entrega: cancelada no Squad OS (com motivo). Terminal — a
+# esteira não roda nada a partir daqui (fluxo.PARADOS).
+STAGES_ENCERRADOS = ("cancelada",)
+
+STAGES = STAGES_TRIAGEM + STAGES_EXECUCAO + STAGES_ENCERRADOS
 
 
 class DemandNotFoundError(Exception):
