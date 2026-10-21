@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-8
+client: somos-agility
+titulo: DEPV - Ajuste no fluxo de aprovação
+tipo: sustentacao
+status: backlog
+criado_em: '2026-10-14T22:25:34.710Z'
+historico:
+  - de: null
+    em: '2026-10-14T22:25:34.708Z'
+    para: backlog
+    autor: Juliana Mendes
