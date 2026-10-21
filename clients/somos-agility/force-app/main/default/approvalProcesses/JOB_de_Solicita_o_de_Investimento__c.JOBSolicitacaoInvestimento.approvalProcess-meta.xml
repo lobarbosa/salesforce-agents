@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>false</active>
+    <allowRecall>false</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Owner</field>
+        <field>Centro_de_Custo__c</field>
+        <field>Classificacao_Gerencial__c</field>
+        <field>Denomina_o_do_JOB__c</field>
+        <field>Observa_o__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>jose.gouveia@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>1 OR 2 OR 3 OR 4 OR 5 OR 6</booleanFilter>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>Wanderley Gadioli de Lima</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>Hugo Andre Tadeu Novo Saadi</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>Luiz Felipe Pane Santos</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>Gustavo Fernandes Eduardo</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>Julio Claudio Augusto de Toledo Filho</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>Julio Toledo</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Enviado para para aprovação Pós Venda</label>
+        <name>PosVenda</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>fabio.soto@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>Sales Operation</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Enviado para para aprovação Comercial</label>
+        <name>Comercial</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>true</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>fabio.soto@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>equals</operation>
+                <value>aaaaaaaaaaaaaaaaaa</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Aprovaçao final</label>
+        <name>AprovacaoFinal</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>fabio.soto@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Marketing
+backoffice
+RH&amp;DP
+Governança</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+                <operation>notEqual</operation>
+                <value>Sales Operation</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>Enviado para para aprovação CEO</label>
+        <name>Outras_Areas</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>JOB de Solicitação de Investimento Geral
+pós venda
+comercial
+Marketing
+backoffice /RH  &amp; DP /  Governança</description>
+    <emailTemplate>Job_de_Investimentos/Solicita_o_de_JOB_de_Investimento</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <booleanFilter>1 OR 2 OR 3 OR 4 OR 5 OR 6 OR 7 OR 8 OR 9 OR 10 OR 11 OR 12 OR 13 OR 14</booleanFilter>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Walmor Costa</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Grupo Marketing</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Ademar Arantes Godoy</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Sales Operation</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>José Helder Spínola Gouveia</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Luiz Felipe Pane Santos</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Gustavo Fernandes Eduardo</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Julio Claudio Augusto de Toledo Filho</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Hugo Andre Tadeu Novo Saadi</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Wanderley Gadioli de Lima</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Fabio Soto</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Customer Sucess Squad</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Grupo PMO</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Marketing Marketing</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Aprova_o_de_JOB</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_Qualificacao_Aprovacao</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Rejei_o_de_JOB</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_Qualificacao_Rejeicao</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <label>JOB de Solicitação de Investimento Geral</label>
+    <processOrder>1</processOrder>
+    <recallActions>
+        <action>
+            <name>Status_Qualificacao_Recall</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

@@ -1,0 +1,713 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>false</active>
+    <allowRecall>false</allowRecall>
+    <allowedSubmitters>
+        <type>creator</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>Diretor_Comercial</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>Gerente_Comercial_Governo</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>Gerente_Comercial_Regional</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>Gerente_Comercial_Telco</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>SalesOperations</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <allowedSubmitters>
+        <submitter>VP_Sales</submitter>
+        <type>role</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 AND 2) OR (3 AND 4) OR (5 AND 6)</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Subscrição ou Renovação</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Contrato de Locação (Renovação)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Sem Contrato de Suporte</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Grupo Operações</label>
+        <name>Qualificacao_Grupo_Operacoes</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupogp@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 AND 2) OR (3 AND 4) AND 5</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>notContain</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Serviços Agility</label>
+        <name>Qualificacao_Servicos_Agility</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>paula.papis@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>contains</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Serviços Agility - Itau</label>
+        <name>Qualificacao_Servicos_Agility_Itau</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 OR 2 OR 3 OR 4) AND 5</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Contrato de Locação (Renovação)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Contrato de Suporte (Novo)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Contrato de Suporte (Renovação)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Contrato de Suporte (Upgrade)</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Com Contrato de Suporte</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Suporte Técnico Agility</label>
+        <name>Qualificacao_Suporte_Tecnico_Agility</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 AND 2) OR (3 AND 4) AND 5 AND 6</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Com Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Subscrição ou Renovação</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Com Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Suporte__c</field>
+                <operation>equals</operation>
+                <value>Sim</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Suporte__c</field>
+                <operation>equals</operation>
+                <value>Não</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Operações + Suporte Agility</label>
+        <name>Qualificacao_Operacoes_Suporte_Agility</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupogp@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>1 AND 2 AND 3</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Com Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>notContain</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Projetos Agility</label>
+        <name>Qualificacao_Projetos_Agility</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>paula.papis@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Com Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>contains</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Projetos Agility - Itau</label>
+        <name>Qualificacao_Projetos_Agility_Itau</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupogp@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 OR 2 OR 3) AND 4 AND 5 AND 6</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Subscrição ou Renovação</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Projeto__c</field>
+                <operation>equals</operation>
+                <value>Sim</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Suporte__c</field>
+                <operation>equals</operation>
+                <value>Não</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>notContain</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Operações + Serviços Agility</label>
+        <name>Qualificacao_Operacoes_Servicos_Agility</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>paula.papis@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 OR 2 OR 3) AND 4 AND 5 AND 6</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Subscrição ou Renovação</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Projeto (Produto + Serviços) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Projeto__c</field>
+                <operation>equals</operation>
+                <value>Sim</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Suporte__c</field>
+                <operation>equals</operation>
+                <value>Não</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>contains</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Operações + Serviços Agility - Itau</label>
+        <name>Qualificacao_Operacoes_Servicos_Agility_Itau</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupogp@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 OR 2) AND 3 AND 4</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Com Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>notContain</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Serviços + Suporte Agility</label>
+        <name>Qualificacao_Servicos_Suporte_Agility</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>paula.papis@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>(1 OR 2) AND 3 AND 4</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviço (Avulso ou Projeto) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Serviços a serem debitados do Banco de Horas do Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Contrato_de_Suporte_Agility__c</field>
+                <operation>equals</operation>
+                <value>Com Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>contains</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Serviços + Suporte Agility - Itau</label>
+        <name>Qualificacao_Servicos_Suporte_Agility_Itau</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupogp@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <booleanFilter>1 AND 2 AND 3 AND 4</booleanFilter>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Projeto__c</field>
+                <operation>equals</operation>
+                <value>Sim</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Suporte__c</field>
+                <operation>equals</operation>
+                <value>Sim</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>notContain</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>ApproveRecord</ifCriteriaNotMet>
+        <label>Qualificação Operações + Suporte + Serviços Agility</label>
+        <name>Qualificacao_Operacies_Suporte_Servicos_Agility</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>grupooperacoes@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>marcelo.ribeiro@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <approver>
+                <name>paula.papis@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>Unanimous</whenMultipleApprovers>
+        </assignedApprover>
+        <entryCriteria>
+            <criteriaItems>
+                <field>Opportunity.Categoria__c</field>
+                <operation>equals</operation>
+                <value>Produto (Sem Serviço) - Com ou Sem Contrato de Suporte</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Projeto__c</field>
+                <operation>equals</operation>
+                <value>Sim</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Cliente_Contratou_Servicos_de_Suporte__c</field>
+                <operation>equals</operation>
+                <value>Sim</value>
+            </criteriaItems>
+            <criteriaItems>
+                <field>DSA__c.Nome_da_conta__c</field>
+                <operation>contains</operation>
+                <value>Itau</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>Qualificação Operações + Suporte + Serviços Agility - Itau</label>
+        <name>Qualificacao_Operacoes_Suporte_Servicos_Agility_Itau</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <emailTemplate>DSA/DSA_Notificacao_de_Oportunidade_Ganha</emailTemplate>
+    <enableMobileDeviceAccess>true</enableMobileDeviceAccess>
+    <entryCriteria>
+        <booleanFilter>1 OR 2</booleanFilter>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>6 - Fechado/Ganho</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>Opportunity.StageName</field>
+            <operation>equals</operation>
+            <value>7 - Processado ERP</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Aprovacao_do_DSA</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_D_S_A_Aprovado</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>true</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Rejeicao_do_DSA</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_D_S_A_Rejeitado</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Notificacao_de_Oportunidade_Ganha</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_DSA_Pendente</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>Qualificação DSA Agility Networks</label>
+    <processOrder>2</processOrder>
+    <recallActions>
+        <action>
+            <name>Recall_do_D_S_A</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_D_S_A_Recall</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>
