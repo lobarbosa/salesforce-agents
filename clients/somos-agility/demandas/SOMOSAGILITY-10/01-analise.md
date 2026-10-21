@@ -155,3 +155,11 @@ Reavaliar após as respostas da seção 5.
 
 Esta análise **não** deve seguir para o arquiteto enquanto as perguntas 1 a 6 da
 seção 5 e o anexo (item 13) não forem respondidos, ou pelo menos o anexo liberado.
+
+## Estimativa de esforço
+
+**Estimativa de esforço:** 6–16 h
+
+Esforço humano (consultor configurando, revisando, testando e homologando — não o tempo do agente). M provisória: entre ajuste de roll-up/filtro (ponta baixa) e lógica sobre muitos registros com histórico (ponta alta).
+
+_Estimativa acrescentada em 2026-10-21 a pedido de Leonardo, a partir do que este artefato já registra (o artefato foi gerado antes de a esteira pedir esta linha). É faixa provisória: o consultor lança a estimativa oficial no card._
