@@ -310,3 +310,26 @@ export async function runsAtivosDoCliente(clientSlug: string): Promise<string[]>
   }
   return urls;
 }
+
+export interface RunAtivo {
+  url: string;
+  clientSlug: string;
+  demandaCode: string;
+  status: string;
+  criadoEm: string;
+}
+
+/** Todas as execuções de run-demand.yml não concluídas, de qualquer cliente. */
+export async function runsAtivosDaEsteira(): Promise<RunAtivo[]> {
+  const gh = octokit();
+  const { owner, repo } = repoConfig();
+  const runs: RunAtivo[] = [];
+  for (const status of ESTADOS_ATIVOS) {
+    const r = await gh.actions.listWorkflowRuns({ owner, repo, workflow_id: "run-demand.yml", status, per_page: 50 });
+    for (const run of r.data.workflow_runs) {
+      const m = /^Rodar demanda (\S+) (\S+)$/.exec(run.display_title ?? "");
+      if (m) runs.push({ url: run.html_url, clientSlug: m[1], demandaCode: m[2], status: run.status ?? status, criadoEm: run.created_at });
+    }
+  }
+  return runs;
+}

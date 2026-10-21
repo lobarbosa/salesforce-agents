@@ -8,6 +8,8 @@ const INTERVALO_MS = 4000;
 
 const ROTULO: Record<EstadoRun, string> = {
   rodando: "Rodando",
+  sem_detalhe: "Rodando",
+  na_fila: "Na fila",
   sem_sinal: "Sem sinal",
   concluida: "Concluída",
   erro: "Falhou",
@@ -30,6 +32,8 @@ function descreve(e: RunAoVivo["eventos"][number]) {
       return "sessão começou";
     case "agente":
       return `chamou o subagente ${e.agente}`;
+    case "fila":
+      return e.detalhe;
     case "turno":
       return "turno concluído";
     case "fim":
@@ -70,13 +74,15 @@ export function EsteiraAoVivo({ inicial }: { inicial: RunAoVivo[] }) {
     };
   }, []);
 
-  const rodando = runs.filter((r) => r.estado === "rodando").length;
+  const rodando = runs.filter((r) => r.estado === "rodando" || r.estado === "sem_detalhe").length;
+  const naFila = runs.filter((r) => r.estado === "na_fila").length;
 
   return (
     <>
       <p className="esteira-resumo" aria-live="polite">
         <span className={`esteira-pulso${rodando ? " ativo" : ""}`} aria-hidden="true" />
         {rodando === 0 ? "Nenhum agente rodando agora." : rodando === 1 ? "1 execução rodando agora." : `${rodando} execuções rodando agora.`}
+        {naFila > 0 && <span className="esteira-fila"> {naFila} na fila.</span>}
         {offline && <span className="esteira-offline"> Sem conexão com o servidor — tentando de novo.</span>}
       </p>
 
@@ -102,6 +108,7 @@ export function EsteiraAoVivo({ inicial }: { inicial: RunAoVivo[] }) {
                   </span>
                   <span className="esteira-onde">
                     etapa <span className="mono">{r.etapa || "?"}</span>
+                    {r.estado === "sem_detalhe" && " · sem detalhe dos agentes"}
                     {r.estado === "rodando" && (
                       <>
                         {" "}· agora em <strong>{r.agenteAtual}</strong>
@@ -109,7 +116,9 @@ export function EsteiraAoVivo({ inicial }: { inicial: RunAoVivo[] }) {
                     )}
                   </span>
                   <span className="esteira-tempo">
-                    {r.estado === "rodando" || r.estado === "sem_sinal"
+                    {r.estado === "na_fila"
+                      ? `esperando ${duracao(r.inicioEm, agora)}`
+                      : r.estado === "rodando" || r.estado === "sem_detalhe" || r.estado === "sem_sinal"
                       ? duracao(r.inicioEm, agora)
                       : duracao(r.inicioEm, new Date(r.ultimoEm).getTime())}
                     <span className="sub">
@@ -123,6 +132,14 @@ export function EsteiraAoVivo({ inicial }: { inicial: RunAoVivo[] }) {
                       <p className="auth-note error">
                         Nenhum evento há {duracao(r.ultimoEm, agora)} e a sessão não avisou que terminou — o job pode ter caído ou sido cancelado. Confira o log.
                       </p>
+                    )}
+                    {r.estado === "sem_detalhe" && (
+                      <p className="sub">
+                        O GitHub diz que esta execução está rodando, mas ela não está mandando eventos — começou antes da esteira ao vivo existir ou ainda está instalando. O detalhe completo está no log.
+                      </p>
+                    )}
+                    {r.estado === "na_fila" && (
+                      <p className="sub">Este cliente já tem uma execução rodando; esta sai sozinha quando ela terminar (uma por vez por cliente).</p>
                     )}
                     {r.agentes.length > 0 && <p className="sub">Subagentes: {r.agentes.join(" → ")}</p>}
                     <ol className="esteira-eventos">

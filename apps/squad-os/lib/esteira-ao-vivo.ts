@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import { runsAtivosDaEsteira } from "@/lib/github";
 
 // Esteira ao vivo (2026-10-21): agrupa os eventos de /api/sync/evento por
 // execução (runId) e responde "o que está rodando agora, em que agente, fazendo
@@ -8,7 +9,10 @@ import { prisma } from "@/lib/prisma";
 export const SEM_SINAL_MS = 10 * 60 * 1000;
 const JANELA_MS = 12 * 3600 * 1000;
 
-export type EstadoRun = "rodando" | "sem_sinal" | "concluida" | "erro";
+// "sem_detalhe": o Actions diz que está rodando, mas a sessão não manda eventos
+// (código anterior à esteira ao vivo, ou ainda instalando). "na_fila": aprovação
+// esperando o cliente ficar livre (lib/fila-esteira.ts).
+export type EstadoRun = "rodando" | "sem_detalhe" | "na_fila" | "sem_sinal" | "concluida" | "erro";
 
 export interface EventoVisto {
   tipo: string;
@@ -100,7 +104,74 @@ export async function listarEsteiraAoVivo(opcoes: { comCusto: boolean }): Promis
       })),
     });
   }
-  // Rodando primeiro; depois o mais recente.
-  const ordem: Record<EstadoRun, number> = { rodando: 0, sem_sinal: 1, erro: 2, concluida: 3 };
-  return runs.sort((a, b) => ordem[a.estado] - ordem[b.estado] || b.ultimoEm.localeCompare(a.ultimoEm));
+  // O que o Actions diz que está ativo e não mandou nenhum evento ainda.
+  const ativos = await runsAtivosDaEsteira().catch(() => []);
+  const comEvento = new Set(runs.map((r) => r.runUrl).filter(Boolean));
+  const clientes = await prisma.client.findMany({ select: { id: true, nome: true, slug: true } });
+  const porSlug = new Map(clientes.map((c) => [c.slug, c]));
+  const semEvento = ativos.filter((a) => !comEvento.has(a.url) && porSlug.has(a.clientSlug));
+  const idsSemEvento = semEvento.length
+    ? await prisma.demanda.findMany({
+        where: { OR: semEvento.map((a) => ({ clientId: porSlug.get(a.clientSlug)!.id, code: a.demandaCode })) },
+        select: { id: true, clientId: true, code: true, status: true },
+      })
+    : [];
+  for (const a of semEvento) {
+    const c = porSlug.get(a.clientSlug)!;
+    const d = idsSemEvento.find((x) => x.clientId === c.id && x.code === a.demandaCode);
+    const executando = a.status === "in_progress";
+    runs.push({
+      runId: a.url,
+      runUrl: a.url,
+      clientId: c.id,
+      clientNome: c.nome,
+      clientSlug: c.slug,
+      demandaCode: a.demandaCode,
+      demandaId: d?.id ?? null,
+      etapa: d?.status ?? "",
+      estado: executando ? "sem_detalhe" : "na_fila",
+      inicioEm: a.criadoEm,
+      ultimoEm: a.criadoEm,
+      agenteAtual: "",
+      agentes: [],
+      ferramentas: 0,
+      custoUsd: null,
+      eventos: [],
+    });
+  }
+
+  // Fila do Squad OS: aprovado, esperando o cliente ficar livre.
+  const fila = await prisma.disparoEsteira.findMany({
+    where: { disparadoEm: null, concluidoEm: null },
+    orderBy: { criadoEm: "asc" },
+    include: { client: { select: { nome: true, slug: true } }, demanda: { select: { code: true } } },
+  });
+  for (const f of fila) {
+    runs.push({
+      runId: `fila-${f.id}`,
+      runUrl: "",
+      clientId: f.clientId,
+      clientNome: f.client.nome,
+      clientSlug: f.client.slug,
+      demandaCode: f.demanda.code,
+      demandaId: f.demandaId,
+      etapa: f.tipo === "aprovar" ? f.gate : "envio para a esteira",
+      estado: "na_fila",
+      inicioEm: f.criadoEm.toISOString(),
+      ultimoEm: f.criadoEm.toISOString(),
+      agenteAtual: "",
+      agentes: [],
+      ferramentas: 0,
+      custoUsd: null,
+      eventos: f.autor ? [{ tipo: "fila", agente: "", ferramenta: "", detalhe: `aprovado por ${f.autor}${f.nota ? ` — ${f.nota}` : ""}`, em: f.criadoEm.toISOString() }] : [],
+    });
+  }
+
+  // Rodando primeiro; depois fila; depois o mais recente.
+  const ordem: Record<EstadoRun, number> = { rodando: 0, sem_detalhe: 1, na_fila: 2, sem_sinal: 3, erro: 4, concluida: 5 };
+  return runs.sort(
+    (a, b) =>
+      ordem[a.estado] - ordem[b.estado] ||
+      (a.estado === "na_fila" ? a.inicioEm.localeCompare(b.inicioEm) : b.ultimoEm.localeCompare(a.ultimoEm))
+  );
 }

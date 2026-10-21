@@ -1366,3 +1366,8 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
   .esteira-cabeca { grid-template-columns: auto 1fr; }
   .esteira-onde, .esteira-tempo { grid-column: 1 / -1; text-align: left; }
 }
+.esteira-run.estado-sem_detalhe { border-left-color: var(--success); }
+.esteira-run.estado-na_fila { border-left-color: var(--accent); }
+.esteira-estado.estado-sem_detalhe { background: var(--success-soft); color: var(--success); }
+.esteira-estado.estado-na_fila { background: var(--accent-soft); color: var(--accent); }
+.esteira-fila { font-weight: 400; color: var(--text-muted); }
