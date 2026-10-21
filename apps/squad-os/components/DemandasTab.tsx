@@ -13,6 +13,7 @@ import {
   estadoDoCliente,
   quemDestrava,
   motivoSemDrop,
+  gateLiberadoPor,
 } from "@/lib/demandas";
 import { Modal } from "@/components/Modal";
 import { useAutoRefresh } from "@/lib/auto-refresh";
@@ -50,7 +51,7 @@ export function DemandasTab({
   // aba aberta congela no estágio em que estava quando carregou, e quem está
   // esperando o gate aparecer fica dando F5 (ou, pior, conclui que travou).
   // Parado em gate não recarrega: ali não vem nada, quem tem que agir é gente.
-  useAutoRefresh(demandas.some((d) => agenteRodando(d.status)));
+  useAutoRefresh(demandas.some((d) => agenteRodando(d.status) || gateLiberadoPor(d) !== null));
 
   // Arrastar (2026-10-21) é atalho com confirmação, não um jeito de mover a
   // esteira: Backlog → Análise = enviar para a esteira; qualquer card parado

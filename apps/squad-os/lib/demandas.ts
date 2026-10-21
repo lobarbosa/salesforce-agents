@@ -325,3 +325,24 @@ export function motivoSemDrop(
   }
   return "as etapas da esteira só avançam pela aprovação do gate";
 }
+
+// Rastro que /api/demandas/[id]/aprovar-gate deixa ao liberar um gate — é ele
+// a reivindicação contra o segundo clique. O status só muda quando a execução
+// sincroniza de volta (minutos), então até lá a tela pergunta por aqui.
+export function marcadorDeGate(gate: string): string {
+  return `Aprovou o gate "${gate}".`;
+}
+
+/** Quem já liberou o gate atual (e a esteira ainda não devolveu), ou null. */
+export function gateLiberadoPor(d: {
+  status: string;
+  ultimaExecucaoEm: Date | string | null;
+  materializadoEm: Date | string | null;
+  comentarios: { texto: string; autor: string; criadoEm: Date | string }[];
+}): string | null {
+  if (!d.status.startsWith("aguardando_")) return null;
+  const desde = new Date(d.ultimaExecucaoEm ?? d.materializadoEm ?? 0).getTime();
+  const marcador = marcadorDeGate(d.status);
+  const c = d.comentarios.find((c) => c.texto.startsWith(marcador) && new Date(c.criadoEm).getTime() > desde);
+  return c ? c.autor : null;
+}

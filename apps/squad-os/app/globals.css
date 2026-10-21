@@ -1334,3 +1334,4 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .column.drop-alvo { outline: 2px dashed var(--accent, var(--primary)); outline-offset: -2px; }
 .column.drop-recusado { outline: 2px dashed var(--danger); outline-offset: -2px; opacity: 0.7; }
 .drop-aviso { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.gate-liberado { margin: 0; font-weight: 600; color: var(--accent3); }

@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { triggerRunDemand } from "@/lib/github";
-import { GATE_DO_CLIENTE } from "@/lib/demandas";
+import { GATE_DO_CLIENTE, marcadorDeGate } from "@/lib/demandas";
 import { travar } from "@/lib/trava";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 
@@ -59,7 +59,7 @@ export async function POST(
 
   const autor = usuario.nome.trim() || usuario.email;
   const gate = demanda.status;
-  const marcador = `Aprovou o gate "${gate}".`;
+  const marcador = marcadorDeGate(gate);
 
   // Reivindica a aprovação ANTES de disparar (compare-and-set). Achado da
   // revisão de 2026-10-12: dois cliques (ou duas pessoas) disparavam o
