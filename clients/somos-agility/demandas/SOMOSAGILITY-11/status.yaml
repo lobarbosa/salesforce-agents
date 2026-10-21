@@ -2,7 +2,7 @@ id: SOMOSAGILITY-11
 client: somos-agility
 titulo: MANUTENÇÃO - CAMPO LOGÍSTICA - DSA
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-10-14T22:43:49.714Z'
 historico:
 - de: null
@@ -29,3 +29,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-10-16T16:34:11.569002+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-10-21T17:14:46.266798+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-21T17:18:40.727415+00:00'

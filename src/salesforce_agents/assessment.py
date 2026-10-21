@@ -110,6 +110,8 @@ async def run(client: str, target_org: str) -> None:
     workspace = f"clients/{client}"
 
     options = ClaudeAgentOptions(
+        # Ver sessao.MAX_BUFFER_MENSAGEM.
+        max_buffer_size=sessao.MAX_BUFFER_MENSAGEM,
         cwd=workspace,
         # Mesma escolha do orquestrador de demanda: Sonnet na sessão que
         # coordena, e o sub-agente segue o `model:` do próprio frontmatter
