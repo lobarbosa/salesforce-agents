@@ -2,7 +2,7 @@ id: SOMOSAGILITY-22
 client: somos-agility
 titulo: Relatorio de Job - Painel controle financeiro
 tipo: sustentacao
-status: aguardando_gate_analise
+status: design
 criado_em: '2026-10-19T21:21:49.467Z'
 historico:
 - de: null
@@ -21,3 +21,7 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-10-21T00:58:47.048761+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-10-21T01:14:18.502547+00:00'
