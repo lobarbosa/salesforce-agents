@@ -41,7 +41,7 @@ def ambiente_do_estagio(status: str) -> str:
     """
     if status not in STAGES:
         raise ValueError(f"estágio desconhecido: {status!r}")
-    if status in STAGES_TRIAGEM:
+    if status in STAGES_TRIAGEM or status == "cancelada":
         return "dev"
     return "qa" if status in _EXECUCAO_QA else "dev"
 

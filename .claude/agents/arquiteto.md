@@ -25,6 +25,9 @@ Você é o Solution Architect. Entrega: `demandas/<DEMAND-ID>/03-design.md`.
 - Impacto em permissões (perfis, permission sets)
 - Riscos técnicos, com severidade
 - O que NÃO será feito nesta demanda
+- Estimativa de esforço humano refinada, já sabendo o que existe na org, no mesmo formato
+  da análise (o Squad OS lê esta linha e ela substitui a da análise):
+  `**Estimativa de esforço:** <min>–<max> h` + o que mudou em relação à análise e por quê
 
 ## Regras
 - Nunca cite metadata que você não confirmou existir na org.

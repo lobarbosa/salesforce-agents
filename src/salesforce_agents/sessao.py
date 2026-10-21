@@ -24,6 +24,7 @@ depois" ainda serve para alguma coisa. Falhar continua sendo o fim da linha
 
 from __future__ import annotations
 
+import re
 from collections.abc import Callable, Iterable, Sequence
 from pathlib import Path
 
@@ -54,6 +55,43 @@ class ArtefatoNaoProduzidoError(RuntimeError):
     `ArtifactAusenteError` de `demands.py`, um passo antes: lá o estado é
     impedido de mentir, aqui a sessão é impedida de terminar em promessa.
     """
+
+
+class ApiIndisponivelError(ArtefatoNaoProduzidoError):
+    """A API do modelo recusou a sessão — crédito, chave, cobrança. Não é o agente.
+
+    Achado real (SOMOSAGILITY-2 e -4, 2026-10-16): o saldo da API acabou e cada
+    turno voltou "Credit balance is too low" a custo zero. A sessão cobrou o
+    agente mais duas vezes — cobrança que nenhum modelo pode atender, porque
+    nenhum modelo chegou a rodar — e o job terminou dizendo que o agente "não
+    gravou" e que isso "não é falta de instrução". Quem lia o log ia procurar
+    defeito no prompt; o defeito era o cartão de crédito.
+
+    Herda de `ArtefatoNaoProduzidoError` de propósito: todo chamador que já
+    transforma aquela em job vermelho continua fazendo isso sem mudar uma linha.
+    """
+
+
+# Erros da própria API que nenhuma cobrança resolve. Casam com o texto que o
+# CLI do Claude Code devolve como resposta quando a chamada é recusada, e com o
+# campo `error` que versões recentes do SDK põem no AssistantMessage.
+_ERROS_DE_API = re.compile(
+    r"credit balance is too low"
+    r"|invalid api key"
+    r"|authentication_error"
+    r"|billing_error"
+    r"|authentication_failed"
+    r"|permission_error",
+    re.IGNORECASE,
+)
+
+
+def erro_de_api(textos: Iterable[str]) -> str | None:
+    """O primeiro texto do turno que é recusa da API, ou None se o turno rodou de verdade."""
+    for texto in textos:
+        if texto and _ERROS_DE_API.search(texto):
+            return texto.strip()
+    return None
 
 
 def faltantes(caminhos: Iterable[Path]) -> list[str]:
@@ -124,16 +162,31 @@ async def rodar(
         pedido = prompt
         for tentativa in range(1, tentativas + 1):
             await sdk.query(pedido)
+            textos_do_turno: list[str] = []
             async for message in sdk.receive_response():
                 if isinstance(message, AssistantMessage):
+                    erro_sdk = getattr(message, "error", None)
+                    if erro_sdk:
+                        textos_do_turno.append(str(erro_sdk))
                     for block in message.content:
                         if isinstance(block, TextBlock):
                             escrever(block.text)
+                            textos_do_turno.append(block.text)
                 elif isinstance(message, ResultMessage):
                     if ao_terminar is not None:
                         ao_terminar(message)
 
             pendencias = conferir()
+            # Recusa da API com o artefato ainda faltando: cobrar de novo só
+            # repetiria a mesma recusa. Falha na hora, dizendo o que é.
+            recusa = erro_de_api(textos_do_turno) if pendencias else None
+            if recusa:
+                raise ApiIndisponivelError(
+                    f"a API do modelo recusou a sessão ({recusa!r}) — nenhum agente chegou "
+                    f"a rodar, então não há o que cobrar dele. Resolva na conta da Anthropic "
+                    f"(saldo de crédito ou ANTHROPIC_API_KEY do GitHub Environment) e "
+                    f"redispare. Ficou faltando: {', '.join(pendencias)}."
+                )
             if not pendencias:
                 return
 
