@@ -1,5 +1,5 @@
 import { Octokit } from "@octokit/rest";
-import { dump as dumpYaml } from "js-yaml";
+import { dump as dumpYaml, load as loadYaml } from "js-yaml";
 
 // A ponte que fecha o gap descrito em docs/conexoes-e-setup.md §3 passo 7:
 // materializa a demanda como clients/<slug>/demandas/<code>/{demanda.md,status.yaml}
@@ -234,5 +234,60 @@ export async function triggerPlanejamento(clientSlug: string) {
     workflow_id: "run-planejamento.yml",
     ref: branch,
     inputs: { client: clientSlug },
+  });
+}
+
+/** A branch existe no repositório? */
+async function branchExiste(nome: string): Promise<boolean> {
+  const gh = octokit();
+  const { owner, repo } = repoConfig();
+  try {
+    await gh.repos.getBranch({ owner, repo, branch: nome });
+    return true;
+  } catch (err) {
+    if ((err as { status?: number }).status === 404) return false;
+    throw err;
+  }
+}
+
+// Congelar/cancelar/descongelar uma demanda já materializada precisa mudar o
+// status.yaml — ele é a fonte de verdade, e o sync de volta sobrescreveria o
+// Postgres com a etapa antiga na próxima execução. Escreve onde a esteira lê:
+// feature/<code> quando a demanda já rodou alguma etapa, senão o branch base.
+export async function registrarStatusNoGit(
+  clientSlug: string,
+  code: string,
+  novoStatus: string,
+  autor: string,
+  motivo: string
+) {
+  const { branch: base } = repoConfig();
+  const feature = `feature/${code}`;
+  const ref = (await branchExiste(feature)) ? feature : base;
+  const path = `clients/${clientSlug}/demandas/${code}/status.yaml`;
+
+  const gh = octokit();
+  const { owner, repo } = repoConfig();
+  const atual = await gh.repos.getContent({ owner, repo, path, ref });
+  if (Array.isArray(atual.data) || atual.data.type !== "file") {
+    throw new Error(`${path} não é um arquivo em ${ref}`);
+  }
+  const doc = (loadYaml(Buffer.from(atual.data.content ?? "", "base64").toString("utf-8")) ?? {}) as {
+    status?: string;
+    historico?: unknown[];
+  };
+  const historico = Array.isArray(doc.historico) ? doc.historico : [];
+  historico.push({ de: doc.status ?? "", para: novoStatus, autor, em: new Date().toISOString(), motivo });
+  doc.status = novoStatus;
+  doc.historico = historico;
+
+  await gh.repos.createOrUpdateFileContents({
+    owner,
+    repo,
+    branch: ref,
+    path,
+    message: `${code}: ${novoStatus} via Squad OS`,
+    content: Buffer.from(dumpYaml(doc, { sortKeys: false }), "utf-8").toString("base64"),
+    sha: atual.data.sha,
   });
 }

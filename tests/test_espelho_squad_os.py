@@ -47,7 +47,7 @@ def test_execucao_bate_com_o_python():
 
 def test_todo_estagio_aparece_em_alguma_coluna_do_quadro():
     """O que este teste impede: demanda existindo e sumindo do quadro."""
-    no_quadro = set(_lista("TRIAGE")) | set(_lista("EXEC_STAGES")) | {"entregue"}
+    no_quadro = set(_lista("TRIAGE")) | set(_lista("EXEC_STAGES")) | set(_lista("ENCERRADOS")) | {"entregue"}
     assert set(demands.STAGES) - no_quadro == set()
 
 

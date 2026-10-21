@@ -216,3 +216,22 @@ def test_saida_pro_github_output_tem_as_chaves_que_o_workflow_le():
         "espera_humano": "true",
         "etapas_rodadas": "build",
     }
+
+
+def test_demanda_congelada_ou_cancelada_nao_roda_nada(tmp_path, monkeypatch):
+    """Disparada por engano (varredura, fila, botão), standby/cancelada não anda.
+
+    Antes, standby caía na regra de triagem e a análise começava.
+    """
+    monkeypatch.chdir(tmp_path)
+    (tmp_path / "clients" / "acme").mkdir(parents=True)
+    monkeypatch.setattr(demands, "CLIENTS_ROOT", tmp_path / "clients")
+    chamadas = []
+    for status in ("standby", "cancelada"):
+        d = demands.create("acme", f"Demanda {status}", "texto")
+        d.status = status
+        d.save()
+        parada = fluxo.rodar("acme", d.id, executor=lambda *a: chamadas.append(a))
+        assert parada.motivo == "fim" and parada.etapa == status
+        assert demands.Demand.load("acme", d.id).status == status
+    assert chamadas == []
