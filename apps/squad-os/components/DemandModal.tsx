@@ -175,13 +175,42 @@ export function DemandModal({
 
       <div className="demanda-texto">{demanda.texto || "(sem descrição)"}</div>
 
+      {canManage && demanda.status === "backlog" && (
+        <div className="approval-banner pendente">
+          {materializeErro && <div role="alert" style={{ marginBottom: "0.4rem" }}>{materializeErro}</div>}
+          {demanda.materializadoEm
+            ? "Na esteira. Os agentes estão fazendo a análise; o card avança sozinho até o primeiro gate."
+            : "Pronta para a esteira? Os agentes começam pela análise e param no primeiro gate para você revisar."}
+          {!demanda.materializadoEm && (
+            <div style={{ marginTop: "0.5rem" }}>
+              {/* Commita no repositório e dispara o CI: dois passos, como a aprovação do gate. */}
+              {confirmarMaterializar ? (
+                <span className="confirmar-inline" role="group" aria-label="Confirmar materialização">
+                  <button type="button" className="btn-ghost" autoFocus onClick={() => setConfirmarMaterializar(false)} disabled={materializando}>
+                    Ainda não
+                  </button>
+                  <button className="btn-secondary" type="button" onClick={materializar} disabled={materializando}>
+                    {materializando ? "Enviando..." : "Confirmar envio"}
+                  </button>
+                </span>
+              ) : (
+                <button className="btn-secondary" type="button" onClick={() => setConfirmarMaterializar(true)}>
+                  Enviar para a esteira
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+
       {!visaoCliente && <EstimativaDemanda demanda={demanda} isAdmin={isAdmin} />}
       {visaoCliente && demanda.estimativaCalibrada && (
-        <div className="estimativa-demanda meta" aria-label="Estimativa de horas">
+        <div className="estimativa-demanda" aria-label="Estimativa de horas">
           <strong>
             Estimativa de horas: {faixaH(demanda.estimativaCalibrada.min, demanda.estimativaCalibrada.max)} h
           </strong>
-          <span>Feita após a análise, antes da construção; pode ser refinada no desenho da solução.</span>
+          <span className="estimativa-nota">Feita após a análise, antes da construção; pode ser refinada no desenho da solução.</span>
         </div>
       )}
 
@@ -380,34 +409,6 @@ export function DemandModal({
         </>
       )}
 
-      {canManage && demanda.status === "backlog" && (
-        <div className="approval-banner pendente">
-          {materializeErro && <div role="alert" style={{ marginBottom: "0.4rem" }}>{materializeErro}</div>}
-          {demanda.materializadoEm
-            ? "Já materializada — os agentes assumem a partir daqui (acompanhe via sfagents / GitHub Actions)."
-            : "Pronta pra virar execução? Isso commita demanda.md + status.yaml em clients/<cliente>/demandas/ e dispara os agentes no CI."}
-          {!demanda.materializadoEm && (
-            <div style={{ marginTop: "0.5rem" }}>
-              {/* Commita no repositório e dispara o CI: dois passos, como a aprovação do gate. */}
-              {confirmarMaterializar ? (
-                <span className="confirmar-inline" role="group" aria-label="Confirmar materialização">
-                  <button type="button" className="btn-ghost" autoFocus onClick={() => setConfirmarMaterializar(false)} disabled={materializando}>
-                    Ainda não
-                  </button>
-                  <button className="btn-secondary" type="button" onClick={materializar} disabled={materializando}>
-                    {materializando ? "Materializando..." : "Confirmar: materializar e disparar"}
-                  </button>
-                </span>
-              ) : (
-                <button className="btn-secondary" type="button" onClick={() => setConfirmarMaterializar(true)}>
-                  Materializar e disparar agentes
-                </button>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
       <DemandaPainel
         demandaId={demanda.id}
         usuarioEmail={usuarioEmail}
@@ -450,6 +451,18 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
   const temConsultor = demanda.estimativaHorasMin !== null && demanda.estimativaHorasMax !== null;
   const temAgente = demanda.agenteHorasGasto !== null && demanda.agenteHorasRestante !== null;
   const temCusto = isAdmin && demanda.custoAgenteRestanteUsd !== null;
+  // Em triagem (backlog) não há o que estimar ainda: o agente sugere na
+  // análise. Mostrar o campo vazio ali só empurrava a ação principal do
+  // card (enviar para a esteira) para baixo de um formulário sem contexto.
+  const emTriagem = ["backlog", "planejada", "recorrente", "standby"].includes(demanda.status);
+  if (
+    emTriagem &&
+    demanda.estimativaConsultorHoras == null &&
+    demanda.sugestaoConsultorHoras == null &&
+    demanda.tempos.length === 0
+  ) {
+    return null;
+  }
 
   const fmtH = (h: number) => h.toLocaleString("pt-BR", { maximumFractionDigits: 1 });
   const faixa = faixaH;
@@ -460,8 +473,9 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
   const cal = demanda.estimativaCalibrada ?? null;
 
   return (
-    <div className="estimativa-demanda meta" aria-label="Estimativa da demanda">
+    <div className="estimativa-demanda" aria-label="Estimativa da demanda">
       <EstimativaConsultor demanda={demanda} />
+      <div className="estimativa-linhas">
       {temConsultor && (
         <span title={`Esforço humano estimado pelo agente na ${fonte} (${demanda.estimativaHorasFonte}).`}>
           Sugestão do agente: {faixa(demanda.estimativaHorasMin!, demanda.estimativaHorasMax!)} h ({fonte}) · lançado{" "}
@@ -509,6 +523,7 @@ function EstimativaDemanda({ demanda, isAdmin }: { demanda: DemandaCompleta; isA
           {demanda.custoAgenteAmostras === 0 && " (estimativa inicial)"}
         </span>
       )}
+      </div>
     </div>
   );
 }
@@ -552,25 +567,24 @@ function EstimativaConsultor({ demanda }: { demanda: DemandaCompleta }) {
   }
 
   return (
-    <div className="field" style={{ width: "100%" }}>
+    <div className="estimativa-campo">
       <label htmlFor={`estimativa-${demanda.id}`}>
-        {atual == null ? "Estimativa de horas (obrigatória antes de apontar tempo)" : "Estimativa de horas do consultor"}
+        {atual == null ? "Estimativa de horas — obrigatória antes de apontar tempo" : "Estimativa de horas do consultor"}
       </label>
-      <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", flexWrap: "wrap" }}>
+      <div className="estimativa-entrada">
         <input
           id={`estimativa-${demanda.id}`}
           inputMode="decimal"
           value={valor}
           onChange={(e) => setValor(e.target.value)}
-          style={{ maxWidth: "7rem" }}
           aria-describedby={`estimativa-ajuda-${demanda.id}`}
         />
-        <span>h</span>
-        <button type="button" onClick={salvar} disabled={salvando || !valor.trim()}>
+        <span className="estimativa-unidade">h</span>
+        <button type="button" className="btn-secondary" onClick={salvar} disabled={salvando || !valor.trim()}>
           {atual == null ? "Lançar estimativa" : "Atualizar"}
         </button>
       </div>
-      <p id={`estimativa-ajuda-${demanda.id}`} className="painel-vazio">
+      <p id={`estimativa-ajuda-${demanda.id}`} className="estimativa-nota">
         {atual != null
           ? `Lançada por ${demanda.estimativaConsultorPor || "—"}${demanda.estimativaConsultorEm ? " " + timeAgo(demanda.estimativaConsultorEm) : ""}.`
           : demanda.sugestaoConsultorHoras != null

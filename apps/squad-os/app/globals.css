@@ -282,6 +282,9 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
 .modal-backdrop { position: fixed; inset: 0; background: rgba(10,14,13,0.45); display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem; overflow-y: auto; }
 .modal { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); width: 100%; max-width: 460px; padding: 1.2rem; display: flex; flex-direction: column; gap: 0.7rem; margin: auto; max-height: calc(100vh - 2rem); overflow-y: auto; }
 .modal.wide { max-width: 620px; }
+/* O modal é coluna flex com altura máxima: sem isto, o flex encolhe os
+   blocos com overflow (a descrição) até sumirem atrás do bloco seguinte. */
+.modal > * { flex-shrink: 0; }
 .modal h3 { margin: 0; font-size: 1rem; }
 .modal .demanda-texto { background: var(--surface-alt); border-radius: 8px; padding: 0.7rem 0.8rem; font-size: 0.85rem; white-space: pre-wrap; max-height: 10rem; overflow-y: auto; }
 .approval-banner { border-radius: 8px; padding: 0.6rem 0.8rem; font-size: 0.8rem; }
@@ -1301,3 +1304,21 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
   .overview-row .oc-client { width: auto; }
   .overview-row .oc-title { flex-basis: 100%; white-space: normal; order: 3; }
 }
+
+/* Estimativa no card (consultor + agente + total; custo só admin). */
+.estimativa-demanda {
+  border: 1px solid var(--border); border-radius: 8px; padding: 0.7rem 0.8rem;
+  display: flex; flex-direction: column; gap: 0.6rem; background: var(--surface-alt);
+}
+.estimativa-demanda strong { font-size: 0.88rem; }
+.estimativa-campo { display: flex; flex-direction: column; gap: 0.35rem; }
+.estimativa-campo label { font-size: 0.8rem; font-weight: 600; color: var(--text); }
+.estimativa-entrada { display: flex; align-items: center; gap: 0.5rem; }
+.estimativa-entrada input {
+  width: 6rem; border: 1px solid var(--border-strong); border-radius: 6px;
+  background: var(--surface); color: var(--text); padding: 0.45rem 0.55rem; font-size: 0.9rem;
+}
+.estimativa-unidade { font-size: 0.85rem; color: var(--text-muted); }
+.estimativa-nota { margin: 0; font-size: 0.76rem; color: var(--text-muted); }
+.estimativa-linhas { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.8rem; color: var(--text-muted); }
+.estimativa-linhas strong { color: var(--text); }
