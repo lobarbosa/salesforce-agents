@@ -15,6 +15,7 @@ import {
   perguntasPendentes,
   progressoDaDemanda,
   timeAgo,
+  aguardaAprovacaoEstimativa,
 } from "@/lib/demandas";
 
 // A Visão Geral monta card a partir de uma demanda sem as relações
@@ -63,6 +64,13 @@ function Indicadores({ demanda }: { demanda: DemandaDeCard }) {
       chave: "anx",
       texto: `⌥ ${anexos}`,
       rotulo: `${anexos} anexo${anexos > 1 ? "s" : ""}`,
+    });
+  }
+  if (aguardaAprovacaoEstimativa(demanda)) {
+    marcas.push({
+      chave: "est",
+      texto: `◇ ${demanda.estimativaConsultorHoras} h p/ aprovar`,
+      rotulo: `estimativa de ${demanda.estimativaConsultorHoras} h esperando aprovação do cliente`,
     });
   }
   if (minutos > 0) {

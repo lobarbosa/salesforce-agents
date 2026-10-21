@@ -383,6 +383,18 @@ model Demanda {
   estimativaConsultorHoras Float?    @map("estimativa_consultor_horas")
   estimativaConsultorPor   String    @default("") @map("estimativa_consultor_por")
   estimativaConsultorEm    DateTime? @map("estimativa_consultor_em")
+  // Aprovação da estimativa pelo cliente (2026-10-21). Vale só enquanto
+  // `estimativaAprovadaHoras` == `estimativaConsultorHoras`: se o consultor
+  // mudar a estimativa depois, o cliente aprova de novo. Sem aprovação válida
+  // o gate de design não libera o build (aprovar-gate).
+  estimativaAprovadaHoras Float?    @map("estimativa_aprovada_horas")
+  estimativaAprovadaPor   String    @default("") @map("estimativa_aprovada_por")
+  estimativaAprovadaEm    DateTime? @map("estimativa_aprovada_em")
+  // Débito no contrato: quando a demanda entra em build com estimativa
+  // aprovada, ESTE número vira o consumo de horas (lib/data.ts horasPorMes),
+  // no mês em que entrou. O timesheet dela deixa de debitar — mede desvio.
+  estimativaDebitadaHoras Float?    @map("estimativa_debitada_horas")
+  estimativaDebitadaEm    DateTime? @map("estimativa_debitada_em")
   agenteHorasGasto     Float? @map("agente_horas_gasto")
   agenteHorasRestante  Float? @map("agente_horas_restante")
   // Custo de agente em USD: gasto até aqui (telemetria) e projeção do que
