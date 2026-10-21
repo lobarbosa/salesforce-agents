@@ -121,3 +121,11 @@ Não há ambiguidade de arquitetura que exija escolha entre sistemas externos (e
 ---
 
 Análise pronta. Preciso da sua validação antes de acionar o arquiteto.
+
+## Estimativa de esforço
+
+**Estimativa de esforço:** 3–6 h
+
+Esforço humano (consultor configurando, revisando, testando e homologando — não o tempo do agente). P: troca de aprovador num processo de aprovação, sem código. Sobe se a Kelly aparecer em mais de um processo ou em regra de atribuição.
+
+_Estimativa acrescentada em 2026-10-21 a pedido de Leonardo, a partir do que este artefato já registra (o artefato foi gerado antes de a esteira pedir esta linha). É faixa provisória: o consultor lança a estimativa oficial no card._
