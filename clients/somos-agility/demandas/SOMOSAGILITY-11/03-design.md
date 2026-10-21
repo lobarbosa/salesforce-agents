@@ -334,3 +334,11 @@ build. Para liberar, é preciso:
 2. **Responder B-1 a B-5** (§7.1). Em especial, confirmar o objeto alvo e garantir que a
    planilha (reduzida a `Id,Status_Backoffice__c`) chegue à demanda.
 3. **Decidir R1 e R2**, os dois riscos Alta que esta etapa encontrou além do recon.
+
+## Estimativa de esforço
+
+**Estimativa de esforço:** 6–12 h
+
+Esforço humano (consultor configurando, revisando, testando e homologando — não o tempo do agente). Carga de dados no nível 0 (sem metadata nova), com massa fictícia respeitando 6 validation rules e homologação; sobe se a planilha trouxer valor novo de picklist ou carga recorrente.
+
+_Estimativa acrescentada em 2026-10-21 a pedido de Leonardo, a partir do que este artefato já registra (o artefato foi gerado antes de a esteira pedir esta linha). É faixa provisória: o consultor lança a estimativa oficial no card._
