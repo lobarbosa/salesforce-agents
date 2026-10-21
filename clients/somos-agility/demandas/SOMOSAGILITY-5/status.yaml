@@ -2,7 +2,7 @@ id: SOMOSAGILITY-5
 client: somos-agility
 titulo: Liberacao de Gravacao - Previsão de Gastos dos Investimentos Realizados
 tipo: sustentacao
-status: standby
+status: cancelada
 criado_em: '2026-10-05T20:44:42.037Z'
 historico:
   - de: null
@@ -26,3 +26,8 @@ historico:
     autor: Leonardo Barbosa
     em: '2026-10-21T01:09:41.074Z'
     motivo: Aberto por outro usuário
+  - de: standby
+    para: cancelada
+    autor: Leonardo Barbosa
+    em: '2026-10-21T01:54:47.612Z'
+    motivo: aberta por outro usuário
