@@ -144,3 +144,11 @@ Pré-condição mínima para liberar o build: **P1 + P5**, e P3 se o erro foi em
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Estimativa de esforço
+
+**Estimativa de esforço:** 4–8 h
+
+Esforço humano (consultor configurando, revisando, testando e homologando — não o tempo do agente). Um critério de entrada no Approval Process certo + validação em QA; sobe se a hipótese H1 não se confirmar (R1).
+
+_Estimativa acrescentada em 2026-10-21 a pedido de Leonardo, a partir do que este artefato já registra (o artefato foi gerado antes de a esteira pedir esta linha). É faixa provisória: o consultor lança a estimativa oficial no card._
