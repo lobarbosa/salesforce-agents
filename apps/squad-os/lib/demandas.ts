@@ -292,3 +292,57 @@ export function formatarTamanho(bytes: number): string {
   if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)} KB`;
   return `${(bytes / 1024 / 1024).toFixed(1)} MB`;
 }
+
+// Onde dá pra parar (congelar/cancelar) uma demanda: triagem ou gate humano —
+// nunca com etapa de agente rodando. Mesma lista na API (/ciclo), no card e
+// no arrastar do quadro.
+export const ESTAGIOS_PARAVEIS: readonly string[] = [
+  "backlog",
+  "planejada",
+  "recorrente",
+  "aguardando_gate_analise",
+  "aguardando_gate_design",
+  "aguardando_gate_build",
+  "aguardando_homologacao",
+];
+
+export function podeCancelar(status: string): boolean {
+  return ESTAGIOS_PARAVEIS.includes(status) || status === "standby";
+}
+
+/** Por que soltar o card nesta fase não faz nada — ou null se faz. */
+export function motivoSemDrop(
+  d: { status: string; materializadoEm: Date | string | null },
+  faseDestino: string
+): string | null {
+  if (faseDestino === "analise") {
+    if (d.status !== "backlog") return "só demanda no backlog vai para a esteira";
+    if (d.materializadoEm) return "esta demanda já foi enviada para a esteira";
+    return null;
+  }
+  if (faseDestino === "entregue") {
+    return podeCancelar(d.status) ? null : "há uma etapa de agente rodando — espere o gate para cancelar";
+  }
+  return "as etapas da esteira só avançam pela aprovação do gate";
+}
+
+// Rastro que /api/demandas/[id]/aprovar-gate deixa ao liberar um gate — é ele
+// a reivindicação contra o segundo clique. O status só muda quando a execução
+// sincroniza de volta (minutos), então até lá a tela pergunta por aqui.
+export function marcadorDeGate(gate: string): string {
+  return `Aprovou o gate "${gate}".`;
+}
+
+/** Quem já liberou o gate atual (e a esteira ainda não devolveu), ou null. */
+export function gateLiberadoPor(d: {
+  status: string;
+  ultimaExecucaoEm: Date | string | null;
+  materializadoEm: Date | string | null;
+  comentarios: { texto: string; autor: string; criadoEm: Date | string }[];
+}): string | null {
+  if (!d.status.startsWith("aguardando_")) return null;
+  const desde = new Date(d.ultimaExecucaoEm ?? d.materializadoEm ?? 0).getTime();
+  const marcador = marcadorDeGate(d.status);
+  const c = d.comentarios.find((c) => c.texto.startsWith(marcador) && new Date(c.criadoEm).getTime() > desde);
+  return c ? c.autor : null;
+}

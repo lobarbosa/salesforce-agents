@@ -164,7 +164,14 @@ export function DemandCard({
   onMove,
   visaoCliente,
   faseVisivel,
+  arrastavel,
+  onDragStart,
+  onDragEnd,
 }: {
+  /** Atalhos do quadro (DemandasTab): soltar em Análise/Entregue. */
+  arrastavel?: boolean;
+  onDragStart?: () => void;
+  onDragEnd?: () => void;
   demanda: DemandaDeCard;
   triageColumn: boolean;
   visaoCliente?: boolean;
@@ -185,6 +192,17 @@ export function DemandCard({
       aria-label={`Abrir demanda ${demanda.titulo}`}
       aria-describedby={metaId}
       onClick={onOpen}
+      draggable={arrastavel}
+      onDragStart={
+        arrastavel
+          ? (e) => {
+              e.dataTransfer.effectAllowed = "move";
+              e.dataTransfer.setData("text/plain", demanda.id);
+              onDragStart?.();
+            }
+          : undefined
+      }
+      onDragEnd={arrastavel ? onDragEnd : undefined}
       onKeyDown={(e) => {
         if (e.target !== e.currentTarget) return;
         if (e.key === "Enter" || e.key === " ") {

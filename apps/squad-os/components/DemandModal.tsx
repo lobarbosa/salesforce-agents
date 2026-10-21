@@ -16,6 +16,8 @@ import {
   progressoDaDemanda,
   timeAgo,
   formatarMinutos,
+  ESTAGIOS_PARAVEIS,
+  gateLiberadoPor,
 } from "@/lib/demandas";
 
 export function DemandModal({
@@ -62,6 +64,11 @@ export function DemandModal({
   // Decide o botão de aprovar, o artefato que aparece e as perguntas que
   // podem ser respondidas: as três coisas são o mesmo gate.
   const podeAprovarEsteGate = podeAprovarGate(canManage, demanda.status);
+  // Liberado = o clique já foi aceito e a próxima etapa está a caminho; o
+  // status só muda quando a execução sincroniza. Sem isto, reabrir o card
+  // nesse meio-tempo mostrava o botão de novo.
+  const [liberadoAgora, setLiberadoAgora] = useState(false);
+  const liberadoPor = gateLiberadoPor(demanda) ?? (liberadoAgora ? "você" : null);
 
   const jaAprovada = !!aprovacao?.aprovado;
   const faltandoResposta = respostas.filter((p) => !p.resposta.trim()).length;
@@ -141,7 +148,8 @@ export function DemandModal({
       if (res?.status === 409) router.refresh();
       return;
     }
-    // Sucesso: o botão fica desabilitado até o modal fechar.
+    // Sucesso: trava de vez — o card mostra "liberado" até a esteira devolver.
+    setLiberadoAgora(true);
     setConfirmandoGate(false);
     router.refresh();
     onClose();
@@ -260,7 +268,11 @@ export function DemandModal({
                   ? "Revise o que foi entregue e aprove quando estiver de acordo. Seu nome e a data ficam registrados, junto com a versão exata do que você aprovou."
                   : "A esteira parou aqui esperando aprovação. Ao liberar, a próxima etapa dispara sozinha na sandbox correspondente — e o seu nome fica registrado como quem aprovou."}
               </p>
-              {!confirmandoGate ? (
+              {liberadoPor ? (
+                <p className="gate-liberado" role="status">
+                  Liberado por {liberadoPor}. A próxima etapa está rodando — o card avança sozinho quando terminar.
+                </p>
+              ) : !confirmandoGate ? (
                 <button
                   className="btn-primary"
                   type="button"
@@ -618,15 +630,6 @@ function EstimativaConsultor({ demanda }: { demanda: DemandaCompleta }) {
 // Congelar / descongelar / cancelar / excluir (2026-10-21). Só delivery.
 // Parar só vale fora de etapa rodando (triagem ou gate) — a API confere de
 // novo; aqui é só pra não oferecer o botão que vai ser recusado.
-const PARAVEIS = new Set([
-  "backlog",
-  "planejada",
-  "recorrente",
-  "aguardando_gate_analise",
-  "aguardando_gate_design",
-  "aguardando_gate_build",
-  "aguardando_homologacao",
-]);
 
 function CicloDemanda({ demanda, onClose }: { demanda: DemandaCompleta; onClose: () => void }) {
   const router = useRouter();
@@ -636,7 +639,7 @@ function CicloDemanda({ demanda, onClose }: { demanda: DemandaCompleta; onClose:
   const [erro, setErro] = useState("");
 
   const congelada = demanda.status === "standby";
-  const podeParar = PARAVEIS.has(demanda.status);
+  const podeParar = ESTAGIOS_PARAVEIS.includes(demanda.status);
   const podeExcluir = !demanda.materializadoEm;
   if (!podeParar && !congelada) return null;
 

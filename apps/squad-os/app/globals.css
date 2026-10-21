@@ -1327,3 +1327,11 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .ciclo-demanda { margin-top: 0.75rem; }
 .ciclo-botoes { display: flex; flex-wrap: wrap; gap: 0.5rem; }
 .btn-ghost.perigo { color: var(--danger); }
+
+/* Arrastar card no quadro: só Análise (enviar) e Entregue/cancelada (cancelar) aceitam */
+.card[draggable="true"] { cursor: grab; }
+.card[draggable="true"]:active { cursor: grabbing; }
+.column.drop-alvo { outline: 2px dashed var(--accent, var(--primary)); outline-offset: -2px; }
+.column.drop-recusado { outline: 2px dashed var(--danger); outline-offset: -2px; opacity: 0.7; }
+.drop-aviso { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; }
+.gate-liberado { margin: 0; font-weight: 600; color: var(--accent3); }
