@@ -292,3 +292,22 @@ def test_erro_de_api_reconhece_so_recusas_conhecidas():
     assert sessao.erro_de_api(["Invalid API key · Fix external API key"])
     assert sessao.erro_de_api(["billing_error"])
     assert sessao.erro_de_api(["vou criar o Flow agora", ""]) is None
+
+
+def test_pii_nos_artefatos_cobra_username_mas_ignora_o_que_fica_so_no_runner(tmp_path):
+    pasta = tmp_path / "SOMOS-1"
+    (pasta / "anexos").mkdir(parents=True)
+    (pasta / "02-recon.md").write_text("org: sbx-x-dev\nusuário: integracao@cliente.com.dev\n", encoding="utf-8")
+    (pasta / "03-design.md").write_text("sem nada pessoal aqui\n", encoding="utf-8")
+    (pasta / "comentarios-do-card.md").write_text("fale com a@b.com\n", encoding="utf-8")
+    (pasta / "anexos" / "email.md").write_text("c@d.com\n", encoding="utf-8")
+
+    achados = sessao.pii_nos_artefatos(pasta)
+
+    assert len(achados) == 1
+    assert "02-recon.md:2" in achados[0]
+    assert "integracao@cliente.com.dev" not in achados[0]  # mascarado, nunca o dado
+
+
+def test_pii_nos_artefatos_sem_pasta_nao_cobra_nada(tmp_path):
+    assert sessao.pii_nos_artefatos(tmp_path / "nao-existe") == []

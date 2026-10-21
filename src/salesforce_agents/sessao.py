@@ -99,6 +99,41 @@ def faltantes(caminhos: Iterable[Path]) -> list[str]:
     return [str(caminho) for caminho in caminhos if not caminho.exists()]
 
 
+_SCANNER_PII = Path(__file__).resolve().parents[2] / "scripts" / "verificar_pii.py"
+
+
+def pii_nos_artefatos(pasta: Path) -> list[str]:
+    """Os mesmos achados que o scan de PII pré-push (`verificar_pii.py`) faria
+    nos .md da pasta da demanda — conferidos com a sessão ainda aberta.
+
+    Achado real (SOMOSAGILITY-18, 2026-10-21): o arquiteto copiou o username da
+    org de dev (formato de e-mail) no `02-recon.md`; o scan pré-push bloqueou,
+    como devia, e o design inteiro foi descartado depois de a sessão já ter
+    acabado. Cobrar aqui dá ao agente a chance de reescrever o trecho antes de
+    encerrar. O scan pré-push continua lá: isto não o substitui.
+    """
+    if not pasta.is_dir() or not _SCANNER_PII.exists():
+        return []
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("verificar_pii", _SCANNER_PII)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)  # type: ignore[union-attr]
+    achados: list[str] = []
+    for arq in sorted(pasta.rglob("*.md")):
+        # anexos/ e comentarios-do-card.md vivem só no runner (.gitignore) e
+        # não vão para o push — não são do agente para reescrever.
+        if "anexos" in arq.parts or arq.name == "comentarios-do-card.md":
+            continue
+        for achado in mod.verificar(str(arq)):
+            achados.append(
+                f"{achado} — dado pessoal ou formato de e-mail/telefone/CPF não pode ficar "
+                f"no artefato (guardrail #2): reescreva o trecho sem ele (ex.: cite a org "
+                f"pelo alias, nunca pelo username)"
+            )
+    return achados
+
+
 def cobranca(pendencias: Sequence[str], tentativa: int, total: int) -> str:
     """O texto que recobra o agente dentro da sessão que ainda está aberta.
 
@@ -112,7 +147,7 @@ def cobranca(pendencias: Sequence[str], tentativa: int, total: int) -> str:
     lista = "\n".join(f"  - {p}" for p in pendencias)
     return (
         f"Parei antes de encerrar porque o que você deveria ter produzido não está no "
-        f"disco (tentativa {tentativa} de {total}):\n\n{lista}\n\n"
+        f"disco, ou está mas precisa de correção (tentativa {tentativa} de {total}):\n\n{lista}\n\n"
         f"{CONTRATO_DA_SESSAO}\n\n"
         "Então: produza os arquivos agora, nesta resposta, usando Write. Não responda que "
         "vai fazer, que está fazendo, ou que avisa quando terminar — nenhuma dessas frases "
