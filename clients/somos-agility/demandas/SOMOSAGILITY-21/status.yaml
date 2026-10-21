@@ -2,10 +2,22 @@ id: SOMOSAGILITY-21
 client: somos-agility
 titulo: Campo origem do Lead
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-19T19:33:52.759Z'
 historico:
 - de: null
   em: '2026-10-19T19:33:52.744Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T00:48:50.546513+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:51:20.292422+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:51:35.100549+00:00'
