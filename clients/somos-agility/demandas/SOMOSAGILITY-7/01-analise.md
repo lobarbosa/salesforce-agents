@@ -102,3 +102,11 @@ Justificativa: a demanda é pontual (um campo, uma regra), mas a regra de consol
 ---
 
 Análise pronta. Preciso da sua validação antes de acionar o arquiteto.
+
+## Estimativa de esforço
+
+**Estimativa de esforço:** 6–12 h
+
+Esforço humano (consultor configurando, revisando, testando e homologando — não o tempo do agente). M provisória: depende da regra do Status Geral e do registro-exemplo que reproduz o erro.
+
+_Estimativa acrescentada em 2026-10-21 a pedido de Leonardo, a partir do que este artefato já registra (o artefato foi gerado antes de a esteira pedir esta linha). É faixa provisória: o consultor lança a estimativa oficial no card._
