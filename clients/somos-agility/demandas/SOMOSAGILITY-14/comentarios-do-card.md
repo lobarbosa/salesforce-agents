@@ -25,3 +25,11 @@ Aprovou o gate "aguardando_gate_analise". A próxima etapa foi disparada.
 Conforme conversamos, resenhei o fluxo de reembolso todo para realizarmos a atualização geral e não ter mais impacto na criação de novos usuarios. 
 
 Coloquei o fluxograma detalhado em anexo
+
+## Equipe — 2026-10-21 01:18
+
+Aprovou o gate "aguardando_gate_design". A próxima etapa foi disparada.
+
+## Equipe — 2026-10-21 01:46
+
+Aprovou o gate "aguardando_gate_design". Entrou na fila da esteira.
