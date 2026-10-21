@@ -291,3 +291,22 @@ export async function registrarStatusNoGit(
     sha: atual.data.sha,
   });
 }
+
+const ESTADOS_ATIVOS = ["queued", "in_progress", "waiting", "pending", "requested"] as const;
+
+/**
+ * URLs das execuções de run-demand.yml ainda não concluídas deste cliente
+ * (pelo título "Rodar demanda <slug> <ID>", o run-name do workflow).
+ */
+export async function runsAtivosDoCliente(clientSlug: string): Promise<string[]> {
+  const gh = octokit();
+  const { owner, repo } = repoConfig();
+  const urls: string[] = [];
+  for (const status of ESTADOS_ATIVOS) {
+    const r = await gh.actions.listWorkflowRuns({ owner, repo, workflow_id: "run-demand.yml", status, per_page: 50 });
+    for (const run of r.data.workflow_runs) {
+      if ((run.display_title ?? "").startsWith(`Rodar demanda ${clientSlug} `)) urls.push(run.html_url);
+    }
+  }
+  return urls;
+}

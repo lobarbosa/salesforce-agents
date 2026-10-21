@@ -333,16 +333,16 @@ export function marcadorDeGate(gate: string): string {
   return `Aprovou o gate "${gate}".`;
 }
 
-/** Quem já liberou o gate atual (e a esteira ainda não devolveu), ou null. */
+/**
+ * Quem já liberou o gate atual e se ainda está na fila — lido da fila de
+ * disparo (DisparoEsteira, lib/fila-esteira.ts), a mesma que a API usa como
+ * reivindicação. `naFila`: esperando o cliente ficar livre; senão, rodando.
+ */
 export function gateLiberadoPor(d: {
   status: string;
-  ultimaExecucaoEm: Date | string | null;
-  materializadoEm: Date | string | null;
-  comentarios: { texto: string; autor: string; criadoEm: Date | string }[];
-}): string | null {
+  disparos?: { tipo: string; gate: string; autor: string; disparadoEm: Date | string | null; concluidoEm: Date | string | null }[];
+}): { autor: string; naFila: boolean } | null {
   if (!d.status.startsWith("aguardando_")) return null;
-  const desde = new Date(d.ultimaExecucaoEm ?? d.materializadoEm ?? 0).getTime();
-  const marcador = marcadorDeGate(d.status);
-  const c = d.comentarios.find((c) => c.texto.startsWith(marcador) && new Date(c.criadoEm).getTime() > desde);
-  return c ? c.autor : null;
+  const aberto = (d.disparos ?? []).find((x) => x.tipo === "aprovar" && x.gate === d.status && !x.concluidoEm);
+  return aberto ? { autor: aberto.autor, naFila: !aberto.disparadoEm } : null;
 }

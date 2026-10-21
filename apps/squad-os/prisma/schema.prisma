@@ -138,6 +138,7 @@ model Client {
   ragChunks RagChunk[]
   execucoes ExecucaoAgente[]
   eventosEsteira EventoEsteira[]
+  disparos       DisparoEsteira[]
 
   // Custo alocado ao cliente (margem de contribuição por cliente).
   contasPagar         ContaPagar[]
@@ -338,6 +339,7 @@ model Demanda {
   // demanda estava quando congelou (standby), pra descongelar voltar pra ela
   // e não pro backlog. `motivoParada` é obrigatório nas duas ações — parar
   // sem dizer por quê é o que vira card esquecido.
+  disparos     DisparoEsteira[]
   congeladaDe  StatusDemanda? @map("congelada_de")
   motivoParada String         @default("") @map("motivo_parada")
 
@@ -741,4 +743,37 @@ model LimiteUso {
   @@id([chave, janela])
   @@index([criadoEm])
   @@map("limites_uso")
+}
+
+// Fila de disparo por cliente (2026-10-21). A esteira roda uma demanda por
+// vez por cliente (concurrency group `demanda-<cliente>` em run-demand.yml), e
+// o GitHub guarda só UM disparo pendente por grupo — o seguinte cancela o
+// anterior em silêncio. Achado real: 7 gates da Somos aprovados em 6 minutos,
+// 5 cancelados sem ninguém saber. Agora o Squad OS não dispara direto: põe
+// aqui e só manda pro Actions quando o cliente está livre. Quem esvazia a
+// fila: a própria aprovação/envio (cliente livre), o sync de fim de execução
+// (/api/sync/demanda) e a varredura de hora em hora (/api/sync/fila).
+model DisparoEsteira {
+  id        String  @id @default(cuid())
+  clientId  String  @map("client_id")
+  client    Client  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  demandaId String  @map("demanda_id")
+  demanda   Demanda @relation(fields: [demandaId], references: [id], onDelete: Cascade)
+
+  // rodar (envio para a esteira) | aprovar (gate liberado)
+  tipo  String
+  // O gate que a pessoa viu e aprovou — vai como gate_esperado pro workflow.
+  gate  String @default("")
+  autor String @default("")
+
+  criadoEm    DateTime  @default(now()) @map("criado_em")
+  // Mandado pro Actions. Nulo = esperando na fila.
+  disparadoEm DateTime? @map("disparado_em")
+  // A execução sincronizou de volta (ou o disparo virou sem efeito).
+  concluidoEm DateTime? @map("concluido_em")
+  nota        String    @default("")
+
+  @@index([clientId, concluidoEm])
+  @@index([demandaId, concluidoEm])
+  @@map("disparos_esteira")
 }

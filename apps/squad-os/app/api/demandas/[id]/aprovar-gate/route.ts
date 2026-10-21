@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
-import { triggerRunDemand } from "@/lib/github";
+import { processarFila } from "@/lib/fila-esteira";
 import { GATE_DO_CLIENTE, marcadorDeGate } from "@/lib/demandas";
 import { travar } from "@/lib/trava";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
@@ -61,64 +61,44 @@ export async function POST(
   const gate = demanda.status;
   const marcador = marcadorDeGate(gate);
 
-  // Reivindica a aprovação ANTES de disparar (compare-and-set). Achado da
-  // revisão de 2026-10-12: dois cliques (ou duas pessoas) disparavam o
-  // workflow duas vezes; a segunda execução esperava na fila do concurrency
-  // group e, quando rodava, a demanda já estava no gate SEGUINTE — e aprovava
-  // esse também, sem ninguém ter olhado. O schema não tem um campo "gate
-  // liberado em", então a reivindicação é o próprio comentário de rastro,
-  // criado sob um lock transacional por demanda: só passa quem não encontra
-  // um "Aprovou o gate X" posterior à última execução sincronizada (uma
-  // execução nova — inclusive uma que falhou — reabre o gate pra nova
-  // tentativa). O workflow ainda confere `gate_esperado` do lado dele.
+  // Reivindica e enfileira na mesma transação (lock por demanda): dois
+  // cliques ou duas pessoas não geram duas aprovações. Até 2026-10-21 a
+  // reivindicação era o comentário de rastro e o disparo ia direto pro
+  // Actions — que guarda um só pendente por cliente: aprovar vários cards em
+  // sequência cancelava os anteriores em silêncio (5 gates da Somos). Agora
+  // a aprovação entra na fila do cliente (lib/fila-esteira.ts) e sai de lá
+  // um disparo por vez. O workflow ainda confere `gate_esperado`.
   const claim = await prisma.$transaction(async (tx) => {
     await travar(tx, `aprovar-gate:${demanda.id}`);
-    const atual = await tx.demanda.findUnique({
-      where: { id: demanda.id },
-      select: { status: true, ultimaExecucaoEm: true, materializadoEm: true },
-    });
+    const atual = await tx.demanda.findUnique({ where: { id: demanda.id }, select: { status: true } });
     if (!atual || atual.status !== gate) return { conflito: "a demanda saiu deste gate enquanto você decidia — recarregue" };
-    const desde = atual.ultimaExecucaoEm ?? atual.materializadoEm ?? new Date(0);
-    const jaAprovado = await tx.comentario.findFirst({
-      where: { demandaId: demanda.id, texto: { startsWith: marcador }, criadoEm: { gt: desde } },
+    const aberto = await tx.disparoEsteira.findFirst({
+      where: { demandaId: demanda.id, tipo: "aprovar", gate, concluidoEm: null },
       select: { autor: true },
     });
-    if (jaAprovado) {
-      return { conflito: `este gate já foi liberado por ${jaAprovado.autor} — a próxima etapa está rodando` };
+    if (aberto) {
+      return { conflito: `este gate já foi liberado por ${aberto.autor} — está na fila da esteira` };
     }
-    // Registro local de quem liberou, pra a conversa do card ter o rastro sem
-    // depender de abrir o git. O `gates.md` da demanda continua sendo o log
-    // oficial — o agente escreve lá na etapa seguinte.
-    const comentario = await tx.comentario.create({
+    await tx.disparoEsteira.create({
+      data: { clientId: demanda.clientId, demandaId: demanda.id, tipo: "aprovar", gate, autor },
+    });
+    // Rastro na conversa do card. O `gates.md` da demanda continua sendo o
+    // log oficial — escrito por gates.py quando a execução roda.
+    await tx.comentario.create({
       data: {
         demandaId: demanda.id,
         autor,
         autorEmail: usuario.email,
-        texto: `${marcador} A próxima etapa foi disparada.`,
+        texto: `${marcador} Entrou na fila da esteira.`,
       },
-      select: { id: true },
     });
-    return { comentarioId: comentario.id };
+    return { ok: true as const };
   });
   if ("conflito" in claim) {
     return NextResponse.json({ error: claim.conflito }, { status: 409 });
   }
-
-  // Quem escreve o status real é o workflow, em status.yaml, e ele volta pelo
-  // /api/sync/demanda — o Postgres não avança a etapa aqui. Se o dispatch
-  // falhar, a reivindicação é desfeita e o gate continua esperando, que é a
-  // verdade.
-  try {
-    await triggerRunDemand(demanda.client.slug, demanda.code, { aprovarGate: autor, gateEsperado: gate });
-  } catch (err) {
-    await prisma.comentario.delete({ where: { id: claim.comentarioId } }).catch((e) => {
-      console.error("aprovar-gate: falha ao desfazer a reivindicação", e);
-    });
-    return NextResponse.json(
-      { error: err instanceof Error ? err.message : "falha ao disparar o pipeline" },
-      { status: 502 }
-    );
-  }
-
+  // Se o cliente está livre, sai agora; senão, quando a execução atual
+  // sincronizar (ou na varredura). Falha aqui não perde nada: está na fila.
+  await processarFila(demanda.clientId).catch((e) => console.error("aprovar-gate: processarFila", e));
   return NextResponse.json({ ok: true, gate, por: autor });
 }

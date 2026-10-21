@@ -66,6 +66,11 @@ export function getDemandasByClient(clientId: string) {
       checklist: { orderBy: { ordem: "asc" } },
       tempos: { orderBy: { inicioEm: "desc" } },
       anexos: { orderBy: { criadoEm: "desc" } },
+      // Fila de disparo (lib/fila-esteira.ts): só o que está aberto importa pro card.
+      disparos: {
+        where: { concluidoEm: null },
+        select: { tipo: true, gate: true, autor: true, disparadoEm: true, concluidoEm: true },
+      },
     },
   });
 }
