@@ -73,6 +73,23 @@ gate humano bloqueante — essa invariante tem teste (`tests/test_fluxo.py`). O 
 automático é a borda: agente→humano (o gate aparece pra quem precisa ver) e humano→agente
 (aprovar aciona). O que era manual antes era o transporte, não a decisão.
 
+**Fila de disparo por cliente** (2026-10-21): o Squad OS nunca dispara `run-demand.yml`
+direto — aprovação de gate e envio para a esteira entram em `DisparoEsteira`
+(`lib/fila-esteira.ts`) e saem um por vez, só com o cliente livre no Actions. Motivo: o
+concurrency group `demanda-<cliente>` guarda **um** pendente só, e o seguinte cancela o
+anterior em silêncio. Achado real: 7 gates da Somos aprovados em 6 minutos, 5 cancelados
+sem ninguém saber, e o card ainda dizia "liberado". Quem esvazia a fila: a própria
+aprovação (cliente livre), o sync de fim de execução e a varredura de hora em hora
+(`/api/sync/fila`), que também devolve à fila o que o Actions cancelou antes de rodar.
+
+**Esteira ao vivo** (`/esteira` no Squad OS, 2026-10-21): durante a sessão,
+`src/salesforce_agents/ao_vivo.py` manda eventos para `/api/sync/evento` — começou,
+qual subagente entrou, que ferramenta chamou (nome do arquivo sem caminho, as três
+primeiras palavras de um comando), custo do turno, terminou. **Só metadata**
+(guardrail #2): nunca texto do modelo, conteúdo de arquivo, padrão de busca ou
+argumento de SOQL. Best-effort: sem URL/token vira no-op e falha de rede nunca derruba
+a sessão. Eventos ficam 7 dias; o histórico durável é `ExecucaoAgente` (/falhas).
+
 O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
 (`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.
 

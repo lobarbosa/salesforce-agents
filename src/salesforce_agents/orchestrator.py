@@ -13,7 +13,7 @@ from pathlib import Path
 import anyio
 from claude_agent_sdk import ClaudeAgentOptions
 
-from . import anexos, comentarios, demands, sessao
+from . import anexos, ao_vivo, comentarios, demands, sessao
 from .costs import log_usage
 from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
@@ -91,16 +91,20 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         f"{sessao.CONTRATO_DA_SESSAO}"
     )
 
-    def registrar(message) -> None:
-        print(f"\n--- turno concluído (custo: ${message.total_cost_usd:.4f}) ---")
-        log_usage(client, demand_id, etapa, message)
+    with ao_vivo.Emissor(client, demand_id, etapa) as vivo:
 
-    await sessao.rodar(
-        options,
-        prompt,
-        conferir=lambda: sessao.faltantes(esperados),
-        ao_terminar=registrar,
-    )
+        def registrar(message) -> None:
+            print(f"\n--- turno concluído (custo: ${message.total_cost_usd:.4f}) ---")
+            log_usage(client, demand_id, etapa, message)
+            vivo.turno(message.total_cost_usd)
+
+        await sessao.rodar(
+            options,
+            prompt,
+            conferir=lambda: sessao.faltantes(esperados),
+            ao_terminar=registrar,
+            ao_usar_ferramenta=vivo.ferramenta,
+        )
 
 
 def run_sync(client: str, demand_id: str, etapa: str) -> None:
