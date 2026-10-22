@@ -2,7 +2,7 @@ id: SOMOSAGILITY-7
 client: somos-agility
 titulo: LAT - Erro na atualizacao dos Status Geral
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-10-14T21:49:25.168Z'
 historico:
 - de: null
@@ -33,3 +33,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-10-21T21:54:54.658779+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-10-22T21:16:01.626755+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-22T21:30:35.969059+00:00'
