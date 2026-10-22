@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <decisions>
+        <name>Status_calculado_e_diferente</name>
+        <label>Status calculado é diferente do atual</label>
+        <locationX>890</locationX>
+        <locationY>153</locationY>
+        <defaultConnectorLabel>Não atualizar (sem mudança)</defaultConnectorLabel>
+        <rules>
+            <name>Atualizar_Status_Geral</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>fxStatusGeralCalculado</leftValueReference>
+                <operator>IsBlank</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>fxStatusGeralCalculado</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Status__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Atualiza_Status_Geral_do_LAT</targetReference>
+            </connector>
+            <label>Atualizar Status Geral</label>
+        </rules>
+    </decisions>
+    <description>SOMOSAGILITY-7: v5 — calcula o Status Geral (Status__c) a partir dos status secundários em uso (Status_de_aprovacao_1/2/3__c, conforme Qtd_de_executores__c), cobrindo aprovação parcial (mantém pendente de preenchimento), aprovação total (Aprovado) e rejeição (volta para preenchimento do executor). Só grava quando o valor calculado é não vazio e diferente do atual.</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>fxStatusGeralCalculado</name>
+        <dataType>String</dataType>
+        <expression>IF(ISPICKVAL({!$Record.Qtd_de_executores__c}, &quot;1&quot;),
+IF(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Pendente - Gerente de projetos&quot;), &quot;Pendente - Gerente de projeto&quot;,
+IF(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Aprovado&quot;), &quot;Aprovado&quot;,
+IF(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Pendente - Preenchimento do executor&quot;), &quot;Pendente - Preenchimento do(s) executor(es)&quot;,
+IF(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Rejeitado&quot;), &quot;Pendente - Preenchimento do(s) executor(es)&quot;,
+&quot;&quot;)))),
+IF(ISPICKVAL({!$Record.Qtd_de_executores__c}, &quot;2&quot;),
+IF(OR(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Pendente - Gerente de projetos&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Pendente - Gerente de projetos&quot;)), &quot;Pendente - Gerente de projeto&quot;,
+IF(AND(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Aprovado&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Aprovado&quot;)), &quot;Aprovado&quot;,
+IF(OR(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Pendente - Preenchimento do executor&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Pendente - Preenchimento do executor&quot;)), &quot;Pendente - Preenchimento do(s) executor(es)&quot;,
+IF(OR(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Rejeitado&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Rejeitado&quot;)), &quot;Pendente - Preenchimento do(s) executor(es)&quot;,
+&quot;&quot;)))),
+IF(ISPICKVAL({!$Record.Qtd_de_executores__c}, &quot;3&quot;),
+IF(OR(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Pendente - Gerente de projetos&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Pendente - Gerente de projetos&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_3__c}, &quot;Pendente - Gerente de projetos&quot;)), &quot;Pendente - Gerente de projeto&quot;,
+IF(AND(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Aprovado&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Aprovado&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_3__c}, &quot;Aprovado&quot;)), &quot;Aprovado&quot;,
+IF(OR(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Pendente - Preenchimento do executor&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Pendente - Preenchimento do executor&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_3__c}, &quot;Pendente - Preenchimento do executor&quot;)), &quot;Pendente - Preenchimento do(s) executor(es)&quot;,
+IF(OR(ISPICKVAL({!$Record.Status_de_aprovacao_1__c}, &quot;Rejeitado&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_2__c}, &quot;Rejeitado&quot;), ISPICKVAL({!$Record.Status_de_aprovacao_3__c}, &quot;Rejeitado&quot;)), &quot;Pendente - Preenchimento do(s) executor(es)&quot;,
+&quot;&quot;)))),
+&quot;&quot;
+)))</expression>
+    </formulas>
+    <interviewLabel>Atualiza o status final de aprovação do LAT {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Atualiza o status final de aprovação do LAT</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Atualiza_Status_Geral_do_LAT</name>
+        <label>Atualiza Status Geral do LAT</label>
+        <locationX>890</locationX>
+        <locationY>300</locationY>
+        <inputAssignments>
+            <field>Status__c</field>
+            <value>
+                <elementReference>fxStatusGeralCalculado</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>550</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>Status_calculado_e_diferente</targetReference>
+        </connector>
+        <filterLogic>or</filterLogic>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendente - Preenchimento do(s) executor(es)</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Rascunho</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Pendente - Gerente de projeto</stringValue>
+            </value>
+        </filters>
+        <object>Lancamento_de_Atividades__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
