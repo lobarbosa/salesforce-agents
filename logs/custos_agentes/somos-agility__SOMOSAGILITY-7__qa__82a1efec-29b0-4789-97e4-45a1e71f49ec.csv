@@ -1,0 +1,3 @@
+timestamp,client,demand_id,etapa,session_id,model,input_tokens,output_tokens,cache_read_tokens,cache_creation_tokens,cost_usd,duration_ms,num_turns,is_error
+2026-10-23T20:35:05.668308+00:00,somos-agility,SOMOSAGILITY-7,qa,82a1efec-29b0-4789-97e4-45a1e71f49ec,claude-haiku-5-5,1628,30,0,0,0.00017780000000000004,395788,31,False
+2026-10-23T20:35:05.668308+00:00,somos-agility,SOMOSAGILITY-7,qa,82a1efec-29b0-4789-97e4-45a1e71f49ec,claude-sonnet-5,68,34077,2299622,168174,1.2212653999999996,395788,31,False
