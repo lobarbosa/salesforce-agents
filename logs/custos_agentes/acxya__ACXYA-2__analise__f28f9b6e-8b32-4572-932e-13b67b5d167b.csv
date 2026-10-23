@@ -1,0 +1,3 @@
+timestamp,client,demand_id,etapa,session_id,model,input_tokens,output_tokens,cache_read_tokens,cache_creation_tokens,cost_usd,duration_ms,num_turns,is_error
+2026-09-14T12:41:27.370938+00:00,acxya,ACXYA-2,analise,f28f9b6e-8b32-4572-932e-13b67b5d167b,claude-haiku-4-5-20251001,1186,4392,40228,17711,0.04930754999999999,124363,14,False
+2026-09-14T12:41:27.370938+00:00,acxya,ACXYA-2,analise,f28f9b6e-8b32-4572-932e-13b67b5d167b,claude-sonnet-5,28,5885,497888,46677,0.27517610000000003,124363,14,False
