@@ -2,10 +2,18 @@ id: ACXYA-3
 client: acxya
 titulo: quero uma nova tela dentro da oportunidade
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-09-14T18:30:28.433Z'
 historico:
-  - de: null
-    em: '2026-09-14T18:30:28.429Z'
-    para: backlog
-    autor: Leonardo
+- de: null
+  em: '2026-09-14T18:30:28.429Z'
+  para: backlog
+  autor: Leonardo
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-08T01:11:26.597438+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-08T01:14:33.688764+00:00'
