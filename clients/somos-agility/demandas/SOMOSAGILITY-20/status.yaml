@@ -2,10 +2,26 @@ id: SOMOSAGILITY-20
 client: somos-agility
 titulo: Automatização de criação de oportunidades de renovações
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_design
 criado_em: '2026-10-19T17:22:40.423Z'
 historico:
-  - de: null
-    em: '2026-10-19T17:22:40.423Z'
-    para: backlog
-    autor: Juliana Mendes
+- de: null
+  em: '2026-10-19T17:22:40.423Z'
+  para: backlog
+  autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T02:55:17.657847+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T02:57:54.007848+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-10-21T12:26:13.345417+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-21T12:40:43.982327+00:00'
