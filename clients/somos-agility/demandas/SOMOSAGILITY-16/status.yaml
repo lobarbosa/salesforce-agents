@@ -2,10 +2,22 @@ id: SOMOSAGILITY-16
 client: somos-agility
 titulo: Desabilitar relatório  - Leads Semanais
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-19T16:23:15.761Z'
 historico:
 - de: null
   em: '2026-10-19T16:23:15.760Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T00:42:19.009411+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:43:34.697121+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:43:44.626244+00:00'
