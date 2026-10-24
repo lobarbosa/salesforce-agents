@@ -2,10 +2,22 @@ id: EPLAST-2
 client: eplast
 titulo: Estabelecer baseline dos indicadores comerciais do projeto
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-09-25T17:08:36.633Z'
 historico:
 - de: null
   em: '2026-09-25T17:08:36.633Z'
   para: backlog
   autor: planejador
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T00:33:38.303010+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:35:22.897754+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:35:32.743077+00:00'
