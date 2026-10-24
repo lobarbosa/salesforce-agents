@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>false</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Responsavel_pela_Acao_DIA__c</field>
+        <field>Cliente__c</field>
+        <field>Nome_da_Acao_DIA__c</field>
+        <field>Objetivo_da_Acao__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <approvalActions>
+            <action>
+                <name>Aprova_o_Gestor</name>
+                <type>Alert</type>
+            </action>
+        </approvalActions>
+        <assignedApprover>
+            <approver>
+                <name>alexandre.martinez@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Qualificação Diretor Comercial</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>User.Manager</field>
+                <operation>equals</operation>
+                <value>Alexandre Martinez</value>
+            </criteriaItems>
+        </entryCriteria>
+        <ifCriteriaNotMet>GotoNextStep</ifCriteriaNotMet>
+        <label>Qualificação Diretor Comercial</label>
+        <name>Qualifica_o_Diretor_Comercial</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <approvalActions>
+            <action>
+                <name>Aprova_o_Gestor_2</name>
+                <type>Alert</type>
+            </action>
+        </approvalActions>
+        <assignedApprover>
+            <approver>
+                <name>fabio.braz@agilitynetworks.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Qualificação Diretor Comercial</description>
+        <entryCriteria>
+            <criteriaItems>
+                <field>User.Manager</field>
+                <operation>equals</operation>
+                <value>Alexandre Belem Martinez</value>
+            </criteriaItems>
+        </entryCriteria>
+        <label>Qualificação Diretor Comercial</label>
+        <name>Qualifica_o_VP</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+        <rejectionActions>
+            <action>
+                <name>Rejei_o_Gestor_2</name>
+                <type>Alert</type>
+            </action>
+        </rejectionActions>
+    </approvalStep>
+    <description>Solicitação de aprovação da Ação Dia</description>
+    <emailTemplate>Modelos_de_Email_Agility/A_o_Dia_Notifica_o</emailTemplate>
+    <enableMobileDeviceAccess>true</enableMobileDeviceAccess>
+    <entryCriteria>
+        <criteriaItems>
+            <field>Acao_DIA__c.Acao_DIA_Encerrada__c</field>
+            <operation>equals</operation>
+            <value>Não</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Notifica_o_de_aprova_o_de_A_o_Dia</name>
+            <type>Alert</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>true</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Notifica_o_de_rejei_o_de_A_o_Dia</name>
+            <type>Alert</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Alerta_de_solicita_o_de_aprova_o_A_o_Dia</name>
+            <type>Alert</type>
+        </action>
+    </initialSubmissionActions>
+    <label>Ação Dia Solicitação</label>
+    <nextAutomatedApprover>
+        <useApproverFieldOfRecordOwner>false</useApproverFieldOfRecordOwner>
+        <userHierarchyField>Manager</userHierarchyField>
+    </nextAutomatedApprover>
+    <processOrder>1</processOrder>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>
