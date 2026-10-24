@@ -2,10 +2,18 @@ id: SOMOSAGILITY-8
 client: somos-agility
 titulo: DEPV - Ajuste no fluxo de aprovação
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-14T22:25:34.710Z'
 historico:
-  - de: null
-    em: '2026-10-14T22:25:34.708Z'
-    para: backlog
-    autor: Juliana Mendes
+- de: null
+  em: '2026-10-14T22:25:34.708Z'
+  para: backlog
+  autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T02:50:42.892232+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T02:54:06.086301+00:00'
