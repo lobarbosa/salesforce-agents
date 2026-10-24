@@ -2,10 +2,22 @@ id: SOMOSAGILITY-19
 client: somos-agility
 titulo: Salesforce - carga em massa de dados para Históricos de Vendas e Renovações
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-19T16:58:52.021Z'
 historico:
 - de: null
   em: '2026-10-19T16:58:52.021Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T10:19:39.058700+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T10:21:48.419851+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T10:22:19.974858+00:00'
