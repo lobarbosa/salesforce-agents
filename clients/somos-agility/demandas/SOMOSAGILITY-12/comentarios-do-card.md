@@ -32,3 +32,11 @@ Aprovou o gate "aguardando_gate_design". A próxima etapa foi disparada.
 ## Equipe — 2026-10-21 01:46
 
 Aprovou o gate "aguardando_gate_design". Entrou na fila da esteira.
+
+## Cliente — 2026-10-23 14:51
+
+Revisar também o preenchimento destes mesmos campos no objeto job de investimentos
+
+## Equipe — 2026-10-25 01:05
+
+Aprovou o gate "aguardando_gate_build". Entrou na fila da esteira.
