@@ -37,8 +37,8 @@ as duas pontas antes de montar qualquer roteiro — nenhuma se confirma:
 2. **A org de QA não está acessível nesta sessão.** `sf org list` retorna apenas:
 
    ```
-   Type     Alias                  Username                              Status
-   Sandbox  sbx-somos-agility-dev  konectabr@somosagility.com.br.sbxdev  Connected
+   Type     Alias                  Status
+   Sandbox  sbx-somos-agility-dev  Connected
    ```
 
    `sbx-somos-agility-qa` não aparece conectada. A etapa `qa` da esteira deveria rodar
