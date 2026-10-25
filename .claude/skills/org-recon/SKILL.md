@@ -32,6 +32,10 @@ sf data query --query "SELECT COUNT() FROM Account" --target-org <ALIAS>
 ## Proibido
 - Query que retorne dados pessoais ou de negócio do cliente (nomes, e-mails, valores, CPF).
   Use `COUNT()` ou registros criados para teste. LGPD não é negociável.
+- Escrever no artefato o **username** da org, o e-mail de qualquer usuário ou a saída
+  crua de `sf org display` / `sf org list`. Cite a org pelo alias (`sbx-<cliente>-dev`)
+  e, se precisar, pelo Org ID. Username tem formato de e-mail: o scan de PII bloqueia o
+  push e a etapa inteira é descartada (achado real, SOMOSAGILITY-18).
 - Rodar qualquer coisa contra org de produção.
 - Afirmar que um componente existe sem ter rodado o comando.
 
