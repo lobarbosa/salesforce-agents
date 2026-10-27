@@ -2,7 +2,7 @@ id: SOMOSAGILITY-10
 client: somos-agility
 titulo: Erro no campo total de despesas realizadas - PRJ
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-10-14T22:31:28.434Z'
 historico:
 - de: null
@@ -25,3 +25,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-10-21T01:48:39.583373+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-10-27T23:24:13.078550+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-27T23:48:06.732457+00:00'
