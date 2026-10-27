@@ -2,7 +2,7 @@ id: SOMOSAGILITY-23
 client: somos-agility
 titulo: Erro ao alterar valor emResultado financeiro
 tipo: sustentacao
-status: build
+status: aguardando_gate_build
 criado_em: '2026-10-20T15:07:38.235Z'
 historico:
 - de: null
@@ -37,3 +37,7 @@ historico:
   para: build
   autor: Leonardo Barbosa
   em: '2026-10-27T22:59:50.870715+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-27T23:11:04.713215+00:00'
