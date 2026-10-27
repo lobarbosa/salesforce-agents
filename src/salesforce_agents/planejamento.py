@@ -101,6 +101,7 @@ async def run(client: str) -> None:
         TextBlock,
     )
 
+    from . import sessao
     from .costs import log_usage
 
     workspace = f"clients/{client}"
@@ -111,6 +112,8 @@ async def run(client: str) -> None:
         )
 
     options = ClaudeAgentOptions(
+        # Ver sessao.MAX_BUFFER_MENSAGEM.
+        max_buffer_size=sessao.MAX_BUFFER_MENSAGEM,
         cwd=workspace,
         model="claude-sonnet-5",
         setting_sources=["project"],
