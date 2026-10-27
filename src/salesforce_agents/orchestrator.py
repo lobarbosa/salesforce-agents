@@ -13,7 +13,7 @@ from pathlib import Path
 import anyio
 from claude_agent_sdk import ClaudeAgentOptions
 
-from . import anexos, comentarios, demands, sessao
+from . import anexos, ao_vivo, comentarios, demands, sessao
 from .costs import log_usage
 from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
@@ -48,6 +48,8 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
 
     options = ClaudeAgentOptions(
+        # Ver sessao.MAX_BUFFER_MENSAGEM.
+        max_buffer_size=sessao.MAX_BUFFER_MENSAGEM,
         cwd=workspace,
         # Sem `model` explícito a sessão orquestradora herda o default (Opus 1M)
         # em todas as 7 etapas. Isso custava caro e, pior, cegava a telemetria:
@@ -75,6 +77,7 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     # `demands.transition` vai exigir logo depois para deixar o status avançar.
     # Ler da mesma fonte é o que impede a sessão cobrar uma coisa e a transição
     # recusar por outra.
+    pasta_da_demanda = Path("clients") / client / "demandas" / demand_id
     esperados = [
         Path("clients") / client / "demandas" / demand_id / nome
         for nome in demands.REQUIRED_ARTIFACTS.get(etapa, ())
@@ -91,16 +94,20 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         f"{sessao.CONTRATO_DA_SESSAO}"
     )
 
-    def registrar(message) -> None:
-        print(f"\n--- turno concluído (custo: ${message.total_cost_usd:.4f}) ---")
-        log_usage(client, demand_id, etapa, message)
+    with ao_vivo.Emissor(client, demand_id, etapa) as vivo:
 
-    await sessao.rodar(
-        options,
-        prompt,
-        conferir=lambda: sessao.faltantes(esperados),
-        ao_terminar=registrar,
-    )
+        def registrar(message) -> None:
+            print(f"\n--- turno concluído (custo: ${message.total_cost_usd:.4f}) ---")
+            log_usage(client, demand_id, etapa, message)
+            vivo.turno(message.total_cost_usd)
+
+        await sessao.rodar(
+            options,
+            prompt,
+            conferir=lambda: sessao.faltantes(esperados) + sessao.pii_nos_artefatos(pasta_da_demanda),
+            ao_terminar=registrar,
+            ao_usar_ferramenta=vivo.ferramenta,
+        )
 
 
 def run_sync(client: str, demand_id: str, etapa: str) -> None:
