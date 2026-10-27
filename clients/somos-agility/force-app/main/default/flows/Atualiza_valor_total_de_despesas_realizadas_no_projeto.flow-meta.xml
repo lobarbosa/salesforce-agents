@@ -73,7 +73,7 @@
             <label>Quilometragem</label>
         </rules>
     </decisions>
-    <description>Atualiza valor total de despesas realizadas no projeto, capturando todos os lançamentos de despesas e somando aqueles que já foram aprovados. Inclui os LD&apos;s informativos - Atualizado em 28/07/2025.</description>
+    <description>Atualiza valor total de despesas realizadas no projeto, capturando todos os lançamentos de despesas e somando aqueles que já foram aprovados. Inclui os LD&apos;s informativos - Atualizado em 27/10/2026 (SOMOSAGILITY-10): critério de entrada trocado para &quot;Lançamento tem projeto&quot; (antes dependia de o próprio Lançamento ser salvo com o status já aprovado, o que não acontecia quando só a SR mudava de etapa) e valor padrão 0 no somatório para projeto sem Lançamento elegível.</description>
     <environments>Default</environments>
     <interviewLabel>Atualiza valor total de despesas realizadas no projeto {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Atualiza valor total de despesas realizadas no projeto</label>
@@ -117,7 +117,7 @@
         <locationY>402</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Atualiza_com_o_valor_0</targetReference>
+            <targetReference>Itera_sob_os_LD_do_PRJ</targetReference>
         </connector>
         <filterLogic>1 AND (2 OR 3 OR 4 OR 5)</filterLogic>
         <filters>
@@ -164,30 +164,6 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>Atualiza_com_o_valor_0</name>
-        <label>Atualiza com o valor 0</label>
-        <locationX>747</locationX>
-        <locationY>402</locationY>
-        <connector>
-            <targetReference>Itera_sob_os_LD_do_PRJ</targetReference>
-        </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.Relacionado_ao_Projeto__r.Id</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Total_de_despesas_realizadas__c</field>
-            <value>
-                <numberValue>0.0</numberValue>
-            </value>
-        </inputAssignments>
-        <object>PPM_Project__c</object>
-    </recordUpdates>
-    <recordUpdates>
         <name>Atualiza_valor_no_projeto</name>
         <label>Atualiza valor no projeto</label>
         <locationX>898</locationX>
@@ -214,33 +190,12 @@
         <connector>
             <targetReference>Captura_lancamentos_de_despesas</targetReference>
         </connector>
-        <filterLogic>or</filterLogic>
+        <filterLogic>and</filterLogic>
         <filters>
-            <field>Status_da_SR__c</field>
-            <operator>EqualTo</operator>
+            <field>Relacionado_ao_Projeto__c</field>
+            <operator>IsNull</operator>
             <value>
-                <stringValue>Pendente - Gestor</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status_da_SR__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Pendente - Diretor</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status_da_SR__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Pendente - Operações</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>Status_da_SR__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>Aprovado</stringValue>
+                <booleanValue>false</booleanValue>
             </value>
         </filters>
         <object>Lancamento_de_Despesas__c</object>
@@ -255,5 +210,8 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
 </Flow>

@@ -5,10 +5,18 @@ public class SolicitacaoReembolsoTriggerHandler extends TriggerHandler {
     }
 
     public override void afterUpdate() {
-        if(Trigger.isExecuting && Trigger.oldMap.keySet().equals(Trigger.newMap.keySet())) {
-            return;
+        Map<Id, Solicitacao_de_Reembolso__c> oldMap = (Map<Id, Solicitacao_de_Reembolso__c>) Trigger.oldMap;
+        List<Solicitacao_de_Reembolso__c> mudaram = new List<Solicitacao_de_Reembolso__c>();
+
+        for (Solicitacao_de_Reembolso__c s : (List<Solicitacao_de_Reembolso__c>) Trigger.new) {
+            Solicitacao_de_Reembolso__c o = oldMap.get(s.Id);
+            if (s.Status_de_Aprovacao_e_Etapas__c != o.Status_de_Aprovacao_e_Etapas__c || s.Status__c != o.Status__c) {
+                mudaram.add(s);
+            }
         }
-        
-        SolicitacaoReembolsoBO.updateLancamentosDespesas((List<Solicitacao_de_Reembolso__c>)Trigger.new);
+
+        if (!mudaram.isEmpty()) {
+            SolicitacaoReembolsoBO.updateLancamentosDespesas(mudaram);
+        }
     }
 }
