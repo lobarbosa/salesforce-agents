@@ -170,3 +170,36 @@ e exigir filtro de visibilidade.
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Adendo — tentativa de build em 2026-10-27, build segue bloqueado
+
+O gate de design foi aprovado em 2026-10-27 (ver `gates.md`) e a demanda entrou em `build`. O agente
+`builder-declarativo` leu `demanda.md`, `comentarios-do-card.md`, `01-analise.md`, `02-recon.md`, este
+design e o anexo PDF liberado nesta sessão, e conferiu as três condições da seção 0 antes de tocar em
+qualquer metadata ou abrir branch:
+
+1. **P1 (lista do que retirar), em texto no card ou print liberado mapeado à tabela da seção 3:**
+   **não satisfeita.** `comentarios-do-card.md` tem só quatro entradas, nenhuma com a lista — a última
+   (2026-10-27 22:55) só registra a aprovação do gate de design. Nenhum outro arquivo em disco traz a
+   lista em texto.
+2. **P2 (escopo de perfis), resposta no card:** **não satisfeita.** Mesma conferência acima — nenhum
+   comentário responde "todos os usuários significa todos os perfis?".
+3. **Matriz item × página (seção 4), adendo do arquiteto:** **não satisfeita.** A seção 4 acima continua
+   com a linha "*pendente P1*" / "*pendente P2*", sem adendo do arquiteto.
+
+Como nenhuma das três condições foi atendida, **nenhuma branch foi criada, nenhum metadata foi escrito
+e nenhum deploy foi feito** em `sbx-somos-agility-dev`. Isso segue a própria instrução do agente de
+build: quando o design não fecha, parar e reportar, não improvisar.
+
+**Observação para acelerar a resolução de P1 (não é uma resposta, nem deve ser tratada como tal):**
+ao reler o PDF do anexo nesta sessão, o agente conseguiu enxergar visualmente a imagem embutida (não
+só extrair texto dela) e notou três trechos do print demarcados em destaque amarelo sobre uma página
+Home padrão: a lista de ordenação do feed ("Classificar por"), o bloco "Principais negócios -
+Oportunidades recentes" e o bloco "Desempenho trimestral". Isso é indício, lido por um agente, de uma
+imagem — não confirmação. Não foi usado para decidir nada aqui e **não substitui** a condição 1: a
+lista ainda precisa chegar em texto no card (ou print liberado por delivery) para virar critério
+verificável para build e QA, e a condição 3 ainda exige que o arquiteto confirme essa correspondência
+na matriz da seção 4, inclusive decidindo entre as interpretações A/B/C da seção 2. Nenhum dado pessoal
+do e-mail (nome, telefone, e-mail da remetente) foi transcrito aqui, conforme guardrail #2.
+
+Build permanece bloqueado até que delivery/arquiteto resolvam P1, P2 e preencham a matriz da seção 4.

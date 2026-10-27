@@ -2,7 +2,7 @@ id: SOMOSAGILITY-15
 client: somos-agility
 titulo: Layout de pagina inicial
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-10-19T16:17:14.279Z'
 historico:
 - de: null
@@ -33,3 +33,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-10-21T13:59:52.464174+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-10-27T23:49:57.256599+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-27T23:54:49.459381+00:00'
