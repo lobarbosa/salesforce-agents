@@ -41,7 +41,7 @@
         <allowDelegate>false</allowDelegate>
         <assignedApprover>
             <approver>
-                <name>kelly.stefani@somosagility.com.br</name>
+                <name>sales.operations@somosagility.com.br</name>
                 <type>user</type>
             </approver>
             <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
