@@ -2,7 +2,7 @@ id: SOMOSAGILITY-21
 client: somos-agility
 titulo: Campo origem do Lead
 tipo: sustentacao
-status: aguardando_homologacao
+status: entregue
 criado_em: '2026-10-19T19:33:52.759Z'
 historico:
 - de: null
@@ -53,3 +53,11 @@ historico:
   para: aguardando_homologacao
   autor: pipeline
   em: '2026-10-28T01:37:23.271011+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Juliana Mendes
+  em: '2026-10-28T23:19:45.551046+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-10-28T23:24:34.390148+00:00'
