@@ -2,7 +2,7 @@ id: SOMOSAGILITY-7
 client: somos-agility
 titulo: LAT - Erro na atualizacao dos Status Geral
 tipo: sustentacao
-status: aguardando_homologacao
+status: entregue
 criado_em: '2026-10-14T21:49:25.168Z'
 historico:
 - de: null
@@ -53,3 +53,11 @@ historico:
   para: aguardando_homologacao
   autor: pipeline
   em: '2026-10-23T20:35:06.385200+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Juliana Mendes
+  em: '2026-10-28T22:50:16.507521+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-10-28T23:02:49.326432+00:00'

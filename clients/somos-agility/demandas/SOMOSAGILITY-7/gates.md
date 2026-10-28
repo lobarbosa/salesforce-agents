@@ -32,3 +32,11 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Commit:** `eb2aae78`
 - **Artefatos revisados:**
   - `04-plano-build.md` — sha256 `1c7ae6ad50a76631` (11603 bytes)
+
+## aguardando_homologacao
+
+- **Aprovado por:** Juliana Mendes
+- **Quando:** 2026-10-28T22:50:16.501686+00:00
+- **Commit:** `4cb73318`
+- **Artefatos revisados:**
+  - `05-testes.md` — sha256 `82556ecd83112b0f` (12285 bytes)
