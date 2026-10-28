@@ -37,6 +37,13 @@ MAX_TENTATIVAS = 3
 # Vai no fim do prompt inicial de quem usa este módulo. O texto mora aqui, e não
 # copiado em cada chamador, porque é a regra da casa sobre o que é uma sessão —
 # não um detalhe de uma etapa específica.
+# Limite de uma mensagem do CLI para o SDK. O padrão do SDK é 1 MB, e uma
+# leitura de anexo (PDF/imagem entra inteiro, em base64, num resultado de
+# ferramenta só) passa disso: achado real SOMOSAGILITY-18 (2026-10-21) — duas
+# sessões de design morreram em 30 s com "JSON message exceeded maximum buffer
+# size of 1048576 bytes", antes de escrever qualquer coisa.
+MAX_BUFFER_MENSAGEM = 32 * 1024 * 1024
+
 CONTRATO_DA_SESSAO = (
     "Esta sessão é a única execução que vai acontecer: ela roda dentro de um job de CI "
     "e termina no instante em que você parar de responder. Não existe turno seguinte, "

@@ -48,6 +48,8 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
 
     options = ClaudeAgentOptions(
+        # Ver sessao.MAX_BUFFER_MENSAGEM.
+        max_buffer_size=sessao.MAX_BUFFER_MENSAGEM,
         cwd=workspace,
         # Sem `model` explícito a sessão orquestradora herda o default (Opus 1M)
         # em todas as 7 etapas. Isso custava caro e, pior, cegava a telemetria:
