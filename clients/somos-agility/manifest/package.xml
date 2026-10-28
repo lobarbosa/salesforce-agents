@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>PS_JST_ClassificacaoDenominacao</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>JOB_de_Solicitacao_de_Treinamentos__c-Layout de JOB de Solicitação de Treinamentos</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>JOB_de_Solicitacao_de_Treinamentos__c.JST_Classif_Denominacao_Obrigatorias</members>
+        <name>ValidationRule</name>
+    </types>
+    <version>68.0</version>
+</Package>
