@@ -45,3 +45,7 @@ historico:
   para: aguardando_homologacao
   autor: pipeline
   em: '2026-10-28T01:58:29.036483+00:00'
+- de: aguardando_homologacao
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-28T01:59:11.157767+00:00'
