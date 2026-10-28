@@ -48,6 +48,8 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
 
     options = ClaudeAgentOptions(
+        # Ver sessao.MAX_BUFFER_MENSAGEM.
+        max_buffer_size=sessao.MAX_BUFFER_MENSAGEM,
         cwd=workspace,
         # Sem `model` explícito a sessão orquestradora herda o default (Opus 1M)
         # em todas as 7 etapas. Isso custava caro e, pior, cegava a telemetria:
@@ -75,6 +77,7 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     # `demands.transition` vai exigir logo depois para deixar o status avançar.
     # Ler da mesma fonte é o que impede a sessão cobrar uma coisa e a transição
     # recusar por outra.
+    pasta_da_demanda = Path("clients") / client / "demandas" / demand_id
     esperados = [
         Path("clients") / client / "demandas" / demand_id / nome
         for nome in demands.REQUIRED_ARTIFACTS.get(etapa, ())
@@ -101,7 +104,7 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         await sessao.rodar(
             options,
             prompt,
-            conferir=lambda: sessao.faltantes(esperados),
+            conferir=lambda: sessao.faltantes(esperados) + sessao.pii_nos_artefatos(pasta_da_demanda),
             ao_terminar=registrar,
             ao_usar_ferramenta=vivo.ferramenta,
         )
