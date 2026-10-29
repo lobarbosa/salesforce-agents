@@ -2,7 +2,7 @@ id: SOMOSAGILITY-21
 client: somos-agility
 titulo: Campo origem do Lead
 tipo: sustentacao
-status: entregue
+status: aguardando_homologacao
 criado_em: '2026-10-19T19:33:52.759Z'
 historico:
 - de: null
@@ -61,3 +61,9 @@ historico:
   para: entregue
   autor: pipeline
   em: '2026-10-28T23:24:34.390148+00:00'
+- de: entregue
+  para: aguardando_homologacao
+  autor: Leonardo Barbosa
+  em: '2026-10-29T18:49:01.400697+00:00'
+  motivo: 'Entrega falsa: nada foi implantado em QA (sbx-somos-agility-qa nunca conectada;
+    etapas de QA rodaram em dev). Volta para homologação até haver release real.'
