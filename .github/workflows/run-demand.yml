@@ -75,6 +75,24 @@ jobs:
       - name: Instalar o mínimo pra ler a demanda
         run: pip install click pyyaml
 
+      # O status.yaml que vale é o da branch da demanda: é lá que cada etapa
+      # commita. O da main fica parado em backlog/análise e, lido daqui,
+      # mandava TODA etapa para dev — achado real (Somos, 2026-10-29): qa,
+      # homologação e release rodaram na sandbox de dev e a esteira marcou
+      # "entregue" sem nenhum deploy em QA.
+      - name: Trazer o status da branch da demanda
+        env:
+          CLIENT: ${{ inputs.client }}
+          DEMAND_ID: ${{ inputs.demand_id }}
+        run: |
+          if git fetch --depth=1 origin "feature/$DEMAND_ID" 2>/dev/null; then
+            git checkout FETCH_HEAD -- "clients/$CLIENT/demandas/$DEMAND_ID/status.yaml" \
+              && echo "status lido de feature/$DEMAND_ID" \
+              || echo "feature/$DEMAND_ID sem status.yaml — usando o da main"
+          else
+            echo "feature/$DEMAND_ID ainda não existe — usando o status da main"
+          fi
+
       # Se o gate vai ser aprovado, o ambiente que importa é o da etapa DEPOIS
       # do gate — é ela que vai rodar. Sem isso, aprovar aguardando_gate_build
       # abriria o Environment de dev pra uma etapa que roda em QA.
@@ -208,7 +226,10 @@ jobs:
           # pasta do cliente — demandas e force-app, onde o build escreve —
           # continua sendo o da branch. Entra no commit da etapa, o que só
           # aproxima a branch da main (o diff do PR encolhe, não cresce).
-          for caminho in src scripts .claude CLAUDE.md pyproject.toml \
+          # .gitignore entra junto (achado 2026-10-29): branches criadas antes de
+          # anexos/ e comentarios-do-card.md entrarem no .gitignore commitaram
+          # esses arquivos — anexo de cliente e comentário no git (guardrail #2).
+          for caminho in src scripts .claude CLAUDE.md pyproject.toml .gitignore \
                          "clients/$CLIENT/CLAUDE.md" "clients/$CLIENT/assessment.md" \
                          "clients/$CLIENT/assessment.json"; do
             git checkout "$GITHUB_SHA" -- "$caminho" 2>/dev/null || true
