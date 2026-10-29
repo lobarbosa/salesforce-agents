@@ -2,7 +2,7 @@ id: SOMOSAGILITY-23
 client: somos-agility
 titulo: Erro ao alterar valor emResultado financeiro
 tipo: sustentacao
-status: entregue
+status: aguardando_homologacao
 criado_em: '2026-10-20T15:07:38.235Z'
 historico:
 - de: null
@@ -65,3 +65,9 @@ historico:
   para: entregue
   autor: pipeline
   em: '2026-10-28T23:32:31.840587+00:00'
+- de: entregue
+  para: aguardando_homologacao
+  autor: Leonardo Barbosa
+  em: '2026-10-29T18:49:08.009741+00:00'
+  motivo: 'Entrega falsa: nada foi implantado em QA (sbx-somos-agility-qa nunca conectada;
+    etapas de QA rodaram em dev). Volta para homologação até haver release real.'
