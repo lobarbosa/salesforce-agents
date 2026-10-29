@@ -6,14 +6,13 @@ import {
   TRIAGE,
   TRIAGE_LABEL,
   STAGE_LABEL,
-  ESTADO_CLIENTE_LABEL,
-  agenteRodando,
-  estaEmGate,
-  estadoDoCliente,
-  quemDestrava,
   formatarMinutos,
   perguntasPendentes,
   progressoDaDemanda,
+  acoesPendentes,
+  estadoDoClienteDemanda,
+  situacaoParaCliente,
+  QUEM_AGE_LABEL,
   timeAgo,
   aguardaAprovacaoEstimativa,
 } from "@/lib/demandas";
@@ -22,7 +21,7 @@ import {
 // carregadas (getAllDemandas), a aba do cliente com elas — daí o Partial.
 // Sem relação, os indicadores simplesmente não aparecem; nada quebra.
 type DemandaDeCard = Demanda &
-  Partial<Pick<DemandaCompleta, "comentarios" | "subtarefas" | "checklist" | "tempos" | "anexos">>;
+  Partial<Pick<DemandaCompleta, "comentarios" | "subtarefas" | "checklist" | "tempos" | "anexos" | "disparos">>;
 
 // O que dá pra saber do card sem abri-lo: quanto da demanda já andou, se tem
 // conversa, se tem arquivo, quanto tempo já custou. Cada indicador só aparece
@@ -95,60 +94,64 @@ function Indicadores({ demanda }: { demanda: DemandaDeCard }) {
   );
 }
 
+// Quem age agora (lib/demandas.ts acoesPendentes). Forma + texto, nunca só cor:
+// cada dono tem um marcador de forma própria (círculo pulsando, quadrado,
+// losango, relógio) e o texto diz o que falta.
+export function QuemAgeChips({ demanda }: { demanda: DemandaDeCard }) {
+  const acoes = acoesPendentes(demanda);
+  if (acoes.length === 0) return null;
+  return (
+    <>
+      {acoes.map((a) => (
+        <span key={a.quem + a.oque} className={`quem-age quem-${a.quem}`}>
+          <span className="quem-marca" aria-hidden="true" />
+          {a.quem === "time" || a.quem === "cliente"
+            ? `${QUEM_AGE_LABEL[a.quem]}: ${a.oque}`
+            : a.quem === "agente"
+              ? "Agente rodando"
+              : QUEM_AGE_LABEL[a.quem]}
+        </span>
+      ))}
+    </>
+  );
+}
+
 function StageChip({
-  status,
+  demanda,
   visaoCliente,
   faseVisivel,
 }: {
-  status: string;
+  demanda: DemandaDeCard;
   visaoCliente?: boolean;
   /** O card está numa coluna que já nomeia a fase — ver DemandasTab. */
   faseVisivel?: boolean;
 }) {
-  // Para o cliente, o chip diz o estado dele e a fase; o jargão interno some.
+  const status = demanda.status;
+  // Cliente: uma frase do que está acontecendo + a etapa com nome, sem jargão.
   if (visaoCliente) {
-    const estado = estadoDoCliente(status);
+    const estado = estadoDoClienteDemanda(demanda);
+    const situacao = situacaoParaCliente(demanda);
     const progresso = progressoDaDemanda(status);
     return (
       <>
-        <span className={`badge ${estado === "voce" ? "gate" : "stage"}`}>
-          {ESTADO_CLIENTE_LABEL[estado]}
-        </span>
-        {progresso && estado === "andamento" && (
-          <span className="badge fase">{progresso.rotulo}</span>
+        {situacao && (
+          <span className={`badge ${estado === "voce" ? "gate sua-vez" : "stage"}`}>{situacao}</span>
+        )}
+        {progresso && estado !== "entregue" && (
+          <span className="badge fase">
+            {progresso.rotulo} · {progresso.nome}
+          </span>
         )}
       </>
     );
   }
-  // Dentro da coluna da fase, repetir o nome dela no chip não diz nada novo.
-  // O que muda a decisão de quem olha é **se está parada e esperando quem** —
-  // e `aguardando_gate_design` é o gate bloqueante da doutrina, que ganha peso
-  // próprio em vez de parecer igual aos outros três.
-  if (estaEmGate(status)) {
-    const quem = quemDestrava(status);
-    const bloqueante = status === "aguardando_gate_design";
-    return (
-      <span className={`badge gate${bloqueante ? " bloqueante" : ""}`}>
-        {bloqueante ? `trava: ${quem}` : `aguarda ${quem}`}
-      </span>
-    );
-  }
-  // Agente trabalhando agora. Antes isto era invisível: dentro da coluna da
-  // fase o chip sumia, e um card com uma sessão de agente rodando ficava
-  // idêntico a um card parado. É a diferença entre esperar e ir investigar.
-  if (agenteRodando(status)) {
-    return (
-      <span className="badge rodando">
-        <span className="pulso" aria-hidden="true" />
-        {faseVisivel ? "rodando" : `${STAGE_LABEL[status] ?? status} · rodando`}
-      </span>
-    );
-  }
-  // Demanda andando dentro da coluna da própria fase: o chip repetiria o
-  // título da coluna. Na Visão Geral, onde não há colunas de fase, ele é a
-  // única pista de onde a demanda está — por isso continua.
-  if (faseVisivel) return null;
-  return <span className="badge stage">{STAGE_LABEL[status] ?? status}</span>;
+  // Fora das colunas de fase (Visão Geral), a etapa é a única pista de onde está.
+  return (
+    <>
+      {!faseVisivel && <span className="badge stage">{STAGE_LABEL[status] ?? status}</span>}
+      <QuemAgeChips demanda={demanda} />
+    </>
+  );
 }
 
 function ApprovalBadge({ demanda }: { demanda: Demanda }) {
@@ -230,7 +233,7 @@ export function DemandCard({
         </span>
         {!triageColumn && (
           <StageChip
-            status={demanda.status}
+            demanda={demanda}
             visaoCliente={visaoCliente}
             faseVisivel={faseVisivel}
           />

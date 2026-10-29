@@ -31,7 +31,7 @@ export const STAGE_LABEL: Record<string, string> = {
   design: "design",
   aguardando_gate_design: "gate: design (bloq.)",
   build: "build",
-  aguardando_gate_build: "gate: PR",
+  aguardando_gate_build: "revisão do PR",
   qa: "qa",
   aguardando_homologacao: "gate: homologação",
   release: "release",
@@ -63,13 +63,19 @@ export interface FaseDoQuadro {
 }
 
 export const FASES: readonly FaseDoQuadro[] = [
-  { chave: "triagem", titulo: "Backlog", estagios: TRIAGE },
+  // Congelada não entra: ela sai do quadro para a faixa "Congeladas" (DemandasTab).
+  // Misturada ao Backlog, uma demanda segurada pelo cliente parecia nova.
+  { chave: "triagem", titulo: "Backlog", estagios: ["backlog", "planejada", "recorrente"] },
   { chave: "analise", titulo: "Análise", estagios: ["analise", "aguardando_gate_analise"] },
   { chave: "design", titulo: "Design", estagios: ["design", "aguardando_gate_design"] },
-  { chave: "build", titulo: "Build", estagios: ["build", "aguardando_gate_build"] },
-  { chave: "qa", titulo: "QA e entrega", estagios: ["qa", "aguardando_homologacao", "release"] },
-  // Cancelada fica junto da entregue: as duas saíram da esteira. Coluna
-  // própria alargaria o quadro para uma exceção.
+  // "Build" lia como "liberar para construir" — mas card parado aqui já foi
+  // construído e espera a revisão do PR. Quem libera a construção é o design.
+  { chave: "build", titulo: "Construção", estagios: ["build", "aguardando_gate_build"] },
+  { chave: "qa", titulo: "QA", estagios: ["qa"] },
+  // A homologação é o único gate do cliente; dividindo coluna com QA e release
+  // (do agente) ela sumia. Release fica junto: é o que acontece logo depois.
+  { chave: "homologacao", titulo: "Homologação", estagios: ["aguardando_homologacao", "release"] },
+  // Cancelada fica junto da entregue: as duas saíram da esteira.
   { chave: "entregue", titulo: "Entregue / cancelada", estagios: ["entregue", ...ENCERRADOS] },
 ];
 
@@ -177,10 +183,15 @@ const FASES_CLIENTE = [
   ["qa", "aguardando_homologacao", "release"],
 ];
 
+// Os nomes que o cliente reconhece para cada fase — sem "design" (que soa
+// como tela) e sem "gate".
+const NOMES_FASES_CLIENTE = ["Entendimento", "Solução", "Construção", "Testes e entrega"];
+
 export interface ProgressoDemanda {
   fase: number;
   total: number;
   rotulo: string;
+  nome: string;
 }
 
 /**
@@ -192,7 +203,12 @@ export interface ProgressoDemanda {
 export function progressoDaDemanda(status: string): ProgressoDemanda | null {
   const i = FASES_CLIENTE.findIndex((fase) => fase.includes(status));
   if (i < 0) return null;
-  return { fase: i + 1, total: FASES_CLIENTE.length, rotulo: `etapa ${i + 1} de ${FASES_CLIENTE.length}` };
+  return {
+    fase: i + 1,
+    total: FASES_CLIENTE.length,
+    rotulo: `etapa ${i + 1} de ${FASES_CLIENTE.length}`,
+    nome: NOMES_FASES_CLIENTE[i],
+  };
 }
 
 export interface Pergunta {
@@ -374,4 +390,87 @@ export function aguardaAprovacaoEstimativa(d: {
   if (d.estimativaConsultorHoras == null || estimativaAprovada(d)) return false;
   const etapa = d.status === "standby" ? d.congeladaDe ?? "" : d.status;
   return ESTAGIOS_APROVACAO_ESTIMATIVA.includes(etapa);
+}
+
+// --- Quem age agora (2026-10-29) --------------------------------------------
+//
+// A coluna diz a fase; não diz se o card está andando ou parado, nem quem
+// destrava. Achado real: "gate de build" lido como "liberar a construção",
+// cliente sem saber que era a vez dele, design esperando o arquiteto parecendo
+// igual a design esperando o cliente aprovar as horas. Esta é a resposta
+// única, usada pelo card, pelos filtros e pela visão do cliente.
+
+export type QuemAge = "agente" | "time" | "cliente" | "fila" | "congelada";
+
+export interface AcaoPendente {
+  quem: QuemAge;
+  /** O que falta, em poucas palavras ("aprovar design", "homologar"). */
+  oque: string;
+}
+
+interface DemandaParaQuemAge {
+  status: string;
+  congeladaDe?: string | null;
+  estimativaConsultorHoras: number | null;
+  estimativaAprovadaHoras: number | null;
+  disparos?: { tipo: string; gate: string; disparadoEm: Date | string | null; concluidoEm: Date | string | null; nota?: string }[];
+}
+
+const OQUE_DO_GATE: Record<string, string> = {
+  aguardando_gate_analise: "aprovar análise",
+  aguardando_gate_design: "aprovar design",
+  aguardando_gate_build: "revisar PR",
+  aguardando_homologacao: "homologar",
+};
+
+/** Quem precisa agir agora — pode ser mais de um (design: arquiteto E cliente nas horas). */
+export function acoesPendentes(d: DemandaParaQuemAge): AcaoPendente[] {
+  if (d.status === "standby") return [{ quem: "congelada", oque: "congelada" }];
+  if (d.status === "entregue" || d.status === "cancelada") return [];
+
+  const aberto = (d.disparos ?? []).find((x) => !x.concluidoEm);
+  if (aberto && aberto.disparadoEm) return [{ quem: "agente", oque: "rodando" }];
+  if (agenteRodando(d.status)) return [{ quem: "agente", oque: "rodando" }];
+
+  const acoes: AcaoPendente[] = [];
+  if (aberto) {
+    acoes.push({ quem: "fila", oque: "na fila" });
+  } else if (estaEmGate(d.status)) {
+    acoes.push({
+      quem: d.status === GATE_DO_CLIENTE ? "cliente" : "time",
+      oque: OQUE_DO_GATE[d.status] ?? "aprovar",
+    });
+  }
+  if (aguardaAprovacaoEstimativa(d)) acoes.push({ quem: "cliente", oque: "aprovar horas" });
+  return acoes;
+}
+
+export const QUEM_AGE_LABEL: Record<QuemAge, string> = {
+  agente: "Agente",
+  time: "Time",
+  cliente: "Cliente",
+  fila: "Na fila",
+  congelada: "Congelada",
+};
+
+// --- O mesmo, dito para o cliente ------------------------------------------
+
+/** Estado do cliente considerando a estimativa: aprovar horas também é a vez dele. */
+export function estadoDoClienteDemanda(d: DemandaParaQuemAge): EstadoCliente {
+  const porStatus = estadoDoCliente(d.status);
+  if (porStatus === "andamento" && aguardaAprovacaoEstimativa(d)) return "voce";
+  return porStatus;
+}
+
+/** Uma frase do que está acontecendo, sem jargão de esteira. */
+export function situacaoParaCliente(d: DemandaParaQuemAge): string {
+  const acoes = acoesPendentes(d);
+  if (d.status === GATE_DO_CLIENTE) return "Sua vez: conferir a entrega e homologar";
+  if (acoes.some((a) => a.quem === "cliente" && a.oque === "aprovar horas")) return "Sua vez: aprovar a estimativa de horas";
+  if (d.status === "release") return "Liberando a entrega";
+  if (acoes.some((a) => a.quem === "agente")) return "Equipe trabalhando agora";
+  if (acoes.some((a) => a.quem === "fila")) return "Na fila para começar";
+  if (estaEmGate(d.status)) return "Em revisão pela equipe";
+  if ((TRIAGE as readonly string[]).includes(d.status) && d.status !== "standby") return "Recebida, aguardando a equipe";
+  return "";
 }
