@@ -6,12 +6,12 @@ import type { Client } from "@/lib/generated/prisma/client";
 import type { DemandaCompleta } from "@/lib/data";
 import {
   FASES,
-  ESTADOS_CLIENTE,
-  ESTADO_CLIENTE_LABEL,
   agenteRodando,
   estaEmGate,
-  estadoDoCliente,
   quemDestrava,
+  acoesPendentes,
+  estadoDoClienteDemanda,
+  type QuemAge,
   motivoSemDrop,
   gateLiberadoPor,
 } from "@/lib/demandas";
@@ -41,6 +41,9 @@ export function DemandasTab({
 }) {
   const router = useRouter();
   const [newOpen, setNewOpen] = useState(false);
+  // Filtro de "quem age" (2026-10-29): responde "o que é meu agora?" sem ler
+  // o quadro inteiro. Esconde os cards; as colunas ficam, para não mudar o mapa.
+  const [filtroQuem, setFiltroQuem] = useState<"" | QuemAge>("");
   const [openId, setOpenId] = useState<string | null>(openDemandId ?? null);
 
   const byId = new Map(demandas.map((d) => [d.id, d]));
@@ -108,20 +111,35 @@ export function DemandasTab({
   // uma. Sem triagem e sem arrastar — mover a esteira não é dele, e as colunas
   // de triagem só exporiam decisão interna de priorização.
   if (visaoCliente) {
-    const porEstado = ESTADOS_CLIENTE.map((estado) => ({
+    // Quatro colunas na ordem do trabalho; pausada e cancelada saem para a
+    // faixa de baixo — eram duas colunas quase sempre vazias. "Sua vez" junta
+    // homologar e aprovar horas: as duas são a mesma pergunta para ele.
+    const COLUNAS_CLIENTE = ["recebida", "andamento", "voce", "entregue"] as const;
+    const porEstado = COLUNAS_CLIENTE.map((estado) => ({
       estado,
-      items: demandas.filter((d) => estadoDoCliente(d.status) === estado),
+      items: demandas.filter((d) => estadoDoClienteDemanda(d) === estado),
     }));
     const suas = porEstado.find((c) => c.estado === "voce")!.items;
+    const homologar = suas.filter((d) => d.status === "aguardando_homologacao").length;
+    const horas = suas.length - homologar;
+    const paradasCliente = demandas.filter((d) => ["pausada", "cancelada"].includes(estadoDoClienteDemanda(d)));
+    const TITULO_CLIENTE: Record<string, string> = {
+      recebida: "Recebidas",
+      andamento: "Em andamento",
+      voce: "Sua vez",
+      entregue: "Entregues",
+    };
+    const AJUDA_CLIENTE: Record<string, string> = {
+      recebida: "A equipe ainda vai começar.",
+      andamento: "A equipe está cuidando; nada para você fazer.",
+      voce: "Precisa de você para seguir.",
+      entregue: "Concluídas.",
+    };
 
     return (
       <>
-        {/* Pedir também é coisa do cliente, não só acompanhar: numa conta de
-            AMS quem sente o problema primeiro é quem usa a org. A API já
-            aceitava (POST /api/demandas só exige alcançar o próprio cliente) —
-            faltava a porta na tela. A demanda nasce em `backlog`, igual às
-            que o consultor registra, e continua sendo o time quem decide o
-            que entra na esteira. */}
+        {/* Pedir também é coisa do cliente, não só acompanhar. A demanda nasce
+            em `backlog` e continua sendo o time quem decide o que entra. */}
         <div className="board-toolbar">
           <span className="save-note">suas demandas em {client.nome}</span>
           <button className="btn-primary" type="button" onClick={() => setNewOpen(true)}>
@@ -129,44 +147,53 @@ export function DemandasTab({
           </button>
         </div>
 
-        {/* As colunas ficam na ordem cronológica, que é o que um quadro
-            promete. Quem chama atenção para o que pede ação é este aviso —
-            enterrar "precisa de você" na terceira coluna é o mesmo que não
-            mostrar. */}
         {suas.length > 0 && (
           <div className="aviso-sua-vez" role="status">
             <strong>
-              {suas.length === 1
-                ? "1 demanda esperando a sua aprovação"
-                : `${suas.length} demandas esperando a sua aprovação`}
+              {suas.length === 1 ? "1 demanda precisa de você" : `${suas.length} demandas precisam de você`}
             </strong>
-            <span>Abra o cartão para ver o que foi entregue e aprovar.</span>
+            <span>
+              {[
+                homologar > 0 && `${homologar} para conferir e homologar`,
+                horas > 0 && `${horas} estimativa${horas > 1 ? "s" : ""} de horas para aprovar (aba Aprovações)`,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </span>
           </div>
         )}
 
-        <div className="board">
+        <div className="board board-cliente">
           {porEstado.map(({ estado, items }) => (
             <div className={`column estado-${estado}`} key={estado}>
               <h3>
-                {ESTADO_CLIENTE_LABEL[estado]}
+                {TITULO_CLIENTE[estado]}
                 <span className="count">{items.length}</span>
               </h3>
+              <p className="column-ajuda">{AJUDA_CLIENTE[estado]}</p>
               {items.length === 0 ? (
                 <div className="empty-col">nenhuma</div>
               ) : (
                 items.map((d) => (
-                  <DemandCard
-                    key={d.id}
-                    demanda={d}
-                    triageColumn={false}
-                    visaoCliente
-                    onOpen={() => setOpenId(d.id)}
-                  />
+                  <DemandCard key={d.id} demanda={d} triageColumn={false} visaoCliente onOpen={() => setOpenId(d.id)} />
                 ))
               )}
             </div>
           ))}
         </div>
+
+        {paradasCliente.length > 0 && (
+          <details className="faixa-paradas">
+            <summary>
+              Pausadas e canceladas <span className="count">{paradasCliente.length}</span>
+            </summary>
+            <div className="faixa-cards">
+              {paradasCliente.map((d) => (
+                <DemandCard key={d.id} demanda={d} triageColumn={false} visaoCliente onOpen={() => setOpenId(d.id)} />
+              ))}
+            </div>
+          </details>
+        )}
 
         {open && (
           <DemandModal
@@ -185,6 +212,19 @@ export function DemandasTab({
     );
   }
 
+  // Contagem por dono para os filtros (uma demanda pode contar em dois:
+  // design esperando o arquiteto E o cliente nas horas).
+  const quemDe = (d: (typeof demandas)[number]) => acoesPendentes(d).map((a) => a.quem);
+  const contagem = (q: QuemAge) => demandas.filter((d) => quemDe(d).includes(q)).length;
+  const passaFiltro = (d: (typeof demandas)[number]) => !filtroQuem || quemDe(d).includes(filtroQuem);
+  const congeladas = demandas.filter((d) => d.status === "standby");
+  const FILTROS: { q: QuemAge; rotulo: string }[] = [
+    { q: "time", rotulo: "Ação do time" },
+    { q: "cliente", rotulo: "Ação do cliente" },
+    { q: "agente", rotulo: "Agente rodando" },
+    { q: "fila", rotulo: "Na fila" },
+  ];
+
   return (
     <>
       <div className="board-toolbar">
@@ -198,6 +238,24 @@ export function DemandasTab({
             + nova demanda
           </button>
         )}
+      </div>
+
+      <div className="filtro-quem" role="group" aria-label="Filtrar por quem precisa agir">
+        <button type="button" className="filtro-btn" aria-pressed={!filtroQuem} onClick={() => setFiltroQuem("")}>
+          Tudo <span className="count">{demandas.length - congeladas.length}</span>
+        </button>
+        {FILTROS.map(({ q, rotulo }) => (
+          <button
+            key={q}
+            type="button"
+            className={`filtro-btn quem-${q}`}
+            aria-pressed={filtroQuem === q}
+            onClick={() => setFiltroQuem(filtroQuem === q ? "" : q)}
+          >
+            <span className="quem-marca" aria-hidden="true" />
+            {rotulo} <span className="count">{contagem(q)}</span>
+          </button>
+        ))}
       </div>
 
       {paradas.length > 0 && (
@@ -221,7 +279,7 @@ export function DemandasTab({
       )}
       <div className="board board-fases">
         {FASES.map((fase) => {
-          const items = demandas.filter((d) => fase.estagios.includes(d.status));
+          const items = demandas.filter((d) => fase.estagios.includes(d.status) && passaFiltro(d));
           const parados = items.filter((d) => estaEmGate(d.status)).length;
           const ehTriagem = fase.chave === "triagem";
           return (
@@ -291,6 +349,25 @@ export function DemandasTab({
           );
         })}
       </div>
+
+      {congeladas.length > 0 && (
+        <details className="faixa-paradas">
+          <summary>
+            Congeladas <span className="count">{congeladas.length}</span>
+          </summary>
+          <div className="faixa-cards">
+            {congeladas.map((d) => (
+              <DemandCard
+                key={d.id}
+                demanda={d}
+                triageColumn={false}
+                faseVisivel
+                onOpen={() => setOpenId(d.id)}
+              />
+            ))}
+          </div>
+        </details>
+      )}
 
       {open && (
         <DemandModal

@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
 import { DecisaoEstimativa } from "@/components/AprovacaoEstimativa";
+import { QuemAgeChips } from "@/components/DemandCard";
 import { Modal } from "@/components/Modal";
 import { Artefato } from "@/components/Artefato";
 import { DemandaPainel } from "@/components/DemandaPainel";
@@ -13,6 +14,9 @@ import {
   STAGE_LABEL,
   ESTADO_CLIENTE_LABEL,
   estadoDoCliente,
+  estadoDoClienteDemanda,
+  situacaoParaCliente,
+  TRIAGE_LABEL,
   podeAprovarGate,
   progressoDaDemanda,
   timeAgo,
@@ -240,14 +244,23 @@ export function DemandModal({
         </div>
       )}
 
-      {visaoCliente && !emGate && (
+      {/* O que está acontecendo, em uma linha: para o cliente sem jargão,
+          para o time com quem precisa agir (lib/demandas.ts acoesPendentes). */}
+      {visaoCliente ? (
         <div className="estado-cliente">
-          <span className={`badge ${estadoDoCliente(demanda.status) === "entregue" ? "aprovado" : "stage"}`}>
-            {ESTADO_CLIENTE_LABEL[estadoDoCliente(demanda.status)]}
+          <span className={`badge ${estadoDoCliente(demanda.status) === "entregue" ? "aprovado" : estadoDoClienteDemanda(demanda) === "voce" ? "gate sua-vez" : "stage"}`}>
+            {situacaoParaCliente(demanda) || ESTADO_CLIENTE_LABEL[estadoDoCliente(demanda.status)]}
           </span>
-          {progressoDaDemanda(demanda.status) && (
-            <span className="gate-texto">{progressoDaDemanda(demanda.status)!.rotulo}</span>
+          {progressoDaDemanda(demanda.status) && estadoDoCliente(demanda.status) !== "entregue" && (
+            <span className="gate-texto">
+              {progressoDaDemanda(demanda.status)!.rotulo} · {progressoDaDemanda(demanda.status)!.nome}
+            </span>
           )}
+        </div>
+      ) : (
+        <div className="estado-cliente">
+          <span className="badge stage">{STAGE_LABEL[demanda.status] ?? TRIAGE_LABEL[demanda.status] ?? demanda.status}</span>
+          <QuemAgeChips demanda={demanda} />
         </div>
       )}
 
@@ -255,8 +268,8 @@ export function DemandModal({
         <div className="gate-box">
           <div className="gate-titulo">
             {visaoCliente ? (
-              <span className="badge gate">
-                {ESTADO_CLIENTE_LABEL[estadoDoCliente(demanda.status)]}
+              <span className={`badge ${demanda.status === "aguardando_homologacao" ? "gate sua-vez" : "stage"}`}>
+                {situacaoParaCliente(demanda) || ESTADO_CLIENTE_LABEL[estadoDoCliente(demanda.status)]}
               </span>
             ) : (
               <>
