@@ -2,7 +2,7 @@ id: SOMOSAGILITY-12
 client: somos-agility
 titulo: JST - Preenchimento obrigatório Classificação gerencial e Denominação
 tipo: sustentacao
-status: entregue
+status: aguardando_homologacao
 criado_em: '2026-10-14T22:49:19.298Z'
 historico:
 - de: null
@@ -65,3 +65,9 @@ historico:
   para: entregue
   autor: pipeline
   em: '2026-10-28T17:02:10.498641+00:00'
+- de: entregue
+  para: aguardando_homologacao
+  autor: Leonardo Barbosa
+  em: '2026-10-29T18:48:53.037787+00:00'
+  motivo: 'Entrega falsa: nada foi implantado em QA (sbx-somos-agility-qa nunca conectada;
+    etapas de QA rodaram em dev). Volta para homologação até haver release real.'
