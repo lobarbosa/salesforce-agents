@@ -2,7 +2,7 @@ id: SOMOSAGILITY-21
 client: somos-agility
 titulo: Campo origem do Lead
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-19T19:33:52.759Z'
 historico:
 - de: null
@@ -73,3 +73,11 @@ historico:
   em: '2026-10-30T01:23:44.260473+00:00'
   motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
     Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:21:54.079274+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T02:25:23.274734+00:00'
