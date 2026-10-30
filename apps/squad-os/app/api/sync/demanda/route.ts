@@ -2,9 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
 import { concluirEmVoo, processarFila } from "@/lib/fila-esteira";
-import { estimativaAprovada } from "@/lib/demandas";
-
-const ESTAGIOS_DE_DEBITO = new Set(["build", "aguardando_gate_build", "qa", "aguardando_homologacao", "release", "entregue"]);
+import { ESTAGIOS_DE_DEBITO, estimativaAprovada } from "@/lib/demandas";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
 
@@ -186,7 +184,7 @@ export async function POST(request: NextRequest) {
       ...dadosDaEstimativa,
       // Entrou em build com estimativa aprovada pelo cliente: ela vira o
       // consumo do contrato agora (uma vez só). Ver horasPorMes em lib/data.ts.
-      ...(ESTAGIOS_DE_DEBITO.has(status) && !demanda.estimativaDebitadaEm && estimativaAprovada(demanda)
+      ...(ESTAGIOS_DE_DEBITO.includes(status) && !demanda.estimativaDebitadaEm && estimativaAprovada(demanda)
         ? { estimativaDebitadaHoras: demanda.estimativaAprovadaHoras, estimativaDebitadaEm: new Date() }
         : {}),
     },

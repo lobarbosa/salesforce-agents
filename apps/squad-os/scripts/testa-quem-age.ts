@@ -25,7 +25,16 @@ caso("revisão do PR é do time", () => {
   assert.deepEqual(quem({ status: "aguardando_gate_build", estimativaAprovadaHoras: 10 }), ["time:revisar PR"]);
 });
 caso("homologação é do cliente", () => {
-  assert.deepEqual(quem({ status: "aguardando_homologacao" }), ["cliente:homologar"]);
+  assert.deepEqual(quem({ status: "aguardando_homologacao", estimativaAprovadaHoras: 10 }), ["cliente:homologar"]);
+});
+caso("depois do build sem aprovação: cliente ainda aprova as horas", () => {
+  assert.deepEqual(quem({ status: "aguardando_gate_build" }), ["time:revisar PR", "cliente:aprovar horas"]);
+});
+caso("depois do build já debitado: não pede aprovação de novo", () => {
+  assert.deepEqual(quem({ status: "aguardando_gate_build", estimativaDebitadaEm: new Date() }), ["time:revisar PR"]);
+});
+caso("entregue sem aprovação: não pede mais", () => {
+  assert.ok(!quem({ status: "entregue" }).includes("cliente:aprovar horas"));
 });
 caso("etapa rodando: agente", () => {
   assert.deepEqual(quem({ status: "build" }), ["agente:rodando"]);
