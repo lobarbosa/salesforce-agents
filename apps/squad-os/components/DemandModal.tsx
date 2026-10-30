@@ -233,7 +233,7 @@ export function DemandModal({
 
 
       {!visaoCliente && <EstimativaDemanda demanda={demanda} isAdmin={isAdmin} />}
-      <DecisaoEstimativa demanda={demanda} podeDecidir={visaoCliente || isAdmin} />
+      <DecisaoEstimativa demanda={demanda} podeDecidir={visaoCliente} />
 
       {visaoCliente && demanda.estimativaCalibrada && (
         <div className="estimativa-demanda" aria-label="Estimativa de horas">

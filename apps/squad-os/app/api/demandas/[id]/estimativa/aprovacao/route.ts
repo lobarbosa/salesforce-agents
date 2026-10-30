@@ -15,13 +15,16 @@ import { processarFila } from "@/lib/fila-esteira";
 //   motivo do cliente. Delivery vê o motivo e decide: revisar a estimativa
 //   (o cliente aprova de novo) ou cancelar.
 //
-// Quem decide é o cliente; admin pode registrar em nome dele (fica no nome).
+// Só o próprio cliente decide (2026-10-30): é a concordância dele com as
+// horas que vão debitar do contrato. Até aqui o admin podia registrar "em nome
+// dele" — e uma aprovação que a Acxya dá a si mesma não vale como aprovação
+// do cliente. Mesma lógica de o agente nunca aprovar gate.
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const acesso = await resolverDemanda(id, { clienteAtivo: "agente" });
   if (acesso.erro) return acesso.erro;
   const { usuario } = acesso;
-  if (usuario.role !== "cliente" && usuario.role !== "admin") {
+  if (usuario.role !== "cliente") {
     return NextResponse.json({ error: "quem aprova a estimativa é o cliente" }, { status: 403 });
   }
   const autor = usuario.nome.trim() || usuario.email;
