@@ -7,7 +7,8 @@ import type { ClienteDaSidebar } from "@/lib/visao-cliente";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { createClient as createSupabaseClient } from "@/lib/supabase/client";
 import { podeVer, ROTULO_PAPEL } from "@/lib/permissoes";
-import { SAUDE } from "@/lib/saude";
+import { descreverEsteira } from "@/lib/esteira-resumo";
+import { useAutoRefresh } from "@/lib/auto-refresh";
 
 const ROLE_LABEL = ROTULO_PAPEL;
 
@@ -217,8 +218,38 @@ function Casca({
     }
   }, [aberta]);
 
+  // Recolher no desktop (2026-10-30): o quadro de 7 colunas precisa da largura.
+  // Preferência por navegador — conveniência, não estado (falha em silêncio).
+  const [recolhida, setRecolhida] = useState(false);
+  useEffect(() => {
+    // Lido depois de montar, como secoesAbertas abaixo: inicializador
+    // preguiçoso daria mismatch de hidratação (o servidor não tem window).
+    try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setRecolhida(localStorage.getItem("sidebar-recolhida") === "1");
+    } catch {}
+  }, []);
+  function alternarRecolhida(v: boolean) {
+    setRecolhida(v);
+    try {
+      localStorage.setItem("sidebar-recolhida", v ? "1" : "0");
+    } catch {}
+  }
+
   return (
     <>
+      {recolhida && (
+        <button
+          className="sidebar-expandir"
+          type="button"
+          onClick={() => alternarRecolhida(false)}
+          aria-label="Mostrar menu lateral"
+          aria-controls="nav-lateral"
+          aria-expanded={false}
+        >
+          <span className="menu-icone" aria-hidden="true" />
+        </button>
+      )}
       <div className="topbar">
         <button
           ref={botaoMenu}
@@ -241,7 +272,18 @@ function Casca({
           onClick={() => aoAlternar(false)}
         />
       )}
-      <aside id="nav-lateral" className={`sidebar${aberta ? " aberta" : ""}`}>
+      <aside id="nav-lateral" className={`sidebar${aberta ? " aberta" : ""}${recolhida ? " recolhida" : ""}`}>
+        <button
+          className="sidebar-recolher"
+          type="button"
+          onClick={() => alternarRecolhida(true)}
+          aria-label="Recolher menu lateral"
+          aria-controls="nav-lateral"
+          aria-expanded={true}
+          title="Recolher menu"
+        >
+          «
+        </button>
         {children}
       </aside>
     </>
@@ -272,6 +314,11 @@ export function Sidebar({
   // {} até o efeito rodar no cliente (SSR não tem localStorage): cada NavArea
   // cai no próprio padrão por rota enquanto isso, sem piscar — o padrão e a
   // preferência salva raramente divergem no primeiro quadro.
+  // Os pontos da lista de clientes acompanham a esteira sozinhos enquanto há
+  // agente rodando ou disparo na fila em algum cliente (mesmo critério do
+  // quadro, lib/auto-refresh.ts: só com a aba visível).
+  useAutoRefresh(clients.some((c) => c.esteira.estado === "agente" || c.esteira.estado === "fila"));
+
   const [secoesAbertas, setSecoesAbertas] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
@@ -509,25 +556,23 @@ export function Sidebar({
           <div className="client-list">
             {filtered.length === 0 && <div className="empty-col">nenhum cliente encontrado</div>}
             {filtered.map((c) => {
-              // O ponto é a saúde da org (mesmo vocabulário de AssessmentCard),
-              // não uma cor de identidade por cliente. Tinha sido um hash do
-              // nome — bonito, mas ao lado de uma cor que já significa algo
-              // neste app (verde/amarelo/vermelho), qualquer cor sem significado
-              // lê como se tivesse um. Pendente (nunca avaliado) cai no cinza
-              // neutro de `.saude.pendente`, não arrasta uma 4ª cor nova.
-              const info = SAUDE[c.assessmentSaude];
-              const classe = info ? `saude-${info.classe}` : "saude-pendente";
-              const rotulo = info ? info.rotulo : "ainda não avaliada";
+              // O ponto é o estado da esteira do cliente agora (lib/esteira-
+              // sidebar.ts), com a mesma forma das etiquetas dos cards: círculo
+              // pulsando = agente rodando, losango = esperando o cliente,
+              // quadrado = esperando o time, círculo vazado = na fila. A saúde
+              // da org (assessment) mudava a cada semanas e fica no perfil.
+              const descricao = descreverEsteira(c.esteira, usuario.role === "cliente");
               return (
                 <Link
                   key={c.id}
                   href={`/clients/${c.id}`}
                   onClick={fecharMenu}
                   className={`client-item${c.id === activeClientId ? " active" : ""}`}
+                  title={descricao}
                 >
-                  <span className={`dot ${classe}`} aria-hidden="true" />
+                  <span className={`dot-esteira esteira-${c.esteira.estado}`} aria-hidden="true" />
                   <span className="cname">{c.nome}</span>
-                  <span className="sr-only">{` — saúde da org: ${rotulo}`}</span>
+                  <span className="sr-only">{` — ${descricao}`}</span>
                 </Link>
               );
             })}

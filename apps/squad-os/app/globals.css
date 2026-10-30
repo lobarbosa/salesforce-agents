@@ -1447,3 +1447,63 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .column.estado-voce { border-color: var(--accent); }
 .column.estado-voce h3 { color: var(--accent); }
 .badge.sua-vez { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+
+/* --- Ajustes de UX do quadro e da sidebar (2026-10-30) --------------------- */
+
+/* Quadro do time: as 7 fases numa linha só, com rolagem DENTRO do quadro
+   quando não couber. Com auto-fit a sétima coluna (Entregue/cancelada)
+   quebrava para uma segunda linha e ficava solta embaixo do quadro. */
+.board.board-fases {
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(172px, 1fr);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+}
+.board.board-fases > .column { scroll-snap-align: start; }
+
+/* Etiqueta "quem age" nunca sai do card: quebra a linha dentro dele. */
+.card .meta { flex-wrap: wrap; min-width: 0; }
+.quem-age { white-space: normal; max-width: 100%; line-height: 1.25; }
+.quem-age .quem-marca { align-self: center; }
+
+/* Recolher a sidebar no desktop. No telefone ela já é gaveta. */
+.sidebar-recolher {
+  position: absolute; top: 0.6rem; right: 0.5rem; z-index: 2;
+  width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--surface-alt); color: var(--text-muted);
+  font-size: 1rem; line-height: 1;
+}
+.sidebar-recolher:hover { color: var(--text); }
+.sidebar-recolher:focus-visible, .sidebar-expandir:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sidebar-expandir {
+  position: fixed; top: 0.8rem; left: 0.8rem; z-index: 30;
+  width: 40px; height: 40px; border-radius: 10px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  box-shadow: 0 2px 8px rgb(0 0 0 / 0.2);
+}
+.sidebar-expandir .menu-icone {
+  display: block; width: 16px; height: 2px; background: currentColor; border-radius: 2px;
+  box-shadow: 0 -5px 0 currentColor, 0 5px 0 currentColor;
+}
+@media (min-width: 861px) {
+  .sidebar.recolhida { display: none; }
+  .sidebar.recolhida ~ main, .shell:has(.sidebar.recolhida) main { padding-left: 4rem; }
+}
+@media (max-width: 860px) {
+  .sidebar-recolher, .sidebar-expandir { display: none; }
+}
+
+/* Ponto da sidebar = estado da esteira do cliente (lib/esteira-sidebar.ts).
+   Mesma forma das etiquetas "quem age" dos cards; nunca só cor. */
+.dot-esteira { display: inline-block; width: 9px; height: 9px; min-width: 9px; aspect-ratio: 1; align-self: center; flex: none; box-sizing: border-box; margin-right: 0.15rem; }
+.esteira-agente { background: var(--success); border-radius: 50%; }
+@media (prefers-reduced-motion: no-preference) {
+  .esteira-agente { animation: esteira-pulsar 1.6s ease-in-out infinite; }
+}
+.esteira-cliente { background: var(--accent); transform: rotate(45deg); width: 8px; height: 8px; }
+.esteira-time { background: var(--gate); border-radius: 2px; }
+.esteira-fila { border: 2px solid var(--text-muted); border-radius: 50%; }
+.esteira-parado { background: var(--text-muted); border-radius: 50%; opacity: 0.45; }

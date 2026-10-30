@@ -1,3 +1,4 @@
+import type { ResumoEsteira } from "@/lib/esteira-resumo";
 import type { AmbienteOrg, Client, Contrato, Entregavel } from "@/lib/generated/prisma/client";
 import type { DemandaCompleta } from "@/lib/data";
 import { GATE_DO_CLIENTE } from "@/lib/demandas";
@@ -99,7 +100,15 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
 }
 
 /** O que a sidebar precisa de cada cliente — nada além disto vai pro navegador. */
-export function clienteDaSidebar(c: Pick<Client, "id" | "nome" | "assessmentSaude">) {
-  return { id: c.id, nome: c.nome, assessmentSaude: c.assessmentSaude };
+export function clienteDaSidebar(
+  c: Pick<Client, "id" | "nome" | "assessmentSaude">,
+  esteira?: ResumoEsteira
+) {
+  return {
+    id: c.id,
+    nome: c.nome,
+    assessmentSaude: c.assessmentSaude,
+    esteira: esteira ?? { estado: "parado" as const, contagem: {} },
+  };
 }
 export type ClienteDaSidebar = ReturnType<typeof clienteDaSidebar>;
