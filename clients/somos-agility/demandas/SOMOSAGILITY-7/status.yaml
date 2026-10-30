@@ -93,3 +93,7 @@ historico:
   para: entregue
   autor: pipeline
   em: '2026-10-30T14:37:00.080072+00:00'
+- de: entregue
+  para: entregue
+  autor: pipeline
+  em: '2026-10-30T14:38:40.069700+00:00'
