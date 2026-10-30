@@ -56,8 +56,8 @@ confirma que, como estão escritos hoje, **CA-01, CA-02, CA-03 e CA-05 não pass
 consequência direta e já documentada da escolha de design, não um defeito de implementação.
 A homologação de 2026-10-30 (Juliana Mendes, `gates.md`) foi registrada sobre esse mesmo
 `05-testes.md`, com o comentário do cliente "Testado em AW, Podemos seguir para produção"
-(`comentarios-do-card.md`, 2026-10-30 14:35) — "AW" bate com o sufixo do username desta sandbox
-de QA (`konectabr@somosagility.com.br.aw`). Entendo a divergência como aceita pelo cliente,
+(`comentarios-do-card.md`, 2026-10-30 14:35) — "AW" bate com o sufixo da instância desta
+sandbox de QA (alias `sbx-somos-agility-qa`). Entendo a divergência como aceita pelo cliente,
 mas registro aqui para quem for dar manutenção não interpretar como regressão.
 
 Também fora do escopo (pedido pelo cliente após o gate de design, `comentarios-do-card.md`,
@@ -86,8 +86,7 @@ sf project deploy start --manifest manifest/package.xml --target-org sbx-somos-a
   `numberComponentsDeployed: 3/3`
 - **Org de destino:** `sbx-somos-agility-qa` (org `Agility`, Enterprise Edition, sandbox
   confirmada via `Organization.IsSandbox = true`; instância
-  `agilitynetworks--aw.sandbox.my.salesforce.com`; username
-  `konectabr@somosagility.com.br.aw`)
+  `agilitynetworks--aw.sandbox.my.salesforce.com`)
 - **Timestamp:** iniciado 2026-10-30T14:45:06Z, concluído 2026-10-30T14:45:18Z
 - Componentes confirmados implantados (IDs retornados pela API de Metadata):
   - `PermissionSet` `PS_JST_ClassificacaoDenominacao` — `created: true`, id `0PSHa0000028VGnOAM`
