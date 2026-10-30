@@ -2,7 +2,7 @@ import { getClients, getClientById, getClientesEncerrados } from "@/lib/data";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { Sidebar } from "@/components/Sidebar";
 import { Copiloto } from "@/components/Copiloto";
-import { marcaUrl } from "@/lib/marca";
+import { marcaUrl, marcaDarkUrl } from "@/lib/marca";
 import { clienteDaSidebar } from "@/lib/visao-cliente";
 import { esteiraPorCliente } from "@/lib/esteira-sidebar";
 
@@ -46,6 +46,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           briefing, assessment) ia no payload RSC pra qualquer papel. */}
       <Sidebar
         marcaSrc={marcaUrl()}
+        marcaDarkSrc={marcaDarkUrl()}
         clients={clients.map((c) => clienteDaSidebar(c, esteira[c.id]))}
         encerrados={encerrados.map((c) => ({ id: c.id, nome: c.nome }))}
         usuario={usuario}

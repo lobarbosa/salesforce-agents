@@ -154,15 +154,17 @@ function Rodape({
 // A marca escrita não é placeholder: é a alternativa quando `public/marca.svg`
 // não existe (ver lib/marca.ts e public/README.md). Quando o arquivo existe, o
 // logo substitui o nome escrito (2026-10-30) e o alt carrega o nome.
-function Marca({ src, sub }: { src: string | null; sub: string }) {
+function Marca({ src, srcDark, sub }: { src: string | null; srcDark: string | null; sub: string }) {
   return (
     <div className="brand">
       {src ? (
         // `next/image` exigiria width/height conhecidos no build, e quem sobe
         // o arquivo da marca é o time, em proporção que o build não conhece.
         // Uma imagem de ~26px de altura na sidebar não move LCP.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className="brand-logo" src={src} alt="Konecta" />
+        <picture>
+          {srcDark && <source srcSet={srcDark} media="(prefers-color-scheme: dark)" />}
+          <img className={`brand-logo${srcDark ? " tem-dark" : ""}`} src={src} alt="Konecta" />
+        </picture>
       ) : (
         <div className="name">Squad OS</div>
       )}
@@ -294,12 +296,14 @@ export function Sidebar({
   encerrados = [],
   usuario,
   marcaSrc,
+  marcaDarkSrc,
 }: {
   clients: ClienteDaSidebar[];
   /** Clientes encerrados — só chegam para o admin (layout.tsx). */
   encerrados?: { id: string; nome: string }[];
   usuario: CurrentUsuario;
   marcaSrc: string | null;
+  marcaDarkSrc: string | null;
 }) {
   const pathname = usePathname();
   const router = useRouter();
@@ -396,7 +400,7 @@ export function Sidebar({
   if (usuario.role === "financeiro") {
     return (
       <Casca aberta={menuAberto} aoAlternar={setMenuAberto} titulo="Squad OS">
-        <Marca src={marcaSrc} sub="financeiro" />
+        <Marca src={marcaSrc} srcDark={marcaDarkSrc} sub="financeiro" />
         <NavArea
           chave="financeiro"
           titulo="Financeiro"
@@ -422,7 +426,7 @@ export function Sidebar({
         aoAlternar={setMenuAberto}
         titulo={meuCliente?.nome ?? "Squad OS"}
       >
-        <Marca src={marcaSrc} sub={meuCliente?.nome ?? "seu espaço"} />
+        <Marca src={marcaSrc} srcDark={marcaDarkSrc} sub={meuCliente?.nome ?? "seu espaço"} />
         <div style={{ padding: "0.6rem 1.1rem", marginTop: "auto", borderTop: "1px solid var(--border)" }}>
           <div className="save-note" style={{ marginBottom: "0.35rem" }}>
             {usuario.email} <span className="mono">({ROLE_LABEL[usuario.role]})</span>
@@ -452,7 +456,7 @@ export function Sidebar({
 
   return (
     <Casca aberta={menuAberto} aoAlternar={setMenuAberto} titulo="Squad OS">
-      <Marca src={marcaSrc} sub="gestão de demandas Salesforce" />
+      <Marca src={marcaSrc} srcDark={marcaDarkSrc} sub="gestão de demandas Salesforce" />
 
       <Link
         href="/"
