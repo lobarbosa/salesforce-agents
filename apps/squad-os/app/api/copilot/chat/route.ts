@@ -19,7 +19,9 @@ import { consumirLimite } from "@/lib/limite-uso";
 // Id verificado contra as infos de ambiente desta sessão (Claude 5 family,
 // Sonnet 5.5) — este sandbox não alcança api-gateway.vercel.sh pra confirmar
 // contra `curl .../v1/models`; reconfirme isso no primeiro deploy real.
-const MODELO = "anthropic/claude-sonnet-5-5";
+// Sobreponível por COPILOT_MODEL (Vercel → Environment Variables): se o nome
+// não existir no Gateway, troca-se sem deploy de código.
+const MODELO = process.env.COPILOT_MODEL?.trim() || "anthropic/claude-sonnet-5-5";
 
 const GUARDRAILS_COMUNS = `O que você nunca faz, mesmo se pedirem diretamente:
 - Nunca aprova gate, avança etapa de demanda, aprova/paga/recusa conta ou decide divergência pelo chat — tudo isso é decisão humana, feita na tela, com os cliques de confirmação que já existem ali. Se pedirem para fazer algo assim pelo chat, explique onde isso se faz na tela.
@@ -187,8 +189,15 @@ export async function POST(request: NextRequest) {
     // real: o copiloto "não funcionava" e não havia como saber por quê,
     // porque o próprio erro nunca era logado em lugar nenhum.
     onError(error) {
-      console.error("copiloto: erro no stream", { papel: usuario.role, erro: error });
-      return "Não consegui falar com o copiloto agora. Tente de novo em instantes.";
+      console.error("copiloto: erro no stream", { papel: usuario.role, modelo: MODELO, erro: error });
+      // Admin vê o motivo técnico (chave, crédito, modelo inexistente,
+      // timeout) — achado de 2026-10-30: o copiloto falhava e, sem acesso aos
+      // logs da Vercel, não havia como saber por quê. Os demais papéis seguem
+      // com a mensagem genérica (nada de detalhe de infraestrutura pra fora).
+      const generico = "Não consegui falar com o copiloto agora. Tente de novo em instantes.";
+      if (usuario.role !== "admin") return generico;
+      const detalhe = error instanceof Error ? error.message : String(error);
+      return `${generico} [admin — modelo ${MODELO}: ${detalhe.slice(0, 300)}]`;
     },
   });
 }
