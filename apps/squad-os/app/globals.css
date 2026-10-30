@@ -96,6 +96,11 @@ select:focus-visible, [tabindex]:focus-visible, a:focus-visible, summary:focus-v
    proporção, e travar a largura distorceria um logotipo largo. `display:block`
    evita a folga de linha-base embaixo de img inline. */
 .sidebar .brand-logo { display: block; height: 32px; width: auto; max-width: 100%; margin-bottom: 0.4rem; }
+/* O logo Konecta tem letras em azul escuro: no tema escuro ganha uma placa
+   branca até chegar a versão própria para fundo escuro (marca-dark). */
+@media (prefers-color-scheme: dark) {
+  .sidebar .brand-logo { background: #fff; padding: 4px 8px; border-radius: 6px; height: 40px; box-sizing: border-box; }
+}
 .sidebar .brand .sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
 /* Gradiente institucional — reservado ao símbolo (aqui, a marca escrita),
    nunca usado como cor de função (botão, link, estado). */
