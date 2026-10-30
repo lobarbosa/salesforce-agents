@@ -2,7 +2,7 @@ id: SOMOSAGILITY-12
 client: somos-agility
 titulo: JST - Preenchimento obrigatório Classificação gerencial e Denominação
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-14T22:49:19.298Z'
 historico:
 - de: null
@@ -77,3 +77,11 @@ historico:
   em: '2026-10-30T01:23:31.649682+00:00'
   motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
     Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T04:04:43.039627+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T04:10:55.421266+00:00'
