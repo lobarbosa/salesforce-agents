@@ -2,7 +2,7 @@ id: ACXYA-3
 client: acxya
 titulo: quero uma nova tela dentro da oportunidade
 tipo: sustentacao
-status: aguardando_gate_analise
+status: cancelada
 criado_em: '2026-09-14T18:30:28.433Z'
 historico:
 - de: null
@@ -17,3 +17,8 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-10-08T01:14:33.688764+00:00'
+- de: aguardando_gate_analise
+  para: cancelada
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:28:28.658206Z'
+  motivo: Parada desde set/out sem andamento; cancelada a pedido.
