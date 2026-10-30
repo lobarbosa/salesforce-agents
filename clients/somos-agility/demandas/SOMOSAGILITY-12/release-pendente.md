@@ -1,3 +1,8 @@
+> **RESOLVIDO em 2026-10-30.** `sbx-somos-agility-qa` foi conectada à esteira depois desta
+> sessão (achado de 2026-10-28 abaixo). O deploy real foi executado com sucesso nessa sandbox
+> nesta data — deploy ID `0AfHa00000E78SFKAZ`, detalhes completos em `06-entrega.md`. Este
+> arquivo é mantido como histórico do bloqueio, não como situação atual.
+
 # Release pendente — SOMOSAGILITY-12
 
 **Agente:** `release` · **Data:** 2026-10-28

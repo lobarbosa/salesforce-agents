@@ -2,7 +2,7 @@ id: SOMOSAGILITY-12
 client: somos-agility
 titulo: JST - Preenchimento obrigatório Classificação gerencial e Denominação
 tipo: sustentacao
-status: aguardando_homologacao
+status: entregue
 criado_em: '2026-10-14T22:49:19.298Z'
 historico:
 - de: null
@@ -85,3 +85,11 @@ historico:
   para: aguardando_homologacao
   autor: pipeline
   em: '2026-10-30T04:10:55.421266+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Juliana Mendes
+  em: '2026-10-30T14:40:21.901887+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-10-30T14:47:26.136859+00:00'
