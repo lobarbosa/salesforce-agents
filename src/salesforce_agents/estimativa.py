@@ -89,6 +89,8 @@ def _soma_por_etapa_e_demanda(
 
 def etapas_restantes(status: str) -> list[str]:
     """Etapas de agente que ainda vão rodar a partir de `status` (inclusive a atual)."""
+    if status in demands.STAGES_ENCERRADOS:
+        return []
     if status in demands.STAGES_TRIAGEM:
         inicio = 0
     elif status in demands.STAGES_EXECUCAO:
