@@ -339,6 +339,25 @@ jobs:
             sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" --github-output
           fi
 
+      # Só a etapa de construção altera metadata. Achado real (Somos,
+      # 2026-10-30): o recon do arquiteto rodava `sf project retrieve start`, que
+      # grava em force-app/, e o commit da etapa levava junto — SOMOSAGILITY-23
+      # (um diagnóstico) chegou à revisão do PR com 244 processos de aprovação
+      # copiados da dev, que o QA tentaria implantar por cima da sandbox de QA.
+      # Fora do build, qualquer mudança em force-app/ é descartada aqui.
+      - name: Descartar metadata alterada fora da construção
+        env:
+          RODADAS: ${{ steps.fluxo.outputs.etapas_rodadas }}
+        run: |
+          case ",$RODADAS," in
+            *,build,*) echo "etapa de construção rodou — force-app/ entra no commit." ; exit 0 ;;
+          esac
+          if [ -n "$(git status --porcelain -- "clients/$CLIENT/force-app")" ]; then
+            echo "::warning::Alterações em force-app/ fora da construção ($RODADAS) — descartadas (recon/retrieve não é entrega)."
+            git checkout HEAD -- "clients/$CLIENT/force-app" 2>/dev/null || true
+            git clean -fdq -- "clients/$CLIENT/force-app"
+          fi
+
       # Guardrail #2 antes do push, não depois. `ci-pii-scan.yml` roda no PR,
       # mas PR aberto pelo bot da esteira fica em `action_required` (o GitHub
       # pede aprovação manual pra rodar workflow nele) ou falha sem rodar job
