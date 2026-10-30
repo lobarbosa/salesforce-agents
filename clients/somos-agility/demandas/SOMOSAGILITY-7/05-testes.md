@@ -76,7 +76,7 @@ de FLS registrado em `02-recon.md` §1 e reproduzido em `04-plano-build.md` §6 
 **se repete em QA, com o mesmo usuário e a mesma causa raiz**:
 
 - `sf sobject describe --sobject Lancamento_de_Atividades__c` para o usuário conectado
-  (`konectabr@somosagility.com.br.aw`, perfil "Administrador do sistema") **não retorna**
+  nesta sessão em `sbx-somos-agility-qa` (perfil "Administrador do sistema") **não retorna**
   `Status_de_aprovacao_1/2/3__c`, `Qtd_de_executores__c` nem `Executor_da_atividade_1/2/3__c`
   — os mesmos campos que em dev davam `INVALID_FIELD`.
 - Consulta a `FieldPermissions` confirma que esses campos só têm FLS concedida pelos
