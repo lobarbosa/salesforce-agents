@@ -1509,3 +1509,37 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .esteira-time { background: var(--gate); border-radius: 2px; }
 .esteira-fila { border: 2px solid var(--text-muted); border-radius: 50%; }
 .esteira-parado { background: var(--text-muted); border-radius: 50%; opacity: 0.45; }
+
+/* --- Celular (2026-10-30) -------------------------------------------------
+   No telefone o quadro do time virava uma rolagem lateral de 7 colunas
+   estreitas, com as vazias ocupando a mesma altura das cheias — era preciso
+   deslizar coluna por coluna pra achar 3 cards. Aqui as fases empilham na
+   vertical e uma fase vazia vira uma linha só (título + 0). */
+@media (max-width: 760px) {
+  .board.board-fases {
+    grid-auto-flow: row; grid-auto-columns: auto; grid-template-columns: 1fr;
+    overflow-x: visible; scroll-snap-type: none;
+  }
+  .board { gap: 0.6rem; }
+  .column { min-height: 0; }
+  .column.vazia { padding: 0.45rem 0.7rem; gap: 0; }
+  .column.vazia h3 { margin: 0; }
+  .column.vazia .empty-col, .column.vazia .column-ajuda { display: none; }
+  .column h3 { font-size: 0.78rem; }
+  .card { font-size: 0.85rem; }
+
+  /* Modal vira folha de tela cheia: no telefone a moldura com margem
+     roubava largura do conteúdo e o botão de aprovar ficava fora da tela. */
+  .modal-backdrop { padding: 0; align-items: stretch; }
+  .modal, .modal.wide { max-width: none; max-height: none; min-height: 100dvh; border-radius: 0; border: 0; margin: 0; }
+
+  /* Visão Geral: cliente em cima, título embaixo, sem cortar o título. */
+  .overview-row { flex-wrap: wrap; row-gap: 0.25rem; }
+  .overview-row .oc-client { width: auto; }
+  .overview-row .oc-title { flex-basis: 100%; white-space: normal; }
+
+  /* Copiloto ocupa a tela toda quando aberto. */
+  .copiloto-painel { inset: 0; width: auto; max-height: none; border-radius: 0; border: 0; padding-top: max(0.9rem, env(safe-area-inset-top)); }
+  .copiloto-fab { bottom: max(0.8rem, env(safe-area-inset-bottom)); }
+  .copiloto-fab.aberto { display: none; }
+}

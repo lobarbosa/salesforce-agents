@@ -165,7 +165,7 @@ export function DemandasTab({
 
         <div className="board board-cliente">
           {porEstado.map(({ estado, items }) => (
-            <div className={`column estado-${estado}`} key={estado}>
+            <div className={`column estado-${estado}${items.length === 0 ? " vazia" : ""}`} key={estado}>
               <h3>
                 {TITULO_CLIENTE[estado]}
                 <span className="count">{items.length}</span>
@@ -284,7 +284,7 @@ export function DemandasTab({
           const ehTriagem = fase.chave === "triagem";
           return (
             <div
-              className={`column fase-${fase.chave}${parados > 0 ? " tem-parada" : ""}${
+              className={`column fase-${fase.chave}${items.length === 0 ? " vazia" : ""}${parados > 0 ? " tem-parada" : ""}${
                 arrastando && alvo === fase.chave && !fase.estagios.includes(arrastando.status)
                   ? motivoSemDrop(arrastando, fase.chave) ? " drop-recusado" : " drop-alvo"
                   : ""
