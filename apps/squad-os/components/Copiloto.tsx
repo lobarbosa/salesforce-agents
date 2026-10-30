@@ -60,7 +60,7 @@ export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: str
 
   const [transport] = useState(() => new DefaultChatTransport<CopilotUIMessage>({ api: "/api/copilot/chat" }));
   const [historicoInicial] = useState(lerHistorico);
-  const { messages, sendMessage, setMessages, status, error, clearError } = useChat<CopilotUIMessage>({
+  const { messages, sendMessage, setMessages, regenerate, status, error, clearError } = useChat<CopilotUIMessage>({
     id: "copiloto",
     transport,
     messages: historicoInicial,
@@ -167,7 +167,25 @@ export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: str
               <div key={m.id} className={`copiloto-msg ${m.role}`}>
                 <span className="copiloto-autor">{m.role === "user" ? "você" : "copiloto"}</span>
                 {m.parts.map((part, i) => {
-                  if (part.type === "text") return <p key={i}>{part.text}</p>;
+                  if (part.type === "text") return part.text.trim() ? <p key={i}>{part.text}</p> : null;
+                  if (part.type.startsWith("tool-") && "state" in part) {
+                    const nome = ROTULO_FERRAMENTA[part.type.slice(5)] ?? "os dados";
+                    if (part.state === "input-streaming" || part.state === "input-available") {
+                      return (
+                        <p key={i} className="copiloto-acao consultando">
+                          Consultando {nome}…
+                        </p>
+                      );
+                    }
+                    if (part.state === "output-error") {
+                      return (
+                        <p key={i} className="copiloto-acao erro">
+                          Não consegui consultar {nome}.
+                          {papel === "admin" && part.errorText ? ` [admin: ${part.errorText.slice(0, 200)}]` : ""}
+                        </p>
+                      );
+                    }
+                  }
                   if (
                     part.type === "tool-criar_demanda" &&
                     part.state === "output-available" &&
@@ -182,6 +200,17 @@ export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: str
                   }
                   return null;
                 })}
+                {m.role === "assistant" && !(carregando && m.id === messages.at(-1)?.id) && respostaIncompleta(m) && (
+                  <p className="copiloto-acao erro">
+                    Não concluí esta resposta.{" "}
+                    {papel === "admin" && m.metadata?.finishReason ? `[admin: parou por "${m.metadata.finishReason}"] ` : ""}
+                    {m.id === messages.at(-1)?.id && (
+                      <button type="button" className="btn-ghost" onClick={() => void regenerate({ body: { clientId } })}>
+                        Tentar de novo
+                      </button>
+                    )}
+                  </p>
+                )}
               </div>
             ))}
             <div ref={fimDaLista} />
@@ -233,6 +262,32 @@ export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: str
       )}
     </>
   );
+}
+
+const ROTULO_FERRAMENTA: Record<string, string> = {
+  consultar_demandas: "as demandas",
+  consultar_contrato: "o contrato",
+  consultar_parados: "o que está parado",
+  criar_demanda: "o registro da demanda",
+  consultar_painel_financeiro: "o painel financeiro",
+  consultar_contas_a_pagar: "as contas a pagar",
+  consultar_divergencias: "as divergências",
+  consultar_horas_por_cliente: "as horas por cliente",
+};
+
+/**
+ * Resposta que consultou ferramenta e não escreveu nada depois — o balão
+ * "Vou consultar…" seguido de silêncio (achado de 2026-10-30).
+ */
+function respostaIncompleta(m: CopilotUIMessage): boolean {
+  let ultimaFerramenta = -1;
+  let ultimoTexto = -1;
+  m.parts.forEach((p, i) => {
+    if (p.type.startsWith("tool-")) ultimaFerramenta = i;
+    if (p.type === "text" && p.text.trim()) ultimoTexto = i;
+  });
+  if (ultimoTexto === -1) return true;
+  return ultimaFerramenta > ultimoTexto;
 }
 
 function mensagemDeErro(error: Error): string {

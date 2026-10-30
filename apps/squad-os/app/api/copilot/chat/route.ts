@@ -187,12 +187,17 @@ export async function POST(request: NextRequest) {
     // silenciosamente caro. Limites de tamanho/frequência da conversa e de
     // demandas criadas: lib/copilot/limites.ts.
     stopWhen: stepCountIs(6),
-    maxOutputTokens: 1024,
+    // 1024 cortava a resposta depois de duas consultas (o texto final
+    // nunca chegava — achado de 2026-10-30, resposta vazia no celular).
+    maxOutputTokens: 2048,
   });
 
   return createAgentUIStreamResponse({
     agent,
     uiMessages: messages,
+    // Por que a resposta terminou — o componente usa isto para dizer "não
+    // concluí" em vez de deixar um balão vazio, e mostra o motivo ao admin.
+    messageMetadata: ({ part }) => (part.type === "finish" ? { finishReason: part.finishReason } : undefined),
     // Sem isso, o default do SDK (`() => 'An error occurred.'`) engole
     // qualquer erro de stream — chave do Gateway inválida, modelo
     // desconhecido, timeout — sem deixar rastro nenhum no log do servidor;
