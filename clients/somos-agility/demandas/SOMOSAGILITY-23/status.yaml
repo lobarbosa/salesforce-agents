@@ -2,10 +2,98 @@ id: SOMOSAGILITY-23
 client: somos-agility
 titulo: Erro ao alterar valor emResultado financeiro
 tipo: sustentacao
-status: backlog
+status: entregue
 criado_em: '2026-10-20T15:07:38.235Z'
 historico:
 - de: null
   em: '2026-10-20T15:07:38.224Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T01:00:20.372075+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T01:02:10.860051+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T01:02:20.216218+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-10-21T12:09:53.593045+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-21T12:22:43.325588+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-21T12:22:56.773921+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-10-27T22:59:50.870715+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-27T23:11:04.713215+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-27T23:11:27.513332+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-28T01:38:35.698513+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-28T01:43:36.694358+00:00'
+- de: aguardando_homologacao
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-28T01:43:47.339292+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Juliana Mendes
+  em: '2026-10-28T23:25:46.803044+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-10-28T23:32:31.840587+00:00'
+- de: entregue
+  para: aguardando_homologacao
+  autor: Leonardo Barbosa
+  em: '2026-10-29T18:49:08.009741+00:00'
+  motivo: 'Entrega falsa: nada foi implantado em QA (sbx-somos-agility-qa nunca conectada;
+    etapas de QA rodaram em dev). Volta para homologação até haver release real.'
+- de: aguardando_homologacao
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-10-30T01:24:04.353811+00:00'
+  motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
+    Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:32:50.325336+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T02:41:31.908339+00:00'
+- de: aguardando_homologacao
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T02:42:16.081706+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Carlos Sordi
+  em: '2026-10-30T19:37:31.607036+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-10-30T19:40:53.057228+00:00'
