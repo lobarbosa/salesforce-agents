@@ -2,10 +2,64 @@ id: SOMOSAGILITY-22
 client: somos-agility
 titulo: Relatorio de Job - Painel controle financeiro
 tipo: sustentacao
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-10-19T21:21:49.467Z'
 historico:
 - de: null
   em: '2026-10-19T21:21:49.443Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T00:56:25.734920+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:58:23.230501+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:58:47.048761+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-10-21T01:14:18.502547+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-21T01:27:42.269574+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-21T01:28:28.941621+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-10-21T01:49:50.008658+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-21T02:00:31.956104+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-25T01:05:57.097298+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-25T01:11:27.837464+00:00'
+- de: aguardando_homologacao
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-10-30T01:23:52.888299+00:00'
+  motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
+    Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:27:06.513717+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T02:31:15.794713+00:00'
