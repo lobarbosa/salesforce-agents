@@ -1,5 +1,6 @@
 "use client";
 
+import { lerVereditoQa, orgEhDeQa } from "@/lib/qa-veredito";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
@@ -364,6 +365,10 @@ export function DemandModal({
           restringe o papel `cliente` a `aguardando_homologacao`). O
           invariante que fica: não existe botão de aprovar sem a coisa
           aprovada do lado. */}
+      {demanda.artefatoNome === "05-testes.md" && demanda.artefatoConteudo && (
+        <VereditoQaResumo texto={demanda.artefatoConteudo} visaoCliente={visaoCliente} />
+      )}
+
       {podeAprovarEsteGate && demanda.artefatoConteudo && (
         <details className="artefato" open>
           <summary>
@@ -740,6 +745,41 @@ function CicloDemanda({ demanda, onClose }: { demanda: DemandaCompleta; onClose:
         </div>
       )}
       {!acao && erro && <p className="auth-note error" role="alert">{erro}</p>}
+    </div>
+  );
+}
+
+// Resultado do QA no topo do card (2026-10-30): falha crítica não pode chegar
+// à homologação escondida no meio do 05-testes.md (achado SOMOSAGILITY-10).
+function VereditoQaResumo({ texto, visaoCliente }: { texto: string; visaoCliente: boolean }) {
+  const { veredito, falhas, org } = lerVereditoQa(texto);
+  if (veredito === "indefinido" && falhas.length === 0) return null;
+  const reprovado = veredito === "reprovado";
+  return (
+    <div className={`auth-note ${reprovado ? "error" : ""}`} role={reprovado ? "alert" : "status"} style={{ marginTop: "0.5rem" }}>
+      <strong>{reprovado ? "Os testes encontraram problema" : "Os testes passaram"}</strong>
+      {falhas.length > 0 && (
+        <ul style={{ margin: "0.35rem 0 0", paddingLeft: "1.1rem" }}>
+          {falhas.map((f) => (
+            <li key={f.titulo}>
+              {f.critica && <strong>Crítica: </strong>}
+              {f.titulo.replace(/^FALHA\s*\d*\s*(\([^)]*\))?\s*[—-]?\s*/i, "")}
+            </li>
+          ))}
+        </ul>
+      )}
+      {!visaoCliente && (
+        <p className="gate-texto" style={{ margin: "0.35rem 0 0" }}>
+          {org ? (
+            <>
+              Rodou em <code className="mono">{org}</code>
+              {!orgEhDeQa(org) && " — atenção: não é a sandbox de QA"}
+            </>
+          ) : (
+            "O relatório não diz em qual org rodou."
+          )}
+        </p>
+      )}
     </div>
   );
 }
