@@ -2,7 +2,7 @@ id: SOMOSAGILITY-23
 client: somos-agility
 titulo: Erro ao alterar valor emResultado financeiro
 tipo: sustentacao
-status: aguardando_homologacao
+status: entregue
 criado_em: '2026-10-20T15:07:38.235Z'
 historico:
 - de: null
@@ -89,3 +89,11 @@ historico:
   para: aguardando_homologacao
   autor: pipeline
   em: '2026-10-30T02:42:16.081706+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Carlos Sordi
+  em: '2026-10-30T19:37:31.607036+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-10-30T19:40:53.057228+00:00'
