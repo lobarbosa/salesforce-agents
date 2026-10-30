@@ -2,10 +2,82 @@ id: SOMOSAGILITY-21
 client: somos-agility
 titulo: Campo origem do Lead
 tipo: sustentacao
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-10-19T19:33:52.759Z'
 historico:
 - de: null
   em: '2026-10-19T19:33:52.744Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T00:48:50.546513+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:51:20.292422+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:51:35.100549+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-10-21T02:30:57.153915+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-21T02:40:42.643091+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-10-27T23:56:00.321307+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-28T00:02:59.303852+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-10-28T00:03:33.415110+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-28T01:33:31.357118+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-28T01:36:56.320853+00:00'
+- de: aguardando_homologacao
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-28T01:37:23.271011+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Juliana Mendes
+  em: '2026-10-28T23:19:45.551046+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-10-28T23:24:34.390148+00:00'
+- de: entregue
+  para: aguardando_homologacao
+  autor: Leonardo Barbosa
+  em: '2026-10-29T18:49:01.400697+00:00'
+  motivo: 'Entrega falsa: nada foi implantado em QA (sbx-somos-agility-qa nunca conectada;
+    etapas de QA rodaram em dev). Volta para homologação até haver release real.'
+- de: aguardando_homologacao
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-10-30T01:23:44.260473+00:00'
+  motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
+    Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:21:54.079274+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T02:25:23.274734+00:00'
