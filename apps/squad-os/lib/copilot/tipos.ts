@@ -17,4 +17,6 @@ import type { criarFerramentasEsteira } from "@/lib/copilot/ferramentas-esteira"
 type CopilotTools = ReturnType<typeof criarFerramentasCliente> &
   ReturnType<typeof criarFerramentasFinanceiro> &
   ReturnType<typeof criarFerramentasEsteira>;
-export type CopilotUIMessage = UIMessage<unknown, never, InferUITools<CopilotTools>>;
+/** Vai no fim de cada resposta: por que o modelo parou (ver route.ts). */
+export type CopilotMetadata = { finishReason?: string };
+export type CopilotUIMessage = UIMessage<CopilotMetadata, never, InferUITools<CopilotTools>>;

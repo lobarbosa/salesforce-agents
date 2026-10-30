@@ -1543,3 +1543,6 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
   .copiloto-fab { bottom: max(0.8rem, env(safe-area-inset-bottom)); }
   .copiloto-fab.aberto { display: none; }
 }
+
+.copiloto-msg .copiloto-acao.erro { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); }
+.copiloto-msg .copiloto-acao.consultando { background: transparent; border-color: var(--border); color: var(--text-muted); font-weight: 400; }
