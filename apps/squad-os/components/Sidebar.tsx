@@ -153,9 +153,7 @@ function Rodape({
 
 // A marca escrita não é placeholder: é a alternativa quando `public/marca.svg`
 // não existe (ver lib/marca.ts e public/README.md). Quando o arquivo existe, o
-// alt fica vazio de propósito — o nome do produto aparece logo abaixo como
-// texto de verdade, e repeti-lo no alt faria o leitor de tela dizer "Squad OS
-// Squad OS".
+// logo substitui o nome escrito (2026-10-30) e o alt carrega o nome.
 function Marca({ src, sub }: { src: string | null; sub: string }) {
   return (
     <div className="brand">
@@ -164,9 +162,10 @@ function Marca({ src, sub }: { src: string | null; sub: string }) {
         // o arquivo da marca é o time, em proporção que o build não conhece.
         // Uma imagem de ~26px de altura na sidebar não move LCP.
         // eslint-disable-next-line @next/next/no-img-element
-        <img className="brand-logo" src={src} alt="" />
-      ) : null}
-      <div className="name">Squad OS</div>
+        <img className="brand-logo" src={src} alt="Konecta" />
+      ) : (
+        <div className="name">Squad OS</div>
+      )}
       <div className="sub">{sub}</div>
     </div>
   );
