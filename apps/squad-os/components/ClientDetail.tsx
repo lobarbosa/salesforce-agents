@@ -12,7 +12,6 @@ import { ContratoTab } from "@/components/ContratoTab";
 import { DemandasTab } from "@/components/DemandasTab";
 import { AprovacoesTab } from "@/components/AprovacaoEstimativa";
 import { aguardaAprovacaoEstimativa } from "@/lib/demandas";
-import { Copiloto } from "@/components/Copiloto";
 import { EncerradoBadge, EncerramentoCliente } from "@/components/EncerramentoCliente";
 
 type Tab = "conhecimento" | "contrato" | "conexao" | "demandas" | "aprovacoes";
@@ -160,10 +159,6 @@ export function ClientDetail({
             <ConexaoTab clientId={client.id} clientSlug={client.slug} ambientes={client.ambientes} canManage={false} />
           </div>
         )}
-
-        {/* Ícone flutuante, não aba — fica alcançável em qualquer aba sem
-            trocar de lugar (ver Copiloto.tsx). */}
-        <Copiloto papel={usuario.role} clientId={client.id} clientNome={client.nome} />
       </>
     );
   }
@@ -296,11 +291,6 @@ export function ClientDetail({
           />
         </div>
       )}
-
-      {/* Admin/consultor também ganham o copiloto aqui — mesmo ícone do
-          papel cliente, escopo nas demandas/contrato DESTE cliente (ver
-          Copiloto.tsx). Admin ainda tem acesso ao financeiro dentro dele. */}
-      <Copiloto papel={usuario.role} clientId={client.id} clientNome={client.nome} />
     </>
   );
 }

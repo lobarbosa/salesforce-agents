@@ -6,6 +6,7 @@ import { canAccessClient } from "@/lib/auth";
 import { enxergaCliente } from "@/lib/encerramento";
 import { criarFerramentasCliente } from "@/lib/copilot/ferramentas";
 import { criarFerramentasFinanceiro } from "@/lib/copilot/ferramentas-financeiro";
+import { criarFerramentasEsteira } from "@/lib/copilot/ferramentas-esteira";
 import { dentroDoLimiteDeRequisicoes, MAX_REQUISICOES_POR_DIA, validarMensagens } from "@/lib/copilot/limites";
 import { consumirLimite } from "@/lib/limite-uso";
 
@@ -51,7 +52,12 @@ function promptInterno({
   clientNome: string | null;
   temFinanceiro: boolean;
 }) {
-  const partes = [`Você é o copiloto interno do Squad OS, ajudando uma pessoa da Acxya (papel: ${papel}).`];
+  const partes = [
+    `Você é o copiloto interno do Squad OS, ajudando uma pessoa da Acxya (papel: ${papel}).`,
+    // A conversa atravessa a navegação (uma instância só, ver Copiloto.tsx):
+    // o histórico pode ter começado noutra tela, com outras ferramentas.
+    `A conversa acompanha a pessoa pelas telas do portal: mensagens anteriores podem ter sido feitas noutra tela. O que vale agora é o contexto descrito abaixo — use o histórico para entender a que a pessoa se refere, e as ferramentas de agora para responder. Se ela pedir algo de um cliente que não é o da tela atual, diga para abrir a página dele, sem fingir que consultou.`,
+  ];
 
   if (clientNome) {
     partes.push(
@@ -59,9 +65,13 @@ function promptInterno({
     );
   } else {
     partes.push(
-      `Esta tela não tem um cliente aberto, então você não tem ferramenta de demanda ou contrato agora. Se perguntarem sobre um cliente específico, diga que é só abrir a página dele que você passa a conseguir consultar.`
+      `Esta tela não tem um cliente aberto, então você não tem as ferramentas de demanda ou contrato de um cliente agora (consultar_parados, abaixo, continua valendo). Se perguntarem sobre um cliente específico, diga que é só abrir a página dele que você passa a conseguir consultar.`
     );
   }
+
+  partes.push(
+    `Em qualquer tela você pode usar consultar_parados para responder "tem algo parado?": ela cruza todos os clientes e diz quem precisa agir em cada demanda e há quantos dias está na etapa. Responda agrupando por quem age (time primeiro), com as mais antigas no topo, e destaque alertas de QA. Aqui, com o time, pode usar os nomes de etapa que a ferramenta devolve.`
+  );
 
   if (temFinanceiro) {
     partes.push(
@@ -154,6 +164,7 @@ export async function POST(request: NextRequest) {
   const tools = {
     ...(clienteEmEscopo ? criarFerramentasCliente({ usuario, clientId: clienteEmEscopo.id }) : {}),
     ...(temFinanceiro ? criarFerramentasFinanceiro({ quem: usuario }) : {}),
+    ...(usuario.role === "admin" || usuario.role === "consultor" ? criarFerramentasEsteira({ usuario }) : {}),
   };
 
   const instructions =

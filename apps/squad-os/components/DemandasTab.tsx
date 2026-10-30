@@ -87,10 +87,10 @@ export function DemandasTab({
     // 409 = a demanda saiu da triagem por baixo (o pipeline moveu): o
     // refresh mostra onde ela está de verdade.
     if (!res) {
-      window.alert("sem conexão com o servidor — a demanda não foi movida");
+      setAviso("sem conexão com o servidor — a demanda não foi movida");
     } else if (!res.ok) {
       const corpo = await res.json().catch(() => ({}));
-      window.alert(corpo.error || "não consegui mover a demanda");
+      setAviso(corpo.error || "não consegui mover a demanda");
     }
     router.refresh();
   }

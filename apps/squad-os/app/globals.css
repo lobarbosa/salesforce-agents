@@ -352,6 +352,8 @@ main { flex: 1; min-width: 0; padding: 1.6rem 2rem 4rem; }
   line-height: 1; min-width: 32px; min-height: 32px; border-radius: 6px;
 }
 .copiloto-fechar:hover { color: var(--text); }
+.copiloto-contexto { font-weight: 400; color: var(--text-muted); }
+.copiloto-cabecalho .btn-ghost { margin-left: auto; margin-right: 0.25rem; font-size: 0.78rem; }
 .copiloto-intro { color: var(--text-muted); font-size: 0.8rem; margin: 0; }
 .copiloto-lista {
   display: flex; flex-direction: column; gap: 0.6rem; flex: 1; min-height: 10rem;

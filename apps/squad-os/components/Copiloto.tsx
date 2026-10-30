@@ -17,30 +17,40 @@ import type { Role } from "@/lib/generated/prisma/client";
 // app: falha muda em formulário já causou confusão em outro lugar do Squad
 // OS — não repetir aqui).
 //
-// Dois jeitos de montar:
-// - Dentro da página de um cliente (`ClientDetail.tsx`): passa `clientId` e
-//   `clientNome` — todo papel (cliente, consultor, admin) só conversa sobre
-//   ESTE cliente enquanto está aqui.
-// - Em qualquer outra tela (`app/(app)/layout.tsx`, montado uma vez pra todo
-//   papel): sem `clientId`. Se o caminho for `/clients/...`, esta instância
-//   se anula (`null`) — a de dentro da página, que já tem o nome do
-//   cliente à mão, é quem aparece ali. Evita dois ícones flutuantes ao
-//   mesmo tempo sem precisar de estado compartilhado entre as duas árvores.
+// Uma instância só, montada no layout (2026-10-30). Antes havia três — a do
+// layout e duas em ClientDetail.tsx — cada uma com a própria conversa: abrir
+// a página de um cliente começava do zero, voltar pra Visão Geral reaparecia
+// a conversa antiga, e trocar de um cliente pro outro mantinha o transporte
+// com o clientId do primeiro (achado do próprio dono: "não segue o contexto
+// quando muda de tela"). Agora a conversa é uma só e atravessa a navegação;
+// o que muda por tela é o contexto, lido do caminho (`/clients/<id>`) e
+// mandado a cada mensagem. O servidor continua decidindo o que esse
+// contexto libera (canAccessClient) — o caminho é só a pergunta.
 //
+// A conversa sobrevive a recarregar a página (sessionStorage, por aba) e
+// some ao fechar a aba ou em "Nova conversa".
+
 // Não é um modal (`role="dialog"`): o resto da tela continua clicável por
 // trás, igual todo chat flutuante — mas fecha com Escape do mesmo jeito que
 // Modal.tsx, e devolve o foco pro botão que abriu, que é o essencial do
 // padrão pra quem navega só por teclado.
-export function Copiloto({
-  papel,
-  clientId,
-  clientNome,
-}: {
-  papel: Role;
-  clientId?: string;
-  clientNome?: string;
-}) {
+const CHAVE_HISTORICO = "copiloto:conversa";
+
+function lerHistorico(): CopilotUIMessage[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const bruto = window.sessionStorage.getItem(CHAVE_HISTORICO);
+    const lista = bruto ? (JSON.parse(bruto) as unknown) : [];
+    return Array.isArray(lista) ? (lista as CopilotUIMessage[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: string; nome: string }[] }) {
   const pathname = usePathname();
+  const clientId = pathname?.match(/^\/clients\/([^/?#]+)/)?.[1];
+  const clientNome = clientes.find((c) => c.id === clientId)?.nome;
   const [aberto, setAberto] = useState(false);
   const [texto, setTexto] = useState("");
   const painelId = useId();
@@ -48,11 +58,23 @@ export function Copiloto({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fimDaLista = useRef<HTMLDivElement>(null);
 
-  const { messages, sendMessage, status, error, clearError } = useChat<CopilotUIMessage>({
-    transport: new DefaultChatTransport({ api: "/api/copilot/chat", body: { clientId } }),
+  const [transport] = useState(() => new DefaultChatTransport<CopilotUIMessage>({ api: "/api/copilot/chat" }));
+  const [historicoInicial] = useState(lerHistorico);
+  const { messages, sendMessage, setMessages, status, error, clearError } = useChat<CopilotUIMessage>({
+    id: "copiloto",
+    transport,
+    messages: historicoInicial,
   });
 
   const carregando = status === "submitted" || status === "streaming";
+
+  useEffect(() => {
+    if (carregando) return;
+    try {
+      if (messages.length) window.sessionStorage.setItem(CHAVE_HISTORICO, JSON.stringify(messages.slice(-40)));
+      else window.sessionStorage.removeItem(CHAVE_HISTORICO);
+    } catch {}
+  }, [messages, carregando]);
 
   useEffect(() => {
     if (!aberto) return;
@@ -76,7 +98,9 @@ export function Copiloto({
     const valor = texto.trim();
     if (!valor || carregando) return;
     setTexto("");
-    void sendMessage({ text: valor });
+    // O contexto vai com cada mensagem, não no transporte: é o da tela em
+    // que a pessoa está agora, mesmo que a conversa tenha começado em outra.
+    void sendMessage({ text: valor }, { body: { clientId } });
   }
 
   function aoTeclarInput(e: KeyboardEvent<HTMLTextAreaElement>) {
@@ -86,19 +110,13 @@ export function Copiloto({
     }
   }
 
-  // Instância "geral" (sem clientId) numa página de cliente: a de dentro de
-  // ClientDetail.tsx já cobre esta tela, com o nome do cliente à mão — dois
-  // ícones flutuantes ao mesmo tempo só confundiria sobre qual conversa é
-  // sobre o quê.
-  if (!clientId && pathname?.startsWith("/clients/")) return null;
-
   const introducao = clientNome
     ? `Pergunte sobre o andamento das demandas ou do contrato de ${clientNome}, ou descreva um pedido novo para eu ajudar a registrar.`
     : papel === "financeiro"
       ? "Pergunte sobre contas a pagar, divergências abertas, horas por cliente ou o painel financeiro."
       : papel === "admin"
-        ? "Pergunte sobre o financeiro, ou abra a página de um cliente para eu ajudar com demandas e contrato dele."
-        : "Abra a página de um cliente para eu ajudar com demandas e contrato dele.";
+        ? "Pergunte o que está parado na esteira, sobre o financeiro, ou abra a página de um cliente para falar das demandas e do contrato dele."
+        : "Pergunte o que está parado na esteira, ou abra a página de um cliente para falar das demandas e do contrato dele.";
 
   return (
     <>
@@ -117,7 +135,15 @@ export function Copiloto({
       {aberto && (
         <div id={painelId} className="copiloto-painel" role="region" aria-label="Copiloto">
           <div className="copiloto-cabecalho">
-            <span>Copiloto</span>
+            <span>
+              Copiloto
+              <span className="copiloto-contexto"> · {clientNome ?? (clientId ? "cliente" : "geral")}</span>
+            </span>
+            {messages.length > 0 && !carregando && (
+              <button type="button" className="btn-ghost" onClick={() => setMessages([])}>
+                Nova conversa
+              </button>
+            )}
             <button
               type="button"
               className="copiloto-fechar"
