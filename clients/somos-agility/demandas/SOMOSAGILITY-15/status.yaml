@@ -2,7 +2,7 @@ id: SOMOSAGILITY-15
 client: somos-agility
 titulo: Layout de pagina inicial
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-19T16:17:14.279Z'
 historico:
 - de: null
@@ -59,3 +59,11 @@ historico:
   em: '2026-10-30T01:23:37.290073+00:00'
   motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
     Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T03:56:02.190706+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T04:02:23.505540+00:00'
