@@ -2,7 +2,7 @@ id: SOMOSAGILITY-20
 client: somos-agility
 titulo: Automatização de criação de oportunidades de renovações
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-19T17:22:40.423Z'
 historico:
 - de: null
@@ -33,3 +33,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-10-28T23:38:23.626124+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T04:20:00.058931+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T04:26:00.942007+00:00'
