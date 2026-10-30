@@ -2,10 +2,59 @@ id: SOMOSAGILITY-14
 client: somos-agility
 titulo: Erro fluxo de reembolso - Usuario Simone
 tipo: sustentacao
-status: backlog
+status: cancelada
 criado_em: '2026-10-15T19:58:57.878Z'
 historico:
   - de: null
     em: '2026-10-15T19:58:57.865Z'
     para: backlog
     autor: Juliana Mendes
+  - de: backlog
+    para: analise
+    autor: pipeline
+    em: '2026-10-16T11:38:01.054145+00:00'
+  - de: analise
+    para: aguardando_gate_analise
+    autor: pipeline
+    em: '2026-10-16T11:40:21.501460+00:00'
+  - de: aguardando_gate_analise
+    para: design
+    autor: Carlos Sordi
+    em: '2026-10-19T23:30:13.193830+00:00'
+  - de: design
+    para: aguardando_gate_design
+    autor: pipeline
+    em: '2026-10-19T23:38:08.634483+00:00'
+  - de: aguardando_gate_design
+    para: build
+    autor: Leonardo Barbosa
+    em: '2026-10-21T02:01:30.640779+00:00'
+  - de: build
+    para: aguardando_gate_build
+    autor: pipeline
+    em: '2026-10-21T02:13:18.872970+00:00'
+  - de: aguardando_gate_build
+    para: qa
+    autor: Leonardo Barbosa
+    em: '2026-10-25T01:12:47.120735+00:00'
+  - de: qa
+    para: aguardando_homologacao
+    autor: pipeline
+    em: '2026-10-25T01:20:47.527807+00:00'
+  - de: aguardando_homologacao
+    para: aguardando_homologacao
+    autor: pipeline
+    em: '2026-10-25T01:21:46.075476+00:00'
+  - de: aguardando_homologacao
+    para: aguardando_gate_design
+    autor: Leonardo Barbosa
+    em: '2026-10-29T20:27:10.394256+00:00'
+    motivo: >-
+      Build nunca existiu (QA e release confirmaram). Volta para o gate de
+      design: responder P1/P3/P5 de 03-design.md com o cliente antes de liberar
+      a construção.
+  - de: aguardando_gate_design
+    para: cancelada
+    autor: Carlos Sordi
+    em: '2026-10-30T18:13:24.219Z'
+    motivo: Realizado
