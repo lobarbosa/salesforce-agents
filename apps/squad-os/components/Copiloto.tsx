@@ -123,7 +123,7 @@ export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: str
       <button
         ref={botaoRef}
         type="button"
-        className="copiloto-fab"
+        className={`copiloto-fab${aberto ? " aberto" : ""}`}
         aria-expanded={aberto}
         aria-controls={painelId}
         onClick={() => setAberto((v) => !v)}
