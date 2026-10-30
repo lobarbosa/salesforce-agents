@@ -170,7 +170,10 @@ export function Copiloto({
 
           {error && (
             <div className="auth-note error" role="alert">
-              Não consegui falar com o copiloto agora. Tente de novo em instantes.{" "}
+              {/* A rota já devolve texto pronto pra pessoa (genérico, ou com o
+                  motivo técnico pro admin — ver onError em route.ts). Um 429/400
+                  vem como JSON {error}; mostra só o campo. */}
+              {mensagemDeErro(error)}{" "}
               <button type="button" className="btn-ghost" onClick={clearError}>
                 Ok
               </button>
@@ -204,4 +207,15 @@ export function Copiloto({
       )}
     </>
   );
+}
+
+function mensagemDeErro(error: Error): string {
+  const generico = "Não consegui falar com o copiloto agora. Tente de novo em instantes.";
+  const bruto = (error.message || "").trim();
+  if (!bruto) return generico;
+  try {
+    const j = JSON.parse(bruto) as { error?: unknown };
+    if (typeof j.error === "string" && j.error) return j.error;
+  } catch {}
+  return bruto.length > 400 ? generico : bruto;
 }
