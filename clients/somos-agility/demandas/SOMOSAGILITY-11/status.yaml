@@ -2,7 +2,7 @@ id: SOMOSAGILITY-11
 client: somos-agility
 titulo: MANUTENÇÃO - CAMPO LOGÍSTICA - DSA
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-14T22:43:49.714Z'
 historico:
 - de: null
@@ -55,3 +55,11 @@ historico:
   em: '2026-10-30T01:23:28.709139+00:00'
   motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
     Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T04:12:32.907261+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T04:18:27.049129+00:00'
