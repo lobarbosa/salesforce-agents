@@ -53,10 +53,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <main id="conteudo" tabIndex={-1}>
         {children}
       </main>
-      {/* Montada uma vez pra todo papel; em páginas de cliente ela se anula
-          sozinha (ver Copiloto.tsx) porque ClientDetail.tsx já monta a
-          própria instância, com o clientId e o nome do cliente à mão. */}
-      <Copiloto papel={usuario.role} />
+      {/* Uma conversa só, que atravessa a navegação; o contexto (cliente da
+          página aberta) sai do caminho — ver Copiloto.tsx. */}
+      <Copiloto papel={usuario.role} clientes={clients.map((c) => ({ id: c.id, nome: c.nome }))} />
     </div>
   );
 }

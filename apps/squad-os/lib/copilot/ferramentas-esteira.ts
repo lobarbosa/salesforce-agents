@@ -32,12 +32,20 @@ export function criarFerramentasEsteira({ usuario }: { usuario: CurrentUsuario }
             estimativaAprovadaHoras: true,
             estimativaDebitadaEm: true,
             artefatoNome: true,
-            artefatoConteudo: true,
             disparos: { select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true } },
             client: { select: { nome: true, encerradoEm: true } },
           },
         });
-        const visiveis = demandas.filter((d) => enxergaCliente(usuario.role, d.client));
+        // O texto do artefato pode ter dezenas de KB por demanda; só o
+        // 05-testes de quem está em homologação interessa (veredito do QA).
+        const testes = await prisma.demanda.findMany({
+          where: { status: "aguardando_homologacao", artefatoNome: "05-testes.md" },
+          select: { code: true, artefatoConteudo: true },
+        });
+        const conteudo = new Map(testes.map((t) => [t.code, t.artefatoConteudo]));
+        const visiveis = demandas
+          .filter((d) => enxergaCliente(usuario.role, d.client))
+          .map((d) => ({ ...d, artefatoConteudo: conteudo.get(d.code) ?? "" }));
         return paradas(visiveis).map((p) => ({
           cliente: p.cliente,
           code: p.code,

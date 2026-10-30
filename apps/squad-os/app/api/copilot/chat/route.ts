@@ -52,7 +52,12 @@ function promptInterno({
   clientNome: string | null;
   temFinanceiro: boolean;
 }) {
-  const partes = [`Você é o copiloto interno do Squad OS, ajudando uma pessoa da Acxya (papel: ${papel}).`];
+  const partes = [
+    `Você é o copiloto interno do Squad OS, ajudando uma pessoa da Acxya (papel: ${papel}).`,
+    // A conversa atravessa a navegação (uma instância só, ver Copiloto.tsx):
+    // o histórico pode ter começado noutra tela, com outras ferramentas.
+    `A conversa acompanha a pessoa pelas telas do portal: mensagens anteriores podem ter sido feitas noutra tela. O que vale agora é o contexto descrito abaixo — use o histórico para entender a que a pessoa se refere, e as ferramentas de agora para responder. Se ela pedir algo de um cliente que não é o da tela atual, diga para abrir a página dele, sem fingir que consultou.`,
+  ];
 
   if (clientNome) {
     partes.push(
