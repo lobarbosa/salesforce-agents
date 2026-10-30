@@ -24,3 +24,16 @@ export function marcaUrl(): string | null {
   cache = achado ? `/${achado}` : null;
   return cache;
 }
+
+// Versão para fundo escuro (2026-10-30): letras claras, servida pelo
+// <picture> só quando o sistema está em tema escuro.
+const CANDIDATOS_DARK = ["marca-dark.svg", "marca-dark.png", "marca-dark.webp"];
+let cacheDark: string | null | undefined;
+
+export function marcaDarkUrl(): string | null {
+  if (cacheDark !== undefined) return cacheDark;
+  const dir = join(process.cwd(), "public");
+  const achado = CANDIDATOS_DARK.find((nome) => existsSync(join(dir, nome)));
+  cacheDark = achado ? `/${achado}` : null;
+  return cacheDark;
+}

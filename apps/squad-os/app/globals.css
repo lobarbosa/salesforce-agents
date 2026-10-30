@@ -99,7 +99,7 @@ select:focus-visible, [tabindex]:focus-visible, a:focus-visible, summary:focus-v
 /* O logo Konecta tem letras em azul escuro: no tema escuro ganha uma placa
    branca até chegar a versão própria para fundo escuro (marca-dark). */
 @media (prefers-color-scheme: dark) {
-  .sidebar .brand-logo { background: #fff; padding: 4px 8px; border-radius: 6px; height: 40px; box-sizing: border-box; }
+  .sidebar .brand-logo:not(.tem-dark) { background: #fff; padding: 4px 8px; border-radius: 6px; height: 40px; box-sizing: border-box; }
 }
 .sidebar .brand .sub { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
 /* Gradiente institucional — reservado ao símbolo (aqui, a marca escrita),
