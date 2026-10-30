@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { mudarCiclo } from "@/lib/ciclo-demanda";
-import { aguardaAprovacaoEstimativa } from "@/lib/demandas";
+import { ESTAGIOS_DE_DEBITO, aguardaAprovacaoEstimativa } from "@/lib/demandas";
 import { processarFila } from "@/lib/fila-esteira";
 
 // O cliente aprova ou segura a estimativa de horas da demanda (2026-10-21).
@@ -56,9 +56,17 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
   if (Number(body?.horas) !== d.estimativaConsultorHoras) {
     return NextResponse.json({ error: "a estimativa mudou enquanto você decidia — recarregue" }, { status: 409 });
   }
+  // Aprovação tardia: a demanda já passou do build, então o débito que o sync
+  // faria na entrada do build acontece aqui, uma vez só.
+  const agora = new Date();
+  const etapa = d.status === "standby" ? d.congeladaDe ?? "" : d.status;
+  const debita = ESTAGIOS_DE_DEBITO.includes(etapa) && !d.estimativaDebitadaEm;
   const { count } = await prisma.demanda.updateMany({
-    where: { id, estimativaConsultorHoras: d.estimativaConsultorHoras },
-    data: { estimativaAprovadaHoras: d.estimativaConsultorHoras, estimativaAprovadaPor: autor, estimativaAprovadaEm: new Date() },
+    where: { id, estimativaConsultorHoras: d.estimativaConsultorHoras, estimativaDebitadaEm: null },
+    data: {
+      estimativaAprovadaHoras: d.estimativaConsultorHoras, estimativaAprovadaPor: autor, estimativaAprovadaEm: agora,
+      ...(debita ? { estimativaDebitadaHoras: d.estimativaConsultorHoras, estimativaDebitadaEm: agora } : {}),
+    },
   });
   if (count === 0) return NextResponse.json({ error: "a estimativa mudou — recarregue" }, { status: 409 });
   await prisma.comentario.create({

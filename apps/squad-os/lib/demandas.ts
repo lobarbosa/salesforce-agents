@@ -372,6 +372,17 @@ export const ESTAGIOS_APROVACAO_ESTIMATIVA: readonly string[] = [
   "aguardando_gate_design",
 ];
 
+/** Estágios em que a estimativa aprovada já vale como débito no contrato. */
+export const ESTAGIOS_DE_DEBITO: readonly string[] = [
+  "build", "aguardando_gate_build", "qa", "aguardando_homologacao", "release", "entregue",
+];
+
+// Aprovação tardia (2026-10-30): demanda que já passou do build sem aprovação
+// válida (as aprovações dadas pelo admin foram anuladas) ainda pode ser
+// aprovada pelo cliente até a entrega — e aí debita na hora. Entregue fica de
+// fora: ali o timesheet já mediu o que foi gasto.
+const ESTAGIOS_APROVACAO_TARDIA: readonly string[] = ["build", "aguardando_gate_build", "qa", "aguardando_homologacao", "release"];
+
 /** A aprovação existe e é do número que está no card agora. */
 export function estimativaAprovada(d: {
   estimativaConsultorHoras: number | null;
@@ -386,10 +397,12 @@ export function aguardaAprovacaoEstimativa(d: {
   congeladaDe?: string | null;
   estimativaConsultorHoras: number | null;
   estimativaAprovadaHoras: number | null;
+  estimativaDebitadaEm?: Date | string | null;
 }): boolean {
   if (d.estimativaConsultorHoras == null || estimativaAprovada(d)) return false;
   const etapa = d.status === "standby" ? d.congeladaDe ?? "" : d.status;
-  return ESTAGIOS_APROVACAO_ESTIMATIVA.includes(etapa);
+  if (ESTAGIOS_APROVACAO_ESTIMATIVA.includes(etapa)) return true;
+  return ESTAGIOS_APROVACAO_TARDIA.includes(etapa) && !d.estimativaDebitadaEm;
 }
 
 // --- Quem age agora (2026-10-29) --------------------------------------------
