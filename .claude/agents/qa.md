@@ -33,13 +33,6 @@ seguir depois:
 4. `qa_browser_close` sempre no fim, mesmo depois de um erro — não deixe sessão aberta.
 
 ## Reporte
-No topo de `05-testes.md`, duas linhas que o Squad OS lê e mostra no card:
-- `**Veredito:** aprovado` ou `**Veredito:** reprovado` — reprovado se houver qualquer falha
-  que bloqueie o aceite.
-- `**Org de teste:** \`<alias>\`` — a org em que você rodou de verdade.
-
-Cada falha num título próprio `### FALHA <n> (crítica|média|branda) — <resumo>`.
-
 Tabela: Caso | Passos | Esperado | Obtido | Status.
 Falha é falha — não arredonde para "passou com ressalva". Liste as falhas primeiro.
 
