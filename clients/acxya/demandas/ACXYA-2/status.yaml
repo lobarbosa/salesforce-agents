@@ -2,7 +2,7 @@ id: ACXYA-2
 client: acxya
 titulo: Campo nova descoberta
 tipo: sustentacao
-status: aguardando_gate_build
+status: cancelada
 criado_em: '2026-09-13T21:29:07.426Z'
 historico:
 - de: null
@@ -41,3 +41,8 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-09-14T15:59:45.040282+00:00'
+- de: aguardando_gate_build
+  para: cancelada
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:28:25.892506Z'
+  motivo: Parada desde set/out sem andamento; cancelada a pedido.
