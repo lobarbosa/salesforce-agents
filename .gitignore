@@ -29,3 +29,5 @@ clients/*/.credenciais-local/
 # Anexos de card liberados pro agente — baixados pelo run-demand.yml só durante o
 # job, nunca versionados (guardrail #2; ver src/salesforce_agents/anexos.py).
 clients/*/demandas/*/anexos/
+# Comentários do card, também só durante o job (ver src/salesforce_agents/comentarios.py).
+clients/*/demandas/*/comentarios-do-card.md
