@@ -2,7 +2,7 @@ id: SOMOSAGILITY-13
 client: somos-agility
 titulo: Criação esteira de venda - Renovação
 tipo: projeto
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-10-14T22:53:44.897Z'
 historico:
 - de: null
@@ -17,3 +17,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-10-21T10:13:55.090540+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-10-30T04:28:14.456203+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-30T04:41:16.298631+00:00'
