@@ -2,7 +2,7 @@ id: SOMOSAGILITY-7
 client: somos-agility
 titulo: LAT - Erro na atualizacao dos Status Geral
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-14T21:49:25.168Z'
 historico:
 - de: null
@@ -73,3 +73,11 @@ historico:
   em: '2026-10-30T01:23:25.969459+00:00'
   motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
     Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:43:56.629001+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T02:54:14.844686+00:00'
