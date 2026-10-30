@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { Copiloto } from "@/components/Copiloto";
 import { marcaUrl } from "@/lib/marca";
 import { clienteDaSidebar } from "@/lib/visao-cliente";
+import { esteiraPorCliente } from "@/lib/esteira-sidebar";
 
 // Toda página aqui lê direto do Postgres (sem fetch(), então o Next não
 // detecta dinamismo sozinho) e depende da sessão do usuário logado — nunca
@@ -33,6 +34,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         : await getClients();
   // Encerrados: fora da lista principal, numa seção à parte só para o admin.
   const encerrados = usuario.role === "admin" ? await getClientesEncerrados() : [];
+  const esteira = await esteiraPorCliente(clients.map((c) => c.id));
 
   return (
     <div className="shell">
@@ -44,7 +46,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           briefing, assessment) ia no payload RSC pra qualquer papel. */}
       <Sidebar
         marcaSrc={marcaUrl()}
-        clients={clients.map(clienteDaSidebar)}
+        clients={clients.map((c) => clienteDaSidebar(c, esteira[c.id]))}
         encerrados={encerrados.map((c) => ({ id: c.id, nome: c.nome }))}
         usuario={usuario}
       />

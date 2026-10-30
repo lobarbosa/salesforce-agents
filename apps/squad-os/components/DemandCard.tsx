@@ -266,9 +266,7 @@ export function DemandCard({
         </>
       ) : triageColumn ? (
         <span className="readonly-note">{TRIAGE_LABEL[demanda.status] ?? demanda.status}</span>
-      ) : visaoCliente ? null : (
-        <span className="readonly-note">avança via sfagents</span>
-      )}
+      ) : null}
     </div>
   );
 }
