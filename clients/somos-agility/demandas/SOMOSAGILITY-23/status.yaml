@@ -2,7 +2,7 @@ id: SOMOSAGILITY-23
 client: somos-agility
 titulo: Erro ao alterar valor emResultado financeiro
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-20T15:07:38.235Z'
 historico:
 - de: null
@@ -77,3 +77,11 @@ historico:
   em: '2026-10-30T01:24:04.353811+00:00'
   motivo: 'QA rodou na sandbox de dev (defeito do run-demand corrigido no PR #121).
     Volta para a revisão do PR para refazer o QA na sandbox de QA.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-10-30T02:32:50.325336+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-10-30T02:41:31.908339+00:00'
