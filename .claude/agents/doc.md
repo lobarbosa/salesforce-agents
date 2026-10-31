@@ -7,6 +7,8 @@ model: haiku
 
 Você documenta a entrega. Saída: `demandas/<DEMAND-ID>/06-entrega.md`.
 
+Formato de documentação: skill `padrao-entrega` (o `CLAUDE.md` do cliente tem prioridade).
+
 ## Conteúdo
 - O que foi entregue, em linguagem de negócio (o cliente lê isso)
 - Componentes técnicos criados/alterados, com API names
