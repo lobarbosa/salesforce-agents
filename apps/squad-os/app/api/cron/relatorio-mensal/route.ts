@@ -4,7 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { horasPorMes } from "@/lib/data";
 import { mesAnterior, progressoDoProjeto } from "@/lib/contrato";
 import { chaveDia } from "@/lib/horas";
-import { entreguesNoMes, textoDoRelatorio, type DadosRelatorio } from "@/lib/relatorio-mensal";
+import { entreguesNoMes, htmlDoRelatorio, textoDoRelatorio, type DadosRelatorio } from "@/lib/relatorio-mensal";
+import { marcaUrl } from "@/lib/marca";
 import { APP_URL, emailConfigurado, enviarEmail, mascarar } from "@/lib/email";
 
 // Vercel Cron no dia 1 (vercel.json): cada cliente recebe o resumo do mês que
@@ -60,19 +61,23 @@ export async function GET(request: NextRequest) {
         entregaveisConcluidos: k.entregaveis.filter((e) => e.concluido).map((e) => e.titulo),
       };
     }
-    const { assunto, texto } = textoDoRelatorio({
+    const dados: DadosRelatorio = {
       clienteNome: c.nome,
       mes,
       entregues: entreguesNoMes(c.demandas, mes).map((d) => ({ code: d.code, titulo: d.titulo })),
       contrato,
       url: `${APP_URL}/clients/${c.id}`,
-    });
+    };
+    const { assunto, texto } = textoDoRelatorio(dados);
+    // Logo servido pelo próprio portal (public/), para o cliente de e-mail baixar.
+    const logo = marcaUrl();
+    const html = htmlDoRelatorio(dados, logo ? `${APP_URL}${logo}` : null);
     const para = c.usuarios.map((u) => u.email);
     previa.push({ cliente: c.nome, para: para.map(mascarar), assunto });
     if (!dry) {
       for (const [i, p] of para.entries()) {
         // Cópia oculta aos admins só uma vez por cliente.
-        if (await enviarEmail({ para: p, assunto, texto, cco: i === 0 ? admins : undefined })) enviados++;
+        if (await enviarEmail({ para: p, assunto, texto, html, cco: i === 0 ? admins : undefined })) enviados++;
       }
     }
   }

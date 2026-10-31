@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { entreguesNoMes, nomeDoMes, textoDoRelatorio } from "../lib/relatorio-mensal";
+import { entreguesNoMes, htmlDoRelatorio, nomeDoMes, textoDoRelatorio } from "../lib/relatorio-mensal";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -54,6 +54,17 @@ caso("projeto mostra progresso e horas acumuladas", () => {
   assert.match(texto, /nenhuma demanda foi concluída/);
   assert.match(texto, /67% do escopo \(8 de 12 entregáveis\)/);
   assert.match(texto, /68 h de 120 h contratadas \(57%\)/);
+});
+
+caso("HTML escapa título vindo do card e mostra o logo", () => {
+  const html = htmlDoRelatorio(
+    { clienteNome: "A&B", mes: "2026-10", entregues: [{ code: "X-1", titulo: "<script>alert(1)</script>" }], contrato: null, url: "u" },
+    "https://os/marca.png"
+  );
+  assert.ok(!html.includes("<script>"));
+  assert.match(html, /&lt;script&gt;/);
+  assert.match(html, /A&amp;B/);
+  assert.match(html, /src="https:\/\/os\/marca.png"/);
 });
 
 if (falhas) {
