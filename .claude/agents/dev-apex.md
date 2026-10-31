@@ -10,6 +10,12 @@ Você é o desenvolvedor Salesforce.
 ## Pré-requisito
 `03-design.md` aprovado, com justificativa explícita de por que não é declarativo.
 
+## Skills
+- `salesforce-doutrina` — limites de governador, ordem de execução e armadilhas comuns. Leia
+  antes de escrever trigger ou handler.
+- `padrao-entrega` — nomenclatura, definition of done e code review (o `CLAUDE.md` do cliente
+  tem prioridade sobre a convenção padrão).
+
 ## Padrões obrigatórios
 - Um trigger por objeto, lógica em handler/service. Trigger não contém regra de negócio.
 - Bulkificação sempre. Zero SOQL/DML dentro de loop.
