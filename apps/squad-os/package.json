@@ -10,7 +10,7 @@
     "lint": "eslint",
     "postinstall": "prisma generate",
     "migrate:from-artifact": "tsx scripts/migrate-from-artifact.ts",
-    "test": "tsx scripts/testa-contrato.ts && tsx scripts/testa-markdown.ts && tsx scripts/testa-horas.ts && tsx scripts/testa-contas.ts && tsx scripts/testa-recorrencias.ts && tsx scripts/testa-contabilidade.ts && tsx scripts/testa-painel.ts && tsx scripts/testa-saude-financeira.ts && tsx scripts/testa-sync-auth.ts && tsx scripts/testa-seguranca.ts && tsx scripts/testa-visao-cliente.ts && tsx scripts/testa-estimativa.ts && tsx scripts/testa-encerramento.ts && tsx scripts/testa-quem-age.ts && tsx scripts/testa-qa-veredito.ts && tsx scripts/testa-esteira-parada.ts && tsx scripts/testa-cobranca.ts && tsx scripts/testa-relatorio-mensal.ts"
+    "test": "tsx scripts/testa-contrato.ts && tsx scripts/testa-markdown.ts && tsx scripts/testa-horas.ts && tsx scripts/testa-contas.ts && tsx scripts/testa-recorrencias.ts && tsx scripts/testa-contabilidade.ts && tsx scripts/testa-painel.ts && tsx scripts/testa-saude-financeira.ts && tsx scripts/testa-sync-auth.ts && tsx scripts/testa-seguranca.ts && tsx scripts/testa-visao-cliente.ts && tsx scripts/testa-estimativa.ts && tsx scripts/testa-encerramento.ts && tsx scripts/testa-quem-age.ts && tsx scripts/testa-qa-veredito.ts && tsx scripts/testa-esteira-parada.ts && tsx scripts/testa-cobranca.ts && tsx scripts/testa-relatorio-mensal.ts && tsx scripts/testa-email.ts"
   },
   "dependencies": {
     "@ai-sdk/react": "^4.0.125",
