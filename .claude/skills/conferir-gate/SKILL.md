@@ -42,6 +42,12 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 - O design considera o que acontece com dados/registros existentes, não só o caso novo?
 - Se a demanda é de sustentação (não projeto), o design está proporcional ao tamanho do
   problema — "design enxuto" não significa pular a decisão, significa não super-desenhar.
+- O design dimensiona o volume **por registro pai**, não só a carga em massa? Quantos
+  filhos um pai chega a ter e quantas automações o pai já tem? Foi isso que passou batido
+  na SOMOSAGILITY-10 e só apareceu no QA (CPU estourado com 150 lançamentos).
+- A estimativa de horas do card foi aprovada **pelo cliente**? Sem isso, aprovar o design
+  não libera o build — a aprovação fica na fila esperando. Só o cliente aprova horas;
+  o time não aprova por ele.
 
 ## Gate de PR (`aguardando_gate_build`)
 
@@ -50,7 +56,9 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
   `ci-salesforce-validate.yml` (deploy validate, check-only) se `force-app` mudou.
   Todo build Apex tem classe de teste dedicada e cobertura mínima de 85% por classe.
 - `04-plano-build.md` bate com o que o PR de fato contém — sobrou algo do plano que não foi
-  implementado, ou o PR tem mais coisa do que o plano previa?
+  implementado, ou o PR tem mais coisa do que o plano previa? Olhe a contagem de arquivos
+  em `force-app/`: dezenas de componentes que o plano não cita é retrieve de recon que
+  vazou para o pacote, não build (achado SOMOSAGILITY-23, 244 processos de aprovação).
 - Nomenclatura de campo/Flow/classe segue a skill `padrao-entrega` (ou a convenção do
   `CLAUDE.md` do cliente, que tem prioridade).
 
@@ -58,8 +66,12 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 
 - `05-testes.md` cobre os critérios de aceite do gate de análise um a um, com evidência
   (print, log, ou resultado de query agregada) — não só "testado e funcionando".
-- O teste rodou na sandbox de **qa**, nunca em dev nem em produção (`ambientes.py` já
-  recusaria um comando fora disso, mas confira que o roteiro relatado é da org certa).
+- Leia a faixa de resultado no topo do card: "Os testes encontraram problema" com falha
+  **crítica** não se homologa — devolva para o design ou para o build com o motivo. Se for
+  aceitar o risco mesmo assim, escreva isso no motivo da aprovação.
+- O teste rodou na sandbox de **qa** (`sbx-<cliente>-qa`), nunca em dev nem em produção. O
+  card mostra a org ao time e avisa quando não é a de QA. Achado real (2026-10-29): quatro
+  demandas chegaram a "entregue" com o QA rodado em dev — a entrega era falsa.
 - Se você é o cliente aprovando: o resultado bate com o que você pediu, não só com o que foi
   entregue? Recusar com uma observação concreta é sempre uma opção — a demanda volta para
   correção, não é penalidade.
