@@ -1,6 +1,6 @@
 ---
 name: revisar-custos
-description: Analisa logs/custos_agentes.csv para decidir se a seleção de modelo por agente (haiku/sonnet/opus) ainda faz sentido, ou se algum agente está caro demais para o que faz ou errando por estar num modelo barato demais. Use depois que uma demanda completar (ou avançar bastante) o ciclo, e antes de propor qualquer mudança na tabela de modelos do CLAUDE.md.
+description: Analisa logs/custos_agentes/ (um CSV por sessão, mais o legado logs/custos_agentes.csv) para decidir se a seleção de modelo por agente (haiku/sonnet/opus) ainda faz sentido, ou se algum agente está caro demais para o que faz ou errando por estar num modelo barato demais. Use depois que uma demanda completar (ou avançar bastante) o ciclo, e antes de propor qualquer mudança na tabela de modelos do CLAUDE.md.
 ---
 
 # Revisar custo e escolha de modelo por agente

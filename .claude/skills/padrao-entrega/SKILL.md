@@ -12,7 +12,7 @@ cliente primeiro — convenção de conta sobrepõe convenção padrão.
 ## Nomenclatura padrão
 | Item | Padrão | Exemplo |
 |---|---|---|
-| Branch | `feature/<DEMAND-ID>-slug` | `feature/ACME-12-valida-desconto` |
+| Branch | `feature/<DEMAND-ID>` (a esteira cria assim; sufixo só em branch manual) | `feature/ACME-12` |
 | Commit | `<DEMAND-ID>: imperativo` | `ACME-12: adiciona validação de desconto` |
 | Campo custom | `<Prefixo>_<Contexto>__c` | defina `<Prefixo>` por cliente no CLAUDE.md dele |
 | Flow | `<Objeto>_<Gatilho>_<Proposito>` | `Opportunity_BeforeSave_ValidaDesconto` |
@@ -30,6 +30,25 @@ cliente primeiro — convenção de conta sobrepõe convenção padrão.
 - [ ] `06-entrega.md` completo
 - [ ] Gates registrados em `gates.md`
 
+## Linhas que o Squad OS lê
+Escreva exatamente neste formato — o portal extrai daqui o que mostra no card:
+
+| Onde | Linha | Quem escreve |
+|---|---|---|
+| `01-analise.md`, `03-design.md` | `**Estimativa de esforço:** <min>–<max> h` (a do design vence) | ba-discovery, arquiteto |
+| `05-testes.md`, no topo | `**Veredito:** aprovado` ou `**Veredito:** reprovado` | qa |
+| `05-testes.md`, no topo | ``**Org de teste:** `sbx-<cliente>-qa` `` — a org em que rodou de verdade | qa |
+| `05-testes.md` | um título `### FALHA <n> (crítica\|média\|branda) — <resumo>` por falha | qa |
+
+Sem a linha, o card não mostra o dado — e não se inventa número para preencher.
+
+## O que nunca entra no PR
+- Retrieve de recon (vai para `/tmp/recon`, ver `org-recon`). Em `force-app/` só o que a
+  demanda cria ou altera — o PR de diagnóstico da SOMOSAGILITY-23 chegou com 244 processos
+  de aprovação copiados da org.
+- `demandas/<ID>/anexos/` e `comentarios-do-card.md` — existem só no runner (`.gitignore`).
+- Username, e-mail ou saída crua de `sf org display` — o scan de PII bloqueia o push.
+
 ## Code review — reprovação automática
 - SOQL ou DML dentro de loop
 - Trigger com regra de negócio embutida
@@ -37,6 +56,8 @@ cliente primeiro — convenção de conta sobrepõe convenção padrão.
 - Hardcode de ID de registro, perfil ou usuário
 - Componente sem descrição
 - Escopo além da demanda (refatoração não pedida)
+- Componente em `force-app/` que não está no plano de build
+- Fixture de teste que não preenche campo exigido por validation rule ativa no objeto
 
 ## Registro de gate (`gates.md`)
 

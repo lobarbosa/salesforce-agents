@@ -51,6 +51,18 @@ digitado no campo `orgAlias` da UI.
 7. **Só para o ambiente `dev`**: uma conexão bem-sucedida dispara sozinho o
    `org-assessment` — não precisa pedir.
 
+## Erros comuns e o que significam
+
+| Mensagem no log de `sf org login jwt` | Causa | O que fazer |
+|---|---|---|
+| secret vazio / `SF_CLIENT_ID` ausente | Environment criado pelo workflow, secrets nunca preenchidos | preencher os 3 secrets no Environment certo (`<cliente>-qa` ≠ `<cliente>-dev`) |
+| `External client app is not installed in this org` | a app existe na org de origem, não na sandbox | instalar/criar a app na própria sandbox e liberar o usuário de integração nela |
+| `user hasn't approved this consumer` | usuário sem pré-autorização | "Admin approved users are pre-authorized" + perfil ou permission set do usuário na app |
+| `invalid_grant` / audience | login URL de produção usado para sandbox | sandbox autentica em `test.salesforce.com` |
+
+Sandbox nova (refresh) perde a Connected App e o usuário pode mudar de sufixo — reconecte
+os dois ambientes depois de todo refresh.
+
 ## Antes de dar como concluído: confira contra copy-paste
 
 Achado real (Eplast, 2026-09): o campo `orgAlias`/`loginUrl`/`username` de um cliente novo
