@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { entreguesNoMes, nomeDoMes, textoDoRelatorio } from "../lib/relatorio-mensal";
+import { gerarPdfRelatorio } from "../lib/relatorio-pdf";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -31,8 +32,9 @@ caso("AMS mostra consumo, percentual e excedente", () => {
     url: "u",
   });
   assert.equal(assunto, "Somos — resumo de outubro de 2026");
-  assert.match(texto, /S-1 — Campo/);
-  assert.match(texto, /44,5 h de 40 h contratadas \(111%\)/);
+  assert.match(texto, /• Demandas concluídas: 1 \(S-1\)/);
+  assert.match(texto, /PDF em anexo/);
+  assert.match(texto, /44,5 h de 40 h \(111%\)/);
   assert.match(texto, /Excedente: 4,5 h/);
 });
 caso("projeto mostra progresso e horas acumuladas", () => {
@@ -51,12 +53,26 @@ caso("projeto mostra progresso e horas acumuladas", () => {
     },
     url: "u",
   });
-  assert.match(texto, /nenhuma demanda foi concluída/);
-  assert.match(texto, /67% do escopo \(8 de 12 entregáveis\)/);
-  assert.match(texto, /68 h de 120 h contratadas \(57%\)/);
+  assert.match(texto, /• Demandas concluídas: 0\n/);
+  assert.match(texto, /67% \(8 de 12 entregáveis\)/);
+  assert.match(texto, /68 h de 120 h \(57%\)/);
 });
 
-if (falhas) {
-  console.log(`${falhas} falha(s)`);
-  process.exit(1);
+async function principal() {
+  const pdf = await gerarPdfRelatorio(
+    {
+      clienteNome: "Somos",
+      mes: "2026-10",
+      entregues: [{ code: "S-1", titulo: "Ação com acentuação: é, ç, ã", entregueEm: "2026-10-28", horasAprovadas: 5, horasLancadas: 6.5 }],
+      contrato: { tipo: "ams", cicloHoras: "mensal", doMes: { mes: "2026-10", horasGastas: 10, horasNoCiclo: 10, horasContratadas: 40 }, historico: [] },
+      url: "u",
+    },
+    null
+  );
+  caso("PDF é gerado", () => assert.equal(pdf.subarray(0, 5).toString(), "%PDF-"));
+  if (falhas) {
+    console.log(`${falhas} falha(s)`);
+    process.exit(1);
+  }
 }
+void principal();

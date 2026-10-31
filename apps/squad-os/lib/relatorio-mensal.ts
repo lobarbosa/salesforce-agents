@@ -26,52 +26,89 @@ export function entreguesNoMes<T extends { status: string; historico: unknown }>
   });
 }
 
+export interface EntregueDetalhe {
+  code: string;
+  titulo: string;
+  /** AAAA-MM-DD (São Paulo). Só no PDF. */
+  entregueEm?: string;
+  /** Horas aprovadas pelo cliente (estimativa debitada), quando houver. */
+  horasAprovadas?: number | null;
+  /** Horas lançadas no timesheet da demanda. */
+  horasLancadas?: number;
+}
+
+export interface EntregavelDetalhe {
+  titulo: string;
+  peso: number;
+  concluido: boolean;
+  demandas: { total: number; entregues: number };
+}
+
 export interface DadosRelatorio {
   clienteNome: string;
   mes: string;
-  entregues: { code: string; titulo: string }[];
+  entregues: EntregueDetalhe[];
   contrato:
-    | { tipo: "ams"; cicloHoras: string; doMes: MesDeHoras | null }
-    | { tipo: "projeto"; nome: string; progresso: Progresso; horasDoMes: number; horasAcumuladas: number; horasContratadas: number; entregaveisConcluidos: string[] }
+    | { tipo: "ams"; cicloHoras: string; doMes: MesDeHoras | null; historico?: MesDeHoras[] }
+    | {
+        tipo: "projeto";
+        nome: string;
+        progresso: Progresso;
+        horasDoMes: number;
+        horasAcumuladas: number;
+        horasContratadas: number;
+        entregaveisConcluidos: string[];
+        entregaveis?: EntregavelDetalhe[];
+        historico?: MesDeHoras[];
+        fimPrevisto?: string | null;
+      }
     | null;
   url: string;
 }
 
+/**
+ * Corpo do e-mail: só o principal, em tópicos. O detalhe vai no PDF anexo
+ * (lib/relatorio-pdf.ts) — preferência do dono (2026-10-31).
+ */
 export function textoDoRelatorio(d: DadosRelatorio): { assunto: string; texto: string } {
   const mesNome = nomeDoMes(d.mes);
-  const linhas: string[] = [`Olá. Este é o resumo de ${mesNome} da ${d.clienteNome}.`, ""];
-
-  linhas.push(`Demandas concluídas no mês (${d.entregues.length}):`);
-  linhas.push(...(d.entregues.length ? d.entregues.map((e) => `- ${e.code} — ${e.titulo}`) : ["- nenhuma demanda foi concluída neste mês"]));
-  linhas.push("");
+  const b: string[] = [];
+  b.push(`• Demandas concluídas: ${d.entregues.length}${d.entregues.length ? ` (${d.entregues.map((e) => e.code).join(", ")})` : ""}`);
 
   const c = d.contrato;
   if (c?.tipo === "ams") {
     const m = c.doMes;
-    linhas.push("Contrato de sustentação (AMS):");
-    if (m) {
-      linhas.push(`- Horas consumidas em ${mesNome}: ${h(m.horasGastas)}`);
-      if (m.horasContratadas > 0) {
-        const ciclo = c.cicloHoras === "mensal" ? "no mês" : "no ciclo até o fim do mês";
-        const saldo = m.horasContratadas - m.horasNoCiclo;
-        linhas.push(`- Consumo ${ciclo}: ${h(m.horasNoCiclo)} de ${h(m.horasContratadas)} contratadas (${Math.round((m.horasNoCiclo / m.horasContratadas) * 100)}%)`);
-        linhas.push(saldo >= 0 ? `- Saldo: ${h(saldo)}` : `- Excedente: ${h(-saldo)} acima do contratado`);
-      }
-    } else {
-      linhas.push("- Sem horas lançadas no mês.");
+    b.push(`• Horas consumidas no mês: ${h(m?.horasGastas ?? 0)}`);
+    if (m && m.horasContratadas > 0) {
+      const ciclo = c.cicloHoras === "mensal" ? "do mês" : "do ciclo";
+      b.push(`• Consumo ${ciclo}: ${h(m.horasNoCiclo)} de ${h(m.horasContratadas)} (${Math.round((m.horasNoCiclo / m.horasContratadas) * 100)}%)`);
+      const saldo = m.horasContratadas - m.horasNoCiclo;
+      b.push(saldo >= 0 ? `• Saldo: ${h(saldo)}` : `• Excedente: ${h(-saldo)} acima do contratado`);
     }
   } else if (c?.tipo === "projeto") {
-    linhas.push(`Projeto${c.nome ? ` ${c.nome}` : ""}:`);
-    linhas.push(`- Progresso: ${c.progresso.pct}% do escopo (${c.progresso.concluidos} de ${c.progresso.total} entregáveis)`);
-    if (c.entregaveisConcluidos.length) linhas.push(`- Entregáveis concluídos até agora: ${c.entregaveisConcluidos.join("; ")}`);
-    linhas.push(`- Horas em ${mesNome}: ${h(c.horasDoMes)}`);
-    linhas.push(
+    b.push(`• Progresso do projeto: ${c.progresso.pct}% (${c.progresso.concluidos} de ${c.progresso.total} entregáveis)`);
+    b.push(`• Horas no mês: ${h(c.horasDoMes)}`);
+    b.push(
       c.horasContratadas > 0
-        ? `- Horas acumuladas no projeto: ${h(c.horasAcumuladas)} de ${h(c.horasContratadas)} contratadas (${Math.round((c.horasAcumuladas / c.horasContratadas) * 100)}%)`
-        : `- Horas acumuladas no projeto: ${h(c.horasAcumuladas)}`
+        ? `• Horas acumuladas: ${h(c.horasAcumuladas)} de ${h(c.horasContratadas)} (${Math.round((c.horasAcumuladas / c.horasContratadas) * 100)}%)`
+        : `• Horas acumuladas: ${h(c.horasAcumuladas)}`
     );
   }
 
-  linhas.push("", `Detalhes no portal: ${d.url}`, "", "— Squad OS");
-  return { assunto: `${d.clienteNome} — resumo de ${mesNome}`, texto: linhas.join("\n") };
+  const texto = [
+    "Olá,",
+    "",
+    `Segue o resumo de ${mesNome} da ${d.clienteNome}:`,
+    "",
+    ...b,
+    "",
+    "O relatório completo, com o detalhe de cada demanda e do contrato, está no PDF em anexo.",
+    `Também dá para acompanhar pelo portal: ${d.url}`,
+    "",
+    "Abraço,",
+    "Konecta",
+  ].join("\n");
+  return { assunto: `${d.clienteNome} — resumo de ${mesNome}`, texto };
 }
+
+export const formatarHoras = h;

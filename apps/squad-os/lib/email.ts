@@ -6,6 +6,9 @@ export interface EmailSaida {
   para: string;
   assunto: string;
   texto: string;
+  /** Versão estilizada; o texto puro vai junto como alternativa. */
+  html?: string;
+  anexos?: { nome: string; conteudo: Buffer }[];
   /** Cópia oculta — o time recebe o mesmo que o cliente viu. */
   cco?: string[];
 }
@@ -25,6 +28,8 @@ export async function enviarEmail(e: EmailSaida): Promise<boolean> {
       ...(e.cco?.length ? { bcc: e.cco } : {}),
       subject: e.assunto,
       text: e.texto,
+      ...(e.html ? { html: e.html } : {}),
+      ...(e.anexos?.length ? { attachments: e.anexos.map((a) => ({ filename: a.nome, content: a.conteudo.toString("base64") })) } : {}),
     }),
   }).catch(() => null);
   if (!res?.ok) console.error("email: envio falhou", res?.status);
