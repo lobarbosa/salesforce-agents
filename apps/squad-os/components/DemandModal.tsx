@@ -1,6 +1,6 @@
 "use client";
 
-import { lerVereditoQa, orgEhDeQa } from "@/lib/qa-veredito";
+import { exigeRiscoAceito, lerVereditoQa, orgEhDeQa } from "@/lib/qa-veredito";
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
@@ -59,6 +59,8 @@ export function DemandModal({
   const [materializando, setMaterializando] = useState(demanda.materializadoEm != null);
   const [materializeErro, setMaterializeErro] = useState("");
   const [confirmandoGate, setConfirmandoGate] = useState(false);
+  const [riscoAceito, setRiscoAceito] = useState("");
+  const pedeRisco = exigeRiscoAceito(demanda);
   const [aprovandoGate, setAprovandoGate] = useState(false);
   const [gateErro, setGateErro] = useState("");
   // Trava síncrona contra clique duplo: o `disabled` só vale depois do
@@ -146,7 +148,11 @@ export function DemandModal({
     emVoo.current = true;
     setGateErro("");
     setAprovandoGate(true);
-    const res = await fetch(`/api/demandas/${demanda.id}/aprovar-gate`, { method: "POST" }).catch(() => null);
+    const res = await fetch(`/api/demandas/${demanda.id}/aprovar-gate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(pedeRisco ? { riscoAceito } : {}),
+    }).catch(() => null);
     if (!res || !res.ok) {
       const body = res ? await res.json().catch(() => ({})) : {};
       setGateErro(body.error || "não consegui liberar o gate");
@@ -314,11 +320,24 @@ export function DemandModal({
                       ? "Confirma a aprovação? Não dá pra desfazer."
                       : "Confirma? Isso aciona os agentes agora."}
                   </span>
+                  {pedeRisco && (
+                    <label className="gate-risco">
+                      Os testes encontraram falha crítica. Para aprovar mesmo assim, escreva o risco que está
+                      aceitando — fica registrado na aprovação.
+                      <textarea
+                        value={riscoAceito}
+                        onChange={(e) => setRiscoAceito(e.target.value)}
+                        rows={3}
+                        maxLength={1000}
+                        placeholder="Ex.: aceitamos o limite de CPU acima de 100 lançamentos por solicitação; correção na próxima demanda."
+                      />
+                    </label>
+                  )}
                   <button
                     className="btn-primary"
                     type="button"
                     onClick={aprovarGate}
-                    disabled={aprovandoGate}
+                    disabled={aprovandoGate || (pedeRisco && riscoAceito.trim().length < 10)}
                   >
                     {aprovandoGate ? "Liberando..." : "Sim, liberar"}
                   </button>

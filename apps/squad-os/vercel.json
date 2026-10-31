@@ -5,6 +5,10 @@
     {
       "path": "/api/cron/recorrencias",
       "schedule": "7 9 * * *"
+    },
+    {
+      "path": "/api/cron/cobranca",
+      "schedule": "13 11 * * 1-5"
     }
   ]
 }
