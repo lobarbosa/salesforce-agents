@@ -5,6 +5,7 @@ import { processarFila } from "@/lib/fila-esteira";
 import { GATE_DO_CLIENTE, estimativaAprovada, marcadorDeGate } from "@/lib/demandas";
 import { travar } from "@/lib/trava";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
+import { exigeRiscoAceito } from "@/lib/qa-veredito";
 
 // O gate humano deixa de ser "aprova aqui e alguém dispara o pipeline lá":
 // aprovar no card move a demanda e acende a próxima sessão de agente.
@@ -17,7 +18,7 @@ import { recusaSeEncerrado } from "@/lib/encerramento-server";
 // precisam responder isto pelo mesmo lugar.
 
 export async function POST(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
@@ -70,6 +71,15 @@ export async function POST(
       { status: 409 }
     );
   }
+  // QA com falha crítica: homologar é aceitar o risco, e isso fica escrito.
+  const corpo = (await request.json().catch(() => null)) as { riscoAceito?: unknown } | null;
+  const riscoAceito = String(corpo?.riscoAceito ?? "").trim().slice(0, 1000);
+  if (exigeRiscoAceito(demanda) && riscoAceito.length < 10) {
+    return NextResponse.json(
+      { error: "os testes encontraram falha crítica — para homologar mesmo assim, escreva o risco que está aceitando" },
+      { status: 400 }
+    );
+  }
   const autor = usuario.nome.trim() || usuario.email;
   const gate = demanda.status;
   const marcador = marcadorDeGate(gate);
@@ -102,7 +112,9 @@ export async function POST(
         demandaId: demanda.id,
         autor,
         autorEmail: usuario.email,
-        texto: `${marcador} Entrou na fila da esteira.`,
+        texto: riscoAceito
+          ? `${marcador} Entrou na fila da esteira. Aprovado com falha crítica no QA — risco aceito: ${riscoAceito}`
+          : `${marcador} Entrou na fila da esteira.`,
       },
     });
     return { ok: true as const };

@@ -192,9 +192,44 @@ export async function POST(request: NextRequest) {
     maxOutputTokens: 2048,
   });
 
+  // Telemetria (2026-10-31): só metadata, nunca texto — ver CopilotoUso no
+  // schema. Acumula por passo e grava uma linha quando o stream termina.
+  const inicio = Date.now();
+  const uso = { ferramentas: [] as string[], erros: 0, passos: 0, finish: "", input: 0, output: 0, erro: "" };
+  const registrarUso = () =>
+    prisma.copilotoUso
+      .create({
+        data: {
+          usuarioId: usuario.id,
+          papel: usuario.role,
+          clientId: clienteEmEscopo?.id ?? null,
+          modelo: MODELO,
+          ferramentas: uso.ferramentas,
+          errosFerramenta: uso.erros,
+          passos: uso.passos,
+          finishReason: uso.finish,
+          inputTokens: uso.input,
+          outputTokens: uso.output,
+          duracaoMs: Date.now() - inicio,
+          erro: uso.erro.slice(0, 300),
+        },
+      })
+      .catch((e) => console.error("copiloto: telemetria", e));
+
   return createAgentUIStreamResponse({
     agent,
     uiMessages: messages,
+    onStepEnd(step) {
+      uso.passos++;
+      uso.ferramentas.push(...step.toolCalls.flatMap((c) => (c ? [c.toolName] : [])));
+      uso.erros += step.content.filter((c) => c?.type === "tool-error").length;
+      uso.finish = step.finishReason;
+      uso.input += step.usage.inputTokens ?? 0;
+      uso.output += step.usage.outputTokens ?? 0;
+    },
+    onEnd() {
+      void registrarUso();
+    },
     // Por que a resposta terminou — o componente usa isto para dizer "não
     // concluí" em vez de deixar um balão vazio, e mostra o motivo ao admin.
     messageMetadata: ({ part }) => (part.type === "finish" ? { finishReason: part.finishReason } : undefined),
@@ -206,6 +241,7 @@ export async function POST(request: NextRequest) {
     // porque o próprio erro nunca era logado em lugar nenhum.
     onError(error) {
       console.error("copiloto: erro no stream", { papel: usuario.role, modelo: MODELO, erro: error });
+      uso.erro = error instanceof Error ? error.message : String(error);
       // Admin vê o motivo técnico (chave, crédito, modelo inexistente,
       // timeout) — achado de 2026-10-30: o copiloto falhava e, sem acesso aos
       // logs da Vercel, não havia como saber por quê. Os demais papéis seguem

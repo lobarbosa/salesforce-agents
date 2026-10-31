@@ -789,3 +789,27 @@ model DisparoEsteira {
   @@index([demandaId, concluidoEm])
   @@map("disparos_esteira")
 }
+
+/// Uma linha por resposta do copiloto (2026-10-31) — só metadata, nunca o
+/// texto da conversa (guardrail #2): quem, em que contexto, que ferramentas,
+/// por que parou e quanto custou. Existe porque uma resposta vazia no
+/// celular não deixou rastro nenhum para investigar.
+model CopilotoUso {
+  id           String   @id @default(cuid())
+  criadoEm     DateTime @default(now()) @map("criado_em")
+  usuarioId    String   @map("usuario_id")
+  papel        String
+  clientId     String?  @map("client_id")
+  modelo       String
+  ferramentas  String[]
+  errosFerramenta Int   @default(0) @map("erros_ferramenta")
+  passos       Int      @default(0)
+  finishReason String   @default("") @map("finish_reason")
+  inputTokens  Int      @default(0) @map("input_tokens")
+  outputTokens Int      @default(0) @map("output_tokens")
+  duracaoMs    Int      @default(0) @map("duracao_ms")
+  erro         String   @default("")
+
+  @@index([criadoEm])
+  @@map("copiloto_uso")
+}

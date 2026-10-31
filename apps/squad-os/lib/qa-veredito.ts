@@ -34,6 +34,15 @@ export function lerVereditoQa(texto: string): VereditoQa {
   return { veredito, falhas, org };
 }
 
+/**
+ * Homologar com falha crítica no QA exige o risco aceito por escrito
+ * (2026-10-31): o aviso no card não bastava, o botão aprovava igual.
+ */
+export function exigeRiscoAceito(d: { status: string; artefatoNome: string; artefatoConteudo: string }): boolean {
+  if (d.status !== "aguardando_homologacao" || d.artefatoNome !== "05-testes.md" || !d.artefatoConteudo) return false;
+  return lerVereditoQa(d.artefatoConteudo).falhas.some((f) => f.critica);
+}
+
 /** Org de QA esperada pela convenção sbx-<cliente>-qa (guardrail #1). */
 export function orgEhDeQa(org: string | null): boolean {
   return org != null && /^sbx-.+-qa$/.test(org);
