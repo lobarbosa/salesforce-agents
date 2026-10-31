@@ -19,6 +19,8 @@ export interface DemandaDaGrade {
   code: string;
   titulo: string;
   clientNome: string;
+  /** Sem estimativa oficial a API recusa o apontamento — a grade avisa antes. */
+  semEstimativa: boolean;
 }
 
 export interface LinhaDaGrade {
@@ -43,9 +45,18 @@ function paraGrade(d: {
   clientId: string;
   code: string;
   titulo: string;
+  status: string;
+  estimativaConsultorHoras: number | null;
   client: { nome: string };
 }): DemandaDaGrade {
-  return { id: d.id, clientId: d.clientId, code: d.code, titulo: d.titulo, clientNome: d.client.nome };
+  return {
+    id: d.id,
+    clientId: d.clientId,
+    code: d.code,
+    titulo: d.titulo,
+    clientNome: d.client.nome,
+    semEstimativa: precisaDeEstimativa(d),
+  };
 }
 
 const SELECAO_DEMANDA = {
@@ -53,8 +64,20 @@ const SELECAO_DEMANDA = {
   clientId: true,
   code: true,
   titulo: true,
+  status: true,
+  estimativaConsultorHoras: true,
   client: { select: { nome: true } },
 } as const;
+
+/**
+ * Apontar hora exige a estimativa oficial do consultor — menos em demanda
+ * recorrente (2026-10-31): ela é o balde de horas contínuas de um cliente
+ * (sustentação do mês, reunião fixa), não tem escopo a estimar, e a regra
+ * travava os consultores de lançar nas da Gauge.
+ */
+export function precisaDeEstimativa(d: { status: string; estimativaConsultorHoras: number | null } | null): boolean {
+  return !!d && d.status !== "recorrente" && d.estimativaConsultorHoras == null;
+}
 
 /**
  * A semana de uma pessoa na grade. Linhas = demandas com hora nesta semana
@@ -79,7 +102,7 @@ export async function minhaSemana(email: string, segunda: string): Promise<Seman
     }),
     prisma.demanda.findMany({
       // Opções para linha nova da grade: cliente encerrado não recebe hora.
-      where: { status: { not: "entregue" }, client: { encerradoEm: null } },
+      where: { status: { notIn: ["entregue", "cancelada"] }, client: { encerradoEm: null } },
       select: SELECAO_DEMANDA,
       orderBy: [{ client: { nome: "asc" } }, { criadoEm: "desc" }],
     }),
@@ -167,9 +190,9 @@ export async function gravarCelula(p: {
     if (parcela > anterior) {
       const est = await tx.demanda.findUnique({
         where: { id: p.demandaId },
-        select: { estimativaConsultorHoras: true },
+        select: { estimativaConsultorHoras: true, status: true },
       });
-      if (est?.estimativaConsultorHoras == null) return { semEstimativa: true as const };
+      if (precisaDeEstimativa(est)) return { semEstimativa: true as const };
     }
 
     // Mais de uma linha de grade no mesmo dia só acontece por corrida entre

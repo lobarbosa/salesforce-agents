@@ -1,3 +1,4 @@
+import { precisaDeEstimativa } from "@/lib/horas-data";
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
@@ -25,8 +26,8 @@ export async function POST(
 
   // Sem estimativa do consultor não se aponta hora: é ela que dá sentido ao
   // número lançado (lançado ÷ estimado é a calibração), e é o que o cliente vê.
-  const est = await prisma.demanda.findUnique({ where: { id }, select: { estimativaConsultorHoras: true } });
-  if (est?.estimativaConsultorHoras == null) {
+  const est = await prisma.demanda.findUnique({ where: { id }, select: { estimativaConsultorHoras: true, status: true } });
+  if (precisaDeEstimativa(est)) {
     return NextResponse.json(
       { error: "lance a estimativa de horas no card antes de apontar tempo nesta demanda", semEstimativa: true },
       { status: 409 }

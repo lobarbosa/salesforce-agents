@@ -19,6 +19,13 @@ import {
 // - erro perto do campo e com caminho de correção, não só cor;
 // - teclado primeiro: Enter salva e desce, Esc desfaz, Tab segue a linha;
 // - tabela rola dentro do próprio cartão no telefone, a página não.
+//
+// 2026-10-31, reclamação dos consultores ("não tem a opção de salvar", "não
+// consigo adicionar horas"): o salvamento automático era invisível (um ✓ de
+// 2s na célula e um aviso só para leitor de tela) e a recusa por falta de
+// estimativa aparecia em letra miúda dentro da célula. Agora há uma barra de
+// estado visível, um botão "Salvar" explícito (o automático continua) e a
+// demanda sem estimativa avisa antes de alguém digitar.
 
 type EstadoCelula = "salvando" | "salvo" | "erro";
 
@@ -43,6 +50,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
   const [estado, setEstado] = useState<Record<string, EstadoCelula>>({});
   const [erroCelula, setErroCelula] = useState<Record<string, string>>({});
   const [aviso, setAviso] = useState("");
+  const [avisoErro, setAvisoErro] = useState(false);
   const [novaDemanda, setNovaDemanda] = useState("");
   const tabela = useRef<HTMLTableElement>(null);
   // Enter salva e move o foco — o que também dispara blur na mesma célula.
@@ -58,6 +66,24 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
   // em que foi criada.
   const rascunhoRef = useRef<Record<string, string>>({});
   const salvos = useRef<Record<string, number>>({});
+
+  function avisar(erro: boolean, texto: string) {
+    setAvisoErro(erro);
+    setAviso(texto);
+  }
+
+  // Células digitadas e ainda não gravadas (o rascunho some quando o servidor confirma).
+  const pendentes = Object.keys(rascunho).length;
+  const salvando = Object.values(estado).includes("salvando");
+
+  /** Botão "Salvar": grava toda célula com rascunho, uma por uma. */
+  function salvarTudo() {
+    for (const k of Object.keys(rascunhoRef.current)) {
+      const [demandaId, dia] = k.split("|");
+      const l = linhas.find((x) => x.demanda.id === demandaId);
+      if (l) void salvar(l, dia);
+    }
+  }
 
   function mudarRascunho(f: (r: Record<string, string>) => Record<string, string>) {
     rascunhoRef.current = f(rascunhoRef.current);
@@ -106,7 +132,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
     if (minutos === null) {
       setEstado((e) => ({ ...e, [k]: "erro" }));
       setErroCelula((e) => ({ ...e, [k]: `Não entendi “${digitado}”. Use 1:30, 1,5 ou 90m.` }));
-      setAviso(`Valor inválido em ${l.demanda.code}, ${rotuloDia(dia)}. Use 1:30, 1,5 ou 90m.`);
+      avisar(true, `Valor inválido em ${l.demanda.code}, ${rotuloDia(dia)}. Use 1:30, 1,5 ou 90m.`);
       return;
     }
     if (minutos === atual) {
@@ -130,7 +156,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
       const msg = corpo.error ?? "Não foi possível salvar — verifique a conexão e tente de novo.";
       setEstado((e) => ({ ...e, [k]: "erro" }));
       setErroCelula((e) => ({ ...e, [k]: msg }));
-      setAviso(`Não salvou ${l.demanda.code}, ${rotuloDia(dia)}: ${msg}`);
+      avisar(true, `Não salvou ${l.demanda.code}, ${rotuloDia(dia)}: ${msg}`);
       return;
     }
 
@@ -141,7 +167,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
     // Só apaga o rascunho se ninguém digitou outra coisa enquanto salvava.
     if (rascunhoRef.current[k] === digitado) descartar(k);
     setEstado((e) => ({ ...e, [k]: "salvo" }));
-    setAviso(`Salvo: ${duracaoPorExtenso(minutos)} em ${l.demanda.code}, ${rotuloDia(dia)}.`);
+    avisar(false, `Salvo: ${duracaoPorExtenso(minutos)} em ${l.demanda.code}, ${rotuloDia(dia)}.`);
     setTimeout(() => setEstado((o) => sem(o, k)), 1800);
 
     if (pendente.current.delete(k)) void salvar(l, dia);
@@ -167,7 +193,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
     if (!d) return;
     setLinhas((ls) => [...ls, { demanda: d, minutos: {}, foraDaGrade: {} }]);
     setNovaDemanda("");
-    setAviso(`${d.code} adicionada à grade. Digite as horas nos dias trabalhados.`);
+    avisar(false, `${d.code} adicionada à grade. Digite as horas nos dias trabalhados e clique em Salvar (ou só saia da célula).`);
     // Leva o foco para o primeiro dia editável da linha nova.
     const di = Math.max(0, dias.findIndex((dia) => dia <= hoje));
     setTimeout(() => focar(linhas.length, di), 0);
@@ -175,6 +201,17 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
 
   return (
     <>
+      <div className="grade-horas-barra">
+        <p className={`grade-horas-status${avisoErro ? " erro" : ""}`} role="status" aria-live="polite">
+          {salvando
+            ? "Salvando…"
+            : aviso || (pendentes ? `${pendentes} ${pendentes === 1 ? "célula não salva" : "células não salvas"}` : "Cada célula salva ao sair dela — ou use o botão.")}
+        </p>
+        <button className="btn-primary" type="button" onClick={salvarTudo} disabled={pendentes === 0 || salvando}>
+          {salvando ? "Salvando…" : pendentes ? `Salvar (${pendentes})` : "Tudo salvo ✓"}
+        </button>
+      </div>
+
       <div className="grade-horas-wrap">
         <table ref={tabela} className="grade-horas">
           <caption className="sr-only">
@@ -214,6 +251,11 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
                     <span className="mono">{l.demanda.code}</span> {l.demanda.titulo}
                   </Link>
                   <span className="gh-cliente">{l.demanda.clientNome}</span>
+                  {l.demanda.semEstimativa && (
+                    <span className="gh-sem-estimativa">
+                      Sem estimativa: lance no card antes de apontar horas.
+                    </span>
+                  )}
                 </th>
                 {dias.map((dia, di) => {
                   const k = chave(l.demanda.id, dia);
@@ -232,7 +274,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
                         autoComplete="off"
                         data-linha={li}
                         data-dia={di}
-                        disabled={futuro}
+                        disabled={futuro || l.demanda.semEstimativa}
                         value={valorExibido(l, dia)}
                         aria-label={`${l.demanda.code}, ${DIAS_SEMANA[di]} ${rotuloDia(dia)}`}
                         aria-invalid={st === "erro" || undefined}
@@ -241,6 +283,8 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
                         title={
                           futuro
                             ? "Esse dia ainda não chegou"
+                            : l.demanda.semEstimativa
+                              ? "Lance a estimativa oficial no card da demanda para apontar horas"
                             : fora
                               ? `Inclui ${formatarDuracao(fora)} de cronômetro ou lançamento no card`
                               : undefined
@@ -289,6 +333,7 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
               {ds.map((d) => (
                 <option key={d.id} value={d.id}>
                   {d.code} — {d.titulo}
+                  {d.semEstimativa ? " (sem estimativa — lance no card)" : ""}
                 </option>
               ))}
             </optgroup>
@@ -299,9 +344,6 @@ export function Timesheet({ dias, hoje, linhasIniciais, opcoes }: Props) {
         </button>
       </div>
 
-      <p className="sr-only" role="status" aria-live="polite">
-        {aviso}
-      </p>
     </>
   );
 }
