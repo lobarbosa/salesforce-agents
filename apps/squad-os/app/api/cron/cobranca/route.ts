@@ -6,8 +6,8 @@ import { emailDoCliente, emailDoTime, type Email, type ParadaComCliente } from "
 import { APP_URL, emailConfigurado, enviarEmail, mascarar } from "@/lib/email";
 
 // Vercel Cron diário (vercel.json): manda a cada pessoa o que espera por ela
-// (lib/cobranca.ts). Envio pela API HTTP do Resend — sem RESEND_API_KEY e
-// COBRANCA_REMETENTE configurados, a rota só calcula e devolve o que mandaria
+// (lib/cobranca.ts). Envio pelo Microsoft 365 ou pelo Resend (lib/email.ts) —
+// sem nenhum dos dois configurado, a rota só calcula e devolve o que mandaria
 // (dry run), não falha. `?dry=1` força o dry run para conferir antes.
 
 
