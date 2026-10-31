@@ -1554,3 +1554,9 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 
 .gate-risco { display: flex; flex-direction: column; gap: 0.35rem; flex-basis: 100%; font-size: 0.8rem; color: var(--danger); }
 .gate-risco textarea { font: inherit; color: var(--text); }
+
+/* Minhas horas (2026-10-31): estado de salvamento visível e botão Salvar. */
+.grade-horas-barra { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.grade-horas-status { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+.grade-horas-status.erro { color: var(--danger); font-weight: 500; }
+.grade-horas .gh-sem-estimativa { display: block; font-size: 0.72rem; color: var(--gate-strong); margin-top: 0.15rem; }
