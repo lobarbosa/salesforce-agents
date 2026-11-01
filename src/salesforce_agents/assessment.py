@@ -150,3 +150,36 @@ def run_sync(client: str, target_org: str) -> None:
     import anyio
 
     anyio.run(run, client, target_org)
+
+
+def nota_para_o_prompt(client: str, raiz: Path = Path("clients")) -> str:
+    """Saúde da org no prompt de toda etapa de demanda (2026-11-01).
+
+    O assessment era produzido no onboarding e só aparecia no perfil do
+    cliente no Squad OS: nenhum agente de demanda o lia, a não ser que o RAG
+    trouxesse um trecho por acaso. É o que mais pesa num design ("31
+    automações competem em Oportunidade"), então vai inteiro e explícito —
+    o resumo e as recomendações do JSON, curtos, e o caminho do relatório
+    completo. Vazio quando o cliente ainda não foi avaliado.
+    """
+    caminho = raiz / client / "assessment.json"
+    if not caminho.exists():
+        return ""
+    try:
+        dados = json.loads(caminho.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return ""
+    recs = [r for r in dados.get("recomendacoes") or [] if isinstance(r, dict) and r.get("titulo")]
+    linhas = [f"  - [{r.get('severidade', '?')}] {r['titulo']} ({r.get('area', '')})" for r in recs]
+    return (
+        "Saúde da org deste cliente (assessment do onboarding — `assessment.md` na raiz do "
+        f"workspace tem o relatório completo). Saúde geral: **{dados.get('saude', '?')}**.\n"
+        f"{dados.get('resumo', '').strip()}\n"
+        + ("Recomendações em aberto:\n" + "\n".join(linhas) + "\n" if linhas else "")
+        + "\nTrate isto como contexto da demanda: a análise registra os riscos do assessment "
+        "que tocam o que foi pedido; o design diz como lida com eles (ou por que não se "
+        "aplicam) nos objetos e automações que vai mexer; o QA testa onde o assessment "
+        "aponta fragilidade. O assessment é uma foto de quando foi feito — o que for "
+        "afirmar como existente na org, confirme com o `sf` (guardrail #3).\n\n"
+    )
+

@@ -267,6 +267,8 @@ export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: str
 const ROTULO_FERRAMENTA: Record<string, string> = {
   consultar_demandas: "as demandas",
   consultar_contrato: "o contrato",
+  consultar_saude_da_org: "o diagnóstico da org",
+  consultar_base_conhecimento: "o histórico do cliente",
   consultar_parados: "o que está parado",
   criar_demanda: "o registro da demanda",
   consultar_painel_financeiro: "o painel financeiro",

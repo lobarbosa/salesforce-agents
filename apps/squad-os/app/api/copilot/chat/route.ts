@@ -7,6 +7,8 @@ import { enxergaCliente } from "@/lib/encerramento";
 import { criarFerramentasCliente } from "@/lib/copilot/ferramentas";
 import { criarFerramentasFinanceiro } from "@/lib/copilot/ferramentas-financeiro";
 import { criarFerramentasEsteira } from "@/lib/copilot/ferramentas-esteira";
+import { criarFerramentasConhecimento } from "@/lib/copilot/ferramentas-conhecimento";
+import { papelVeConhecimento } from "@/lib/copilot/papeis";
 import { dentroDoLimiteDeRequisicoes, MAX_REQUISICOES_POR_DIA, validarMensagens } from "@/lib/copilot/limites";
 import { consumirLimite } from "@/lib/limite-uso";
 
@@ -36,6 +38,7 @@ function promptCliente(clientNome: string) {
 
 O que você pode fazer:
 - Responder perguntas sobre o avanço das demandas e atividades do cliente (ferramenta consultar_demandas) e sobre o contrato — horas consumidas ou progresso do projeto (ferramenta consultar_contrato).
+- Explicar o diagnóstico da org feito no início do contrato — saúde, riscos e recomendações (ferramenta consultar_saude_da_org), em linguagem de negócio.
 - Ajudar a esclarecer e registrar um pedido novo, pequeno, como demanda no backlog (ferramenta criar_demanda) — só depois de entender o suficiente pra escrever um título e descrição claros. Se faltar contexto, pergunte antes de criar.
 
 Nunca fala sobre outro cliente — você só enxerga os dados deste cliente, e nem faria sentido responder sobre outro.
@@ -61,7 +64,7 @@ function promptInterno({
 
   if (clientNome) {
     partes.push(
-      `A conversa está acontecendo na página do cliente "${clientNome}": use consultar_demandas e consultar_contrato pra responder sobre o andamento e o contrato dele, e criar_demanda pra registrar um pedido novo no backlog dele (pergunte antes de criar se faltar contexto). Não fale sobre outro cliente — se quiserem saber de outro, diga pra abrir a página dele.`
+      `A conversa está acontecendo na página do cliente "${clientNome}": use consultar_demandas e consultar_contrato pra responder sobre o andamento e o contrato dele, consultar_saude_da_org para os riscos e recomendações do diagnóstico da org (assessment), consultar_base_conhecimento para o histórico interno do cliente (demandas anteriores, decisões de design, aprovações, briefing e o assessment completo — cite o arquivo de origem), e criar_demanda pra registrar um pedido novo no backlog dele (pergunte antes de criar se faltar contexto). Não fale sobre outro cliente — se quiserem saber de outro, diga pra abrir a página dele.`
     );
   } else {
     partes.push(
@@ -165,6 +168,11 @@ export async function POST(request: NextRequest) {
     ...(clienteEmEscopo ? criarFerramentasCliente({ usuario, clientId: clienteEmEscopo.id }) : {}),
     ...(temFinanceiro ? criarFerramentasFinanceiro({ quem: usuario }) : {}),
     ...(usuario.role === "admin" || usuario.role === "consultor" ? criarFerramentasEsteira({ usuario }) : {}),
+    // RAG interno: só o time, só o cliente da página aberta. Nunca o papel
+    // cliente — o corpus é material interno de delivery.
+    ...(papelVeConhecimento(usuario.role) && clienteEmEscopo
+      ? criarFerramentasConhecimento({ clientId: clienteEmEscopo.id })
+      : {}),
   };
 
   const instructions =

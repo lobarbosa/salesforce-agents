@@ -25,7 +25,11 @@ Antes da etapa 1 de todo cliente novo vem o **assessment da org** (`org-assessme
 `run-assessment.yml`): diagnóstico read-only da saúde da org, que vira `assessment.md` +
 `assessment.json` em `clients/<cliente>/` e o bloco "Saúde da org" no perfil do cliente no
 Squad OS. Dispara sozinho quando a org de dev conecta pela primeira vez. Não é demanda —
-não tem `status.yaml` nem gate; é o que evita desenhar solução numa org desconhecida.
+não tem `status.yaml` nem gate; é o que evita desenhar solução numa org desconhecida. Desde 2026-11-01 o assessment
+também é **contexto de toda etapa de demanda**: `assessment.nota_para_o_prompt` põe saúde,
+resumo e recomendações no prompt da sessão, e os agentes de análise, design, build e QA
+leem `assessment.md` — a análise registra os riscos que tocam o pedido e o design diz como
+lida com eles. Antes disso ele só aparecia no perfil do cliente.
 
 Num cliente de **contrato de projeto**, as demandas não precisam ser digitadas uma a uma:
 o agente `planejador` (`run-planejamento.yml`) lê os entregáveis contratados e propõe as
@@ -147,7 +151,9 @@ Vale para o assessment e para as 7 etapas de demanda.
    só lê do mesmo Postgres que a tela já expõe (demandas no vocabulário `ESTADOS_CLIENTE`,
    contrato somente leitura, financeiro só leitura), nas mesmas funções de
    `lib/data.ts`/`lib/contrato.ts`/`lib/contas-data.ts`/`lib/ops.ts` que a UI usa.
-   `criar_demanda` é a única ferramenta de escrita de todas (cliente, consultor e admin), e
+   `consultar_saude_da_org` (2026-11-01) devolve o mesmo bloco "Saúde da org" que o perfil
+   do cliente já mostra a quem enxerga o cliente — saúde, resumo e recomendações do banco,
+   nunca o `assessment.md` longo. `criar_demanda` é a única ferramenta de escrita de todas (cliente, consultor e admin), e
    chama a mesma `criarDemanda()` que a API — sempre em `backlog`, nunca aprova gate nem
    materializa; as financeiras (`consultar_painel_financeiro`, `consultar_contas_a_pagar`,
    `consultar_divergencias`, `consultar_horas_por_cliente`) não escrevem nada. Existe pra
@@ -166,8 +172,12 @@ Vale para o assessment e para as 7 etapas de demanda.
    pra qualquer papel.
 
    RAG interno por cliente (`src/salesforce_agents/rag.py`, `apps/squad-os/lib/rag.ts`,
-   `/api/sync/rag*`) — decisão explícita (2026-09-29): **só o pipeline de agentes Python
-   consulta**, nunca o copiloto acima, de nenhum papel. O corpus é todo `.md` de
+   `/api/sync/rag*`) — decisão de 2026-09-29, revista em 2026-11-01: o pipeline de agentes
+   Python consulta (`rag_consultar`, liberada nos subagentes de análise, design, build e
+   doc), e o **copiloto só para o time** — `consultar_base_conhecimento`, para admin e
+   consultor, sempre no cliente da página aberta (`lib/copilot/papeis.ts`, com teste em
+   `testa-seguranca.ts`). **Nunca o papel cliente**: o corpus é material interno de
+   delivery (designs, `gates.md`, briefing de conta), impróprio para o próprio cliente. O corpus é todo `.md` de
    `clients/<cliente>/` (CLAUDE.md de conta, demanda.md, os artefatos das 7 etapas,
    gates.md, assessment.md) — dado interno de delivery, já sujeito ao guardrail #2 desde
    que foi escrito (nenhum desses arquivos deveria ter CPF/e-mail/telefone/valor de
