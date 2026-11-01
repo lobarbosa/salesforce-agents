@@ -421,8 +421,15 @@ jobs:
         if: always()
         env:
           RAG_URL: ${{ secrets.SQUAD_OS_SYNC_RAG_URL }}
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
           SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
         run: |
+          # Sem secret próprio, deriva de SQUAD_OS_SYNC_URL (…/demanda → …/rag),
+          # como ao_vivo.py e rag.py fazem — o secret dedicado nunca existiu e
+          # o RAG ficou vazio até 2026-11-01.
+          if [ -z "$RAG_URL" ] && [ "${SYNC_URL%/api/sync/demanda}" != "$SYNC_URL" ]; then
+            RAG_URL="${SYNC_URL%demanda}rag"
+          fi
           if [ -z "$RAG_URL" ] || [ -z "$SYNC_TOKEN" ]; then
             echo "::warning::SQUAD_OS_SYNC_RAG_URL/SQUAD_OS_SYNC_TOKEN não configurados — o RAG interno deste cliente não foi atualizado. Ver docs/conexoes-e-setup.md."
             exit 0
