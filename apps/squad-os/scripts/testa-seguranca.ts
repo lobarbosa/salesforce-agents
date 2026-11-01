@@ -8,6 +8,7 @@ import { conteudoBate } from "@/lib/arquivo";
 import { bloqueioDocumento } from "@/lib/contas";
 import { mesclarRespostas, montarAprovacao } from "@/lib/demandas";
 import { validarMensagens, MAX_MENSAGENS, MAX_CHARS_MENSAGEM, dentroDoLimiteDeRequisicoes, MAX_REQUISICOES_POR_MINUTO } from "@/lib/copilot/limites";
+import { papelVeConhecimento } from "@/lib/copilot/papeis";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -140,6 +141,15 @@ caso("código de demanda: maior sufixo + 1, não contagem + 1", () => {
 });
 
 // FIM-CASOS
+
+// RAG interno no copiloto (2026-11-01): só o time. O corpus é material interno
+// de delivery (designs, gates.md, briefing) — o papel cliente nunca recebe.
+caso("copiloto: RAG interno só para admin/consultor", () => {
+  assert.equal(papelVeConhecimento("admin"), true);
+  assert.equal(papelVeConhecimento("consultor"), true);
+  assert.equal(papelVeConhecimento("cliente"), false);
+  assert.equal(papelVeConhecimento("financeiro"), false);
+});
 
 if (falhas > 0) {
   console.log(`\n${falhas} caso(s) falharam`);

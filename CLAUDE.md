@@ -172,8 +172,12 @@ Vale para o assessment e para as 7 etapas de demanda.
    pra qualquer papel.
 
    RAG interno por cliente (`src/salesforce_agents/rag.py`, `apps/squad-os/lib/rag.ts`,
-   `/api/sync/rag*`) — decisão explícita (2026-09-29): **só o pipeline de agentes Python
-   consulta**, nunca o copiloto acima, de nenhum papel. O corpus é todo `.md` de
+   `/api/sync/rag*`) — decisão de 2026-09-29, revista em 2026-11-01: o pipeline de agentes
+   Python consulta (`rag_consultar`, liberada nos subagentes de análise, design, build e
+   doc), e o **copiloto só para o time** — `consultar_base_conhecimento`, para admin e
+   consultor, sempre no cliente da página aberta (`lib/copilot/papeis.ts`, com teste em
+   `testa-seguranca.ts`). **Nunca o papel cliente**: o corpus é material interno de
+   delivery (designs, `gates.md`, briefing de conta), impróprio para o próprio cliente. O corpus é todo `.md` de
    `clients/<cliente>/` (CLAUDE.md de conta, demanda.md, os artefatos das 7 etapas,
    gates.md, assessment.md) — dado interno de delivery, já sujeito ao guardrail #2 desde
    que foi escrito (nenhum desses arquivos deveria ter CPF/e-mail/telefone/valor de
