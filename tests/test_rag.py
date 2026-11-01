@@ -18,3 +18,19 @@ def test_rag_tools_server_e_novo_por_cliente():
     a = criar_rag_tools_server("acxya")
     b = criar_rag_tools_server("eplast")
     assert a is not b
+
+
+def test_url_de_consulta_deriva_do_sync(monkeypatch):
+    # Achado 2026-11-01: sem secret dedicado o RAG nunca era consultado.
+    from salesforce_agents.rag import url_de_consulta
+
+    monkeypatch.delenv("SQUAD_OS_RAG_QUERY_URL", raising=False)
+    monkeypatch.setenv("SQUAD_OS_SYNC_URL", "https://os.acxya.com/api/sync/demanda")
+    assert url_de_consulta() == "https://os.acxya.com/api/sync/rag-query"
+
+    monkeypatch.setenv("SQUAD_OS_RAG_QUERY_URL", "https://outro/rag-query")
+    assert url_de_consulta() == "https://outro/rag-query"
+
+    monkeypatch.delenv("SQUAD_OS_RAG_QUERY_URL")
+    monkeypatch.setenv("SQUAD_OS_SYNC_URL", "https://os.acxya.com/outra-coisa")
+    assert url_de_consulta() == ""

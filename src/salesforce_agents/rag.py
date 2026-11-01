@@ -43,6 +43,23 @@ def _post(url: str, token: str, payload: dict, timeout: float = 30.0) -> dict:
         return json.loads(resp.read().decode("utf-8"))
 
 
+def url_de_consulta() -> str:
+    """`SQUAD_OS_RAG_QUERY_URL`, ou derivada de `SQUAD_OS_SYNC_URL`
+    (…/api/sync/demanda → …/api/sync/rag-query), mesmo padrão de ao_vivo.py.
+
+    Achado de 2026-11-01: o secret explícito nunca foi criado, então toda
+    sessão de agente respondia "RAG não configurado" e a tabela rag_chunks
+    estava vazia para os 6 clientes — o RAG existia só no código.
+    """
+    explicita = os.environ.get("SQUAD_OS_RAG_QUERY_URL", "").strip()
+    if explicita:
+        return explicita
+    base = os.environ.get("SQUAD_OS_SYNC_URL", "").strip()
+    if base.endswith("/api/sync/demanda"):
+        return base[: -len("demanda")] + "rag-query"
+    return ""
+
+
 def criar_rag_tools_server(client: str):
     @tool(
         "rag_consultar",
@@ -53,7 +70,7 @@ def criar_rag_tools_server(client: str):
         {"pergunta": str},
     )
     async def rag_consultar(args: dict) -> dict:
-        url = os.environ.get("SQUAD_OS_RAG_QUERY_URL", "")
+        url = url_de_consulta()
         token = os.environ.get("SQUAD_OS_SYNC_TOKEN", "")
         if not url or not token:
             return _text_result(

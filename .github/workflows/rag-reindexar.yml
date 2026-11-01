@@ -1,0 +1,74 @@
+name: Reindexar RAG interno
+
+# Reingestão completa do RAG de cada cliente a partir do que está na main.
+# O run-demand.yml já reingere o cliente ao fim de cada etapa; este workflow é
+# para a carga inicial (2026-11-01: a tabela rag_chunks estava vazia porque a
+# URL de ingestão nunca foi configurada) e para refazer tudo depois de mudar
+# o modelo de embedding ou a regra de chunk.
+#
+# Um job por cliente, no Environment `<cliente>-dev`, para usar o token de
+# sync do próprio cliente quando ele já foi migrado (lib/sync-auth.ts).
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: "Cliente (pasta em clients/) — vazio = todos"
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+jobs:
+  listar:
+    runs-on: ubuntu-latest
+    outputs:
+      clientes: ${{ steps.l.outputs.clientes }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: l
+        env:
+          PEDIDO: ${{ inputs.client }}
+        run: |
+          if [ -n "$PEDIDO" ]; then
+            [ -d "clients/$PEDIDO" ] || { echo "::error::clients/$PEDIDO não existe"; exit 1; }
+            echo "clientes=[\"$PEDIDO\"]" >> "$GITHUB_OUTPUT"
+          else
+            echo "clientes=$(find clients -mindepth 1 -maxdepth 1 -type d -not -name '_*' -printf '%f\n' | sort | jq -R . | jq -sc .)" >> "$GITHUB_OUTPUT"
+          fi
+
+  reindexar:
+    needs: listar
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        client: ${{ fromJson(needs.listar.outputs.clientes) }}
+    environment: ${{ matrix.client }}-dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -q -e .
+      - name: Reingerir
+        env:
+          CLIENT: ${{ matrix.client }}
+          RAG_URL: ${{ secrets.SQUAD_OS_SYNC_RAG_URL }}
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$RAG_URL" ] && [ "${SYNC_URL%/api/sync/demanda}" != "$SYNC_URL" ]; then
+            RAG_URL="${SYNC_URL%demanda}rag"
+          fi
+          if [ -z "$RAG_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::SQUAD_OS_SYNC_URL/SQUAD_OS_SYNC_TOKEN não configurados"
+            exit 1
+          fi
+          sfagents cliente rag-payload --client "$CLIENT" \
+            | curl -fsS -X POST "$RAG_URL" \
+                -H "Authorization: Bearer $SYNC_TOKEN" \
+                -H "Content-Type: application/json" \
+                --data-binary @-
+          echo
