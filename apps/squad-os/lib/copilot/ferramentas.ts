@@ -102,6 +102,31 @@ export function criarFerramentasCliente({
       },
     }),
 
+    // Saúde da org (2026-11-01): o mesmo bloco "Saúde da org" que o perfil
+    // do cliente já mostra a todo papel que enxerga o cliente — cliente
+    // incluído. Só os campos resumidos do banco (saúde, resumo,
+    // recomendações); o relatório longo (assessment.md) fica no git.
+    consultar_saude_da_org: tool({
+      description:
+        "Traz o diagnóstico da org Salesforce do cliente feito no onboarding (assessment): saúde geral (verde/amarelo/vermelho), resumo dos principais riscos e as recomendações por severidade. Use para perguntas sobre riscos da org, por que algo é arriscado de mexer, ou o que o diagnóstico recomendou.",
+      inputSchema: z.object({}),
+      execute: async () => {
+        const c = await prisma.client.findUnique({
+          where: { id: clientId },
+          select: { assessmentEm: true, assessmentSaude: true, assessmentResumo: true, assessmentRecomendacoes: true },
+        });
+        if (!c?.assessmentEm) return { existe: false as const };
+        const recs = Array.isArray(c.assessmentRecomendacoes) ? (c.assessmentRecomendacoes as { titulo?: string; severidade?: string; area?: string }[]) : [];
+        return {
+          existe: true as const,
+          feitoEm: timeAgo(c.assessmentEm),
+          saude: c.assessmentSaude,
+          resumo: c.assessmentResumo,
+          recomendacoes: recs.filter((r) => r?.titulo).map((r) => ({ titulo: r.titulo, severidade: r.severidade ?? "", area: r.area ?? "" })),
+        };
+      },
+    }),
+
     criar_demanda: tool({
       description:
         "Registra uma demanda nova (pedido pequeno, dúvida, ajuste) no backlog do cliente — exatamente como o botão \"+ nova demanda\" da tela. Não aprova nem avança nada sozinho: a demanda entra em backlog e segue o fluxo normal, com os mesmos gates humanos de sempre. Use só depois de entender o pedido o suficiente para escrever um título claro; se faltar contexto, pergunte antes de criar.",
