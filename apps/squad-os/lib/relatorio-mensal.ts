@@ -63,6 +63,8 @@ export interface DadosRelatorio {
         fimPrevisto?: string | null;
       }
     | null;
+  /** Horas lançadas por consultor no mês, por demanda (só no PDF). */
+  horasPorConsultor?: { consultor: string; code: string; titulo: string; horas: number }[];
   url: string;
 }
 
@@ -73,6 +75,11 @@ export interface DadosRelatorio {
 export function textoDoRelatorio(d: DadosRelatorio): { assunto: string; texto: string } {
   const mesNome = nomeDoMes(d.mes);
   const b: string[] = [];
+  if (d.horasPorConsultor?.length) {
+    const total = d.horasPorConsultor.reduce((s, x) => s + x.horas, 0);
+    const pessoas = new Set(d.horasPorConsultor.map((x) => x.consultor)).size;
+    b.push(`• Horas lançadas pela equipe: ${h(total)} (${pessoas} ${pessoas === 1 ? "consultor" : "consultores"})`);
+  }
   b.push(`• Demandas concluídas: ${d.entregues.length}${d.entregues.length ? ` (${d.entregues.map((e) => e.code).join(", ")})` : ""}`);
 
   const c = d.contrato;
@@ -112,3 +119,13 @@ export function textoDoRelatorio(d: DadosRelatorio): { assunto: string; texto: s
 }
 
 export const formatarHoras = h;
+
+/** Primeiro dia útil (seg–sex) do mês de `hoje` — feriados não entram. */
+export function ehPrimeiroDiaUtil(hoje: string): boolean {
+  const [a, m, d] = hoje.split("-").map(Number);
+  for (let dia = 1; dia <= 7; dia++) {
+    const semana = new Date(Date.UTC(a, m - 1, dia)).getUTCDay();
+    if (semana !== 0 && semana !== 6) return dia === d;
+  }
+  return false;
+}

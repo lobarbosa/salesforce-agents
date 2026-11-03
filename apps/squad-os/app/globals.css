@@ -1560,3 +1560,7 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 .grade-horas-status { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
 .grade-horas-status.erro { color: var(--danger); font-weight: 500; }
 .grade-horas .gh-sem-estimativa { display: block; font-size: 0.72rem; color: var(--gate-strong); margin-top: 0.15rem; }
+
+/* Fechamento do mês (2026-11-03). */
+.fechamento { margin-bottom: 1.6rem; }
+.fechamento-acoes { display: flex; gap: 0.4rem; flex-wrap: wrap; }

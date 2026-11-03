@@ -813,3 +813,18 @@ model CopilotoUso {
   @@index([criadoEm])
   @@map("copiloto_uso")
 }
+
+/// Fechamento mensal enviado ao cliente (2026-11-03): quem enviou, quando e
+/// para quantos. Um por cliente e mês — reenviar exige pedir de novo, para o
+/// mesmo relatório não chegar duas vezes por clique duplo.
+model RelatorioEnviado {
+  id            String   @id @default(cuid())
+  clientId      String   @map("client_id")
+  mes           String
+  enviadoEm     DateTime @default(now()) @map("enviado_em")
+  enviadoPor    String   @map("enviado_por")
+  destinatarios Int      @default(0)
+
+  @@unique([clientId, mes])
+  @@map("relatorios_enviados")
+}
