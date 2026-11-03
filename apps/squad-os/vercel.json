@@ -12,7 +12,7 @@
     },
     {
       "path": "/api/cron/relatorio-mensal",
-      "schedule": "23 11 1 * *"
+      "schedule": "23 11 1-3 * *"
     }
   ]
 }

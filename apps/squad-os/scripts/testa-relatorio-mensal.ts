@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { entreguesNoMes, nomeDoMes, textoDoRelatorio } from "../lib/relatorio-mensal";
+import { ehPrimeiroDiaUtil, entreguesNoMes, nomeDoMes, textoDoRelatorio } from "../lib/relatorio-mensal";
 import { gerarPdfRelatorio } from "../lib/relatorio-pdf";
 
 let falhas = 0;
@@ -58,6 +58,28 @@ caso("projeto mostra progresso e horas acumuladas", () => {
   assert.match(texto, /68 h de 120 h \(57%\)/);
 });
 
+caso("primeiro dia útil pula fim de semana", () => {
+  assert.equal(ehPrimeiroDiaUtil("2026-11-02"), true); // 01/11/2026 é domingo
+  assert.equal(ehPrimeiroDiaUtil("2026-11-01"), false);
+  assert.equal(ehPrimeiroDiaUtil("2026-11-03"), false);
+  assert.equal(ehPrimeiroDiaUtil("2026-12-01"), true); // terça
+});
+caso("e-mail resume as horas da equipe", () => {
+  const { texto } = textoDoRelatorio({
+    clienteNome: "Somos",
+    mes: "2026-10",
+    entregues: [],
+    contrato: null,
+    horasPorConsultor: [
+      { consultor: "Ana", code: "S-1", titulo: "a", horas: 10 },
+      { consultor: "Ana", code: "S-2", titulo: "b", horas: 2.5 },
+      { consultor: "Bruno", code: "S-1", titulo: "a", horas: 4 },
+    ],
+    url: "u",
+  });
+  assert.match(texto, /Horas lançadas pela equipe: 16,5 h \(2 consultores\)/);
+});
+
 async function principal() {
   const pdf = await gerarPdfRelatorio(
     {
@@ -65,6 +87,7 @@ async function principal() {
       mes: "2026-10",
       entregues: [{ code: "S-1", titulo: "Ação com acentuação: é, ç, ã", entregueEm: "2026-10-28", horasAprovadas: 5, horasLancadas: 6.5 }],
       contrato: { tipo: "ams", cicloHoras: "mensal", doMes: { mes: "2026-10", horasGastas: 10, horasNoCiclo: 10, horasContratadas: 40 }, historico: [] },
+      horasPorConsultor: [{ consultor: "Ana Souza", code: "S-1", titulo: "Ação", horas: 6.5 }],
       url: "u",
     },
     null

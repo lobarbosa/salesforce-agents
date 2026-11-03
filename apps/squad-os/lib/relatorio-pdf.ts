@@ -150,6 +150,36 @@ export function gerarPdfRelatorio(d: DadosRelatorio, logo: Buffer | null): Promi
     doc.font("Helvetica").fontSize(10).fillColor(COR.suave).text("Nenhuma demanda foi concluída neste mês.", M);
   }
 
+  // Horas da equipe no mês, por consultor e demanda (2026-11-03): é o que o
+  // admin "fecha" no primeiro dia útil e manda ao cliente.
+  if (d.horasPorConsultor?.length) {
+    titulo(doc, "Horas lançadas pela equipe no mês");
+    const linhas: string[][] = [];
+    const porConsultor = new Map<string, number>();
+    for (const x of d.horasPorConsultor) porConsultor.set(x.consultor, (porConsultor.get(x.consultor) ?? 0) + x.horas);
+    let anterior = "";
+    for (const x of d.horasPorConsultor) {
+      linhas.push([x.consultor === anterior ? "" : x.consultor, `${x.code} — ${x.titulo}`, h(x.horas)]);
+      anterior = x.consultor;
+    }
+    tabela(doc, [{ t: "Consultor", w: 140 }, { t: "Demanda", w: LARG - 140 - 70 }, { t: "Horas", w: 70, alinhar: "right" }], linhas);
+    const total = d.horasPorConsultor.reduce((s, x) => s + x.horas, 0);
+    doc.moveDown(0.4);
+    doc.font("Helvetica-Bold").fontSize(10).fillColor(COR.texto).text(
+      `Total: ${h(total)}  ·  ${[...porConsultor.entries()].map(([n, v]) => `${n}: ${h(v)}`).join("  ·  ")}`,
+      M,
+      doc.y,
+      { width: LARG }
+    );
+    doc.moveDown(0.3);
+    doc.font("Helvetica").fontSize(8.5).fillColor(COR.suave).text(
+      "Horas registradas no timesheet. Em demandas com estimativa aprovada, o que debita do contrato é a estimativa; as horas lançadas medem o realizado.",
+      M,
+      doc.y,
+      { width: LARG }
+    );
+  }
+
   // Contrato
   if (c?.tipo === "ams") {
     titulo(doc, "Contrato de sustentação (AMS)");
@@ -218,8 +248,12 @@ export function gerarPdfRelatorio(d: DadosRelatorio, logo: Buffer | null): Promi
     }
   }
 
-  doc.moveDown(1.5);
-  doc.font("Helvetica").fontSize(8.5).fillColor(COR.suave).text(`Acompanhe pelo portal: ${d.url}`, M, doc.y, { width: LARG, link: d.url });
+  // Rodapé só se couber: sozinho numa página nova parecia erro (o link
+  // também vai no corpo do e-mail).
+  if (doc.y < 740) {
+    doc.moveDown(1.5);
+    doc.font("Helvetica").fontSize(8.5).fillColor(COR.suave).text(`Acompanhe pelo portal: ${d.url}`, M, doc.y, { width: LARG, link: d.url });
+  }
   doc.end();
   return pronto;
 }

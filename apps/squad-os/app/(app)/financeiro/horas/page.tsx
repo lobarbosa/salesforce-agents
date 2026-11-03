@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { usuarioDaArea } from "@/lib/area";
 import { horasPorCliente } from "@/lib/horas-data";
-import { chaveDia, ehChaveMes, formatarDuracao, type SituacaoConsumo } from "@/lib/horas";
+import { chaveDia, ehChaveMes, formatarDuracao, rotuloDia, type SituacaoConsumo } from "@/lib/horas";
+import { prisma } from "@/lib/prisma";
+import { emailConfigurado } from "@/lib/email";
+import { FechamentoMensal, type LinhaFechamento } from "@/components/FechamentoMensal";
 
 // Horas por cliente: consumido × contratado (padrão do relatório Summary do
 // Clockify). Lê os mesmos lançamentos de "Minhas horas" e do card.
@@ -34,6 +37,29 @@ export default async function HorasPorClientePage({
   const total = linhas.reduce((s, l) => s + l.minutos, 0);
   const atencao = linhas.filter((l) => l.situacao === "atencao" || l.situacao === "estourado");
   const rotuloMes = `${mes.slice(5)}/${mes.slice(0, 4)}`;
+
+  // Mês já fechado: o envio do relatório ao cliente (FechamentoMensal).
+  let fechamento: LinhaFechamento[] = [];
+  if (mes < atual) {
+    const [clientes, envios] = await Promise.all([
+      prisma.client.findMany({
+        where: { encerradoEm: null },
+        select: { id: true, nome: true, _count: { select: { usuarios: { where: { role: "cliente" } } } } },
+        orderBy: { nome: "asc" },
+      }),
+      prisma.relatorioEnviado.findMany({ where: { mes } }),
+    ]);
+    const porCliente = new Map(envios.map((e) => [e.clientId, e]));
+    fechamento = clientes.map((c) => {
+      const e = porCliente.get(c.id);
+      return {
+        clientId: c.id,
+        clienteNome: c.nome,
+        destinatarios: c._count.usuarios,
+        enviado: e ? { por: e.enviadoPor, em: rotuloDia(chaveDia(e.enviadoEm)), para: e.destinatarios } : null,
+      };
+    });
+  }
 
   return (
     <>
@@ -76,6 +102,10 @@ export default async function HorasPorClientePage({
           <span className="kpi-nota">{atencao.length ? atencao.map((l) => l.clientNome).join(", ") : "nenhum"}</span>
         </div>
       </div>
+
+      {fechamento.length > 0 && (
+        <FechamentoMensal mes={mes} rotuloMes={rotuloMes} linhas={fechamento} emailAtivo={emailConfigurado()} />
+      )}
 
       {linhas.length === 0 ? (
         <div className="overview-empty ok">Nenhum cliente cadastrado ainda.</div>
