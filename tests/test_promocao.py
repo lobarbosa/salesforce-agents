@@ -55,3 +55,18 @@ def test_comparar_orgs_ignora_espaco_e_acusa_falta(tmp_path):
     r = cmp.comparar(cmp.arquivos(tmp_path / "qa"), cmp.arquivos(tmp_path / "dev"))
     assert r == {"faltando": ["c.xml"], "diferente": ["b.xml"], "igual": ["a.xml"]}
     assert "1 de 3 arquivos iguais" in cmp.relatorio(r)
+
+
+def test_comparar_ignora_id_de_registro_no_caminho(tmp_path):
+    for org, idd in (("qa", "16jHa00000052kL"), ("dev", "16jHb00000099zZ")):
+        p = tmp_path / org / "force-app" / f"bundle/localActions/insights_{idd}/a.json"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(f'{{"plugin": "insights_{idd}"}}')
+    r = cmp.comparar(cmp.arquivos(tmp_path / "qa"), cmp.arquivos(tmp_path / "dev"))
+    assert r["igual"] == ["bundle/localActions/insights_*/a.json"]
+    assert r["faltando"] == [] and r["diferente"] == []
+
+
+def test_diferencas_mostra_o_trecho():
+    out = cmp.diferencas({"x": "<a>1</a>\n<b>2</b>"}, {"x": "<a>1</a>\n<b>3</b>"}, ["x"])
+    assert "-<b>2</b>" in out and "+<b>3</b>" in out
