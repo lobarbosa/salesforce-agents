@@ -2,10 +2,18 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-  - de: null
-    em: '2026-11-10T12:00:00Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:21:55.875174+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:25:36.609329+00:00'
