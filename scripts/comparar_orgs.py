@@ -10,9 +10,20 @@ Diferenças só de espaço em branco não contam. Uso:
 
 from __future__ import annotations
 
+import difflib
 import re
 import sys
 from pathlib import Path
+
+# Ação local de agente leva o Id do registro no nome da pasta
+# (insights_comerciais_16jHa00000052kL): o mesmo componente migrado tem outro
+# Id em cada org. Comparar com o Id trocado por * evita falso "faltando".
+# Id de 15 posições: prefixo de 3 + instância de 2 + zeros + sequência.
+_ID_SF = re.compile(r"_[0-9A-Za-z]{5}0{3}[0-9A-Za-z]{7}(?![0-9A-Za-z])")
+
+
+def sem_ids(caminho: str) -> str:
+    return _ID_SF.sub("_*", caminho)
 
 
 def normalizar(texto: str) -> str:
@@ -20,11 +31,12 @@ def normalizar(texto: str) -> str:
 
 
 def arquivos(raiz: Path) -> dict[str, str]:
+    """Caminho (com Ids de registro trocados por *) → conteúdo normalizado."""
     base = raiz / "force-app"
     if not base.is_dir():
         return {}
     return {
-        str(p.relative_to(base)): normalizar(p.read_text(encoding="utf-8", errors="ignore"))
+        sem_ids(str(p.relative_to(base))): _ID_SF.sub("_*", p.read_text(encoding="utf-8", errors="ignore"))
         for p in base.rglob("*")
         if p.is_file()
     }
@@ -33,9 +45,30 @@ def arquivos(raiz: Path) -> dict[str, str]:
 def comparar(qa: dict[str, str], dev: dict[str, str]) -> dict[str, list[str]]:
     return {
         "faltando": sorted(k for k in qa if k not in dev),
-        "diferente": sorted(k for k in qa if k in dev and qa[k] != dev[k]),
-        "igual": sorted(k for k in qa if k in dev and qa[k] == dev[k]),
+        "diferente": sorted(k for k in qa if k in dev and normalizar(qa[k]) != normalizar(dev[k])),
+        "igual": sorted(k for k in qa if k in dev and normalizar(qa[k]) == normalizar(dev[k])),
     }
+
+
+def diferencas(qa: dict[str, str], dev: dict[str, str], chaves: list[str], max_linhas: int = 40) -> str:
+    """Trecho do diff de cada arquivo diferente (QA → DEV), para saber o quê."""
+    blocos = []
+    for k in chaves:
+        linhas = [
+            l
+            for l in difflib.unified_diff(
+                [x.strip() for x in qa[k].splitlines() if x.strip()],
+                [x.strip() for x in dev[k].splitlines() if x.strip()],
+                "QA",
+                "DEV",
+                lineterm="",
+                n=0,
+            )
+            if not l.startswith("@@")
+        ]
+        corte = linhas[:max_linhas] + ([f"... (+{len(linhas) - max_linhas} linhas)"] if len(linhas) > max_linhas else [])
+        blocos.append(f"<details><summary><code>{k}</code></summary>\n\n```diff\n" + "\n".join(corte) + "\n```\n</details>")
+    return "\n".join(blocos)
 
 
 def relatorio(r: dict[str, list[str]]) -> str:
@@ -60,4 +93,9 @@ def relatorio(r: dict[str, list[str]]) -> str:
 
 
 if __name__ == "__main__":
-    print(relatorio(comparar(arquivos(Path(sys.argv[1])), arquivos(Path(sys.argv[2])))))
+    qa, dev = arquivos(Path(sys.argv[1])), arquivos(Path(sys.argv[2]))
+    r = comparar(qa, dev)
+    print(relatorio(r))
+    if r["diferente"]:
+        print("#### O que muda em cada arquivo diferente\n")
+        print(diferencas(qa, dev, r["diferente"]))
