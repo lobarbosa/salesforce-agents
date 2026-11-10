@@ -14,7 +14,7 @@ from pathlib import Path
 
 import click
 
-from . import ambientes, demands, fluxo
+from . import ambientes, demands, fluxo, sessao
 
 # Quais estágios disparam sessão de agente vive em fluxo.py, junto com a regra
 # de qual etapa vem depois de qual — eram dois lugares dizendo a mesma coisa.
@@ -316,6 +316,15 @@ def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: 
             click.echo(f"{demand_id}: gate aprovado por {aprovar_gate} -> {d.status}")
         parada = fluxo.rodar(client, demand_id)
     except (fluxo.FluxoError, demands.InvalidStatusError, demands.DemandNotFoundError) as exc:
+        raise click.ClickException(str(exc))
+    except sessao.ApiIndisponivelError as exc:
+        # Crédito/chave da API: não é falha da demanda. O motivo vai para o
+        # Squad OS (execução → aviso no topo do portal). Achado 2026-11-10: a
+        # esteira ficou 6 dias falhando por saldo sem ninguém ser avisado.
+        destino = os.environ.get("GITHUB_OUTPUT")
+        if github_output and destino:
+            with open(destino, "a", encoding="utf-8") as fh:
+                fh.write("motivo=api_indisponivel\n")
         raise click.ClickException(str(exc))
 
     if parada.etapas_rodadas:
