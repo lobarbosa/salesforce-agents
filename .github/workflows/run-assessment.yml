@@ -152,10 +152,17 @@ jobs:
         if: always()
         env:
           SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_ASSESSMENT_URL }}
+          BASE_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
           SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
           RESULTADO: ${{ job.status }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
+          # Sem secret dedicado, deriva de SQUAD_OS_SYNC_URL (…/demanda → …/assessment).
+          # Achado 2026-11-10: SQUAD_OS_SYNC_EXECUCAO_URL nunca foi criado e
+          # /falhas e /operacao ficaram sem nenhuma execução registrada.
+          if [ -z "$SYNC_URL" ] && [ "${BASE_URL%/api/sync/demanda}" != "$BASE_URL" ]; then
+            SYNC_URL="${BASE_URL%demanda}assessment"
+          fi
           if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
             echo "::warning::SQUAD_OS_SYNC_ASSESSMENT_URL/SQUAD_OS_SYNC_TOKEN não configurados — o assessment não aparece no perfil do cliente. Ver docs/conexoes-e-setup.md."
             exit 0
@@ -184,9 +191,16 @@ jobs:
         if: always()
         env:
           EXEC_URL: ${{ secrets.SQUAD_OS_SYNC_EXECUCAO_URL }}
+          BASE_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
           SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
           RESULTADO: ${{ job.status }}
         run: |
+          # Sem secret dedicado, deriva de SQUAD_OS_SYNC_URL (…/demanda → …/execucao).
+          # Achado 2026-11-10: SQUAD_OS_SYNC_EXECUCAO_URL nunca foi criado e
+          # /falhas e /operacao ficaram sem nenhuma execução registrada.
+          if [ -z "$EXEC_URL" ] && [ "${BASE_URL%/api/sync/demanda}" != "$BASE_URL" ]; then
+            EXEC_URL="${BASE_URL%demanda}execucao"
+          fi
           if [ -z "$EXEC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
             exit 0
           fi

@@ -66,9 +66,13 @@ jobs:
             echo "::error::SQUAD_OS_SYNC_URL/SQUAD_OS_SYNC_TOKEN não configurados"
             exit 1
           fi
-          sfagents cliente rag-payload --client "$CLIENT" \
-            | curl -fsS -X POST "$RAG_URL" \
+          HTTP=$(sfagents cliente rag-payload --client "$CLIENT" \
+            | curl -sS -o resposta.json -w '%{http_code}' -X POST "$RAG_URL" \
                 -H "Authorization: Bearer $SYNC_TOKEN" \
                 -H "Content-Type: application/json" \
-                --data-binary @-
-          echo
+                --data-binary @-)
+          cat resposta.json; echo
+          # 409 = cliente encerrado no portal: não recebe dado novo, e isso
+          # não é falha da reindexação (achado 2026-11-01, acxya).
+          if [ "$HTTP" = "409" ]; then echo "::notice::$CLIENT está encerrado no portal — pulado."; exit 0; fi
+          [ "$HTTP" -ge 200 ] && [ "$HTTP" -lt 300 ] || { echo "::error::reindexação falhou (HTTP $HTTP)"; exit 1; }

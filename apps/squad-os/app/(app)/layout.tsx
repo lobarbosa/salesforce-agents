@@ -5,6 +5,8 @@ import { Copiloto } from "@/components/Copiloto";
 import { marcaUrl, marcaDarkUrl } from "@/lib/marca";
 import { clienteDaSidebar } from "@/lib/visao-cliente";
 import { esteiraPorCliente } from "@/lib/esteira-sidebar";
+import { apiIndisponivelDesde } from "@/lib/api-indisponivel";
+import { chaveDia, rotuloDia } from "@/lib/horas";
 
 // Toda página aqui lê direto do Postgres (sem fetch(), então o Next não
 // detecta dinamismo sozinho) e depende da sessão do usuário logado — nunca
@@ -35,6 +37,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   // Encerrados: fora da lista principal, numa seção à parte só para o admin.
   const encerrados = usuario.role === "admin" ? await getClientesEncerrados() : [];
   const esteira = await esteiraPorCliente(clients.map((c) => c.id));
+  // Só o time vê: é assunto de conta/cobrança, não do cliente.
+  const semApiDesde =
+    usuario.role === "admin" || usuario.role === "consultor" ? await apiIndisponivelDesde().catch(() => null) : null;
 
   return (
     <div className="shell">
@@ -52,6 +57,14 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         usuario={usuario}
       />
       <main id="conteudo" tabIndex={-1}>
+        {semApiDesde && (
+          <div className="conn-warning" role="alert">
+            <strong>A esteira está parada: a API do modelo recusou as execuções</strong> desde{" "}
+            {rotuloDia(chaveDia(semApiDesde))} (saldo de crédito ou chave da Anthropic). Nenhum agente roda até isso ser
+            resolvido em console.anthropic.com → Billing. Depois, reenvie as demandas que falharam; este aviso some na
+            primeira execução que der certo.
+          </div>
+        )}
         {children}
       </main>
       {/* Uma conversa só, que atravessa a navegação; o contexto (cliente da

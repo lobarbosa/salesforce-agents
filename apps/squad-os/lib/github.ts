@@ -22,7 +22,24 @@ function repoConfig() {
   return { owner, repo, branch };
 }
 
+// Dois commits quase simultâneos na mesma branch (duas demandas enviadas em
+// sequência, ou os dois arquivos de uma materialização enquanto outra roda)
+// fazem a API do GitHub responder 409: a ponta da branch andou entre a
+// leitura e a escrita. Reler e tentar de novo resolve; sem isso o envio
+// falhava e a demanda voltava a "não enviada" (achado 2026-11-10, EPLAST-35/37/38).
 async function putFile(path: string, content: string, message: string) {
+  for (let tentativa = 1; ; tentativa++) {
+    try {
+      return await putFileUmaVez(path, content, message);
+    } catch (err) {
+      const status = (err as { status?: number }).status;
+      if ((status !== 409 && status !== 422) || tentativa >= 4) throw err;
+      await new Promise((ok) => setTimeout(ok, 400 * tentativa));
+    }
+  }
+}
+
+async function putFileUmaVez(path: string, content: string, message: string) {
   const gh = octokit();
   const { owner, repo, branch } = repoConfig();
 
