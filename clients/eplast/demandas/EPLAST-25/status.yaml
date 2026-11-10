@@ -1,0 +1,11 @@
+id: EPLAST-25
+client: eplast
+titulo: Medição do piloto de IA contra o baseline (até 10 usuários)
+tipo: projeto
+status: backlog
+criado_em: '2026-10-30T01:17:19.419Z'
+historico:
+  - de: null
+    em: '2026-10-30T01:17:19Z'
+    para: backlog
+    autor: Leonardo Barbosa
