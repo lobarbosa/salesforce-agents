@@ -2,22 +2,27 @@ id: EPLAST-32
 client: eplast
 titulo: Painel meta × carteira × faturamento × pedidos × gap
 tipo: projeto
-status: aguardando_gate_analise
+status: cancelada
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-- de: null
-  em: '2026-11-10T12:00:00Z'
-  para: backlog
-  autor: Leonardo Barbosa
-- de: backlog
-  para: analise
-  autor: pipeline
-  em: '2026-11-10T01:38:10.191188+00:00'
-- de: analise
-  para: aguardando_gate_analise
-  autor: pipeline
-  em: '2026-11-10T01:40:00.510280+00:00'
-- de: aguardando_gate_analise
-  para: aguardando_gate_analise
-  autor: pipeline
-  em: '2026-11-10T01:40:13.289813+00:00'
+  - de: null
+    em: '2026-11-10T12:00:00Z'
+    para: backlog
+    autor: Leonardo Barbosa
+  - de: backlog
+    para: analise
+    autor: pipeline
+    em: '2026-11-10T01:38:10.191188+00:00'
+  - de: analise
+    para: aguardando_gate_analise
+    autor: pipeline
+    em: '2026-11-10T01:40:00.510280+00:00'
+  - de: aguardando_gate_analise
+    para: aguardando_gate_analise
+    autor: pipeline
+    em: '2026-11-10T01:40:13.289813+00:00'
+  - de: aguardando_gate_analise
+    para: cancelada
+    autor: Carlos Sordi
+    em: '2026-11-10T18:00:25.566Z'
+    motivo: cancelar
