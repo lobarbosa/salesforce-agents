@@ -2,10 +2,15 @@ id: SOMOSAGILITY-25
 client: somos-agility
 titulo: Desabilitar fluxo FVP - Kelly
 tipo: sustentacao
-status: backlog
+status: cancelada
 criado_em: '2026-11-03T15:57:22.024Z'
 historico:
   - de: null
     em: '2026-11-03T15:57:22.024Z'
     para: backlog
     autor: Juliana Mendes
+  - de: backlog
+    para: cancelada
+    autor: Leonardo Barbosa
+    em: '2026-11-10T21:32:55.979Z'
+    motivo: Card resolvido
