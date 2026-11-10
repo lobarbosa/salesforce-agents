@@ -1,0 +1,238 @@
+name: Promover agente da QA para a DEV
+
+# Achado de 2026-11-10 (Eplast): o agente do Agentforce foi construído direto na
+# sandbox de QA, e a DEV — onde a esteira constrói — ficou sem ele. Sem trazer
+# de volta, toda demanda nova seria desenhada em cima de uma DEV que não tem o
+# que já existe.
+#
+# Dois modos, sempre com gente no meio (regra de ouro):
+#   trazer    → descobre na QA tudo o que compõe o agente
+#               (scripts/agentforce_dependencias.py), traz para
+#               clients/<cliente>/force-app numa branch `promocao/...`, abre PR e
+#               faz um deploy de VALIDAÇÃO (dry-run) na DEV, para o PR já mostrar
+#               o que falta lá (campo, objeto, licença).
+#   implantar → depois do PR APROVADO por alguém, faz o deploy de verdade na DEV.
+#               Recusa sem aprovação e recusa se a org não se declarar sandbox
+#               (guardrail #1). Produção não existe aqui.
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: "Cliente (pasta em clients/)"
+        required: true
+        default: eplast
+      agente:
+        description: "Nome do agente (Bot) na QA"
+        required: true
+        default: SFAgent2
+      modo:
+        description: "trazer = QA → PR + validação na DEV; implantar = deploy na DEV (exige PR aprovado)"
+        required: true
+        type: choice
+        default: trazer
+        options: [trazer, implantar, comparar]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  CLIENT_DIR: clients/${{ inputs.client }}
+  BRANCH: promocao/${{ inputs.client }}-${{ inputs.agente }}
+  MANIFEST: manifest/promocao-${{ inputs.agente }}.xml
+  QA: sbx-${{ inputs.client }}-qa
+  DEV: sbx-${{ inputs.client }}-dev
+
+jobs:
+  trazer:
+    if: inputs.modo == 'trazer'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-qa
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+      - name: Autenticar na QA (JWT)
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt --client-id "$CLIENT_ID" --jwt-key-file server.key --username "$USERNAME" \
+            --instance-url https://test.salesforce.com --alias "$QA"
+          rm -f server.key
+      - name: Descobrir os componentes do agente
+        env:
+          AGENTE: ${{ inputs.agente }}
+        run: |
+          mkdir -p "$CLIENT_DIR/manifest" "$CLIENT_DIR/force-app"
+          python3 -I scripts/agentforce_dependencias.py "$AGENTE" "$QA" "$CLIENT_DIR/$MANIFEST" | tee resumo.md
+          cat resumo.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Trazer para a branch de promoção
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Reparte da main fresca a cada rodada (mesma regra de baseline/assessment).
+          git checkout -B "$BRANCH"
+          ( cd "$CLIENT_DIR" && sf project retrieve start --manifest "$MANIFEST" --target-org "$QA" --wait 30 )
+          git add "$CLIENT_DIR"
+          git commit -q -m "${{ inputs.client }}: trazer ${{ inputs.agente }} da QA" --allow-empty
+          git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" 2>/dev/null || true
+          git push --force-with-lease origin "HEAD:$BRANCH"
+      - name: Abrir PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! gh pr view "$BRANCH" --json number >/dev/null 2>&1; then
+            {
+              echo "Aberto por \`promover-qa-dev.yml\`: traz da **QA** o agente \`${{ inputs.agente }}\` e o que ele usa, para implantar na **DEV**."
+              echo
+              cat resumo.md
+              echo
+              echo "A validação na DEV (dry-run) aparece como comentário. Aprovado o PR, rode o workflow com \`modo: implantar\`."
+            } > corpo.md
+            gh pr create --base main --head "$BRANCH" --title "${{ inputs.client }}: promover ${{ inputs.agente }} da QA para a DEV" --body-file corpo.md \
+              || echo "::warning::Não consegui abrir o PR — a branch $BRANCH está no ar."
+          fi
+
+  validar-na-dev:
+    if: inputs.modo == 'trazer'
+    needs: trazer
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: promocao/${{ inputs.client }}-${{ inputs.agente }}
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+      - name: Autenticar na DEV (JWT)
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt --client-id "$CLIENT_ID" --jwt-key-file server.key --username "$USERNAME" \
+            --instance-url https://test.salesforce.com --alias "$DEV"
+          rm -f server.key
+      - name: Validar na DEV (dry-run, não grava nada)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set +e
+          ( cd "$CLIENT_DIR" && sf project deploy start --dry-run --manifest "$MANIFEST" --target-org "$DEV" \
+              --test-level NoTestRun --wait 60 --json ) > validacao.json
+          set -e
+          python3 scripts/resumo_validacao.py validacao.json > comentario.md
+          cat comentario.md >> "$GITHUB_STEP_SUMMARY"
+          gh pr comment "$BRANCH" --body-file comentario.md || true
+
+  # modo comparar (2026-11-10): só lê as duas orgs. Para quando a migração foi
+  # feita à mão e a pergunta é "está tudo lá?". O retrieve da QA vira artefato
+  # do job (1 dia), nunca commit.
+  comparar-qa:
+    if: inputs.modo == 'comparar'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-qa
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+      - name: Autenticar na QA (JWT)
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt --client-id "$CLIENT_ID" --jwt-key-file server.key --username "$USERNAME" \
+            --instance-url https://test.salesforce.com --alias "$QA"
+          rm -f server.key
+      - name: Descobrir e trazer da QA
+        env:
+          AGENTE: ${{ inputs.agente }}
+        run: |
+          mkdir -p cmp/qa/force-app
+          python3 -I scripts/agentforce_dependencias.py "$AGENTE" "$QA" cmp/package.xml | tee cmp/resumo.md
+          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"64.0"}' > cmp/qa/sfdx-project.json
+          ( cd cmp/qa && sf project retrieve start --manifest ../package.xml --target-org "$QA" --wait 30 )
+      - uses: actions/upload-artifact@v4
+        with:
+          name: comparacao-qa
+          path: cmp
+          retention-days: 1
+
+  comparar-dev:
+    if: inputs.modo == 'comparar'
+    needs: comparar-qa
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: comparacao-qa
+          path: cmp
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+      - name: Autenticar na DEV (JWT)
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt --client-id "$CLIENT_ID" --jwt-key-file server.key --username "$USERNAME" \
+            --instance-url https://test.salesforce.com --alias "$DEV"
+          rm -f server.key
+      - name: Trazer o mesmo manifest da DEV e comparar
+        run: |
+          mkdir -p cmp/dev/force-app
+          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"64.0"}' > cmp/dev/sfdx-project.json
+          ( cd cmp/dev && sf project retrieve start --manifest ../package.xml --target-org "$DEV" --wait 30 ) || true
+          { cat cmp/resumo.md; echo; python3 -I scripts/comparar_orgs.py cmp/qa cmp/dev; } | tee relatorio.md
+          cat relatorio.md >> "$GITHUB_STEP_SUMMARY"
+
+  implantar:
+    if: inputs.modo == 'implantar'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-dev
+    steps:
+      - name: Exigir PR aprovado
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          N=$(gh api "repos/${{ github.repository }}/pulls?head=${{ github.repository_owner }}:$BRANCH&state=open" --jq '.[0].number // empty')
+          [ -n "$N" ] || { echo "::error::Não há PR aberto da branch $BRANCH — rode primeiro com modo: trazer."; exit 1; }
+          APROVADO=$(gh api "repos/${{ github.repository }}/pulls/$N/reviews" --jq '[.[]|select(.state=="APPROVED")]|length')
+          [ "$APROVADO" -gt 0 ] || { echo "::error::O PR #$N ainda não foi aprovado — revise e aprove antes de implantar."; exit 1; }
+          echo "PR #$N aprovado."
+      - uses: actions/checkout@v4
+        with:
+          ref: promocao/${{ inputs.client }}-${{ inputs.agente }}
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+      - name: Autenticar na DEV (JWT)
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt --client-id "$CLIENT_ID" --jwt-key-file server.key --username "$USERNAME" \
+            --instance-url https://test.salesforce.com --alias "$DEV"
+          rm -f server.key
+      # Guardrail #1, camada do destino: a org tem de se declarar sandbox.
+      - name: Conferir que a DEV é sandbox
+        run: |
+          S=$(sf data query --query "SELECT IsSandbox FROM Organization" --target-org "$DEV" --json | python3 -c "import json,sys;print(json.load(sys.stdin)['result']['records'][0]['IsSandbox'])")
+          [ "$S" = "True" ] || { echo "::error::RECUSADO: $DEV responde IsSandbox=$S"; exit 1; }
+      - name: Implantar na DEV
+        run: |
+          cd "$CLIENT_DIR"
+          sf project deploy start --manifest "$MANIFEST" --target-org "$DEV" --test-level NoTestRun --wait 60
