@@ -31,7 +31,7 @@ on:
         required: true
         type: choice
         default: trazer
-        options: [trazer, implantar]
+        options: [trazer, implantar, comparar]
 
 permissions:
   contents: write
@@ -130,6 +130,75 @@ jobs:
           python3 scripts/resumo_validacao.py validacao.json > comentario.md
           cat comentario.md >> "$GITHUB_STEP_SUMMARY"
           gh pr comment "$BRANCH" --body-file comentario.md || true
+
+  # modo comparar (2026-11-10): só lê as duas orgs. Para quando a migração foi
+  # feita à mão e a pergunta é "está tudo lá?". O retrieve da QA vira artefato
+  # do job (1 dia), nunca commit.
+  comparar-qa:
+    if: inputs.modo == 'comparar'
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-qa
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+      - name: Autenticar na QA (JWT)
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt --client-id "$CLIENT_ID" --jwt-key-file server.key --username "$USERNAME" \
+            --instance-url https://test.salesforce.com --alias "$QA"
+          rm -f server.key
+      - name: Descobrir e trazer da QA
+        env:
+          AGENTE: ${{ inputs.agente }}
+        run: |
+          mkdir -p cmp/qa/force-app
+          python3 -I scripts/agentforce_dependencias.py "$AGENTE" "$QA" cmp/package.xml | tee cmp/resumo.md
+          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"64.0"}' > cmp/qa/sfdx-project.json
+          ( cd cmp/qa && sf project retrieve start --manifest ../package.xml --target-org "$QA" --wait 30 )
+      - uses: actions/upload-artifact@v4
+        with:
+          name: comparacao-qa
+          path: cmp
+          retention-days: 1
+
+  comparar-dev:
+    if: inputs.modo == 'comparar'
+    needs: comparar-qa
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.client }}-dev
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/download-artifact@v4
+        with:
+          name: comparacao-qa
+          path: cmp
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+      - name: Autenticar na DEV (JWT)
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt --client-id "$CLIENT_ID" --jwt-key-file server.key --username "$USERNAME" \
+            --instance-url https://test.salesforce.com --alias "$DEV"
+          rm -f server.key
+      - name: Trazer o mesmo manifest da DEV e comparar
+        run: |
+          mkdir -p cmp/dev/force-app
+          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"64.0"}' > cmp/dev/sfdx-project.json
+          ( cd cmp/dev && sf project retrieve start --manifest ../package.xml --target-org "$DEV" --wait 30 ) || true
+          { cat cmp/resumo.md; echo; python3 -I scripts/comparar_orgs.py cmp/qa cmp/dev; } | tee relatorio.md
+          cat relatorio.md >> "$GITHUB_STEP_SUMMARY"
 
   implantar:
     if: inputs.modo == 'implantar'

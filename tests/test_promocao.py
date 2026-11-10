@@ -41,3 +41,17 @@ def test_resumo_validacao_ok_e_falhas():
         }
     )
     assert "| GenAiFunction | `X` | no Field a/b |" in texto
+
+
+cmp = _carregar("comparar_orgs")
+
+
+def test_comparar_orgs_ignora_espaco_e_acusa_falta(tmp_path):
+    for org, arquivos in {"qa": {"a.xml": "<x>1</x>", "b.xml": "<y> 2 </y>", "c.xml": "novo"}, "dev": {"a.xml": "<x>1</x>\n", "b.xml": "<y>3</y>"}}.items():
+        for nome, conteudo in arquivos.items():
+            p = tmp_path / org / "force-app" / nome
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_text(conteudo)
+    r = cmp.comparar(cmp.arquivos(tmp_path / "qa"), cmp.arquivos(tmp_path / "dev"))
+    assert r == {"faltando": ["c.xml"], "diferente": ["b.xml"], "igual": ["a.xml"]}
+    assert "1 de 3 arquivos iguais" in cmp.relatorio(r)
