@@ -2,10 +2,22 @@ id: SOMOSAGILITY-26
 client: somos-agility
 titulo: Campos de preenchimento Cenário SF
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-04T20:16:11.384Z'
 historico:
-  - de: null
-    em: '2026-11-04T20:16:11.373Z'
-    para: backlog
-    autor: Geovana Nogueira
+- de: null
+  em: '2026-11-04T20:16:11.373Z'
+  para: backlog
+  autor: Geovana Nogueira
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T21:34:36.705763+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T21:36:28.161486+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T21:36:37.609034+00:00'
