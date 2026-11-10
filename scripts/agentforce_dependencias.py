@@ -30,7 +30,7 @@ from pathlib import Path
 
 TIPOS_AGENTE = ["Bot", "GenAiPlannerBundle", "GenAiPlugin", "GenAiFunction", "GenAiPromptTemplate"]
 TIPOS_CODIGO = ["Flow", "ApexClass"]
-API = "64.0"
+API = "66.0"  # agentes do Agentforce exigem a versão 65 ou maior (achado 2026-11-10)
 
 
 def sf(args: list[str]) -> dict:
