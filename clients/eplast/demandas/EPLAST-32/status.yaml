@@ -1,0 +1,11 @@
+id: EPLAST-32
+client: eplast
+titulo: Painel meta × carteira × faturamento × pedidos × gap
+tipo: projeto
+status: backlog
+criado_em: '2026-11-10T00:22:17.398Z'
+historico:
+  - de: null
+    em: '2026-11-10T12:00:00Z'
+    para: backlog
+    autor: Leonardo Barbosa
