@@ -161,7 +161,7 @@ jobs:
         run: |
           mkdir -p cmp/qa/force-app
           python3 -I scripts/agentforce_dependencias.py "$AGENTE" "$QA" cmp/package.xml | tee cmp/resumo.md
-          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"64.0"}' > cmp/qa/sfdx-project.json
+          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"66.0"}' > cmp/qa/sfdx-project.json
           ( cd cmp/qa && sf project retrieve start --manifest ../package.xml --target-org "$QA" --wait 30 )
       - uses: actions/upload-artifact@v4
         with:
@@ -195,7 +195,7 @@ jobs:
       - name: Trazer o mesmo manifest da DEV e comparar
         run: |
           mkdir -p cmp/dev/force-app
-          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"64.0"}' > cmp/dev/sfdx-project.json
+          echo '{"packageDirectories":[{"path":"force-app","default":true}],"sourceApiVersion":"66.0"}' > cmp/dev/sfdx-project.json
           ( cd cmp/dev && sf project retrieve start --manifest ../package.xml --target-org "$DEV" --wait 30 ) || true
           { cat cmp/resumo.md; echo; python3 -I scripts/comparar_orgs.py cmp/qa cmp/dev; } | tee relatorio.md
           cat relatorio.md >> "$GITHUB_STEP_SUMMARY"
