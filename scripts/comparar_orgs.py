@@ -71,6 +71,37 @@ def diferencas(qa: dict[str, str], dev: dict[str, str], chaves: list[str], max_l
     return "\n".join(blocos)
 
 
+def acoes(raiz: Path) -> dict[str, tuple[str, str]]:
+    """Ações do agente (tópico/ação) → (tipo, alvo) lidos do GenAiPlannerBundle.
+
+    O alvo (Apex, Flow, prompt) é o que precisa existir na org para a ação
+    funcionar; se a DEV aponta para o mesmo alvo, ele existe lá (a org não
+    salva ação apontando para alvo inexistente).
+    """
+    saida: dict[str, tuple[str, str]] = {}
+    for p in (raiz / "force-app").rglob("*.genAiPlannerBundle"):
+        texto = p.read_text(encoding="utf-8", errors="ignore")
+        for bloco in re.findall(r"<localActions>(.*?)</localActions>", texto, re.S):
+            nome = re.search(r"<(?:localDeveloperName|developerName)>([^<]+)<", bloco)
+            alvo = re.search(r"<invocationTarget>([^<]+)<", bloco)
+            tipo = re.search(r"<invocationTargetType>([^<]+)<", bloco)
+            if nome:
+                saida[_ID_SF.sub("", nome.group(1))] = (tipo.group(1) if tipo else "?", alvo.group(1) if alvo else "?")
+    return saida
+
+
+def tabela_acoes(qa: dict[str, tuple[str, str]], dev: dict[str, tuple[str, str]]) -> str:
+    if not qa and not dev:
+        return ""
+    linhas = ["#### Ações do agente e o que cada uma chama\n", "| Ação | QA | DEV | |", "|---|---|---|---|"]
+    for nome in sorted(set(qa) | set(dev)):
+        a, b = qa.get(nome), dev.get(nome)
+        fmt = lambda x: f"{x[0]} `{x[1]}`" if x else "—"
+        marca = "ok" if a == b else ("falta na DEV" if not b else ("só na DEV" if not a else "alvo diferente"))
+        linhas.append(f"| `{nome}` | {fmt(a)} | {fmt(b)} | {marca} |")
+    return "\n".join(linhas) + "\n"
+
+
 def relatorio(r: dict[str, list[str]]) -> str:
     total = sum(len(v) for v in r.values())
     linhas = [f"### QA × DEV: {len(r['igual'])} de {total} arquivos iguais\n"]
@@ -96,6 +127,7 @@ if __name__ == "__main__":
     qa, dev = arquivos(Path(sys.argv[1])), arquivos(Path(sys.argv[2]))
     r = comparar(qa, dev)
     print(relatorio(r))
+    print(tabela_acoes(acoes(Path(sys.argv[1])), acoes(Path(sys.argv[2]))))
     if r["diferente"]:
         print("#### O que muda em cada arquivo diferente\n")
         print(diferencas(qa, dev, r["diferente"]))
