@@ -70,3 +70,16 @@ def test_comparar_ignora_id_de_registro_no_caminho(tmp_path):
 def test_diferencas_mostra_o_trecho():
     out = cmp.diferencas({"x": "<a>1</a>\n<b>2</b>"}, {"x": "<a>1</a>\n<b>3</b>"}, ["x"])
     assert "-<b>2</b>" in out and "+<b>3</b>" in out
+
+
+def test_acoes_le_alvo_de_cada_acao_local(tmp_path):
+    p = tmp_path / "force-app" / "b" / "x.genAiPlannerBundle"
+    p.parent.mkdir(parents=True)
+    p.write_text(
+        "<localActions><invocationTarget>ConsultarPedidosApex</invocationTarget>"
+        "<invocationTargetType>apex</invocationTargetType>"
+        "<localDeveloperName>ConsultarPedidos</localDeveloperName></localActions>"
+    )
+    a = cmp.acoes(tmp_path)
+    assert a == {"ConsultarPedidos": ("apex", "ConsultarPedidosApex")}
+    assert "| `ConsultarPedidos` | apex `ConsultarPedidosApex` | — | falta na DEV |" in cmp.tabela_acoes(a, {})
