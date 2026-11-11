@@ -2,10 +2,15 @@ id: CENTRIC-3
 client: centric
 titulo: Integração com Omie
 tipo: sustentacao
-status: backlog
+status: cancelada
 criado_em: '2026-11-11T20:57:26.330Z'
 historico:
   - de: null
     em: '2026-11-11T20:57:26.305Z'
     para: backlog
     autor: Vanilson Reepson
+  - de: backlog
+    para: cancelada
+    autor: Vanilson Reepson
+    em: '2026-11-11T21:02:30.122Z'
+    motivo: t
