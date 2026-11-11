@@ -1,0 +1,11 @@
+id: SOMOSAGILITY-28
+client: somos-agility
+titulo: Acessar o objeto solicitação de treinamento
+tipo: sustentacao
+status: backlog
+criado_em: '2026-11-11T15:40:05.756Z'
+historico:
+  - de: null
+    em: '2026-11-11T15:40:05.751Z'
+    para: backlog
+    autor: Fernando Paula
