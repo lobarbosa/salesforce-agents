@@ -1,0 +1,11 @@
+id: CENTRIC-3
+client: centric
+titulo: Integração com Omie
+tipo: sustentacao
+status: backlog
+criado_em: '2026-11-11T20:57:26.330Z'
+historico:
+  - de: null
+    em: '2026-11-11T20:57:26.305Z'
+    para: backlog
+    autor: Vanilson Reepson
