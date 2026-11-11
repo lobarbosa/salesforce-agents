@@ -5,6 +5,7 @@ import { chaveDia, ehChaveMes, formatarDuracao, rotuloDia, type SituacaoConsumo 
 import { prisma } from "@/lib/prisma";
 import { emailConfigurado } from "@/lib/email";
 import { FechamentoMensal, type LinhaFechamento } from "@/components/FechamentoMensal";
+import { semanaPassada } from "@/lib/espelho-horas";
 
 // Horas por cliente: consumido × contratado (padrão do relatório Summary do
 // Clockify). Lê os mesmos lançamentos de "Minhas horas" e do card.
@@ -33,6 +34,19 @@ export default async function HorasPorClientePage({
   const pedido = (await searchParams).mes ?? "";
   const mes = ehChaveMes(pedido) && pedido <= atual ? pedido : atual;
   const linhas = await horasPorCliente(mes);
+
+  // Espelho de horas em PDF: clientes ativos e quem lançou hora nos últimos 4 meses.
+  const hoje = chaveDia(new Date());
+  const padrao = semanaPassada(hoje);
+  const [clientesDoEspelho, consultores] = await Promise.all([
+    prisma.client.findMany({ where: { encerradoEm: null }, select: { id: true, nome: true }, orderBy: { nome: "asc" } }),
+    prisma.registroTempo.findMany({
+      where: { fimEm: { not: null }, inicioEm: { gte: new Date(Date.parse(`${hoje}T00:00:00Z`) - 120 * 86_400_000) } },
+      select: { autor: true, autorEmail: true },
+      distinct: ["autorEmail"],
+      orderBy: { autor: "asc" },
+    }),
+  ]);
 
   const total = linhas.reduce((s, l) => s + l.minutos, 0);
   const atencao = linhas.filter((l) => l.situacao === "atencao" || l.situacao === "estourado");
@@ -106,6 +120,51 @@ export default async function HorasPorClientePage({
       {fechamento.length > 0 && (
         <FechamentoMensal mes={mes} rotuloMes={rotuloMes} linhas={fechamento} emailAtivo={emailConfigurado()} />
       )}
+
+      <section className="overview-section" aria-labelledby="espelho-titulo">
+        <h2 id="espelho-titulo">Espelho de horas em PDF</h2>
+        <p className="save-note">
+          Gera o PDF das horas lançadas no período (uma tabela por semana, por demanda e consultor) para enviar ao
+          cliente. Abre em outra aba; nada é enviado por aqui.
+        </p>
+        <form className="campos-linha" action="/api/financeiro/horas/pdf" method="get" target="_blank">
+          <div className="field grow">
+            <label htmlFor="espelho-cliente">Cliente</label>
+            <select id="espelho-cliente" name="clientId" required defaultValue="">
+              <option value="" disabled>
+                Escolha…
+              </option>
+              {clientesDoEspelho.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.nome}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="field">
+            <label htmlFor="espelho-desde">De</label>
+            <input id="espelho-desde" type="date" name="desde" required defaultValue={padrao.desde} max={hoje} />
+          </div>
+          <div className="field">
+            <label htmlFor="espelho-ate">Até</label>
+            <input id="espelho-ate" type="date" name="ate" required defaultValue={padrao.ate} />
+          </div>
+          <div className="field">
+            <label htmlFor="espelho-consultor">Consultor</label>
+            <select id="espelho-consultor" name="consultor" defaultValue="">
+              <option value="">Todos</option>
+              {consultores.map((c) => (
+                <option key={c.autorEmail} value={c.autorEmail}>
+                  {c.autor || c.autorEmail}
+                </option>
+              ))}
+            </select>
+          </div>
+          <button type="submit" className="btn-primary">
+            Gerar PDF
+          </button>
+        </form>
+      </section>
 
       {linhas.length === 0 ? (
         <div className="overview-empty ok">Nenhum cliente cadastrado ainda.</div>
