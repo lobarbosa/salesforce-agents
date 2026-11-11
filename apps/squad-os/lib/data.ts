@@ -71,6 +71,8 @@ export function getDemandasByClient(clientId: string) {
         where: { concluidoEm: null },
         select: { tipo: true, gate: true, autor: true, disparadoEm: true, concluidoEm: true },
       },
+      // Tipo do contrato: aprovação de horas pelo cliente só existe em AMS.
+      client: { select: { contrato: { select: { tipo: true } } } },
     },
   });
 }

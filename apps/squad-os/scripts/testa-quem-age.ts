@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { acoesPendentes, estadoDoClienteDemanda, situacaoParaCliente } from "../lib/demandas";
+import { acoesPendentes, estadoDoClienteDemanda, estimativaLiberaBuild, situacaoParaCliente } from "../lib/demandas";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -57,6 +57,17 @@ caso("cliente: aprovar horas é a vez dele; gate interno é 'em revisão pela eq
   const semPendencia = { ...base, estimativaAprovadaHoras: 10 };
   assert.equal(estadoDoClienteDemanda(semPendencia), "andamento");
   assert.equal(situacaoParaCliente(semPendencia), "Em revisão pela equipe");
+});
+
+caso("contrato de projeto: ninguém espera o cliente aprovar horas", () => {
+  const projeto = { client: { contrato: { tipo: "projeto" } } };
+  assert.deepEqual(quem(projeto), ["time:aprovar design"]);
+  assert.equal(estadoDoClienteDemanda({ ...base, ...projeto }), "andamento");
+  assert.ok(estimativaLiberaBuild({ ...base, ...projeto }));
+  // AMS e contrato não informado continuam exigindo.
+  assert.ok(!estimativaLiberaBuild({ ...base, client: { contrato: { tipo: "ams" } } }));
+  assert.ok(!estimativaLiberaBuild(base));
+  assert.ok(estimativaLiberaBuild({ ...base, estimativaAprovadaHoras: 10, client: { contrato: { tipo: "ams" } } }));
 });
 
 if (falhas) {

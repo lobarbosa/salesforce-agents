@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { travar } from "@/lib/trava";
 import { runsAtivosDoCliente, triggerRunDemand } from "@/lib/github";
-import { estimativaAprovada } from "@/lib/demandas";
+import { estimativaLiberaBuild } from "@/lib/demandas";
 
 const NOTA_ESPERA_ESTIMATIVA = "esperando o cliente aprovar a estimativa de horas";
 
@@ -70,7 +70,14 @@ export async function processarFila(clientId: string, opcoes: { excetoRunUrl?: s
       const pendentes = await tx.disparoEsteira.findMany({
         where: { clientId, disparadoEm: null, concluidoEm: null },
         orderBy: { criadoEm: "asc" },
-        include: { demanda: { select: { code: true, status: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true } } },
+        include: {
+          demanda: {
+            select: {
+              code: true, status: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true,
+              client: { select: { contrato: { select: { tipo: true } } } },
+            },
+          },
+        },
       });
       for (const p of pendentes) {
         if (p.tipo === "aprovar" && p.demanda.status !== p.gate) {
@@ -80,10 +87,10 @@ export async function processarFila(clientId: string, opcoes: { excetoRunUrl?: s
           });
           continue;
         }
-        // Build só com a estimativa aprovada pelo cliente: a aprovação do
+        // Build só com a estimativa aprovada pelo cliente (AMS): a aprovação do
         // gate fica guardada na fila e sai quando ele aprovar (a rota de
         // aprovação chama processarFila de novo).
-        if (p.tipo === "aprovar" && p.gate === "aguardando_gate_design" && !estimativaAprovada(p.demanda)) {
+        if (p.tipo === "aprovar" && p.gate === "aguardando_gate_design" && !estimativaLiberaBuild(p.demanda)) {
           if (p.nota !== NOTA_ESPERA_ESTIMATIVA) {
             await tx.disparoEsteira.update({ where: { id: p.id }, data: { nota: NOTA_ESPERA_ESTIMATIVA } });
           }

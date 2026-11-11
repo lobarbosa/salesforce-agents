@@ -20,7 +20,7 @@ export interface DemandaParaParada {
   artefatoNome: string;
   artefatoConteudo: string;
   disparos: { tipo: string; gate: string; disparadoEm: Date | null; concluidoEm: Date | null }[];
-  client: { nome: string };
+  client: { nome: string; contrato?: { tipo: string } | null };
 }
 
 export interface Parada {

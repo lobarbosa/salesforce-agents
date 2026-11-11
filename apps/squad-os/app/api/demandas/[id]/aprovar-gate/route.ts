@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { processarFila } from "@/lib/fila-esteira";
-import { GATE_DO_CLIENTE, estimativaAprovada, marcadorDeGate } from "@/lib/demandas";
+import { GATE_DO_CLIENTE, estimativaLiberaBuild, marcadorDeGate } from "@/lib/demandas";
 import { travar } from "@/lib/trava";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { exigeRiscoAceito } from "@/lib/qa-veredito";
@@ -28,7 +28,7 @@ export async function POST(
 
   const demanda = await prisma.demanda.findUnique({
     where: { id },
-    include: { client: { select: { slug: true, nome: true, encerradoEm: true } } },
+    include: { client: { select: { slug: true, nome: true, encerradoEm: true, contrato: { select: { tipo: true } } } } },
   });
   if (!demanda) {
     return NextResponse.json({ error: "demanda não encontrada" }, { status: 404 });
@@ -59,8 +59,9 @@ export async function POST(
   }
 
   // Build só com a estimativa aprovada pelo cliente (2026-10-21): é o número
-  // que vai debitar do contrato quando a construção começar.
-  if (demanda.status === "aguardando_gate_design" && !estimativaAprovada(demanda)) {
+  // que vai debitar do contrato quando a construção começar. Só em AMS —
+  // contrato de projeto não tem horas para o cliente aprovar.
+  if (demanda.status === "aguardando_gate_design" && !estimativaLiberaBuild(demanda)) {
     return NextResponse.json(
       {
         error:

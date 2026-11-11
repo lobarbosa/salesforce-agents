@@ -36,7 +36,10 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     return NextResponse.json({ error: "decisão inválida" }, { status: 400 });
   }
 
-  const d = await prisma.demanda.findUniqueOrThrow({ where: { id } });
+  const d = await prisma.demanda.findUniqueOrThrow({
+    where: { id },
+    include: { client: { select: { contrato: { select: { tipo: true } } } } },
+  });
   if (!aguardaAprovacaoEstimativa(d)) {
     return NextResponse.json({ error: "não há estimativa esperando aprovação nesta demanda" }, { status: 409 });
   }
