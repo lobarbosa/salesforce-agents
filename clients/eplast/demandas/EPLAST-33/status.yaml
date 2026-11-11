@@ -2,7 +2,7 @@ id: EPLAST-33
 client: eplast
 titulo: Cross-sell, aumento de volume e recuperação de clientes
 tipo: projeto
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -21,3 +21,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-11-10T01:44:52.266978+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-11T16:03:49.947684+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T16:15:30.050420+00:00'
