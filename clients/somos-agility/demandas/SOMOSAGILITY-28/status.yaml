@@ -2,10 +2,22 @@ id: SOMOSAGILITY-28
 client: somos-agility
 titulo: Acessar o objeto solicitação de treinamento
 tipo: sustentacao
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-11T15:40:05.756Z'
 historico:
-  - de: null
-    em: '2026-11-11T15:40:05.751Z'
-    para: backlog
-    autor: Fernando Paula
+- de: null
+  em: '2026-11-11T15:40:05.751Z'
+  para: backlog
+  autor: Fernando Paula
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-11T18:21:27.182512+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-11T18:23:37.460554+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-11T18:23:45.598003+00:00'
