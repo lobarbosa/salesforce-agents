@@ -38,15 +38,14 @@ falta para ele existir.
 - **`sf org list`** (rodado agora, nesta sessão):
 
   ```
-  Type     Alias           Username                           Org Id              Status
-  Sandbox  sbx-eplast-dev  projetos@konectabr.com.eplast2.qa  00DHa000006vfMLMAY  Connected
+  Type     Alias           Org Id              Status
+  Sandbox  sbx-eplast-dev  00DHa000006vfMLMAY  Connected
   ```
 
   Só `sbx-eplast-dev` está autenticada neste runner. `sbx-eplast-qa` não
-  aparece. O próprio username contém `.eplast2.qa`, o que é consistente com o
-  risco 5 do design ("`sbx-eplast-dev` pode ser a mesma sandbox que
-  `sbx-eplast-qa`") — não consegui confirmar nem descartar isso só pelo
-  username, precisa de confirmação humana (Org Id de `sbx-eplast-qa` não
+  aparece — não consegui confirmar nem descartar o risco 5 do design
+  ("`sbx-eplast-dev` pode ser a mesma sandbox que `sbx-eplast-qa`") a partir
+  daqui, precisa de confirmação humana (Org Id de `sbx-eplast-qa` não
   disponível para comparar neste runner).
 
 ## Decisão deste agente
