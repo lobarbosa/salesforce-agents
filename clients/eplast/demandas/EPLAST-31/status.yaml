@@ -2,7 +2,7 @@ id: EPLAST-31
 client: eplast
 titulo: Previsão de vendas por vendedor, região, carteira e período
 tipo: projeto
-status: build
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -37,3 +37,7 @@ historico:
   para: build
   autor: Carlos Sordi
   em: '2026-11-11T22:05:44.014209+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-11T22:11:31.131434+00:00'
