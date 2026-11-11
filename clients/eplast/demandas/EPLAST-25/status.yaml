@@ -2,10 +2,34 @@ id: EPLAST-25
 client: eplast
 titulo: Medição do piloto de IA contra o baseline (até 10 usuários)
 tipo: projeto
-status: backlog
+status: aguardando_gate_design
 criado_em: '2026-10-30T01:17:19.419Z'
 historico:
-  - de: null
-    em: '2026-10-30T01:17:19Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-10-30T01:17:19Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:50:24.881435+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:52:46.484501+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:53:14.527136+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-11T16:24:36.615023+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T16:31:13.602178+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T16:31:23.457269+00:00'
