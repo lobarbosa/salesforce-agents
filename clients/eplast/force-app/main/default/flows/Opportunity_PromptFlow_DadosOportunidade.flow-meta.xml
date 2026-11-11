@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <assignments>
+        <name>Set_Texto_Oportunidade</name>
+        <label>Montar texto da oportunidade</label>
+        <locationX>176</locationX>
+        <locationY>360</locationY>
+        <assignmentItems>
+            <assignToReference>TextoOportunidade</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Nome da oportunidade: {!varOportunidadeAtual.Name}
+Conta: {!varOportunidadeAtual.Account.Name}
+Segmento da conta (Industry): {!varOportunidadeAtual.Account.Industry}
+Tipo de conta: {!varOportunidadeAtual.Account.Type}
+Cidade / UF da conta: {!varOportunidadeAtual.Account.BillingCity} / {!varOportunidadeAtual.Account.BillingState}
+Etapa (StageName): {!varOportunidadeAtual.StageName}
+Data prevista de fechamento (CloseDate): {!varOportunidadeAtual.CloseDate}
+Valor (Amount): {!varOportunidadeAtual.Amount}
+Probabilidade: {!varOportunidadeAtual.Probability}
+Próximo passo (NextStep): {!varOportunidadeAtual.NextStep}
+Descrição da oportunidade: {!varOportunidadeAtual.Description}
+Tipo de oportunidade: {!varOportunidadeAtual.Type}
+Origem (LeadSource): {!varOportunidadeAtual.LeadSource}
+Fechada: {!varOportunidadeAtual.IsClosed}
+Ganha: {!varOportunidadeAtual.IsWon}
+Data da última atividade (LastActivityDate): {!varOportunidadeAtual.LastActivityDate}
+</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Oportunidade</targetReference>
+        </connector>
+    </assignments>
+    <description>EPLAST-30. Grounding declarativo, só leitura, para os 3 Flex prompt templates de rascunho comercial. Lê campos padrão de Opportunity e da Account relacionada e devolve um texto estruturado. Zero DML. Usa Get Records em modo coleção + loop de 1 item (em vez de "primeiro registro"), porque "primeiro registro + registros relacionados" quebrou com erro interno do servidor em sbx-eplast-dev nesta etapa de build (ver 04-plano-build.md). Criado durante o build porque o input direto de SObject (sobject://Opportunity) no GenAiPromptTemplate também havia causado erro de servidor. Ver demandas/EPLAST-30/03-design.md, seções 2 e 3.</description>
+    <environments>Default</environments>
+    <interviewLabel>Opportunity_PromptFlow_DadosOportunidade {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity - Prompt Flow - Dados da Oportunidade</label>
+    <loops>
+        <name>Loop_Oportunidade</name>
+        <label>Percorrer oportunidade (no máximo 1 item)</label>
+        <locationX>176</locationX>
+        <locationY>240</locationY>
+        <assignNextValueToReference>varOportunidadeAtual</assignNextValueToReference>
+        <collectionReference>Get_Oportunidade</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Set_Texto_Oportunidade</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>PromptFlow</processType>
+    <recordLookups>
+        <name>Get_Oportunidade</name>
+        <label>Obter oportunidade</label>
+        <locationX>176</locationX>
+        <locationY>120</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Oportunidade</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <limit>
+            <numberValue>2.0</numberValue>
+        </limit>
+        <object>Opportunity</object>
+        <relatedRecords>
+            <queriedFields>Name</queriedFields>
+            <queriedFields>Industry</queriedFields>
+            <queriedFields>Type</queriedFields>
+            <queriedFields>BillingCity</queriedFields>
+            <queriedFields>BillingState</queriedFields>
+            <relatedObject>Account</relatedObject>
+            <relationshipField>Account</relationshipField>
+        </relatedRecords>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Oportunidade</targetReference>
+        </connector>
+        <triggerType>Capability</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>TextoOportunidade</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varOportunidadeAtual</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>
