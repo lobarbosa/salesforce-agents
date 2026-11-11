@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
       estimativaDebitadaEm: true,
       artefatoNome: true,
       disparos: { select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true } },
-      client: { select: { nome: true } },
+      client: { select: { nome: true, contrato: { select: { tipo: true } } } },
     },
   });
   const porCode = new Map(demandas.map((d) => [d.code, d.clientId]));

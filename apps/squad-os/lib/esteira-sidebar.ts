@@ -24,6 +24,7 @@ export async function esteiraPorCliente(clientIds: string[]): Promise<Record<str
       congeladaDe: true,
       estimativaConsultorHoras: true,
       estimativaAprovadaHoras: true,
+      client: { select: { contrato: { select: { tipo: true } } } },
       disparos: {
         where: { concluidoEm: null },
         select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true },

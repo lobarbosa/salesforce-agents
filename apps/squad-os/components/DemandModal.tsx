@@ -24,7 +24,7 @@ import {
   formatarMinutos,
   ESTAGIOS_PARAVEIS,
   gateLiberadoPor,
-  estimativaAprovada,
+  estimativaLiberaBuild,
 } from "@/lib/demandas";
 
 export function DemandModal({
@@ -295,7 +295,7 @@ export function DemandModal({
               {liberado ? (
                 <p className="gate-liberado" role="status">
                   Liberado por {liberado.autor}.{" "}
-                  {liberado.naFila && demanda.status === "aguardando_gate_design" && !estimativaAprovada(demanda)
+                  {liberado.naFila && demanda.status === "aguardando_gate_design" && !estimativaLiberaBuild(demanda)
                     ? "O build sai assim que o cliente aprovar a estimativa de horas."
                     : liberado.naFila
                     ? "Na fila da esteira: este cliente já tem uma execução rodando, e esta sai assim que ela terminar."

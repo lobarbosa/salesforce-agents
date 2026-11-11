@@ -33,7 +33,7 @@ export function criarFerramentasEsteira({ usuario }: { usuario: CurrentUsuario }
             estimativaDebitadaEm: true,
             artefatoNome: true,
             disparos: { select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true } },
-            client: { select: { nome: true, encerradoEm: true } },
+            client: { select: { nome: true, encerradoEm: true, contrato: { select: { tipo: true } } } },
           },
         });
         // O texto do artefato pode ter dezenas de KB por demanda; só o

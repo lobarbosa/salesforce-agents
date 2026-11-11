@@ -383,6 +383,24 @@ export const ESTAGIOS_DE_DEBITO: readonly string[] = [
 // fora: ali o timesheet já mediu o que foi gasto.
 const ESTAGIOS_APROVACAO_TARDIA: readonly string[] = ["build", "aguardando_gate_build", "qa", "aguardando_homologacao", "release"];
 
+// Aprovação de horas é coisa de AMS (2026-11-11): lá a estimativa aprovada
+// debita do balde de horas. Em contrato de projeto o escopo já foi vendido
+// fechado — não há balde, e pedir ao cliente para aprovar horas de cada
+// demanda travava o build à toa. Só "projeto" explícito isenta: sem o tipo
+// na mão (query que esqueceu de trazer o contrato) a regra continua valendo.
+type ComContrato = { client?: { contrato?: { tipo: string } | null } | null };
+
+export function exigeAprovacaoDoCliente(d: ComContrato): boolean {
+  return d.client?.contrato?.tipo !== "projeto";
+}
+
+/** O gate de design pode liberar o build? (projeto: sempre; AMS: com as horas aprovadas) */
+export function estimativaLiberaBuild(
+  d: ComContrato & { estimativaConsultorHoras: number | null; estimativaAprovadaHoras: number | null }
+): boolean {
+  return !exigeAprovacaoDoCliente(d) || estimativaAprovada(d);
+}
+
 /** A aprovação existe e é do número que está no card agora. */
 export function estimativaAprovada(d: {
   estimativaConsultorHoras: number | null;
@@ -392,13 +410,14 @@ export function estimativaAprovada(d: {
 }
 
 /** O cliente pode decidir sobre a estimativa agora? (inclui a segurada por ele) */
-export function aguardaAprovacaoEstimativa(d: {
+export function aguardaAprovacaoEstimativa(d: ComContrato & {
   status: string;
   congeladaDe?: string | null;
   estimativaConsultorHoras: number | null;
   estimativaAprovadaHoras: number | null;
   estimativaDebitadaEm?: Date | string | null;
 }): boolean {
+  if (!exigeAprovacaoDoCliente(d)) return false;
   if (d.estimativaConsultorHoras == null || estimativaAprovada(d)) return false;
   const etapa = d.status === "standby" ? d.congeladaDe ?? "" : d.status;
   if (ESTAGIOS_APROVACAO_ESTIMATIVA.includes(etapa)) return true;
@@ -421,7 +440,7 @@ export interface AcaoPendente {
   oque: string;
 }
 
-interface DemandaParaQuemAge {
+interface DemandaParaQuemAge extends ComContrato {
   status: string;
   congeladaDe?: string | null;
   estimativaConsultorHoras: number | null;
