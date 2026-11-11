@@ -350,6 +350,10 @@ Cada card mostra horas de consultor, horas de agente, o total das duas, e custo 
   **vira o consumo do contrato** naquele mês (`horasPorMes`), uma vez só; o timesheet dela
   deixa de debitar e passa a medir o desvio (excedente aparece no card, não debita).
   Demandas sem aprovação (anteriores à regra) seguem debitando pelo timesheet.
+  **Só em AMS** (2026-11-11): em contrato de projeto o escopo já foi vendido fechado e não
+  há balde de horas, então o cliente não aprova horas e o gate de design libera o build
+  direto (`exigeAprovacaoDoCliente` em `lib/demandas.ts`). A estimativa do consultor
+  continua existindo ali, para o apontamento e a calibração.
 - **Custo de agente (USD)** — conta, não opinião: o gasto da demanda pela telemetria
   acima, mais a mediana por etapa do que ainda falta (valor de partida declarado enquanto
   não há 3 amostras). **Só admin vê**: a página recorta para os demais papéis
