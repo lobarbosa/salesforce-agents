@@ -20,9 +20,12 @@ homologação de algo que não existe.
 
 ```
 $ sf org list
-Type     Alias          Username                            Org Id              Status
-Sandbox  sbx-eplast-qa  projetos@konectabr.com.eplast2.qas  00DHa000006vZtmMAE  Connected
+Type     Alias          Org Id              Status
+Sandbox  sbx-eplast-qa  00DHa000006vZtmMAE  Connected
 ```
+
+(Username omitido do registro — guardrail #2: formato de e-mail não entra no artefato. A org é
+citada pelo alias e pelo Org Id, que bastam para a identificação técnica abaixo.)
 
 Só `sbx-eplast-qa` está autenticada neste runner — consistente com a doutrina (guardrail
 #1: a partir da etapa `qa` a demanda já vive na sandbox de QA). É essa a org usada abaixo
@@ -31,19 +34,19 @@ como "Org de teste".
 ### Observação sobre o risco 5 do design (dev × qa podem ser a mesma sandbox)
 
 `03-design.md` e o `assessment.md` (achado 6) registram a dúvida: o alias `sbx-eplast-dev`
-aponta para uma sandbox cujo username/instância se identificam como "qa"
-(`projetos@konectabr.com.eplast2.qa`, `https://eplast--qa.sandbox.my.salesforce.com`), e
-isso levanta a pergunta se `sbx-eplast-dev` e `sbx-eplast-qa` são a mesma sandbox física.
+aponta para uma sandbox cuja instância se identifica como "qa"
+(`https://eplast--qa.sandbox.my.salesforce.com`), e isso levanta a pergunta se
+`sbx-eplast-dev` e `sbx-eplast-qa` são a mesma sandbox física. (Username omitido aqui também
+— guardrail #2.)
 
 Nesta sessão, `sf org display --target-org sbx-eplast-qa` retornou:
 
 ```
 instanceUrl: https://eplast--qas.sandbox.my.salesforce.com
-username:    projetos@konectabr.com.eplast2.qas
 id:          00DHa000006vZtmMAE
 ```
 
-Note o **"qas" com "s"** (instância e username), diferente do **"qa" sem "s"** registrado
+Note o **"qas" com "s"** (instância), diferente do **"qa" sem "s"** registrado
 para `sbx-eplast-dev` em `04-plano-build.md` (Org Id `00DHa000006vfMLMAY` ali, diferente do
 Org Id acima). São nomes parecidos mas distintos, e os Org Ids não batem — isso é **evidência
 de que são sandboxes diferentes**, não a mesma. Dito isso, essa comparação foi feita a
