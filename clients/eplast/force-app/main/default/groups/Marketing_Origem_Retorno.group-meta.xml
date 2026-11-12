@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Group xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-39. Grupo publico, destino do compartilhamento das pastas de relatorio/dashboard C1/C2 (03-design.md C3).</description>
+    <doesIncludeBosses>false</doesIncludeBosses>
+    <name>Origem e Retorno de Campanhas</name>
+</Group>
+
