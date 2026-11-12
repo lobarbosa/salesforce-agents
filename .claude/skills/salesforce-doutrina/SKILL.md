@@ -38,6 +38,57 @@ custo de manutenção em projeto Salesforce.
   em QA (achado SOMOSAGILITY-10, `ValidaJOB`). Fixture de teste preenche todo campo exigido
   por validation rule do objeto, não só os que a regra da demanda usa.
 
+## Relatórios e painéis por metadata
+Achado EPLAST-39 (2026-11-12): 5 relatórios e 1 painel custaram quatro vezes um build
+normal, porque o formato foi descoberto deployando e lendo o erro — e o QA ainda reprovou
+o painel. XML de relatório e painel não tem validação local; o que segue foi confirmado
+por erro real de deploy ou por execução na org (API 68.0, Enterprise Edition). Vale como
+ponto de partida, não como referência completa.
+
+**Antes de escrever o XML**
+- Parta de um exemplo da própria org: faça retrieve de um relatório que já use o recurso
+  (filtro relativo de data, bucket, fórmula) e copie a sintaxe dele. Não adivinhe valor de
+  enum: `INTERVAL_THISFISCALQUARTER` e `INTERVAL_THIS_FISCAL_QUARTER` foram os dois
+  recusados em `<timeFrameFilter>` (`UserDateInterval`). Duas tentativas recusadas no
+  mesmo campo → pare, tire o item e registre como pendência no plano de build.
+- Confira o tipo de relatório pelo describe
+  (`/services/data/vNN.0/analytics/report-types/<Tipo>`) antes de desenhar: ele diz as
+  colunas que existem (o `ROI` nativo de `CampaignList` dispensou fórmula própria e já
+  não divide por custo zero) e se o usuário da esteira tem acesso — `CampaignInfluence`
+  existe, mas respondeu "sem permissão aos objetos" e o relatório saiu do escopo.
+- `scope` depende do tipo de relatório: `Opportunity` recusou `org` e aceitou `team`;
+  `OpportunityLead` aceita `org`. Copie o `scope` de um relatório existente do mesmo tipo.
+- `ReportFolder` e `DashboardFolder` não aceitam `<description>`; `Group` aceita.
+
+**Bucket sobre picklist**
+- `bucketType` tem de casar com o tipo da coluna de origem: `text` sobre picklist é
+  recusado.
+- Entrada de bucket para valor vazio (`<sourceValues/>`) com `bucketType` `picklist` deu
+  erro interno opaco. Sem ela, o nulo aparece no relatório com rótulo `-`, não com o
+  texto que o critério de aceite pedir. Se o critério exige um rótulo ("Sem origem"),
+  diga no design que isso é ajuste manual na tela (renomear o grupo), não metadata.
+- `otherBucketLabel` não consolidou valores fora da lista numa picklist não restrita:
+  cada valor solto virou um grupo próprio. Não prometa a linha única "Fora da lista".
+
+**Relatório que alimenta painel**
+- Componente de gráfico exige relatório de **resumo ou matriz** (com `groupingsDown`), ou
+  tabular com limite de linhas e "Configurações do Painel". Tabular puro dá erro 209
+  permanente no componente, com qualquer volume de dado. Decida o formato de cada
+  relatório no design já sabendo qual componente ele alimenta.
+- O teto de painéis dinâmicos (`LoggedInUser`) presumido no design não se confirmou no
+  deploy: confirme limite de edição pelo erro real, não por suposição.
+- Deploy com sucesso não prova que o painel renderiza. Ainda no build, confira cada
+  componente pela Analytics API (`/analytics/dashboards/<id>`): `errorCode` ou `NO_DATA`
+  em todos os componentes é defeito de build, não achado para o QA.
+
+**No QA**
+- O navegador da esteira não clica dentro do iframe do visualizador de relatório e
+  painel. Teste pela Analytics API (`/analytics/reports/<id>`), lendo só rótulos e
+  contagens agregadas (guardrail #2).
+- Sandbox sem registro no objeto não testa relatório: o recon conta os registros dos
+  objetos envolvidos, e o design diz de onde vem o dado de teste (sintético, e quem o
+  apaga depois).
+
 ## Ordem de execução (resumo operacional)
 Validação de sistema → before-save Flows → before triggers → validation rules custom →
 duplicate rules → gravação (sem commit) → after triggers → assignment/auto-response →
