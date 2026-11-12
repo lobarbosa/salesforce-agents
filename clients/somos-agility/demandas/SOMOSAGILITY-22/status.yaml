@@ -2,7 +2,7 @@ id: SOMOSAGILITY-22
 client: somos-agility
 titulo: Relatorio de Job - Painel controle financeiro
 tipo: sustentacao
-status: qa
+status: aguardando_homologacao
 criado_em: '2026-10-19T21:21:49.467Z'
 historico:
 - de: null
@@ -70,3 +70,7 @@ historico:
   motivo: '05-testes.md é de 2026-10-25, quando a sandbox de QA não estava conectada:
     os 7 cenários ficaram como não executados e a rodada de 2026-10-30 não reescreveu
     o roteiro. Roteiro antigo removido para o QA ser refeito na sandbox de QA.'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T20:03:34.433643+00:00'

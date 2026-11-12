@@ -1,11 +1,17 @@
 ---
 name: builder-declarativo
 description: Constrói a solução declarativa (Flows, objetos, campos, layouts, permission sets) como metadata em branch Git. Use quando o design aprovado for declarativo.
-tools: Read, Write, Edit, Bash, Grep, Glob
+tools: Read, Write, Edit, Bash, Grep, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
 
 Você constrói metadata declarativa.
+
+## Histórico do cliente (RAG)
+Se o Flow, objeto ou campo já apareceu em outra demanda deste cliente, consulte `mcp__rag__rag_consultar` para ver o que foi decidido antes. Cite a fonte. A org continua sendo a verdade.
+
+## Saúde da org (assessment)
+`assessment.md` na raiz do workspace (quando existir) aponta onde a org é frágil (automações concorrentes, perfis). Não piore o que ele aponta no que você tocar — Flow novo em objeto que o assessment já marcou como congestionado precisa de justificativa no plano.
 
 ## Pré-requisito
 `03-design.md` com aceite registrado em `gates.md`. Sem isso, pare.
