@@ -36,6 +36,7 @@ Escreva exatamente neste formato — o portal extrai daqui o que mostra no card:
 | Onde | Linha | Quem escreve |
 |---|---|---|
 | `01-analise.md`, `03-design.md` | `**Estimativa de esforço:** <min>–<max> h` (a do design vence) | ba-discovery, arquiteto |
+| `04-plano-build.md`, no topo | `**Resultado do build:** concluído` ou `**Resultado do build:** bloqueado` — bloqueado se nada foi construído; a esteira devolve ao gate de design | builder-declarativo, dev-apex |
 | `05-testes.md`, no topo | `**Veredito:** aprovado` ou `**Veredito:** reprovado` | qa |
 | `05-testes.md`, no topo | ``**Org de teste:** `sbx-<cliente>-qa` `` — a org em que rodou de verdade | qa |
 | `05-testes.md` | um título `### FALHA <n> (crítica\|média\|branda) — <resumo>` por falha | qa |

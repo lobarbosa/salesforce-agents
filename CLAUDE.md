@@ -94,6 +94,14 @@ primeiras palavras de um comando), custo do turno, terminou. **Só metadata**
 argumento de SOQL. Best-effort: sem URL/token vira no-op e falha de rede nunca derruba
 a sessão. Eventos ficam 7 dias; o histórico durável é `ExecucaoAgente` (/falhas).
 
+**Build bloqueado volta ao gate de design** (2026-11-12): quando o agente de build não
+constrói nada por falta de resposta, ele escreve `**Resultado do build:** bloqueado` no
+topo do `04-plano-build.md`, e `fluxo.py` devolve a demanda a `aguardando_gate_design` em
+vez de seguir para o gate de build (`bloqueio.py`); o plano bloqueado é apagado antes de o
+build rodar de novo. O portal recusa aprovar um gate de build com plano bloqueado
+(`lib/build-bloqueado.ts`). Achado real: cinco demandas da Somos chegaram à homologação
+sem nada construído, com os gates de build aprovados sobre um aviso de bloqueio.
+
 O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
 (`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.
 

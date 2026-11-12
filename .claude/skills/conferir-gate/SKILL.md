@@ -45,12 +45,19 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 - O design dimensiona o volume **por registro pai**, não só a carga em massa? Quantos
   filhos um pai chega a ter e quantas automações o pai já tem? Foi isso que passou batido
   na SOMOSAGILITY-10 e só apareceu no QA (CPU estourado com 150 lançamentos).
-- A estimativa de horas do card foi aprovada **pelo cliente**? Sem isso, aprovar o design
+- O design declara pergunta em aberto que **bloqueia o build**? Então não aprove ainda:
+  cobre a resposta no card primeiro. Aprovar assim só faz o build voltar bloqueado para
+  este mesmo gate (achado Somos Agility, 2026-11-12: cinco demandas foram até a
+  homologação sem nada construído).
+- Em contrato AMS, a estimativa de horas do card foi aprovada **pelo cliente**? Sem isso, aprovar o design
   não libera o build — a aprovação fica na fila esperando. Só o cliente aprova horas;
   o time não aprova por ele.
 
 ## Gate de PR (`aguardando_gate_build`)
 
+- O plano abre com `**Resultado do build:** concluído`? Plano que diz "bloqueado" não é
+  PR para revisar: a esteira devolve a demanda ao gate de design e o portal recusa a
+  aprovação aqui.
 - O PR abre contra `feature/<DEMAND-ID>` (nunca direto em `main`) e os checks de CI estão
   verdes: `ci-python.yml`/`ci-squad-os.yml` conforme o que mudou, e
   `ci-salesforce-validate.yml` (deploy validate, check-only) se `force-app` mudou.

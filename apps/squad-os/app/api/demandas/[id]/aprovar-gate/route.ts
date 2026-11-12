@@ -6,6 +6,7 @@ import { GATE_DO_CLIENTE, estimativaLiberaBuild, marcadorDeGate } from "@/lib/de
 import { travar } from "@/lib/trava";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { exigeRiscoAceito } from "@/lib/qa-veredito";
+import { gateDeBuildBloqueado } from "@/lib/build-bloqueado";
 
 // O gate humano deixa de ser "aprova aqui e alguém dispara o pipeline lá":
 // aprovar no card move a demanda e acende a próxima sessão de agente.
@@ -68,6 +69,17 @@ export async function POST(
           demanda.estimativaConsultorHoras == null
             ? "lance a estimativa oficial no card — o cliente precisa aprová-la antes do build"
             : "o cliente ainda não aprovou a estimativa de horas — o build só sai depois disso",
+      },
+      { status: 409 }
+    );
+  }
+  // Plano de build que só registra o bloqueio não é PR para revisar: aprovar
+  // levaria ao QA uma demanda sem nada construído (lib/build-bloqueado.ts).
+  if (gateDeBuildBloqueado(demanda)) {
+    return NextResponse.json(
+      {
+        error:
+          "o build desta demanda está bloqueado — nada foi construído. Responda as pendências no card e devolva a demanda ao gate de design; aprovar aqui a levaria ao QA vazia",
       },
       { status: 409 }
     );

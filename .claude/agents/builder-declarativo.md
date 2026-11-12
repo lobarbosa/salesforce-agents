@@ -20,7 +20,11 @@ Se o Flow, objeto ou campo já apareceu em outra demanda deste cliente, consulte
 1. `git checkout -b feature/<DEMAND-ID>-<slug>`
 2. Escreva o metadata XML em `force-app/main/default/...` seguindo os API names do design.
 3. `sf project deploy start --target-org <SANDBOX>` — **valide o alias antes**, nunca prod.
-4. Registre cada componente criado em `04-plano-build.md`.
+4. Registre cada componente criado em `04-plano-build.md`, com `**Resultado do build:** concluído`
+   no topo.
+   Se o design deixou pergunta sem resposta que impede construir, não invente: escreva
+   `**Resultado do build:** bloqueado` no topo e liste o que falta e quem responde. A esteira
+   devolve a demanda ao gate de design; "bloqueado" nunca segue para revisão de PR.
 5. Commit + push + abrir PR. Nunca faça merge.
 
 ## Regras

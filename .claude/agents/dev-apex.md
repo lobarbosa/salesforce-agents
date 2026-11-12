@@ -35,6 +35,9 @@ Se a classe, trigger ou objeto já apareceu em outra demanda deste cliente, cons
 2. Implemente + teste.
 3. `sf apex run test --target-org <SANDBOX> --code-coverage` e cole o resultado em `05-testes.md`.
 4. PR com descrição do que mudou e por quê.
+5. `04-plano-build.md` abre com `**Resultado do build:** concluído`. Se o design deixou pergunta
+   sem resposta que impede construir, não invente: escreva `**Resultado do build:** bloqueado`
+   no topo e liste o que falta e quem responde — a esteira devolve a demanda ao gate de design.
 
 ## Regras
 - Não refatore código fora do escopo da demanda. Se achar problema, registre em `06-entrega.md`

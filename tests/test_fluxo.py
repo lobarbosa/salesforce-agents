@@ -235,3 +235,65 @@ def test_demanda_congelada_ou_cancelada_nao_roda_nada(tmp_path, monkeypatch):
         assert parada.motivo == "fim" and parada.etapa == status
         assert demands.Demand.load("acme", d.id).status == status
     assert chamadas == []
+
+
+# --- build bloqueado ----------------------------------------------------
+
+
+def _executor_de_build(texto):
+    def executor(client, demand_id, etapa):
+        base = demands.CLIENTS_ROOT / client / "demandas" / demand_id
+        (base / "04-plano-build.md").write_text(texto, encoding="utf-8")
+
+    return executor
+
+
+def test_build_bloqueado_volta_ao_gate_de_design(repo):
+    """Achado Somos Agility 2026-11-12: build que só registrou o bloqueio seguia
+    para o gate de build e chegava à homologação sem nada construído."""
+    d = _demanda("build")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_build("**Resultado do build:** bloqueado\n\nFalta D1."))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_design"
+    assert demands.Demand.load("acme", d.id).status == "aguardando_gate_design"
+
+
+def test_build_concluido_segue_para_o_gate_de_build(repo):
+    d = _demanda("build")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_build("**Resultado do build:** concluído\n\n- Flow X"))
+    assert parada.etapa == "aguardando_gate_build"
+
+
+def test_plano_bloqueado_antigo_sai_antes_de_refazer_o_build(repo):
+    """Sessão que não reescreve o plano não pode passar como build feito."""
+    d = _demanda("build")
+    plano = demands.CLIENTS_ROOT / "acme" / "demandas" / d.id / "04-plano-build.md"
+    plano.write_text("# 04 — Build: BLOQUEADO (não é um plano de build concluído)", encoding="utf-8")
+
+    with pytest.raises(demands.ArtifactAusenteError):
+        fluxo.rodar("acme", d.id, executor=lambda *a: None)
+    assert not plano.exists()
+
+
+@pytest.mark.parametrize(
+    "texto",
+    [
+        "**Resultado desta etapa: BUILD BLOQUEADO. Nenhum componente foi criado.**",
+        "# 04 — Build: BLOQUEADO (não é um plano de build concluído)",
+        "## Resultado desta tentativa: build não executado",
+        "## Execução bloqueada até confirmação",
+        "**Status: BUILD BLOQUEADO. Nenhum metadata foi criado ou alterado.**",
+    ],
+)
+def test_planos_antigos_da_somos_sao_lidos_como_bloqueados(texto):
+    from salesforce_agents import bloqueio
+
+    assert bloqueio.build_bloqueado("# 04 — Plano de build\n\n" + texto)
+
+
+def test_plano_normal_nao_e_lido_como_bloqueado():
+    from salesforce_agents import bloqueio
+
+    assert not bloqueio.build_bloqueado("# 04 — Plano de build\n\n## Componentes\n- Flow X\n\nRisco: deploy bloqueado se faltar o campo.")
+    assert not bloqueio.build_bloqueado("**Resultado do build:** concluído\n\n## Execução bloqueada até confirmação")
+    assert not bloqueio.build_bloqueado("## O build não está bloqueado")
