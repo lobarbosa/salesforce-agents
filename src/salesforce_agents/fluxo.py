@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import ambientes, demands, gates
+from . import ambientes, bloqueio, demands, gates
 
 # Etapas de execução que acionam uma sessão de agente. As `aguardando_*` são
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
@@ -43,6 +43,21 @@ DISPARA_SESSAO = frozenset({"analise", "design", "build", "qa", "release"})
 # por botão, varredura ou disparo duplicado na fila. Sem isto, standby caía
 # na regra de triagem abaixo e a análise começava (achado de 2026-10-21).
 PARADOS = frozenset({"standby", "cancelada"})
+
+# Onde o build bloqueado volta: o gate em que alguém decide o design e responde
+# as pendências. Aprovar de novo ali refaz o build.
+GATE_DE_RETORNO_DO_BUILD = "aguardando_gate_design"
+PLANO_DE_BUILD = "04-plano-build.md"
+
+
+def _plano_de_build(d: demands.Demand):
+    return d.path / PLANO_DE_BUILD
+
+
+def _plano_bloqueado(d: demands.Demand) -> bool:
+    plano = _plano_de_build(d)
+    return plano.exists() and bloqueio.build_bloqueado(plano.read_text(encoding="utf-8"))
+
 
 # Autor registrado no histórico quando quem avança é o próprio pipeline. Fica
 # distinguível de uma transição humana ao ler `status.yaml` depois.
@@ -195,8 +210,22 @@ def rodar(
                 f"sem gate — o laço precisa devolver o controle ali."
             )
 
+        # Plano de uma rodada anterior que só registrou o bloqueio sai antes de
+        # o build rodar de novo: com o arquivo em disco, uma sessão que não
+        # reescreve nada passaria como "produziu o artefato" (achado
+        # SOMOSAGILITY-22: QA refeito em 4 min sem tocar no roteiro antigo).
+        if d.status == "build" and _plano_bloqueado(d):
+            _plano_de_build(d).unlink()
+
         executor(client, demand_id, d.status)
         rodadas.append(d.status)
+
+        # Build que declarou bloqueio não construiu nada: volta ao gate de
+        # design em vez de seguir para o gate de build, onde seria aprovado
+        # como se houvesse PR para revisar (ver bloqueio.py).
+        if d.status == "build" and _plano_bloqueado(d):
+            demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
+            continue
 
         prox = proxima_etapa(d.status)
         if prox is None:
