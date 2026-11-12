@@ -2,7 +2,7 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -51,3 +51,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-12T14:01:00.928400+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Carlos Sordi
+  em: '2026-11-12T19:49:32.694478+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T19:55:13.230693+00:00'
