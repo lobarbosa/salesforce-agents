@@ -2,7 +2,7 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -29,3 +29,25 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-10T18:23:06.467120+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-12T13:50:28.835415+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: 'orquestrador (revisão pré-build, 2026-11-12): B0/B1/Q1-Q5 seguem sem resposta
+    registrada — ver addendum em 03-design.md'
+  em: '2026-11-12T13:55:04.821699+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: 'orquestrador: retomando build nesta sessão para produzir 04-plano-build.md
+    (ver seção 0 do plano — nenhuma opção A/B/C/D escolhida, nenhum metadata criado)'
+  em: '2026-11-12T13:57:18.083198+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-12T13:59:55.761396+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-12T14:01:00.928400+00:00'

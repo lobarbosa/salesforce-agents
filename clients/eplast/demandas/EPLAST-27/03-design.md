@@ -238,3 +238,65 @@ O que mudou em relação à análise (8–24 h), e por quê:
 Design pronto. **Gate bloqueante**: preciso do aceite do arquiteto humano para liberar o
 build. Neste caso, minha recomendação explícita é que o aceite cubra apenas as restrições
 D1–D4 e que o build **não** seja liberado enquanto B0 e B1 não tiverem resposta registrada.
+
+---
+
+## Addendum — revisão na entrada da etapa de build (2026-11-12)
+
+O gate `aguardando_gate_design` foi aprovado por Carlos Sordi em
+2026-11-12T13:50:28Z e a demanda avançou para `build` (ver `status.yaml` e
+`gates.md`). Antes de acionar `builder-declarativo`/`dev-apex`, conferi se B0,
+B1 e Q1–Q5 (seção 0 e 9 deste design) tinham resposta registrada em algum
+lugar sincronizado — `comentarios-do-card.md`, `demanda.md`, `contrato.md` —
+porque sem elas não há o que construir sem inventar decisão de negócio
+(guardrail #3, e o mesmo padrão que travou `CustomerSummaryService`/EPLAST-23
+citado na seção B1 acima).
+
+**O que confirmei nesta revisão:**
+
+- `comentarios-do-card.md` só registra as duas aprovações de gate (análise e
+  design), sem nenhuma resposta a B0, B1 ou Q1–Q5.
+- `contrato.md` (materializado pelo `planejador`, não editado à mão) continua
+  listando, hoje, "Ondas 3 (Comercial), 4 (Marketing) e 5 (Integrações e
+  treinamento) ainda não contratadas" — **B0 segue sem confirmação registrada
+  de que a Onda 3 foi autorizada.**
+- Nenhum artefato novo ou editado desde a aprovação do gate (o hash de
+  `03-design.md` e `02-recon.md` em `gates.md` ainda bate com o que está em
+  disco) — ou seja, nada mudou de substância entre a aprovação e agora.
+- B1 (sobreposição com `SFAgent2`/`insights_comerciais` e com
+  `eplast-ent-09/10/11`) segue sem resposta.
+- Nenhuma das opções A/B/C/D da seção 1.2 foi escolhida, e Q1 (lista de ações
+  candidatas e critério de priorização) continua sem resposta. **Isto por si
+  só já impede qualquer build**: não existe regra determinística, tópico de
+  agente, fórmula ou classe Apex possível de escrever sem inventar o que a
+  "próxima melhor ação" significa — independente de como B0/B1 forem
+  resolvidos.
+
+**Decisão desta revisão:** não acionei `builder-declarativo` nem `dev-apex`.
+Construir agora exigiria escolher uma das opções A–D e definir a regra de
+negócio por conta própria, o que a doutrina deste squad proíbe explicitamente
+e que já custou caro uma vez nesta conta (EPLAST-23). Devolvi a demanda para
+`aguardando_gate_design` (reversão de status permitida pelo guardrail #5 do
+`CLAUDE.md` raiz — "corrigir manualmente pra trás... sempre é permitido, sem
+exigir o artefato do estágio abandonado"; nenhum artefato de build foi
+produzido, então não há nada a abandonar). Isto não desfaz nem invalida a
+aprovação já registrada em `gates.md` — ela continua valendo para as
+restrições D1–D4. O que falta é uma aprovação **com as respostas de B0, B1 e
+Q1–Q5 registradas em `comentarios-do-card.md` ou em `contrato.md`** antes do
+build poder começar de fato.
+
+**Para desbloquear, alguém com visibilidade do contrato e do cliente precisa
+responder, no card ou no contrato:**
+
+1. B0 — a Onda 3 foi autorizada para esta demanda entrar em esteira (e
+   `contrato.md` precisa ser atualizado pelo `planejador`), ou a demanda
+   deve voltar para `backlog` como antecipação sem build, ou sair deste
+   projeto?
+2. B1 — EPLAST-27 é extensão do tópico `insights_comerciais` do `SFAgent2`,
+   entrega separada, ou parte de EPLAST-26/28/33?
+3. Q1–Q5 — lista de ações candidatas e critério de priorização, fontes de
+   dado, canal (página de registro × agente), regra determinística × IA
+   generativa, e público/frequência.
+
+Sem isso registrado, recomendo que o próximo gate aprovado **não** repita a
+mesma aprovação genérica — ela não libera o build sozinha.
