@@ -4,6 +4,8 @@
 **Entradas:** `demanda.md`, `01-analise.md` (aprovada em `gates.md`, 2026-11-11), `comentarios-do-card.md`, `assessment.md` (2026-09-30), `02-recon.md` (2026-11-11, `sbx-eplast-dev`)
 **Histórico consultado (RAG):** `demandas/EPLAST-29/02-recon.md` e `03-design.md` (extensão do `SFAgent2`), `demandas/EPLAST-27/03-design.md` (cascata Task → Account), `demandas/EPLAST-34/03-design.md` (provedores de IA não desligados, permission set por público).
 
+> **Revisão 1 — 2026-11-12 (retorno do build).** A versão aprovada em 2026-11-11 (hash `049045dc14019ee1` em `gates.md`) continua abaixo, sem reescrita. Esta revisão acrescenta a **seção 12** (achado do build, diagnóstico, decisão, componentes, riscos e estimativa) e marca com **[Rev. 1]** os pontos das seções 2.4, 3.1, 6, 8 e 11 que ela altera. Entrada nova: `04-plano-build.md` (build de 2026-11-12, que parou na verificação 2 da seção 2.4).
+
 Toda metadata citada como **existente** foi confirmada em `sbx-eplast-dev` em 2026-11-11 (ver `02-recon.md`). Os nomes da seção 3.1 são componentes **novos**, propostos por este design.
 
 ---
@@ -95,6 +97,8 @@ Não confirmei na documentação oficial, nesta etapa, três capacidades das qua
 
 **Se 1 ou 2 falhar, o build para e volta ao design.** Não se desce para Apex em silêncio. O substituto natural seria a opção B, que tem os riscos descritos acima, e essa troca é decisão do arquiteto humano.
 
+**[Rev. 1]** A verificação 2 falhou no build (`04-plano-build.md`, 3.6). As verificações 1 e 3 ficaram sem resposta, porque dependem do template deployado. O diagnóstico aponta para um contrato de PromptFlow incompleto, não para limitação de plataforma. A decisão desta revisão é corrigir o contrato antes de trocar de opção, e a opção B continua fora. Ver seção 12.
+
 ---
 
 ## 3. Componentes
@@ -102,6 +106,8 @@ Não confirmei na documentação oficial, nesta etapa, três capacidades das qua
 Não há convenção própria da Eplast no `CLAUDE.md` do cliente (seção de nomenclatura em branco). Vale a skill `padrao-entrega`. Todo componente novo sai com `Description` preenchida (achado 4).
 
 ### 3.1 Criar (nomes propostos, não existem hoje)
+
+**[Rev. 1]** Esta tabela é a lista aprovada em 2026-11-11. O build já criou na org `IA_Rascunho_Comercial` e `Opportunity_PromptFlow_CotacaoPrimaria`, e acrescentou `Opportunity_PromptFlow_DadosOportunidade`. A lista vigente e as alterações estão na seção 12.5.
 
 | Tipo | API name | Função |
 |---|---|---|
@@ -191,7 +197,7 @@ O critério de escalonamento da doutrina (passou de ~70% de um limite no volume 
 | R5 | **Habilitação e licença de IA em produção desconhecidas; custo de consumo indefinido** (P-11). A PSL de Prompt Templates em sandbox não prova contrato em produção | **Média** | Conta e cliente confirmam licença e créditos antes do release. A solução só consome quando o usuário pede, sem execução em lote |
 | R6 | **Campos sem descrição** (achado 4: 19/19 em Opportunity, 77/78 em Account) | **Média** | Allowlist só com campos padrão e CPQ (3.4). Custom só após curadoria, com descrição, por novo design |
 | R7 | **Alucinação de preço, prazo ou condição** | **Média** | Grounding restrito, instruções fixas, marcadores. QA com casos adversariais: sem cotação, cotação com campos vazios, campo `Description` com texto que tenta instruir o modelo (prompt injection por dado) |
-| R8 | **Capacidades da plataforma não verificadas em documentação** (Flex template em Screen Flow, PromptFlow lendo objeto CPQ) | **Média** | POC no passo 0 do build. Se falhar, volta ao design (2.4) |
+| R8 | **Capacidades da plataforma não verificadas em documentação** (Flex template em Screen Flow, PromptFlow lendo objeto CPQ) | **Média** → **materializado [Rev. 1]** | POC no passo 0 do build. Se falhar, volta ao design (2.4). **[Rev. 1]** Falhou na verificação 2 (`04-plano-build.md`, 3.6). Tratamento novo na seção 12; riscos derivados R14 a R18 na seção 12.7 |
 | R9 | **Cenário "Trilha de uso sem dado pessoal" não é atendível sem decisão nova.** Gravar usuário, registro, tipo e data exige **objeto custom (mudança de modelo de dados)**. A auditoria do Trust Layer, se ativa, guarda prompt e resposta completos, contra o critério e P-10 | **Média** | **Escalado ao arquiteto humano (mudança de modelo de dados, seção 8).** A v1 **não** entrega esse cenário |
 | R10 | Latência sem meta (P-9) | **Baixa** | Medida e reportada no QA. Sem critério de reprovação até o cliente definir N |
 | R11 | Sobreposição com EPLAST-29 e com o piloto (`SFAgent2`) | **Baixa** | A v1 não toca o `SFAgent2`. Exposição como ação do agente vira demanda futura |
@@ -229,7 +235,7 @@ O critério de escalonamento da doutrina (passou de ~70% de um limite no volume 
 ## 8. Escalado ao arquiteto humano (não decidido aqui)
 
 1. **Mudança de modelo de dados para a trilha de uso** (R9, cenário Gherkin "Trilha de uso sem dado pessoal"). Para cumprir o cenário seria preciso um objeto custom de log (usuário, registro, tipo, data, modelo, sem texto). Isso é mudança de modelo de dados, gravação nova e uma decisão de retenção (P-10). **Proposta deste design:** retirar o cenário da v1 e reabrir quando o cliente e o DPO definirem retenção. A alternativa é aprovar o objeto agora, o que reabre o design e a estimativa.
-2. **Troca de A por B** se a POC do passo 0 falhar (2.4).
+2. **Troca de A por B** se a POC do passo 0 falhar (2.4). **[Rev. 1]** A POC falhou. Esta revisão **não** recomenda B (seção 12.3). Recomenda corrigir o contrato do PromptFlow, com Apex como fallback **só se o aceite autorizar** (seção 12.8).
 
 ---
 
@@ -261,7 +267,7 @@ Antes do QA: **R4** (dev ≠ qa) resolvido.
 
 ## 11. Estimativa
 
-**Estimativa de esforço:** 36–80 h
+Estimativa original, aprovada em 2026-11-11: 36–80 h. **[Rev. 1]** Substituída pela seção 12.9.
 
 | Bloco | Horas |
 |---|---|
@@ -282,4 +288,173 @@ Antes do QA: **R4** (dev ≠ qa) resolvido.
 
 ---
 
-Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+## 12. Revisão 1 (2026-11-12): retorno do build, grounding Flex ↔ PromptFlow
+
+### 12.1 Por que este design voltou
+
+O build parou de propósito na verificação 2 da seção 2.4, como este design mandava. Os 3 `GenAiPromptTemplate` (Flex) não deployam em `sbx-eplast-dev`. Os dois falham com o mesmo erro, um para cada Flow de grounding: "O parâmetro de saída da ação `<Flow>` não corresponde". O erro se repetiu em vários deploys isolados (`04-plano-build.md`, 3.6). Tudo o que depende dos templates também ficou bloqueado: o Screen Flow, o PermissionSet, o PSG e a FlexiPage.
+
+O build tomou duas decisões que esta revisão **aceita**, porque ficam dentro da arquitetura A (declarativa, sem DML):
+- **`Opportunity_PromptFlow_DadosOportunidade`** foi criado porque o input `sobject://Opportunity` no template derrubou o servidor com NullPointerException (`04-plano-build.md`, 3.1). O template agora recebe `OpportunityId` (texto), e o Flow lê Opportunity e Account. A allowlist da seção 3.4 não mudou.
+- **Get Records em modo coleção com loop de 1 item, `limit` 2 e `triggerType` `Capability`** contornam erros reais de deploy (3.2, 3.4 e 3.5 do plano). Não são SOQL em loop.
+
+### 12.2 Diagnóstico desta revisão: o que confirmei e o que não
+
+Não rodei deploy, nem mesmo `--dry-run`. Esta etapa não escreve na org, e o pedido desta sessão proíbe deploy. Também não tenho acesso à documentação oficial pela web nesta sessão. Por isso, tudo abaixo é evidência local ou consulta read-only à org.
+
+| Evidência | Fonte | O que mostra |
+|---|---|---|
+| Exemplo oficial `Get_Event_Info` + classe `CurrentDate` | `@salesforce/templates`, que vem com o `sf` CLI do runner (o mesmo exemplo que o build usou) | O data provider devolve **uma saída chamada `Prompt`**: o campo `Prompt` da classe `Response`, marcado como `@InvocableVariable`. O template a referencia como `{!$Apex:CurrentDate.Prompt}`. O `parameterName` do provider (`Event_Type`) tem o **mesmo nome** do input do template (`Event_Type`) |
+| Os 3 templates em `force-app/` | Leitura do repositório | Referenciam `{!$Flow:<Flow>.TextoOportunidade}` e `.TextoCotacao`, que são nomes de variáveis comuns, e não `.Prompt`. O `parameterName` é `recordId`, mas o input do template se chama `OpportunityId` |
+| Schema oficial do Metadata API | `@salesforce/types` (`metadata.d.ts`) do `sf` CLI | `FlowStart` tem `capabilityTypes: FlowCapability[]` (`capabilityName`, mais `inputs` com `capabilityInputName`, `dataType` e `isCollection`). `FlowElementSubtype` inclui **`AddPromptInstructions`**, aplicado a um nó de Flow como o Assignment |
+| Os 2 PromptFlows deployados | Leitura do XML em `force-app/` | **Nenhuma** ocorrência de `capabilityTypes` nem de `AddPromptInstructions`. O `start` só declara `triggerType` `Capability`, sem dizer a que capacidade (template) o Flow atende, e a saída é uma variável comum |
+| PromptFlows na org | `FlowDefinitionView` em `sbx-eplast-dev` | 7 no total, todos com `TriggerType = Capability`. 5 são gerenciados (`OfferMgmt`, `setup_service_plan`, `sfdc_fieldservice`) e 2 são nossos. A Tooling API (`Flow`) só devolve as 2 versões não gerenciadas, então os gerenciados não servem de modelo |
+| Versão de API | `sf org display` | A org está na API **68.0**. Os Flows do build declaram `apiVersion` 61.0 |
+| Templates na org | `sf org list metadata -m GenAiPromptTemplate` | 0, consistente com o rollback descrito no plano (seção 4) |
+
+**Leitura.** A conclusão da seção 3.3 do plano de build foi: "o exemplo oficial não usa `isOutput`, então uso variável comum". Essa conclusão lê o exemplo pela metade. No exemplo Apex, a saída não é "qualquer variável": é o campo `Prompt` da resposta invocável. No PromptFlow, o equivalente provável é a saída de prompt que o elemento **Add Prompt Instructions** (`elementSubtype` `AddPromptInstructions`) escreve. Ela só existe quando o Flow declara, no `start`, a capacidade (`capabilityTypes`) do template a que serve. As duas mensagens que pareciam contraditórias no 3.3 ("`$Prompt` é a única saída" e "não pode referenciar `$Prompt`") são coerentes com isso: existe uma saída de prompt reservada, e ela não se escreve com um Assignment comum. O erro "parâmetro de saída não corresponde" também é coerente: o template pede `.TextoOportunidade`, e esse nome não existe no contrato.
+
+**Isto é hipótese com evidência forte, não fato confirmado.** A POC da seção 12.4 precisa responder:
+1. o formato exato de `capabilityName` para um template Flex. Lembro de algo como `FlexTemplate://<API name do template>`, mas **não confirmei**;
+2. a referência exata da saída escrita pelo Add Prompt Instructions dentro do Flow (de memória, `$Output.Prompt`) e no template (`{!$Flow:<Flow>.Prompt}`). Também **não confirmei**;
+3. se um Flow de capacidade pode atender aos 3 templates ou se fica preso a um só (1:1);
+4. se a dependência circular (o Flow declara o template e o template declara o Flow) deploya num pacote só ou exige duas rodadas;
+5. (opcional, não bloqueia) se `SOBJECT://Opportunity`, em maiúsculas, evita a NPE do 3.1. Se evitar, não muda esta revisão: o caminho por Id já funciona.
+
+### 12.3 Opções reavaliadas
+
+| | **D. Corrigir o contrato do PromptFlow** (nova, escolhida) | A-UI. Criar pela UI do Prompt Builder/Flow Builder e fazer retrieve (hipótese (a) do build) | C. Apex como `templateDataProvider` (`apex://`) | B. Agentforce (`SFAgent2`) |
+|---|---|---|---|---|
+| Nível da doutrina | Declarativo, o mesmo já aprovado | Declarativo. É **técnica** para chegar em D, não uma arquitetura diferente | **Código** | Configuração + declarativo |
+| Evidência de que funciona | Indireta e forte: schema + contrato `Prompt` do exemplo oficial (12.2) | Alta: a UI gera a estrutura que a plataforma espera, e o retrieve revela o que falta | **A mais direta**: é o único padrão com exemplo oficial completo | Não testada. A ação do agente também precisaria de grounding |
+| Quem pode executar | Agente de build, por metadata | **Só humano**, porque o build não tem navegador (só o `qa` tem) | Agente `dev-apex` | Agente, mas no artefato de outra frente |
+| Apex novo | Nenhum | Nenhum | 2 classes + 2 `<Classe>Test` a 85% | Nenhum |
+| Interação com o que existe | Altera só os 2 PromptFlows desta demanda | Igual a D | Os testes criam Opportunity, Account e cotação, e com isso **disparam** `OpportunityTrigger`, `SBQQ.OpportunityAfter`, `OpportunityFlow` (até 22 DMLs, cotação CPQ, aprovação) e 16 validation rules. A solução não entra na cadeia do achado 1, mas **o teste entra** | O `SFAgent2` tem 4 versões de `GenAiPlannerBundle` (`SFAgent2_v1` a `_v4`), todas modificadas em 2026-11-10, construídas fora da esteira. **Está em mudança ativa** |
+| Release em produção | Sem Apex, sem nível de teste a decidir | Igual a D | Deploy com Apex exige nível de teste. Com `RunLocalTests` vale a cobertura geral da org (mínimo de 75%), e a org está em **10%** (achado 2). Na prática obriga `RunSpecifiedTests` com as classes novas. É decisão de release, mas nasce aqui | Sem Apex |
+
+**Por que não B agora.** Os motivos da seção 2.2 continuam valendo, e o recon de hoje os reforça:
+- o agente está mudando fora da esteira (4 versões do bundle no mesmo dia, 2026-11-10);
+- o estado da EPLAST-29 é **divergente**. Nesta branch, o `status.yaml` dela está em `backlog` e não há `03-design.md` em disco. O RAG, porém, devolve trechos de um `demandas/EPLAST-29/03-design.md` que estende o `SFAgent2`, provavelmente de outra branch. Não consigo confirmar daqui qual dos dois é o atual. Nos dois casos, B põe duas demandas no mesmo artefato (guardrail #6);
+- B troca o determinismo do botão pelo roteamento do planner, sem ganho funcional para um uso que começa na própria oportunidade;
+- B não elimina a dúvida de plataforma, só a troca por outra (ação de agente com grounding), também não testada nesta org.
+
+**Por que C não é a escolha principal.**
+- Nenhum dos 5 gatilhos da doutrina para descer a Apex existe aqui: são 3 leituras simples, sem DML, sem volume, sem rollback e sem callout. O único motivo seria limitação de plataforma, e ela **ainda não foi demonstrada**: o build testou um contrato incompleto (12.2).
+- Apex novo bem testado não piora a cobertura de 10%. Uma classe a 85% até sobe a média um pouco. O custo real está em dois pontos. Primeiro, o fixture de teste atravessa a cadeia de automação de Opportunity e CPQ (achado 1, R13, e o risco de CPU do achado SOMOSAGILITY-10, agora **no teste**). Segundo, o release de produção passa a depender de uma decisão de nível de teste numa org a 10%.
+- C continua sendo o caminho com **maior chance de deployar na primeira tentativa**. Por isso fica como **fallback explícito**, que vale só se o aceite deste gate o autorizar (12.8). O build não desce para Apex em silêncio.
+
+### 12.4 Decisão (recomendação para o aceite)
+
+**Opção D: manter a arquitetura A e corrigir o contrato dos PromptFlows. A UI (A-UI) entra como desempate dentro da mesma POC. C fica como fallback pré-autorizável. B fica fora.**
+
+**POC com teto de 4 h**, em `sbx-eplast-dev`. O agente de build trabalha numa pasta temporária fora de `force-app/`, como já fez no plano.
+1. **Por metadata (até 2 h).** Usar 1 template (`Rascunho_Followup_Comercial`) + `Opportunity_PromptFlow_DadosOportunidade`:
+   - o `start` ganha `capabilityTypes`, que aponta para o template, com um input cujo `capabilityInputName` tem o mesmo nome do input do template (`OpportunityId`);
+   - o Assignment final passa a ser `AddPromptInstructions` e escreve na saída de prompt;
+   - o template referencia `.Prompt`, e o `parameterName` passa a ter o mesmo nome do input da capacidade;
+   - `apiVersion` 68.0 nos dois;
+   - validar primeiro com `--dry-run`, depois com deploy real;
+   - cada tentativa fica registrada com a mensagem de erro, sem tentativa às cegas além das combinações das perguntas 1 a 4 da seção 12.2.
+2. **Pela UI (se o passo 1 não fechar).** Uma pessoa de delivery com acesso a Setup faz isto:
+   - cria o template como rascunho no Prompt Builder;
+   - cria um *Template-Triggered Prompt Flow* no Flow Builder, vinculado a esse template;
+   - salva os dois.
+
+   O agente então faz o retrieve dos dois e compara com `force-app/`. A diferença é o contrato que faltava, e ele passa a valer para os outros 2 templates. Esse passo é trabalho humano, não um gate novo. Só usar dado sintético (P-8).
+3. **Critério de sucesso:**
+   - o template deploya;
+   - o Preview do Prompt Builder (ou a execução pelo Screen Flow) resolve os blocos de oportunidade e de cotação com dado sintético;
+   - as verificações 1 e 3 da seção 2.4 ficam respondidas.
+4. **Se 1 e 2 falharem:**
+   - se o aceite marcou a autorização de C na seção 12.8, o build segue para C (seção 12.5, quadro C);
+   - se não marcou, o build para e volta ao design de novo;
+   - nos dois casos, o resultado da POC é registrado em `04-plano-build.md`.
+
+### 12.5 Componentes: o que muda
+
+**Caminho D (principal)**
+
+| Componente | Situação hoje | Mudança |
+|---|---|---|
+| `IA_Rascunho_Comercial` (CustomPermission) | Deployado | **Nenhuma** |
+| `Opportunity_PromptFlow_DadosOportunidade` (Flow PromptFlow) | Deployado | **Alterar:** `capabilityTypes` no `start`, saída por `AddPromptInstructions`, input com o mesmo nome do input da capacidade, `apiVersion` 68.0. Ficam iguais: consulta, allowlist, modo coleção + loop e zero DML |
+| `Opportunity_PromptFlow_CotacaoPrimaria` (Flow PromptFlow) | Deployado | **Alterar**, igual ao anterior. Ficam iguais: teto de 50 linhas, ordenação, texto "sem cotação" e zero DML |
+| `Rascunho_Proposta_Comercial`, `Rascunho_Followup_Comercial`, `Argumentos_Comerciais_Oportunidade` (GenAiPromptTemplate Flex) | Só no repositório | **Alterar:** referências `.Prompt`, `parameterName` com o mesmo nome do input. Ficam iguais: instruções de conteúdo (3.5), modelo e input `OpportunityId` |
+| `Opportunity_Screen_RascunhoComercial`, `PS_Comercial_RascunhoIA`, `PSG_Comercial_RascunhoIA`, aba da `Opportunity_Record_Page` | Só no repositório | Sem mudança de conteúdo. O `PS` só muda se os Flows forem renomeados (abaixo) |
+
+**Condicional em D: capacidade 1:1 com o template** (pergunta 3 da seção 12.2). Se um Flow de capacidade não puder atender a 3 templates, **a decisão fica tomada aqui**, para não voltar ao gate por isso:
+- 1 Flow de grounding por template: `Opportunity_PromptFlow_RascunhoProposta`, `Opportunity_PromptFlow_RascunhoFollowup` e `Opportunity_PromptFlow_ArgumentosComerciais`;
+- cada um monta os blocos de oportunidade e de cotação com a mesma lógica dos 2 Flows atuais. "Um Flow, um propósito" continua valendo: o propósito passa a ser "o grounding do template X";
+- os 2 Flows atuais são **depreciados** (desativados e removidos em dev por `destructiveChanges`, pelo build) e saem do `PS`;
+- **6 Flows (2 por template) ficam descartados**: o dobro de componentes com a mesma lógica repetida.
+
+**Caminho C (fallback, só com autorização na seção 12.8)**
+
+| Componente | Mudança |
+|---|---|
+| `OpportunityRascunhoDadosProvider` + `OpportunityRascunhoDadosProviderTest` (Apex, novo) | `@InvocableMethod` com `Request.OpportunityId` e `Response.Prompt`. `with sharing`, `WITH USER_MODE`, mesma allowlist, zero DML. Teste a ≥85% |
+| `OpportunityRascunhoCotacaoProvider` + `OpportunityRascunhoCotacaoProviderTest` (Apex, novo) | Igual ao anterior, para a cotação primária e até 50 linhas. Uma query para as linhas, sem SOQL em loop |
+| 3 templates | `templateDataProviders` passa para `apex://`. Referências `{!$Apex:<Classe>.Prompt}` |
+| 2 PromptFlows deployados | **Depreciar** (desativar e remover em dev) |
+| `PS_Comercial_RascunhoIA` | **Alterar:** `classAccesses` para as 2 classes. Os `flowAccesses` dos PromptFlows saem |
+| `IA_Rascunho_Comercial`, Screen Flow, PSG, FlexiPage | Sem mudança |
+
+Fixture dos testes C:
+- preenche toda validation rule ativa de Opportunity, Account, cotação e linha (doutrina, achado SOMOSAGILITY-10, R13);
+- não usa `SeeAllData=true`;
+- se precisar desligar os triggers do CPQ no teste, o build **confirma na org** que o mecanismo existe antes de usá-lo. Este design não o confirmou.
+
+### 12.6 O que NÃO muda
+
+- **A decisão de arquitetura A:** Prompt Builder Flex + Screen Flow na Opportunity, somente leitura, zero DML, sem LWC, sem Named Credential, sem tocar o `SFAgent2`.
+- Seções 3.4 (allowlist), 3.5 (regras de conteúdo), 4 (conflito de automação, que segue fora do evento), 5 (governador: no máximo 50 linhas e 0 DML) e 7 (permissões por PSG, nenhum perfil alterado). A seção 9 (o que não será feito) também não muda, exceto o item "Apex", que pode cair **só** pelo caminho C autorizado.
+- `IA_Rascunho_Comercial`, já na org, vale em todos os caminhos.
+- **Os 2 PromptFlows já deployados: correção à premissa de que "continuam valendo em qualquer opção".** A lógica de leitura deles continua valendo em D e serve de especificação em C. Os componentes em si mudam:
+  - em D, são **alterados** (contrato de capacidade);
+  - no condicional 1:1 de D, são **substituídos** por 3 Flows com a mesma lógica;
+  - em C, são **depreciados**.
+
+  Nenhum dos caminhos joga fora o trabalho de consulta: allowlist, `relatedRecords`, modo coleção e teto de 50.
+- Pendências que esta revisão não resolve: **R1** (Onda 3 não contratada, reforçado na seção 0 do plano de build), **R4** (dev = qa?) e **R9** (trilha de uso).
+
+### 12.7 Riscos novos ou alterados
+
+| # | Risco | Severidade | Tratamento |
+|---|---|---|---|
+| R8 | Capacidade de plataforma não verificada | **Materializado** | Seções 12.2 e 12.4 |
+| R14 | **O diagnóstico de 12.2 estar errado** e D também falhar (limitação real para Flow custom como provider nesta release) | **Média** | POC com teto de 4 h e 2 técnicas (metadata e UI). Depois disso, C, se autorizado, ou volta ao design. Não há uma terceira rodada de tentativa às cegas |
+| R15 | **Fallback C:** o fixture de teste dispara a cadeia de Opportunity/CPQ (CPU e validation rules), e o release de produção depende de nível de teste numa org a 10% | **Média** (só se C for acionado) | Fixture completo, `RunSpecifiedTests` com as classes novas no release, medição de CPU do teste no build. Se passar de ~70% de um limite, volta ao design (doutrina) |
+| R16 | **Capacidade 1:1:** 3 Flows em vez de 2 e depreciação em dev | **Baixa** | Decidido em 12.5. Sem impacto em produção, onde nada foi deployado |
+| R17 | **Ordem de deploy:** dependência circular Flow ↔ template | **Baixa** | A POC responde (pergunta 4). Se exigir duas rodadas, o plano de build e o release registram a ordem |
+| R18 | **`SFAgent2` em mudança fora da esteira** (4 versões do bundle em 2026-11-10) e estado da EPLAST-29 divergente entre branch e RAG | **Baixa** para este design (B fora); **alta** para quem for expor os templates no agente depois | Registrado para a demanda futura de exposição no Agentforce (R11). Este design não toca o agente |
+
+R7 (alucinação) e R13 (dado sintético) não mudam. R13 só pesa mais em C (R15).
+
+### 12.8 O que o aceite deste gate precisa decidir
+
+1. **Aceitar D + POC de 4 h** (12.4), inclusive a decisão condicional 1:1 (12.5).
+2. **[ ] Autorizar C como fallback** se a POC falhar nas duas técnicas. Sem essa marca registrada no card ou no comentário do gate, o build para e volta ao design em vez de descer a Apex. Esta revisão **recomenda autorizar**, porque C é contido (2 classes de leitura, sem DML) e evita uma terceira volta ao gate. Mesmo assim, a decisão de reabrir o "zero Apex" é humana.
+3. **Quem faz o passo de UI** (12.4, passo 2): uma pessoa de delivery com acesso a Setup em `sbx-eplast-dev`.
+4. **R1 continua aberto:** o plano de build pede de novo autorização escrita para a Onda 3 antes do gate de build.
+
+### 12.9 Estimativa revisada
+
+**Estimativa de esforço:** 40–92 h
+
+Os blocos são os da seção 11, mais o que esta revisão acrescenta:
+
+| Bloco novo | Horas |
+|---|---|
+| POC de correção do contrato (metadata + UI, teto fixo) | 2–4 |
+| Retrabalho dos 2 PromptFlows e dos 3 templates (ou 3 Flows novos e depreciação, no condicional 1:1) | 2–6 |
+| Revisão de design (esta) e reconferência do Screen Flow e do PS depois da mudança | 0–2 |
+
+**O que mudou em relação à estimativa aprovada (36–80 h) e por quê:**
+- **O piso subiu 4 h** (POC + retrabalho mínimo). Parte do build já foi gasta, mas não sai da faixa, porque os blocos de templates, Flow de tela e permissões **não fecharam**: só existem no repositório.
+- **O teto subiu 12 h**: retrabalho no pior caso de D (3 Flows novos + depreciação) e reconferência de tudo o que depende dos templates.
+- **Fora da faixa: o fallback C.** Se for acionado, soma **14–24 h** (2 classes, 2 testes a 85% com fixture que atravessa 16 validation rules e a cadeia CPQ, ajuste de PS e depreciação dos Flows), e o teto vai para ~116 h. Fica fora porque só acontece se D falhar **e** o aceite autorizar.
+- Continuam fora da faixa os mesmos itens da seção 11: curadoria de campos, trilha de uso, Agentforce e provedores do Einstein.
+
+---
+
+Design revisado (Revisão 1) e pronto. **Gate bloqueante**: preciso do aceite do arquiteto humano para liberar o build de novo.

@@ -2,7 +2,7 @@ id: EPLAST-30
 client: eplast
 titulo: Apoio a propostas, follow-ups e argumentos comerciais
 tipo: projeto
-status: build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -29,3 +29,11 @@ historico:
   para: build
   autor: Carlos Sordi
   em: '2026-11-11T22:18:34.080197+00:00'
+- de: build
+  para: design
+  autor: pipeline
+  em: '2026-11-12T19:09:29.493882+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-12T19:17:04.372940+00:00'
