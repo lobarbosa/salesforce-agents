@@ -2,10 +2,55 @@ id: EPLAST-28
 client: eplast
 titulo: Alertas de oportunidade parada ou sem acompanhamento
 tipo: projeto
-status: backlog
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-  - de: null
-    em: '2026-11-10T12:00:00Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:26:53.677893+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:29:51.812330+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Carlos Sordi
+  em: '2026-11-10T18:42:48.148138+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-10T18:53:54.253039+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-10T18:54:05.767415+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-11T22:12:57.258937+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-11T22:16:50.817290+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Carlos Sordi
+  em: '2026-11-12T13:36:34.193394+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T13:42:09.668511+00:00'
+- de: aguardando_homologacao
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-13T15:10:52.958955+00:00'
+  motivo: 'Nada foi construído: o build ficou bloqueado por decisões pendentes (escopo
+    da Onda 3 e perguntas de negócio) e a demanda chegou à homologação só com documentos,
+    reprovada pelo QA. Volta ao gate de design até as respostas chegarem pelo card.
+    04-plano-build.md e 05-testes.md (registros do bloqueio) removidos para as etapas
+    serem refeitas.'
