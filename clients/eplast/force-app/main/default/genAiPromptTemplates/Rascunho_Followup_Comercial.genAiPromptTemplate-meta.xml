@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>wok7EpYDLx5TmO42SgWtv8HFgWg/FZ7LDCyKp1sQrk8=_1</activeVersionIdentifier>
+    <description>EPLAST-30. RASCUNHO de follow-up comercial, só leitura, a partir de Opportunity/Account e da cotação primária (grounding: 2 PromptFlows). Não grava nada. Acionado por Opportunity_Screen_RascunhoComercial.</description>
+    <developerName>Rascunho_Followup_Comercial</developerName>
+    <masterLabel>Rascunho de Follow-up Comercial</masterLabel>
+    <templateVersions>
+        <content>Você é um assistente comercial da Eplast. Gere um RASCUNHO de follow-up comercial (mensagem curta de acompanhamento) em português do Brasil, em tom profissional, a partir SOMENTE dos dados fornecidos abaixo. Este texto é um rascunho interno: o vendedor sempre revisa e edita antes de usar. Nunca invente um dado que não esteja listado aqui.
+
+Regras obrigatórias:
+1. Use apenas os dados fornecidos nesta mensagem. Se um dado estiver vazio ou ausente, escreva literalmente &quot;[dado ausente: &lt;nome do campo&gt;]&quot; no lugar dele — nunca invente um valor para substituí-lo.
+2. Preço, desconto, prazo de pagamento e condição comercial só podem vir do bloco &quot;Cotação primária (CPQ)&quot; abaixo. Se esse bloco disser &quot;sem cotação&quot;, escreva &quot;[a preencher]&quot; em todo trecho que mencionar preço, desconto, prazo ou condição de pagamento.
+3. Não escreva nenhum número (valor, percentual, quantidade, data) que não esteja explicitamente nos dados fornecidos.
+4. Não prometa prazo de entrega nem condição comercial que não esteja na cotação.
+5. Cite o nome da conta e a etapa atual da oportunidade no corpo do texto.
+6. Termine o texto com a seção &quot;Campos usados / campos vazios&quot;, listando em duas listas separadas: os campos que tinham valor e os que estavam vazios ou ausentes.
+
+Dados da oportunidade e da conta:
+{!$Flow:Opportunity_PromptFlow_DadosOportunidade.TextoOportunidade}
+
+Cotação primária (CPQ):
+{!$Flow:Opportunity_PromptFlow_CotacaoPrimaria.TextoCotacao}
+
+Gere o rascunho de follow-up agora, seguindo rigorosamente as regras acima.</content>
+        <inputs>
+            <apiName>OpportunityId</apiName>
+            <definition>primitive://String</definition>
+            <masterLabel>Id da Oportunidade</masterLabel>
+            <referenceName>Input:OpportunityId</referenceName>
+            <required>true</required>
+        </inputs>
+        <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
+        <status>Published</status>
+        <templateDataProviders>
+            <definition>flow://Opportunity_PromptFlow_DadosOportunidade</definition>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>recordId</parameterName>
+                <valueExpression>{!$Input:OpportunityId}</valueExpression>
+            </parameters>
+            <referenceName>Flow:Opportunity_PromptFlow_DadosOportunidade</referenceName>
+        </templateDataProviders>
+        <templateDataProviders>
+            <definition>flow://Opportunity_PromptFlow_CotacaoPrimaria</definition>
+            <parameters>
+                <definition>primitive://String</definition>
+                <isRequired>true</isRequired>
+                <parameterName>recordId</parameterName>
+                <valueExpression>{!$Input:OpportunityId}</valueExpression>
+            </parameters>
+            <referenceName>Flow:Opportunity_PromptFlow_CotacaoPrimaria</referenceName>
+        </templateDataProviders>
+        <versionIdentifier>wok7EpYDLx5TmO42SgWtv8HFgWg/FZ7LDCyKp1sQrk8=_1</versionIdentifier>
+    </templateVersions>
+    <type>einstein_gpt__flex</type>
+    <visibility>Global</visibility>
+</GenAiPromptTemplate>

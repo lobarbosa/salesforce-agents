@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <assignments>
+        <name>Set_Sem_Cotacao</name>
+        <label>Definir sem cotação</label>
+        <locationX>578</locationX>
+        <locationY>240</locationY>
+        <assignmentItems>
+            <assignToReference>TextoCotacao</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <stringValue>sem cotação</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>Set_Cabecalho_Cotacao</name>
+        <label>Montar cabeçalho da cotação</label>
+        <locationX>314</locationX>
+        <locationY>240</locationY>
+        <assignmentItems>
+            <assignToReference>TextoCotacao</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>Cotação primária — status: {!varCotacaoPrimaria.SBQQ__Status__c}; valor líquido: {!varCotacaoPrimaria.SBQQ__NetAmount__c}; condição de pagamento: {!varCotacaoPrimaria.SBQQ__PaymentTerms__c}; validade: {!varCotacaoPrimaria.SBQQ__ExpirationDate__c}; desconto do cliente: {!varCotacaoPrimaria.SBQQ__CustomerDiscount__c}; quantidade de itens: {!varCotacaoPrimaria.SBQQ__LineItemCount__c}.
+Itens (até 50, ordenados por valor líquido):
+</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Linhas</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Linha</name>
+        <label>Adicionar linha ao texto</label>
+        <locationX>314</locationX>
+        <locationY>360</locationY>
+        <assignmentItems>
+            <assignToReference>TextoCotacao</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>- Produto: {!varLinhaAtual.SBQQ__Product__r.Name}; quantidade: {!varLinhaAtual.SBQQ__Quantity__c}; preço líquido: {!varLinhaAtual.SBQQ__NetPrice__c}; total líquido: {!varLinhaAtual.SBQQ__NetTotal__c}; desconto: {!varLinhaAtual.SBQQ__Discount__c}; descrição: {!varLinhaAtual.SBQQ__Description__c}
+</stringValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Linhas</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <name>Add_Nota_Mais_Itens</name>
+        <label>Adicionar nota de itens restantes</label>
+        <locationX>178</locationX>
+        <locationY>480</locationY>
+        <assignmentItems>
+            <assignToReference>varItensRestantes</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>varCotacaoPrimaria.SBQQ__LineItemCount__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varItensRestantes</assignToReference>
+            <operator>Subtract</operator>
+            <value>
+                <numberValue>50.0</numberValue>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>TextoCotacao</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <stringValue>E mais {!varItensRestantes} itens além dos 50 listados (ver cotação no CPQ).
+</stringValue>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <name>Decision_Tem_Cotacao</name>
+        <label>Tem cotação primária?</label>
+        <locationX>446</locationX>
+        <locationY>120</locationY>
+        <defaultConnector>
+            <targetReference>Get_Linhas_Cotacao</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Tem cotação</defaultConnectorLabel>
+        <rules>
+            <name>Sem_Cotacao</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCotacaoPrimaria</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Set_Sem_Cotacao</targetReference>
+            </connector>
+            <label>Sem cotação</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Mais_Itens</name>
+        <label>Tem mais de 50 itens?</label>
+        <locationX>314</locationX>
+        <locationY>480</locationY>
+        <defaultConnectorLabel>50 ou menos</defaultConnectorLabel>
+        <rules>
+            <name>Mais_De_50</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varCotacaoPrimaria.SBQQ__LineItemCount__c</leftValueReference>
+                <operator>GreaterThan</operator>
+                <rightValue>
+                    <numberValue>50.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Add_Nota_Mais_Itens</targetReference>
+            </connector>
+            <label>Mais de 50</label>
+        </rules>
+    </decisions>
+    <description>EPLAST-30. Grounding declarativo, só leitura, para os 3 Flex prompt templates de rascunho comercial. Lê a cotação primária (SBQQ__Quote__c) da oportunidade e até 50 linhas (SBQQ__QuoteLine__c, ordenadas por valor líquido desc). Sem cotação primária, devolve "sem cotação". Zero DML. Ver demandas/EPLAST-30/03-design.md, seções 3 e 5.</description>
+    <environments>Default</environments>
+    <interviewLabel>Opportunity_PromptFlow_CotacaoPrimaria {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity - Prompt Flow - Cotação Primária</label>
+    <loops>
+        <name>Loop_Linhas</name>
+        <label>Percorrer linhas da cotação</label>
+        <locationX>314</locationX>
+        <locationY>300</locationY>
+        <assignNextValueToReference>varLinhaAtual</assignNextValueToReference>
+        <collectionReference>Get_Linhas_Cotacao</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Linha</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Decision_Mais_Itens</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>PromptFlow</processType>
+    <recordLookups>
+        <name>Get_Cotacao_Primaria</name>
+        <label>Obter cotação primária</label>
+        <locationX>446</locationX>
+        <locationY>60</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Decision_Tem_Cotacao</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SBQQ__Opportunity2__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>recordId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>SBQQ__Primary__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>SBQQ__Quote__c</object>
+        <outputReference>varCotacaoPrimaria</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>SBQQ__Status__c</queriedFields>
+        <queriedFields>SBQQ__NetAmount__c</queriedFields>
+        <queriedFields>SBQQ__PaymentTerms__c</queriedFields>
+        <queriedFields>SBQQ__ExpirationDate__c</queriedFields>
+        <queriedFields>SBQQ__CustomerDiscount__c</queriedFields>
+        <queriedFields>SBQQ__LineItemCount__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Linhas_Cotacao</name>
+        <label>Obter linhas da cotação (até 50)</label>
+        <locationX>578</locationX>
+        <locationY>120</locationY>
+        <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Set_Cabecalho_Cotacao</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SBQQ__Quote__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varCotacaoPrimaria.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <limit>
+            <numberValue>50.0</numberValue>
+        </limit>
+        <object>SBQQ__QuoteLine__c</object>
+        <relatedRecords>
+            <queriedFields>Name</queriedFields>
+            <relatedObject>Product2</relatedObject>
+            <relationshipField>SBQQ__Product__r</relationshipField>
+        </relatedRecords>
+        <sortField>SBQQ__NetTotal__c</sortField>
+        <sortOrder>Desc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>320</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Get_Cotacao_Primaria</targetReference>
+        </connector>
+        <triggerType>Capability</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>recordId</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>TextoCotacao</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue></stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>varCotacaoPrimaria</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>SBQQ__Quote__c</objectType>
+    </variables>
+    <variables>
+        <name>varLinhaAtual</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>SBQQ__QuoteLine__c</objectType>
+    </variables>
+    <variables>
+        <name>varItensRestantes</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+    </variables>
+</Flow>

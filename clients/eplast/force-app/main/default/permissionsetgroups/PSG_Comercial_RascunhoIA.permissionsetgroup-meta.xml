@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSetGroup xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-30. Agrupa PS_Comercial_RascunhoIA e force__EinsteinGPTPromptTemplateUser (exige PSL EinsteinGPTPromptTemplatesPsl). Atribuir manualmente por usuário comercial autorizado. Ver 03-design.md, seção 7.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PSG Comercial Rascunho IA</label>
+    <permissionSets>PS_Comercial_RascunhoIA</permissionSets>
+    <permissionSets>force__EinsteinGPTPromptTemplateUser</permissionSets>
+    <status>Updated</status>
+</PermissionSetGroup>
