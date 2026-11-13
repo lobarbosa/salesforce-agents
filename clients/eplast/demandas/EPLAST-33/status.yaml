@@ -2,10 +2,63 @@ id: EPLAST-33
 client: eplast
 titulo: Cross-sell, aumento de volume e recuperação de clientes
 tipo: projeto
-status: backlog
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-  - de: null
-    em: '2026-11-10T12:00:00Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:41:26.411849+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:43:46.695796+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:44:52.266978+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-11T16:03:49.947684+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T16:15:30.050420+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T16:16:28.278559+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-12T03:34:43.190558+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-12T03:38:07.220036+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Carlos Sordi
+  em: '2026-11-12T13:30:01.079988+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T13:34:01.206946+00:00'
+- de: aguardando_homologacao
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T13:34:52.242675+00:00'
+- de: aguardando_homologacao
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-13T15:11:04.711884+00:00'
+  motivo: 'Nada foi construído: o build ficou bloqueado por decisões pendentes (escopo
+    da Onda 3 e perguntas de negócio) e a demanda chegou à homologação só com documentos,
+    reprovada pelo QA. Volta ao gate de design até as respostas chegarem pelo card.
+    04-plano-build.md e 05-testes.md (registros do bloqueio) removidos para as etapas
+    serem refeitas.'
