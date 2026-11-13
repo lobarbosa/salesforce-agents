@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <buckets>
+        <bucketType>picklist</bucketType>
+        <developerName>BucketField_Origem</developerName>
+        <masterLabel>Origem (bucket)</masterLabel>
+        <nullTreatment>n</nullTreatment>
+        <otherBucketLabel>Fora da lista</otherBucketLabel>
+        <sourceColumnName>LEAD_SOURCE</sourceColumnName>
+        <values>
+            <sourceValues>
+                <sourceValue>Campanha</sourceValue>
+            </sourceValues>
+            <value>Campanha</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>WhatsApp</sourceValue>
+            </sourceValues>
+            <value>WhatsApp</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Indicação</sourceValue>
+            </sourceValues>
+            <value>Indicação</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Evento</sourceValue>
+            </sourceValues>
+            <value>Evento</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Google Ads</sourceValue>
+            </sourceValues>
+            <value>Google Ads</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Google Orgânico</sourceValue>
+            </sourceValues>
+            <value>Google Orgânico</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Instagram</sourceValue>
+            </sourceValues>
+            <value>Instagram</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Facebook</sourceValue>
+            </sourceValues>
+            <value>Facebook</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Prospecção ativa</sourceValue>
+            </sourceValues>
+            <value>Prospecção ativa</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Prospecção passiva</sourceValue>
+            </sourceValues>
+            <value>Prospecção passiva</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>Econodata</sourceValue>
+            </sourceValues>
+            <value>Econodata</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>E-mail MKT</sourceValue>
+            </sourceValues>
+            <value>E-mail MKT</value>
+        </values>
+        <values>
+            <sourceValues>
+                <sourceValue>SDR</sourceValue>
+            </sourceValues>
+            <value>SDR</value>
+        </values>
+    </buckets>
+    <description>EPLAST-39. Leads criados no periodo, agrupados por bucket de origem (Origem_Bucket sobre Lead.LeadSource, ver buckets) x mes de criacao. Sem linhas de detalhe, sem coluna pessoal (03-design.md R1).</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Month</dateGranularity>
+        <field>BucketField_Origem</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Month</dateGranularity>
+        <field>CREATED_MONTH</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>MKT Leads por Origem</name>
+    <reportType>LeadList</reportType>
+    <scope>org</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+</Report>
