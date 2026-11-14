@@ -44,6 +44,10 @@ não decide declarativo vs. código e não materializa nada — quem decide o qu
 continua sendo o humano.
 
 O orquestrador (sessão principal) roteia entre agentes. Nunca pula etapa.
+Cada subagente é acionado uma única vez, em primeiro plano: a execução em background fica
+desligada na sessão (`CLAUDE_CODE_DISABLE_BACKGROUND_TASKS`). Achado da EPLAST-47 (2026-11-14):
+o orquestrador acionou o `builder-declarativo` em background e de novo em seguida; os dois
+escreveram na mesma pasta e na mesma sandbox e a etapa terminou sem build.
 
 ## Como a conta é vendida muda o que o time acompanha
 
