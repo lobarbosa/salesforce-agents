@@ -23,6 +23,7 @@ const base = {
   artefatoNome: "03-design.md",
   artefatoConteudo: "interno",
   artefatoTruncado: false,
+  roteiroCliente: "passo a passo",
   perguntas: [],
   historico: [{ de: "a" }],
   ultimoRunUrl: "https://run",
@@ -78,6 +79,15 @@ caso("recorte do cliente continua escondendo artefato e run", () => {
   assert.equal(d.artefatoConteudo, "");
   assert.equal(d.ultimoRunUrl, "");
   assert.deepEqual(d.historico, []);
+});
+
+caso("cliente só vê o roteiro de teste da homologação em diante", () => {
+  assert.equal(demandaParaCliente(base).roteiroCliente, "");
+  for (const status of ["aguardando_homologacao", "release", "entregue"]) {
+    const d = demandaParaCliente({ ...base, status } as DemandaCompleta);
+    assert.equal(d.roteiroCliente, "passo a passo", status);
+  }
+  assert.equal(semCustoAgente(base).roteiroCliente, "passo a passo");
 });
 
 caso("consultor mantém horas mas perde custo de agente", () => {

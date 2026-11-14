@@ -133,6 +133,14 @@ export async function POST(request: NextRequest) {
       }
     : {};
 
+  // Roteiro do cliente (roteiro.py): o CLI manda sempre, vazio quando não há,
+  // para o espelho apagar o roteiro de um QA que depois reprovou. Payload
+  // antigo, sem o campo, não mexe no que está gravado.
+  const dadosDoRoteiro =
+    typeof body.roteiro_cliente === "string"
+      ? { roteiroCliente: body.roteiro_cliente.slice(0, CONTEUDO_MAX) }
+      : {};
+
   // Estimativa (estimativa.py): só sobrescreve o que veio. Payload antigo,
   // sem o campo, não apaga uma estimativa já gravada.
   const est =
@@ -181,6 +189,7 @@ export async function POST(request: NextRequest) {
       ultimoResultado: String(body.resultado ?? "").slice(0, 40),
       ultimoRunUrl: String(body.run_url ?? "").slice(0, 500),
       ...dadosDoArtefato,
+      ...dadosDoRoteiro,
       ...dadosDaEstimativa,
       // Entrou em build com estimativa aprovada pelo cliente: ela vira o
       // consumo do contrato agora (uma vez só). Ver horasPorMes em lib/data.ts.

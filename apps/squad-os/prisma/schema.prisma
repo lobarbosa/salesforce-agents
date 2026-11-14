@@ -368,6 +368,11 @@ model Demanda {
   artefatoConteudo String  @default("") @map("artefato_conteudo")
   artefatoTruncado Boolean @default(false) @map("artefato_truncado")
 
+  // Roteiro de teste do cliente (2026-11-14): o passo a passo que o `qa`
+  // escreve em 05-roteiro-cliente.md quando aprova, para quem homologa. Vem
+  // no mesmo sync; vazio enquanto não houver QA aprovado.
+  roteiroCliente String @default("") @map("roteiro_cliente")
+
   // Estimativa (2026-10-17), espelhada pelo mesmo sync (estimativa.py).
   // Horas: esforço humano estimado pelo agente na análise, refinado no
   // design — nulo até alguma etapa escrever a linha. Visível pra delivery,

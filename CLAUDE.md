@@ -21,7 +21,7 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 | 2 | Recon da org | `recon` (skill `org-recon`) | `02-recon.md` | — |
 | 3 | Desenho da solução | `arquiteto` | `03-design.md` | **Arquiteto humano aprova** |
 | 4 | Build em branch + sandbox dev | `builder-declarativo` / `dev-apex` | `04-plano-build.md` | Revisão do PR |
-| 5 | Testes na sandbox de QA | `qa` | `05-testes.md` | Cliente homologa |
+| 5 | Testes na sandbox de QA | `qa` | `05-testes.md`, `05-roteiro-cliente.md` | Cliente homologa |
 | 6–7 | Deploy em QA e documentação | `release`, `doc` | `06-entrega.md` | — |
 
 - O orquestrador roda **uma etapa por sessão**, aciona o subagente da etapa e para no gate.
@@ -36,6 +36,8 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - `05-testes.md` abre com `**Veredito:** aprovado|reprovado` e `**Org de teste:**` com a
   sandbox de QA. Só aprovado, com evidência por caso, chega ao cliente; o resto volta para
   o build, e o roteiro reprovado fica como `05-testes-rodada-<n>.md`.
+- QA aprovado grava também `05-roteiro-cliente.md`: o passo a passo de homologação, em
+  linguagem de usuário, que o Squad OS mostra ao cliente no card. Reprovado não tem roteiro.
 - **Nada é marcado como entregue sem evidência**: `entregue` exige `05-testes.md` aprovado
   na sandbox de QA e `06-entrega.md`, no fluxo ou em correção manual.
 - `gates.md` e `status.yaml` são escritos pela esteira (`sfagents`), nunca pelo agente.

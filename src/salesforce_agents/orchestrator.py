@@ -14,7 +14,7 @@ from pathlib import Path
 import anyio
 from claude_agent_sdk import ClaudeAgentOptions
 
-from . import anexos, ao_vivo, assessment, comentarios, demands, sessao
+from . import ambientes, anexos, ao_vivo, assessment, comentarios, demands, roteiro, sessao
 from .costs import log_usage
 from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
@@ -101,6 +101,14 @@ def _desligar_background() -> None:
     os.environ["CLAUDE_CODE_DISABLE_BACKGROUND_TASKS"] = "1"
 
 
+def _roteiro_do_cliente_faltando(client: str, etapa: str, pasta: Path) -> list[str]:
+    # QA aprovado sem o passo a passo de quem homologa não está pronto para o
+    # cliente (ver roteiro.py). Cobrado com a sessão aberta, como os demais.
+    if etapa != "qa":
+        return []
+    return roteiro.faltando(pasta, ambientes.org_alias(client, "qa"))
+
+
 async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
     _desligar_background()
@@ -169,7 +177,11 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         await sessao.rodar(
             options,
             prompt,
-            conferir=lambda: sessao.faltantes(esperados) + sessao.pii_nos_artefatos(pasta_da_demanda),
+            conferir=lambda: (
+                sessao.faltantes(esperados)
+                + _roteiro_do_cliente_faltando(client, etapa, pasta_da_demanda)
+                + sessao.pii_nos_artefatos(pasta_da_demanda)
+            ),
             ao_terminar=registrar,
             ao_usar_ferramenta=vivo.ferramenta,
         )

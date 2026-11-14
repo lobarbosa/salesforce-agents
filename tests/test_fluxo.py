@@ -339,6 +339,7 @@ def test_qa_aprovado_com_evidencia_segue_para_a_homologacao(repo):
 def test_qa_sem_aprovacao_provada_volta_para_o_build(repo, texto):
     """Achado 2026-11-13: dez demandas em homologação com o QA reprovado."""
     d = _demanda("qa")
+    (_pasta(d) / "05-roteiro-cliente.md").write_text("# Roteiro de uma rodada anterior", encoding="utf-8")
     parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(texto))
     assert parada.motivo == "refazer"
     assert parada.etapa == "build"
@@ -346,6 +347,8 @@ def test_qa_sem_aprovacao_provada_volta_para_o_build(repo, texto):
     assert demands.Demand.load("acme", d.id).status == "build"
     # o roteiro reprovado fica para o builder ler; o próximo QA escreve outro
     assert (_pasta(d) / "05-testes-rodada-1.md").exists()
+    # e o roteiro do cliente não sobrevive: descrevia o que vai mudar
+    assert not (_pasta(d) / "05-roteiro-cliente.md").exists()
     assert not (_pasta(d) / "05-testes.md").exists()
 
 
