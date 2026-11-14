@@ -50,6 +50,8 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  # Disparar ci-salesforce-validate.yml ao fim do build (ver o passo).
+  actions: write
 
 jobs:
   decidir:
@@ -392,6 +394,19 @@ jobs:
           if [ -d logs ]; then git add logs/; fi
           git commit -m "$DEMAND_ID: ${{ steps.fluxo.outputs.etapas_rodadas || 'sessão' }} via CI ($AMBIENTE)" --allow-empty -q
           git push origin "HEAD:$DEMAND_BRANCH"
+
+      # O check de validação do deploy não roda sozinho em PR de demanda: o
+      # commit acima é do robô do Actions, e o evento de PR que ele gera nasce
+      # aguardando aprovação humana (achado EPLAST-47, 2026-11-14). Disparo
+      # explícito, pela main, que é onde o workflow está atualizado; ele valida
+      # a branch da demanda e publica o resultado na PR como status do commit.
+      - name: Disparar a validação do deploy (build)
+        if: success() && contains(steps.fluxo.outputs.etapas_rodadas, 'build')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run ci-salesforce-validate.yml --ref main -f branch="$DEMAND_BRANCH" \
+            || echo "::warning::Não consegui disparar a validação do deploy para $DEMAND_BRANCH — dispare ci-salesforce-validate.yml à mão antes de aprovar o gate de build."
 
       # Se o job falhou antes do commit acima, o disco do runner tem um estado
       # que nunca foi pro git — tipicamente o gate aprovado em memória e a

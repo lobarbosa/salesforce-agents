@@ -58,6 +58,8 @@ por isso o `decidir` não abre nenhum: ele não precisa ver secret pra ler um ar
 input. `ci-salesforce-validate.yml` dispara sozinho em todo PR que mexe em
 `clients/<cliente>/force-app/**` (detecta o cliente pelo path alterado, sem input manual),
 sempre contra `<cliente>-dev`, e nunca faz deploy de verdade — só validação check-only.
+Em PR de demanda o commit é do robô do Actions e esse disparo fica aguardando aprovação;
+por isso o `run-demand.yml` dispara o mesmo workflow ao fim do build, informando a branch.
 Hoje só `acxya` tem secrets cadastrados; nos outros 5 clientes o job roda, avisa que o
 Environment ainda não tem credencial, e passa sem validar nada.
 

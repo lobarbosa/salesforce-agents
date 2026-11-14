@@ -282,8 +282,13 @@ Vale para o assessment e para as 7 etapas de demanda.
 
    - `ci-python.yml` — testes do orquestrador (`src/salesforce_agents/`)
    - `ci-squad-os.yml` — lint + build do Squad OS (`apps/squad-os/`)
-   - `ci-salesforce-validate.yml` — `sf project deploy validate` (check-only, nunca
-     deploy de verdade) contra a sandbox do cliente cujo `force-app` mudou no PR
+   - `ci-salesforce-validate.yml` — deploy check-only (dry-run, nunca deploy de verdade)
+     contra a sandbox do cliente cujo `force-app` mudou no PR. Roda só os testes da
+     própria demanda (`<Classe>Test` do Apex alterado; sem Apex, nenhum), não a suíte da
+     org: 70 de 79 testes legados da `sbx-eplast-dev` falham e reprovavam PR sem Apex
+     (achado EPLAST-47, 2026-11-14). Em PR de demanda quem dispara é o `run-demand.yml`
+     ao fim do build, porque o evento de PR de commit do robô nasce aguardando aprovação;
+     o resultado aparece na PR como status do commit
 5. **Estado em disco.** Cada demanda gera `clients/<cliente>/demandas/<DEMAND-ID>/` com os
    artefatos numerados. Se a sessão cair, o próximo agente lê a pasta e retoma de onde parou.
    `sfagents demanda avancar` **recusa avançar** um estágio de execução pra frente se o
