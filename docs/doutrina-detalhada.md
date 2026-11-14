@@ -307,8 +307,12 @@ Cada agente em `.claude/agents/*.md` declara `model:` no frontmatter — não ro
 no mesmo modelo default por acidente. Heurística aplicada (council de 2026-09-07, ver
 `gates.md`/histórico de sessão — não repita a análise, ela já foi feita):
 
-- **haiku** — `ba-discovery`, `doc`: extração e formatação de texto, sem decisão de risco.
-- **sonnet** — `builder-declarativo`, `dev-apex`, `devops`, `qa`, `release`, `planejador`,
+- **haiku** — `ba-discovery`, `doc` e, desde 2026-11-14, o **orquestrador** (só roteia: o
+  prompt diz qual subagente roda a etapa): extração, formatação e roteamento, sem decisão
+  de risco.
+- **sonnet** — `recon` (desde 2026-11-14: o levantamento da org saiu do `arquiteto`, que o
+  fazia em Opus, e virou agente próprio; o arquiteto lê o `02-recon.md` pronto),
+  `builder-declarativo`, `dev-apex`, `devops`, `qa`, `release`, `planejador`,
   `org-assessment`: trabalho
   estruturado com julgamento, mas revisado por PR ou gate antes de valer. Cavalo de batalha.
 - **opus** — só `arquiteto`, e só pela decisão declarativo-vs-código em si: é o único gate

@@ -18,7 +18,8 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 | # | Etapa | Agente | Artefato | Gate |
 |---|-------|--------|----------|------|
 | 1 | Análise e critérios de aceite | `ba-discovery` | `01-analise.md` | Humano aprova |
-| 2–3 | Recon da org e desenho | `arquiteto` (skill `org-recon`) | `02-recon.md`, `03-design.md` | **Arquiteto humano aprova** |
+| 2 | Recon da org | `recon` (skill `org-recon`) | `02-recon.md` | — |
+| 3 | Desenho da solução | `arquiteto` | `03-design.md` | **Arquiteto humano aprova** |
 | 4 | Build em branch + sandbox dev | `builder-declarativo` / `dev-apex` | `04-plano-build.md` | Revisão do PR |
 | 5 | Testes na sandbox de QA | `qa` | `05-testes.md` | Cliente homologa |
 | 6–7 | Deploy em QA e documentação | `release`, `doc` | `06-entrega.md` | — |

@@ -16,11 +16,13 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 `assessment.md` na raiz do workspace (quando existir) é o diagnóstico da org. Considere-o antes de desenhar: o design precisa dizer como lida com cada risco do assessment que toca os objetos e automações que vai mexer — ou por que não se aplica. Ele é uma foto de quando foi feito; confirme na org o que afirmar.
 
 ## Pré-requisito
-`01-analise.md` aprovado em `gates.md`. Se não estiver, pare.
+`01-analise.md` aprovado em `gates.md` e `02-recon.md` na pasta da demanda. Se não estiverem, pare.
 
 ## Método
-1. Rode o recon da org (skill `org-recon`) e registre em `02-recon.md`: objetos, campos,
-   Flows, classes, validation rules e automações que serão tocados ou impactados.
+1. Leia `02-recon.md`: o agente `recon` já levantou na org o que existe, o que será tocado,
+   as automações concorrentes e o volume. **Não refaça o recon.** Se faltar um dado que
+   muda a decisão, confirme só esse ponto com um comando `sf` específico e acrescente a
+   linha ao `02-recon.md`. Se o arquivo não existir, pare e devolva isso ao orquestrador.
 2. Decida a abordagem seguindo a ordem de preferência da plataforma:
    configuração → declarativo (Flow) → código (Apex/LWC). Só desça um nível com justificativa.
    Os critérios dessa decisão, os limites de governador e a ordem de execução estão na skill

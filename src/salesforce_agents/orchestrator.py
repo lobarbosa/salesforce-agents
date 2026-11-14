@@ -48,7 +48,11 @@ ALLOWED_TOOLS = [
 # lendo status.yaml e o fluxo para descobrir o que o fluxo.py já sabe.
 SUBAGENTE_DA_ETAPA = {
     "analise": "O subagente desta etapa é `ba-discovery`.",
-    "design": "O subagente desta etapa é `arquiteto` (ele faz o recon com a skill `org-recon` antes de desenhar).",
+    "design": (
+        "Esta etapa tem dois subagentes, nesta ordem: primeiro `recon`, que levanta a org e grava "
+        "`02-recon.md`; depois `arquiteto`, que lê esse arquivo e grava `03-design.md`. Só acione "
+        "o `arquiteto` depois de o `02-recon.md` existir."
+    ),
     "build": (
         "O subagente desta etapa é `builder-declarativo` quando o `03-design.md` decide por "
         "configuração/Flow, ou `dev-apex` quando decide por código — leia só a seção de decisão do design para escolher."
@@ -92,7 +96,14 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         # impossível saber quanto foi decisão de arquitetura e quanto foi o loop
         # relendo CLAUDE.md. Com Sonnet aqui, os dois passam a ser linhas
         # distintas. Os subagentes seguem o frontmatter e não são afetados.
-        model="claude-sonnet-5",
+        # Haiku desde 2026-11-14: o orquestrador é só roteador — o prompt diz
+        # qual subagente roda e manda não refazer o trabalho dele. Medido antes
+        # da mudança (out/15 a nov/12): rodando em Sonnet, ele custava US$ 0,37
+        # por sessão de análise, contra US$ 0,01 do `ba-discovery` que fazia a
+        # análise, e US$ 0,80 por sessão de design. Efeito colateral aceito: a
+        # linha do orquestrador volta a se somar à dos subagentes Haiku
+        # (`ba-discovery`, `doc`) na telemetria.
+        model="claude-haiku-5-5",
         setting_sources=["project"],
         # O servidor de RAG nasce aqui, por sessão, fechado sobre `client` — ao
         # contrário de salesforce_tools_server (singleton de módulo, sem
