@@ -8,24 +8,15 @@ import { Artefato } from "@/components/Artefato";
 // partir de estrutura de dados: texto escrito por agente nunca vira HTML.
 export function RoteiroCliente({
   texto,
-  codigo,
+  demandaId,
   visaoCliente,
   aberto,
 }: {
   texto: string;
-  codigo: string;
+  demandaId: string;
   visaoCliente: boolean;
   aberto: boolean;
 }) {
-  function baixar() {
-    const url = URL.createObjectURL(new Blob([texto], { type: "text/markdown;charset=utf-8" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `roteiro-de-teste-${codigo}.md`;
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
   return (
     <details className="artefato" open={aberto}>
       <summary>
@@ -40,9 +31,9 @@ export function RoteiroCliente({
         <Artefato texto={texto} />
       </div>
       <p className="gate-texto">
-        <button type="button" className="btn-ghost" onClick={baixar}>
-          Baixar o roteiro
-        </button>
+        <a className="btn-ghost" href={`/api/demandas/${demandaId}/roteiro/pdf`} target="_blank" rel="noopener">
+          Baixar em PDF
+        </a>
       </p>
     </details>
   );

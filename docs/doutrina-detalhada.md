@@ -126,7 +126,8 @@ Roteiro do cliente (2026-11-14): o `05-testes.md` é evidência para quem aprova
 ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava também
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
 ele (`roteiro.py`), o sync o leva ao Squad OS, e o card o mostra ao cliente da homologação
-em diante, com botão de baixar. QA reprovado apaga o roteiro da rodada anterior.
+em diante, com botão para baixar em PDF (mesmo desenho do espelho de horas,
+`lib/roteiro-pdf.ts`). QA reprovado apaga o roteiro da rodada anterior.
 
 **Entregue só com evidência** (2026-11-14): `demands.transition` recusa `entregue` sem
 `05-testes.md` aprovado na sandbox de QA e sem `06-entrega.md` (`EntregaSemEvidenciaError`),

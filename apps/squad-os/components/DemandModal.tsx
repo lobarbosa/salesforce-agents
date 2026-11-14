@@ -392,7 +392,7 @@ export function DemandModal({
       {demanda.roteiroCliente && (
         <RoteiroCliente
           texto={demanda.roteiroCliente}
-          codigo={demanda.code}
+          demandaId={demanda.id}
           visaoCliente={visaoCliente}
           aberto={visaoCliente && podeAprovarEsteGate}
         />
