@@ -102,6 +102,16 @@ build rodar de novo. O portal recusa aprovar um gate de build com plano bloquead
 (`lib/build-bloqueado.ts`). Achado real: cinco demandas da Somos chegaram à homologação
 sem nada construído, com os gates de build aprovados sobre um aviso de bloqueio.
 
+**QA é a porta para o cliente** (2026-11-14): depois da etapa `qa`, a demanda só chega à
+homologação com evidência de aprovação — `**Veredito:** aprovado` e `**Org de teste:**`
+igual à sandbox de QA do cliente (`veredito.py`). Reprovado, sem veredito ou org errada: o
+roteiro vira `05-testes-rodada-<n>.md`, a demanda volta para `build` e o Squad OS põe o
+build refeito na fila sozinho (motivo `refazer` no sync). O build corrigido passa de novo
+pelo gate de PR antes de voltar ao QA — cada volta tem um humano no meio. Depois de duas
+reprovações seguidas a demanda para no gate de design, para o arquiteto decidir. Achado
+real: dez demandas (Eplast e Somos) estavam em homologação com o QA reprovado, porque o
+fluxo só conferia se o `05-testes.md` existia.
+
 O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
 (`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.
 

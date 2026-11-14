@@ -55,6 +55,9 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 
 ## Gate de PR (`aguardando_gate_build`)
 
+- A pasta tem `05-testes-rodada-<n>.md`? Então este PR é correção de um QA reprovado:
+  confira no plano a seção "Correções da rodada <n>", falha por falha, antes de devolver
+  ao QA.
 - O plano abre com `**Resultado do build:** concluído`? Plano que diz "bloqueado" não é
   PR para revisar: a esteira devolve a demanda ao gate de design e o portal recusa a
   aprovação aqui.

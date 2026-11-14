@@ -478,7 +478,8 @@ jobs:
           PAYLOAD=$(sfagents demanda status-json --client "$CLIENT" "$DEMAND_ID")
           echo "$PAYLOAD" \
             | jq --arg r "$RESULTADO" --arg run "$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
-                 '. + {resultado: $r, run_url: $run}' \
+                 --arg motivo "${{ steps.fluxo.outputs.motivo }}" \
+                 '. + {resultado: $r, run_url: $run, motivo: $motivo}' \
             | curl -fsS -X POST "$SYNC_URL" \
                 -H "Authorization: Bearer $SYNC_TOKEN" \
                 -H "Content-Type: application/json" \

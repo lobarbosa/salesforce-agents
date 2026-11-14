@@ -34,11 +34,14 @@ def _executor_que_produz(artefatos_por_etapa):
         rodou.append(etapa)
         base = demands.CLIENTS_ROOT / client / "demandas" / demand_id
         for nome in artefatos_por_etapa.get(etapa, ()):
-            (base / nome).write_text(f"artefato de {etapa}", encoding="utf-8")
+            texto = QA_APROVADO if nome == "05-testes.md" else f"artefato de {etapa}"
+            (base / nome).write_text(texto, encoding="utf-8")
 
     executor.rodou = rodou
     return executor
 
+
+QA_APROVADO = "**Veredito:** aprovado\n**Org de teste:** `sbx-acme-qa`\n\n| Caso | Status |"
 
 TODOS_ARTEFATOS = {
     "analise": ("01-analise.md",),
@@ -297,3 +300,71 @@ def test_plano_normal_nao_e_lido_como_bloqueado():
     assert not bloqueio.build_bloqueado("# 04 — Plano de build\n\n## Componentes\n- Flow X\n\nRisco: deploy bloqueado se faltar o campo.")
     assert not bloqueio.build_bloqueado("**Resultado do build:** concluído\n\n## Execução bloqueada até confirmação")
     assert not bloqueio.build_bloqueado("## O build não está bloqueado")
+
+
+# --- QA que não aprova volta para a construção ---------------------------
+
+
+def _executor_de_qa(texto):
+    def executor(client, demand_id, etapa):
+        base = demands.CLIENTS_ROOT / client / "demandas" / demand_id
+        (base / "05-testes.md").write_text(texto, encoding="utf-8")
+
+    return executor
+
+
+def _pasta(d):
+    return demands.CLIENTS_ROOT / "acme" / "demandas" / d.id
+
+
+def test_qa_aprovado_com_evidencia_segue_para_a_homologacao(repo):
+    d = _demanda("qa")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(QA_APROVADO))
+    assert parada.etapa == "aguardando_homologacao"
+    assert (_pasta(d) / "05-testes.md").exists()
+
+
+@pytest.mark.parametrize(
+    "texto",
+    [
+        "**Veredito:** reprovado\n**Org de teste:** `sbx-acme-qa`\n\n### FALHA 1 (crítica) — painel sem dado",
+        "# 05 — Testes\n\nTudo certo, sem linha de veredito.",
+        "**Veredito:** aprovado\n**Org de teste:** `sbx-acme-dev`",
+        "**Veredito:** aprovado",
+    ],
+)
+def test_qa_sem_aprovacao_provada_volta_para_o_build(repo, texto):
+    """Achado 2026-11-13: dez demandas em homologação com o QA reprovado."""
+    d = _demanda("qa")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(texto))
+    assert parada.motivo == "refazer"
+    assert parada.etapa == "build"
+    assert not parada.espera_humano
+    assert demands.Demand.load("acme", d.id).status == "build"
+    # o roteiro reprovado fica para o builder ler; o próximo QA escreve outro
+    assert (_pasta(d) / "05-testes-rodada-1.md").exists()
+    assert not (_pasta(d) / "05-testes.md").exists()
+
+
+def test_build_refeito_passa_pelo_gate_de_pr_antes_de_voltar_ao_qa(repo):
+    """Cada volta do QA tem um humano no meio: a regra de ouro não afrouxa."""
+    d = _demanda("qa")
+    fluxo.rodar("acme", d.id, executor=_executor_de_qa("**Veredito:** reprovado"))
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_build("**Resultado do build:** concluído"))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_build"
+
+
+def test_depois_do_teto_de_reprovacoes_quem_decide_e_o_arquiteto(repo):
+    d = _demanda("qa")
+    for n in range(1, fluxo.MAX_VOLTAS_DO_QA + 1):
+        (_pasta(d) / f"05-testes-rodada-{n}.md").write_text("**Veredito:** reprovado", encoding="utf-8")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa("**Veredito:** reprovado"))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_design"
+    assert (_pasta(d) / f"05-testes-rodada-{fluxo.MAX_VOLTAS_DO_QA + 1}.md").exists()
+
+
+def test_refazer_sai_no_github_output():
+    saida = fluxo.Parada("refazer", "build", "qa", ("qa",)).as_github_output()
+    assert "motivo=refazer" in saida and "espera_humano=false" in saida

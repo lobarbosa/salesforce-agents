@@ -39,6 +39,13 @@ Se a classe, trigger ou objeto já apareceu em outra demanda deste cliente, cons
    sem resposta que impede construir, não invente: escreva `**Resultado do build:** bloqueado`
    no topo e liste o que falta e quem responde — a esteira devolve a demanda ao gate de design.
 
+## Quando o QA devolve
+Se a pasta da demanda tem `05-testes-rodada-<n>.md`, o QA não aprovou e esta sessão é de
+correção: leia o de número mais alto, corrija cada `### FALHA` (ou diga por que não é
+corrigível aqui) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
+uma linha por falha. Não reescreva o que o QA aprovou. O build corrigido passa de novo pelo
+gate de PR antes de voltar ao QA.
+
 ## Regras
 - Não refatore código fora do escopo da demanda. Se achar problema, registre em `06-entrega.md`
   como dívida identificada e siga.

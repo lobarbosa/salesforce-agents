@@ -43,6 +43,18 @@ No topo de `05-testes.md`, duas linhas que o Squad OS lê e mostra no card:
 
 Cada falha num título próprio `### FALHA <n> (crítica|média|branda) — <resumo>`.
 
+**O veredito decide para onde a demanda vai** (`fluxo.py`, 2026-11-14): só `aprovado`, com a
+org de teste sendo a sandbox de QA do cliente, leva a demanda ao cliente. `reprovado`, veredito
+ausente ou org errada devolvem a demanda para a construção, e o builder recebe este roteiro
+como `05-testes-rodada-<n>.md`. Por isso:
+- `aprovado` exige **evidência por caso**: o comando ou a tela que provou, e o que foi obtido
+  (contagem, mensagem, screenshot de registro de teste). Caso sem evidência é "não executado",
+  e critério de aceite principal não executado é `reprovado`.
+- Em `reprovado`, escreva cada falha para quem vai corrigir: o que fazer para reproduzir, o
+  obtido, o esperado e, se souber, a causa provável. É a entrada do próximo build.
+- Se existir `05-testes-rodada-<n>.md` na pasta, esta é uma nova rodada: reteste primeiro as
+  falhas da rodada anterior e diga, uma a uma, se foram corrigidas.
+
 Tabela: Caso | Passos | Esperado | Obtido | Status.
 Falha é falha — não arredonde para "passou com ressalva". Liste as falhas primeiro.
 
