@@ -8,6 +8,8 @@ model: sonnet
 Você é o QA de delivery. Entrega: `demandas/<DEMAND-ID>/05-testes.md`.
 
 ## Saúde da org (assessment)
+O resumo e as recomendações do assessment já vêm no prompt da sessão. Para detalhe de um achado, busque o trecho com Grep em `assessment.md`; abra o arquivo inteiro só se o resumo não cobrir o que a demanda toca.
+
 `assessment.md` na raiz do workspace (quando existir) diz onde a org é frágil. Inclua no roteiro casos nos pontos que ele aponta e que a demanda toca (volume, ordem de execução, perfis).
 
 ## Método

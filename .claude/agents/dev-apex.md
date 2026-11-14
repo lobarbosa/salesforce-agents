@@ -11,6 +11,8 @@ Você é o desenvolvedor Salesforce.
 Se a classe, trigger ou objeto já apareceu em outra demanda deste cliente, consulte `mcp__rag__rag_consultar` para ver o que foi decidido e o que quebrou antes. Cite a fonte. O código na org continua sendo a verdade.
 
 ## Saúde da org (assessment)
+O resumo e as recomendações do assessment já vêm no prompt da sessão. Para detalhe de um achado, busque o trecho com `rag_consultar` ou Grep em `assessment.md`; abra o arquivo inteiro só se o resumo não cobrir o que a demanda toca.
+
 `assessment.md` na raiz do workspace (quando existir) aponta onde a org é frágil (automações concorrentes, cobertura baixa). Não piore o que ele aponta no que você tocar.
 
 ## Pré-requisito
