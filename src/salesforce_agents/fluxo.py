@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import ambientes, bloqueio, demands, gates
+from . import ambientes, bloqueio, demands, gates, veredito
 
 # Etapas de execução que acionam uma sessão de agente. As `aguardando_*` são
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
@@ -57,6 +57,27 @@ def _plano_de_build(d: demands.Demand):
 def _plano_bloqueado(d: demands.Demand) -> bool:
     plano = _plano_de_build(d)
     return plano.exists() and bloqueio.build_bloqueado(plano.read_text(encoding="utf-8"))
+
+
+# QA que não aprova devolve a demanda para a construção (decisão de
+# 2026-11-14, ver veredito.py). O build refeito passa de novo pelo gate de PR
+# antes de voltar ao QA, então cada volta tem um humano no meio. O teto existe
+# para a conta: depois de MAX_VOLTAS_DO_QA reprovações seguidas, quem decide o
+# que fazer é o arquiteto, no gate de design.
+ROTEIRO_DE_TESTE = "05-testes.md"
+MAX_VOLTAS_DO_QA = 2
+GATE_QUANDO_O_QA_NAO_FECHA = "aguardando_gate_design"
+
+
+def _rodadas_reprovadas(d: demands.Demand) -> int:
+    return len(list(d.path.glob("05-testes-rodada-*.md")))
+
+
+def _arquivar_roteiro_reprovado(d: demands.Demand) -> None:
+    """Guarda o roteiro reprovado para o builder ler as falhas e tira o
+    `05-testes.md` do caminho: o próximo QA tem de escrever um novo."""
+    destino = d.path / f"05-testes-rodada-{_rodadas_reprovadas(d) + 1}.md"
+    (d.path / ROTEIRO_DE_TESTE).rename(destino)
 
 
 # Autor registrado no histórico quando quem avança é o próprio pipeline. Fica
@@ -96,7 +117,7 @@ class Parada:
     YAML em silêncio, então eles têm teste.
     """
 
-    motivo: str  # gate | fim
+    motivo: str  # gate | fim | refazer
     etapa: str
     ambiente: str
     etapas_rodadas: tuple[str, ...] = ()
@@ -226,6 +247,23 @@ def rodar(
         if d.status == "build" and _plano_bloqueado(d):
             demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
             continue
+
+        # QA só entrega ao cliente o que provou. Sem aprovação com evidência,
+        # a demanda volta para a construção — em outro job, porque o build
+        # roda na sandbox de dev e este autenticou na de QA.
+        if d.status == "qa" and (d.path / ROTEIRO_DE_TESTE).exists():
+            v = veredito.ler(
+                (d.path / ROTEIRO_DE_TESTE).read_text(encoding="utf-8"),
+                ambientes.org_alias(client, "qa"),
+            )
+            if not v.aprovado:
+                voltas = _rodadas_reprovadas(d)
+                _arquivar_roteiro_reprovado(d)
+                if voltas >= MAX_VOLTAS_DO_QA:
+                    demands.transition(client, demand_id, GATE_QUANDO_O_QA_NAO_FECHA, AUTOR_PIPELINE)
+                    return Parada("gate", GATE_QUANDO_O_QA_NAO_FECHA, ambiente_do_job, tuple(rodadas))
+                demands.transition(client, demand_id, "build", AUTOR_PIPELINE)
+                return Parada("refazer", "build", ambiente_do_job, tuple(rodadas))
 
         prox = proxima_etapa(d.status)
         if prox is None:

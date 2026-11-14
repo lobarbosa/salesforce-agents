@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { autorizarSync } from "@/lib/sync-auth";
-import { concluirEmVoo, processarFila } from "@/lib/fila-esteira";
+import { concluirEmVoo, processarFila, enfileirar } from "@/lib/fila-esteira";
 import { ESTAGIOS_DE_DEBITO, estimativaAprovada } from "@/lib/demandas";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
@@ -194,6 +194,19 @@ export async function POST(request: NextRequest) {
   // próximo (lib/fila-esteira.ts). A execução que chama ainda aparece ativa
   // no Actions — por isso é excluída pela URL.
   await concluirEmVoo(demanda.id);
+  // QA não aprovou (fluxo.py, motivo "refazer"): a demanda voltou para `build`
+  // e ninguém vai clicar em nada — o build refeito entra na fila sozinho. Sem
+  // isto ela ficaria em `build` sem agente rodando. O gate de PR depois do
+  // build continua sendo de gente.
+  if (body.motivo === "refazer" && status === "build" && body.resultado === "success") {
+    const jaNaFila = await prisma.disparoEsteira.findFirst({
+      where: { demandaId: demanda.id, tipo: "rodar", concluidoEm: null },
+      select: { id: true },
+    });
+    if (!jaNaFila) {
+      await enfileirar({ clientId: client.id, demandaId: demanda.id, tipo: "rodar", autor: "esteira (QA não aprovou)" });
+    }
+  }
   await processarFila(client.id, { excetoRunUrl: atualizada.ultimoRunUrl }).catch((e) =>
     console.error("sync/demanda: processarFila", e)
   );

@@ -27,6 +27,13 @@ Se o Flow, objeto ou campo já apareceu em outra demanda deste cliente, consulte
    devolve a demanda ao gate de design; "bloqueado" nunca segue para revisão de PR.
 5. Commit + push + abrir PR. Nunca faça merge.
 
+## Quando o QA devolve
+Se a pasta da demanda tem `05-testes-rodada-<n>.md`, o QA não aprovou e esta sessão é de
+correção: leia o de número mais alto, corrija cada `### FALHA` (ou diga por que não é
+corrigível aqui) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
+uma linha por falha. Não reescreva o que o QA aprovou. O build corrigido passa de novo pelo
+gate de PR antes de voltar ao QA.
+
 ## Regras
 - Um Flow por propósito. Não empilhe lógica não relacionada em um Flow gigante.
 - Flow record-triggered: sempre defina critério de entrada. Flow que roda em todo update é dívida técnica.
