@@ -40,3 +40,14 @@ def test_recon_e_do_agente_recon_nao_do_arquiteto():
     assert _frontmatter("recon")["model"].strip() == "sonnet"
     arquiteto = (AGENTES / "arquiteto.md").read_text(encoding="utf-8")
     assert "Não refaça o recon" in arquiteto
+
+
+def test_orquestrador_aciona_um_subagente_por_vez_em_primeiro_plano():
+    # EPLAST-47 (2026-11-14): subagente em background + nova chamada = dois
+    # construtores na mesma sandbox e etapa sem build.
+    fonte = (RAIZ / "src" / "salesforce_agents" / "orchestrator.py").read_text(encoding="utf-8")
+    assert 'os.environ["CLAUDE_CODE_DISABLE_BACKGROUND_TASKS"] = "1"' in fonte
+    corpo_do_run = fonte.split("async def run(", 1)[1]
+    assert "_desligar_background()" in corpo_do_run.split("ClaudeAgentOptions(", 1)[0]
+    assert "{UM_SUBAGENTE_POR_VEZ}" in corpo_do_run
+    assert "nunca em background" in fonte

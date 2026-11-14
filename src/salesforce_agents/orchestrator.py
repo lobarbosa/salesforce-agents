@@ -8,6 +8,7 @@ em qual workspace de cliente.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import anyio
@@ -82,8 +83,27 @@ ECONOMIA_DE_CONTEXTO = (
 )
 
 
+# Achado real (EPLAST-47, build de 2026-11-14): o orquestrador acionou o
+# `builder-declarativo` em background, a chamada voltou na hora e ele acionou o
+# mesmo subagente de novo. Ficaram dois construtores na mesma pasta e na mesma
+# sandbox, um desfazendo o trabalho do outro, e a etapa terminou sem build. A
+# variável desliga a execução em background no Claude Code; a frase no prompt
+# cobre o caso de ela deixar de valer.
+UM_SUBAGENTE_POR_VEZ = (
+    "Acione cada subagente **uma única vez, em primeiro plano** (nunca em background, nunca "
+    "`run_in_background`) e não acione outro, nem o mesmo de novo, enquanto ele não devolver "
+    "a resposta: dois subagentes escrevendo na mesma demanda e na mesma sandbox se atropelam. "
+    "Se ele voltar sem o artefato, acione-o de novo só depois de ele ter terminado."
+)
+
+
+def _desligar_background() -> None:
+    os.environ["CLAUDE_CODE_DISABLE_BACKGROUND_TASKS"] = "1"
+
+
 async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
+    _desligar_background()
 
     options = ClaudeAgentOptions(
         # Ver sessao.MAX_BUFFER_MENSAGEM.
@@ -131,7 +151,7 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     prompt = (
         f"Demanda {demand_id} do cliente {client}, etapa **{etapa}** (pasta "
         f"demandas/{demand_id}/). {_quem_roda(etapa)} Acione-o via Task, **espere ele "
-        f"terminar** e pare: depois desta etapa vem um gate humano.\n\n"
+        f"terminar** e pare: depois desta etapa vem um gate humano. {UM_SUBAGENTE_POR_VEZ}\n\n"
         f"{ECONOMIA_DE_CONTEXTO}"
         f"{assessment.nota_para_o_prompt(client)}"
         f"{anexos.nota_para_o_prompt(client, demand_id)}"
