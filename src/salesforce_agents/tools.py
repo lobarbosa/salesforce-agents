@@ -65,6 +65,25 @@ async def spec_read(args: dict) -> dict:
     return _text_result(f"Formato não suportado: {suffix}")
 
 
+# Tudo o que uma ferramenta devolve é relido pelo modelo a cada turno até o fim
+# da sessão: 93% dos tokens da esteira são releitura (medido em 2026-11-14).
+# Uma saída de 200 KB de `sf` custa 200 KB vezes o número de turnos seguintes.
+# O corte guarda o começo e o fim e diz ao agente para refinar o comando.
+LIMITE_SAIDA_SF = 12_000
+
+
+def _cortar(texto: str, limite: int = LIMITE_SAIDA_SF) -> str:
+    if len(texto) <= limite:
+        return texto
+    cabeca, cauda = texto[: limite * 3 // 4], texto[-(limite // 4):]
+    return (
+        f"{cabeca}\n\n... [saída cortada: {len(texto)} caracteres no total, mostrando o começo e o fim. "
+        "Refine o comando — campos específicos na query, --metadata mais estreito, LIMIT — em vez de "
+        "pedir tudo de novo.] ...\n\n"
+        f"{cauda}"
+    )
+
+
 def _run_sf(args: list[str]) -> dict:
     try:
         proc = sf(args)
@@ -73,7 +92,7 @@ def _run_sf(args: list[str]) -> dict:
             "Salesforce CLI ('sf') não encontrada no PATH. Instale com "
             "'npm install -g @salesforce/cli' e autentique o org do cliente."
         )
-    output = proc.stdout.strip() or proc.stderr.strip()
+    output = _cortar(proc.stdout.strip() or proc.stderr.strip())
     status = "OK" if proc.returncode == 0 else f"ERRO (exit {proc.returncode})"
     return _text_result(f"[{status}] sf {' '.join(args)}\n\n{output}")
 

@@ -154,6 +154,9 @@ def test_release_fecha_a_demanda_sem_pedir_mais_nada(repo):
     """`release` é a única etapa de agente sem gate depois: o que vem é
     `entregue`, terminal. Então é a única invocação que sai por 'fim'."""
     d = _demanda("release")
+    # A demanda chega ao release com o QA já aprovado: sem essa evidência em
+    # disco, `entregue` é recusado (test_entregue_sem_qa_aprovado_e_recusado).
+    (demands.CLIENTS_ROOT / "acme" / "demandas" / d.id / "05-testes.md").write_text(QA_APROVADO, encoding="utf-8")
     ex = _executor_que_produz(TODOS_ARTEFATOS)
 
     parada = fluxo.rodar("acme", d.id, executor=ex)
@@ -368,3 +371,35 @@ def test_depois_do_teto_de_reprovacoes_quem_decide_e_o_arquiteto(repo):
 def test_refazer_sai_no_github_output():
     saida = fluxo.Parada("refazer", "build", "qa", ("qa",)).as_github_output()
     assert "motivo=refazer" in saida and "espera_humano=false" in saida
+
+
+# --- entregue só com evidência -------------------------------------------
+
+
+def test_entregue_sem_qa_aprovado_e_recusado(repo):
+    """Achado 2026-11-14: demandas marcadas 'entregue' por correção manual só com o pedido."""
+    d = _demanda("backlog")
+    with pytest.raises(demands.EntregaSemEvidenciaError):
+        demands.transition("acme", d.id, "entregue", "alguém")
+    (_pasta(d) / "05-testes.md").write_text("**Veredito:** reprovado", encoding="utf-8")
+    (_pasta(d) / "06-entrega.md").write_text("entrega", encoding="utf-8")
+    with pytest.raises(demands.EntregaSemEvidenciaError):
+        demands.transition("acme", d.id, "entregue", "alguém")
+    assert demands.Demand.load("acme", d.id).status == "backlog"
+
+
+def test_entregue_com_qa_aprovado_e_documento_passa(repo):
+    d = _demanda("release")
+    (_pasta(d) / "05-testes.md").write_text(QA_APROVADO, encoding="utf-8")
+    with pytest.raises(demands.ArtifactAusenteError):  # falta o documento de entrega
+        demands.transition("acme", d.id, "entregue", "pipeline")
+    (_pasta(d) / "06-entrega.md").write_text("entrega", encoding="utf-8")
+    assert demands.transition("acme", d.id, "entregue", "pipeline").status == "entregue"
+
+
+def test_saida_longa_do_sf_e_cortada():
+    tools = pytest.importorskip("salesforce_agents.tools")
+    texto = "x" * 50_000
+    cortado = tools._cortar(texto)
+    assert len(cortado) < 13_000 and "saída cortada: 50000" in cortado
+    assert tools._cortar("curto") == "curto"

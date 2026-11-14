@@ -44,6 +44,44 @@ ALLOWED_TOOLS = [
 # workspace-trust warning by loosening this — it isn't gating anything that matters.
 
 
+# Quem roda cada etapa. Vai no prompt para o orquestrador não gastar turnos
+# lendo status.yaml e o fluxo para descobrir o que o fluxo.py já sabe.
+SUBAGENTE_DA_ETAPA = {
+    "analise": "O subagente desta etapa é `ba-discovery`.",
+    "design": (
+        "Esta etapa tem dois subagentes, nesta ordem: primeiro `recon`, que levanta a org e grava "
+        "`02-recon.md`; depois `arquiteto`, que lê esse arquivo e grava `03-design.md`. Só acione "
+        "o `arquiteto` depois de o `02-recon.md` existir."
+    ),
+    "build": (
+        "O subagente desta etapa é `builder-declarativo` quando o `03-design.md` decide por "
+        "configuração/Flow, ou `dev-apex` quando decide por código — leia só a seção de decisão do design para escolher."
+    ),
+    "qa": "O subagente desta etapa é `qa`.",
+    "release": "Os subagentes desta etapa são `release` e, em seguida, `doc`.",
+}
+
+
+def _quem_roda(etapa: str) -> str:
+    return SUBAGENTE_DA_ETAPA.get(etapa, "Acione o subagente da etapa conforme o fluxo do CLAUDE.md.")
+
+
+# 93% dos tokens da esteira são releitura de contexto (medido em 2026-11-14):
+# tudo o que entra numa sessão é relido a cada turno. Estas regras valem para o
+# orquestrador e são repassadas ao subagente no briefing.
+ECONOMIA_DE_CONTEXTO = (
+    "Economia de contexto (tudo o que você lê é relido e cobrado a cada turno seguinte):\n"
+    "- Você é só o roteador: não leia os artefatos da demanda nem refaça o trabalho do "
+    "subagente. Passe a ele este briefing inteiro e, quando ele voltar, confira apenas que "
+    "os arquivos da etapa existem.\n"
+    "- Repasse ao subagente: ler só o que a etapa precisa; usar `rag_consultar` ou Grep para "
+    "achar um trecho em vez de abrir arquivo inteiro (assessment, designs antigos, demandas "
+    "anteriores); não reler arquivo já lido na sessão; em `sf`, pedir campos e metadata "
+    "específicos, com LIMIT, e nunca despejar describe ou retrieve inteiro na conversa; "
+    "devolver ao final um resumo de poucas linhas, não o conteúdo do artefato.\n\n"
+)
+
+
 async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
 
@@ -58,7 +96,14 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         # impossível saber quanto foi decisão de arquitetura e quanto foi o loop
         # relendo CLAUDE.md. Com Sonnet aqui, os dois passam a ser linhas
         # distintas. Os subagentes seguem o frontmatter e não são afetados.
-        model="claude-sonnet-5",
+        # Haiku desde 2026-11-14: o orquestrador é só roteador — o prompt diz
+        # qual subagente roda e manda não refazer o trabalho dele. Medido antes
+        # da mudança (out/15 a nov/12): rodando em Sonnet, ele custava US$ 0,37
+        # por sessão de análise, contra US$ 0,01 do `ba-discovery` que fazia a
+        # análise, e US$ 0,80 por sessão de design. Efeito colateral aceito: a
+        # linha do orquestrador volta a se somar à dos subagentes Haiku
+        # (`ba-discovery`, `doc`) na telemetria.
+        model="claude-haiku-5-5",
         setting_sources=["project"],
         # O servidor de RAG nasce aqui, por sessão, fechado sobre `client` — ao
         # contrário de salesforce_tools_server (singleton de módulo, sem
@@ -84,11 +129,10 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     ]
 
     prompt = (
-        f"Continue o ciclo de delivery da demanda {demand_id} do cliente {client}. "
-        f"A história está em demandas/{demand_id}/demanda.md e o estágio atual em "
-        f"demandas/{demand_id}/status.yaml. Siga o fluxo canônico descrito em CLAUDE.md "
-        f"a partir do estágio atual, acionando o subagente correspondente via Task e "
-        f"**esperando ele terminar**, e pare no próximo gate humano.\n\n"
+        f"Demanda {demand_id} do cliente {client}, etapa **{etapa}** (pasta "
+        f"demandas/{demand_id}/). {_quem_roda(etapa)} Acione-o via Task, **espere ele "
+        f"terminar** e pare: depois desta etapa vem um gate humano.\n\n"
+        f"{ECONOMIA_DE_CONTEXTO}"
         f"{assessment.nota_para_o_prompt(client)}"
         f"{anexos.nota_para_o_prompt(client, demand_id)}"
         f"{comentarios.nota_para_o_prompt(client, demand_id)}"
