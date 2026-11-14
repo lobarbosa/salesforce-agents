@@ -1,0 +1,11 @@
+id: EPLAST-47
+client: eplast
+titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação de contas)
+tipo: sustentacao
+status: backlog
+criado_em: '2026-11-14T18:20:45.448Z'
+historico:
+  - de: null
+    em: '2026-11-14T18:20:45Z'
+    para: backlog
+    autor: Leonardo Barbosa
