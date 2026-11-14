@@ -19,26 +19,52 @@ on:
   pull_request:
     paths:
       - "clients/*/force-app/**"
+  # Disparo explícito pela esteira (run-demand.yml, ao fim do build). O evento
+  # de PR de um commit feito pelo robô do Actions nasce "aguardando aprovação"
+  # e nunca roda sozinho — achado EPLAST-47, 2026-11-14: nenhuma PR de demanda
+  # tinha este check, só as que receberam commit de uma pessoa. workflow_dispatch
+  # é a exceção que o GITHUB_TOKEN consegue disparar. Roda a partir da main
+  # (as branches de demanda não trazem este arquivo atualizado) e valida a
+  # branch informada; o resultado vai para a PR como status do commit.
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: "Branch da demanda a validar (ex.: feature/EPLAST-47)"
+        required: true
+        type: string
 
 permissions:
   contents: read
+  statuses: write
 
 jobs:
   detect:
     runs-on: ubuntu-latest
     outputs:
       clients: ${{ steps.changed.outputs.clients }}
+      base: ${{ steps.changed.outputs.base }}
+      head: ${{ steps.changed.outputs.head }}
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch || '' }}
           fetch-depth: 0
 
       - name: Descobrir quais clients/<cliente>/force-app mudaram
         id: changed
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
+          if [ -n "$PR_BASE_SHA" ]; then
+            BASE_SHA="$PR_BASE_SHA"; HEAD_SHA="$PR_HEAD_SHA"
+          else
+            # Disparo pela esteira: o que a branch mudou desde que saiu da main.
+            HEAD_SHA=$(git rev-parse HEAD)
+            BASE_SHA=$(git merge-base origin/main HEAD)
+          fi
+          echo "base=$BASE_SHA" >> "$GITHUB_OUTPUT"
+          echo "head=$HEAD_SHA" >> "$GITHUB_OUTPUT"
           CLIENTS=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- 'clients/*/force-app/**' \
             | sed -E 's#^clients/([^/]+)/force-app/.*#\1#' | sort -u | jq -R -s -c 'split("\n")[:-1]')
           echo "clientes com force-app alterado: $CLIENTS"
@@ -58,6 +84,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.branch || '' }}
           fetch-depth: 0
 
       - name: Instalar Salesforce CLI
@@ -84,8 +111,8 @@ jobs:
       - name: Deploy check-only (validate)
         if: steps.auth.outputs.ok == 'true'
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          BASE_SHA: ${{ needs.detect.outputs.base }}
+          HEAD_SHA: ${{ needs.detect.outputs.head }}
         run: |
           # Só o que este PR mudou, não o force-app inteiro do cliente — um
           # cliente com 6 meses de metadata legado pode ter erros pré-existentes
@@ -108,4 +135,68 @@ jobs:
             echo "Todos os arquivos mudados neste PR foram removidos — nada a validar."
             exit 0
           fi
-          sf project deploy validate "${ARGS[@]}" --target-org "$TARGET_ORG" --wait 30
+          # Testes: só os da própria demanda, nunca a suíte inteira da org.
+          # `deploy validate` roda todos os testes locais, e a org do cliente
+          # traz testes legados quebrados sem relação com a demanda (achado
+          # EPLAST-47, 2026-11-14: 70 de 79 testes da sbx-eplast-dev falham, e
+          # reprovavam PR que só tinha Flow e metadata). Sem Apex no PR:
+          # dry-run sem teste. Com Apex: as classes de teste dedicadas
+          # (`<Classe>Test`, convenção do CLAUDE.md), e a falta delas reprova.
+          APEX=$(printf '%s\n' "$CHANGED" | grep -E '/(classes|triggers)/[^/]+\.(cls|trigger)$' || true)
+          if [ -z "$APEX" ]; then
+            echo "Sem Apex neste PR — validando sem rodar testes."
+            sf project deploy start --dry-run "${ARGS[@]}" --target-org "$TARGET_ORG" --test-level NoTestRun --wait 30
+            exit 0
+          fi
+          TESTES=()
+          FALTOU=""
+          while IFS= read -r f; do
+            [ -e "$f" ] || continue
+            nome=$(basename "$f"); nome="${nome%.*}"
+            dir_classes="$(dirname "$(dirname "$f")")/classes"
+            if [[ "$f" == *.cls ]] && grep -qi '@istest' "$f"; then
+              TESTES+=("$nome")
+            elif [ -e "$dir_classes/${nome}Test.cls" ]; then
+              TESTES+=("${nome}Test")
+            elif [[ "$f" == *.trigger ]]; then
+              # Trigger costuma ser coberto pelo teste do handler, que entra
+              # na lista quando o handler muda junto.
+              echo "::warning::$f não tem ${nome}Test.cls — depende do teste do handler estar neste PR."
+            else
+              echo "::error::$f não tem classe de teste dedicada (${nome}Test.cls). Todo Apex da demanda precisa da sua (CLAUDE.md, Convenções)."
+              FALTOU=1
+            fi
+          done <<< "$APEX"
+          [ -z "$FALTOU" ] || exit 1
+          if [ "${#TESTES[@]}" -eq 0 ]; then
+            echo "::error::Este PR muda Apex e não traz nenhuma classe de teste que o cubra."
+            exit 1
+          fi
+          TESTES_ARGS=()
+          for t in $(printf '%s\n' "${TESTES[@]}" | sort -u); do TESTES_ARGS+=(--tests "$t"); done
+          echo "Testes desta demanda: ${TESTES_ARGS[*]}"
+          sf project deploy start --dry-run "${ARGS[@]}" --target-org "$TARGET_ORG" \
+            --test-level RunSpecifiedTests "${TESTES_ARGS[@]}" --wait 30
+
+      # No disparo pela esteira não há evento de PR para pendurar o check: o
+      # resultado vai como status do commit, que a PR da demanda mostra.
+      - name: Publicar o resultado na PR da demanda
+        if: always() && github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          HEAD_SHA: ${{ needs.detect.outputs.head }}
+          RESULTADO: ${{ job.status }}
+          CLIENTE: ${{ matrix.client }}
+          AUTENTICOU: ${{ steps.auth.outputs.ok }}
+        run: |
+          case "$RESULTADO" in
+            success) ESTADO=success; DESC="Deploy validado na sandbox de dev (check-only)";;
+            *) ESTADO=failure; DESC="Validação do deploy falhou — ver o log";;
+          esac
+          if [ "$RESULTADO" = "success" ] && [ "$AUTENTICOU" != "true" ]; then
+            DESC="Sem credenciais da sandbox de dev — validação pulada"
+          fi
+          gh api "repos/$GITHUB_REPOSITORY/statuses/$HEAD_SHA" \
+            -f state="$ESTADO" -f context="validar deploy Salesforce ($CLIENTE)" \
+            -f description="$DESC" \
+            -f target_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" >/dev/null

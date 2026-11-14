@@ -63,7 +63,9 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
   aprovação aqui.
 - O PR abre contra `feature/<DEMAND-ID>` (nunca direto em `main`) e os checks de CI estão
   verdes: `ci-python.yml`/`ci-squad-os.yml` conforme o que mudou, e
-  `ci-salesforce-validate.yml` (deploy validate, check-only) se `force-app` mudou.
+  `ci-salesforce-validate.yml` (deploy check-only) se `force-app` mudou. Em PR de demanda
+  ele aparece como status do commit, "validar deploy Salesforce (<cliente>)", disparado
+  pela esteira ao fim do build; se não estiver lá, dispare o workflow à mão com a branch.
   Todo build Apex tem classe de teste dedicada e cobertura mínima de 85% por classe.
 - `04-plano-build.md` bate com o que o PR de fato contém — sobrou algo do plano que não foi
   implementado, ou o PR tem mais coisa do que o plano previa? Olhe a contagem de arquivos
