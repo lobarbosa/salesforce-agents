@@ -1,8 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>EPLAST-47: aviso operacional de falha do job, so para o destinatario configurado em ScheduledFlowOpportunitySetting__mdt. Corpo so com Id da conta e mensagem de erro, sem dado de cliente. Nao e comunicacao de marketing (regra 2 da conta). Se a Eplast classificar o aviso como marketing (P5), remover este elemento e manter so o IntegrationLog__c.</description>
+        <name>SendFaultEmail</name>
+        <label>Enviar Aviso de Falha</label>
+        <locationX>578</locationX>
+        <locationY>1700</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>GetSetting.FaultRecipient__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Falha no Fluxo Agendado - Oportunidade (ScheduledFlowOpportunity)</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>FaultBody</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
     <apiVersion>59.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
+        <description>Soma Amount das oportunidades ganhas do ano da conta (regra atual, mantida: P2).</description>
         <name>AssignSumValue</name>
         <label>Atribuir Soma do Valor</label>
         <locationX>666</locationX>
@@ -19,28 +50,53 @@
         </connector>
     </assignments>
     <assignments>
-        <name>QuantityOpportunities</name>
-        <label>Quantidade de Oportunidades</label>
-        <locationX>578</locationX>
-        <locationY>468</locationY>
+        <description>Media da conta vazia: mantem o Ranking atual da conta (nunca grava GG por falta de dado; criterio 11 da analise, P6).</description>
+        <name>KeepCurrentRanking</name>
+        <label>Manter Ranking Atual</label>
+        <locationX>50</locationX>
+        <locationY>1100</locationY>
         <assignmentItems>
-            <assignToReference>Count</assignToReference>
-            <operator>AssignCount</operator>
+            <assignToReference>NewRanking</assignToReference>
+            <operator>Assign</operator>
             <value>
-                <elementReference>GetOpportunities</elementReference>
+                <elementReference>$Record.Account.Ranking__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
-            <targetReference>LoopOpportunities</targetReference>
+            <targetReference>HasChanges</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>Primeira faixa que contem a media: grava o Ranking da faixa e marca como encontrada. As faixas seguintes nao sobrescrevem.</description>
+        <name>AssignRanking</name>
+        <label>Atribuir Ranking da Faixa</label>
+        <locationX>842</locationX>
+        <locationY>1316</locationY>
+        <assignmentItems>
+            <assignToReference>NewRanking</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LoopRanges.Ranking__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>RangeFound</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopRanges</targetReference>
         </connector>
     </assignments>
     <decisions>
-        <description>Esta decisão verifica se o dia é 1º de cada mês para então atualizar o campo &quot;Valor de Compras Último Mês&quot; e &quot;Ranking&quot; no objeto contas</description>
+        <description>Executa so no dia do mes configurado em ScheduledFlowOpportunitySetting__mdt (registro Default, hoje dia 14). Fluxo agendado nao tem frequencia mensal, por isso Daily com checagem do dia (P9).</description>
         <name>CheckDayMonth</name>
         <label>Verificar dia do mês</label>
         <locationX>974</locationX>
         <locationY>252</locationY>
-        <defaultConnectorLabel>Resultado padrão</defaultConnectorLabel>
+        <defaultConnectorLabel>Fora do dia</defaultConnectorLabel>
         <rules>
             <name>Day1</name>
             <conditionLogic>and</conditionLogic>
@@ -48,116 +104,199 @@
                 <leftValueReference>Day</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue>
-                    <numberValue>14.0</numberValue>
+                    <elementReference>GetSetting.RunDayOfMonth__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>CheckAccount</targetReference>
+            </connector>
+            <label>Dia configurado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Oportunidade sem conta nao tem o que classificar: termina.</description>
+        <name>CheckAccount</name>
+        <label>Oportunidade tem conta</label>
+        <locationX>578</locationX>
+        <locationY>252</locationY>
+        <defaultConnectorLabel>Sem conta</defaultConnectorLabel>
+        <rules>
+            <name>HasAccount</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>GetRepresentativeOpportunity</targetReference>
+            </connector>
+            <label>Tem conta</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Execucao por conta sem gravar estado: so a interview da oportunidade ganha de menor Id da conta segue adiante. As demais terminam antes da soma, garantindo 1 calculo e no maximo 1 update por conta.</description>
+        <name>IsRepresentative</name>
+        <label>É a oportunidade representante</label>
+        <locationX>578</locationX>
+        <locationY>360</locationY>
+        <defaultConnectorLabel>Não é a representante</defaultConnectorLabel>
+        <rules>
+            <name>IsFirstOpportunity</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetRepresentativeOpportunity.Id</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Id</elementReference>
                 </rightValue>
             </conditions>
             <connector>
                 <targetReference>GetOpportunities</targetReference>
             </connector>
-            <label>Dia 1</label>
+            <label>É a representante</label>
         </rules>
     </decisions>
     <decisions>
-        <name>ValuePurchasesLastMonth</name>
-        <label>Valor das compras no último mês</label>
+        <description>Classificacao pela media (AveragePurchasesThisYear__c, P3). Media vazia nao altera o Ranking; media preenchida (inclusive 0) percorre as faixas de RankingRange__mdt.</description>
+        <name>ClassifyRanking</name>
+        <label>Classificar Ranking</label>
         <locationX>578</locationX>
-        <locationY>1092</locationY>
+        <locationY>984</locationY>
         <defaultConnector>
-            <targetReference>UpdateAccountGG</targetReference>
+            <targetReference>GetRanges</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>GG</defaultConnectorLabel>
+        <defaultConnectorLabel>Média preenchida</defaultConnectorLabel>
         <rules>
-            <name>PP</name>
+            <name>AverageEmpty</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
-                <operator>EqualTo</operator>
+                <operator>IsNull</operator>
                 <rightValue>
-                    <numberValue>10000.0</numberValue>
+                    <booleanValue>true</booleanValue>
                 </rightValue>
             </conditions>
             <connector>
-                <targetReference>UpdateAccountPP</targetReference>
+                <targetReference>KeepCurrentRanking</targetReference>
             </connector>
-            <label>PP</label>
-        </rules>
-        <rules>
-            <name>P</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>10000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>70000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>UpdateAccountP</targetReference>
-            </connector>
-            <label>P</label>
-        </rules>
-        <rules>
-            <name>M</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>70000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>150000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>UpdatAccountM</targetReference>
-            </connector>
-            <label>M</label>
-        </rules>
-        <rules>
-            <name>G</name>
-            <conditionLogic>and</conditionLogic>
-            <conditions>
-                <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
-                <operator>GreaterThan</operator>
-                <rightValue>
-                    <numberValue>150000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <conditions>
-                <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
-                <operator>LessThanOrEqualTo</operator>
-                <rightValue>
-                    <numberValue>500000.0</numberValue>
-                </rightValue>
-            </conditions>
-            <connector>
-                <targetReference>UpdateAccountG</targetReference>
-            </connector>
-            <label>G</label>
+            <label>Média vazia</label>
         </rules>
     </decisions>
+    <decisions>
+        <description>Faixa vale se ainda nao houve faixa e a media e menor ou igual ao limite da faixa (inclusive), ou a faixa nao tem limite (3G, sem teto). Acima do limite anterior e garantido pela ordem de SortOrder__c.</description>
+        <name>RangeMatches</name>
+        <label>Faixa contém a média</label>
+        <locationX>842</locationX>
+        <locationY>1208</locationY>
+        <defaultConnector>
+            <targetReference>LoopRanges</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não contém</defaultConnectorLabel>
+        <rules>
+            <name>InRange</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>RangeFound</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopRanges.UpperLimit__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Account.AveragePurchasesThisYear__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>LoopRanges.UpperLimit__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssignRanking</targetReference>
+            </connector>
+            <label>Contém</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>So grava se a soma ou o Ranking mudaram. Sem mudanca nao ha update, evitando rodar a cadeia de automacao de Account (triggers, 2 flows after-save sem criterio de entrada) a toa.</description>
+        <name>HasChanges</name>
+        <label>Houve mudança</label>
+        <locationX>578</locationX>
+        <locationY>1500</locationY>
+        <defaultConnectorLabel>Sem mudança</defaultConnectorLabel>
+        <rules>
+            <name>Changed</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>SumAmount</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Account.LastMonthPurchaseValue__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>NewRanking</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>$Record.Account.Ranking__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateAccount</targetReference>
+            </connector>
+            <label>Mudou</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Envia e-mail so se houver destinatario configurado. Destinatario vazio (P11 pendente): so o log em IntegrationLog__c.</description>
+        <name>HasRecipient</name>
+        <label>Tem destinatário</label>
+        <locationX>578</locationX>
+        <locationY>1592</locationY>
+        <defaultConnectorLabel>Sem destinatário</defaultConnectorLabel>
+        <rules>
+            <name>RecipientFilled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetSetting.FaultRecipient__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SendFaultEmail</targetReference>
+            </connector>
+            <label>Destinatário preenchido</label>
+        </rules>
+    </decisions>
+    <description>Fluxo agendado diario que, no dia do mes configurado em ScheduledFlowOpportunitySetting__mdt, calcula por conta a soma das oportunidades Fechado/Ganho do ano (Opportunity.ThisYear__c) em Account.LastMonthPurchaseValue__c e classifica Account.Ranking__c pela media AveragePurchasesThisYear__c, usando as faixas de RankingRange__mdt. Um calculo e no maximo um update por conta; falha no update gera IntegrationLog__c (IntegrationAction__c = ScheduledFlowOpportunity). EPLAST-47, versao 2.</description>
     <environments>Default</environments>
     <formulas>
+        <description>Dia do mes da execucao, comparado com RunDayOfMonth__c.</description>
         <name>Day</name>
         <dataType>Number</dataType>
         <expression>DAY({!$Flow.CurrentDate})</expression>
         <scale>0</scale>
     </formulas>
+    <formulas>
+        <description>Corpo do log e do aviso de falha: Id da conta e mensagem de erro. Sem dado de cliente.</description>
+        <name>FaultBody</name>
+        <dataType>String</dataType>
+        <expression>&quot;Conta &quot; &amp; {!$Record.AccountId} &amp; &quot;: &quot; &amp; {!$Flow.FaultMessage}</expression>
+    </formulas>
     <interviewLabel>Fluxo Agendado - Oportunidade {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Fluxo Agendado - Oportunidade</label>
     <loops>
+        <description>Percorre as oportunidades ganhas do ano da conta para somar o Amount.</description>
         <name>LoopOpportunities</name>
         <label>Loop Oportunidades</label>
         <locationX>578</locationX>
@@ -168,7 +307,22 @@
             <targetReference>AssignSumValue</targetReference>
         </nextValueConnector>
         <noMoreValuesConnector>
-            <targetReference>GetOpportunities2</targetReference>
+            <targetReference>ClassifyRanking</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>Percorre as faixas de RankingRange__mdt em ordem de SortOrder__c ate achar a que contem a media.</description>
+        <name>LoopRanges</name>
+        <label>Loop Faixas</label>
+        <locationX>842</locationX>
+        <locationY>1100</locationY>
+        <collectionReference>GetRanges</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>RangeMatches</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>HasChanges</targetReference>
         </noMoreValuesConnector>
     </loops>
     <processMetadataValues>
@@ -190,15 +344,103 @@
         </value>
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Registra a falha do update da conta em IntegrationLog__c, identificada por IntegrationAction__c = ScheduledFlowOpportunity. Reaproveita o objeto de log existente (nao cria objeto novo).</description>
+        <name>LogFault</name>
+        <label>Registrar Falha</label>
+        <locationX>578</locationX>
+        <locationY>1400</locationY>
+        <connector>
+            <targetReference>HasRecipient</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ExecutionDate__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IntegrationAction__c</field>
+            <value>
+                <stringValue>ScheduledFlowOpportunity</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ResponseBody__c</field>
+            <value>
+                <elementReference>FaultBody</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ResponseStatus__c</field>
+            <value>
+                <stringValue>Erro</stringValue>
+            </value>
+        </inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
     <recordLookups>
-        <description>Neste componente são obtidas oportunidades com status ganho e o campo &quot;Este ano&quot; verdadeiro. Isso significa que  somente oportunidades fechadas este ano.</description>
+        <description>Le o registro Default de ScheduledFlowOpportunitySetting__mdt: dia de execucao e destinatario da falha.</description>
+        <name>GetSetting</name>
+        <label>Obter Parâmetros</label>
+        <locationX>974</locationX>
+        <locationY>144</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>CheckDayMonth</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Default</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ScheduledFlowOpportunitySetting__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Obtem a oportunidade ganha de menor Id da conta. Define a representante da conta na execucao (1 calculo por conta).</description>
+        <name>GetRepresentativeOpportunity</name>
+        <label>Obter Oportunidade Representante</label>
+        <locationX>578</locationX>
+        <locationY>252</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>IsRepresentative</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>IsWon</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <sortField>Id</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Neste componente sao obtidas oportunidades da conta com status ganho e o campo &quot;Este ano&quot; verdadeiro. Isso significa que somente oportunidades fechadas este ano (regra atual, mantida: P2).</description>
         <name>GetOpportunities</name>
         <label>Obter Oportunidades</label>
         <locationX>578</locationX>
-        <locationY>360</locationY>
+        <locationY>468</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>QuantityOpportunities</targetReference>
+            <targetReference>LoopOpportunities</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -227,34 +469,30 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <name>GetOpportunities2</name>
-        <label>Obter Oportunidades</label>
-        <locationX>578</locationX>
-        <locationY>876</locationY>
+        <description>Le as faixas de classificacao de RankingRange__mdt, ordenadas por SortOrder__c (nao por UpperLimit__c, para a faixa sem teto ficar por ultimo).</description>
+        <name>GetRanges</name>
+        <label>Obter Faixas</label>
+        <locationX>842</locationX>
+        <locationY>1000</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>LastMonthPurchaseValue</targetReference>
+            <targetReference>LoopRanges</targetReference>
         </connector>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>LastMonth__c</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
-        <object>Opportunity</object>
+        <object>RankingRange__mdt</object>
+        <sortField>SortOrder__c</sortField>
+        <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordUpdates>
-        <name>LastMonthPurchaseValue</name>
-        <label>Valor de Compras Último Mês</label>
+        <description>Um unico update da conta com a soma e o Ranking (antes eram ate 2 updates por interview). Falha vai para LogFault.</description>
+        <name>UpdateAccount</name>
+        <label>Atualizar Conta</label>
         <locationX>578</locationX>
-        <locationY>984</locationY>
-        <connector>
-            <targetReference>ValuePurchasesLastMonth</targetReference>
-        </connector>
+        <locationY>1308</locationY>
+        <faultConnector>
+            <targetReference>LogFault</targetReference>
+        </faultConnector>
         <filterLogic>and</filterLogic>
         <filters>
             <field>Id</field>
@@ -269,109 +507,10 @@
                 <elementReference>SumAmount</elementReference>
             </value>
         </inputAssignments>
-        <object>Account</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>UpdatAccountM</name>
-        <label>Atualizar Conta M</label>
-        <locationX>578</locationX>
-        <locationY>1200</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.AccountId</elementReference>
-            </value>
-        </filters>
         <inputAssignments>
             <field>Ranking__c</field>
             <value>
-                <stringValue>M</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Account</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>UpdateAccountG</name>
-        <label>Atualizar Conta G</label>
-        <locationX>842</locationX>
-        <locationY>1200</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.AccountId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Ranking__c</field>
-            <value>
-                <stringValue>G</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Account</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>UpdateAccountGG</name>
-        <label>Atualizar Conta GG</label>
-        <locationX>1106</locationX>
-        <locationY>1200</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.AccountId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Ranking__c</field>
-            <value>
-                <stringValue>GG</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Account</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>UpdateAccountP</name>
-        <label>Atualizar Conta P</label>
-        <locationX>314</locationX>
-        <locationY>1200</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.AccountId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Ranking__c</field>
-            <value>
-                <stringValue>P</stringValue>
-            </value>
-        </inputAssignments>
-        <object>Account</object>
-    </recordUpdates>
-    <recordUpdates>
-        <name>UpdateAccountPP</name>
-        <label>Atualizar Conta PP</label>
-        <locationX>50</locationX>
-        <locationY>1200</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Id</field>
-            <operator>EqualTo</operator>
-            <value>
-                <elementReference>$Record.AccountId</elementReference>
-            </value>
-        </filters>
-        <inputAssignments>
-            <field>Ranking__c</field>
-            <value>
-                <stringValue>PP</stringValue>
+                <elementReference>NewRanking</elementReference>
             </value>
         </inputAssignments>
         <object>Account</object>
@@ -380,7 +519,7 @@
         <locationX>848</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>CheckDayMonth</targetReference>
+            <targetReference>GetSetting</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>
@@ -400,17 +539,26 @@
     </start>
     <status>Active</status>
     <variables>
-        <name>Count</name>
-        <dataType>Number</dataType>
+        <description>Ranking calculado para a conta nesta execucao.</description>
+        <name>NewRanking</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
-        <isInput>true</isInput>
-        <isOutput>true</isOutput>
-        <scale>0</scale>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>Indica que uma faixa ja foi encontrada nesta execucao.</description>
+        <name>RangeFound</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
         <value>
-            <numberValue>0.0</numberValue>
+            <booleanValue>false</booleanValue>
         </value>
     </variables>
     <variables>
+        <description>Soma do Amount das oportunidades ganhas do ano da conta. Sem valor padrao (comportamento atual, P6).</description>
         <name>SumAmount</name>
         <dataType>Currency</dataType>
         <isCollection>false</isCollection>
