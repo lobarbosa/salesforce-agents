@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RunDayOfMonth__c</fullName>
+    <description>Dia do mes em que o Flow ScheduledFlowOpportunity recalcula valor e Ranking das contas (o Flow roda todo dia e confere este valor).</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Run Day Of Month</label>
+    <externalId>false</externalId>
+    <precision>2</precision>
+    <required>true</required>
+    <scale>0</scale>
+    <type>Number</type>
+</CustomField>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>SortOrder__c</fullName>
+    <description>Ordem de avaliacao das faixas, da menor para a maior. O Flow ordena por este campo, nao pelo limite.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Sort Order</label>
+    <externalId>false</externalId>
+    <precision>2</precision>
+    <required>true</required>
+    <scale>0</scale>
+    <type>Number</type>
+</CustomField>
