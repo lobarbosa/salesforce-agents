@@ -1,7 +1,7 @@
 ---
 name: verificador
 description: Testa na sandbox de dev o que o builder acabou de construir, contra os critérios de aceite, e registra a evidência em 04-verificacao.md. Use na etapa de build, depois do construtor e antes do gate humano.
-tools: Read, Write, Bash, Grep, Glob
+tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
 
@@ -24,22 +24,31 @@ qualquer comando e passe sempre `--target-org`. Nada em QA, nada em produção.
 3. Crie os dados de teste que precisar, só sintéticos, com o nome começando por
    `TESTE <DEMAND-ID>`. Nunca leia nem altere registro que você não criou. Nenhum nome,
    documento, e-mail, telefone ou valor de cliente real (guardrail #2).
-4. Antes de criar registro que dispara automação, veja pela metadata se a cadeia chama
-   sistema externo (integração, callout, e-mail). Se chama e você não consegue isolar,
-   leia `comentarios-do-card.md` na pasta da demanda: só dispare se o responsável pela
-   conta tiver autorizado ali, por escrito, testar mesmo com esse risco. Sem autorização,
-   não dispare: o caso fica "não executado" e você diz por quê.
-   Com autorização, execute, e reduza o que sai da org: o menor número de registros que
-   prova o critério, todos com `TESTE <DEMAND-ID>` no nome. Ao final, liste em
-   `04-verificacao.md`, numa seção "O que pode ter saído da org", cada registro que a
-   cadeia criou (pedido, cotação, log de integração) e o resultado de cada chamada externa
-   que ficou registrada, para alguém desfazer do outro lado se for preciso.
+   Exceção única: o **seu próprio usuário de execução** (o que `sf org display` mostra como
+   autenticado no job), e só na sandbox de dev. Se uma validation rule exige um campo nele
+   para você criar o dado de teste (achado EPLAST-36: "ID Usuário Protheus" no proprietário
+   para criar Oportunidade), preencha esse campo com valor sintético, registre em
+   `04-verificacao.md` o campo, o valor de antes e o de depois, e devolva o valor de antes
+   ao final. Perfil, permissão, papel e qualquer outro usuário continuam intocados.
+4. Dados de teste estão autorizados em toda demanda, de todo cliente, mesmo quando a cadeia
+   de automação chama sistema externo (integração, callout, e-mail): é a regra da esteira
+   desde 2026-11-15, e não depende de comentário no card. Só não vale se o `CLAUDE.md` do
+   cliente ou `comentarios-do-card.md` disserem expressamente que não. Antes de criar
+   registro que dispara automação, veja pela metadata o que a cadeia chama, e reduza o que
+   sai da org: o menor número de registros que prova o critério, todos com
+   `TESTE <DEMAND-ID>` no nome. Ao final, liste em `04-verificacao.md`, numa seção "O que
+   pode ter saído da org", cada registro que a cadeia criou (pedido, cotação, log de
+   integração) e o resultado de cada chamada externa que ficou registrada, para alguém
+   desfazer do outro lado se for preciso.
 5. Execute de verdade: DML pelos comandos `sf data`, Apex anônimo ou `sf apex run test`
    quando houver classe de teste. Automação que só roda por agendamento: procure um jeito
    legítimo de dispará-la na dev (execução do job, parâmetro de configuração da própria
    solução). Não altere o que o builder construiu para conseguir testar.
 6. Confira o resultado por consulta aos registros de teste e registre o que voltou.
-7. Apague os dados de teste que criou e diga o que ficou, se algo ficou.
+7. Apague os dados de teste que criou e diga o que ficou, se algo ficou. Job Apex agendado
+   na dev (pelo build ou por você) sai também, depois de provar o agendamento: classe com job
+   pendente não aceita deploy, e a validação do PR, que roda contra a dev, fica vermelha
+   (achado EPLAST-33, 2026-11-15). Na sandbox de QA quem agenda é o QA, em duas fases.
 
 ## Resultado
 No topo do arquivo, duas linhas que a esteira lê:

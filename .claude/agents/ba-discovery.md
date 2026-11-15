@@ -1,7 +1,7 @@
 ---
 name: ba-discovery
 description: Lê a demanda registrada pelo consultor e a transforma em análise funcional com critérios de aceite testáveis. Use no início de toda demanda, antes de qualquer desenho técnico.
-tools: Read, Write, Bash, mcp__rag__rag_consultar
+tools: Read, Write, Bash, mcp__rag__rag_consultar, Grep, Glob
 model: haiku
 ---
 
