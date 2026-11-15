@@ -14,4 +14,15 @@ Regras:
   `CLAUDE.md` da conta, se houver; senão, o verificador pode preencher esse campo no
   próprio usuário de execução, só na dev, e devolve o valor ao final.
 
-Ainda vazio: o primeiro a precisar monta e grava aqui.
+## Scripts provados (2026-11-15)
+
+| Script | Cria | Exige antes | Provado por |
+|---|---|---|---|
+| `lead.apex` | Leads sintéticos simples | nada | EPLAST-26 |
+| `lead-segmento.apex` | Leads com estado, setor e opt-out | nada (permite salvar duplicado de teste) | EPLAST-36 |
+| `opportunity.apex` | Conta + Oportunidade (tipo Industria), aberta | `ProtheusSellerId__c` no proprietário | EPLAST-26 |
+| `conta-oportunidade-ganha.apex` | Filial, condição de pagamento, 5 contas com contato e oportunidades Fechado/Ganho (alimenta `LastPurchase__c`) | `ProtheusSellerId__c` no proprietário | EPLAST-36 |
+| `pedido-com-produto.apex` | Produto, entrada de catálogo, Pedido com item | a conta de `conta-oportunidade-ganha.apex` | EPLAST-36 |
+
+Cada script diz no topo como apagar o que criou. Os nomes trazem o ID da demanda que o
+provou; ao reutilizar, troque pelo ID da sua demanda.
