@@ -1,61 +1,47 @@
 **Verificação:** inconclusiva
-**Org de teste:** `sbx-eplast-dev` (`sf org list`: Sandbox, Connected, Org Id 00DHa000006vfMLMAY; usuário omitido por ser dado pessoal)
+**Org de teste:** `sbx-eplast-dev` (alias; sandbox confirmada por `Organization.IsSandbox` = true; `sf org list`: só este alias conectado, Connected; username e Org Id omitidos do artefato)
 
-# EPLAST-26 — Verificação do build
+# EPLAST-26 — Verificação do build na dev
 
-Só a dev foi tocada. Nada em QA, produção ou Marketing Cloud. Nenhum arquivo de metadata alterado. Dados de teste: 5 Leads sintéticos `TESTE EPLAST-26 L1..L5` (Company `TESTE EPLAST-26`), lidos só pelos campos da entrega e apagados ao fim (`SELECT COUNT() FROM Lead` = 0 depois).
+Todo o lado Lead foi exercitado e passou. A Opportunity ficou sem execução, por motivo que o builder não resolve (ver "O que ficou sem prova"). Não é defeito encontrado: nenhum caso executado falhou.
 
-## Resultado em resumo
-
-Nenhum caso executado falhou. Lead, permissões, list views e revisão de metadata passaram. **Os cenários de Opportunity (score e faixa) não foram executados**: ficam sem prova de execução (ver "O que ficou sem prova"). Por isso a verificação é inconclusiva, não aprovada.
+## Método e cuidados
+- Casos derivados dos critérios de `01-analise.md` seção 4, não do plano de build.
+- Cadeia do Lead conferida pela metadata antes de criar registro: sem ApexTrigger em Lead; um Flow ativo, `Lead_AfterInsert_AplicaRegraAtribuicao`, que chama a Apex `LeadAssignmentService`. O corpo da classe não tem Http, callout, Messaging nem sendEmail. Não sai nada da org.
+- Cadeia da Opportunity (OpportunityFlow, CPQ, Protheus): `comentarios-do-card.md` não traz autorização escrita para disparar. Nenhuma Opportunity foi criada.
+- Dados: 4 Leads sintéticos (`Company` = `TESTE EPLAST-26`, sobrenome `TESTE EPLAST-26 L1..L4`), todos apagados ao fim. Nenhum registro de cliente foi lido nem alterado (a dev tinha 0 Leads e tem 0 Opportunities).
 
 ## Casos
 
-| Caso | Critério (análise, seção 4) | O que foi feito | Esperado | Obtido | Status |
+| Caso | Critério (01-analise, seção 4) | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| L1 | Lead setor + origem + Contatado | `sf data create record` (Sector Alimentos, LeadSource Evento, Contatado); SOQL em `PriorityScore__c`, `PriorityBand__c` | 100, Alta | 100, Alta | passou |
-| L2 | Lead só com setor | Sector preenchido, sem origem, "Aberto - Não contatado" | 30, Baixa | 30, Baixa | passou |
-| L3 | Lead sem setor e sem origem | Só Status Contatado | 0, Sem dados suficientes | 0, Sem dados suficientes | passou |
-| L4 | Alteração de status | Lead setor+origem "Aberto - Não contatado"; depois `sf data update record` Status=Contatado | 60 Média, depois 100 Alta | 60 Média, depois 100 Alta | passou |
-| L5 | Extra: só origem, não contatado | LeadSource preenchido apenas | 30, Baixa | 30, Baixa | passou |
-| L6 | Lead convertido mantém score (PD-05) | Não criado: conversão cria Account/Contact/Opportunity e dispara a cadeia de Opportunity. Fórmula conferida no metadata do design (`OR(ISPICKVAL(Status,"Contatado"), IsConverted)`) | 100, Alta | — | não executado |
-| O1 | Opp Probability 90 / valor / 30 dias / origem | Não criada (ver abaixo) | 96, Alta | — | não executado |
-| O2 | Opp 50 / valor / 61 dias / sem origem | idem | 40, Média | — | não executado |
-| O3 | Opp 10 / valor 0 / 200 dias | idem | 4, Baixa | — | não executado |
-| O4 | Opp encerrada (4 fases) | idem | Encerrada, 0 | — | não executado |
-| O5 | PD-03 (vencida), 60 dias, PD-04 (55% = 22) | idem | sem ponto de prazo; com ponto; 22 | — | não executado |
-| O-F | Fórmulas de Opportunity (leitura estática) | Tooling `CustomField.Metadata` na dev, `Opportunity.PriorityScore__c` e `PriorityBand__c` | Fórmula igual à seção 4.2 do design | Fórmula idêntica (ROUND, BLANKVALUE, janela 0 a 60 dias, IsClosed, faixas 70/40) | passou (só leitura de metadata; não substitui O1 a O5) |
-| S1 | Campos somente leitura | `sf data update record -v "PriorityScore__c=5"` em Lead; describe | Escrita recusada | `Unable to create/update fields: PriorityScore__c...`; describe: `calculated=true`, `updateable=false` (score e faixa) | passou (Lead; Opportunity pelo mesmo tipo fórmula, sem DML) |
-| P1 | Permission set | Query em `FieldPermissions` do `PS_Comercial_ScorePrioridade`; `PermissionSetAssignment` | 4 campos só leitura; 1 atribuição | 4 linhas, `PermissionsRead=true`, `PermissionsEdit=false`; 1 atribuição | passou |
-| V1 | Lista ordena por score (Lead) | REST `listviews/<id>/describe` e `/results?orderBy=PriorityScore__c DESC` na `Leads_Abertos_Prioridade` | Coluna ordenável; ordem decrescente | `PriorityScore__c` e `PriorityBand__c` com `sortable=true`; resultados 100, 100, 30, 30, 0. SOQL `ORDER BY PriorityScore__c DESC` igual | passou (ordenação pela API da list view; clique na tela não exercitado) |
-| V2 | Lista filtra por faixa (Opportunity) | REST describe da `Oportunidades_Prioridade_Alta` | Filtro por faixa Alta | Query: `WHERE IsClosed = false AND PriorityBand__c = 'Alta'`; colunas de score e faixa presentes | passou (query compilada); sem Opportunity para ver linhas |
-| V3 | `Oportunidades_Abertas_Prioridade` | REST describe | Filtro `IsClosed = false`, colunas de score e faixa | Confirmado; `results` size 0 (org sem Opportunity) | passou |
-| R1 | Sem trigger, Flow ou Apex | `git diff main --stat -- force-app` | Só campos, layouts, FlexiPages, list views e permission set | 12 arquivos, todos esses tipos; nenhum ApexClass, ApexTrigger ou Flow | passou |
-| R2 | Sem callout, e-mail ou integração externa | Revisão do diff dos 12 arquivos | Nenhuma Named Credential, Flow ou e-mail | Nenhum (o único acerto de busca foi `xmlns`) | passou |
-| R3 | Regressão de Opportunity e testes Apex | Não executado | Automações e testes como antes | — | não executado |
-| N1 | Taxa de ganho por faixa | Critério de negócio pós go-live (R5 do design) | Não testável | — | não executado |
+| L1 | Lead com setor, origem e Contatado: Alta | `sf data create record` Lead com Sector=Alimentos, LeadSource=Evento, Status=Contatado; SOQL nos campos | 100 / Alta | 100 / Alta | passou |
+| L2 | Lead só com setor: Baixa | Lead com Sector, sem LeadSource, Status "Aberto - Não contatado" | 30 / Baixa | 30 / Baixa | passou |
+| L3 | Lead sem setor e sem origem: sem faixa | Lead sem Sector e sem LeadSource, Status=Contatado | 0 / Sem dados suficientes | 0 / Sem dados suficientes | passou |
+| L4 | Alteração de status atualiza o score | Lead com Sector e LeadSource, Status "Aberto - Não contatado": lido 60 / Média. `sf data update record` Status=Contatado e nova consulta | 60 / Média, depois 100 / Alta | 60 / Média, depois 100 / Alta | passou |
+| RO | Campos somente leitura | `describe` Lead: `PriorityScore__c` e `PriorityBand__c` com `calculated=true`, `createable=false`, `updateable=false`. Tentativa de `update` de cada um | Escrita recusada | "Unable to create/update fields: PriorityScore__c" e idem `PriorityBand__c` | passou (Lead). Opportunity: só metadata, ver abaixo |
+| V1 | Lista ordena por score | Vista `Leads_Abertos_Prioridade` (existe na dev) executada pela API REST de list view; SOQL `ORDER BY PriorityScore__c DESC` nos Leads 100, 30, 0 | Ordem 100, 30, 0; coluna ordenável | Ordem 100, 30, 0; `sortable=true` na coluna de score; a vista retornou os 4 Leads de teste com score e faixa | passou (a ordenação pelo clique na tela não foi vista; a coluna é ordenável e o `ORDER BY` confere) |
+| V2 | Lista de Opportunity filtra por Alta | Vista `Oportunidades_Prioridade_Alta` existe na dev e foi executada pela API: colunas de score e faixa presentes, `sortable=true`, 0 linhas (a dev não tem Opportunity) | Só faixa Alta | Sem linhas para conferir o filtro | não executado |
+| G1 | Sem Trigger, Flow nem Apex novos em Lead/Opportunity | `git show --name-status f9b72bf5` (commit do build): só 4 campos, 3 list views, 1 permission set, 2 layouts e 2 FlexiPages | Nenhum ApexTrigger, Flow ou classe Apex | Confirmado. As automações existentes não foram tocadas | passou |
+| G2 | Sem callout, Named Credential, e-mail alert ou Flow de e-mail do score | Mesmo diff e busca por `namedCredential`, `callout`, `emailAlert`, `emailSimple`, `http` | Nenhum | Nenhum no diff do build | passou |
+| O1 | Opportunity Prob. 90, valor, 30 dias, origem: 96 / Alta | Não executado | 96 / Alta | — | não executado |
+| O2 | Opportunity Prob. 50, 61 dias, sem origem: 40 / Média | Não executado | 40 / Média | — | não executado |
+| O3 | Opportunity Prob. 10, sem valor, 200 dias: 4 / Baixa | Não executado | 4 / Baixa | — | não executado |
+| O4 | Opportunity encerrada: Encerrada / 0 | Não executado | Encerrada / 0 | — | não executado |
+| R1 | Regressão de Opportunity (criar e alterar) | Não executado | Automações existentes iguais; classes de teste de Opportunity passam | — | não executado |
+| N1 | Taxa de ganho por faixa | Critério de negócio, medido seis meses após o go-live | — | — | não executado (fora do escopo da verificação) |
 
-## Pendências do builder, tentadas aqui
+## O que ficou sem prova
+- **Opportunity (O1 a O4, V2, R1, e a escrita recusada na API da Opportunity).** A dev não tem nenhuma Opportunity. Criar uma passa por 16 validation rules e dispara `OpportunityFlow`, com cotação CPQ e cadeia até o Protheus. Não há autorização escrita do responsável pela conta no card para disparar isso, então não disparei. A fórmula não pôde ser avaliada sem registro.
+- **O que uma pessoa precisa fazer para provar:** (a) o Leonardo autoriza por escrito no card uma fixture mínima de Opportunity, com `TESTE EPLAST-26` no nome e apagada ao fim, e o QA ou a verificação a executa na dev (de preferência) e depois na QAS, fora da janela da EPLAST-47, que vai até 15/11 21:00 UTC; ou (b) o time executa os Testes 5 a 9 do `05-roteiro-cliente.md` na homologação.
+- Aparência da tela (seção "Prioridade" no layout e na FlexiPage, `Opportunity_Record_Page_Three_Column` sem a seção, layout `SBQQ__CPQ Opportunity Layout` sem os campos, como declarado no plano) não foi conferida. Não há como ver a interface daqui.
+- Não conferi as atribuições do permission set aos usuários reais (passo manual do administrador, PD-07).
 
-1. **Ordenação por score**: resolvida via API da list view (V1). Clique na coluna, na tela, não foi exercitado.
-2. **`Opportunity_Record_Page_Three_Column`**: tentei por Tooling (`ProfileActionOverride`) e a consulta não retornou utilizável. Existem 2 FlexiPages de Opportunity (`Opportunity_Record_Page` e `_Three_Column`). **Inconclusivo**: o administrador deve conferir no Setup (Gerenciador de Apps / ativação da página) se a Three_Column está atribuída.
-3. **Dev x QA**: só o alias dev está conectado (Org Id 00DHa000006vfMLMAY). Sem o Org Id do alias QA não há comparação. **Inconclusivo**: a esteira de QA deve comparar os dois Org Ids antes de implantar.
-
-## Observação (não é falha)
-
-- No deploy, `PriorityScore__c` tem precisão 18, escala 0 (o design citava 3 casas inteiras). Não muda resultado: o máximo é 100.
-- O layout `CPQ Opportunity Layout` não foi alterado (pacote gerenciado), como o builder registrou.
-
-## O que ficou sem prova (o que uma pessoa precisa fazer)
-
-- **Score e faixa de Opportunity (O1 a O5) e lead convertido (L6)**: não criei Opportunity. Criar Opportunity nesta org passa por 16 validation rules e dispara `OpportunityFlow` (cotação CPQ, possível aprovação) e, pelo histórico, a cadeia pode chegar à integração Protheus. `comentarios-do-card.md` não traz autorização por escrito do responsável para disparar essa cadeia na dev, então não disparei. Para provar: o responsável pela conta autorizar por escrito o teste (e o endpoint da sandbox ser confirmado), ou o QA executar a fixture da seção 8 do design com o menor número de registros, todos com `TESTE EPLAST-26` no nome, e apagá-los ao fim.
-- Regressão de Opportunity e classes de teste Apex existentes: dependem da mesma fixture e do QA.
-- Cliques de interface (ordenação na tela, aparição da seção "Prioridade" na página): não exercitáveis daqui.
+## B0 — dev distinta de QA
+Resolvida. O card de 15/11 confirma que são duas orgs distintas. O Org Id da dev termina em `...vfMLMAY` (conferido agora).
 
 ## O que pode ter saído da org
+Nada. A cadeia dos Leads de teste (Flow de atribuição, que chama `LeadAssignmentService`) não tem callout nem e-mail; nenhum registro foi criado em outro sistema.
 
-Nada. Só Leads sintéticos foram criados (Lead não tem trigger, Flow nem integração, conforme `02-recon.md`/design seção 5) e foram apagados. Nenhum registro de Opportunity, cotação, pedido ou log de integração foi criado.
-
-## Dados de teste
-
-Criados e apagados: 5 Leads `TESTE EPLAST-26 L1..L5`. Nada ficou.
+## Limpeza
+Os 4 Leads `TESTE EPLAST-26` foram apagados; a consulta por `Company = 'TESTE EPLAST-26'` devolve 0. Não ficou nenhum registro de teste. Os arquivos temporários do retrieve do Flow ficaram só em `/tmp`, fora do repositório.

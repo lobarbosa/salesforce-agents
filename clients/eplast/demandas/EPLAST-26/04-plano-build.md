@@ -74,3 +74,12 @@ Os dois FlexiPages foram retornados da dev antes da edição e vieram idênticos
 ## Premissas assumidas aplicadas (do design, seção 9)
 
 Construído como decidido: PD-01 (sem prefixo), PD-02 (pesos literais na fórmula), PD-03 (fechamento vencido não pontua), PD-04 (`ROUND`), PD-05 (`IsConverted` conta como contatado), PD-06 (Lead "Fechado - Não convertido" sem faixa especial, fora de C6 pelo filtro), PD-07 (permission set), PD-08 (list views para todos os usuários internos). Nenhuma foi tratada como pendência.
+
+## Correções da rodada 1
+
+Fonte: `05-testes-rodada-1.md` (reprovado). Org conferida com `sf org list`: só `sbx-eplast-dev` conectada (Sandbox, Connected). Nenhum arquivo de `force-app` alterado nesta rodada, nenhum deploy novo.
+
+- **FALHA 1 (Opportunity: O1, O2, borda de 60 dias, 55% = 22, V2 com linhas, sem prova de execução):** não corrigível no build. O QA registrou que não há divergência: a fórmula lida da org é idêntica ao design e todo registro existente bate com ela. O que falta é execução com fixture de Opportunity na QAS, que passa por 16 validation rules e dispara `OpportunityFlow` (cotação CPQ, possível aprovação, cadeia até o Protheus). Isso é DML do QA, não da solução, e depende de autorização escrita no card do responsável pela conta, que não existe (`comentarios-do-card.md`; o último comentário proíbe alterar registro que o agente não criou e afetar a EPLAST-47, com teste armado até 15/11 21:00 UTC). Caminhos: (1) o Leonardo autoriza no card a fixture mínima (`TESTE EPLAST-26` no nome, apagar ao fim, confirmando o endpoint da QAS) e o QA roda de novo depois das 21:00 UTC; ou (2) o time executa os Testes 5 a 9 do `05-roteiro-cliente.md` na homologação. Não alterei a regra para "forçar" cobertura.
+- **B0 (dev x QA), atualização:** a incerteza do plano está resolvida. O card de 15/11 10:09 (Leonardo) confirma que são duas orgs distintas, e o QA comparou os Org Ids (final `...vfMLMAY` na dev, final `...vZtmMAE` na QAS). Não é mais pendência.
+- **Casos "não executado" de tela (V1 clique na coluna, seção "Prioridade", `Opportunity_Record_Page_Three_Column`) e R3 (regressão Apex):** sem correção de metadata possível; dependem de registro real ou da mesma autorização de fixture. A ordenação foi confirmada como possível (`sortable=true`). A `Opportunity_Record_Page_Three_Column` segue sem alteração, como declarado em B3.
+- **Pendência de administrador (inalterada):** atribuir `PS_Comercial_ScorePrioridade` aos usuários reais da PD-07, por ambiente. Sem isso os campos ficam invisíveis na API e na tela.
