@@ -2,10 +2,18 @@ id: EPLAST-41
 client: eplast
 titulo: Apoio à criação de textos comerciais e de relacionamento
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
   em: '2026-11-10T12:00:00Z'
   para: backlog
   autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T17:47:38.321997+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T17:49:49.008875+00:00'
