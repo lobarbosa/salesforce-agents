@@ -2,7 +2,7 @@
 
 # EPLAST-38 · Plano de build: roteamento regional do lead
 
-**Org conferida:** `sbx-eplast-dev` (projetos@konectabr.com.eplast2.qa, Org ID 00DHa000006vfMLMAY), única conectada, via `sf org list`. Branch `feature/EPLAST-38`. Rota: opção (a) do design, configuração sobre o que já existe. Nada foi implantado na org: o build só versiona (retrieve) e cria fixtures. Nenhum componente novo de metadata, nenhuma versão nova de Flow, classe ou agente. `SFAgent2` e Marketing Cloud não tocados.
+**Org conferida:** `sbx-eplast-dev` (alias da esteira; Org ID 00DHa000006vfMLMAY), única conectada, via `sf org list`. Branch `feature/EPLAST-38`. Rota: opção (a) do design, configuração sobre o que já existe. Nada foi implantado na org: o build só versiona (retrieve) e cria fixtures. Nenhum componente novo de metadata, nenhuma versão nova de Flow, classe ou agente. `SFAgent2` e Marketing Cloud não tocados.
 
 ## Componentes registrados
 
