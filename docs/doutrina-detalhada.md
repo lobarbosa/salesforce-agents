@@ -138,7 +138,11 @@ ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava ta
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
 ele (`roteiro.py`), o sync o leva ao Squad OS, e o card o mostra ao cliente da homologação
 em diante, com botão para baixar em PDF (mesmo desenho do espelho de horas,
-`lib/roteiro-pdf.ts`). QA reprovado apaga o roteiro da rodada anterior.
+`lib/roteiro-pdf.ts`).
+Desde 2026-11-15 o roteiro sai em toda rodada de QA, não só na aprovada: na EPLAST-47 a
+sandbox de QA tem dado real e parte do teste fica para gente, que precisa do passo a passo
+mesmo com o QA automático reprovado. A esteira apaga o roteiro antes de cada rodada, para
+a sessão escrever o novo; o cliente continua vendo só da homologação em diante.
 
 **Entregue só com evidência** (2026-11-14): `demands.transition` recusa `entregue` sem
 `05-testes.md` aprovado na sandbox de QA e sem `06-entrega.md` (`EntregaSemEvidenciaError`),

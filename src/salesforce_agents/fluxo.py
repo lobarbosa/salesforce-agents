@@ -238,6 +238,12 @@ def rodar(
         if d.status == "build" and _plano_bloqueado(d):
             _plano_de_build(d).unlink()
 
+        # O roteiro do cliente é reescrito a cada rodada de QA: o da anterior
+        # descreve um build que mudou, e com ele em disco a sessão passaria
+        # sem escrever outro.
+        if d.status == "qa":
+            roteiro.descartar(d.path)
+
         rodadas_antes = set(d.path.glob("05-testes-rodada-*.md"))
         executor(client, demand_id, d.status)
         rodadas.append(d.status)
@@ -268,7 +274,6 @@ def rodar(
             if not v.aprovado:
                 voltas = _rodadas_reprovadas(d)
                 _arquivar_roteiro_reprovado(d)
-                roteiro.descartar(d.path)
                 if voltas >= MAX_VOLTAS_DO_QA:
                     demands.transition(client, demand_id, GATE_QUANDO_O_QA_NAO_FECHA, AUTOR_PIPELINE)
                     return Parada("gate", GATE_QUANDO_O_QA_NAO_FECHA, ambiente_do_job, tuple(rodadas))

@@ -56,4 +56,4 @@ def test_orquestrador_aciona_um_subagente_por_vez_em_primeiro_plano():
 def test_qa_sabe_escrever_o_roteiro_do_cliente_e_a_esteira_cobra():
     assert "05-roteiro-cliente.md" in (AGENTES / "qa.md").read_text(encoding="utf-8")
     fonte = (RAIZ / "src" / "salesforce_agents" / "orchestrator.py").read_text(encoding="utf-8")
-    assert "_roteiro_do_cliente_faltando(client, etapa, pasta_da_demanda)" in fonte
+    assert "_roteiro_do_cliente_faltando(etapa, pasta_da_demanda)" in fonte

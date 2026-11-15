@@ -347,7 +347,7 @@ def test_qa_sem_aprovacao_provada_volta_para_o_build(repo, texto):
     assert demands.Demand.load("acme", d.id).status == "build"
     # o roteiro reprovado fica para o builder ler; o próximo QA escreve outro
     assert (_pasta(d) / "05-testes-rodada-1.md").exists()
-    # e o roteiro do cliente não sobrevive: descrevia o que vai mudar
+    # o roteiro da rodada anterior sai antes de a sessão rodar
     assert not (_pasta(d) / "05-roteiro-cliente.md").exists()
     assert not (_pasta(d) / "05-testes.md").exists()
 
@@ -422,3 +422,15 @@ def test_copia_do_roteiro_gravada_pelo_agente_nao_conta_como_outra_rodada(repo):
 
     assert parada.motivo == "refazer"
     assert sorted(p.name for p in _pasta(d).glob("05-testes*")) == ["05-testes-rodada-1.md"]
+
+
+def test_roteiro_do_cliente_escrito_num_qa_reprovado_fica_para_o_time_testar(repo):
+    """Decisão de 2026-11-15: o roteiro sai em toda rodada, não só na aprovada."""
+    d = _demanda("qa")
+
+    def executor(client, demand_id, etapa):
+        (_pasta(d) / "05-testes.md").write_text("**Veredito:** reprovado", encoding="utf-8")
+        (_pasta(d) / "05-roteiro-cliente.md").write_text("# Roteiro desta rodada", encoding="utf-8")
+
+    assert fluxo.rodar("acme", d.id, executor=executor).motivo == "refazer"
+    assert (_pasta(d) / "05-roteiro-cliente.md").read_text(encoding="utf-8") == "# Roteiro desta rodada"
