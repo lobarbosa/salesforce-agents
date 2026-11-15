@@ -2,7 +2,7 @@ id: EPLAST-31
 client: eplast
 titulo: Previsão de vendas por vendedor, região, carteira e período
 tipo: projeto
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -77,3 +77,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-11-15T02:49:47.306543+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T03:51:59.594555+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T04:03:09.387561+00:00'
