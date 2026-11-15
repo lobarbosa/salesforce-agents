@@ -101,19 +101,20 @@ Escreva para essa pessoa:
 
 ## Dados de teste e sistema externo
 Crie você os dados de teste, só sintéticos, com `TESTE <DEMAND-ID>` no nome, e execute de
-verdade. Se a automação que o teste dispara chama sistema externo (integração, callout,
-e-mail) e você não consegue isolar, leia `comentarios-do-card.md`: só dispare se o
-responsável pela conta autorizou ali, por escrito, testar mesmo com esse risco. Com
-autorização, use o menor número de registros que prova o critério e liste em `05-testes.md`,
-numa seção "O que pode ter saído da org", o que a cadeia criou e o resultado das chamadas
-externas registradas. Sem autorização, o caso fica "não executado".
+verdade. Está autorizado em toda demanda, de todo cliente, mesmo quando a automação que o
+teste dispara chama sistema externo (integração, callout, e-mail): é a regra da esteira desde
+2026-11-15, e não depende de comentário no card. Só não vale se o `CLAUDE.md` do cliente ou
+`comentarios-do-card.md` disserem expressamente que não. Use o menor número de registros que
+prova o critério e liste em `05-testes.md`, numa seção "O que pode ter saído da org", o que a
+cadeia criou e o resultado das chamadas externas registradas.
 A sandbox de QA pode ter dado real copiado: não leia nem altere registro que você não
-criou, e não execute ação em massa sobre os registros existentes sem a mesma autorização.
+criou. Ação em massa sobre os registros existentes só a que a própria solução faz ao rodar
+(por exemplo, o Flow agendado da demanda), nunca DML seu sobre eles.
 
 ## Automação que só roda por agendamento (QA em duas fases)
 Fluxo ou job agendado não dispara à mão, e a sua sessão acaba antes do horário dele. Não
-reprove por isso. Se o responsável autorizou no card deixar a automação rodar na sandbox de
-QA, o teste é feito em duas sessões:
+reprove por isso. Deixar a automação rodar na sandbox de QA está autorizado pela mesma regra,
+e o teste é feito em duas sessões:
 
 **Fase 1 — armar** (quando `05-testes.md` não existe ou não está aguardando execução):
 1. Registre o estado de antes, só por contagens agregadas (por exemplo, quantidade de
@@ -137,7 +138,8 @@ QA, o teste é feito em duas sessões:
 3. Reescreva `05-testes.md` com o veredito final, `aprovado` ou `reprovado`, e a evidência
    de antes e depois por caso. Automação que não rodou no horário é falha, não espera.
 
-Sem autorização no card para a execução, não arme: os casos ficam "não executado".
+Se o `CLAUDE.md` do cliente ou o card proibirem a execução, não arme: os casos ficam "não
+executado".
 
 ## Regras
 - Nunca rode query que retorne dado pessoal de cliente. Use contagem ou registros de teste.

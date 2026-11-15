@@ -62,6 +62,11 @@ SUBAGENTE_DA_ETAPA = {
         "testa na sandbox de dev o que foi construído e grava `04-verificacao.md`. Build bloqueado "
         "não tem verificação."
     ),
+    "verificacao": (
+        "Esta é uma reverificação: o build já foi feito e está na sandbox de dev "
+        "(`04-plano-build.md`). O único subagente é o `verificador`, que testa de novo o que foi "
+        "construído e grava `04-verificacao.md`. Não acione construtor nem altere `force-app/`."
+    ),
     "qa": "O subagente desta etapa é `qa`.",
     "release": "Os subagentes desta etapa são `release` e, em seguida, `doc`.",
 }
@@ -108,7 +113,7 @@ def _desligar_background() -> None:
 def _verificacao_faltando(etapa: str, pasta: Path) -> list[str]:
     # Build concluído sem a verificação do agente não vai ao gate humano
     # (ver verificacao.py). Cobrado com a sessão aberta, como os demais.
-    if etapa != "build":
+    if etapa not in ("build", "verificacao"):
         return []
     return verificacao.faltando(pasta)
 
