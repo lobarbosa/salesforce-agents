@@ -33,7 +33,7 @@ Start em Opportunity com `IsClosed = false`, diário. Lê o CMDT `Default` e o t
 ## Observações e itens que ficaram sem prova
 - **Limites oficiais (design 5.2, item 5): NÃO conferidos.** Esta sessão não tem acesso à documentação oficial e não vou citar de memória. Pendente: limite horário de notificações personalizadas e limite diário de interviews de Flow agendado (o limiar de 150.000 do design 1.3c também depende disso). Quem confere: QA/humano, antes da carga inicial (P16).
 - **Permissão do destinatário (design 6):** não exercitada. Dev tem 0 oportunidades abertas (contagem agregada), então o Flow ainda não rodou sobre nenhum registro. A verificação tenta debug com registro sintético ou declara inconclusivo.
-- **Dev x QA podem ser a mesma sandbox (R2):** o alias de dev aponta para `projetos@konectabr.com.eplast2.qa`. O Flow ativo já agenda nessa org. Comparar Org Id das duas antes do deploy de QA.
+- **Dev x QA podem ser a mesma sandbox (R2):** o alias `sbx-eplast-dev` aponta para uma org cujo usuário e URL se identificam como QA (dado omitido aqui por LGPD). O Flow ativo já agenda nessa org. Comparar Org Id das duas antes do deploy de QA.
 - Sintaxe de `$Record.Owner.IsActive` e `$Record.Owner.Manager.IsActive` aceita no deploy, mas o comportamento em tempo de execução só se prova com registro.
 - `DataCargaInicial__c` não vai no registro `Default` (vazio, P16).
 
