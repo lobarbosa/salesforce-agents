@@ -72,3 +72,6 @@ O design não mudou (`03-design.md` inalterado, aceite em `gates.md`, commit `a4
 - `Account.Ranking__c`: picklist ativa MP, PP, P, M, G, GG, 3G.
 
 Não exercitei o Flow (dev sem contas nem oportunidades; R5): a prova de comportamento fica com o `verificador` e o QA. O deploy na QA é da esteira (`05-deploy-qa.md`); o builder não toca a QA. Pendência de decisão humana antes do QA, vinda do card de 15/11: como testar na QA com 1.217 contas reais (R2) e para onde aponta a integração Protheus dela (R5). Demais pendências (P1, P5, P6, P8, P10, P11, P12) como na seção "Pendências de negócio".
+
+## Reconferência após autorização de teste com dados sintéticos (2026-11-15)
+O design não mudou. Na `sbx-eplast-dev` (única org conectada), reconferido por query, sem alterar metadata: `ScheduledFlowOpportunity` v1 Obsolete e v2 Active; `RankingRange__mdt` com 7 registros (MP a X3G, `SortOrder__c` 1 a 7); `ScheduledFlowOpportunitySetting__mdt` `Default` com dia 14; relatório `AccountRankingChanges` presente. Nada novo a construir. A autorização do Leonardo (card, 15/11) vale para o `verificador` e o QA criarem dados sintéticos "TESTE EPLAST-47"; o builder não criou dado nem exercitou o Flow. Execução em massa sobre contas reais da QA segue pendente de decisão humana.

@@ -26,7 +26,14 @@ qualquer comando e passe sempre `--target-org`. Nada em QA, nada em produção.
    documento, e-mail, telefone ou valor de cliente real (guardrail #2).
 4. Antes de criar registro que dispara automação, veja pela metadata se a cadeia chama
    sistema externo (integração, callout, e-mail). Se chama e você não consegue isolar,
+   leia `comentarios-do-card.md` na pasta da demanda: só dispare se o responsável pela
+   conta tiver autorizado ali, por escrito, testar mesmo com esse risco. Sem autorização,
    não dispare: o caso fica "não executado" e você diz por quê.
+   Com autorização, execute, e reduza o que sai da org: o menor número de registros que
+   prova o critério, todos com `TESTE <DEMAND-ID>` no nome. Ao final, liste em
+   `04-verificacao.md`, numa seção "O que pode ter saído da org", cada registro que a
+   cadeia criou (pedido, cotação, log de integração) e o resultado de cada chamada externa
+   que ficou registrada, para alguém desfazer do outro lado se for preciso.
 5. Execute de verdade: DML pelos comandos `sf data`, Apex anônimo ou `sf apex run test`
    quando houver classe de teste. Automação que só roda por agendamento: procure um jeito
    legítimo de dispará-la na dev (execução do job, parâmetro de configuração da própria
