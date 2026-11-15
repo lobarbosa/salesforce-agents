@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import ambientes, bloqueio, demands, gates, roteiro, veredito
+from . import ambientes, bloqueio, demands, gates, roteiro, veredito, verificacao
 
 # Etapas de execução que acionam uma sessão de agente. As `aguardando_*` são
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
@@ -66,6 +66,12 @@ def _plano_bloqueado(d: demands.Demand) -> bool:
 # que fazer é o arquiteto, no gate de design.
 ROTEIRO_DE_TESTE = "05-testes.md"
 MAX_VOLTAS_DO_QA = 2
+
+# Verificação do build (ver verificacao.py): reprovada refaz a construção, sem
+# humano no meio, porque nada foi entregue a ninguém ainda. O teto existe pela
+# conta e para o builder não ficar rodando em círculo; depois dele decide o
+# arquiteto, no gate de design.
+MAX_VOLTAS_DA_VERIFICACAO = 2
 GATE_QUANDO_O_QA_NAO_FECHA = "aguardando_gate_design"
 
 
@@ -238,13 +244,18 @@ def rodar(
         if d.status == "build" and _plano_bloqueado(d):
             _plano_de_build(d).unlink()
 
+        # A verificação é da construção que vai rodar agora: a da anterior sai,
+        # ou um build refeito chegaria ao gate com a evidência do antigo.
+        if d.status == "build":
+            verificacao.descartar(d.path)
+
         # O roteiro do cliente é reescrito a cada rodada de QA: o da anterior
         # descreve um build que mudou, e com ele em disco a sessão passaria
         # sem escrever outro.
         if d.status == "qa":
             roteiro.descartar(d.path)
 
-        rodadas_antes = set(d.path.glob("05-testes-rodada-*.md"))
+        rodadas_antes = set(d.path.glob("0[45]-*-rodada-*.md"))
         executor(client, demand_id, d.status)
         rodadas.append(d.status)
 
@@ -253,7 +264,7 @@ def rodar(
         # cópia como `05-testes-rodada-1.md`; a esteira arquivou o original
         # como rodada 2 e a demanda passou a contar duas reprovações onde
         # houve uma, gastando o teto de voltas.
-        for intruso in set(d.path.glob("05-testes-rodada-*.md")) - rodadas_antes:
+        for intruso in set(d.path.glob("0[45]-*-rodada-*.md")) - rodadas_antes:
             intruso.unlink()
 
         # Build que declarou bloqueio não construiu nada: volta ao gate de
@@ -262,6 +273,22 @@ def rodar(
         if d.status == "build" and _plano_bloqueado(d):
             demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
             continue
+
+        # O humano só é chamado ao gate de build depois de o agente ter
+        # testado e evidenciado (decisão de 2026-11-15, ver verificacao.py).
+        # Reprovada refaz a construção em outro job, que o Squad OS dispara;
+        # inconclusiva segue para o gate, porque refazer não resolve.
+        # Sem plano não há o que verificar: a transição abaixo recusa e o job
+        # falha vermelho, como sempre.
+        if d.status == "build" and _plano_de_build(d).exists():
+            v = verificacao.da_pasta(d.path, ambientes.org_alias(client, "dev"))
+            if v.estado == "reprovada":
+                voltas = verificacao.rodadas_reprovadas(d.path)
+                verificacao.arquivar_reprovada(d.path)
+                if voltas >= MAX_VOLTAS_DA_VERIFICACAO:
+                    demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
+                    return Parada("gate", GATE_DE_RETORNO_DO_BUILD, ambiente_do_job, tuple(rodadas))
+                return Parada("refazer", "build", ambiente_do_job, tuple(rodadas))
 
         # QA só entrega ao cliente o que provou. Sem aprovação com evidência,
         # a demanda volta para a construção — em outro job, porque o build

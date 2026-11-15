@@ -20,7 +20,7 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 | 1 | Análise e critérios de aceite | `ba-discovery` | `01-analise.md` | Humano aprova |
 | 2 | Recon da org | `recon` (skill `org-recon`) | `02-recon.md` | — |
 | 3 | Desenho da solução | `arquiteto` | `03-design.md` | **Arquiteto humano aprova** |
-| 4 | Build em branch + sandbox dev | `builder-declarativo` / `dev-apex` | `04-plano-build.md` | Revisão do PR |
+| 4 | Build em branch + sandbox dev, e verificação | `builder-declarativo` / `dev-apex`, depois `verificador` | `04-plano-build.md`, `04-verificacao.md` | Revisão do PR |
 | 5 | Testes na sandbox de QA | `qa` | `05-testes.md`, `05-roteiro-cliente.md` | Cliente homologa |
 | 6–7 | Deploy em QA e documentação | `release`, `doc` | `06-entrega.md` | — |
 
@@ -33,6 +33,10 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 ## O que o fluxo exige de cada artefato (lido por máquina)
 - `04-plano-build.md` abre com `**Resultado do build:** concluído` ou `bloqueado`. Bloqueado
   (pergunta de negócio sem resposta) volta ao gate de design; nunca invente a resposta.
+- **O humano só é chamado depois de o agente testar e evidenciar.** Build concluído sai com
+  `04-verificacao.md`, que abre com `**Verificação:** aprovada|reprovada|inconclusiva` e
+  `**Org de teste:**` com a sandbox de dev. Reprovada refaz a construção sem chamar ninguém;
+  inconclusiva (o agente não conseguiu exercitar) vai ao gate dizendo o que ficou sem prova.
 - `05-testes.md` abre com `**Veredito:** aprovado|reprovado` e `**Org de teste:**` com a
   sandbox de QA. Só aprovado, com evidência por caso, chega ao cliente; o resto volta para
   o build, e o roteiro reprovado fica como `05-testes-rodada-<n>.md`.

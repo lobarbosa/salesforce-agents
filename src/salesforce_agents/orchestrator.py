@@ -14,7 +14,7 @@ from pathlib import Path
 import anyio
 from claude_agent_sdk import ClaudeAgentOptions
 
-from . import anexos, ao_vivo, assessment, comentarios, demands, roteiro, sessao
+from . import anexos, ao_vivo, assessment, comentarios, demands, roteiro, sessao, verificacao
 from .costs import log_usage
 from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
@@ -55,8 +55,12 @@ SUBAGENTE_DA_ETAPA = {
         "o `arquiteto` depois de o `02-recon.md` existir."
     ),
     "build": (
-        "O subagente desta etapa é `builder-declarativo` quando o `03-design.md` decide por "
-        "configuração/Flow, ou `dev-apex` quando decide por código — leia só a seção de decisão do design para escolher."
+        "Esta etapa tem dois subagentes, nesta ordem. Primeiro o construtor: `builder-declarativo` "
+        "quando o `03-design.md` decide por configuração/Flow, ou `dev-apex` quando decide por "
+        "código — leia só a seção de decisão do design para escolher; ele grava `04-plano-build.md`. "
+        "Depois, só se o plano abrir com `**Resultado do build:** concluído`, o `verificador`, que "
+        "testa na sandbox de dev o que foi construído e grava `04-verificacao.md`. Build bloqueado "
+        "não tem verificação."
     ),
     "qa": "O subagente desta etapa é `qa`.",
     "release": "Os subagentes desta etapa são `release` e, em seguida, `doc`.",
@@ -99,6 +103,14 @@ UM_SUBAGENTE_POR_VEZ = (
 
 def _desligar_background() -> None:
     os.environ["CLAUDE_CODE_DISABLE_BACKGROUND_TASKS"] = "1"
+
+
+def _verificacao_faltando(etapa: str, pasta: Path) -> list[str]:
+    # Build concluído sem a verificação do agente não vai ao gate humano
+    # (ver verificacao.py). Cobrado com a sessão aberta, como os demais.
+    if etapa != "build":
+        return []
+    return verificacao.faltando(pasta)
 
 
 def _roteiro_do_cliente_faltando(etapa: str, pasta: Path) -> list[str]:
@@ -180,6 +192,7 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
             conferir=lambda: (
                 sessao.faltantes(esperados)
                 + _roteiro_do_cliente_faltando(etapa, pasta_da_demanda)
+                + _verificacao_faltando(etapa, pasta_da_demanda)
                 + sessao.pii_nos_artefatos(pasta_da_demanda)
             ),
             ao_terminar=registrar,

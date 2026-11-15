@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from salesforce_agents import demands, fluxo
+from salesforce_agents import demands, fluxo, verificacao
 
 
 @pytest.fixture
@@ -36,11 +36,15 @@ def _executor_que_produz(artefatos_por_etapa):
         for nome in artefatos_por_etapa.get(etapa, ()):
             texto = QA_APROVADO if nome == "05-testes.md" else f"artefato de {etapa}"
             (base / nome).write_text(texto, encoding="utf-8")
+        # Build concluído sai com a verificação do agente (verificacao.py).
+        if etapa == "build" and (base / "04-plano-build.md").exists():
+            (base / "04-verificacao.md").write_text(VERIFICACAO_APROVADA, encoding="utf-8")
 
     executor.rodou = rodou
     return executor
 
 
+VERIFICACAO_APROVADA = "**Verificação:** aprovada\n**Org de teste:** `sbx-acme-dev`\n\n| Caso | Status |"
 QA_APROVADO = "**Veredito:** aprovado\n**Org de teste:** `sbx-acme-qa`\n\n| Caso | Status |"
 
 TODOS_ARTEFATOS = {
@@ -250,6 +254,9 @@ def _executor_de_build(texto):
     def executor(client, demand_id, etapa):
         base = demands.CLIENTS_ROOT / client / "demandas" / demand_id
         (base / "04-plano-build.md").write_text(texto, encoding="utf-8")
+        # Build concluído sai verificado pelo agente; bloqueado não tem o que verificar.
+        if "concluído" in texto:
+            (base / "04-verificacao.md").write_text(VERIFICACAO_APROVADA, encoding="utf-8")
 
     return executor
 
@@ -434,3 +441,81 @@ def test_roteiro_do_cliente_escrito_num_qa_reprovado_fica_para_o_time_testar(rep
 
     assert fluxo.rodar("acme", d.id, executor=executor).motivo == "refazer"
     assert (_pasta(d) / "05-roteiro-cliente.md").read_text(encoding="utf-8") == "# Roteiro desta rodada"
+
+
+# --- verificação do build: o agente testa antes de chamar o humano -----------
+
+
+def _executor_com_verificacao(verificacao_texto):
+    def executor(client, demand_id, etapa):
+        base = demands.CLIENTS_ROOT / client / "demandas" / demand_id
+        (base / "04-plano-build.md").write_text("**Resultado do build:** concluído", encoding="utf-8")
+        if verificacao_texto is not None:
+            (base / "04-verificacao.md").write_text(verificacao_texto, encoding="utf-8")
+
+    return executor
+
+
+def test_build_verificado_segue_para_o_gate_humano(repo):
+    d = _demanda("build")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_com_verificacao(VERIFICACAO_APROVADA))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_build"
+
+
+@pytest.mark.parametrize(
+    "texto",
+    [
+        "**Verificação:** reprovada\n**Org de teste:** `sbx-acme-dev`\n\n### FALHA 1 — faixa errada",
+        "# Verificação\n\nTudo certo, sem linha de resultado.",
+        "**Verificação:** aprovada\n**Org de teste:** `sbx-acme-qa`",
+        None,
+    ],
+)
+def test_build_sem_verificacao_aprovada_refaz_a_construcao_sem_chamar_humano(repo, texto):
+    d = _demanda("build")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_com_verificacao(texto))
+    assert parada.motivo == "refazer"
+    assert parada.etapa == "build"
+    assert not parada.espera_humano
+    assert demands.Demand.load("acme", d.id).status == "build"
+    # a verificação reprovada fica para o builder ler; a próxima escreve outra
+    assert not (_pasta(d) / "04-verificacao.md").exists()
+    assert (_pasta(d) / "04-verificacao-rodada-1.md").exists() == (texto is not None)
+
+
+def test_verificacao_inconclusiva_vai_ao_gate_porque_refazer_nao_resolve(repo):
+    d = _demanda("build")
+    texto = "**Verificação:** inconclusiva\n**Org de teste:** `sbx-acme-dev`\n\nNão há como disparar o agendamento na dev."
+    parada = fluxo.rodar("acme", d.id, executor=_executor_com_verificacao(texto))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_build"
+    assert (_pasta(d) / "04-verificacao.md").exists()
+
+
+def test_depois_do_teto_de_verificacoes_reprovadas_quem_decide_e_o_arquiteto(repo):
+    d = _demanda("build")
+    for n in range(1, fluxo.MAX_VOLTAS_DA_VERIFICACAO + 1):
+        (_pasta(d) / f"04-verificacao-rodada-{n}.md").write_text("**Verificação:** reprovada", encoding="utf-8")
+    reprovada = "**Verificação:** reprovada\n**Org de teste:** `sbx-acme-dev`"
+    parada = fluxo.rodar("acme", d.id, executor=_executor_com_verificacao(reprovada))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_design"
+
+
+def test_verificacao_de_um_build_anterior_nao_vale_para_o_refeito(repo):
+    d = _demanda("build")
+    (_pasta(d) / "04-verificacao.md").write_text(VERIFICACAO_APROVADA, encoding="utf-8")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_com_verificacao(None))
+    assert parada.motivo == "refazer"
+
+
+def test_build_bloqueado_continua_voltando_ao_design_sem_verificacao(repo):
+    d = _demanda("build")
+
+    def executor(client, demand_id, etapa):
+        (_pasta(d) / "04-plano-build.md").write_text("**Resultado do build:** bloqueado", encoding="utf-8")
+
+    parada = fluxo.rodar("acme", d.id, executor=executor)
+    assert parada.etapa == "aguardando_gate_design"
+    assert verificacao.faltando(_pasta(d)) == []
