@@ -2,7 +2,7 @@ id: EPLAST-33
 client: eplast
 titulo: Cross-sell, aumento de volume e recuperação de clientes
 tipo: projeto
-status: aguardando_gate_build
+status: build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -101,3 +101,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T12:47:04.551057+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-15T22:53:03.205001+00:00'
+  motivo: 'deploy na sandbox de QA falhou nos testes Apex (deploy 0AfHa00000EI4Q6KAL):
+    todos os testes de CommercialSignalBatchTest com System.QueryException "No such
+    column ''SignalKey__c'' on entity ''CommercialSignal__c''". Na dev os testes passam.
+    Refazer o build investigando por que o campo não existe para o teste na QA.'
