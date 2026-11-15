@@ -82,4 +82,9 @@
         <enabled>true</enabled>
         <name>ViewHelpLink</name>
     </userPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RelationshipClass__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 </Profile>

@@ -10,4 +10,9 @@
         <enabled>true</enabled>
         <name>SelectFilesFromSalesforce</name>
     </userPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.RelationshipClass__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
 </Profile>
