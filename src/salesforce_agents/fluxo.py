@@ -238,8 +238,17 @@ def rodar(
         if d.status == "build" and _plano_bloqueado(d):
             _plano_de_build(d).unlink()
 
+        rodadas_antes = set(d.path.glob("05-testes-rodada-*.md"))
         executor(client, demand_id, d.status)
         rodadas.append(d.status)
+
+        # Quem arquiva roteiro reprovado é a esteira, logo abaixo. Achado real
+        # (EPLAST-47, 2026-11-15): o agente de QA gravou por conta própria uma
+        # cópia como `05-testes-rodada-1.md`; a esteira arquivou o original
+        # como rodada 2 e a demanda passou a contar duas reprovações onde
+        # houve uma, gastando o teto de voltas.
+        for intruso in set(d.path.glob("05-testes-rodada-*.md")) - rodadas_antes:
+            intruso.unlink()
 
         # Build que declarou bloqueio não construiu nada: volta ao gate de
         # design em vez de seguir para o gate de build, onde seria aprovado

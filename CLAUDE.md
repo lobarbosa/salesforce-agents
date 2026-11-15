@@ -36,6 +36,8 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - `05-testes.md` abre com `**Veredito:** aprovado|reprovado` e `**Org de teste:**` com a
   sandbox de QA. Só aprovado, com evidência por caso, chega ao cliente; o resto volta para
   o build, e o roteiro reprovado fica como `05-testes-rodada-<n>.md`.
+- Quem leva o build para a sandbox de QA é a esteira, num passo fixo antes da sessão de QA,
+  registrado em `05-deploy-qa.md`. Builder não toca a QA; o agente de QA não implanta.
 - QA aprovado grava também `05-roteiro-cliente.md`: o passo a passo de homologação, em
   linguagem de usuário, que o Squad OS mostra ao cliente no card. Reprovado não tem roteiro.
 - **Nada é marcado como entregue sem evidência**: `entregue` exige `05-testes.md` aprovado

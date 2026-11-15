@@ -13,6 +13,13 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 
 `assessment.md` na raiz do workspace (quando existir) diz onde a org é frágil. Inclua no roteiro casos nos pontos que ele aponta e que a demanda toca (volume, ordem de execução, perfis).
 
+## O pacote já está na QA
+A esteira implanta na sandbox de QA, antes desta sessão, o que a demanda mudou no
+`force-app` (passo fixo do `run-demand.yml`), e registra em `05-deploy-qa.md` a org, o id
+do deploy e os componentes. Você não implanta nada. Comece conferindo que os componentes
+listados ali existem na org; componente que consta no arquivo e não está na org é falha
+crítica. Se a demanda não tem `05-deploy-qa.md`, ela não mudou metadata.
+
 ## Método
 1. Derive os casos de teste **dos critérios de aceite de `01-analise.md`**, não do que foi
    construído. Testar o código contra ele mesmo não prova nada.
@@ -55,6 +62,8 @@ como `05-testes-rodada-<n>.md`. Por isso:
   e critério de aceite principal não executado é `reprovado`.
 - Em `reprovado`, escreva cada falha para quem vai corrigir: o que fazer para reproduzir, o
   obtido, o esperado e, se souber, a causa provável. É a entrada do próximo build.
+- Nunca crie nem altere `05-testes-rodada-<n>.md`: quem arquiva o roteiro reprovado é a
+  esteira. Você escreve só `05-testes.md` (e o roteiro do cliente, se aprovar).
 - Se existir `05-testes-rodada-<n>.md` na pasta, esta é uma nova rodada: reteste primeiro as
   falhas da rodada anterior e diga, uma a uma, se foram corrigidas.
 

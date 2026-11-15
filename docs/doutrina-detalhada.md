@@ -122,6 +122,17 @@ reprovações seguidas a demanda para no gate de design, para o arquiteto decidi
 real: dez demandas (Eplast e Somos) estavam em homologação com o QA reprovado, porque o
 fluxo só conferia se o `05-testes.md` existia.
 
+Deploy em QA (2026-11-15): o build só toca a sandbox de dev e o QA só testa, e até aqui
+ninguém levava o pacote de uma para a outra antes do teste; o `release` faz isso só depois
+da homologação. Na EPLAST-47 o QA reprovou em um minuto ("o build não está na QA"), o
+builder respondeu que não podia corrigir, e a demanda rodava em círculo. O `run-demand.yml`
+ganhou um passo fixo, antes da sessão de QA: implanta em `sbx-<cliente>-qa` só o que a
+branch mudou no `force-app` (`scripts/pacote_da_demanda.py`; sem Apex, sem teste; com Apex,
+só os `<Classe>Test` da demanda) e grava `05-deploy-qa.md`. Se o deploy falha, o job falha
+antes de o gate de build ser aprovado. Arquivo removido na demanda não é apagado da org.
+No mesmo achado: o agente de QA gravou uma cópia do roteiro como `05-testes-rodada-1.md`;
+a esteira passou a apagar qualquer arquivo de rodada criado pela sessão.
+
 Roteiro do cliente (2026-11-14): o `05-testes.md` é evidência para quem aprova gate, e era
 ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava também
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
