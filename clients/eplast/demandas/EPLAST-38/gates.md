@@ -24,3 +24,11 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Artefatos revisados:**
   - `02-recon.md` — sha256 `187cb09db4e06a8e` (10366 bytes)
   - `03-design.md` — sha256 `9b29b88e66387395` (25972 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-15T23:21:21.487929+00:00
+- **Commit:** `ce3c4856`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `a7937b7adc460067` (4148 bytes)

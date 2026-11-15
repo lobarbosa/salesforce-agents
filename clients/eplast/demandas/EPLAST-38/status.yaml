@@ -2,7 +2,7 @@ id: EPLAST-38
 client: eplast
 titulo: Qualificação e roteamento do lead ao vendedor responsável
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -33,3 +33,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T20:23:04.604230+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T23:21:21.491426+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-15T23:24:26.198965+00:00'
