@@ -144,6 +144,17 @@ produção do ERP. O responsável pela conta decidiu testar mesmo assim. Regra q
 externo que não dá para isolar, só disparam com autorização escrita do responsável no card
 (`comentarios-do-card.md`), usam o mínimo de registros e listam o que pode ter saído da org.
 
+QA em duas fases (2026-11-15): o `ScheduledFlowOpportunity` da EPLAST-47 só roda às 15:47
+UTC, não dispara à mão, e a sessão de QA acaba em minutos; o QA reprovava sem defeito
+nenhum. Com autorização do responsável no card, a primeira sessão registra o estado de
+antes por contagens, muda o parâmetro de execução da própria solução na sandbox de QA e
+grava `**Veredito:** aguardando execução` com `**Conferir depois de:**`. O fluxo devolve
+`motivo=aguardar` e a demanda fica em `qa`, sem voltar ao build e sem chamar o cliente
+(`veredito.Veredito.pendente`). A segunda sessão é disparada por gente depois do horário
+(`run-demand.yml` sem aprovação de gate); o passo de deploy em QA reimplanta a configuração
+original, e o QA confere antes e depois e dá o veredito final. Não há disparo automático
+da segunda sessão: o Squad OS só reenfileira em `refazer`.
+
 Deploy em QA (2026-11-15): o build só toca a sandbox de dev e o QA só testa, e até aqui
 ninguém levava o pacote de uma para a outra antes do teste; o `release` faz isso só depois
 da homologação. Na EPLAST-47 o QA reprovou em um minuto ("o build não está na QA"), o

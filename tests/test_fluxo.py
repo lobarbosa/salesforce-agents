@@ -519,3 +519,30 @@ def test_build_bloqueado_continua_voltando_ao_design_sem_verificacao(repo):
     parada = fluxo.rodar("acme", d.id, executor=executor)
     assert parada.etapa == "aguardando_gate_design"
     assert verificacao.faltando(_pasta(d)) == []
+
+
+# --- QA em duas fases: automação agendada ------------------------------------
+
+
+def test_qa_que_armou_o_teste_espera_em_qa_sem_chamar_ninguem(repo):
+    d = _demanda("qa")
+    texto = "**Veredito:** aguardando execução\n**Org de teste:** `sbx-acme-qa`\n**Conferir depois de:** 2026-11-15T16:00Z"
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(texto))
+    assert parada.motivo == "aguardar"
+    assert parada.etapa == "qa"
+    assert not parada.espera_humano
+    assert demands.Demand.load("acme", d.id).status == "qa"
+    # nada é arquivado: a sessão seguinte reescreve este mesmo arquivo
+    assert (_pasta(d) / "05-testes.md").exists()
+    assert not list(_pasta(d).glob("05-testes-rodada-*.md"))
+
+
+def test_teste_armado_fora_da_sandbox_de_qa_volta_para_o_build(repo):
+    d = _demanda("qa")
+    texto = "**Veredito:** aguardando execução\n**Org de teste:** `sbx-acme-dev`"
+    assert fluxo.rodar("acme", d.id, executor=_executor_de_qa(texto)).motivo == "refazer"
+
+
+def test_aguardar_sai_no_github_output():
+    saida = fluxo.Parada("aguardar", "qa", "qa", ("qa",)).as_github_output()
+    assert "motivo=aguardar" in saida and "espera_humano=false" in saida

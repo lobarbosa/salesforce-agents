@@ -16,7 +16,8 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 ## O pacote já está na QA
 A esteira implanta na sandbox de QA, antes desta sessão, o que a demanda mudou no
 `force-app` (passo fixo do `run-demand.yml`), e registra em `05-deploy-qa.md` a org, o id
-do deploy e os componentes. Você não implanta nada. Comece conferindo que os componentes
+do deploy e os componentes. Você não implanta o build (a única exceção é o registro de
+configuração do QA em duas fases, abaixo). Comece conferindo que os componentes
 listados ali existem na org; componente que consta no arquivo e não está na org é falha
 crítica. Se a demanda não tem `05-deploy-qa.md`, ela não mudou metadata.
 
@@ -108,6 +109,35 @@ numa seção "O que pode ter saído da org", o que a cadeia criou e o resultado 
 externas registradas. Sem autorização, o caso fica "não executado".
 A sandbox de QA pode ter dado real copiado: não leia nem altere registro que você não
 criou, e não execute ação em massa sobre os registros existentes sem a mesma autorização.
+
+## Automação que só roda por agendamento (QA em duas fases)
+Fluxo ou job agendado não dispara à mão, e a sua sessão acaba antes do horário dele. Não
+reprove por isso. Se o responsável autorizou no card deixar a automação rodar na sandbox de
+QA, o teste é feito em duas sessões:
+
+**Fase 1 — armar** (quando `05-testes.md` não existe ou não está aguardando execução):
+1. Registre o estado de antes, só por contagens agregadas (por exemplo, quantidade de
+   registros por valor do campo que a automação grava, e quantidade de linhas de histórico).
+2. Faça a automação rodar na próxima execução agendada usando o parâmetro de configuração
+   da própria solução (por exemplo, o dia de execução). Para isso você pode implantar na
+   sandbox de QA **só o registro de configuração alterado**, com `--target-org` explícito;
+   é a única implantação que você faz. Não commite essa alteração: a esteira a descarta.
+   Calcule o dia e a hora da próxima execução no fuso da org, não no da sessão.
+3. Calcule, com as mesmas contagens agregadas, o resultado esperado depois da execução.
+4. Grave `05-testes.md` abrindo com `**Veredito:** aguardando execução`, a linha
+   `**Org de teste:**` e `**Conferir depois de:** <data e hora em UTC>`, e nele o estado de
+   antes, o que foi alterado para armar, o esperado e como desfazer.
+
+**Fase 2 — conferir** (quando `05-testes.md` existe com `aguardando execução`):
+1. Se ainda não passou do horário de `Conferir depois de`, a esteira já reimplantou a
+   configuração original: arme de novo e mantenha `aguardando execução`.
+2. Se passou: confira que a automação rodou (job, log ou histórico), compare as contagens
+   de depois com o esperado e leia o histórico do campo. Confirme que a configuração voltou
+   ao valor original (a esteira a reimplanta no início da sessão); se não voltou, desfaça.
+3. Reescreva `05-testes.md` com o veredito final, `aprovado` ou `reprovado`, e a evidência
+   de antes e depois por caso. Automação que não rodou no horário é falha, não espera.
+
+Sem autorização no card para a execução, não arme: os casos ficam "não executado".
 
 ## Regras
 - Nunca rode query que retorne dado pessoal de cliente. Use contagem ou registros de teste.

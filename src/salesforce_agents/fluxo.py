@@ -123,7 +123,7 @@ class Parada:
     YAML em silêncio, então eles têm teste.
     """
 
-    motivo: str  # gate | fim | refazer
+    motivo: str  # gate | fim | refazer | aguardar
     etapa: str
     ambiente: str
     etapas_rodadas: tuple[str, ...] = ()
@@ -298,6 +298,11 @@ def rodar(
                 (d.path / ROTEIRO_DE_TESTE).read_text(encoding="utf-8"),
                 ambientes.org_alias(client, "qa"),
             )
+            # Teste armado, esperando a automação agendada rodar: nem cliente
+            # nem builder. A demanda fica em `qa`; outra sessão, depois do
+            # horário, confere e dá o veredito (ver veredito.Veredito.pendente).
+            if v.pendente:
+                return Parada("aguardar", "qa", ambiente_do_job, tuple(rodadas))
             if not v.aprovado:
                 voltas = _rodadas_reprovadas(d)
                 _arquivar_roteiro_reprovado(d)

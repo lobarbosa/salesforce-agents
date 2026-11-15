@@ -37,3 +37,13 @@ def test_descartar_apaga_e_nao_reclama_se_nao_existe(tmp_path):
     roteiro.descartar(tmp_path)
 
     assert not (tmp_path / roteiro.NOME).exists()
+
+
+def test_veredito_aguardando_execucao_e_pendente_so_na_sandbox_de_qa():
+    from salesforce_agents import veredito
+
+    v = veredito.ler("**Veredito:** aguardando execução\n**Org de teste:** `sbx-acme-qa`", "sbx-acme-qa")
+    assert v.pendente and not v.aprovado
+    fora = veredito.ler("**Veredito:** aguardando execucao\n**Org de teste:** `sbx-acme-dev`", "sbx-acme-qa")
+    assert not fora.pendente and not fora.aprovado
+    assert not veredito.ler(APROVADO, "sbx-acme-qa").pendente
