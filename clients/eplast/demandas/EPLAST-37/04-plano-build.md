@@ -2,7 +2,7 @@
 
 # Plano de build — EPLAST-37 · Classificação de clientes em ativos, inativos e potenciais
 
-**Org de build:** `sbx-eplast-dev` (`projetos@konectabr.com.eplast2.qa`, Org Id `00DHa000006vfMLMAY`), conferida com `sf org list`. QA e produção não foram tocadas. Branch `feature/EPLAST-37`.
+**Org de build:** `sbx-eplast-dev` (alias `sbx-eplast-dev`, Org Id `00DHa000006vfMLMAY`), conferida com `sf org list`. QA e produção não foram tocadas. Branch `feature/EPLAST-37`.
 **Abordagem:** configuração nativa (design, nível 1). Sem Flow, Apex nem trigger; nada gravado em Account, Opportunity ou Order. Nada feito no Marketing Cloud.
 
 ## Componentes criados
