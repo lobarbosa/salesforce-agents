@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default</label>
+    <protected>false</protected>
+    <values><field>RecoveryDays__c</field><value xsi:type="xsd:double">60</value></values>
+    <values><field>PurchaseStatuses__c</field><value xsi:type="xsd:string">Faturamento;Concluido</value></values>
+    <values><field>VolumeWindowMonths__c</field><value xsi:type="xsd:double">3</value></values>
+    <values><field>VolumeThresholdPercent__c</field><value xsi:type="xsd:double">30</value></values>
+    <values><field>VolumeDirections__c</field><value xsi:type="xsd:string">Queda;Alta</value></values>
+    <values><field>CrossSellGroupField__c</field><value xsi:type="xsd:string">Industry</value></values>
+    <values><field>CrossSellLookbackMonths__c</field><value xsi:type="xsd:double">12</value></values>
+    <values><field>CrossSellRecentDays__c</field><value xsi:type="xsd:double">180</value></values>
+    <values><field>CrossSellMinSharePercent__c</field><value xsi:type="xsd:double">30</value></values>
+    <values><field>CrossSellMinGroupSize__c</field><value xsi:type="xsd:double">5</value></values>
+    <values><field>CrossSellMaxPerAccount__c</field><value xsi:type="xsd:double">10</value></values>
+    <values><field>BatchSize__c</field><value xsi:type="xsd:double">100</value></values>
+    <values><field>IncludeNeverPurchased__c</field><value xsi:type="xsd:boolean">true</value></values>
+</CustomMetadata>

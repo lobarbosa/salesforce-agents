@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>LastPurchaseDate__c</fullName>
+    <description>Data da ultima compra valida da conta (pedido em status de compra, por EffectiveDate).</description>
+    <label>Ultima compra</label>
+    <type>Date</type>
+</CustomField>

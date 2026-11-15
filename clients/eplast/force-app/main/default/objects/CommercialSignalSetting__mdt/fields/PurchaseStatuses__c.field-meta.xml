@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PurchaseStatuses__c</fullName>
+    <description>Status de Order que contam como compra, separados por ponto e virgula.</description>
+    <label>Status de compra</label>
+    <length>255</length>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Text</type>
+</CustomField>

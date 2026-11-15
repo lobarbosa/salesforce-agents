@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>EPLAST-33. Sinal comercial por conta (recuperacao, nunca comprou, queda/alta de volume, cruzada). Gravado somente pelo batch CommercialSignalBatch; sem trigger, Flow ou validation rule. Visibilidade herdada da conta (master-detail).</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>false</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>false</enableSearch>
+    <enableSharing>false</enableSharing>
+    <enableStreamingApi>false</enableStreamingApi>
+    <externalSharingModel>ControlledByParent</externalSharingModel>
+    <label>Sinal Comercial</label>
+    <nameField>
+        <displayFormat>SC-{000000}</displayFormat>
+        <label>Numero do Sinal</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>Sinais Comerciais</pluralLabel>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

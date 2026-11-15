@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Account__c</fullName>
+    <description>Conta a que o sinal se refere. Master-detail: a visibilidade do sinal segue a da conta e a exclusao da conta apaga os sinais.</description>
+    <label>Conta</label>
+    <referenceTo>Account</referenceTo>
+    <relationshipLabel>Sinais Comerciais</relationshipLabel>
+    <relationshipName>CommercialSignals</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    <type>MasterDetail</type>
+</CustomField>

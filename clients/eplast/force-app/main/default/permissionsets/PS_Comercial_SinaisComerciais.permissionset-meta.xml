@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-33. Leitura dos Sinais Comerciais e do relatorio. Sem criar, editar ou excluir.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PS Comercial - Sinais Comerciais</label>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.Product__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.LastPurchaseDate__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.DaysWithoutPurchase__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.BasePeriodAmount__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.CurrentPeriodAmount__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.VariationPercent__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.Reason__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.CalculationDate__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>CommercialSignal__c.SignalKey__c</field><readable>true</readable></fieldPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Account</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>CommercialSignal__c</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+    <tabSettings><tab>CommercialSignal__c</tab><visibility>Available</visibility></tabSettings>
+</PermissionSet>

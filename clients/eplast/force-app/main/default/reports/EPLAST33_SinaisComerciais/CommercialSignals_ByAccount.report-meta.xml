@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns><field>Account$Id</field></columns>
+    <columns><field>Account$Name</field></columns>
+    <columns><field>Account$Ranking__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$Product__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$DaysWithoutPurchase__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$BasePeriodAmount__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$CurrentPeriodAmount__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$VariationPercent__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$LastPurchaseDate__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$Reason__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$CalculationDate__c</field></columns>
+    <description>EPLAST-33. Sinais comerciais por conta, agrupados por tipo. Sem dado de contato.</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.CommercialSignals__r$Type__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Sinais Comerciais por Conta</name>
+    <params><name>co</name><value>1</value></params>
+    <reportType>Accounts_with_CommercialSignals__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+</Report>

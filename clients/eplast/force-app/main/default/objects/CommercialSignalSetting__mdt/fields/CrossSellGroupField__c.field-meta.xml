@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CrossSellGroupField__c</fullName>
+    <description>API name do campo de Account que define o grupo de comparacao.</description>
+    <label>Campo de grupo da cruzada</label>
+    <length>80</length>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Text</type>
+</CustomField>

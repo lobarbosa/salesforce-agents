@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CrossSellRecentDays__c</fullName>
+    <description>Se a conta comprou o produto nesta janela, nao recebe cruzada para ele.</description>
+    <label>Compra recente da cruzada (dias)</label>
+    <precision>4</precision>
+    <scale>0</scale>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Number</type>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VariationPercent__c</fullName>
+    <description>Volume: variacao absoluta em % entre os periodos (a direcao esta no tipo). Cruzada: % do grupo que comprou o produto.</description>
+    <label>Variacao %</label>
+    <precision>6</precision>
+    <scale>1</scale>
+    <type>Percent</type>
+</CustomField>
