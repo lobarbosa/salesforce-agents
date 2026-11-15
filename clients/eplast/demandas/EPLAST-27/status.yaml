@@ -2,7 +2,7 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -118,3 +118,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T17:30:59.892630+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-15T18:01:19.188818+00:00'
+  motivo: 'decisão B de 15/11: uma versão do SFAgent2 por demanda, a partir do que
+    está ativo na QA. A v6 anterior copiou a v5 da dev e levava junto a EPLAST-29
+    e a EPLAST-34. Refazer a v6 a partir da v4 do repositório (= v4 da QA + a 27),
+    sem nada da 29 e da 34, e tirar o SFAgent2_v4 do pacote. Build anterior em rodada-anterior/build-agente-v6-misto/.'
