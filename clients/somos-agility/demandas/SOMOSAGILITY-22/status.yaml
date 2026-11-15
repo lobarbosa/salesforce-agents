@@ -82,3 +82,11 @@ historico:
     desta demanda é do fluxo antigo (sem verificação no build, sem 05-deploy-qa.md,
     veredito ausente ou reprovado), e entregue exige 05-testes.md aprovado na sandbox
     de QA. Artefatos anteriores em rodada-anterior/fluxo-antigo/.'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T19:16:33.841404+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T19:18:35.000176+00:00'

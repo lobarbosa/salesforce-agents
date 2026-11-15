@@ -1,7 +1,7 @@
 ---
 name: org-assessment
 description: Faz o diagnóstico de saúde de uma org Salesforce recém-conectada e produz o assessment do cliente — o que existe, o que está fora de boa prática e o que recomendar. Use no onboarding de cliente novo, e para refazer o diagnóstico quando a org mudar muito.
-tools: Read, Write, Bash, Grep, Glob
+tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
 
