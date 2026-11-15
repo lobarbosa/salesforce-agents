@@ -136,6 +136,14 @@ roda de novo, disparada pelo Squad OS como no QA reprovado; depois de
 refazer não resolve, e diz o que ficou sem prova. O QA na sandbox de QA continua existindo:
 é outro teste, em outra org, antes do cliente.
 
+Teste com sistema externo na cadeia (2026-11-15): na EPLAST-47 a primeira verificação saiu
+inconclusiva porque criar oportunidade ganha dispara pedido, cotação, CPQ e a integração
+Protheus, e a linha de base mostra a sandbox apontando para o endereço cadastrado como
+produção do ERP. O responsável pela conta decidiu testar mesmo assim. Regra que ficou: o
+`verificador` e o `qa` criam os próprios dados e executam; quando a cadeia chama sistema
+externo que não dá para isolar, só disparam com autorização escrita do responsável no card
+(`comentarios-do-card.md`), usam o mínimo de registros e listam o que pode ter saído da org.
+
 Deploy em QA (2026-11-15): o build só toca a sandbox de dev e o QA só testa, e até aqui
 ninguém levava o pacote de uma para a outra antes do teste; o `release` faz isso só depois
 da homologação. Na EPLAST-47 o QA reprovou em um minuto ("o build não está na QA"), o
