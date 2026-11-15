@@ -2,7 +2,7 @@ id: EPLAST-34
 client: eplast
 titulo: Resumos automáticos para reuniões comerciais, GDD, S&OP e Board
 tipo: projeto
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -66,3 +66,11 @@ historico:
   motivo: 'refazer o build com versão nova do SFAgent2 (regra de 15/11): o build anterior
     alterou no lugar a v5, ativa na dev, e a mesma versão carrega a 27 e a 29. Parte
     da versão deixada pela EPLAST-29. Plano e verificação anteriores em rodada-anterior/build-agente-v5/.'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T20:37:01.649826+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T20:43:29.537922+00:00'
