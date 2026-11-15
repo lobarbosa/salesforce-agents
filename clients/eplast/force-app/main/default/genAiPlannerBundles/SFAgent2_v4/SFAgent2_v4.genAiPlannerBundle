@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Automate common business tasks and assist users in their flow of work. Agentforce Employee Agent can search knowledge articles and other data sources. Customize it further to meet your employees&apos; business needs.</description>
+    <localTopicLinks>
+        <genAiPluginName>agent_router_1793c28af9cbbe9</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>ambiguous_question_179e90e0a513faf</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>insights_comerciais_1790e90ae9fbdc8</genAiPluginName>
+    </localTopicLinks>
+    <localTopicLinks>
+        <genAiPluginName>off_topic_179c53c92cc98ee</genAiPluginName>
+    </localTopicLinks>
+    <localTopics>
+        <fullName>ambiguous_question_179e90e0a513faf</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Redirect conversation to relevant topics when user request is too ambiguous</description>
+        <developerName>ambiguous_question_179e90e0a513faf</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.
+
+The user&apos;s current context is:
+Current App Name: {{state.currentAppName}}
+Current Object Name: {{state.currentObjectApiName}}
+Current Page Type: {{state.currentPageType}}
+Current Record ID: {{state.currentRecordId}}</description>
+            <developerName>instruction0_179Ha0000005mNP</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Ha0000005mNP</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>ambiguous_question</localDeveloperName>
+        <masterLabel>Ambiguous Question</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>insights_comerciais_1790e90ae9fbdc8</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Responde perguntas sobre produtos, políticas e procedimentos da empresa, analisa o histórico de pedidos e oportunidades de uma conta, gera insights para negociação e identifica oportunidades paradas, pedidos pendentes e sinais de risco na carteira do vendedor, e sugere a próxima ação para um cliente.</description>
+        <developerName>insights_comerciais_1790e90ae9fbdc8</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.
+
+The user&apos;s current context is:
+Current App Name: {{state.currentAppName}}
+Current Object Name: {{state.currentObjectApiName}}
+Current Page Type: {{state.currentPageType}}
+Current Record ID: {{state.currentRecordId}}</description>
+            <developerName>instruction0_179Ha0000005mNO</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Ha0000005mNO</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localActionLinks>
+            <functionName>AgregacaoPedidos_1725cd7ae380d76</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>IdentificarConta_172f7b0892c38ff</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>ConsultarPedidos_172f39c00708abb</functionName>
+        </localActionLinks>
+        <localActionLinks>
+            <functionName>ProximaAcaoCliente_EPLAST27</functionName>
+        </localActionLinks>
+        <localActions>
+            <fullName>IdentificarConta_172f7b0892c38ff</fullName>
+            <description>Searches for Salesforce CRM records by name and returns their ID.</description>
+            <developerName>IdentificarConta_172f7b0892c38ff</developerName>
+            <invocationTarget>identifyRecordByName</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>IdentificarConta</localDeveloperName>
+            <masterLabel>Identify record by name</masterLabel>
+            <source>EmployeeCopilot__IdentifyRecordByName</source>
+        </localActions>
+        <localActions>
+            <fullName>ProximaAcaoCliente_EPLAST27</fullName>
+            <description>Devolve a proxima melhor acao para uma conta pela regra fixa (risco, oportunidade parada, cliente inativo). EPLAST-27.</description>
+            <developerName>ProximaAcaoCliente_EPLAST27</developerName>
+            <invocationTarget>Account_Agente_ProximaAcao</invocationTarget>
+            <invocationTargetType>flow</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>ProximaAcaoCliente</localDeveloperName>
+            <masterLabel>Proxima acao do cliente</masterLabel>
+        </localActions>
+        <localActions>
+            <fullName>AgregacaoPedidos_1725cd7ae380d76</fullName>
+            <description>Answers aggregation questions (count, sum, average) about Salesforce records.</description>
+            <developerName>AgregacaoPedidos_1725cd7ae380d76</developerName>
+            <invocationTarget>queryRecordsWithAggregate</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>AgregacaoPedidos</localDeveloperName>
+            <masterLabel>Query records with aggregate</masterLabel>
+            <source>EmployeeCopilot__QueryRecordsWithAggregate</source>
+        </localActions>
+        <localActions>
+            <fullName>ConsultarPedidos_172f39c00708abb</fullName>
+            <description>Finds and retrieves Salesforce CRM records based on a SOQL query.</description>
+            <developerName>ConsultarPedidos_172f39c00708abb</developerName>
+            <invocationTarget>queryRecords</invocationTarget>
+            <invocationTargetType>standardInvocableAction</invocationTargetType>
+            <isConfirmationRequired>false</isConfirmationRequired>
+            <isIncludeInProgressIndicator>true</isIncludeInProgressIndicator>
+            <localDeveloperName>ConsultarPedidos</localDeveloperName>
+            <masterLabel>Query records</masterLabel>
+            <source>EmployeeCopilot__QueryRecords</source>
+        </localActions>
+        <localDeveloperName>insights_comerciais</localDeveloperName>
+        <masterLabel>Insights Comerciais e Acompanhamento</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>off_topic_179c53c92cc98ee</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Redirect conversation to relevant topics when user request goes off-topic</description>
+        <developerName>off_topic_179c53c92cc98ee</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.
+
+The user&apos;s current context is:
+Current App Name: {{state.currentAppName}}
+Current Object Name: {{state.currentObjectApiName}}
+Current Page Type: {{state.currentPageType}}
+Current Record ID: {{state.currentRecordId}}</description>
+            <developerName>instruction0_179Ha0000005mNQ</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Ha0000005mNQ</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>off_topic</localDeveloperName>
+        <masterLabel>Off Topic</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <localTopics>
+        <fullName>agent_router_1793c28af9cbbe9</fullName>
+        <canEscalate>false</canEscalate>
+        <description>Welcome the user and determine the appropriate subagent based on user input</description>
+        <developerName>agent_router_1793c28af9cbbe9</developerName>
+        <genAiPluginInstructions>
+            <description>You are an AI Agent.
+
+The user&apos;s current context is:
+Current App Name: {{state.currentAppName}}
+Current Object Name: {{state.currentObjectApiName}}
+Current Page Type: {{state.currentPageType}}
+Current Record ID: {{state.currentRecordId}}
+
+{{state.AgentScriptInternal_agent_instructions}}</description>
+            <developerName>instruction0_179Ha0000005mNN</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction0_179Ha0000005mNN</masterLabel>
+            <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <language>en_US</language>
+        <localDeveloperName>agent_router</localDeveloperName>
+        <masterLabel>Agent Router</masterLabel>
+        <pluginType>Topic</pluginType>
+    </localTopics>
+    <masterLabel>SFAgent2</masterLabel>
+    <plannerType>Atlas__ConcurrentMultiAgentOrchestration</plannerType>
+</GenAiPlannerBundle>
