@@ -134,4 +134,11 @@ def payload_de_sync(demanda: Demand) -> dict:
     # Sempre presente, vazio quando não há: o espelho no Squad OS precisa
     # apagar o roteiro de um QA que depois foi reprovado.
     dados["roteiro_cliente"] = roteiro.conteudo(demanda.path)
+    # QA armado esperando a automação agendada: quando conferir (veredito.py).
+    if demanda.status == "qa" and (demanda.path / "05-testes.md").exists():
+        from . import veredito
+
+        quando = veredito.conferir_depois_de((demanda.path / "05-testes.md").read_text(encoding="utf-8"))
+        if quando:
+            dados["conferir_depois_de"] = quando
     return dados
