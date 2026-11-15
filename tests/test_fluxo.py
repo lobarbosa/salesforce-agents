@@ -546,3 +546,50 @@ def test_teste_armado_fora_da_sandbox_de_qa_volta_para_o_build(repo):
 def test_aguardar_sai_no_github_output():
     saida = fluxo.Parada("aguardar", "qa", "qa", ("qa",)).as_github_output()
     assert "motivo=aguardar" in saida and "espera_humano=false" in saida
+
+
+# --- reverificação: só o verificador, sobre o build que já existe ----------------
+
+
+def test_reverificar_roda_so_o_verificador_e_volta_ao_gate(repo):
+    d = _demanda("aguardando_gate_build")
+    (_pasta(d) / "04-plano-build.md").write_text("**Resultado do build:** concluído", encoding="utf-8")
+    (_pasta(d) / "04-verificacao.md").write_text(
+        "**Verificação:** inconclusiva\n**Org de teste:** `sbx-acme-dev`", encoding="utf-8"
+    )
+    executor = _executor_com_verificacao(VERIFICACAO_APROVADA)
+    etapas = []
+
+    def registra(client, demand_id, etapa):
+        etapas.append(etapa)
+        executor(client, demand_id, etapa)
+
+    fluxo.reverificar("acme", d.id, "Fulano")
+    parada = fluxo.rodar("acme", d.id, executor=registra, so_verificar=True)
+
+    assert etapas == [fluxo.ETAPA_SO_VERIFICACAO]
+    assert parada.motivo == "gate" and parada.etapa == "aguardando_gate_build"
+    assert parada.etapas_rodadas == (fluxo.ETAPA_SO_VERIFICACAO,)
+    assert "aprovada" in (_pasta(d) / "04-verificacao.md").read_text(encoding="utf-8")
+
+
+def test_reverificacao_reprovada_refaz_o_build_de_verdade(repo):
+    d = _demanda("aguardando_gate_build")
+    (_pasta(d) / "04-plano-build.md").write_text("**Resultado do build:** concluído", encoding="utf-8")
+    fluxo.reverificar("acme", d.id, "Fulano")
+    reprovada = "**Verificação:** reprovada\n**Org de teste:** `sbx-acme-dev`"
+    parada = fluxo.rodar("acme", d.id, executor=_executor_com_verificacao(reprovada), so_verificar=True)
+    assert parada.motivo == "refazer" and parada.etapa == "build"
+
+
+@pytest.mark.parametrize("status,plano", [
+    ("aguardando_gate_design", "**Resultado do build:** concluído"),
+    ("aguardando_gate_build", None),
+    ("aguardando_gate_build", "**Resultado do build:** bloqueado"),
+])
+def test_reverificar_recusa_sem_build_concluido_no_gate(repo, status, plano):
+    d = _demanda(status)
+    if plano:
+        (_pasta(d) / "04-plano-build.md").write_text(plano, encoding="utf-8")
+    with pytest.raises(fluxo.FluxoError):
+        fluxo.reverificar("acme", d.id, "Fulano")

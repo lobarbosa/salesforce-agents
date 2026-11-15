@@ -151,6 +151,17 @@ produção do ERP. O responsável pela conta decidiu testar mesmo assim. Regra q
 externo que não dá para isolar, só disparam com autorização escrita do responsável no card
 (`comentarios-do-card.md`), usam o mínimo de registros e listam o que pode ter saído da org.
 
+Autorização para toda a esteira (2026-11-15, decisão do responsável): pedir autorização card
+a card deixou seis de nove verificações da Eplast inconclusivas (26, 28, 29, 30, 36, 39) sem
+defeito nenhum, só por falta do comentário. Desde então criar dados de teste, deixar a
+automação da solução rodar (inclusive agendada, em duas fases) e ativar na QA a versão nova
+de um agente para testar valem para toda demanda de todo cliente, sem comentário no card. O
+que continua: só sintético, `TESTE <DEMAND-ID>` no nome, o mínimo que prova o critério,
+nunca tocar em registro que o agente não criou, e a seção "O que pode ter saído da org". O
+`CLAUDE.md` do cliente ou um comentário no card podem proibir, e aí vale a proibição. Para
+rodar de novo só a verificação de um build parado no gate de build, sem reconstruir, há
+`run-demand.yml` com `reverificar` (`sfagents demanda rodar --reverificar`).
+
 QA em duas fases (2026-11-15): o `ScheduledFlowOpportunity` da EPLAST-47 só roda às 15:47
 UTC, não dispara à mão, e a sessão de QA acaba em minutos; o QA reprovava sem defeito
 nenhum. Com autorização do responsável no card, a primeira sessão registra o estado de

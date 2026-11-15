@@ -64,3 +64,9 @@ gate de PR antes de voltar ao QA.
 - Não refatore código fora do escopo da demanda. Se achar problema, registre em `06-entrega.md`
   como dívida identificada e siga.
 - Se a cobertura ficar abaixo de 85%, não maquie com teste vazio. Reporte.
+
+## Job agendado
+Classe `Schedulable` se prova pelo teste (`System.schedule` dentro de `Test.startTest`). Não
+deixe job agendado na sandbox de dev: classe com job pendente não aceita deploy, e a validação
+do PR, que roda contra a dev, fica vermelha (achado EPLAST-33, 2026-11-15). Se agendar para
+conferir, desagende e diga no plano. Agendar na sandbox de QA é do `qa`, em duas fases.

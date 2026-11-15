@@ -46,6 +46,10 @@ on:
         description: 'Gate que a pessoa aprovou (ex.: aguardando_gate_design). Se o status.yaml já estiver em outro, a aprovação é recusada. Vazio = não confere.'
         required: false
         default: ''
+      reverificar:
+        description: 'Nome de quem pediu. Tira do gate de build um build concluído e roda só o verificador de novo, sem reconstruir. Não vai junto com aprovar_gate.'
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -107,6 +111,7 @@ jobs:
           CLIENT: ${{ inputs.client }}
           DEMAND_ID: ${{ inputs.demand_id }}
           APROVAR_GATE: ${{ inputs.aprovar_gate }}
+          REVERIFICAR: ${{ inputs.reverificar }}
         run: |
           python3 - <<'PY' | tee -a "$GITHUB_OUTPUT"
           import os
@@ -117,6 +122,9 @@ jobs:
           etapa = demands.Demand.load(client, demand_id).status
           if os.environ.get("APROVAR_GATE") and fluxo.eh_gate(etapa):
               etapa = fluxo.proxima_etapa(etapa)
+          # Reverificação roda o verificador na sandbox de dev, onde está o build.
+          if os.environ.get("REVERIFICAR") and etapa == "aguardando_gate_build":
+              etapa = "build"
           amb = ambientes.ambiente_do_estagio(etapa)
           print(f"etapa={etapa}")
           print(f"ambiente={amb}")
@@ -384,8 +392,12 @@ jobs:
           # que vem do app.
           APROVAR_GATE: ${{ inputs.aprovar_gate }}
           GATE_ESPERADO: ${{ inputs.gate_esperado }}
+          REVERIFICAR: ${{ inputs.reverificar }}
         run: |
-          if [ -n "$APROVAR_GATE" ]; then
+          if [ -n "$REVERIFICAR" ] && [ -z "$APROVAR_GATE" ]; then
+            sfagents demanda rodar --client "$CLIENT" "$DEMAND_ID" \
+              --reverificar "$REVERIFICAR" --github-output
+          elif [ -n "$APROVAR_GATE" ]; then
             # Disparo duplicado (dois cliques) espera na fila do concurrency
             # group; quando roda, a primeira execução já levou a demanda ao
             # gate SEGUINTE — e sem esta conferência ele seria aprovado sem
@@ -463,7 +475,7 @@ jobs:
       # explícito, pela main, que é onde o workflow está atualizado; ele valida
       # a branch da demanda e publica o resultado na PR como status do commit.
       - name: Disparar a validação do deploy (build)
-        if: success() && contains(steps.fluxo.outputs.etapas_rodadas, 'build')
+        if: success() && (contains(steps.fluxo.outputs.etapas_rodadas, 'build') || contains(steps.fluxo.outputs.etapas_rodadas, 'verificacao'))
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
