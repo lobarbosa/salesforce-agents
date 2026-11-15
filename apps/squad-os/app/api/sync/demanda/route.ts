@@ -229,6 +229,26 @@ export async function POST(request: NextRequest) {
       await enfileirar({ clientId: client.id, demandaId: demanda.id, tipo: "rodar", autor: "esteira (QA não aprovou)" });
     }
   }
+  // QA em duas fases (motivo "aguardar"): a segunda sessão entra na fila
+  // sozinha, liberada para depois do horário que o QA declarou em
+  // `**Conferir depois de:**` (veredito.py). A varredura de 15 em 15 minutos
+  // (varrer-demandas.yml) a dispara quando a hora chega.
+  const conferir = typeof body.conferir_depois_de === "string" ? new Date(body.conferir_depois_de) : null;
+  if (body.motivo === "aguardar" && status === "qa" && conferir && !Number.isNaN(conferir.getTime())) {
+    const jaNaFila = await prisma.disparoEsteira.findFirst({
+      where: { demandaId: demanda.id, tipo: "rodar", concluidoEm: null },
+      select: { id: true },
+    });
+    if (!jaNaFila) {
+      await enfileirar({
+        clientId: client.id,
+        demandaId: demanda.id,
+        tipo: "rodar",
+        autor: "esteira (QA em duas fases)",
+        liberarEm: new Date(conferir.getTime() + 5 * 60 * 1000),
+      });
+    }
+  }
   await processarFila(client.id, { excetoRunUrl: atualizada.ultimoRunUrl }).catch((e) =>
     console.error("sync/demanda: processarFila", e)
   );

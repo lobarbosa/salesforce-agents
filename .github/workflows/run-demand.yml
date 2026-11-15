@@ -143,8 +143,11 @@ jobs:
     # false` é de propósito: a segunda execução espera na fila em vez de
     # cancelar a primeira — cancelar no meio de uma etapa deixaria
     # status.yaml/gates.md num estado que ninguém decidiu.
+    # Por cliente E ambiente desde 2026-11-15: o guardrail é por sandbox, e a
+    # dev ficava parada enquanto a QA testava. Dev e QA do mesmo cliente andam
+    # em paralelo; duas sessões na mesma sandbox continuam em fila.
     concurrency:
-      group: demanda-${{ inputs.client }}
+      group: demanda-${{ inputs.client }}-${{ needs.decidir.outputs.ambiente }}
       cancel-in-progress: false
     env:
       CLIENT: ${{ inputs.client }}

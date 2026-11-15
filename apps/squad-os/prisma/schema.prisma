@@ -789,6 +789,11 @@ model DisparoEsteira {
   // A execução sincronizou de volta (ou o disparo virou sem efeito).
   concluidoEm DateTime? @map("concluido_em")
   nota        String    @default("")
+  // Sandbox em que o disparo rodou (dev | qa), gravado ao disparar: a fila
+  // deixa um em voo por ambiente, não por cliente (guardrail #6).
+  ambiente    String    @default("")
+  // Não sai antes disso (segunda sessão do QA em duas fases).
+  liberarEm   DateTime? @map("liberar_em")
 
   @@index([clientId, concluidoEm])
   @@index([demandaId, concluidoEm])

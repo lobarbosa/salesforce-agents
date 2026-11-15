@@ -1,12 +1,13 @@
 import { prisma } from "@/lib/prisma";
 import { travar } from "@/lib/trava";
 import { runsAtivosDoCliente, triggerRunDemand } from "@/lib/github";
-import { decidirDisparo, type TipoDisparo } from "@/lib/fila-decisao";
+import { ambienteDoDisparo, decidirDisparo, type TipoDisparo } from "@/lib/fila-decisao";
 
-// Fila de disparo por cliente — ver o comentário de DisparoEsteira no schema.
-// Regra única: no máximo UM disparo em voo por cliente, e só se o Actions não
-// tem nada rodando/na fila desse cliente. Assim o concurrency group nunca tem
-// dois pendentes e nunca cancela ninguém.
+// Fila de disparo por cliente e ambiente — ver o comentário de DisparoEsteira
+// no schema. Regra: no máximo UM disparo em voo por cliente POR SANDBOX (dev e
+// qa andam em paralelo, guardrail #6 é por sandbox), e só se o Actions não tem
+// run desse cliente que a fila não conheça. O concurrency group do workflow é
+// por cliente e ambiente, então nunca há dois pendentes no mesmo grupo.
 
 /** Em voo sem sync de volta há mais que isso e sem run ativo: o run morreu (cancelado/nunca rodou). */
 const EM_VOO_MAX_MS = 10 * 60 * 1000;
@@ -17,9 +18,17 @@ export async function enfileirar(d: {
   tipo: TipoDisparo;
   gate?: string;
   autor?: string;
+  liberarEm?: Date;
 }) {
   return prisma.disparoEsteira.create({
-    data: { clientId: d.clientId, demandaId: d.demandaId, tipo: d.tipo, gate: d.gate ?? "", autor: d.autor ?? "" },
+    data: {
+      clientId: d.clientId,
+      demandaId: d.demandaId,
+      tipo: d.tipo,
+      gate: d.gate ?? "",
+      autor: d.autor ?? "",
+      liberarEm: d.liberarEm ?? null,
+    },
   });
 }
 
@@ -44,29 +53,43 @@ export async function processarFila(clientId: string, opcoes: { excetoRunUrl?: s
     async (tx) => {
       await travar(tx, `fila-esteira:${clientId}`);
 
-      const emVoo = await tx.disparoEsteira.findFirst({
+      const emVoo = await tx.disparoEsteira.findMany({
         where: { clientId, disparadoEm: { not: null }, concluidoEm: null },
         include: { demanda: { select: { ultimaExecucaoEm: true } } },
       });
       const ativos = (await runsAtivosDoCliente(client.slug)).filter((u) => u !== opcoes.excetoRunUrl);
 
-      if (emVoo) {
-        if (ativos.length > 0) return;
-        const idade = Date.now() - emVoo.disparadoEm!.getTime();
-        if (idade < EM_VOO_MAX_MS) return; // pode ainda estar aparecendo no Actions
-        const sincronizou = emVoo.demanda.ultimaExecucaoEm && emVoo.demanda.ultimaExecucaoEm > emVoo.disparadoEm!;
-        await tx.disparoEsteira.update({
-          where: { id: emVoo.id },
-          data: sincronizou
-            ? { concluidoEm: new Date() }
-            : { disparadoEm: null, nota: "a execução não rodou (cancelada no Actions) — voltou para a fila" },
-        });
-      } else if (ativos.length > 0) {
-        return; // algo de fora da fila (varredura, disparo manual) está rodando
+      // Run do cliente que a fila não disparou (varredura, disparo manual): não
+      // dá para saber a sandbox dele, então nada sai até ele acabar.
+      if (ativos.length > emVoo.length) return;
+
+      // Em voo sem run nenhum no Actions há mais que o prazo: o run morreu.
+      const vivos = [];
+      for (const v of emVoo) {
+        const idade = Date.now() - v.disparadoEm!.getTime();
+        if (ativos.length === 0 && idade >= EM_VOO_MAX_MS) {
+          const sincronizou = v.demanda.ultimaExecucaoEm && v.demanda.ultimaExecucaoEm > v.disparadoEm!;
+          await tx.disparoEsteira.update({
+            where: { id: v.id },
+            data: sincronizou
+              ? { concluidoEm: new Date() }
+              : { disparadoEm: null, nota: "a execução não rodou (cancelada no Actions) — voltou para a fila" },
+          });
+        } else {
+          vivos.push(v);
+        }
       }
+      // Disparo antigo, sem ambiente gravado: ocupa as duas sandboxes.
+      const ocupados = new Set<string>(vivos.flatMap((v) => (v.ambiente ? [v.ambiente] : ["dev", "qa"])));
+      if (ocupados.has("dev") && ocupados.has("qa")) return;
 
       const pendentes = await tx.disparoEsteira.findMany({
-        where: { clientId, disparadoEm: null, concluidoEm: null },
+        where: {
+          clientId,
+          disparadoEm: null,
+          concluidoEm: null,
+          OR: [{ liberarEm: null }, { liberarEm: { lte: new Date() } }],
+        },
         orderBy: { criadoEm: "asc" },
         include: {
           demanda: {
@@ -80,6 +103,8 @@ export async function processarFila(clientId: string, opcoes: { excetoRunUrl?: s
       // Outra demanda do cliente em teste na sandbox de QA segura quem iria para lá.
       const emQa = await tx.demanda.findMany({ where: { clientId, status: "qa" }, select: { id: true, code: true } });
       for (const p of pendentes) {
+        const ambiente = ambienteDoDisparo(p.tipo, p.gate, p.demanda.status);
+        if (ocupados.has(ambiente)) continue;
         const outraEmQa = emQa.find((d) => d.id !== p.demandaId)?.code ?? null;
         const decisao = decidirDisparo(p, outraEmQa);
         if (decisao.acao === "descartar") {
@@ -101,8 +126,9 @@ export async function processarFila(clientId: string, opcoes: { excetoRunUrl?: s
           });
           return; // tenta de novo no próximo gatilho
         }
-        await tx.disparoEsteira.update({ where: { id: p.id }, data: { disparadoEm: new Date(), nota: "" } });
-        return;
+        await tx.disparoEsteira.update({ where: { id: p.id }, data: { disparadoEm: new Date(), nota: "", ambiente } });
+        ocupados.add(ambiente);
+        if (ocupados.has("dev") && ocupados.has("qa")) return;
       }
     },
     { timeout: 30000, maxWait: 10000 }
