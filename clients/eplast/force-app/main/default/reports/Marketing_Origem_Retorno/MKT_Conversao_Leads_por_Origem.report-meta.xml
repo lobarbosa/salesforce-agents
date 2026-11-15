@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <aggregates>
+        <calculatedFormula>CONVERTED:SUM / RowCount</calculatedFormula>
+        <datatype>percent</datatype>
+        <developerName>FORMULA1</developerName>
+        <isActive>true</isActive>
+        <isCrossBlock>false</isCrossBlock>
+        <masterLabel>Taxa de Conversao</masterLabel>
+        <scale>0</scale>
+    </aggregates>
+    <description>EPLAST-39. Taxa de conversao de leads (CONVERTED:SUM / RowCount, mesmo padrao de Marketing_Exec_Conversion_Rate) por origem agrupada (Lead.MKT_Origem_Agrupada__c). Sem linhas de detalhe, sem coluna pessoal (03-design.md R2).</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Lead.MKT_Origem_Agrupada__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>MKT Conversao de Leads por Origem</name>
+    <reportType>LeadList</reportType>
+    <scope>org</scope>
+    <showDetails>false</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <endDate>2099-12-31</endDate>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2000-01-01</startDate>
+    </timeFrameFilter>
+</Report>
