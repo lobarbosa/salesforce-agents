@@ -9,97 +9,11 @@
         <masterLabel>Taxa de Conversao</masterLabel>
         <scale>0</scale>
     </aggregates>
-    <buckets>
-        <bucketType>picklist</bucketType>
-        <developerName>BucketField_Origem</developerName>
-        <masterLabel>Origem (bucket)</masterLabel>
-        <nullTreatment>n</nullTreatment>
-        <otherBucketLabel>Fora da lista</otherBucketLabel>
-        <sourceColumnName>LEAD_SOURCE</sourceColumnName>
-        <values>
-            <sourceValues>
-                <sourceValue>Campanha</sourceValue>
-            </sourceValues>
-            <value>Campanha</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>WhatsApp</sourceValue>
-            </sourceValues>
-            <value>WhatsApp</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Indicação</sourceValue>
-            </sourceValues>
-            <value>Indicação</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Evento</sourceValue>
-            </sourceValues>
-            <value>Evento</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Google Ads</sourceValue>
-            </sourceValues>
-            <value>Google Ads</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Google Orgânico</sourceValue>
-            </sourceValues>
-            <value>Google Orgânico</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Instagram</sourceValue>
-            </sourceValues>
-            <value>Instagram</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Facebook</sourceValue>
-            </sourceValues>
-            <value>Facebook</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Prospecção ativa</sourceValue>
-            </sourceValues>
-            <value>Prospecção ativa</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Prospecção passiva</sourceValue>
-            </sourceValues>
-            <value>Prospecção passiva</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>Econodata</sourceValue>
-            </sourceValues>
-            <value>Econodata</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>E-mail MKT</sourceValue>
-            </sourceValues>
-            <value>E-mail MKT</value>
-        </values>
-        <values>
-            <sourceValues>
-                <sourceValue>SDR</sourceValue>
-            </sourceValues>
-            <value>SDR</value>
-        </values>
-    </buckets>
-    <description>EPLAST-39. Taxa de conversao de leads (CONVERTED:SUM / RowCount, mesmo padrao de Marketing_Exec_Conversion_Rate) por bucket de origem (Lead.LeadSource). Sem linhas de detalhe, sem coluna pessoal (03-design.md R2).</description>
+    <description>EPLAST-39. Taxa de conversao de leads (CONVERTED:SUM / RowCount, mesmo padrao de Marketing_Exec_Conversion_Rate) por origem agrupada (Lead.MKT_Origem_Agrupada__c). Sem linhas de detalhe, sem coluna pessoal (03-design.md R2).</description>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
-        <field>BucketField_Origem</field>
+        <field>Lead.MKT_Origem_Agrupada__c</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
     <name>MKT Conversao de Leads por Origem</name>
@@ -108,4 +22,10 @@
     <showDetails>false</showDetails>
     <showGrandTotal>true</showGrandTotal>
     <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <endDate>2099-12-31</endDate>
+        <interval>INTERVAL_CUSTOM</interval>
+        <startDate>2000-01-01</startDate>
+    </timeFrameFilter>
 </Report>

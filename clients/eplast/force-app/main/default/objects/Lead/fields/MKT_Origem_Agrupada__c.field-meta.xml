@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MKT_Origem_Agrupada__c</fullName>
+    <description>EPLAST-39. Agrupa LeadSource para relatorio e segmentacao: vazio = Sem origem; fora dos 13 valores = Fora da lista. Ao incluir valor novo na picklist LeadSource, incluir tambem aqui.</description>
+    <externalId>false</externalId>
+    <formula>IF(ISBLANK(TEXT(LeadSource)), &quot;Sem origem&quot;,
+  CASE(TEXT(LeadSource),
+    &quot;Campanha&quot;,&quot;Campanha&quot;, &quot;WhatsApp&quot;,&quot;WhatsApp&quot;, &quot;Indicação&quot;,&quot;Indicação&quot;, &quot;Evento&quot;,&quot;Evento&quot;,
+    &quot;Google Ads&quot;,&quot;Google Ads&quot;, &quot;Google Orgânico&quot;,&quot;Google Orgânico&quot;, &quot;Instagram&quot;,&quot;Instagram&quot;,
+    &quot;Facebook&quot;,&quot;Facebook&quot;, &quot;Prospecção ativa&quot;,&quot;Prospecção ativa&quot;, &quot;Prospecção passiva&quot;,&quot;Prospecção passiva&quot;,
+    &quot;Econodata&quot;,&quot;Econodata&quot;, &quot;E-mail MKT&quot;,&quot;E-mail MKT&quot;, &quot;SDR&quot;,&quot;SDR&quot;,
+    &quot;Fora da lista&quot;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Origem do lead agrupada para relatorios: Sem origem ou Fora da lista quando nao reconhecida.</inlineHelpText>
+    <label>Origem Agrupada (MKT)</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

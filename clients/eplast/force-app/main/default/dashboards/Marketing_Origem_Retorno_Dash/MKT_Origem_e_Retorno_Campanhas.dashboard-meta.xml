@@ -21,7 +21,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>true</expandOthers>
-                <groupingColumn>BucketField_Origem</groupingColumn>
+                <groupingColumn>Lead.MKT_Origem_Agrupada__c</groupingColumn>
                 <groupingColumn>CREATED_MONTH</groupingColumn>
                 <header>Leads por Origem</header>
                 <legendPosition>Right</legendPosition>
@@ -52,7 +52,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>true</expandOthers>
-                <groupingColumn>BucketField_Origem</groupingColumn>
+                <groupingColumn>Lead.MKT_Origem_Agrupada__c</groupingColumn>
                 <header>Taxa de Conversão de Leads por Origem</header>
                 <legendPosition>Right</legendPosition>
                 <maxValuesDisplayed>14</maxValuesDisplayed>

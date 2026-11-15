@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>EPLAST-39. Leitura (sem create/edit) em Campaign, Lead, Opportunity p/ painel de origem/retorno campanhas (03-design.md C4). FLS em Campaign.ActualCost/BudgetedCost/ExpectedRevenue, Lead.LeadSource, Opportunity.LeadSource/CampaignId. Sem Marketing User.</description>
+    <description>EPLAST-39. Leitura (sem create/edit) em Campaign, Lead e Opportunity, FLS de leitura nos campos de origem e custo e RunReports, para o painel de origem e retorno de campanhas. Sem Marketing User.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <label>PS Marketing Analise Campanhas</label>
     <objectPermissions>
@@ -52,6 +52,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>Lead.MKT_Origem_Agrupada__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>Opportunity.LeadSource</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -60,4 +65,8 @@
         <field>Opportunity.CampaignId</field>
         <readable>true</readable>
     </fieldPermissions>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>RunReports</name>
+    </userPermissions>
 </PermissionSet>
