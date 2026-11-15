@@ -2,7 +2,7 @@ id: EPLAST-46
 client: eplast
 titulo: Sugestão de campanhas pelo comportamento dos clientes
 tipo: projeto
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -29,3 +29,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-11-15T18:11:45.513815+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T23:31:30.288684+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T23:44:05.941146+00:00'
