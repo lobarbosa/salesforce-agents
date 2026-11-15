@@ -21,12 +21,13 @@ List<List<Object>> spec = new List<List<Object>>{
   new List<Object>{'A5','Recorrente','SP','Alimentos',null}
 };
 List<Account> accs = new List<Account>();
-for (List<Object> s : spec) accs.add(new Account(Name='TESTE EPLAST-36 '+(String)s[0], Type=(String)s[1], BillingState=(String)s[2], BillingCity='Cidade Teste', BillingStreet='Rua Teste 1', BillingPostalCode='01000000', BillingNeighborhood__c='Bairro Teste', Sector__c=(String)s[3], CNAE__c='0000000', CompanyName__c='TESTE EPLAST-36 Ltda', Email__c='teste36@example.invalid', Phone='(11)30000000', Store__c='01'));
-insert accs;
+for (List<Object> s : spec) accs.add(new Account(Name='TESTE EPLAST-36 '+(String)s[0], Type=(String)s[1], BillingState=(String)s[2], BillingCity='Cidade Teste', BillingStreet='Rua Teste 1', BillingPostalCode='01000000', BillingNeighborhood__c='Bairro Teste', Sector__c=(String)s[3], CNAE__c='0000000', CompanyName__c='TESTE EPLAST-36 Ltda', Email__c='teste36'+(String)s[0]+'@example.invalid', Phone='(11)3999000'+String.valueOf(accs.size()), Store__c='01'));
+Database.DMLOptions dml = new Database.DMLOptions(); dml.DuplicateRuleHeader.allowSave = true; // QAS tem regra de duplicidade e dado real copiado
+List<Database.SaveResult> srs = Database.insert(accs, dml); for (Database.SaveResult sr : srs) if (!sr.isSuccess()) throw new DmlException(String.valueOf(sr.getErrors()));
 List<Contact> cons = new List<Contact>();
 for (Account a : accs) cons.add(new Contact(AccountId=a.Id, LastName=a.Name, Email='teste36@example.invalid'));
 cons.add(new Contact(AccountId=accs[0].Id, LastName='TESTE EPLAST-36 A1 optout', Email='teste36optout@example.invalid', HasOptedOutOfEmail=true));
-insert cons;
+Database.insert(cons, dml);
 Id rt = Schema.SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get('Industria').getRecordTypeId();
 List<Opportunity> opps = new List<Opportunity>();
 for (Integer i=0;i<spec.size();i++) { if (spec[i][4]==null) continue;
