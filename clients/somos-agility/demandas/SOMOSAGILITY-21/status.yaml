@@ -2,7 +2,7 @@ id: SOMOSAGILITY-21
 client: somos-agility
 titulo: Campo origem do Lead
 tipo: sustentacao
-status: build
+status: aguardando_gate_build
 criado_em: '2026-10-19T19:33:52.759Z'
 historico:
 - de: null
@@ -105,3 +105,7 @@ historico:
   para: build
   autor: pipeline
   em: '2026-11-15T19:14:41.046615+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T19:27:02.759282+00:00'

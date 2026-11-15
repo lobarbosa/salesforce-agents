@@ -1,30 +1,46 @@
 **Verificação:** inconclusiva
 **Org de teste:** sbx-somos-agility-dev
 
-## Org e escopo
-- `sf org list`: única org conectada é `sbx-somos-agility-dev` (Sandbox, Connected). Todos os comandos usaram `--target-org`/`-o` com esse alias.
-- Nenhum dado de teste foi criado, nenhum DML nem Apex anônimo executado. Nenhum dado real lido.
+# 04 — Verificação — SOMOSAGILITY-21: Campo origem do Lead
 
-## Discrepância com o preflight
-O preflight dizia "nada a conferir: sem componentes no repositório". Isso está correto, e não conflita com o build: `04-plano-build.md` declara que **nada foi criado em `force-app`** (a Opção F, rede de segurança, depende da P-2, não confirmada; a Opção A é correção de payload no middleware, fora do Salesforce). Confirmado:
-- `clients/somos-agility/force-app` só contém `main` e o último commit que o tocou é o baseline/limpeza do recon (nada da demanda).
-- Na dev, consulta retornou 0 registros para: Flow `%OrigemSite%` (FlowDefinition), CustomPermission `Lead_Origem%`, PermissionSet `PS_Integracao_Lead%`.
-- `Lead` com Company `TESTE SOMOSAGILITY-21%`: 0.
-- Observação: `04-plano-build.md` não traz a linha `**Resultado do build:** concluido|bloqueado` exigida pelo fluxo.
+Org confirmada com `sf org list`: `sbx-somos-agility-dev` (Sandbox, Connected). Todo comando levou `--target-org sbx-somos-agility-dev`. QA e produção não foram tocadas.
 
-## Critérios de aceite
+## Resumo
+
+O build não criou metadata. A correção principal (CA-01 em produção) é o ajuste do payload no middleware do Connected App `Lead Site Agility`, e isso não dá para exercitar daqui. A plataforma se comporta como o design afirma, e nada na org sobrescreve `LeadSource`. Por isso o veredito é inconclusiva: o critério principal ficou sem prova ponta a ponta. Nenhum caso executado falhou.
+
+A Opção F (Flow before-save com Custom Permission) não foi construída porque a P-2 continua sem resposta. Não há o que testar nela.
+
+## Casos
+
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| 1 | CA-01 Lead do site recebe LeadSource correto | Consulta de metadata na dev por componente da demanda | Haver automação a exercitar | Não existe componente; a correção é no middleware externo | não executado |
-| 2 | CA-02 Outros canais inalterados | Idem | Regra restrita ao canal do site | Sem regra construída; nada a testar. Fragilidade da org (24 automações no mesmo evento de Lead/Oportunidade) não foi exercitada | não executado |
-| 3 | CA-03 Valor do site sobrepõe default | Idem | Sobrescrita do default | Sem componente | não executado |
-| 4 | CA-04 Teste com carga simulando payload | Não aplicável na dev sem componente; depende do middleware e da QA | Lead de teste com LeadSource correto | Não executado | não executado |
+| V1 | Premissa do design (D-1) | `sf sobject describe -s Lead`, só o campo `LeadSource` | Valor `Web Site Agility Networks` com label `Web Site Agility`, ativo; picklist não restrito; default `Prospecção - Gerente de Contas` | Valor e label como esperado, `active=true`; `restrictedPicklist=False`, `nillable=True`; default `Prospecção - Gerente de Contas`. Existe também `Web Site Agility – E-mail` | passou |
+| V2 | CA-02 (nada sobrescreve) | Tooling `ApexTrigger` em Lead: contagem | 0 | 0 | passou |
+| V3 | CA-02 | `FlowDefinitionView` ativos com objeto Lead | Só after-save, sem before-save | 3 ativos (`Alerta_Diretor_Comercial`, `Alerta_Gerente_de_Contas`, `Notifica_se_Novo_Lead_Criado`), todos `RecordAfterSave` | passou |
+| V4 | CA-02 | Tooling `Flow.Metadata` das 3 versões ativas, contagem de referências a `LeadSource` | 0 | 0 nas três | passou |
+| V5 | CA-02 | Tooling `WorkflowRule` em Lead: contagem (sem filtro de ativo) | Só as 2 inativas citadas no design | 2 regras. Não conferi o estado ativo nesta sessão, o design as registra como inativas | não executado (estado ativo não reconferido) |
+| V6 | CA-01/CA-03 (lado plataforma) | Apex anônimo: insert de Lead sintético com `LeadSource = 'Web Site Agility Networks'` | Valor mantido | `Web Site Agility Networks` | passou |
+| V7 | CA-03 / H1 | Insert sem `LeadSource` | Default de org | `Prospecção - Gerente de Contas` (confirma H1 na plataforma) | passou |
+| V8 | H2 | Insert com `LeadSource = 'Web Site Agility'` (label) | Aceito como texto solto | Gravado como `Web Site Agility`, fora da lista (confirma H2 na plataforma) | passou |
+| V9 | CA-04 (payload REST real do middleware) | Não executável: o middleware está fora da sessão | Lead do site chega com `Web Site Agility Networks` | Sem prova | não executado |
+| V10 | CA-01 em produção | Fora do alcance (guardrail #1) | Leads do site com o valor correto | Sem prova | não executado |
 
-## O que ficou sem prova
-Todos os critérios. A correção (Opção A) acontece fora do Salesforce e a Opção F não foi construída.
-Para provar: (1) TI Agility confirma P-2 e, se houver usuário exclusivo, constrói-se a Opção F e reverifica-se; ou (2) o dono do middleware ajusta o payload para `LeadSource = "Web Site Agility Networks"` (API name) e alguém testa na QA/ambiente do middleware com carga sintética.
+V6 a V8 usaram DML de Apex anônimo, não o endpoint REST do Connected App. Provam o comportamento do campo, não o caminho da integração. Os 3 Leads foram `TESTE SOMOSAGILITY-21 C1/C2/C3`, com `Status='Novo'` para passar a `Lead_Novo`. O script rodou dentro de `Savepoint` com `Database.rollback` no fim, então nada foi gravado e os Flows after-save de alerta não chegaram a ser confirmados (nada saiu da org).
 
-## Riscos e incertezas
-- P-1 (valor-alvo), P-2 (usuário exclusivo), P-3 (causa-raiz em produção) e P-4 (dono do ajuste) continuam em aberto, segundo o plano de build.
-- Não confirmei via `sf` o picklist de `LeadSource` nem o default da org nesta rodada; as afirmações vêm de `03-design.md`/`04-plano-build.md`.
-- Sem dados de teste criados: nada a limpar nem a desfazer; nenhuma saída da org.
+## Dados de teste e limpeza
+
+- Contagem de Leads com `Company='TESTE SOMOSAGILITY-21'` depois do rollback: 0 (conferida no Apex e por `sf data query`).
+- Nenhuma alteração em usuário, permission set ou opção de usuário.
+- Nada ficou na org.
+
+## O que pode ter saído da org
+
+Nada. O rollback desfez os inserts antes do commit, então os Flows after-save de alerta não confirmaram envio.
+
+## O que ficou sem prova e o que uma pessoa precisa fazer
+
+1. **CA-01/CA-04 ponta a ponta.** Alguém da TI Agility (dono do middleware, P-4) precisa ajustar o payload para enviar `LeadSource = "Web Site Agility Networks"` (API name, não o label). Depois, com dados fictícios, deve disparar um `POST /services/data/vNN.0/sobjects/Lead` pelo Connected App na sandbox de QA e mostrar o Lead gravado com esse valor. A causa real em produção (H1, H2 ou H3) só se separa vendo um Lead afetado lá (P-3).
+2. **P-2 sem resposta.** Sem a confirmação de usuário de integração exclusivo do site Agility, a rede de segurança segue não construída. Isso é decisão de gate, não falha de build.
+3. **V5.** Reconferir se as duas workflow rules de Lead estão inativas. O design já afirma isso, mas esta sessão não reconfirmou.
+4. **Efeito colateral a comunicar (R-4).** O Flow `Atualizar_Descri_o_com_Informa_es_do_Lead` (Opportunity) passa a disparar para oportunidades vindas do site depois da correção. Não foi exercitado aqui.
