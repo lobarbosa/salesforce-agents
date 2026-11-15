@@ -109,5 +109,11 @@ da Eplast, em qualquer etapa.
    o achado 6 do `assessment.md` está resolvido por esta regra. Continue conferindo com
    `sf org list` qual org está conectada, como sempre.
    A QAS é Partial Copy e tem dado real copiado: lá vale a regra de não ler nem alterar
-   registro que o agente não criou, e qualquer execução em massa precisa de autorização no
-   card.
+   registro que o agente não criou. Deixar a automação da própria solução rodar sobre os
+   registros existentes está autorizado pela regra da esteira (2026-11-15); DML do agente
+   sobre eles, nunca.
+6. **Dados e usuário de teste** (2026-11-15). Dado de teste está autorizado em toda
+   demanda. Monte-o pelos scripts de `fixtures/` nesta pasta e grave lá o que funcionar
+   (ver `fixtures/README.md`). Existe um usuário válido na org para teste (proprietário de
+   registro e caso de acesso negado); a identificação dele entra aqui pelo Id de usuário
+   (`005…`), nunca pelo e-mail. Id: _a informar pelo responsável_.
