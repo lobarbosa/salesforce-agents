@@ -2,7 +2,7 @@
 
 # EPLAST-39 — Plano de build (rodada 2)
 
-**Org:** `sbx-eplast-dev` (sandbox `eplast--qa` da Eplast = dev da esteira, `projetos@konectabr.com.eplast2.qa`, Org Id 00DHa000006vfMLMAY), conferida com `sf org list`. B1 resolvido pelo card (2026-11-15 09:58) e pela regra 5 do CLAUDE.md do cliente. Não toquei `sbx-eplast-qa`, nem produção, nem Marketing Cloud.
+**Org:** `sbx-eplast-dev` (sandbox `eplast--qa` da Eplast = dev da esteira, usuário de integração da org de dev, identificado pelo alias; Org Id omitido), conferida com `sf org list`. B1 resolvido pelo card (2026-11-15 09:58) e pela regra 5 do CLAUDE.md do cliente. Não toquei `sbx-eplast-qa`, nem produção, nem Marketing Cloud.
 **Branch:** `feature/EPLAST-39`. **Abordagem:** configuração nativa (campo fórmula, relatório, painel, permission set). Sem Flow, Apex, trigger ou e-mail. Sem DML em registro.
 **Commits:** ver seção final.
 
