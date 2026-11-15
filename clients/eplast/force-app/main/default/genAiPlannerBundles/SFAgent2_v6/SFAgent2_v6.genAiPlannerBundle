@@ -2,22 +2,22 @@
 <GenAiPlannerBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <description>Automate common business tasks and assist users in their flow of work. Agentforce Employee Agent can search knowledge articles and other data sources. Customize it further to meet your employees&apos; business needs.</description>
     <localTopicLinks>
-        <genAiPluginName>agent_router_1793c28af9cbbe9</genAiPluginName>
+        <genAiPluginName>agent_router_1793c28af9cbbe9_v6</genAiPluginName>
     </localTopicLinks>
     <localTopicLinks>
-        <genAiPluginName>ambiguous_question_179e90e0a513faf</genAiPluginName>
+        <genAiPluginName>ambiguous_question_179e90e0a513faf_v6</genAiPluginName>
     </localTopicLinks>
     <localTopicLinks>
-        <genAiPluginName>insights_comerciais_1790e90ae9fbdc8</genAiPluginName>
+        <genAiPluginName>insights_comerciais_1790e90ae9fbdc8_v6</genAiPluginName>
     </localTopicLinks>
     <localTopicLinks>
-        <genAiPluginName>off_topic_179c53c92cc98ee</genAiPluginName>
+        <genAiPluginName>off_topic_179c53c92cc98ee_v6</genAiPluginName>
     </localTopicLinks>
     <localTopics>
-        <fullName>ambiguous_question_179e90e0a513faf</fullName>
+        <fullName>ambiguous_question_179e90e0a513faf_v6</fullName>
         <canEscalate>false</canEscalate>
         <description>Redirect conversation to relevant topics when user request is too ambiguous</description>
-        <developerName>ambiguous_question_179e90e0a513faf</developerName>
+        <developerName>ambiguous_question_179e90e0a513faf_v6</developerName>
         <genAiPluginInstructions>
             <description>You are an AI Agent.
 
@@ -26,9 +26,9 @@ Current App Name: {{state.currentAppName}}
 Current Object Name: {{state.currentObjectApiName}}
 Current Page Type: {{state.currentPageType}}
 Current Record ID: {{state.currentRecordId}}</description>
-            <developerName>instruction0_179Ha0000005mNP</developerName>
+            <developerName>instruction0_179Ha0000005mNP_v6</developerName>
             <language>en_US</language>
-            <masterLabel>instruction0_179Ha0000005mNP</masterLabel>
+            <masterLabel>instruction0_179Ha0000005mNP_v6</masterLabel>
             <sortOrder>0</sortOrder>
         </genAiPluginInstructions>
         <language>en_US</language>
@@ -37,10 +37,10 @@ Current Record ID: {{state.currentRecordId}}</description>
         <pluginType>Topic</pluginType>
     </localTopics>
     <localTopics>
-        <fullName>insights_comerciais_1790e90ae9fbdc8</fullName>
+        <fullName>insights_comerciais_1790e90ae9fbdc8_v6</fullName>
         <canEscalate>false</canEscalate>
         <description>Responde perguntas sobre produtos, políticas e procedimentos da empresa, analisa o histórico de pedidos e oportunidades de uma conta, gera insights para negociação e identifica oportunidades paradas, pedidos pendentes e sinais de risco na carteira do vendedor, e sugere a próxima ação para um cliente.</description>
-        <developerName>insights_comerciais_1790e90ae9fbdc8</developerName>
+        <developerName>insights_comerciais_1790e90ae9fbdc8_v6</developerName>
         <genAiPluginInstructions>
             <description>You are an AI Agent.
 
@@ -49,28 +49,35 @@ Current App Name: {{state.currentAppName}}
 Current Object Name: {{state.currentObjectApiName}}
 Current Page Type: {{state.currentPageType}}
 Current Record ID: {{state.currentRecordId}}</description>
-            <developerName>instruction0_179Ha0000005mNO</developerName>
+            <developerName>instruction0_179Ha0000005mNO_v6</developerName>
             <language>en_US</language>
-            <masterLabel>instruction0_179Ha0000005mNO</masterLabel>
+            <masterLabel>instruction0_179Ha0000005mNO_v6</masterLabel>
             <sortOrder>0</sortOrder>
+        </genAiPluginInstructions>
+        <genAiPluginInstructions>
+            <description>PROXIMA ACAO POR CLIENTE: quando o vendedor pedir a proxima acao, a proxima melhor acao ou o que fazer com um cliente, identifique a conta com a acao IdentificarConta e chame a acao ProximaAcaoCliente com o Id da conta. Apresente a mensagem devolvida exatamente como veio, sem acrescentar, trocar nem combinar acoes. Se o codigo for NOT_OWNER, nao consulte a conta por nenhuma outra acao e nao revele dados dela.</description>
+            <developerName>instruction2_EPLAST27_v6</developerName>
+            <language>en_US</language>
+            <masterLabel>instruction2_EPLAST27_v6</masterLabel>
+            <sortOrder>1</sortOrder>
         </genAiPluginInstructions>
         <language>en_US</language>
         <localActionLinks>
-            <functionName>AgregacaoPedidos_1725cd7ae380d76</functionName>
+            <functionName>AgregacaoPedidos_1725cd7ae380d76_v6</functionName>
         </localActionLinks>
         <localActionLinks>
-            <functionName>IdentificarConta_172f7b0892c38ff</functionName>
+            <functionName>IdentificarConta_172f7b0892c38ff_v6</functionName>
         </localActionLinks>
         <localActionLinks>
-            <functionName>ConsultarPedidos_172f39c00708abb</functionName>
+            <functionName>ConsultarPedidos_172f39c00708abb_v6</functionName>
         </localActionLinks>
         <localActionLinks>
-            <functionName>ProximaAcaoCliente_EPLAST27</functionName>
+            <functionName>ProximaAcaoCliente_EPLAST27_v6</functionName>
         </localActionLinks>
         <localActions>
-            <fullName>AgregacaoPedidos_1725cd7ae380d76</fullName>
+            <fullName>AgregacaoPedidos_1725cd7ae380d76_v6</fullName>
             <description>Answers aggregation questions (count, sum, average) about Salesforce records.</description>
-            <developerName>AgregacaoPedidos_1725cd7ae380d76</developerName>
+            <developerName>AgregacaoPedidos_1725cd7ae380d76_v6</developerName>
             <invocationTarget>queryRecordsWithAggregate</invocationTarget>
             <invocationTargetType>standardInvocableAction</invocationTargetType>
             <isConfirmationRequired>false</isConfirmationRequired>
@@ -80,9 +87,9 @@ Current Record ID: {{state.currentRecordId}}</description>
             <source>EmployeeCopilot__QueryRecordsWithAggregate</source>
         </localActions>
         <localActions>
-            <fullName>ConsultarPedidos_172f39c00708abb</fullName>
+            <fullName>ConsultarPedidos_172f39c00708abb_v6</fullName>
             <description>Finds and retrieves Salesforce CRM records based on a SOQL query.</description>
-            <developerName>ConsultarPedidos_172f39c00708abb</developerName>
+            <developerName>ConsultarPedidos_172f39c00708abb_v6</developerName>
             <invocationTarget>queryRecords</invocationTarget>
             <invocationTargetType>standardInvocableAction</invocationTargetType>
             <isConfirmationRequired>false</isConfirmationRequired>
@@ -92,9 +99,9 @@ Current Record ID: {{state.currentRecordId}}</description>
             <source>EmployeeCopilot__QueryRecords</source>
         </localActions>
         <localActions>
-            <fullName>IdentificarConta_172f7b0892c38ff</fullName>
+            <fullName>IdentificarConta_172f7b0892c38ff_v6</fullName>
             <description>Searches for Salesforce CRM records by name and returns their ID.</description>
-            <developerName>IdentificarConta_172f7b0892c38ff</developerName>
+            <developerName>IdentificarConta_172f7b0892c38ff_v6</developerName>
             <invocationTarget>identifyRecordByName</invocationTarget>
             <invocationTargetType>standardInvocableAction</invocationTargetType>
             <isConfirmationRequired>false</isConfirmationRequired>
@@ -104,9 +111,9 @@ Current Record ID: {{state.currentRecordId}}</description>
             <source>EmployeeCopilot__IdentifyRecordByName</source>
         </localActions>
         <localActions>
-            <fullName>ProximaAcaoCliente_EPLAST27</fullName>
+            <fullName>ProximaAcaoCliente_EPLAST27_v6</fullName>
             <description>Devolve a proxima melhor acao para uma conta pela regra fixa (risco, oportunidade parada, cliente inativo). EPLAST-27.</description>
-            <developerName>ProximaAcaoCliente_EPLAST27</developerName>
+            <developerName>ProximaAcaoCliente_EPLAST27_v6</developerName>
             <invocationTarget>Account_Agente_ProximaAcao</invocationTarget>
             <invocationTargetType>flow</invocationTargetType>
             <isConfirmationRequired>false</isConfirmationRequired>
@@ -119,10 +126,10 @@ Current Record ID: {{state.currentRecordId}}</description>
         <pluginType>Topic</pluginType>
     </localTopics>
     <localTopics>
-        <fullName>off_topic_179c53c92cc98ee</fullName>
+        <fullName>off_topic_179c53c92cc98ee_v6</fullName>
         <canEscalate>false</canEscalate>
         <description>Redirect conversation to relevant topics when user request goes off-topic</description>
-        <developerName>off_topic_179c53c92cc98ee</developerName>
+        <developerName>off_topic_179c53c92cc98ee_v6</developerName>
         <genAiPluginInstructions>
             <description>You are an AI Agent.
 
@@ -131,9 +138,9 @@ Current App Name: {{state.currentAppName}}
 Current Object Name: {{state.currentObjectApiName}}
 Current Page Type: {{state.currentPageType}}
 Current Record ID: {{state.currentRecordId}}</description>
-            <developerName>instruction0_179Ha0000005mNQ</developerName>
+            <developerName>instruction0_179Ha0000005mNQ_v6</developerName>
             <language>en_US</language>
-            <masterLabel>instruction0_179Ha0000005mNQ</masterLabel>
+            <masterLabel>instruction0_179Ha0000005mNQ_v6</masterLabel>
             <sortOrder>0</sortOrder>
         </genAiPluginInstructions>
         <language>en_US</language>
@@ -142,10 +149,10 @@ Current Record ID: {{state.currentRecordId}}</description>
         <pluginType>Topic</pluginType>
     </localTopics>
     <localTopics>
-        <fullName>agent_router_1793c28af9cbbe9</fullName>
+        <fullName>agent_router_1793c28af9cbbe9_v6</fullName>
         <canEscalate>false</canEscalate>
         <description>Welcome the user and determine the appropriate subagent based on user input</description>
-        <developerName>agent_router_1793c28af9cbbe9</developerName>
+        <developerName>agent_router_1793c28af9cbbe9_v6</developerName>
         <genAiPluginInstructions>
             <description>You are an AI Agent.
 
@@ -156,9 +163,9 @@ Current Page Type: {{state.currentPageType}}
 Current Record ID: {{state.currentRecordId}}
 
 {{state.AgentScriptInternal_agent_instructions}}</description>
-            <developerName>instruction0_179Ha0000005mNN</developerName>
+            <developerName>instruction0_179Ha0000005mNN_v6</developerName>
             <language>en_US</language>
-            <masterLabel>instruction0_179Ha0000005mNN</masterLabel>
+            <masterLabel>instruction0_179Ha0000005mNN_v6</masterLabel>
             <sortOrder>0</sortOrder>
         </genAiPluginInstructions>
         <language>en_US</language>
