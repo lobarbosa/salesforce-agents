@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>EPLAST-35. Pede a plataforma para reaplicar a regra de atribuicao ativa ao Lead recem-criado.</description>
+        <name>Aplicar_Regra_Atribuicao</name>
+        <label>Aplicar regra de atribuicao</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <actionName>LeadAssignmentService</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>leadIds</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>LeadAssignmentService</nameSegment>
+    </actionCalls>
+    <apiVersion>68.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <description>EPLAST-35. Lead criado por usuario com a custom permission Lead_DistribuicaoAutomaticaViaApi (integracao sem cabecalho de atribuicao) e ainda com dono usuario: reaplica a regra Distribuicao_Regional_Leads pelo caminho assincrono. Usuario de tela nao tem a permissao, entao nao entra.</description>
+    <environments>Default</environments>
+    <interviewLabel>Lead_AfterInsert_AplicaRegraAtribuicao {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Lead_AfterInsert_AplicaRegraAtribuicao</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <filterFormula>AND({!$Permission.Lead_DistribuicaoAutomaticaViaApi}, LEFT({!$Record.OwnerId}, 3) = &quot;005&quot;)</filterFormula>
+        <object>Lead</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <scheduledPaths>
+            <connector>
+                <targetReference>Aplicar_Regra_Atribuicao</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

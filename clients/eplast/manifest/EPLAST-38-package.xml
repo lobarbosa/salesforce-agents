@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <!-- Grupo 1 (seguro): classes, custom permission e permission set -->
+    <types>
+        <members>LeadAssignmentService</members>
+        <members>LeadAssignmentServiceTest</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>Lead_DistribuicaoAutomaticaViaApi</members>
+        <name>CustomPermission</name>
+    </types>
+    <types>
+        <members>PS_Integracao_DistribuicaoLead</members>
+        <name>PermissionSet</name>
+    </types>
+    <!-- Grupo 2 (condicional ao deploy em QA, R1 e R2 do design): so se ausente ou identico na QAS -->
+    <types>
+        <members>Leads_SP</members>
+        <members>Leads_RJ</members>
+        <members>Leads_MG</members>
+        <members>Leads_ES</members>
+        <members>Leads_Sul</members>
+        <members>Leads_CO</members>
+        <members>Leads_NO_NE</members>
+        <members>Leads_Triagem</members>
+        <name>Queue</name>
+    </types>
+    <types>
+        <members>Lead</members>
+        <name>AssignmentRules</name>
+    </types>
+    <types>
+        <members>Lead-Lead Layout</members>
+        <name>Layout</name>
+    </types>
+    <types>
+        <members>Lead_AfterInsert_AplicaRegraAtribuicao</members>
+        <name>Flow</name>
+    </types>
+    <version>68.0</version>
+</Package>
