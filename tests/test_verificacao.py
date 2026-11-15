@@ -56,3 +56,16 @@ def test_quem_revisa_o_build_ve_a_evidencia_junto_do_plano(tmp_path):
 
     assert "**Verificação:** aprovada" in verificacao.anexo_para_o_gate(tmp_path)
     assert revisao.verificacao is verificacao
+
+
+def test_org_sem_crase_ou_com_comentario_e_a_mesma_declaracao():
+    """Achado EPLAST-28: `**Org de teste:** sbx-eplast-dev` sem crase virava reprovada."""
+    assert verificacao.ler("**Verificação:** inconclusiva\n**Org de teste:** sbx-acme-dev", DEV).estado == "inconclusiva"
+    assert verificacao.ler("**Verificação:** aprovada\n**Org de teste:** `sbx-acme-dev` (Org ID 00D...)", DEV).estado == "aprovada"
+    assert verificacao.ler("**Verificação:** aprovada\n**Org de teste:** sbx-acme-qa", DEV).estado == "reprovada"
+
+
+def test_veredito_do_qa_aceita_org_sem_crase():
+    from salesforce_agents import veredito
+
+    assert veredito.ler("**Veredito:** aprovado\n**Org de teste:** sbx-acme-qa", "sbx-acme-qa").aprovado
