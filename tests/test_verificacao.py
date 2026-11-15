@@ -69,3 +69,12 @@ def test_veredito_do_qa_aceita_org_sem_crase():
     from salesforce_agents import veredito
 
     assert veredito.ler("**Veredito:** aprovado\n**Org de teste:** sbx-acme-qa", "sbx-acme-qa").aprovado
+
+
+def test_conferir_depois_de_sai_em_iso_utc():
+    from salesforce_agents import veredito
+
+    t = "**Veredito:** aguardando execução\n**Org de teste:** `sbx-acme-qa`\n**Conferir depois de:** 2026-11-15T18:47Z\n"
+    assert veredito.conferir_depois_de(t) == "2026-11-15T18:47Z"
+    assert veredito.conferir_depois_de("**Conferir depois de:** `2026-11-16 10:05:00`") == "2026-11-16T10:05:00Z"
+    assert veredito.conferir_depois_de("**Veredito:** aprovado") == ""

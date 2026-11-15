@@ -7,6 +7,24 @@ export const NOTA_ESPERA_ESTIMATIVA = "esperando o cliente aprovar a estimativa 
 export const notaEsperaQa = (codigo: string) => `esperando a sandbox de QA: ${codigo} está em teste lá`;
 
 export type TipoDisparo = "rodar" | "aprovar" | "reverificar";
+export type Ambiente = "dev" | "qa";
+
+// Espelho de ambientes.py: estágios que rodam na sandbox de QA. Mudou lá,
+// muda aqui (scripts/testa-fila.ts confere os casos da fronteira).
+const ESTAGIOS_QA = new Set(["qa", "aguardando_homologacao", "release", "entregue"]);
+const DEPOIS_DO_GATE: Record<string, string> = {
+  aguardando_gate_analise: "design",
+  aguardando_gate_design: "build",
+  aguardando_gate_build: "qa",
+  aguardando_homologacao: "release",
+};
+
+/** Em qual sandbox o disparo vai rodar: a do estágio que a sessão executa. */
+export function ambienteDoDisparo(tipo: string, gate: string, status: string): Ambiente {
+  if (tipo === "reverificar") return "dev";
+  const etapa = tipo === "aprovar" ? (DEPOIS_DO_GATE[gate] ?? status) : status;
+  return ESTAGIOS_QA.has(etapa) ? "qa" : "dev";
+}
 
 export interface PedidoNaFila {
   tipo: string;

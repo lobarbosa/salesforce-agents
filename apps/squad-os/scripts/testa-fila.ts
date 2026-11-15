@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { decidirDisparo, NOTA_ESPERA_ESTIMATIVA, notaEsperaQa, type PedidoNaFila } from "../lib/fila-decisao";
+import { ambienteDoDisparo, decidirDisparo, NOTA_ESPERA_ESTIMATIVA, notaEsperaQa, type PedidoNaFila } from "../lib/fila-decisao";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -50,6 +50,17 @@ caso("AMS sem estimativa aprovada espera no gate de design", () => {
     null
   );
   assert.deepEqual(d, { acao: "esperar", nota: NOTA_ESPERA_ESTIMATIVA });
+});
+
+caso("ambiente do disparo: sandbox da etapa que vai rodar", () => {
+  assert.equal(ambienteDoDisparo("aprovar", "aguardando_gate_build", "aguardando_gate_build"), "qa");
+  assert.equal(ambienteDoDisparo("aprovar", "aguardando_gate_design", "aguardando_gate_design"), "dev");
+  assert.equal(ambienteDoDisparo("aprovar", "aguardando_gate_analise", "aguardando_gate_analise"), "dev");
+  assert.equal(ambienteDoDisparo("aprovar", "aguardando_homologacao", "aguardando_homologacao"), "qa");
+  assert.equal(ambienteDoDisparo("reverificar", "aguardando_gate_build", "aguardando_gate_build"), "dev");
+  assert.equal(ambienteDoDisparo("rodar", "", "qa"), "qa");
+  assert.equal(ambienteDoDisparo("rodar", "", "build"), "dev");
+  assert.equal(ambienteDoDisparo("rodar", "", "backlog"), "dev");
 });
 
 if (falhas) {

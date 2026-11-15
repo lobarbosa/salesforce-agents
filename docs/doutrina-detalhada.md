@@ -162,6 +162,16 @@ nunca tocar em registro que o agente não criou, e a seção "O que pode ter sa�
 rodar de novo só a verificação de um build parado no gate de build, sem reconstruir, há
 `run-demand.yml` com `reverificar` (`sfagents demanda rodar --reverificar`).
 
+Fila por sandbox e QA agendado curto (2026-11-15, decisão do responsável): a fila de
+disparo segurava o cliente inteiro, e a dev ficava parada enquanto a QA testava; o guardrail
+#6 é por sandbox. A fila (`lib/fila-esteira.ts`) passou a deixar um disparo em voo por
+cliente e ambiente, e o concurrency group do `run-demand.yml` virou cliente + ambiente.
+Run do cliente que a fila não conhece continua segurando tudo. No QA em duas fases, o
+agente arma para no máximo 1 hora à frente (parâmetro da solução, job agendado para daqui a
+15–30 min, ou Flow agendado com o horário trocado só na QA, sem commit), e o sync
+reenfileira a segunda sessão com `liberar_em` = `Conferir depois de` + 5 min; a varredura
+roda de 15 em 15 minutos e a dispara.
+
 Usuário de execução na dev (2026-11-15, decisão do responsável): na reverificação da EPLAST-36
 a Oportunidade de teste não pôde ser criada porque a validation rule exige "ID Usuário
 Protheus" no proprietário, e o proprietário é o usuário com que o job autentica, que o agente
