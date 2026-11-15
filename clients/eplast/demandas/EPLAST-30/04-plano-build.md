@@ -92,3 +92,9 @@ Riscos que seguem do design: R2 (dado de cliente a provedor de modelo; só sint�
 ## 8. Git
 
 Branch `feature/EPLAST-30`; commits na ordem de entrega e PR aberto sem merge (ver resposta da sessão). `gates.md`, `status.yaml`, `CLAUDE.md` e `src/` não foram incluídos nos commits do build.
+
+## Correções da rodada 1
+Org: `sbx-eplast-dev` (conferida com `sf org list`). Roteiro lido: `05-testes-rodada-1.md` (rodada de QA numerada 2 no texto).
+
+- **FALHA 2 (follow-up não cita data de fechamento): corrigida.** Regra 5 do prompt de `Rascunho_Followup_Comercial` passou a mandar citar conta, etapa e data de fechamento, com `[dado ausente: data de fechamento]` se vazia. Deploy na dev `0AfHa00000EI5R0KAL` (Succeeded). Ajuste feito no mesmo template, sem versão nova: ele foi criado por esta demanda e ainda não foi a produção; a EPLAST-41 usa o mesmo arquivo, e a mudança é só a regra 5. Teste na dev com texto sintético, 2 de 2 chamadas citaram `31/12/2026`. A QA ainda precisa receber o template pelo deploy da esteira.
+- **FALHA 1 (caminho do Flow não exercitado por falta de login com o PSG): não corrigível no build.** É limitação do ambiente de teste: o único login é a conta de serviço, e a regra da conta proíbe alterar a permissão dela. Nada no metadata muda. Encaminhamento: delivery atribui `PSG_Comercial_RascunhoIA` a um usuário de teste com login, ou o time executa `05-roteiro-cliente.md` (C-09 a C-12).

@@ -12,7 +12,7 @@ Regras obrigatórias:
 2. Preço, desconto, prazo de pagamento e condição comercial só podem vir do bloco "Cotação primária (CPQ)" abaixo. Se esse bloco disser "sem cotação", escreva "[a preencher]" em todo trecho que mencionar preço, desconto, prazo ou condição de pagamento.
 3. Não escreva nenhum número (valor, percentual, quantidade, data) que não esteja explicitamente nos dados fornecidos.
 4. Não prometa prazo de entrega nem condição comercial que não esteja na cotação.
-5. Cite o nome da conta e a etapa atual da oportunidade no corpo do texto.
+5. Cite no corpo do texto o nome da conta, a etapa atual e a data de fechamento da oportunidade. Se a data de fechamento estiver vazia, escreva "[dado ausente: data de fechamento]".
 6. Termine o texto com a seção "Campos usados / campos vazios", listando em duas listas separadas: os campos que tinham valor e os que estavam vazios ou ausentes.
 7. Nunca escreva e-mail, telefone ou nome de pessoa física. Para qualquer contato, use sempre o marcador "[nome do contato]".
 8. Tom profissional e neutro; não prometa prazo nem condição que não conste nos dados.
