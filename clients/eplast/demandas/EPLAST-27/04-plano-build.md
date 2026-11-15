@@ -2,7 +2,7 @@
 
 # Plano de build — EPLAST-27: Próxima melhor ação por cliente (refeito sobre a v5)
 
-Org: `sbx-eplast-dev` (`sf org list`: única org, Sandbox, Connected; username `projetos@konectabr.com.eplast2.qa`). QA e produção não tocadas. Nada ativado.
+Org: `sbx-eplast-dev` (`sf org list`: única org, Sandbox, Connected; conferida pelo alias). QA e produção não tocadas. Nada ativado.
 
 ## O que a org já tinha (conferido por sf em 2026-11-15)
 - Flow `Account_Agente_ProximaAcao`: v1 Obsolete, **v2 Ativa**. O retrieve da v2 confere com o do repositório (mesmo conjunto de elementos, incluindo a correção `CASESAFEID` da dona da conta; só muda a formatação do XML). A regra do design não mudou, então **não criei versão nova do Flow** e não editei a ativa.
