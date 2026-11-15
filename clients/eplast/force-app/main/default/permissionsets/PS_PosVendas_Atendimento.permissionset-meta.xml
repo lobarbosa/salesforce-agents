@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-40: acesso de atendimento do Pós-vendas. Leitura do campo Case.Oportunidade__c e leitura de Oportunidade. Não amplia acesso a objeto além do que os perfis já dão. Atribuição a usuários é passo manual da Eplast.</description>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Case.Oportunidade__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PS Pós-vendas Atendimento</label>
+    <objectPermissions>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <object>Opportunity</object>
+        <viewAllRecords>false</viewAllRecords>
+    </objectPermissions>
+</PermissionSet>

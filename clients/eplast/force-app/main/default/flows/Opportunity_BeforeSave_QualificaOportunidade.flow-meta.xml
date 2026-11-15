@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <description>EPLAST-40: before-save em Opportunity. Quando StageName = Qualificação e Discovery_Completed__c e Budget_Confirmed__c estão marcados, promove StageName para Qualificado no próprio registro. Sem consulta, sem DML, sem envio.</description>
+    <environments>Default</environments>
+    <interviewLabel>Opportunity_BeforeSave_QualificaOportunidade {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity_BeforeSave_QualificaOportunidade</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <description>Promove o estágio no próprio registro (Fast Field Update).</description>
+        <name>Promove_para_Qualificado</name>
+        <label>Promove para Qualificado</label>
+        <locationX>176</locationX>
+        <locationY>287</locationY>
+        <inputAssignments>
+            <field>StageName</field>
+            <value>
+                <stringValue>Qualificado</stringValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Promove_para_Qualificado</targetReference>
+        </connector>
+        <filterFormula>AND(ISPICKVAL({!$Record.StageName}, &quot;Qualificação&quot;), {!$Record.Discovery_Completed__c} = true, {!$Record.Budget_Confirmed__c} = true)</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>
