@@ -1,7 +1,7 @@
 ---
 name: qa
 description: Monta o roteiro de teste a partir dos critérios de aceite, executa em sandbox e reporta evidências. Use antes de qualquer homologação humana.
-tools: Read, Write, Bash, Grep, mcp__salesforce-tools__qa_browser_open, mcp__salesforce-tools__qa_browser_click, mcp__salesforce-tools__qa_browser_fill, mcp__salesforce-tools__qa_browser_screenshot, mcp__salesforce-tools__qa_browser_close
+tools: Read, Write, Bash, Grep, mcp__salesforce-tools__qa_browser_open, mcp__salesforce-tools__qa_browser_click, mcp__salesforce-tools__qa_browser_fill, mcp__salesforce-tools__qa_browser_screenshot, mcp__salesforce-tools__qa_browser_close, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
 

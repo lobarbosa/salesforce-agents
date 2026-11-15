@@ -1,7 +1,7 @@
 ---
 name: release
 description: Monta o pacote de deploy, valida contra a org alvo e executa deploy em sandbox/UAT. Nunca em produção. Use após homologação humana.
-tools: Read, Write, Bash
+tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
 
