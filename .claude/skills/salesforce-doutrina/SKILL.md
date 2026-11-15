@@ -89,7 +89,40 @@ ponto de partida, não como referência completa.
   objetos envolvidos, e o design diz de onde vem o dado de teste (sintético, e quem o
   apaga depois).
 
-## Ordem de execução (resumo operacional)
+## Alterar o que já existe: nova versão primeiro, ativação depois
+
+Regra do responsável (2026-11-15). Flow, agente Agentforce e classe Apex que já existem na
+org nunca são editados no lugar. Primeiro se cria uma versão nova; ela é implantada sem
+substituir a que está em uso; a troca para a versão nova (ativação) é um passo separado,
+declarado no plano, que só acontece depois de a versão nova ser provada.
+
+Achados que motivaram (EPLAST-27 e EPLAST-33, 2026-11-15): o deploy na QA recusou alterar
+`SFAgent2_v4` porque a versão estava ativa lá, e a validação recusou reimplantar classes
+Apex com job agendado em andamento. Editar o que está ativo trava o deploy ou troca o
+comportamento de quem usa a org sem ninguém ter decidido.
+
+- **Flow.** Implante como versão nova do mesmo Flow com `<status>Draft</status>` (ou
+  Obsolete), não como Active. A ativação é o passo seguinte, depois da verificação, e fica
+  escrita no plano com a versão que entra e a que sai. Para desfazer: reativar a anterior.
+  Flow novo (que não existia) pode nascer Active, porque não substitui nada.
+- **Agente Agentforce.** Nunca altere uma `BotVersion` nem o `GenAiPlannerBundle` de uma
+  versão existente: crie a versão seguinte (`vN+1`) a partir da última, com o tópico ou a
+  ação novos, e implante-a **inativa**. Ativar a versão nova (e desativar a anterior) é um
+  passo separado. Na sandbox de QA o `qa` pode ativá-la para testar (autorizado para toda a
+  esteira desde 2026-11-15) e registra em `05-testes.md` qual versão entrou e qual saiu,
+  porque isso troca o assistente de quem está testando. Demandas que mexem no mesmo agente partem da versão
+  deixada pela anterior e criam a próxima; nunca duas demandas na mesma versão.
+- **Classe Apex.** Classe em uso (chamada por trigger, Flow, ação de agente ou job
+  agendado) não é reescrita no lugar quando a mudança altera comportamento: crie a classe
+  nova (`<Nome>V2` ou nome que diga a mudança), com sua `<Classe>Test`, e troque quem a
+  chama num passo separado. Correção pequena que não muda contrato pode editar a classe,
+  desde que nenhum job agendado ou em andamento a use; se houver, o plano diz quem
+  desagenda e reagenda, e quando.
+- **No plano de build** (`04-plano-build.md`), uma seção "Versões e ativação": o que foi
+  criado como versão nova, o que continua ativo, o passo de ativação (quem, onde, quando)
+  e como desfazer.
+
+
 Validação de sistema → before-save Flows → before triggers → validation rules custom →
 duplicate rules → gravação (sem commit) → after triggers → assignment/auto-response →
 workflow (legado) → after-save Flows → entitlement → roll-up summary e cross-object →
