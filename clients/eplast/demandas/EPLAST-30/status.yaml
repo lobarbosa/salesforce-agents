@@ -2,7 +2,7 @@ id: EPLAST-30
 client: eplast
 titulo: Apoio a propostas, follow-ups e argumentos comerciais
 tipo: projeto
-status: aguardando_gate_design
+status: backlog
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -61,3 +61,10 @@ historico:
     a ponta na sandbox de QA. Volta ao gate de design para decidir a correção antes
     de refazer o build. O roteiro reprovado fica como 05-testes-rodada-1.md para o
     builder ler; o próximo QA escreve um 05-testes.md novo.'
+- de: aguardando_gate_design
+  para: backlog
+  autor: Leonardo Barbosa
+  em: '2026-11-15T02:12:32.099897+00:00'
+  motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
+    resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
+    anterior guardados em rodada-anterior/
