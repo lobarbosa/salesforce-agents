@@ -373,6 +373,20 @@ jobs:
           } > "demandas/$DEMAND_ID/05-deploy-qa.md"
           echo "Deploy $ID concluído ($ESTADO)."
 
+      # Pré-checagem (preflight.py): o que travou EPLAST-27, 29, 33 e 34 em
+      # 15/11 só aparecia no meio da sessão. Confere antes, na org que este job
+      # autenticou e nas branches das outras demandas do cliente, e grava
+      # 00-preflight.md para o agente. Bloqueia só com outra demanda do cliente
+      # em teste na sandbox de QA (guardrail #6), antes de aprovar qualquer gate.
+      - name: Pré-checagem da demanda
+        env:
+          PYTHONPATH: src
+          ETAPA: ${{ needs.decidir.outputs.etapa }}
+        run: |
+          git fetch -q $( [ -f .git/shallow ] && echo --unshallow ) origin \
+            '+refs/heads/main:refs/remotes/origin/main' '+refs/heads/feature/*:refs/remotes/origin/feature/*' || true
+          sfagents demanda preflight --client "$CLIENT" "$DEMAND_ID" --etapa "$ETAPA" --org "$TARGET_ORG"
+
       - name: Rodar a demanda até o próximo gate
         id: fluxo
         env:

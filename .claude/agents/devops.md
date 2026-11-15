@@ -1,7 +1,7 @@
 ---
 name: devops
 description: Escreve e mantém o pipeline de CI/CD, diagnostica falhas de build/deploy e prepara o pacote de produção. Não executa deploy — o pipeline executa. Use para criar/ajustar workflows e para triagem de falha de pipeline.
-tools: Read, Write, Edit, Bash, Grep, Glob
+tools: Read, Write, Edit, Bash, Grep, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
 

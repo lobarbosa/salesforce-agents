@@ -1,7 +1,7 @@
 ---
 name: planejador
 description: Quebra os entregáveis contratados de um projeto nas demandas que eles viram, para entrarem no quadro do Squad OS em backlog. Use no início de um projeto, depois que os entregáveis estiverem cadastrados.
-tools: Read, Write, Grep, Glob
+tools: Read, Write, Grep, Glob, Bash, mcp__rag__rag_consultar
 model: sonnet
 ---
 
