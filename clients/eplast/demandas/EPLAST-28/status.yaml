@@ -2,7 +2,7 @@ id: EPLAST-28
 client: eplast
 titulo: Alertas de oportunidade parada ou sem acompanhamento
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -61,3 +61,11 @@ historico:
   motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
     resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
     anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:32:07.441584+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:35:03.755741+00:00'
