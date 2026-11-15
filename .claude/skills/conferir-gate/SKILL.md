@@ -76,6 +76,8 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 
 ## Gate de homologação (`aguardando_homologacao`) — o único do cliente
 
+- `05-deploy-qa.md` existe (quando a demanda mudou metadata) e a org é a sandbox de QA: é
+  a prova de que o que foi testado é o que foi construído.
 - `05-roteiro-cliente.md` existe e dá para seguir sem conhecer a construção: rótulos de
   tela, dado de teste explicado, resultado esperado com valor. É o que o cliente vai ler.
 - `05-testes.md` cobre os critérios de aceite do gate de análise um a um, com evidência

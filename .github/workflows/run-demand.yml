@@ -303,6 +303,68 @@ jobs:
       # `demands.transition` levanta ArtifactAusenteError e o job fica
       # vermelho — de propósito: um pipeline que engole isso deixa status.yaml
       # declarando etapa que não aconteceu.
+      # O build só toca a sandbox de dev e o QA só testa: quem leva o pacote
+      # para a sandbox de QA é este passo, antes de a sessão de QA começar.
+      # Achado real (EPLAST-47, 2026-11-15): ninguém levava. O QA reprovou em um
+      # minuto porque o build não estava lá, o builder respondeu que não podia
+      # corrigir, e a demanda rodava em círculo entre as duas etapas.
+      # Passo fixo, não tarefa de agente: implanta só o que a branch mudou no
+      # force-app do cliente (scripts/pacote_da_demanda.py), só na sandbox de
+      # QA, e falha o job se a implantação falhar — antes de o gate de build
+      # ser aprovado, então nada avança e quem aprovou vê o erro.
+      - name: Implantar o build na sandbox de QA
+        if: needs.decidir.outputs.etapa == 'qa'
+        run: |
+          if [ "$TARGET_ORG" != "sbx-$CLIENT-qa" ]; then
+            echo "::error::A etapa de QA só implanta em sbx-$CLIENT-qa; o alvo deste job é '$TARGET_ORG'. Nada foi implantado."
+            exit 1
+          fi
+          git fetch -q origin main
+          BASE=$(git merge-base origin/main HEAD 2>/dev/null || true)
+          if [ -z "$BASE" ]; then
+            git fetch -q --unshallow origin 2>/dev/null || git fetch -q origin
+            BASE=$(git merge-base origin/main HEAD)
+          fi
+          set +e
+          git diff --name-only "$BASE" HEAD -- "clients/$CLIENT/force-app" \
+            | python3 scripts/pacote_da_demanda.py "$CLIENT" > /tmp/pacote-args.txt
+          RC=$?
+          set -e
+          if [ "$RC" -eq 3 ]; then
+            echo "Esta demanda não mudou metadata — nada a implantar na QA."
+            exit 0
+          fi
+          [ "$RC" -eq 0 ] || exit "$RC"
+          mapfile -t ARGS < /tmp/pacote-args.txt
+          echo "Implantando em $TARGET_ORG: ${ARGS[*]}"
+          cd "clients/$CLIENT"
+          set +e
+          sf project deploy start "${ARGS[@]}" --target-org "$TARGET_ORG" --wait 30 --json > /tmp/deploy-qa.json
+          RC=$?
+          set -e
+          ID=$(jq -r '.result.id // "sem id"' /tmp/deploy-qa.json)
+          ESTADO=$(jq -r '.result.status // .name // "desconhecido"' /tmp/deploy-qa.json)
+          if [ "$RC" -ne 0 ]; then
+            echo "::error::Deploy na sandbox de QA falhou ($ESTADO, id $ID). O gate de build não foi aprovado; corrija e aprove de novo."
+            jq -r '(.result.details.componentFailures // []) | if type=="array" then .[] else . end | "- \(.componentType) \(.fullName): \(.problem)"' /tmp/deploy-qa.json | head -40 || true
+            jq -r '.message // empty' /tmp/deploy-qa.json | head -5
+            exit 1
+          fi
+          # O que foi implantado fica registrado na pasta da demanda: é o que o
+          # QA confere antes de testar e o que quem homologa pode auditar.
+          {
+            echo "# Deploy na sandbox de QA"
+            echo
+            echo "- **Org:** \`$TARGET_ORG\`"
+            echo "- **Deploy:** \`$ID\` ($ESTADO)"
+            echo "- **Quando:** $(date -u +%Y-%m-%dT%H:%MZ)"
+            echo "- **Commit:** \`$(git rev-parse --short HEAD)\`"
+            echo
+            echo "## Componentes"
+            grep -v '^--' /tmp/pacote-args.txt | grep '^force-app/' | sed 's/^/- `/; s/$/`/'
+          } > "demandas/$DEMAND_ID/05-deploy-qa.md"
+          echo "Deploy $ID concluído ($ESTADO)."
+
       - name: Rodar a demanda até o próximo gate
         id: fluxo
         env:
