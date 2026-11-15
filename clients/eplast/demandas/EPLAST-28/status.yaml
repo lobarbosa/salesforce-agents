@@ -2,7 +2,7 @@ id: EPLAST-28
 client: eplast
 titulo: Alertas de oportunidade parada ou sem acompanhamento
 tipo: projeto
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -69,3 +69,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-11-15T02:35:03.755741+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T03:21:04.369697+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T03:30:07.715444+00:00'
