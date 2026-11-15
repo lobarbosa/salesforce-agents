@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-35. Liga o Flow Lead_AfterInsert_AplicaRegraAtribuicao para o usuario: Lead criado por ele (integracao, sem cabecalho de atribuicao) passa pela regra Distribuicao_Regional_Leads. Usuario de tela nao precisa dela.</description>
+    <isLicensed>false</isLicensed>
+    <label>Lead Distribuicao Automatica Via API</label>
+</CustomPermission>
