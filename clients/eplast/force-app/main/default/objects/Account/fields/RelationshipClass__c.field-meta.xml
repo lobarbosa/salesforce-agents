@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RelationshipClass__c</fullName>
+    <description>EPLAST-37. Classe derivada: Potencial (sem compra ganha), Inativo (Inactive__c), Ativo. Não grava; não usar o campo Type como fonte.</description>
+    <formula>IF(ISBLANK(LastPurchase__c), &quot;Potencial&quot;, IF(Inactive__c, &quot;Inativo&quot;, &quot;Ativo&quot;))</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <inlineHelpText>Potencial: a conta nunca teve oportunidade ganha. Inativo: a última compra (oportunidade ganha) foi há mais de 90 dias. Ativo: comprou nos últimos 90 dias. Calculado automaticamente; não depende do campo Tipo.</inlineHelpText>
+    <label>Classe de Relacionamento</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>
