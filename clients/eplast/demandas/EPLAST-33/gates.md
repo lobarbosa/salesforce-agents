@@ -32,3 +32,11 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Commit:** `3332f4f0`
 - **Artefatos revisados:**
   - `04-plano-build.md` — sha256 `35cf8cfa9811931a` (4137 bytes)
+
+## aguardando_gate_analise
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-15T04:36:01.669040+00:00
+- **Commit:** `617a47fe`
+- **Artefatos revisados:**
+  - `01-analise.md` — sha256 `12da8335ea87b668` (26103 bytes)
