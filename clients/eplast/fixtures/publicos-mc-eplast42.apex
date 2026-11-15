@@ -1,7 +1,7 @@
 // Fixture EPLAST-42 (variacao de lead-segmento.apex e conta-oportunidade-ganha.apex). Dado SINTETICO, prefixo 'EPLAST42 TESTE'.
 // Modo: troque MODO para 'CRIAR' ou 'LIMPAR'. Rode so em sbx-eplast-dev (ou na QAS, sem tocar registro que o agente nao criou).
 // Exige (CRIAR): Account.Owner.ProtheusSellerId__c preenchido no usuario de execucao (so na dev; devolva o valor ao final).
-// Telefone, celular e WhatsApp ficam vazios (validation rules). E-mail em dominio example.invalid.
+// Telefone, celular e WhatsApp ficam vazios (validation rules). E-mail em dominio example.invalid. Conta leva Phone ficticio (validation CheckAccountHasPhone da Oportunidade).
 // Cria:
 //  Leads: L1 SP opt-out de celular; L2 SP sem opt-out (referencia); L3 SP a converter (Database.convertLead);
 //         L4 LeadSource=Evento; L5 sem origem e sem setor ("Sem dados suficientes"); L6 faixa Alta (setor, origem, Status=Contatado).
@@ -39,7 +39,7 @@ if (MODO == 'LIMPAR') {
   List<List<Object>> spec = new List<List<Object>>{
     new List<Object>{'C100',100}, new List<Object>{'C400',400}, new List<Object>{'C365',365}};
   List<Account> accs = new List<Account>();
-  for (List<Object> s : spec) accs.add(new Account(Name=P+' '+(String)s[0], Type='Recorrente', BillingState='SP', BillingCity='Cidade Teste', BillingStreet='Rua Teste 1', BillingPostalCode='01000000', BillingNeighborhood__c='Bairro Teste', Sector__c='Alimentos', CNAE__c='0000000', CompanyName__c=P+' Ltda', Email__c='e42@example.invalid', Store__c='01'));
+  for (List<Object> s : spec) accs.add(new Account(Name=P+' '+(String)s[0], Type='Recorrente', BillingState='SP', BillingCity='Cidade Teste', BillingStreet='Rua Teste 1', BillingPostalCode='01000000', BillingNeighborhood__c='Bairro Teste', Sector__c='Alimentos', CNAE__c='0000000', CompanyName__c=P+' Ltda', Email__c='e42@example.invalid', Phone='(11)30000000', Store__c='01'));
   insert accs;
   List<Contact> cons = new List<Contact>();
   for (Account a : accs) cons.add(new Contact(AccountId=a.Id, LastName=a.Name, Email='e42@example.invalid'));

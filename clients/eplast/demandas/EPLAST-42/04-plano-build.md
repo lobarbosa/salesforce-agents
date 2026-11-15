@@ -2,7 +2,7 @@
 
 # EPLAST-42 — Plano de build
 
-**Org:** `sbx-eplast-dev` (sandbox de dev da esteira; usuário `projetos@konectabr.com.eplast2.qa`, confirmado com `sf org list`). Nada na QA, nada em produção, nada no Marketing Cloud.
+**Org:** `sbx-eplast-dev` (sandbox de dev da esteira; conexão confirmada com `sf org list`). Nada na QA, nada em produção, nada no Marketing Cloud.
 **Branch:** `feature/EPLAST-42`. Design: `03-design.md` (aceite em `gates.md`).
 **Pacote:** 58 relatórios alterados, 1 relatório criado, 1 permission set alterado. Zero Flow, Apex, campo, objeto, Campaign ou agente.
 

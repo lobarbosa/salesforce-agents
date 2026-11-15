@@ -2,7 +2,7 @@ id: EPLAST-42
 client: eplast
 titulo: Automação de campanhas de relacionamento, prospecção e reativação
 tipo: projeto
-status: aguardando_gate_design
+status: build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -37,3 +37,7 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-15T20:54:37.356974+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T22:53:21.989482+00:00'
