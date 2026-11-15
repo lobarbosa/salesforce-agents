@@ -2,10 +2,18 @@ id: EPLAST-37
 client: eplast
 titulo: Classificação de clientes ativos, inativos e potenciais
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
   em: '2026-11-10T12:00:00Z'
   para: backlog
   autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T17:32:30.341904+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T17:36:30.214753+00:00'
