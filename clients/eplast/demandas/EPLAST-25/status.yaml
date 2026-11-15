@@ -2,7 +2,7 @@ id: EPLAST-25
 client: eplast
 titulo: Medição do piloto de IA contra o baseline (até 10 usuários)
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-10-30T01:17:19.419Z'
 historico:
 - de: null
@@ -40,3 +40,11 @@ historico:
   motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
     resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
     anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:14:57.550510+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:18:21.500636+00:00'
