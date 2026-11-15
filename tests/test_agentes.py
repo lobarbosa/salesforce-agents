@@ -25,7 +25,7 @@ def _citados_no_orquestrador() -> set[str]:
 
 def test_todo_subagente_citado_existe_e_declara_modelo():
     citados = _citados_no_orquestrador()
-    assert {"ba-discovery", "recon", "arquiteto", "builder-declarativo", "dev-apex", "qa", "release", "doc"} <= citados
+    assert {"ba-discovery", "recon", "arquiteto", "builder-declarativo", "dev-apex", "verificador", "qa", "release", "doc"} <= citados
     for nome in citados:
         assert (AGENTES / f"{nome}.md").exists(), nome
         assert _frontmatter(nome).get("model", "").strip() in {"haiku", "sonnet", "opus"}, nome
@@ -56,4 +56,11 @@ def test_orquestrador_aciona_um_subagente_por_vez_em_primeiro_plano():
 def test_qa_sabe_escrever_o_roteiro_do_cliente_e_a_esteira_cobra():
     assert "05-roteiro-cliente.md" in (AGENTES / "qa.md").read_text(encoding="utf-8")
     fonte = (RAIZ / "src" / "salesforce_agents" / "orchestrator.py").read_text(encoding="utf-8")
-    assert "_roteiro_do_cliente_faltando(client, etapa, pasta_da_demanda)" in fonte
+    assert "_roteiro_do_cliente_faltando(etapa, pasta_da_demanda)" in fonte
+
+
+def test_build_concluido_sem_verificacao_do_agente_nao_encerra_a_sessao():
+    fonte = (RAIZ / "src" / "salesforce_agents" / "orchestrator.py").read_text(encoding="utf-8")
+    assert "_verificacao_faltando(etapa, pasta_da_demanda)" in fonte
+    verificador = (AGENTES / "verificador.md").read_text(encoding="utf-8")
+    assert "04-verificacao.md" in verificador and "**Verificação:**" in verificador

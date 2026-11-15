@@ -1,4 +1,6 @@
-"""O roteiro do cliente só é cobrado quando o QA aprovou, e some quando reprova."""
+"""O roteiro do cliente sai em toda rodada de QA e é reescrito a cada uma."""
+
+import pytest
 
 from salesforce_agents import roteiro
 
@@ -6,30 +8,19 @@ APROVADO = "**Veredito:** aprovado\n**Org de teste:** `sbx-acme-qa`\n\n| Caso | 
 REPROVADO = "**Veredito:** reprovado\n**Org de teste:** `sbx-acme-qa`\n\n### FALHA 1 (crítica) — x"
 
 
-def test_qa_aprovado_sem_roteiro_cobra_o_arquivo(tmp_path):
-    (tmp_path / "05-testes.md").write_text(APROVADO, encoding="utf-8")
+@pytest.mark.parametrize("testes", [APROVADO, REPROVADO])
+def test_toda_rodada_de_qa_sem_roteiro_cobra_o_arquivo(tmp_path, testes):
+    (tmp_path / "05-testes.md").write_text(testes, encoding="utf-8")
 
-    assert roteiro.faltando(tmp_path, "sbx-acme-qa") == [str(tmp_path / roteiro.NOME)]
+    assert roteiro.faltando(tmp_path) == [str(tmp_path / roteiro.NOME)]
 
 
-def test_qa_aprovado_com_roteiro_nao_cobra_nada(tmp_path):
-    (tmp_path / "05-testes.md").write_text(APROVADO, encoding="utf-8")
+def test_com_roteiro_ou_sem_testes_nao_cobra_nada(tmp_path):
+    assert roteiro.faltando(tmp_path) == []
+    (tmp_path / "05-testes.md").write_text(REPROVADO, encoding="utf-8")
     (tmp_path / roteiro.NOME).write_text("# Roteiro", encoding="utf-8")
 
-    assert roteiro.faltando(tmp_path, "sbx-acme-qa") == []
-
-
-def test_qa_reprovado_ou_sem_testes_nao_pede_roteiro(tmp_path):
-    assert roteiro.faltando(tmp_path, "sbx-acme-qa") == []
-    (tmp_path / "05-testes.md").write_text(REPROVADO, encoding="utf-8")
-
-    assert roteiro.faltando(tmp_path, "sbx-acme-qa") == []
-
-
-def test_aprovado_em_org_que_nao_e_a_de_qa_nao_pede_roteiro(tmp_path):
-    (tmp_path / "05-testes.md").write_text(APROVADO, encoding="utf-8")
-
-    assert roteiro.faltando(tmp_path, "sbx-outro-qa") == []
+    assert roteiro.faltando(tmp_path) == []
 
 
 def test_conteudo_vem_vazio_sem_arquivo_e_cortado_no_limite(tmp_path):

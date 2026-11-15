@@ -24,7 +24,7 @@ export function RoteiroCliente({
         <span className="gate-texto">
           {visaoCliente
             ? "o passo a passo para você conferir esta entrega"
-            : "o passo a passo que o cliente segue na homologação"}
+            : "o passo a passo para testar à mão — o cliente vê da homologação em diante"}
         </span>
       </summary>
       <div className="artefato-corpo">
