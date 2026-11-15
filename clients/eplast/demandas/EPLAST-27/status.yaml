@@ -2,7 +2,7 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -142,3 +142,11 @@ historico:
     versão não pode ser ativada na QA para o teste do assistente. Refazer o build
     acrescentando bots/SFAgent2/v6.botVersion-meta.xml, inativa, ligada ao planner
     v6, sem mexer no resto da v6. Build anterior em rodada-anterior/build-v6-sem-botversion/.
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T19:10:40.910001+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T19:15:16.534365+00:00'
