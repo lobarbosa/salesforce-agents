@@ -2,7 +2,7 @@ id: EPLAST-42
 client: eplast
 titulo: Automação de campanhas de relacionamento, prospecção e reativação
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -21,3 +21,11 @@ historico:
   autor: Leonardo Barbosa
   motivo: 'Plataforma de marketing definida: Marketing Cloud. A demanda prepara o
     Sales Cloud; nada é feito no Marketing Cloud.'
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T17:51:08.840661+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T17:55:04.399186+00:00'
