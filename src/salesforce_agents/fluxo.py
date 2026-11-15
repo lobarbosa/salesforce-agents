@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import ambientes, bloqueio, demands, gates, veredito
+from . import ambientes, bloqueio, demands, gates, roteiro, veredito
 
 # Etapas de execução que acionam uma sessão de agente. As `aguardando_*` são
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
@@ -259,6 +259,7 @@ def rodar(
             if not v.aprovado:
                 voltas = _rodadas_reprovadas(d)
                 _arquivar_roteiro_reprovado(d)
+                roteiro.descartar(d.path)
                 if voltas >= MAX_VOLTAS_DO_QA:
                     demands.transition(client, demand_id, GATE_QUANDO_O_QA_NAO_FECHA, AUTOR_PIPELINE)
                     return Parada("gate", GATE_QUANDO_O_QA_NAO_FECHA, ambiente_do_job, tuple(rodadas))

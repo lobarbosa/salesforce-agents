@@ -57,3 +57,9 @@ Roteiro do design, seção 8, com estes pontos específicos da implementação:
 6. **Ordem de deploy (R3):** picklist e histórico, depois custom metadata e registros, depois Flow, depois relatório. Na QA, a pasta `EPLAST47` vem junto.
 7. **Riscos abertos:** R1 (ordem entre `AccountBefore` e `AccountTrigger`, 2 flows after-save sem critério de entrada), R2 (troca em massa na primeira execução), R5 (dado sintético dispara Order/Quote/CPQ/Protheus: conferir endpoint na QA antes), R9 (validation rules em contas legadas passam a gerar log).
 8. **Rollback:** reativar a v1 do `ScheduledFlowOpportunity`; não desativar o histórico de campo.
+
+## Correções da rodada 2
+Fonte: `05-testes-rodada-2.md` (reprovado, `sbx-eplast-qa`). Reconferido nesta sessão na `sbx-eplast-dev`: `ScheduledFlowOpportunity` v1 Obsolete, v2 Active. Nenhum metadata foi alterado; o build da dev continua como aprovado pela revisão.
+
+- **FALHA 1 (build ausente na QA):** não corrigível no build. Guardrail #1 restringe o build à `sbx-eplast-dev`; o deploy dev para QA é do `release` (ou de quem a esteira designar). Ordem a seguir, conforme R3 do design: picklist `Ranking__c` (7 valores) e histórico de campo, depois `RankingRange__mdt` e `ScheduledFlowOpportunitySetting__mdt` com registros (7 faixas e `Default`), depois Flow v2 Active, depois relatório `AccountRankingChanges`. Depois conferir os 7 valores, os 7 registros e a v2 Active e devolver ao QA.
+- **FALHA 2 (dado de teste e risco R5):** não corrigível no build, pois depende de decisão humana. Ficam pendentes: (a) como isolar o teste na QA, que tem dado real e onde o Flow v2 atualizaria `Ranking__c` em massa (R2); (b) conferir para onde aponta a integração Protheus na QA, só metadata; (c) número do teste de volume (P10). Quem responde: arquiteto/responsável pela conta e delivery.
