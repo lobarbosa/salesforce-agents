@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { ambienteDoDisparo, decidirDisparo, NOTA_ESPERA_ESTIMATIVA, notaEsperaQa, type PedidoNaFila } from "../lib/fila-decisao";
+import { ambienteDoDisparo, decidirDisparo, ordemDaFila, NOTA_ESPERA_ESTIMATIVA, notaEsperaQa, type PedidoNaFila } from "../lib/fila-decisao";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -61,6 +61,17 @@ caso("ambiente do disparo: sandbox da etapa que vai rodar", () => {
   assert.equal(ambienteDoDisparo("rodar", "", "qa"), "qa");
   assert.equal(ambienteDoDisparo("rodar", "", "build"), "dev");
   assert.equal(ambienteDoDisparo("rodar", "", "backlog"), "dev");
+});
+
+caso("projeto antes de sustentação; segunda fase do QA antes de tudo", () => {
+  const t = (m: number) => new Date(Date.UTC(2026, 10, 15, 20, m));
+  const fila = [
+    { id: "sust-antiga", criadoEm: t(0), liberarEm: null, demanda: { tipo: "sustentacao" } },
+    { id: "proj-nova", criadoEm: t(5), liberarEm: null, demanda: { tipo: "projeto" } },
+    { id: "fase2", criadoEm: t(9), liberarEm: t(1), demanda: { tipo: "sustentacao" } },
+    { id: "proj-antiga", criadoEm: t(1), liberarEm: null, demanda: { tipo: "projeto" } },
+  ];
+  assert.deepEqual(fila.sort(ordemDaFila).map((x) => x.id), ["fase2", "proj-antiga", "proj-nova", "sust-antiga"]);
 });
 
 if (falhas) {

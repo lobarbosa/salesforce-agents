@@ -68,3 +68,17 @@ export function decidirDisparo(p: PedidoNaFila, outraEmQa: string | null): Decis
   if (p.tipo === "reverificar") return { acao: "disparar", opcoes: { reverificar: p.autor || "Squad OS" } };
   return { acao: "disparar", opcoes: {} };
 }
+
+/**
+ * Ordem da fila (decisão de 2026-11-15): projeto antes de sustentação, e
+ * dentro de cada grupo por ordem de chegada. Exceção: a segunda sessão de um
+ * QA em duas fases (`liberarEm` vencido) sai primeiro, porque é ela que
+ * devolve a sandbox de QA para as outras.
+ */
+export function ordemDaFila(
+  a: { criadoEm: Date; liberarEm: Date | null; demanda: { tipo: string } },
+  b: { criadoEm: Date; liberarEm: Date | null; demanda: { tipo: string } }
+): number {
+  const peso = (x: typeof a) => (x.liberarEm ? 0 : x.demanda.tipo === "projeto" ? 1 : 2);
+  return peso(a) - peso(b) || a.criadoEm.getTime() - b.criadoEm.getTime();
+}

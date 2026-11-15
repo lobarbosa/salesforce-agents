@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { travar } from "@/lib/trava";
 import { runsAtivosDoCliente, triggerRunDemand } from "@/lib/github";
-import { ambienteDoDisparo, decidirDisparo, type TipoDisparo } from "@/lib/fila-decisao";
+import { ambienteDoDisparo, decidirDisparo, ordemDaFila, type TipoDisparo } from "@/lib/fila-decisao";
 
 // Fila de disparo por cliente e ambiente — ver o comentário de DisparoEsteira
 // no schema. Regra: no máximo UM disparo em voo por cliente POR SANDBOX (dev e
@@ -94,12 +94,13 @@ export async function processarFila(clientId: string, opcoes: { excetoRunUrl?: s
         include: {
           demanda: {
             select: {
-              code: true, status: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true,
+              code: true, status: true, tipo: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true,
               client: { select: { contrato: { select: { tipo: true } } } },
             },
           },
         },
       });
+      pendentes.sort(ordemDaFila);
       // Outra demanda do cliente em teste na sandbox de QA segura quem iria para lá.
       const emQa = await tx.demanda.findMany({ where: { clientId, status: "qa" }, select: { id: true, code: true } });
       for (const p of pendentes) {
