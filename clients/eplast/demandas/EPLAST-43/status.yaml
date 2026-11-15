@@ -2,7 +2,7 @@ id: EPLAST-43
 client: eplast
 titulo: Personalização de conteúdos, e-mails e mensagens
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -21,3 +21,11 @@ historico:
   autor: Leonardo Barbosa
   motivo: 'Plataforma de marketing definida: Marketing Cloud. A demanda prepara o
     Sales Cloud; nada é feito no Marketing Cloud.'
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T17:56:18.942791+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T17:58:19.101140+00:00'
