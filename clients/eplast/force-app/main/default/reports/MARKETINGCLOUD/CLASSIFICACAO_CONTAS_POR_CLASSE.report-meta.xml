@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ACCOUNT.NAME</field>
+    </columns>
+    <columns>
+        <field>USERS.NAME</field>
+    </columns>
+    <columns>
+        <field>ADDRESS1_STATE</field>
+    </columns>
+    <columns>
+        <field>Account.LastPurchase__c</field>
+    </columns>
+    <columns>
+        <field>Account.Inactive__c</field>
+    </columns>
+    <columns>
+        <field>Account.Ranking__c</field>
+    </columns>
+    <currency>BRL</currency>
+    <description>EPLAST-37. Visão de negócio da classificação de clientes: contas agrupadas por Classe de Relacionamento (Potencial, Inativo, Ativo) e depois pelo Tipo manual, para mostrar a divergência. Sem e-mail, telefone, endereço completo nem CPF/CNPJ.</description>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>Account.RelationshipClass__c</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>TYPE</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>CLASSIFICAÇÃO - CONTAS POR CLASSE</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>AccountList</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+    <timeFrameFilter>
+        <dateColumn>CREATED_DATE</dateColumn>
+        <interval>INTERVAL_CUSTOM</interval>
+    </timeFrameFilter>
+</Report>
