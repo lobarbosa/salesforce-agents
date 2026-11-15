@@ -3,7 +3,7 @@ client: eplast
 titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
   de contas)
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_gate_design
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
 - de: null
@@ -54,3 +54,9 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T00:25:14.722918+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-15T00:48:17.776253+00:00'
+  motivo: refazer o build com a verificação do agente na dev antes do gate humano
+    (decisão de 2026-11-15); remove a cópia duplicada do roteiro reprovado
