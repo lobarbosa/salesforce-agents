@@ -37,9 +37,8 @@ da Eplast, em qualquer etapa.
 1. **Escopo não bloqueia.** O foco é entregar o projeto da Eplast. Demanda da Onda 3
    (Comercial) ou de outra onda ainda não listada em `contrato.md` está autorizada a seguir
    análise, design e build. Não trate "onda não contratada" como pendência nem como motivo
-   de build bloqueado, e não devolva pergunta sobre isso ao cliente. Perguntas de **regra
-   de negócio** sem resposta continuam bloqueando: escopo liberado não autoriza inventar
-   regra.
+   de build bloqueado, e não devolva pergunta sobre isso ao cliente. Pergunta de **regra
+   de negócio** sem resposta segue a regra 4.
 2. **Tudo que é de marketing é disparado pelo Marketing Cloud.** E-mail, mensagem,
    campanha, jornada e nutrição de leads saem pelo Marketing Cloud — não desenhe envio por
    Flow com e-mail alert, Apex de e-mail ou outra ferramenta de disparo dentro do CRM. No
@@ -55,3 +54,32 @@ da Eplast, em qualquer etapa.
    resumo, recomendação ou linguagem natural parte dele: estende tópico ou ação, não cria
    agente novo. O mesmo vale para relatórios, painéis, campos de score e automações: se
    já há um que atende, ajuste-o.
+4. **Pergunta de negócio sem resposta do cliente não trava a demanda** (decisão de
+   2026-11-15). O cliente não está respondendo, e o projeto precisa andar. Quando faltar
+   uma resposta de regra de negócio, resolva nesta ordem, e diga de onde veio:
+   1. **O que a org já mostra.** Campo, picklist, validation rule, Flow, relatório ou
+      processo existente que revela como a Eplast trabalha hoje. Confirme por `sf`, só
+      metadata e contagens agregadas.
+   2. **O padrão.** O comportamento padrão da plataforma Salesforce ou a prática
+      consolidada do squad (skills `salesforce-doutrina` e `padrao-entrega`), na opção mais
+      simples e mais fácil de mudar depois.
+   3. Só se nem a org nem o padrão indicam um caminho, e errar é caro ou difícil de
+      desfazer, a pergunta continua aberta e bloqueia.
+
+   Isso não é inventar: é decidir com evidência e deixar escrito. Cada decisão assim entra
+   como **premissa assumida**, numa seção "Premissas assumidas (validar na homologação)",
+   com a pergunta, a decisão, a evidência (o que na org ou qual padrão) e como mudar se o
+   cliente discordar. Prefira deixar o ponto configurável.
+
+   Por etapa:
+   - `ba-discovery`: levante na org antes de perguntar. Escreva a premissa assumida como
+     item resolvido (`- [x]`), nunca como pendência (`- [ ]`): pendência em aberto impede a
+     aprovação do gate no Squad OS. Use `- [ ]` só para o caso 3.
+   - `arquiteto`: discuta no design as alternativas que a análise deixou e escolha a
+     melhor para o que a org tem, com o porquê. Leve as premissas assumidas adiante e
+     acrescente as suas. A demanda só fica bloqueada pelo caso 3.
+   - builders, `verificador` e `qa`: construam e testem conforme as premissas do design.
+     Pergunta já decidida como premissa não é motivo de build bloqueado nem de reprovação.
+   - `qa`: repita as premissas assumidas no roteiro do cliente, numa seção "O que
+     assumimos e você precisa confirmar", em linguagem de usuário. É na homologação que o
+     cliente valida.
