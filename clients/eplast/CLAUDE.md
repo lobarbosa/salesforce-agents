@@ -96,3 +96,18 @@ da Eplast, em qualquer etapa.
    - `qa`: repita as premissas assumidas no roteiro do cliente, numa seção "O que
      assumimos e você precisa confirmar", em linguagem de usuário. É na homologação que o
      cliente valida.
+5. **Ambientes da esteira** (confirmado pelo responsável pela conta, 2026-11-15). Os nomes
+   da Eplast não batem com os da esteira, e isso é esperado:
+
+   | Esteira | Alias | Sandbox da Eplast | Uso |
+   |---|---|---|---|
+   | dev | `sbx-eplast-dev` | `eplast--qa` (a "QA" da Eplast) | build e verificação |
+   | qa | `sbx-eplast-qa` | `eplast--qas` (a "QAS" da Eplast, Partial Copy) | QA e homologação |
+
+   São duas orgs distintas (IDs diferentes, conferido em 2026-11-15). Instância, usuário ou
+   nome de sandbox com "qa" no alias de dev **não** é motivo de bloqueio, risco nem pergunta:
+   o achado 6 do `assessment.md` está resolvido por esta regra. Continue conferindo com
+   `sf org list` qual org está conectada, como sempre.
+   A QAS é Partial Copy e tem dado real copiado: lá vale a regra de não ler nem alterar
+   registro que o agente não criou, e qualquer execução em massa precisa de autorização no
+   card.

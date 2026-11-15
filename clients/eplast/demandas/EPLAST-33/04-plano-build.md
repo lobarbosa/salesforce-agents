@@ -2,7 +2,7 @@
 
 # EPLAST-33 — Plano de build (cross-sell, volume e recuperação)
 
-**Org:** `sbx-eplast-dev` (sandbox `eplast--qa`, usuário `projetos@konectabr.com.eplast2.qa`, única org em `sf org list`; regra 5 da conta). **Branch:** `feature/EPLAST-33`. **Design:** `03-design.md`, aprovado em 2026-11-15 (`gates.md`), incluindo o objeto novo `CommercialSignal__c`. Nenhuma pergunta aberta (design, seção 8); build seguiu as premissas PA-1 a PA-22.
+**Org:** `sbx-eplast-dev` (alias `sbx-eplast-dev`, sandbox `eplast--qa`, única org em `sf org list`; regra 5 da conta). **Branch:** `feature/EPLAST-33`. **Design:** `03-design.md`, aprovado em 2026-11-15 (`gates.md`), incluindo o objeto novo `CommercialSignal__c`. Nenhuma pergunta aberta (design, seção 8); build seguiu as premissas PA-1 a PA-22.
 
 ## 1. O que foi construído (tudo implantado na dev)
 
