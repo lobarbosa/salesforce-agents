@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<QuickAction xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-41. Abre o Screen Flow Task_Screen_RascunhoRelacionamento a partir de Account para gerar rascunho de mensagem de relacionamento ou texto comercial com IA. Só rascunho: grava 1 Task apenas se o usuário escolher salvar. Sem envio.</description>
+    <flowDefinition>Task_Screen_RascunhoRelacionamento</flowDefinition>
+    <label>Rascunho com IA</label>
+    <optionsCreateFeedItem>false</optionsCreateFeedItem>
+    <type>Flow</type>
+</QuickAction>

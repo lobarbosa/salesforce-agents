@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-30. Controla a visibilidade da aba &quot;Rascunho IA&quot; na página da Oportunidade e o acesso ao Screen Flow Opportunity_Screen_RascunhoComercial. Concedida via PermissionSet PS_Comercial_RascunhoIA / PermissionSetGroup PSG_Comercial_RascunhoIA.</description>
+    <isLicensed>false</isLicensed>
+    <label>IA Rascunho Comercial</label>
+</CustomPermission>

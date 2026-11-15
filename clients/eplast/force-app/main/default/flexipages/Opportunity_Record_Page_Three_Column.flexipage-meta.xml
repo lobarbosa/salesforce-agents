@@ -137,6 +137,9 @@
                         <valueListItems>
                             <value>Clone</value>
                         </valueListItems>
+                        <valueListItems>
+                            <value>Opportunity.Rascunho_Texto_IA</value>
+                        </valueListItems>
                     </valueList>
                 </componentInstanceProperties>
                 <componentInstanceProperties>

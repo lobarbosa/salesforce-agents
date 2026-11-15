@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customPermissions>
+        <enabled>true</enabled>
+        <name>IA_Rascunho_Comercial</name>
+    </customPermissions>
+    <description>EPLAST-41. Acesso aos Flows Task_Screen_RascunhoRelacionamento e Opportunity_Screen_RascunhoComercial e à custom permission IA_Rascunho_Comercial. Sem permissão de objeto. Incluído no PSG_Comercial_RascunhoIA.</description>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Opportunity_Screen_RascunhoComercial</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Task_Screen_RascunhoRelacionamento</flow>
+    </flowAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PS Comercial Rascunho Relacionamento</label>
+</PermissionSet>
