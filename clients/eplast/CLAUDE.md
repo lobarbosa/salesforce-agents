@@ -39,13 +39,26 @@ da Eplast, em qualquer etapa.
    análise, design e build. Não trate "onda não contratada" como pendência nem como motivo
    de build bloqueado, e não devolva pergunta sobre isso ao cliente. Pergunta de **regra
    de negócio** sem resposta segue a regra 4.
-2. **Tudo que é de marketing é disparado pelo Marketing Cloud.** E-mail, mensagem,
-   campanha, jornada e nutrição de leads saem pelo Marketing Cloud — não desenhe envio por
-   Flow com e-mail alert, Apex de e-mail ou outra ferramenta de disparo dentro do CRM. No
-   CRM fica o que alimenta o Marketing Cloud: dado, segmento, público, status. Se o desenho
-   depender de algo do Marketing Cloud que a esteira não alcança (ela só conecta as
-   sandboxes do CRM), declare isso como passo de quem opera o Marketing Cloud, não
-   contorne.
+2. **Tudo que é de marketing é disparado pelo Marketing Cloud, e o Sales Cloud tem de
+   estar preparado para ele.** E-mail, mensagem, campanha, jornada e nutrição de leads
+   saem pelo Marketing Cloud — não desenhe envio por Flow com e-mail alert, Apex de e-mail
+   ou outra ferramenta de disparo dentro do CRM.
+   - **Não faça nada no Marketing Cloud** (reforço de 2026-11-15): a esteira não conecta,
+     não configura, não cria jornada, público ou envio lá, e não altera a conexão entre os
+     dois. O que for do Marketing Cloud é passo de quem o opera, declarado no desenho, não
+     contornado.
+   - **Preveja o Marketing Cloud em toda demanda que toca marketing** (leads, origem,
+     campanha, segmentação, público, nutrição, comunicação, relacionamento, reativação). A
+     análise e o desenho trazem uma seção "Preparação do Sales Cloud para o Marketing
+     Cloud" dizendo: quais dados o Marketing Cloud vai precisar ler e onde eles ficam no
+     CRM (objeto e campo); como o público ou o segmento fica identificável do lado do CRM
+     (campo, status, campanha e membro de campanha, relatório ou lista); o que o Marketing
+     Cloud devolve e onde isso é gravado; consentimento e opt-out; e o que fica para quem
+     opera o Marketing Cloud fazer com isso.
+   - O build entrega só o lado do CRM dessa preparação: dado, segmento, público, status.
+   - A linha de base da org tem componentes do conector Marketing Cloud Connect (namespace
+     `et4ae5`). O recon confirma na org o que está instalado e quais objetos e campos já
+     são usados por ele antes de propor campo ou objeto novo (regra 3).
 3. **Não sobreponha o que já existe.** Antes de propor qualquer componente, o recon confere
    na org o que já cobre o pedido, e o design diz, item a item, o que reaproveita e o que
    cria. Em especial, o agente Agentforce `SFAgent2` já existe na DEV e na QA, com 4
