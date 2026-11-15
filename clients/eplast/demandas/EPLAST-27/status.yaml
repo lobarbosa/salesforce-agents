@@ -2,7 +2,7 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -103,3 +103,10 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T11:27:00.614620+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-15T12:24:34.118100+00:00'
+  motivo: 'refazer o build com versão nova do agente SFAgent2 (regra de 15/11, skill
+    salesforce-doutrina "Alterar o que já existe"): o deploy na QA recusou alterar
+    SFAgent2_v4, ativa lá. Plano e verificação anteriores em rodada-anterior/build-agente-v4/.'
