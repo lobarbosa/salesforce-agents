@@ -115,5 +115,10 @@ da Eplast, em qualquer etapa.
 6. **Dados e usuário de teste** (2026-11-15). Dado de teste está autorizado em toda
    demanda. Monte-o pelos scripts de `fixtures/` nesta pasta e grave lá o que funcionar
    (ver `fixtures/README.md`). Existe um usuário válido na org para teste (proprietário de
-   registro e caso de acesso negado); a identificação dele entra aqui pelo Id de usuário
-   (`005…`), nunca pelo e-mail. Id: _a informar pelo responsável_.
+   registro e caso de acesso negado): a conta de serviço da Konecta cujo username começa por
+   `projetos@konectabr.com` (em sandbox o username ganha sufixo, ex.: `.qa`). Resolva o Id
+   na org do job com
+   `SELECT Id, IsActive, Profile.Name FROM User WHERE Username LIKE 'projetos@konectabr.com%'`
+   e, nos artefatos, cite só o Id (`005…`). Use-o como proprietário de registro de teste e
+   para o caso de acesso negado; não altere perfil, permissão nem papel dele. Se não
+   existir ou estiver inativo naquela org, diga isso no artefato e siga sem ele.
