@@ -98,6 +98,17 @@ Escreva para essa pessoa:
 - Em `reprovado`, o roteiro descreve o comportamento esperado da entrega, não o defeito: as
   falhas ficam em `05-testes.md`.
 
+## Dados de teste e sistema externo
+Crie você os dados de teste, só sintéticos, com `TESTE <DEMAND-ID>` no nome, e execute de
+verdade. Se a automação que o teste dispara chama sistema externo (integração, callout,
+e-mail) e você não consegue isolar, leia `comentarios-do-card.md`: só dispare se o
+responsável pela conta autorizou ali, por escrito, testar mesmo com esse risco. Com
+autorização, use o menor número de registros que prova o critério e liste em `05-testes.md`,
+numa seção "O que pode ter saído da org", o que a cadeia criou e o resultado das chamadas
+externas registradas. Sem autorização, o caso fica "não executado".
+A sandbox de QA pode ter dado real copiado: não leia nem altere registro que você não
+criou, e não execute ação em massa sobre os registros existentes sem a mesma autorização.
+
 ## Regras
 - Nunca rode query que retorne dado pessoal de cliente. Use contagem ou registros de teste.
 - Se um critério de aceite não for testável na sandbox atual, diga isso explicitamente.
