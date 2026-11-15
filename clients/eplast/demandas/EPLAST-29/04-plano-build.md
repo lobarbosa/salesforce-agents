@@ -38,5 +38,5 @@ EPLAST-27 (aguardando_gate_build) e EPLAST-34 (aguardando_gate_design) também m
 ## Para a verificação
 - Tópico `acoes_comerciais` na v7 ativa; roteamento do pedido "crie uma tarefa..." para ele; `insights_comerciais` com as mesmas 4 ações da v6.
 - Confirmação obrigatória antes de gravar; recusa de assunto `Check In @`; registro ambíguo; AC-4 (acesso negado) e licença Agentforce (R9).
-- Pendências já conhecidas da rodada anterior: caminho de sucesso exige Account/Opportunity de teste (gatilho com callout Protheus, R8) e usuário `Comercial - Analista`; usar `fixtures/` e o usuário `projetos@konectabr.com*` da regra 6 do CLAUDE.md da Eplast.
+- Pendências já conhecidas da rodada anterior: caminho de sucesso exige Account/Opportunity de teste (gatilho com callout Protheus, R8) e usuário `Comercial - Analista`; usar `fixtures/` e o usuário de teste da conta de serviço da Konecta (regra 6 do CLAUDE.md da Eplast, resolvido por consulta na org de dev).
 - Premissas assumidas do design (seção 9) construídas como decididas; nada bloqueado.
