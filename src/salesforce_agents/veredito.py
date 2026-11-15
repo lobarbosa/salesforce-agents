@@ -21,7 +21,11 @@ from dataclasses import dataclass
 _VEREDITO = re.compile(
     r"\*\*Veredito:\*\*\s*\**\s*(aprovado|reprovado|aguardando execu[çc][ãa]o)", re.I
 )
-_ORG = re.compile(r"\*\*Org de teste:\*\*\s*`([^`]+)`", re.I)
+# A org vem com ou sem crase, e às vezes seguida de comentário entre parênteses:
+# "`sbx-x-dev`", "sbx-x-dev" e "`sbx-x-dev` (Org ID ...)" são a mesma declaração.
+# Achado EPLAST-28 (2026-11-15): sem crase, a verificação inconclusiva foi lida
+# como reprovada e a construção rodou de novo à toa.
+_ORG = re.compile(r"\*\*Org de teste:\*\*\s*`?([A-Za-z0-9_.\-]+)`?", re.I)
 _FALHA = re.compile(r"^#{2,4}\s*(FALHA\b[^\n]*)$", re.I | re.M)
 
 
@@ -58,3 +62,18 @@ def ler(texto: str, org_de_qa: str) -> Veredito:
             falhas,
         )
     return Veredito(True, "", falhas)
+
+
+# Quando o QA em duas fases quer ser conferido (2026-11-15). Vai no sync para o
+# Squad OS reenfileirar a segunda sessão sozinho, em vez de alguém lembrar de
+# disparar. Formato pedido em qa.md: data e hora em UTC, ISO 8601.
+_CONFERIR = re.compile(r"\*\*Conferir depois de:\*\*\s*`?(\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}(?::\d{2})?Z?)`?", re.I)
+
+
+def conferir_depois_de(texto: str) -> str:
+    """O instante ISO (UTC) de `**Conferir depois de:**`, ou vazio."""
+    m = _CONFERIR.search(texto)
+    if not m:
+        return ""
+    v = m.group(1).replace(" ", "T")
+    return v if v.endswith("Z") else v + "Z"

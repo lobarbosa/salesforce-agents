@@ -96,3 +96,29 @@ da Eplast, em qualquer etapa.
    - `qa`: repita as premissas assumidas no roteiro do cliente, numa seção "O que
      assumimos e você precisa confirmar", em linguagem de usuário. É na homologação que o
      cliente valida.
+5. **Ambientes da esteira** (confirmado pelo responsável pela conta, 2026-11-15). Os nomes
+   da Eplast não batem com os da esteira, e isso é esperado:
+
+   | Esteira | Alias | Sandbox da Eplast | Uso |
+   |---|---|---|---|
+   | dev | `sbx-eplast-dev` | `eplast--qa` (a "QA" da Eplast) | build e verificação |
+   | qa | `sbx-eplast-qa` | `eplast--qas` (a "QAS" da Eplast, Partial Copy) | QA e homologação |
+
+   São duas orgs distintas (IDs diferentes, conferido em 2026-11-15). Instância, usuário ou
+   nome de sandbox com "qa" no alias de dev **não** é motivo de bloqueio, risco nem pergunta:
+   o achado 6 do `assessment.md` está resolvido por esta regra. Continue conferindo com
+   `sf org list` qual org está conectada, como sempre.
+   A QAS é Partial Copy e tem dado real copiado: lá vale a regra de não ler nem alterar
+   registro que o agente não criou. Deixar a automação da própria solução rodar sobre os
+   registros existentes está autorizado pela regra da esteira (2026-11-15); DML do agente
+   sobre eles, nunca.
+6. **Dados e usuário de teste** (2026-11-15). Dado de teste está autorizado em toda
+   demanda. Monte-o pelos scripts de `fixtures/` nesta pasta e grave lá o que funcionar
+   (ver `fixtures/README.md`). Existe um usuário válido na org para teste (proprietário de
+   registro e caso de acesso negado): a conta de serviço da Konecta cujo username começa por
+   `projetos@konectabr.com` (em sandbox o username ganha sufixo, ex.: `.qa`). Resolva o Id
+   na org do job com
+   `SELECT Id, IsActive, Profile.Name FROM User WHERE Username LIKE 'projetos@konectabr.com%'`
+   e, nos artefatos, cite só o Id (`005…`). Use-o como proprietário de registro de teste e
+   para o caso de acesso negado; não altere perfil, permissão nem papel dele. Se não
+   existir ou estiver inativo naquela org, diga isso no artefato e siga sem ele.
