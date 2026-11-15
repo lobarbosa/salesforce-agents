@@ -28,8 +28,8 @@ Nenhuma escrita, trigger, Flow ou validation rule em Account, Opportunity, Order
 
 `sf apex run test -o sbx-eplast-dev --class-names CommercialSignalServiceTest CommercialSignalGroupStatsBatchTest CommercialSignalBatchTest CommercialSignalSchedulerTest --code-coverage` — Test Run Id `707Ha00001Dzssr`, última rodada:
 
-- **38 testes, 38 passam (100%)**, tempo 32,7 s.
-- Cobertura por classe: `CommercialSignalService` 99%, `CommercialSignalGroupStatsBatch` 98%, `CommercialSignalBatch` 97%, `CommercialSignalScheduler` 100% (todas ≥ 85%, CA-20).
+- **Rodada de correção (Test Run Id `707Ha00001E3vyx`, usuário sem o permission set atribuído): 41 testes, 41 passam (100%).** Rodada anterior: 38 de 38.
+- Cobertura por classe: `CommercialSignalService` 99%, `CommercialSignalGroupStatsBatch` 98%, `CommercialSignalBatch` 97% (linhas 120 e 129 descobertas), `CommercialSignalScheduler` 100% (todas ≥ 85%, CA-20).
 
 Cenários cobertos, com `System.assert*` sobre o resultado: CA-01/02 (61, 60 e 59 dias), CA-03/04 (nunca comprou; cancelado e "Revisao de Pedido" não contam), CA-05/06 (30% exato fora, 31% dentro, queda e alta), CA-07 (sem base), CA-08/09/10/11 (cruzada 4 de 10 sim, 2 de 10 não, compra recente, sem Industry, grupo de 4), CA-12 (contagem e maior `LastModifiedDate` de Account e Order, contagens de OrderItem e Opportunity, nenhum `EmailMessage`), CA-15 (reexecução sem duplicata, mesmos Ids), CA-16 (pedido novo remove a recuperação), CA-17 (90 dias), bulk de 200 contas num lote (um sinal por conta), 200 fatos no serviço, negativo (campo de grupo inexistente cai em `Industry`, tipo desligado remove sinais, parâmetros por direção), permissão (sem o permission set não lê; com ele lê e não cria), agendamento (job registrado, cron esperado, e encadeamento fase 1 → fase 2 gravando sinais).
 
@@ -56,3 +56,19 @@ Sem premissa nova. Valem PA-1 a PA-22 do `03-design.md`. Onde mudar cada uma est
 
 - Deploy na QA (feito pela esteira, `05-deploy-qa.md`): objeto, CMDT e registro, 4 classes + testes + fábrica, tipo de relatório, pasta, relatório, grupo público, permission set, aba. Depois: agendar o job e atribuir o permission set a quem testa.
 - Cobertura global da org continua baixa (assessment, achado 2); esta entrega não a eleva (risco R-5 do release humano).
+
+## Correções da rodada de retorno do deploy na QA (deploy 0AfHa00000EI4Q6KAL)
+
+**Falha:** todos os testes de `CommercialSignalBatchTest` com `System.QueryException: No such column 'SignalKey__c' on entity 'CommercialSignal__c'` na QA; na dev passavam.
+
+**Causa (reproduzida na dev):** campo custom recém-implantado é invisível (SOQL estático, dinâmico e Apex, inclusive para o administrador) para quem não tem FLS sobre ele. Na dev o usuário que testa tinha o `PS_Comercial_SinaisComerciais` atribuído à mão (ponto 4.3 acima), o que escondia o problema; na QA o usuário do deploy não tem. Removi a atribuição na dev e os testes falharam igual à QA. Não é diferença de metadata: o campo existe e está no deploy.
+
+**Correção (só em teste, sem mudar regra nem componente de produção):**
+1. `CommercialSignalTestFactory.grantSignalAccess()`: atribui o permission set ao usuário que executa o teste (idempotente, DML de setup dentro de `System.runAs`).
+2. `@TestSetup` nas classes `CommercialSignalGroupStatsBatchTest`, `CommercialSignalBatchTest` e `CommercialSignalSchedulerTest` chama a fábrica; cada método de teste roda dentro de `System.runAs(new User(Id = UserInfo.getUserId()))`, necessário para a permissão atribuída valer no corpo do teste (só o `@TestSetup` não bastou: testado).
+3. `CommercialSignalServiceTest` não mexe no campo em SOQL e passou sem alteração.
+4. Validado na dev com o permission set **desatribuído** do usuário (condição da QA): 41/41. Depois reatribuí o permission set ao usuário da dev (dado de sandbox, necessário para o job real).
+
+**Atenção para a QA e para quem agenda (não é código):** o usuário que agenda o job `CommercialSignalScheduler` precisa ter o `PS_Comercial_SinaisComerciais` atribuído, senão o batch falha em runtime com o mesmo erro. Os passos "agendar o job" e "atribuir o permission set a quem testa" (seção 6) ficam: atribuir o permission set **antes** de agendar, ao mesmo usuário. Não alterei perfil (design, seção 9). Estado do job na dev: nenhum job `EPLAST33%` pendente (conferido por `CronTrigger`), então a classe aceita deploy.
+
+**Indentação:** o script de ajuste deixou os corpos de teste um nível abaixo do esperado dentro do `runAs`; é só formato.

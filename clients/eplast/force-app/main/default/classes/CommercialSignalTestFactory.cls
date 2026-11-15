@@ -26,6 +26,23 @@ public class CommercialSignalTestFactory {
     private static Id branchId;
     private static Map<Id, Id> entryByProduct = new Map<Id, Id>();
 
+    /**
+     * Campo custom novo nao e visivel (nem em SOQL, nem em Apex) para quem nao tem FLS, nem para o
+     * administrador que implanta: sem isto o teste falha com "No such column 'SignalKey__c'" numa org
+     * onde o permission set ainda nao foi atribuido a esse usuario (QA, deploy de validacao).
+     * Atribui PS_Comercial_SinaisComerciais ao usuario que executa o teste (idempotente).
+     */
+    public static void grantSignalAccess() {
+        Id userId = UserInfo.getUserId();
+        PermissionSet ps = [SELECT Id FROM PermissionSet WHERE Name = 'PS_Comercial_SinaisComerciais' LIMIT 1];
+        if ([SELECT COUNT() FROM PermissionSetAssignment WHERE AssigneeId = :userId AND PermissionSetId = :ps.Id] > 0) {
+            return;
+        }
+        System.runAs(new User(Id = userId)) {
+            insert new PermissionSetAssignment(AssigneeId = userId, PermissionSetId = ps.Id);
+        }
+    }
+
     public static List<Account> createAccounts(Integer count, String industry, String prefix) {
         List<Account> accounts = new List<Account>();
         for (Integer i = 0; i < count; i++) {

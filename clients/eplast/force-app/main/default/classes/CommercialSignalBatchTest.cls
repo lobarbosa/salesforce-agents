@@ -1,6 +1,11 @@
 @IsTest
 private class CommercialSignalBatchTest {
 
+    @TestSetup
+    static void grantAccess() {
+        CommercialSignalTestFactory.grantSignalAccess();
+    }
+
     private static final Date TODAY = Date.today();
 
     private static void run(CommercialSignalService.Settings s,
@@ -25,6 +30,7 @@ private class CommercialSignalBatchTest {
 
     @IsTest
     static void recoveryAt61DaysAndNotAt59() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account a61 = CommercialSignalTestFactory.createAccounts(1, null, 'R61')[0];
         Account a59 = CommercialSignalTestFactory.createAccounts(1, null, 'R59')[0];
@@ -36,10 +42,12 @@ private class CommercialSignalBatchTest {
         System.assertEquals(61, r[0].DaysWithoutPurchase__c);
         System.assertEquals(0, CommercialSignalTestFactory.signals(a59.Id, 'Recuperacao').size(), 'CA-02');
         System.assertEquals(0, CommercialSignalTestFactory.signals(a59.Id, 'NuncaComprou').size(), 'comprou, nao e nunca comprou');
+        }
     }
 
     @IsTest
     static void neverPurchasedAndInvalidOrdersDoNotCount() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account none = CommercialSignalTestFactory.createAccounts(1, null, 'N0')[0];
         Account inv = CommercialSignalTestFactory.createAccounts(1, null, 'N1')[0];
@@ -50,10 +58,12 @@ private class CommercialSignalBatchTest {
         System.assertEquals(0, CommercialSignalTestFactory.signals(none.Id, 'Recuperacao').size());
         System.assertEquals(1, CommercialSignalTestFactory.signals(inv.Id, 'NuncaComprou').size(), 'CA-04');
         System.assertEquals(0, CommercialSignalTestFactory.signals(inv.Id, 'Recuperacao').size());
+        }
     }
 
     @IsTest
     static void volumeDropAndRiseUseStrictLimits() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account d30 = CommercialSignalTestFactory.createAccounts(1, null, 'D30')[0];
         Account d31 = CommercialSignalTestFactory.createAccounts(1, null, 'D31')[0];
@@ -74,10 +84,12 @@ private class CommercialSignalBatchTest {
         System.assertEquals(6900, drop[0].CurrentPeriodAmount__c);
         System.assertEquals(0, CommercialSignalTestFactory.signals(u30.Id, 'AltaVolume').size(), 'CA-06: 30% nao');
         System.assertEquals(1, CommercialSignalTestFactory.signals(u31.Id, 'AltaVolume').size(), 'CA-06: 31% sim');
+        }
     }
 
     @IsTest
     static void volumeWithoutBaseDoesNotClassify() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account a = CommercialSignalTestFactory.createAccounts(1, null, 'V0')[0];
         CommercialSignalTestFactory.createOrders(new List<CommercialSignalTestFactory.OrderSpec>{
@@ -85,10 +97,12 @@ private class CommercialSignalBatchTest {
         run();
         System.assertEquals(0, CommercialSignalTestFactory.signals(a.Id, 'QuedaVolume').size(), 'CA-07');
         System.assertEquals(0, CommercialSignalTestFactory.signals(a.Id, 'AltaVolume').size(), 'CA-07');
+        }
     }
 
     @IsTest
     static void crossSellExcludesRecentBuyerAndAccountWithoutIndustry() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         List<Account> grp = CommercialSignalTestFactory.createAccounts(10, 'Embalagens', 'CS');
         Account noIndustry = CommercialSignalTestFactory.createAccounts(1, null, 'CSX')[0];
         Product2 p = CommercialSignalTestFactory.createProducts(1)[0];
@@ -107,10 +121,12 @@ private class CommercialSignalBatchTest {
         System.assertEquals(1, CommercialSignalTestFactory.signals(grp[0].Id, 'Cruzada').size());
         System.assertEquals(0, CommercialSignalTestFactory.signals(noIndustry.Id, 'Cruzada').size(), 'CA-10');
         System.assertEquals(1, CommercialSignalTestFactory.signals(noIndustry.Id, 'NuncaComprou').size(), 'segue nos demais tipos');
+        }
     }
 
     @IsTest
     static void doesNotWriteToCommercialObjects() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account a = CommercialSignalTestFactory.createAccounts(1, 'Embalagens', 'W0')[0];
         CommercialSignalTestFactory.createOrders(new List<CommercialSignalTestFactory.OrderSpec>{
@@ -130,10 +146,12 @@ private class CommercialSignalBatchTest {
         System.assertEquals(oppCount, [SELECT COUNT() FROM Opportunity]);
         System.assertEquals(0, [SELECT COUNT() FROM EmailMessage], 'nenhum e-mail');
         System.assert([SELECT COUNT() FROM CommercialSignal__c] > 0, 'o batch rodou e gravou so o objeto novo');
+        }
     }
 
     @IsTest
     static void rerunIsIdempotent() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account a = CommercialSignalTestFactory.createAccounts(1, null, 'I0')[0];
         CommercialSignalTestFactory.createAccounts(1, null, 'I1');
@@ -145,10 +163,12 @@ private class CommercialSignalBatchTest {
         Map<Id, CommercialSignal__c> second = new Map<Id, CommercialSignal__c>([SELECT Id, SignalKey__c FROM CommercialSignal__c]);
         System.assertEquals(2, second.size(), 'CA-15: sem duplicatas');
         System.assertEquals(first.keySet(), second.keySet(), 'mesmos registros (upsert, nao recria)');
+        }
     }
 
     @IsTest
     static void newOrderRemovesRecoveryOnNextRun() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account a = CommercialSignalTestFactory.createAccounts(1, null, 'N16')[0];
         CommercialSignalTestFactory.createOrders(new List<CommercialSignalTestFactory.OrderSpec>{
@@ -159,10 +179,12 @@ private class CommercialSignalBatchTest {
             spec(a.Id, 'Faturamento', 0, 100, prod) });
         runAgain(CommercialSignalTestFactory.settings());
         System.assertEquals(0, CommercialSignalTestFactory.signals(a.Id, 'Recuperacao').size(), 'CA-16: sinal obsoleto removido');
+        }
     }
 
     @IsTest
     static void parameterChangesClassificationWithoutCode() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Id prod = CommercialSignalTestFactory.createProducts(1)[0].Id;
         Account a = CommercialSignalTestFactory.createAccounts(1, null, 'P17')[0];
         CommercialSignalTestFactory.createOrders(new List<CommercialSignalTestFactory.OrderSpec>{
@@ -171,18 +193,22 @@ private class CommercialSignalBatchTest {
         s.recoveryDays = 90;
         run(s, null);
         System.assertEquals(0, CommercialSignalTestFactory.signals(a.Id, 'Recuperacao').size(), 'CA-17');
+        }
     }
 
     @IsTest
     static void bulkTwoHundredAccounts() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         List<Account> accounts = CommercialSignalTestFactory.createAccounts(200, 'Embalagens', 'B');
         run();
         System.assertEquals(200, [SELECT COUNT() FROM CommercialSignal__c WHERE Type__c = 'NuncaComprou' AND Account__c IN :accounts],
             'um sinal por conta em um unico lote de 200');
+        }
     }
 
     @IsTest
     static void statefulCountersAndProcessDirectly() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         List<Account> accounts = CommercialSignalTestFactory.createAccounts(3, null, 'S');
         CommercialSignalBatch b = new CommercialSignalBatch(CommercialSignalTestFactory.settings(), TODAY, null);
         b.process([SELECT Id, Industry FROM Account WHERE Id IN :accounts]);
@@ -196,10 +222,12 @@ private class CommercialSignalBatchTest {
         b2.process([SELECT Id, Industry FROM Account WHERE Id IN :accounts]);
         System.assertEquals(3, b2.signalsDeleted, 'tipo desligado remove os sinais existentes');
         System.assertEquals(0, [SELECT COUNT() FROM CommercialSignal__c]);
+        }
     }
 
     @IsTest
     static void signalsAreReadOnlyForPermissionSetUsers() {
+        System.runAs(new User(Id = UserInfo.getUserId())) {
         Account a = CommercialSignalTestFactory.createAccounts(1, null, 'PERM')[0];
         run();
         Profile prof = [SELECT Id FROM Profile WHERE UserType = 'Standard' AND (NOT Name LIKE '%Admin%') LIMIT 1];
@@ -230,6 +258,7 @@ private class CommercialSignalBatchTest {
                 System.assert(e instanceof TypeException || e instanceof DmlException,
                     'sem criar: ' + e.getTypeName());
             }
+        }
         }
     }
 }
