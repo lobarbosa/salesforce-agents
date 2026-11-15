@@ -88,3 +88,11 @@ historico:
   motivo: 'correção: a verificação não reprovou; a esteira leu a org sem crase como
     reprovação (defeito corrigido na PR #187). Volta ao gate de build com a verificação
     original.'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T13:19:12.291886+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T13:20:40.041493+00:00'
