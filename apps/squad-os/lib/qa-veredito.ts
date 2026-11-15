@@ -22,7 +22,7 @@ export function lerVereditoQa(texto: string): VereditoQa {
     const titulo = m[1].replace(/\*\*/g, "").trim();
     return { titulo, critica: /cr[ií]tic/i.test(titulo) };
   });
-  const org = texto.match(/\*\*Org de teste:\*\*\s*`([^`]+)`/i)?.[1] ?? null;
+  const org = texto.match(/\*\*Org de teste:\*\*\s*`?([A-Za-z0-9_.-]+)`?/i)?.[1] ?? null; // com ou sem crase, como em veredito.py
 
   const explicito = texto.match(/\*\*Veredito:\*\*\s*\**\s*(aprovado|reprovado)/i)?.[1]?.toLowerCase();
   const veredito: Veredito =

@@ -21,7 +21,11 @@ from dataclasses import dataclass
 _VEREDITO = re.compile(
     r"\*\*Veredito:\*\*\s*\**\s*(aprovado|reprovado|aguardando execu[çc][ãa]o)", re.I
 )
-_ORG = re.compile(r"\*\*Org de teste:\*\*\s*`([^`]+)`", re.I)
+# A org vem com ou sem crase, e às vezes seguida de comentário entre parênteses:
+# "`sbx-x-dev`", "sbx-x-dev" e "`sbx-x-dev` (Org ID ...)" são a mesma declaração.
+# Achado EPLAST-28 (2026-11-15): sem crase, a verificação inconclusiva foi lida
+# como reprovada e a construção rodou de novo à toa.
+_ORG = re.compile(r"\*\*Org de teste:\*\*\s*`?([A-Za-z0-9_.\-]+)`?", re.I)
 _FALHA = re.compile(r"^#{2,4}\s*(FALHA\b[^\n]*)$", re.I | re.M)
 
 
