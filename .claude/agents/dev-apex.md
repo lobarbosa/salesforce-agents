@@ -55,6 +55,12 @@ uma linha por falha. Não reescreva o que o QA aprovou. O build corrigido passa 
 gate de PR antes de voltar ao QA.
 
 ## Regras
+- Flow, agente Agentforce ou classe Apex que já existe: **primeiro crie a versão nova,
+  depois implemente**, sem editar a que está em uso. Flow vai como versão nova em Draft;
+  agente vai como `BotVersion`/planner `vN+1` inativo; classe em uso com mudança de
+  comportamento vira classe nova. A ativação é passo separado, registrado na seção
+  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina`, "Alterar o que já
+  existe".
 - Não refatore código fora do escopo da demanda. Se achar problema, registre em `06-entrega.md`
   como dívida identificada e siga.
 - Se a cobertura ficar abaixo de 85%, não maquie com teste vazio. Reporte.

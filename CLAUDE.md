@@ -81,6 +81,9 @@ Tudo o que entra na sessão é relido a cada turno; é o maior custo da esteira.
 - Subagente devolve um resumo curto ao orquestrador, não o conteúdo do artefato.
 
 ## Convenções
+- Flow, agente ou classe que já existe: **primeiro uma versão nova, depois a implementação**;
+  nunca editar no lugar o que está ativo. Ativação é passo separado (skill
+  `salesforce-doutrina`).
 - Branch `feature/<DEMAND-ID>`; commit `<DEMAND-ID>: verbo no imperativo`.
 - Apex: cobertura mínima de 85% por classe; classe de teste dedicada `<Classe>Test`.
 - Nomenclatura: skill `padrao-entrega`; a convenção do `CLAUDE.md` do cliente tem prioridade.

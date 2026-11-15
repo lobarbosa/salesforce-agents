@@ -122,6 +122,13 @@ reprovações seguidas a demanda para no gate de design, para o arquiteto decidi
 real: dez demandas (Eplast e Somos) estavam em homologação com o QA reprovado, porque o
 fluxo só conferia se o `05-testes.md` existia.
 
+Nova versão antes de implementar (2026-11-15): o deploy da EPLAST-27 na QA foi recusado
+porque alterava a versão ativa do agente `SFAgent2`, e a validação da EPLAST-33 foi recusada
+porque reimplantava classes Apex com job agendado. Decisão do responsável: Flow, agente e
+classe que já existem ganham uma versão nova, implantada sem substituir a que está em uso,
+e a ativação é passo separado, registrado no plano ("Versões e ativação"). Regra completa na
+skill `salesforce-doutrina`.
+
 Verificação do build (2026-11-15): o gate de build chegava ao revisor sem ninguém ter
 exercitado a construção; o builder só provava que a metadata era aceita, e o primeiro teste
 de comportamento era o QA, depois do gate. Decisão do responsável: precisa existir uma etapa
