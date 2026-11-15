@@ -2,7 +2,7 @@ id: EPLAST-26
 client: eplast
 titulo: Scoring de leads e oportunidades
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -125,3 +125,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T18:18:42.407733+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T20:32:37.041273+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-15T21:05:15.550480+00:00'

@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EHwNhKAL` (Succeeded)
-- **Quando:** 2026-11-15T12:00Z
-- **Commit:** `c42418b2`
+- **Deploy:** `0AfHa00000EI09aKAD` (Succeeded)
+- **Quando:** 2026-11-15T20:32Z
+- **Commit:** `15dc3a9c`
 
 ## Componentes
 - `force-app/main/default/flexipages/Lead_Record_Page.flexipage-meta.xml`
