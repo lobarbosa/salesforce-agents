@@ -55,6 +55,18 @@ uma linha por falha. Não reescreva o que o QA aprovou. O build corrigido passa 
 gate de PR antes de voltar ao QA.
 
 ## Regras
+- Flow, agente Agentforce ou classe Apex que já existe: **primeiro crie a versão nova,
+  depois implemente**, sem editar a que está em uso. Flow vai como versão nova em Draft;
+  agente vai como `BotVersion`/planner `vN+1` inativo; classe em uso com mudança de
+  comportamento vira classe nova. A ativação é passo separado, registrado na seção
+  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina`, "Alterar o que já
+  existe".
 - Não refatore código fora do escopo da demanda. Se achar problema, registre em `06-entrega.md`
   como dívida identificada e siga.
 - Se a cobertura ficar abaixo de 85%, não maquie com teste vazio. Reporte.
+
+## Job agendado
+Classe `Schedulable` se prova pelo teste (`System.schedule` dentro de `Test.startTest`). Não
+deixe job agendado na sandbox de dev: classe com job pendente não aceita deploy, e a validação
+do PR, que roda contra a dev, fica vermelha (achado EPLAST-33, 2026-11-15). Se agendar para
+conferir, desagende e diga no plano. Agendar na sandbox de QA é do `qa`, em duas fases.
