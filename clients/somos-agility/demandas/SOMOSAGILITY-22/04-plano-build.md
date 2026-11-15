@@ -1,3 +1,7 @@
+**Resultado do build:** concluído
+
+**Org de teste:** sbx-somos-agility-dev
+
 # 04 — Plano de build: SOMOSAGILITY-22 — Relatório de Jobs do painel de controle financeiro
 
 **Cliente:** somos-agility
@@ -109,3 +113,38 @@ Já está descrito em `03-design.md`, seção 6. Resumo, a ser executado em `sbx
 - Arquivos adicionados ao commit: o novo `force-app/main/default/approvalProcesses/JOB_de_Solicita_o_de_Investimento__c.JOB_de_solicitacoes_de_investimento.approvalProcess-meta.xml` e este `04-plano-build.md`.
 - Nenhum outro arquivo do índice (as mudanças já staged em `CLAUDE.md`, `src/salesforce_agents/ao_vivo.py`, `src/salesforce_agents/orchestrator.py`, `src/salesforce_agents/sessao.py` são de outra sessão/demanda e não foram tocadas nem incluídas aqui).
 - Push para `origin feature/SOMOSAGILITY-22` — atualiza o PR já aberto pela esteira, sem abrir um novo.
+
+---
+
+## 7. Sessão de 15/11 (reconferência, sem mudança de construção)
+
+Contexto: a esteira devolveu a demanda ao build para ser verificada e testada pelas regras de 15/11 (`comentarios-do-card.md`, 2026-11-15 18:59: "Nada muda no que foi construído"). `05-testes-rodada-1.md` é do fluxo antigo, mas foi lido para não repetir as falhas.
+
+**Branch e commit:** `feature/SOMOSAGILITY-22`. O processo de aprovação alterado já está versionado e commitado em sessões anteriores. Nesta sessão não há alteração de metadata nova.
+
+### Confirmado via `sf` nesta sessão (org `sbx-somos-agility-dev`, única conectada)
+- O `ApprovalProcess` `JOB_de_solicitacoes_de_investimento` recuperado de dev é idêntico ao arquivo do repositório (diff sem diferença), incluindo `initialSubmissionActions` = `Status_Qualificacao` (FieldUpdate). Nada foi editado no lugar nem ativado nesta sessão. O retrieve temporário foi apagado.
+- Existem 2 usuários ativos em dev cujo nome coincide com valores dos critérios de entrada do processo de ordem 2 (contagem agregada; nenhum dado de usuário foi lido).
+
+### Como o verificador pode exercitar o envio (falha 1 da rodada 1 da QA)
+Os critérios de entrada dos dois processos ativos dependem do criador do Job (`CreatedBy`), e o usuário de execução do Apex anônimo não está na lista. Por isso o envio dá `NO_APPLICABLE_PROCESS`.
+- Opção A: criar o Job de teste com `CreatedById` de um dos usuários acima. Só funciona se o "Set Audit Fields upon Record Creation" estiver habilitado na dev. **Não confirmado.**
+- Opção B: executar o envio logado como um desses usuários (login-as). **Não confirmado.**
+- Não alterei usuário, perfil nem critério de entrada para forçar o teste. Se nenhuma das opções valer, a verificação fica inconclusiva e o gate precisa de um usuário de teste sintético, registrado no `CLAUDE.md` do cliente.
+
+### Incerto
+- Pedido do cliente de 30/10 ("tornar obrigatórios Classificação gerencial e Denominação na aprovação do Walmor"): **não está em `01-analise.md` nem em `03-design.md` e não foi construído.** Falta definir quais campos (API names), em que etapa a obrigatoriedade vale (envio ou etapa de aprovação) e se entra nesta demanda. Não inventei. Quem responde: arquiteto e demandante, no gate de design. Não bloqueia o escopo já aprovado.
+- G2 (janela do relatório) e G3 (Jobs já em aprovação): sem resposta no card. Relatório intocado. G4 (produção igual a dev): sem registro.
+
+---
+
+## 8. Pontos que o verificador deve exercitar (critério de aceite da análise ligado ao componente)
+
+| Critério (`01-analise.md` seção 4) | Componente | O que exercitar em dev |
+|---|---|---|
+| Job com status válido aparece no grupo correto (aqui: Pendente após o envio) | `ApprovalProcess` `JOB_de_solicitacoes_de_investimento` + FieldUpdate `Status_Qualificacao` | Job de teste sintético, criado por usuário que entra no processo de ordem 2, enviado para aprovação: `Status_da_Qualificaco__c` = Pendente. Depois aprovar (Aprovado), rejeitar em outro Job (Rejeitado), reenviar o rejeitado (Pendente). `Status_Previs_o_de_Gastos__c` não muda. |
+| Nenhum job some do relatório; rosca = linhas | Report `JOBs_de_Investimento_HsY` (intocado) | Contagem agregada por status no objeto, sem linhas. O relatório não foi alterado, então o total não deve mudar. |
+| Todos os valores de status estão no filtro | Report (intocado) | Conferir o filtro no metadata do relatório contra os valores do picklist. Sem tela com dado real. |
+| Dashboard reflete o relatório | Dashboard `Controle Financeiro` (intocado) | Contagem por status igual à do relatório, por consulta agregada. |
+| Nenhum dado de cliente sai do teste | Todos | Só Job sintético, apagado ao final; contagens agregadas; sem prints de registro real. |
+| Regressão do design (R4/seção 6) | Lookup `Relacionado_ao_Job__c` | Continua só aceitando Job Aprovado. |
