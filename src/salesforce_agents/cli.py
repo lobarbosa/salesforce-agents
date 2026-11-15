@@ -299,11 +299,20 @@ def avancar(client: str, demand_id: str, novo_status: str, autor: str) -> None:
     "Squad OS manda quando alguém clica em aprovar no card.",
 )
 @click.option(
+    "--reverificar",
+    default=None,
+    metavar="AUTOR",
+    help="Tira do gate de build um build concluído e roda só o verificador de novo, "
+    "sem reconstruir.",
+)
+@click.option(
     "--github-output",
     is_flag=True,
     help="Escreve o motivo da parada em $GITHUB_OUTPUT (uso do run-demand.yml).",
 )
-def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: bool) -> None:
+def rodar(
+    client: str, demand_id: str, aprovar_gate: str | None, reverificar: str | None, github_output: bool
+) -> None:
     """Roda a demanda a partir do estágio atual até o próximo gate humano.
 
     É o comando que run-demand.yml chama. Diferente de `avancar`, não recebe
@@ -311,10 +320,15 @@ def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: 
     existe a possibilidade de alguém disparar a etapa errada por engano.
     """
     try:
+        if aprovar_gate and reverificar:
+            raise click.ClickException("--aprovar-gate e --reverificar não vão juntos.")
         if aprovar_gate:
             d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
             click.echo(f"{demand_id}: gate aprovado por {aprovar_gate} -> {d.status}")
-        parada = fluxo.rodar(client, demand_id)
+        if reverificar:
+            fluxo.reverificar(client, demand_id, reverificar)
+            click.echo(f"{demand_id}: reverificação pedida por {reverificar}")
+        parada = fluxo.rodar(client, demand_id, so_verificar=bool(reverificar))
     except (fluxo.FluxoError, demands.InvalidStatusError, demands.DemandNotFoundError) as exc:
         raise click.ClickException(str(exc))
     except sessao.ApiIndisponivelError as exc:

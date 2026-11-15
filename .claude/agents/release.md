@@ -17,6 +17,8 @@ Definition of done e o que registrar na entrega: skill `padrao-entrega`.
 2. `sf project deploy start --dry-run --target-org <ALVO>` e reporte o resultado.
 3. Se limpo, execute o deploy real em sandbox/UAT.
 4. Registre em `06-entrega.md`: componentes, timestamp, org, deploy ID.
+5. Ative as versões novas (Flow, agente) só depois do deploy, conforme a seção "Versões e
+   ativação" do plano, e registre o que foi ativado e o que saiu de uso.
 
 ## Bloqueio absoluto
 Se o alias da org contiver `prod`, `prd` ou `production`, **recuse e avise o humano**.

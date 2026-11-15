@@ -44,6 +44,9 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
   `**Estimativa de esforço:** <min>–<max> h` + o que mudou em relação à análise e por quê
 
 ## Regras
+- Quando o desenho altera Flow, agente Agentforce ou classe Apex que já existe, diga qual
+  versão nova será criada e qual é o passo de ativação (skill `salesforce-doutrina`,
+  "Alterar o que já existe"). Nunca desenhe edição no lugar do que está ativo.
 - Nunca cite metadata que você não confirmou existir na org.
 - Nunca escreva username da org, e-mail ou telefone de ninguém (nem do remetente de um
   anexo): cite a org pelo alias. Formato de e-mail no artefato bloqueia o push e descarta a

@@ -1,45 +1,71 @@
 **Verificação:** inconclusiva
-**Org de teste:** sbx-eplast-dev
+**Org de teste:** `sbx-eplast-dev`
 
-# EPLAST-36 — Verificação do build
+# EPLAST-36 — Verificação do build (reverificação, 2026-11-15)
 
-**Data:** 2026-11-15. `sf org list` mostrou uma única org conectada, a sandbox de alias `sbx-eplast-dev` (tipo Sandbox, Connected). É a "QA" da Eplast usada como dev da esteira (regra 5 da conta). QA da esteira não tocada. Só leitura de metadata e contagens agregadas. Nenhum DML, nenhum registro criado, nada a apagar.
+`sf org list` mostrou uma única org, `sbx-eplast-dev` (Sandbox, Connected), que é a "QA" da Eplast usada como dev da esteira (regra 5 da conta). QA da esteira e produção não tocadas. Nada feito no Marketing Cloud. `force-app/` não alterado.
+
+Diferença para a rodada anterior: desta vez criei massa sintética `TESTE EPLAST-36` e executei os relatórios de verdade (Analytics REST, `includeDetails=true`). A dev tinha 0 Accounts, então os resultados dos relatórios vêm só da massa de teste.
+
+## Resultado em uma frase
+Região, segmento (Conta e Lead), Inativos, Sazonais e opt-out foram provados com dados e passaram. Histórico de compra (faixas de recência), relatório de produto e acesso negado **não foram provados**: ficam sem prova pelo motivo abaixo.
 
 ## Por que inconclusiva
-A dev tem 0 registros de Account (`SELECT COUNT(Id) FROM Account` devolveu 0). O critério principal (o público retorna só as Contas do filtro, e a contagem bate com um relatório de controle) não pôde ser exercitado com dados. A metadata não mostrou defeito. Não criei massa sintética: não foi pedido, e Account/Contact/Lead têm automação cuja cadeia (inclusive o conector `et4ae5`) não foi isolada nesta verificação.
+`Account.LastPurchase__c` é um roll-up (max de `Opportunity.CloseDate` com `StageName = Fechado/Ganho`), não é gravável. Para ter data de última compra é preciso criar Oportunidade ganha. A validação da Oportunidade exige, em cadeia, Filial com código ERP, condição de pagamento, endereço, CNAE, razão social, e-mail da Conta e **"ID Usuário Protheus" no registro do Proprietário da Conta**. Os quatro primeiros eu satisfiz com dados sintéticos. O último é campo do usuário proprietário (registro que não criei); não o alterei (regra de não alterar o que não é meu) e não há licença livre para criar usuário de teste (14 de 14, segundo o assessment). A criação das Oportunidades falhou nesse ponto. Order/OrderItem para o relatório de produto dependem de Pricebook, Produto e Oportunidade, e têm trigger com envio ao Protheus na atualização, por isso não foram montados.
 
-## O que uma pessoa precisa fazer para provar
-1. Carregar massa sintética `TESTE EPLAST-36` na dev (ou executar na QAS com autorização no card): Contas em regiões, setores, `Type` e `LastPurchase__c` variados, com e sem `HasOptedOutOfEmail`.
-2. Rodar os relatórios e comparar com a contagem esperada da massa. Cobrir as fronteiras de recência (hoje-90, 91, 180, 181, 365, 366 dias) e Conta sem data de última compra.
-3. Atribuir `PS_Marketing_Publicos` a um usuário de teste e confirmar o acesso. Usar um usuário sem o PS para o cenário negativo.
-4. Conferir `PRODUTO - CONTAS POR PRODUTO COMPRADO` com Pedidos e itens.
+## O que uma pessoa precisa fazer para provar o restante
+1. Na dev, preencher `ProtheusSellerId__c` de um usuário de teste (ou liberar o uso do proprietário atual) e criar Oportunidades `Fechado/Ganho` com `CloseDate` em hoje-90, -91, -180, -181, -365, -366 e uma Conta sem compra. Esperado: cada Conta cai em exatamente uma faixa (`COMPRA - ÚLTIMOS 90 DIAS`, `SEM COMPRA - 91 A 180`, `181 A 365`, `MAIS DE 365`); Conta sem data não aparece em nenhuma.
+2. Criar Order e OrderItem sintéticos e rodar `PRODUTO - CONTAS POR PRODUTO COMPRADO`.
+3. Atribuir `PS_Marketing_Publicos` a um usuário de teste e conferir o acesso; usar um usuário sem o PS para o cenário negativo.
 
-## Casos executados (metadata na dev)
+## Massa criada (toda com `TESTE EPLAST-36` no nome)
+7 Contas A1..A7, cada uma com 1 Contato; 3 Leads L1..L3; 1 Filial, 1 Condição de pagamento e 7 vínculos Conta x Condição (só para tentar a Oportunidade).
+
+| Conta | Type | UF | Setor | Opt-out do Contato |
+|---|---|---|---|---|
+| A1 | Recorrente | SP | Alimentos | não |
+| A2 | Recorrente | SP | Alimentos | **sim** |
+| A3 | Recorrente | PR | PET | não |
+| A4 | Inativo | MG | Bebidas | não |
+| A5 | Recorrente | RJ | Alimentos | não |
+| A6 | Sazonal | SP | Bebidas | não |
+| A7 | Recorrente | SP | Alimentos | não |
+
+Leads: L1 Alimentos sem opt-out; L2 Alimentos com opt-out; L3 Bebidas sem opt-out.
+
+## Casos
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| C01 | Público por região | Analytics REST `describe` dos 58 relatórios da pasta; filtros dos 7 `RECORRENTES (ATIVOS) - <região>` | Filtro por UF por região, mais `TYPE = Recorrente` | CO `GO,DF,MT,MS,TO`; ES; MG; NO/NE (15 UFs); RJ; SP; SUL `PR,SC,RS`; todos com `TYPE = Recorrente` (PA-11). GERAL só `TYPE` e opt-out | passou (metadata) |
-| C02 | Público combinando critérios (segmento) | Filtros de `SEGMENTO - ALIMENTOS`, `SEGMENTO - PET`, `LEADS - SEGMENTO - ALIMENTOS` | `Account.Sector__c` / `Lead.Sector__c` = setor, mais opt-out | `Account.Sector__c = Alimentos` e `= PET (Bem-estar animal)`; `Lead.Sector__c = Alimentos`; todos com opt-out falso | passou (metadata) |
-| C03 | Histórico de compra | Filtros das 4 faixas e de `COMPRA - ÚLTIMOS 90 DIAS` | Faixas sem lacuna nem sobreposição, Conta sem data fora | ≤90d (`>=` 90 dias atrás até hoje); 91–180 (`<=` 91 e `>=` 180 dias atrás); 181–365 (`<=` 181 e `>=` 365); mais de 365 (`<` 365 dias atrás). Contíguas por construção | passou (metadata) |
-| C04 | Inativos | Filtro de `INATIVOS - GERAL` | `TYPE = Inativo` + opt-out | Conforme | passou (metadata) |
-| C05 | Opt-out em todos | Procura de `EMAIL_OPT_OUT` nos filtros dos 58 | Presente nos 35 ajustados e nos novos baseados em Contact/Lead | Presente em 57 de 58. Exceção: `PRODUTO - CONTAS POR PRODUTO COMPRADO` (tipo `OrderItemList`, sem filtros). Ver observação 1 | passou com observação |
-| C06 | Contagem e duplicado | `SELECT COUNT(Id) FROM Report WHERE FolderName='MARKETING CLOUD'`; consulta por nome | 58 relatórios; `SAZONAIS - MG` duplicado renomeado, não excluído | 58; `SAZONAIS_MG_X7D` = `SAZONAIS - MG (DUPLICADO - REVISAR)`; original `SAZONAIS_MG_Jfz` mantido | passou |
-| C07 | Documentação | Descrição dos 58 relatórios | Todos com descrição | 58 de 58 | passou |
-| C08 | Não grava em registro | Plano e design sem Flow, Apex nem campo novo; só relatórios e permission set | Nenhuma automação nem campo novo | Consistente com o plano. Não verificado por teste de gravação | passou (por construção) |
-| C09 | Acesso respeita perfil (permission set) | Consulta a PermissionSet, ObjectPermissions e FieldPermissions de `PS_Marketing_Publicos` | Leitura em Account, Contact, Lead, Order, Product2; Campaign leitura, criação e edição; RunReports e CreateCustomizeReports; sem ViewAll, ModifyAll nem export; FLS de leitura nos campos de segmento e opt-out | Conforme: Account, Contact, Lead, Order, Product2 só leitura; Campaign R/C/E sem delete; RunReports e CreateCustomizeReports verdadeiros; ViewAllData, ModifyAllData e ExportReport falsos; 8 FLS de leitura (`Sector__c`, `Subsector__c`, `LastPurchase__c`, `Inactive__c` em Account; `Sector__c`, `Subsector__c` em Lead; `et4ae5__HasOptedOutOfMobile__c` em Lead e Contact), sem edição | passou (metadata) |
-| C10 | Contagem do relatório = relatório de controle, filtros com dados | Não executado | Resultado igual à massa esperada | Account = 0 na dev | não executado |
-| C11 | Acesso negado a usuário sem PS / pasta | Não executado | Usuário sem permissão não vê o público | `PermissionSetAssignment` do PS = 0 (nenhum usuário atribuído); sem usuário de teste | não executado |
-| C12 | Relatório de produto com dados | Não executado | Contas por produto comprado, sem valores | Sem Order nem OrderItem de teste | não executado |
+| V01 | Público por região | Executei `RECORRENTES (ATIVOS) - SP` | A1 e A7. Fora: A2 (opt-out), A3, A4, A5, A6 (Sazonal) | 2 linhas: A1, A7 | passou |
+| V02 | Público por região | Executei `RECORRENTES (ATIVOS) - SUL` e `- RJ` | SUL: A3 (PR). RJ: A5 | SUL: A3 (1). RJ: A5 (1) | passou |
+| V03 | Região, geral | Executei `RECORRENTES (ATIVOS) - GERAL` | Recorrentes sem opt-out: A1, A3, A5, A7 | 4 linhas: A1, A3, A5, A7 (A2 fora, Sazonal e Inativo fora) | passou |
+| V04 | Segmento | Executei `SEGMENTO - ALIMENTOS`, `- BEBIDAS`, `- PET (BEM-ESTAR ANIMAL)`, `- INDUSTRIAL` | ALIM: A1, A5, A7 (A2 fora por opt-out). BEB: A4, A6. PET: A3. INDUSTRIAL: vazio | ALIM: A1, A5, A7. BEB: A4, A6. PET: A3. INDUSTRIAL: 0 | passou |
+| V05 | Segmento de Lead | Executei `LEADS - SEGMENTO - ALIMENTOS`, `- BEBIDAS`, `- INDUSTRIAL` | ALIM: L1 (L2 fora por opt-out). BEB: L3. IND: vazio | ALIM: L1. BEB: L3. IND: 0 | passou |
+| V06 | Inativos | Executei `INATIVOS - GERAL` | A4 | A4 (1) | passou |
+| V07 | Sazonais (relatório pré-existente, região SP) | Executei `SAZONAIS - SP` | A6 | A6 (1) | passou |
+| V08 | Opt-out respeitado | A2 e L2 têm opt-out; conferidos em V01, V03, V04, V05 | A2 e L2 nunca aparecem | Ausentes em todos os relatórios acima | passou |
+| V09 | Combinar critérios (região E segmento) | Provado pela interseção dos resultados de V01 e V04 (A1 e A7 estão em SP e Alimentos; A2 por opt-out; A5 só em Alimentos RJ). Não rodei um relatório com os dois filtros juntos | Pares distintos não se misturam | Consistente, sem relatório combinado | passou (indireto) |
+| V10 | Histórico de compra, faixas | Tentei criar Oportunidades ganhas nas fronteiras 90/91/180/181/365/366. `COMPRA - ÚLTIMOS 90 DIAS` e `SEM COMPRA - MAIS DE 365 DIAS` rodaram vazios | Cada Conta em uma faixa | Oportunidade bloqueada pela validação (ID Usuário Protheus do proprietário). Relatórios rodam sem erro, mas sem dado de compra | não executado |
+| V11 | Produto por Conta | `PRODUTO - CONTAS POR PRODUTO COMPRADO` rodou sem erro e vazio; sem Order/OrderItem | Contas por produto, sem valores | Sem massa de pedido | não executado |
+| V12 | Acesso negado sem PS/pasta | Sem usuário de teste e sem PS atribuído | Usuário sem permissão não vê | Não executado | não executado |
+| V13 | Público não grava em registro | Antes e depois das execuções, Account/Contact/Lead não receberam campo novo; build é só relatório e permission set (sem Flow, Apex ou campo novo) | Nada gravado | Nenhuma diferença nos registros de teste; relatórios só leem | passou |
+| V14 | Sem erro nos 58 relatórios | Já verificado na rodada anterior (metadata, descrição, duplicado, PS). Não repeti, e nada mudou no build | 58 com descrição, PS sem ViewAll/ModifyAll/Export | Rodada anterior: conforme | passou (herdado da rodada anterior) |
+
+Falhas da rodada anterior: a rodada anterior era inconclusiva por falta de massa, sem falhas abertas. Os casos C10 (contagem com dados), antes não executado, agora estão cobertos por V01 a V08; C11 e C12 seguem sem prova (V12, V11).
+
+## Efeitos colaterais da ordem de execução (assessment)
+A demanda não grava em Account/Opportunity/Order; só relatórios. Mesmo assim a inserção da massa passou pelo `AccountTrigger` e pelos Flows da org. Anotado: a tentativa de Oportunidade expôs 5 validações em cadeia (Filial/ERP, condição de pagamento, endereço, CNAE/razão social/e-mail, ID Protheus do proprietário), útil para o QA montar massa.
 
 ## Observações (não são reprovação)
-1. `PRODUTO - CONTAS POR PRODUTO COMPRADO` não tem filtro de opt-out nem qualquer filtro. `OrderItemList` não expõe `EMAIL_OPT_OUT`. Se o relatório alimentar envio, o opt-out precisa ser aplicado em outro ponto. Confirmar com o arquiteto.
-2. `ObjectPermissions` do PS não lista `OrderItem` (o plano diz que o PS lê OrderItem). O acesso a itens de pedido costuma seguir Order e Product2. Conferir na homologação com um usuário real.
-3. `LEADS - NO/NE` não existe (lacuna já registrada pelo builder). Os setores de Lead são 8, não 9 (`Lead.Sector__c` não tem PET), também já declarado.
-4. Compartilhamento da pasta `MARKETING CLOUD` e "Usuário de marketing" são passos do administrador (pendências do plano). Não verificados aqui.
-5. Faixas de data usam valores relativos (`N_DAYS_AGO`); o comportamento nas fronteiras só se prova com dados.
+1. `PRODUTO - CONTAS POR PRODUTO COMPRADO` não tem filtro de opt-out (`OrderItemList` não expõe `EMAIL_OPT_OUT`). Se alimentar envio, aplicar opt-out em outro ponto. Confirmar com o arquiteto.
+2. `ObjectPermissions` de `PS_Marketing_Publicos` não lista `OrderItem`, apesar do plano. Conferir na homologação com usuário real.
+3. `LEADS - NO/NE` não existe (lacuna já declarada pelo builder); Leads têm 8 setores, não 9.
 
-## Cadeia externa
-Nenhum registro foi criado, então nada disparou automação nem saiu da org. "O que pode ter saído da org": nada.
+## O que pode ter saído da org
+- Para não disparar a consulta de CNPJ (callout do `AccountTrigger` após insert/update) e o handler de Oportunidade, as inserções e atualizações da massa rodaram em Apex anônimo com `TriggerUtility.bypassTrigger = true` (variável estática, só vale naquela execução; a configuração `TriggerUtility__mdt` não foi alterada, segue `false`). Os Flows record-triggered continuaram ativos.
+- Nenhuma Order foi criada ou atualizada, então não houve envio ao Protheus (o `OrderTrigger` só age em update). Nenhuma Oportunidade foi criada (todas falharam na validação). Nenhum envio de e-mail, nenhum envio ao Marketing Cloud. Não consultei o log de integração; nenhum registro de Task, Quote ou Order apareceu (contagens 0).
+- Obs.: os 3 Leads passaram pelo Flow `Lead_AfterInsert_AplicaRegraAtribuicao` (regra de atribuição interna).
 
-## Dados de teste
-Nenhum criado. Nada a apagar. Arquivos temporários só em `/tmp`, fora do repositório.
+## Limpeza
+Apaguei toda a massa por Apex anônimo (Leads, vínculos de condição de pagamento, Contatos, Contas, Condição de pagamento, Filial). Contagens agregadas depois: Account 0, Contact 0, Lead 0, Opportunity 0, Order 0, Quote 0, Task 0, PaymentTerms__c 0, Branch__c 0, RelationshipAccountsPaymentTerm__c 0 (a dev estava toda zerada antes). Nada ficou. Nenhum job Apex agendado criado (CronTrigger = 0).

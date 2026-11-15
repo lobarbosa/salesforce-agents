@@ -169,12 +169,39 @@ def aprovar_gate(client: str, demand_id: str, autor: str) -> demands.Demand:
     return demands.transition(client, demand_id, prox, autor)
 
 
+# Reverificação (decisão de 2026-11-15): com a autorização de dados de teste
+# valendo para toda a esteira, as verificações que saíram inconclusivas por
+# falta dela precisam rodar de novo. Refazer o build inteiro custaria um
+# construtor e mexeria numa entrega que ninguém reprovou; aqui roda só o
+# `verificador`, sobre o que já está construído na dev.
+ETAPA_SO_VERIFICACAO = "verificacao"
+
+
+def reverificar(client: str, demand_id: str, autor: str) -> demands.Demand:
+    """Tira a demanda do gate de build para refazer só a verificação.
+
+    Só vale para build concluído parado no gate: sem plano, ou com o build
+    bloqueado, não há construção para verificar. Voltar o status é permitido
+    (guardrail #5); o histórico registra quem pediu.
+    """
+    d = demands.Demand.load(client, demand_id)
+    if d.status != "aguardando_gate_build":
+        raise FluxoError(
+            f"{client}/{demand_id} está em '{d.status}': só se reverifica um build parado "
+            f"no gate de build."
+        )
+    if not _plano_de_build(d).exists() or _plano_bloqueado(d):
+        raise FluxoError(f"{client}/{demand_id}: não há build concluído para verificar.")
+    return demands.transition(client, demand_id, "build", autor)
+
+
 def rodar(
     client: str,
     demand_id: str,
     *,
     executor=None,
     max_etapas: int = 12,
+    so_verificar: bool = False,
 ) -> Parada:
     """Roda etapas de agente em sequência até precisar parar.
 
@@ -256,8 +283,12 @@ def rodar(
             roteiro.descartar(d.path)
 
         rodadas_antes = set(d.path.glob("0[45]-*-rodada-*.md"))
-        executor(client, demand_id, d.status)
-        rodadas.append(d.status)
+        # Na reverificação, a primeira sessão é só do verificador; se ele
+        # reprovar, o build de verdade roda em outro job, como sempre.
+        etapa_da_sessao = ETAPA_SO_VERIFICACAO if (so_verificar and d.status == "build") else d.status
+        so_verificar = False
+        executor(client, demand_id, etapa_da_sessao)
+        rodadas.append(etapa_da_sessao)
 
         # Quem arquiva roteiro reprovado é a esteira, logo abaixo. Achado real
         # (EPLAST-47, 2026-11-15): o agente de QA gravou por conta própria uma
