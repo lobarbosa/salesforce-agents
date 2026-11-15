@@ -162,6 +162,13 @@ nunca tocar em registro que o agente não criou, e a seção "O que pode ter sa�
 rodar de novo só a verificação de um build parado no gate de build, sem reconstruir, há
 `run-demand.yml` com `reverificar` (`sfagents demanda rodar --reverificar`).
 
+Usuário de execução na dev (2026-11-15, decisão do responsável): na reverificação da EPLAST-36
+a Oportunidade de teste não pôde ser criada porque a validation rule exige "ID Usuário
+Protheus" no proprietário, e o proprietário é o usuário com que o job autentica, que o agente
+não criou. Não há licença livre para usuário de teste. Ficou permitido ao `verificador`
+preencher, só na sandbox de dev, campo que validação exige no próprio usuário de execução,
+com valor sintético, registrando antes e depois e devolvendo o valor de antes ao final.
+
 QA em duas fases (2026-11-15): o `ScheduledFlowOpportunity` da EPLAST-47 só roda às 15:47
 UTC, não dispara à mão, e a sessão de QA acaba em minutos; o QA reprovava sem defeito
 nenhum. Com autorização do responsável no card, a primeira sessão registra o estado de
