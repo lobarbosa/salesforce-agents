@@ -2,7 +2,7 @@ id: EPLAST-31
 client: eplast
 titulo: Previsão de vendas por vendedor, região, carteira e período
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -69,3 +69,11 @@ historico:
   motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
     resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
     anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:46:43.599574+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:49:47.306543+00:00'
