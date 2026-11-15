@@ -40,3 +40,12 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Commit:** `8795d68b`
 - **Artefatos revisados:**
   - `01-analise.md` — sha256 `5dfd3e67125d35d5` (19949 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-15T10:17:20.270296+00:00
+- **Commit:** `90b6d05c`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `b42897563745ad88` (10922 bytes)
+  - `03-design.md` — sha256 `620df8e3ec847199` (31771 bytes)
