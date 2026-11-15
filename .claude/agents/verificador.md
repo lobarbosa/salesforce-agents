@@ -24,6 +24,12 @@ qualquer comando e passe sempre `--target-org`. Nada em QA, nada em produção.
 3. Crie os dados de teste que precisar, só sintéticos, com o nome começando por
    `TESTE <DEMAND-ID>`. Nunca leia nem altere registro que você não criou. Nenhum nome,
    documento, e-mail, telefone ou valor de cliente real (guardrail #2).
+   Exceção única: o **seu próprio usuário de execução** (o que `sf org display` mostra como
+   autenticado no job), e só na sandbox de dev. Se uma validation rule exige um campo nele
+   para você criar o dado de teste (achado EPLAST-36: "ID Usuário Protheus" no proprietário
+   para criar Oportunidade), preencha esse campo com valor sintético, registre em
+   `04-verificacao.md` o campo, o valor de antes e o de depois, e devolva o valor de antes
+   ao final. Perfil, permissão, papel e qualquer outro usuário continuam intocados.
 4. Dados de teste estão autorizados em toda demanda, de todo cliente, mesmo quando a cadeia
    de automação chama sistema externo (integração, callout, e-mail): é a regra da esteira
    desde 2026-11-15, e não depende de comentário no card. Só não vale se o `CLAUDE.md` do
