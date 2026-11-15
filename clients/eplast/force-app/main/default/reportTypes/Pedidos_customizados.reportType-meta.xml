@@ -606,4 +606,22 @@
         </columns>
         <masterLabel>Oportunidade</masterLabel>
     </sections>
+    <sections>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Account.Owner</field>
+            <table>Order</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Account.BillingState</field>
+            <table>Order</table>
+        </columns>
+        <columns>
+            <checkedByDefault>false</checkedByDefault>
+            <field>Account.Sector__c</field>
+            <table>Order</table>
+        </columns>
+        <masterLabel>Conta do pedido</masterLabel>
+    </sections>
 </ReportType>
