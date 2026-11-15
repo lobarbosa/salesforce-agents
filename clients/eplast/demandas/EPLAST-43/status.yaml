@@ -2,7 +2,7 @@ id: EPLAST-43
 client: eplast
 titulo: Personalização de conteúdos, e-mails e mensagens
 tipo: projeto
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -29,3 +29,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-11-15T17:58:19.101140+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T20:56:05.149773+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T21:09:27.435855+00:00'
