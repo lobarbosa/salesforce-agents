@@ -96,3 +96,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T13:20:40.041493+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T18:34:28.344462+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T18:36:21.245623+00:00'
