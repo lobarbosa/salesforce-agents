@@ -3,7 +3,7 @@ client: eplast
 titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
   de contas)
 tipo: sustentacao
-status: build
+status: aguardando_gate_build
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
 - de: null
@@ -50,3 +50,7 @@ historico:
   para: build
   autor: pipeline
   em: '2026-11-15T00:22:56.657776+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T00:25:14.722918+00:00'
