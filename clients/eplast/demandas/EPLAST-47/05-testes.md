@@ -1,53 +1,54 @@
 **Veredito:** aguardando execução
-**Org de teste:** `sbx-eplast-qa`
-**Conferir depois de:** 2026-11-15 21:00 UTC
+**Org de teste:** `sbx-eplast-qa` (sandbox `eplast--qas`, Org ID `00DHa000006vZtmMAE`)
+**Conferir depois de:** 2026-11-15 20:40 UTC
 
-# EPLAST-47 — Testes (rodada 3, fase 1: armar)
+# EPLAST-47 — Testes (rodada 3, fase 1: armar de novo)
 
 ## Org
-`sf org list`: só `sbx-eplast-qa` (Sandbox, Connected, Org ID `00DHa000006vZtmMAE`). É a QA. Nenhum deploy do build por mim; o pacote é o da esteira (`05-deploy-qa.md`, deploy `0AfHa00000EHrSrKAL`, Succeeded). Fuso da org: America/Sao_Paulo.
+`sf org list`: só `sbx-eplast-qa` (Sandbox, Connected). É a QA. Pacote do build: `05-deploy-qa.md`, deploy `0AfHa00000EI0cbKAD` (Succeeded, 19:33Z). Flow `ScheduledFlowOpportunity`: v4 Active, criada 19:33:12Z (v1 a v3 Obsolete). Fuso da org: America/Sao_Paulo. Nenhum DML meu em registro; nada criado.
 
-## Retorno da rodada 2
-A FALHA 1 (Flow não exercitado) segue aberta: o Flow é agendado e não dispara por API. Nesta rodada ele é exercitado pela autorização do card de 15/11 01:13 (Leonardo Barbosa): dia de execução alterado para o dia do teste, job roda sobre as contas e oportunidades existentes, conferência só por contagens agregadas, dia volta para 14 ao final. Fica para a fase 2 (sessão depois do horário). Os casos de configuração 1 a 9 da rodada 2 não foram refeitos; o pacote é o mesmo.
+## Por que armei de novo
+A armação anterior (job das 18:47Z) executou **antes** do novo build: o job rodou com a v3 e a esteira implantou a v4 só às 19:33Z. Esse resultado não vale para o build atual (veredito não emitido a partir dele). Como ainda não passou do horário de `Conferir depois de` e o build mudou, armei o job para a v4.
+
+Observação para o builder, caso a execução da v4 repita o quadro (só como alerta, não é falha desta rodada): a execução da v3 deixou 391 linhas de `AccountHistory`, 396 contas em G (370 delas com média <= 160.000), soma de `LastMonthPurchaseValue__c` de 108.525.004,97 nas elegíveis (esperado 183.408.613,36), 162 `IntegrationLog__c` de ação `ScheduledFlowOpportunity` e 460 de `Send Client To Protheus` (saída externa autorizada).
 
 ## O que foi alterado para armar
-- Registro `ScheduledFlowOpportunitySetting__mdt` `Default`: `RunDayOfMonth__c` de **14** para **15**, deploy `0AfHa00000EHrUTKA1` (Succeeded) só desse registro, `--target-org sbx-eplast-qa`. Conferido por query: `Default`, 15. Não commitado; a esteira descarta a alteração.
-- Próxima execução do job (`CronTrigger` `ScheduledFlowOpportunity-3`, WAITING): **2026-11-15T18:47Z** (15:47 em São Paulo; dia 15 no fuso da org). Conferir depois das 21:00 UTC.
-- **Como desfazer:** reimplantar `ScheduledFlowOpportunitySetting.Default` com `RunDayOfMonth__c` = 14 (a esteira reimplanta a configuração original no início da fase 2). Se o job não rodar às 18:47Z, o dia 15 vence à meia-noite de São Paulo (03:00Z de 16/11) e o job do dia 16 não executa a classificação; nesse caso é falha, não espera.
+- Deploy `0AfHa00000EI0fpKAD` (Succeeded, 19:37Z, `--target-org sbx-eplast-qa`), só dois itens, nada commitado:
+  - Flow `ScheduledFlowOpportunity`: horário de início de 15:47 para **17:10** (fuso da org) = 20:10Z; o resto idêntico à v4. Cria versão nova ativa.
+  - `ScheduledFlowOpportunitySetting.Default`: `RunDayOfMonth__c` de 14 para **15** (confirmado por query: 15).
+- Próxima execução (`CronTrigger` `ScheduledFlowOpportunity-5`, WAITING): **2026-11-15T20:10:00Z**, conferido na org.
+- **Como desfazer:** reimplantar o Flow original (início 15:47) e `Default` com `RunDayOfMonth__c` = 14; a esteira faz isso antes da fase 2. Se o job não rodar às 20:10Z, é falha (o dia 15 acaba às 03:00Z de 16/11).
 
-## Estado de antes (contagens agregadas, QA, 15/11 01:3xZ)
+## Estado de antes (contagens agregadas, QA, 15/11 19:4xZ, depois da execução da v3)
 | Medida | Valor |
 |---|---|
 | Contas | 1.217 |
-| Contas por `Ranking__c` | vazio 851; PP 136; P 180; M 27; G 5; GG 18; MP 0; 3G 0 |
-| `AccountHistory` (linhas) | 0 |
-| Oportunidades ganhas (`IsWon`), todas | 7.454 |
-| Oportunidades ganhas do ano com conta (Fechado/Ganho, `ThisYear__c`) | 2.764, em 341 contas |
-| Contas elegíveis (com ao menos 1 ganha) | 563; 8 com média vazia (Ranking não muda) |
-| Elegíveis com valor de compras vazio | 457 |
-| Soma de `LastMonthPurchaseValue__c` nas elegíveis | 12.468.370,41 |
-| `IntegrationLog__c` total / com ação `ScheduledFlowOpportunity` | 52 / 0 |
-| Pedidos (Order) | 10.320 |
+| Contas por `Ranking__c` | vazio 615; PP 54; P 116; M 23; G 396; GG 13; MP 0; 3G 0 |
+| `AccountHistory` (linhas) | 391 (todas de 18:47Z) |
+| Contas elegíveis (com ao menos 1 ganha) | 563; 8 com média vazia |
+| Elegíveis por faixa da média (limite inclusive) | MP 207; PP 138; P 107; M 73; G 30; GG 0; 3G 0 |
+| Dessas, já com o Ranking da faixa | MP 0; PP 11; P 29; M 11; G 26 |
+| Soma de `LastMonthPurchaseValue__c` nas elegíveis | 108.525.004,97 |
+| Soma das ganhas do ano com conta (`Amount`) | 183.408.613,36 |
+| `IntegrationLog__c` total / ação `ScheduledFlowOpportunity` | 665 / 162 |
 
-## Resultado esperado depois da execução
-Regra do Flow: por conta com ganha, soma das ganhas do ano em `LastMonthPurchaseValue__c`; classificação pela média (`AveragePurchasesThisYear__c`), até o limite inclusive; média vazia mantém.
-- Faixa pela média, entre as 555 elegíveis com média: MP 207; PP 138; P 107; M 73; G 30; GG 0; 3G 0.
-- Contas que mudam de classificação (entram em `AccountHistory`): MP 207 + PP 96 + P 62 + M 59 + G 27 = **451** linhas de histórico (Ranking anterior diferente ou vazio).
-- Distribuição final de `Ranking__c` na org: MP 207; PP 138 + (136 não elegíveis ou inalteradas, a recalcular na fase 2 a partir da query das elegíveis); GG das elegíveis deixa de existir. Na fase 2 conferir por query: elegíveis com média por faixa (valores acima) e Ranking igual à faixa em 100% delas.
-- Soma de `LastMonthPurchaseValue__c` nas 563 elegíveis: **183.408.613,36** (soma das ganhas do ano; contas sem ganha no ano ficam com o valor configurado, zero).
-- `IntegrationLog__c` com ação `ScheduledFlowOpportunity`: 0 esperado (sem falha); se houver, ler só contagem e mensagem agregada.
-- Nenhum `UNABLE_TO_LOCK_ROW` nos logs do job; cada conta atualizada uma vez (451 linhas de histórico, não mais; mais de uma linha por conta indica atualização repetida).
-- Pode ter saído da org: sincronização com o Protheus pelos updates de conta (autorizado); listar na fase 2 o que a cadeia criou (IntegrationLog, pedidos, cotações).
+## Resultado esperado depois da execução da v4
+- 100% das 555 elegíveis com média têm `Ranking__c` igual à faixa: MP 207; PP 138; P 107; M 73; G 30; GG 0; 3G 0 (faixa de cada conta por `AveragePurchasesThisYear__c`, limite inclusive). As 8 sem média mantêm o ranking.
+- Soma de `LastMonthPurchaseValue__c` nas elegíveis: 183.408.613,36.
+- `AccountHistory` novas linhas = contas cujo Ranking mudou: 207 + (138-11) + (107-29) + (73-11) + (30-26) = 478, no máximo, descontadas as que já estavam na faixa e as com Ranking anterior igual; nenhuma conta com mais de 1 linha nova.
+- `IntegrationLog__c` de ação `ScheduledFlowOpportunity` novos: 0.
+- Nenhum `UNABLE_TO_LOCK_ROW`.
+- Pode ter saído da org: sincronização com o Protheus pelos updates de conta (autorizado); listar na fase 2.
 
 ## Casos
 | Caso | Critério | Status nesta fase |
 |---|---|---|
-| 4 (1 atualização por conta) | 4 | aguardando execução (451 linhas de histórico, nenhuma conta com 2) |
+| 4 (1 atualização por conta) | 4 | aguardando execução |
 | 6 (sem lock) | 6 | aguardando execução |
-| 8, 9 (soma e vazio) | 8, 9 | aguardando execução (soma total 183.408.613,36; contas sem ganha no ano = valor configurado) |
-| 10, 11 (faixas) | 10, 11 | aguardando execução (por faixa nas contagens acima) |
-| 14 (relatório de mudanças) | 14 | aguardando execução (relatório mostra 451 mudanças) |
-| 16 (falha com destinatário) | 16 | não executado: falha forçada exige alterar registro existente; só se o job gerar log |
-| 17, 18 | volume P10 | não executado: P10 sem número do cliente |
+| 8, 9 (soma e vazio) | 8, 9 | aguardando execução |
+| 10, 11 (faixas) | 10, 11 | aguardando execução |
+| 14 (relatório de mudanças) | 14 | aguardando execução |
+| 16 (falha com destinatário) | 16 | não executado: exige falha forçada em registro existente |
+| 17, 18 | volume | não executado: sem número do cliente (P10) |
+| 1 a 3, 5, 12, 13, 15 | configuração/documentação | comprovados nas rodadas anteriores (mesmo pacote); reconferir na fase 2 |
 | 7 | período configurável | fora de escopo (D3) |
-| 1 a 3 | documentação | não reavaliado |

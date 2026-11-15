@@ -1,53 +1,64 @@
 # EPLAST-47 — Roteiro de teste: classificação das contas por faixa de compras
 
-Foi entregue o ajuste da rotina que calcula, uma vez por mês, o valor de compras de cada conta e a Classificação. A rotina agora processa cada conta uma única vez, usa sete faixas novas (MP, PP, P, M, G, GG e 3G), grava o histórico de mudanças da Classificação e tem um relatório com essas mudanças.
+Foi entregue o ajuste da rotina que calcula, uma vez por mês, o valor de compras de cada conta e a Classificação (campo Ranking). A rotina processa cada conta uma única vez, usa sete faixas (MP, PP, P, M, G, GG e 3G), guarda o histórico de mudanças do Ranking e tem um relatório com as contas que mudaram de faixa. Para quem usa, muda a Classificação das contas e o valor de compras, que passam a seguir as faixas abaixo.
 
-**Situação do teste automático:** o time já comprovou a configuração (7 faixas, valores dos limites, lista de Classificação com 7 opções, relatório e histórico criados). O resultado da rotina sobre as contas depende de execução agendada em 15/11 às 15:47 (horário de Brasília) na sandbox de QA e será conferido pelo time em seguida; até lá, os testes 2 a 5 ficam para quem segue este roteiro.
+**Situação do teste automático:** o time comprovou a configuração (sete faixas, lista do campo Ranking com sete opções, relatório e histórico criados). O resultado da rotina sobre as contas depende da execução agendada, que foi programada para 15/11 às 17:10 (horário de Brasília) e será conferida pelo time numa segunda sessão. Até lá, os Testes 2 a 5 ficam para quem segue este roteiro, depois da execução.
 
 ## Antes de começar
-- Ambiente: sandbox de QA. Perfil: administrador ou usuário que veja Contas e Relatórios.
-- A rotina roda sozinha uma vez por mês; para este teste foi programada para o dia 15/11.
-- Para conferir faixas por tela, use uma conta existente na QA com valores de teste, ou crie uma conta chamada "TESTE EPLAST-47 Conta A" com uma oportunidade ganha de teste (a criação de oportunidade pode exigir dados de apoio; peça ao time).
+- Ambiente: sandbox de QA (QAS). Perfil: administrador ou usuário que veja Contas e Relatórios.
+- A rotina roda sozinha; para este teste foi programada para o dia 15/11. Faça os Testes 2 a 5 depois dela.
+- Use só contas de teste. Se precisar de uma conta com valores conhecidos, peça ao time para criar "TESTE EPLAST-47 Conta A" com oportunidades ganhas de teste.
 
-## Teste 1 — Lista de Classificação
+## Teste 1 — Lista do campo Ranking
 1. Abra uma conta e clique em Editar.
-2. Abra a lista do campo Classificação.
+2. Abra a lista do campo Ranking.
 
 **Resultado esperado:** aparecem exatamente MP, PP, P, M, G, GG e 3G.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Classificação pelas novas faixas
-1. Depois da execução de 15/11, abra uma conta com média de compras do ano conhecida.
-2. Veja os campos Média de compras este ano e Classificação.
+## Teste 2 — Classificação pelas faixas
+1. Depois da execução, abra uma conta de teste cuja Média de compras do ano você conheça.
+2. Veja os campos Média de compras este ano e Ranking.
 
-**Resultado esperado:** até 10.000 = MP; até 35.000 = PP; até 80.000 = P; até 160.000 = M; até 500.000 = G; até 1.000.000 = GG; acima = 3G. O limite exato fica na faixa de baixo (35.000 é PP).
+**Resultado esperado:** até 10.000 = MP; até 35.000 = PP; até 80.000 = P; até 160.000 = M; até 500.000 = G; até 1.000.000 = GG; acima = 3G. O valor exato do limite fica na faixa de baixo (35.000 é PP; 35.000,01 é P).
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Valor de compras ignora perdidas
-1. Use uma conta com oportunidades ganhas de 3.000 e 2.000 e uma perdida de 9.000 no ano.
+## Teste 3 — Valor de compras soma só as ganhas
+1. Abra uma conta de teste com oportunidades ganhas de 3.000 e 2.000 neste ano e uma perdida de 9.000.
 2. Veja o campo Valor de Compras Último Mês.
 
-**Resultado esperado:** 5.000,00.
+**Resultado esperado:** 5.000,00 (a perdida não entra).
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Conta sem compra ganha
-1. Abra uma conta que só tenha oportunidades perdidas ou nenhuma.
-2. Veja Valor de Compras Último Mês.
+## Teste 4 — Conta sem compra e conta sem média
+1. Abra uma conta de teste sem oportunidade ganha neste ano.
+2. Veja Valor de Compras Último Mês e Ranking.
+3. Abra uma conta com Média de compras vazia que já tinha Ranking.
 
-**Resultado esperado:** zero ou vazio, e a Classificação não cai em GG.
+**Resultado esperado:** conta sem ganha no ano fica com Valor de Compras zerado ou vazio; conta com média vazia mantém o Ranking que tinha (não vira GG).
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 5 — Histórico e relatório de mudanças
-1. Abra uma conta cuja Classificação mudou e clique em Histórico de Classificação (ou Visualizar histórico do campo).
-2. Abra Relatórios, pasta "EPLAST-47 Relatorios", relatório "AccountRankingChanges".
+1. Abra uma conta cujo Ranking mudou na execução.
+2. Na aba Relacionado, abra o Histórico da conta e procure a linha do campo Ranking.
+3. Vá em Relatórios, pasta "EPLAST-47 Relatorios (provisorio, P12)", e abra "Mudancas de Classificacao de Contas".
 
-**Resultado esperado:** o histórico mostra a Classificação anterior e a nova; o relatório lista as contas alteradas com anterior e nova (cerca de 451 contas na execução de 15/11 da QA).
+**Resultado esperado:** o histórico mostra uma única mudança de Ranking dessa conta, com valor anterior e novo; o relatório lista as contas que mudaram, com a classificação anterior e a nova.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
+## O que assumimos e você precisa confirmar
+- Só contam compras do ano corrente com oportunidade em Fechado/Ganho (regra atual). Confirme que é essa a regra desejada.
+- Conta com Média de compras vazia mantém o Ranking que tinha. Conta com média zero cai em MP. Confirme.
+- Conta sem compra no ano fica com o valor configurado (zero ou vazio), como a rotina já fazia.
+- O aviso de falha só sai se houver um destinatário configurado; hoje está vazio. Informe quem deve receber. A falha sempre fica registrada.
+- O sistema Protheus precisa aceitar os valores MP e 3G no Ranking; confirmar com quem cuida da integração.
+- A rotina continua diária, só classificando no dia 14 de cada mês.
+- O relatório está numa pasta provisória; diga onde deve ficar.
+
 ## O que não dá para conferir pela tela
-Uma atualização por conta, ausência de erros de bloqueio, aviso de falha por e-mail (destinatário ainda não informado pela Eplast) e volume: ficam com o time técnico. Evidência na fase 2 de `05-testes.md`.
+Execução agendada, ausência de erro de bloqueio de registro, volume e envio ao Protheus: o time confere por contagens na sandbox e registra em `05-testes.md`.

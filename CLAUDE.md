@@ -46,11 +46,15 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - Quem leva o build para a sandbox de QA é a esteira, num passo fixo antes da sessão de QA,
   registrado em `05-deploy-qa.md`. Builder não toca a QA; o agente de QA não implanta.
 - Toda rodada de QA grava também `05-roteiro-cliente.md`: o passo a passo de teste, em
-  linguagem de usuário, que o Squad OS mostra no card e entrega em PDF. O time o vê sempre;
-  o cliente, da homologação em diante.
+  linguagem de usuário, que o Squad OS publica como anexo em PDF no card. O time o vê
+  sempre; o cliente, da homologação em diante.
 - **Nada é marcado como entregue sem evidência**: `entregue` exige `05-testes.md` aprovado
   na sandbox de QA e `06-entrega.md`, no fluxo ou em correção manual.
 - `gates.md` e `status.yaml` são escritos pela esteira (`sfagents`), nunca pelo agente.
+- Antes de cada sessão a esteira grava `00-preflight.md`: versão ativa de agente e Flow, job
+  pendente das classes, e outras demandas do cliente mexendo nos mesmos componentes. Leia antes
+  de agir. Todo agente pode consultar e baixar metadata da org do job (`sf data query`,
+  `sf project retrieve`) para conferir; o que for baixado fora do build é descartado.
 - Demais linhas que o portal lê: skill `padrao-entrega`.
 
 ## Guardrails inegociáveis
@@ -81,6 +85,9 @@ Tudo o que entra na sessão é relido a cada turno; é o maior custo da esteira.
 - Subagente devolve um resumo curto ao orquestrador, não o conteúdo do artefato.
 
 ## Convenções
+- Flow, agente ou classe que já existe: **primeiro uma versão nova, depois a implementação**;
+  nunca editar no lugar o que está ativo. Ativação é passo separado (skill
+  `salesforce-doutrina`).
 - Branch `feature/<DEMAND-ID>`; commit `<DEMAND-ID>: verbo no imperativo`.
 - Apex: cobertura mínima de 85% por classe; classe de teste dedicada `<Classe>Test`.
 - Nomenclatura: skill `padrao-entrega`; a convenção do `CLAUDE.md` do cliente tem prioridade.
