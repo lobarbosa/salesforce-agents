@@ -134,7 +134,7 @@ export async function materializeDemanda(d: DemandaParaMaterializar) {
 export async function triggerRunDemand(
   clientSlug: string,
   demandCode: string,
-  opts: { aprovarGate?: string; gateEsperado?: string } = {}
+  opts: { aprovarGate?: string; gateEsperado?: string; reverificar?: string } = {}
 ) {
   const gh = octokit();
   const { owner, repo, branch } = repoConfig();
@@ -153,6 +153,8 @@ export async function triggerRunDemand(
       // status.yaml já estiver em outro (ver run-demand.yml): é o que impede
       // um disparo duplicado na fila de aprovar o gate seguinte.
       gate_esperado: opts.aprovarGate ? (opts.gateEsperado ?? "") : "",
+      // Roda só o verificador sobre o build parado no gate (ver fluxo.reverificar).
+      reverificar: opts.aprovarGate ? "" : (opts.reverificar ?? ""),
     },
   });
 }

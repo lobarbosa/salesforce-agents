@@ -356,6 +356,32 @@ def rodar(
             fh.write(parada.as_github_output() + "\n")
 
 
+@demanda.command("preflight")
+@click.option("--client", required=True)
+@click.argument("demand_id")
+@click.option("--etapa", required=True, help="Etapa que vai rodar (a saída `etapa` do job decidir).")
+@click.option("--org", "org_alias", required=True, help="Alias da org que o job autenticou.")
+def preflight_cmd(client: str, demand_id: str, etapa: str, org_alias: str) -> None:
+    """Confere org e outras demandas antes da sessão e grava 00-preflight.md.
+
+    Sai com erro só quando há bloqueio (outra demanda do cliente em teste na
+    sandbox de QA); avisos ficam no arquivo para o agente.
+    """
+    from . import preflight
+
+    try:
+        res = preflight.gravar(client, demand_id, etapa, org_alias)
+    except demands.DemandNotFoundError as exc:
+        raise click.ClickException(str(exc))
+    for aviso in res.avisos:
+        click.echo(f"::warning::{aviso}")
+    for achado in res.org:
+        click.echo(f"{demand_id}: {achado}")
+    if res.bloqueios:
+        raise click.ClickException(" ".join(res.bloqueios))
+    click.echo(f"{demand_id}: pré-checagem sem bloqueio.")
+
+
 @demanda.command("comentarios-md")
 @click.option("--client", required=True)
 @click.argument("demand_id")

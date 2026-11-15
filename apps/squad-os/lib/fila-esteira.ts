@@ -1,9 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { travar } from "@/lib/trava";
 import { runsAtivosDoCliente, triggerRunDemand } from "@/lib/github";
-import { estimativaLiberaBuild } from "@/lib/demandas";
-
-const NOTA_ESPERA_ESTIMATIVA = "esperando o cliente aprovar a estimativa de horas";
+import { decidirDisparo, type TipoDisparo } from "@/lib/fila-decisao";
 
 // Fila de disparo por cliente — ver o comentário de DisparoEsteira no schema.
 // Regra única: no máximo UM disparo em voo por cliente, e só se o Actions não
@@ -16,7 +14,7 @@ const EM_VOO_MAX_MS = 10 * 60 * 1000;
 export async function enfileirar(d: {
   clientId: string;
   demandaId: string;
-  tipo: "rodar" | "aprovar";
+  tipo: TipoDisparo;
   gate?: string;
   autor?: string;
 }) {
@@ -79,36 +77,23 @@ export async function processarFila(clientId: string, opcoes: { excetoRunUrl?: s
           },
         },
       });
+      // Outra demanda do cliente em teste na sandbox de QA segura quem iria para lá.
+      const emQa = await tx.demanda.findMany({ where: { clientId, status: "qa" }, select: { id: true, code: true } });
       for (const p of pendentes) {
-        if (p.tipo === "aprovar" && p.demanda.status !== p.gate) {
-          await tx.disparoEsteira.update({
-            where: { id: p.id },
-            data: { concluidoEm: new Date(), nota: `sem efeito: a demanda saiu de ${p.gate} antes de rodar` },
-          });
+        const outraEmQa = emQa.find((d) => d.id !== p.demandaId)?.code ?? null;
+        const decisao = decidirDisparo(p, outraEmQa);
+        if (decisao.acao === "descartar") {
+          await tx.disparoEsteira.update({ where: { id: p.id }, data: { concluidoEm: new Date(), nota: decisao.nota } });
           continue;
         }
-        // Build só com a estimativa aprovada pelo cliente (AMS): a aprovação do
-        // gate fica guardada na fila e sai quando ele aprovar (a rota de
-        // aprovação chama processarFila de novo).
-        if (p.tipo === "aprovar" && p.gate === "aguardando_gate_design" && !estimativaLiberaBuild(p.demanda)) {
-          if (p.nota !== NOTA_ESPERA_ESTIMATIVA) {
-            await tx.disparoEsteira.update({ where: { id: p.id }, data: { nota: NOTA_ESPERA_ESTIMATIVA } });
+        if (decisao.acao === "esperar") {
+          if (p.nota !== decisao.nota) {
+            await tx.disparoEsteira.update({ where: { id: p.id }, data: { nota: decisao.nota } });
           }
           continue;
         }
-        if (p.demanda.status === "standby" || p.demanda.status === "cancelada") {
-          await tx.disparoEsteira.update({
-            where: { id: p.id },
-            data: { concluidoEm: new Date(), nota: `sem efeito: demanda ${p.demanda.status}` },
-          });
-          continue;
-        }
         try {
-          await triggerRunDemand(
-            client.slug,
-            p.demanda.code,
-            p.tipo === "aprovar" ? { aprovarGate: p.autor, gateEsperado: p.gate } : {}
-          );
+          await triggerRunDemand(client.slug, p.demanda.code, decisao.opcoes);
         } catch (err) {
           await tx.disparoEsteira.update({
             where: { id: p.id },

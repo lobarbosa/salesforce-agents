@@ -1,0 +1,52 @@
+import { estimativaLiberaBuild } from "@/lib/demandas";
+
+// O que a fila faz com cada pedido pendente. Função pura, separada de
+// fila-esteira.ts para ter teste (scripts/testa-fila.ts) sem banco nem GitHub.
+
+export const NOTA_ESPERA_ESTIMATIVA = "esperando o cliente aprovar a estimativa de horas";
+export const notaEsperaQa = (codigo: string) => `esperando a sandbox de QA: ${codigo} está em teste lá`;
+
+export type TipoDisparo = "rodar" | "aprovar" | "reverificar";
+
+export interface PedidoNaFila {
+  tipo: string;
+  gate: string;
+  autor: string;
+  nota: string;
+  demanda: Parameters<typeof estimativaLiberaBuild>[0] & { status: string };
+}
+
+export type Decisao =
+  | { acao: "descartar"; nota: string }
+  | { acao: "esperar"; nota: string }
+  | { acao: "disparar"; opcoes: { aprovarGate?: string; gateEsperado?: string; reverificar?: string } };
+
+/**
+ * `outraEmQa`: código de outra demanda do mesmo cliente que está em `qa`, se
+ * houver. Guardrail #6 (uma demanda por vez, por cliente, na mesma sandbox):
+ * o teste de uma não pode criar registros no meio do teste armado da outra
+ * (achado 2026-11-15: a EPLAST-47 contava contas na QA entre duas sessões).
+ */
+export function decidirDisparo(p: PedidoNaFila, outraEmQa: string | null): Decisao {
+  const status = p.demanda.status;
+  if (status === "standby" || status === "cancelada") {
+    return { acao: "descartar", nota: `sem efeito: demanda ${status}` };
+  }
+  if (p.tipo === "aprovar" && status !== p.gate) {
+    return { acao: "descartar", nota: `sem efeito: a demanda saiu de ${p.gate} antes de rodar` };
+  }
+  if (p.tipo === "reverificar" && status !== "aguardando_gate_build") {
+    return { acao: "descartar", nota: `sem efeito: reverificação só no gate de build (demanda em ${status})` };
+  }
+  // Build só com a estimativa aprovada pelo cliente (AMS): a aprovação do
+  // gate fica guardada na fila e sai quando ele aprovar.
+  if (p.tipo === "aprovar" && p.gate === "aguardando_gate_design" && !estimativaLiberaBuild(p.demanda)) {
+    return { acao: "esperar", nota: NOTA_ESPERA_ESTIMATIVA };
+  }
+  if (p.tipo === "aprovar" && p.gate === "aguardando_gate_build" && outraEmQa) {
+    return { acao: "esperar", nota: notaEsperaQa(outraEmQa) };
+  }
+  if (p.tipo === "aprovar") return { acao: "disparar", opcoes: { aprovarGate: p.autor, gateEsperado: p.gate } };
+  if (p.tipo === "reverificar") return { acao: "disparar", opcoes: { reverificar: p.autor || "Squad OS" } };
+  return { acao: "disparar", opcoes: {} };
+}

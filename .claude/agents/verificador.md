@@ -1,7 +1,7 @@
 ---
 name: verificador
 description: Testa na sandbox de dev o que o builder acabou de construir, contra os critérios de aceite, e registra a evidência em 04-verificacao.md. Use na etapa de build, depois do construtor e antes do gate humano.
-tools: Read, Write, Bash, Grep, Glob
+tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
 

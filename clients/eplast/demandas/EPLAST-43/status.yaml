@@ -1,0 +1,23 @@
+id: EPLAST-43
+client: eplast
+titulo: Personalização de conteúdos, e-mails e mensagens
+tipo: projeto
+status: backlog
+criado_em: '2026-11-10T00:22:17.398Z'
+historico:
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  em: '2026-11-10T12:00:01Z'
+  para: standby
+  autor: Leonardo Barbosa
+  motivo: Aguardando a Eplast decidir a plataforma de Marketing (decisão prevista
+    até a semana 12, conforme a arquitetura-alvo da Onda 1).
+- de: standby
+  em: '2026-11-15T03:11:12Z'
+  para: backlog
+  autor: Leonardo Barbosa
+  motivo: 'Plataforma de marketing definida: Marketing Cloud. A demanda prepara o
+    Sales Cloud; nada é feito no Marketing Cloud.'
