@@ -133,9 +133,9 @@
                 <rightValue><booleanValue>true</booleanValue></rightValue>
             </conditions>
             <conditions>
-                <leftValueReference>GetAccount.OwnerId</leftValueReference>
-                <operator>NotEqualTo</operator>
-                <rightValue><elementReference>$User.Id</elementReference></rightValue>
+                <leftValueReference>IsNotOwnerFormula</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
             </conditions>
             <connector><targetReference>SetNotOwner</targetReference></connector>
             <label>Fora da carteira</label>
@@ -200,6 +200,11 @@
     </decisions>
     <description>Proxima melhor acao por cliente (EPLAST-27). Flow autolancado, sem gatilho e sem DML, chamado como acao do agente SFAgent2. Regra fixa: NODATA, A1 (risco), A2 (oportunidade parada), A3 (cliente inativo), NONE. Parametros em NextBestActionSetting__mdt.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>IsNotOwnerFormula</name>
+        <dataType>Boolean</dataType>
+        <expression>CASESAFEID({!GetAccount.OwnerId}) &lt;&gt; CASESAFEID({!$User.Id})</expression>
+    </formulas>
     <formulas>
         <name>IsRiskAccount</name>
         <dataType>Boolean</dataType>

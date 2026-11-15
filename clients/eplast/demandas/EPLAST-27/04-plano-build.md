@@ -34,3 +34,13 @@ Seguidas sem alteração. Valor de risco `E` e 30 dias ficam no CMDT. Limiar de 
 2. **Flow sem teste declarativo** (I4). Evidência vem de execução com massa fictícia e dos cenários da seção 10 do design.
 3. **Massa de teste (R2/I5): não criada neste build.** Antes de criar Account ou Opportunity fictícia, conferir `TriggerUtility__mdt` e conter o envio ao Protheus (`IntegrationLog__c` por contagem). Sem contenção, sem DML.
 4. Não foi executada nenhuma consulta a dado de negócio. Só metadata e confirmação de campos.
+
+## Correções da verificação 1
+
+- **Falha 1 (dono recebia `NOT_OWNER` na própria conta com `RestrictToOwner__c = true`): corrigida no código, ainda não provada.**
+  - Causa tratada: a decisão `CheckOwner` comparava `GetAccount.OwnerId` com `$User.Id` direto. Hipótese (a verificação não isolou a causa): `$User.Id` no Flow vem com 15 caracteres e `OwnerId` com 18, então a comparação nunca é igual.
+  - Mudança: nova fórmula `IsNotOwnerFormula` = `CASESAFEID({!GetAccount.OwnerId}) <> CASESAFEID({!$User.Id})`. A condição "Fora da carteira" agora exige `RestrictToOwner__c = true` e `IsNotOwnerFormula = true`. Nenhuma outra parte do Flow mudou (regra, textos, consultas, `DefaultMode`).
+  - Deploy na dev (`sbx-eplast-dev`): Succeeded (0AfHa00000EHvQ1KAL). Nada em QA.
+  - **Sem prova nesta sessão:** a dev não tem Account, e criar massa atravessa a cadeia Protheus (R2), contida só pelo verificador. A reverificação deve repetir C8 (dono = usuário que executa, config padrão, esperado NODATA/A1/A2/A3/NONE) e C9 (dono diferente, esperado `NOT_OWNER`). Para C9 provar a comparação, executar como dois usuários distintos.
+- **Lacunas do agente (C15, `agentGraph`, ativação da v4, licença, permission set sem concessão do agente):** não são corrigíveis por metadata aqui. Seguem como passos manuais (R1, I3) e a verificação do agente continua inconclusiva até alguém ativar a v4 na dev e conceder o acesso.
+- **Premissas assumidas:** P1 a P12 do design, sem alteração.
