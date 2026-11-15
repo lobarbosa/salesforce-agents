@@ -2,7 +2,7 @@ id: EPLAST-29
 client: eplast
 titulo: Ações por linguagem natural no assistente de IA
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -60,3 +60,10 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T09:58:42.091218+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-15T12:38:35.636740+00:00'
+  motivo: 'refazer o build em cima da versão nova do SFAgent2 que a EPLAST-27 vai
+    criar (regra de 15/11): o build anterior criou a v5 na dev junto com a ação da
+    27, e a QA só tem a v4. Plano e verificação anteriores em rodada-anterior/build-agente-v5/.'
