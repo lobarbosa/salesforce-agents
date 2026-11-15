@@ -1,6 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
-    <apiVersion>61.0</apiVersion>
+    <actionCalls>
+        <name>Gerar_Proposta</name>
+        <label>Gerar proposta</label>
+        <locationX>50</locationX>
+        <locationY>1200</locationY>
+        <actionName>Rascunho_Proposta_Comercial</actionName>
+        <actionType>generatePromptResponse</actionType>
+        <connector>
+            <targetReference>Tela_Resultado</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Tela_Erro</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>Input:DadosOportunidade</name>
+            <value>
+                <elementReference>fDadosOportunidade</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>Input:DadosCotacao</name>
+            <value>
+                <elementReference>fDadosCotacao</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>varTextoGerado</assignToReference>
+            <name>promptResponse</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Gerar_Followup</name>
+        <label>Gerar follow-up</label>
+        <locationX>314</locationX>
+        <locationY>1200</locationY>
+        <actionName>Rascunho_Followup_Comercial</actionName>
+        <actionType>generatePromptResponse</actionType>
+        <connector>
+            <targetReference>Tela_Resultado</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Tela_Erro</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>Input:DadosOportunidade</name>
+            <value>
+                <elementReference>fDadosOportunidade</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>Input:DadosCotacao</name>
+            <value>
+                <elementReference>fDadosCotacao</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>varTextoGerado</assignToReference>
+            <name>promptResponse</name>
+        </outputParameters>
+    </actionCalls>
+    <actionCalls>
+        <name>Gerar_Argumentos</name>
+        <label>Gerar argumentos</label>
+        <locationX>578</locationX>
+        <locationY>1200</locationY>
+        <actionName>Argumentos_Comerciais_Oportunidade</actionName>
+        <actionType>generatePromptResponse</actionType>
+        <connector>
+            <targetReference>Tela_Resultado</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Tela_Erro</targetReference>
+        </faultConnector>
+        <inputParameters>
+            <name>Input:DadosOportunidade</name>
+            <value>
+                <elementReference>fDadosOportunidade</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>Input:DadosCotacao</name>
+            <value>
+                <elementReference>fDadosCotacao</elementReference>
+            </value>
+        </inputParameters>
+        <outputParameters>
+            <assignToReference>varTextoGerado</assignToReference>
+            <name>promptResponse</name>
+        </outputParameters>
+    </actionCalls>
+    <apiVersion>67.0</apiVersion>
+    <assignments>
+        <name>Assign_Linha</name>
+        <label>Acumular linha</label>
+        <locationX>800</locationX>
+        <locationY>800</locationY>
+        <assignmentItems>
+            <assignToReference>varLinhasTxt</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>fLinhaAtual</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>varContador</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <numberValue>1.0</numberValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>Loop_Linhas</targetReference>
+        </connector>
+    </assignments>
     <choices>
         <name>Escolha_Proposta</name>
         <choiceText>Proposta comercial</choiceText>
@@ -26,14 +139,114 @@
         </value>
     </choices>
     <decisions>
+        <name>Decision_Opp</name>
+        <label>Oportunidade acessível?</label>
+        <locationX>314</locationX>
+        <locationY>600</locationY>
+        <defaultConnector>
+            <targetReference>Tela_Negativa</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não (sem acesso ou Id inválido)</defaultConnectorLabel>
+        <rules>
+            <name>R_Decision_Opp</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varOpp.Id</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Conta</targetReference>
+            </connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Conta</name>
+        <label>Oportunidade tem conta?</label>
+        <locationX>314</locationX>
+        <locationY>600</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Cotacao</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não</defaultConnectorLabel>
+        <rules>
+            <name>R_Decision_Conta</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varOpp.AccountId</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Account</targetReference>
+            </connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Cotacao</name>
+        <label>Tem cotação primária?</label>
+        <locationX>314</locationX>
+        <locationY>600</locationY>
+        <defaultConnector>
+            <targetReference>Decision_Tipo</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não (bloco "sem cotação")</defaultConnectorLabel>
+        <rules>
+            <name>R_Decision_Cotacao</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varOpp.SBQQ__PrimaryQuote__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Quote</targetReference>
+            </connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Decision_Limite</name>
+        <label>Atingiu 50 linhas?</label>
+        <locationX>314</locationX>
+        <locationY>600</locationY>
+        <defaultConnector>
+            <targetReference>Assign_Linha</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não</defaultConnectorLabel>
+        <rules>
+            <name>R_Decision_Limite</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>varContador</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue>
+                    <numberValue>50.0</numberValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Decision_Tipo</targetReference>
+            </connector>
+            <label>Sim, sai do loop</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Decision_Tipo</name>
         <label>Tipo escolhido</label>
         <locationX>314</locationX>
-        <locationY>240</locationY>
+        <locationY>1080</locationY>
         <defaultConnector>
             <targetReference>Gerar_Argumentos</targetReference>
         </defaultConnector>
-        <defaultConnectorLabel>Argumentos (padrão)</defaultConnectorLabel>
+        <defaultConnectorLabel>Argumentos</defaultConnectorLabel>
         <rules>
             <name>Rota_Proposta</name>
             <conditionLogic>and</conditionLogic>
@@ -65,11 +278,40 @@
             <label>Follow-up</label>
         </rules>
     </decisions>
-    <description>EPLAST-30. Ponto de entrada do apoio a propostas, follow-ups e argumentos comerciais via IA. Só leitura: zero elementos de criação, atualização ou exclusão de registro. Usuário escolhe o tipo de rascunho; o Flow passa o Id da Oportunidade ao Flex prompt template correspondente, que faz o grounding via Opportunity_PromptFlow_DadosOportunidade e Opportunity_PromptFlow_CotacaoPrimaria, e exibe o texto gerado para revisão. Acesso restrito via custom permission IA_Rascunho_Comercial / PermissionSet PS_Comercial_RascunhoIA. Ver demandas/EPLAST-30/03-design.md e 04-plano-build.md (desvio do grounding por merge field direto).</description>
+    <description>EPLAST-30 (design rev. 2, opção E). Ponto de entrada do apoio a propostas, follow-ups e argumentos comerciais via IA. Só leitura: zero criação, atualização ou exclusão de registro, e-mail ou aprovação. Lê Opportunity, Account, cotação primária (SBQQ__Quote__c) e até 50 linhas (SBQQ__QuoteLine__c) com Get Records no contexto do usuário (CRUD, FLS e sharing aplicados), monta o texto de dados e o passa ao template Flex escolhido pela ação de Prompt Template. Sem acesso ao registro, mostra negativa e não chama o modelo. Acesso restrito pelo PSG PSG_Comercial_RascunhoIA. Ver demandas/EPLAST-30/03-design.md seções 3.2 a 3.4.</description>
     <environments>Default</environments>
+    <formulas>
+        <name>fDadosOportunidade</name>
+        <dataType>String</dataType>
+        <expression>"Oportunidade (nome): "&amp;IF(ISBLANK({!varOpp.Name}),"[dado ausente: Nome da oportunidade]",{!varOpp.Name})&amp;CHR(10)&amp;"Etapa: "&amp;IF(ISBLANK(TEXT({!varOpp.StageName})),"[dado ausente: Etapa]",TEXT({!varOpp.StageName}))&amp;CHR(10)&amp;"Data de fechamento prevista: "&amp;IF(ISBLANK({!varOpp.CloseDate}),"[dado ausente: Data de fechamento]",TEXT(DAY({!varOpp.CloseDate}))&amp;"/"&amp;TEXT(MONTH({!varOpp.CloseDate}))&amp;"/"&amp;TEXT(YEAR({!varOpp.CloseDate})))&amp;CHR(10)&amp;"Valor da oportunidade: "&amp;IF(ISBLANK({!varOpp.Amount}),"[dado ausente: Valor da oportunidade]",TEXT({!varOpp.CurrencyIsoCode})&amp;" "&amp;SUBSTITUTE(TEXT({!varOpp.Amount}),".",","))&amp;CHR(10)&amp;"Probabilidade: "&amp;IF(ISBLANK({!varOpp.Probability}),"[dado ausente: Probabilidade]",SUBSTITUTE(TEXT({!varOpp.Probability}),".",",")&amp;"%")&amp;CHR(10)&amp;"Tipo: "&amp;IF(ISBLANK(TEXT({!varOpp.Type})),"[dado ausente: Tipo]",TEXT({!varOpp.Type}))&amp;CHR(10)&amp;"Origem do lead: "&amp;IF(ISBLANK(TEXT({!varOpp.LeadSource})),"[dado ausente: Origem do lead]",TEXT({!varOpp.LeadSource}))&amp;CHR(10)&amp;"Encerrada: "&amp;IF({!varOpp.IsClosed},"sim","não")&amp;CHR(10)&amp;"Ganha: "&amp;IF({!varOpp.IsWon},"sim","não")&amp;CHR(10)&amp;"Última atividade: "&amp;IF(ISBLANK({!varOpp.LastActivityDate}),"[dado ausente: Última atividade]",TEXT(DAY({!varOpp.LastActivityDate}))&amp;"/"&amp;TEXT(MONTH({!varOpp.LastActivityDate}))&amp;"/"&amp;TEXT(YEAR({!varOpp.LastActivityDate})))&amp;CHR(10)&amp;"Conta (nome): "&amp;IF(ISBLANK({!varAcc.Name}),"[dado ausente: Nome da conta]",{!varAcc.Name})&amp;CHR(10)&amp;"Conta (setor): "&amp;IF(ISBLANK(TEXT({!varAcc.Industry})),"[dado ausente: Setor da conta]",TEXT({!varAcc.Industry}))&amp;CHR(10)&amp;"Conta (tipo): "&amp;IF(ISBLANK(TEXT({!varAcc.Type})),"[dado ausente: Tipo da conta]",TEXT({!varAcc.Type}))&amp;CHR(10)&amp;"Conta (cidade): "&amp;IF(ISBLANK({!varAcc.BillingCity}),"[dado ausente: Cidade da conta]",{!varAcc.BillingCity})&amp;CHR(10)&amp;"Conta (estado): "&amp;IF(ISBLANK({!varAcc.BillingState}),"[dado ausente: Estado da conta]",{!varAcc.BillingState})</expression>
+    </formulas>
+    <formulas>
+        <name>fDadosCotacao</name>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!varQuote.Id}),"sem cotação","Status da cotação: "&amp;IF(ISBLANK(TEXT({!varQuote.SBQQ__Status__c})),"[dado ausente: Status da cotação]",TEXT({!varQuote.SBQQ__Status__c}))&amp;CHR(10)&amp;"Valor líquido da cotação: "&amp;IF(ISBLANK({!varQuote.SBQQ__NetAmount__c}),"[dado ausente: Valor líquido da cotação]",TEXT({!varQuote.CurrencyIsoCode})&amp;" "&amp;SUBSTITUTE(TEXT({!varQuote.SBQQ__NetAmount__c}),".",","))&amp;CHR(10)&amp;"Condição de pagamento: "&amp;IF(ISBLANK(TEXT({!varQuote.SBQQ__PaymentTerms__c})),"[dado ausente: Condição de pagamento]",TEXT({!varQuote.SBQQ__PaymentTerms__c}))&amp;CHR(10)&amp;"Validade da cotação: "&amp;IF(ISBLANK({!varQuote.SBQQ__ExpirationDate__c}),"[dado ausente: Validade da cotação]",TEXT(DAY({!varQuote.SBQQ__ExpirationDate__c}))&amp;"/"&amp;TEXT(MONTH({!varQuote.SBQQ__ExpirationDate__c}))&amp;"/"&amp;TEXT(YEAR({!varQuote.SBQQ__ExpirationDate__c})))&amp;CHR(10)&amp;"Desconto do cliente: "&amp;IF(ISBLANK({!varQuote.SBQQ__CustomerDiscount__c}),"[dado ausente: Desconto do cliente]",SUBSTITUTE(TEXT({!varQuote.SBQQ__CustomerDiscount__c}),".",",")&amp;"%")&amp;CHR(10)&amp;"Quantidade de linhas: "&amp;IF(ISBLANK({!varQuote.SBQQ__LineItemCount__c}),"[dado ausente: Quantidade de linhas]",SUBSTITUTE(TEXT({!varQuote.SBQQ__LineItemCount__c}),".",","))&amp;CHR(10)&amp;"Linhas (maior total líquido primeiro):"&amp;CHR(10)&amp;IF({!varContador}=0,"[dado ausente: linhas da cotação]",{!varLinhasTxt})&amp;IF(BLANKVALUE({!varQuote.SBQQ__LineItemCount__c},0)&gt;50,"e mais "&amp;TEXT(BLANKVALUE({!varQuote.SBQQ__LineItemCount__c},0)-50)&amp;" itens (ver cotação)",""))</expression>
+    </formulas>
+    <formulas>
+        <name>fLinhaAtual</name>
+        <dataType>String</dataType>
+        <expression>"- "&amp;IF(ISBLANK({!Loop_Linhas.SBQQ__ProductName__c}),"[dado ausente: Produto]",{!Loop_Linhas.SBQQ__ProductName__c})&amp;" | quantidade: "&amp;IF(ISBLANK({!Loop_Linhas.SBQQ__Quantity__c}),"[dado ausente: Quantidade]",SUBSTITUTE(TEXT({!Loop_Linhas.SBQQ__Quantity__c}),".",","))&amp;" | preço líquido: "&amp;IF(ISBLANK({!Loop_Linhas.SBQQ__NetPrice__c}),"[dado ausente: Preço líquido]",SUBSTITUTE(TEXT({!Loop_Linhas.SBQQ__NetPrice__c}),".",","))&amp;" | desconto: "&amp;IF(ISBLANK({!Loop_Linhas.SBQQ__Discount__c}),"[dado ausente: Desconto]",SUBSTITUTE(TEXT({!Loop_Linhas.SBQQ__Discount__c}),".",",")&amp;"%")&amp;" | total líquido: "&amp;IF(ISBLANK({!Loop_Linhas.SBQQ__NetTotal__c}),"[dado ausente: Total líquido]",SUBSTITUTE(TEXT({!Loop_Linhas.SBQQ__NetTotal__c}),".",","))&amp;CHR(10)</expression>
+    </formulas>
     <interviewLabel>Rascunho comercial com IA {!$Flow.CurrentDateTime}</interviewLabel>
     <isAdditionalPermissionRequiredToRun>true</isAdditionalPermissionRequiredToRun>
     <label>Opportunity - Rascunho Comercial com IA</label>
+    <loops>
+        <name>Loop_Linhas</name>
+        <label>Percorrer linhas da cotação</label>
+        <locationX>800</locationX>
+        <locationY>680</locationY>
+        <collectionReference>varLinhasCot</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Decision_Limite</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>Decision_Tipo</targetReference>
+        </noMoreValuesConnector>
+    </loops>
     <processMetadataValues>
         <name>BuilderType</name>
         <value>
@@ -77,88 +319,149 @@
         </value>
     </processMetadataValues>
     <processType>Flow</processType>
-    <actionCalls>
-        <name>Gerar_Proposta</name>
-        <label>Gerar proposta</label>
-        <locationX>178</locationX>
-        <locationY>360</locationY>
-        <actionName>Rascunho_Proposta_Comercial</actionName>
-        <actionType>generatePromptResponse</actionType>
-        <connector>
-            <targetReference>Tela_Resultado</targetReference>
-        </connector>
-        <faultConnector>
-            <targetReference>Tela_Erro</targetReference>
-        </faultConnector>
-        <inputParameters>
-            <name>OpportunityId</name>
-            <value>
-                <elementReference>Opportunity.Id</elementReference>
-            </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>varTextoGerado</assignToReference>
-            <name>promptResponse</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
-        <name>Gerar_Followup</name>
-        <label>Gerar follow-up</label>
+    <recordLookups>
+        <name>Get_Opportunity</name>
+        <label>Ler oportunidade</label>
         <locationX>314</locationX>
-        <locationY>360</locationY>
-        <actionName>Rascunho_Followup_Comercial</actionName>
-        <actionType>generatePromptResponse</actionType>
+        <locationY>400</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Tela_Resultado</targetReference>
+            <targetReference>Decision_Opp</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Tela_Erro</targetReference>
         </faultConnector>
-        <inputParameters>
-            <name>OpportunityId</name>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
             <value>
-                <elementReference>Opportunity.Id</elementReference>
+                <elementReference>recordId</elementReference>
             </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>varTextoGerado</assignToReference>
-            <name>promptResponse</name>
-        </outputParameters>
-    </actionCalls>
-    <actionCalls>
-        <name>Gerar_Argumentos</name>
-        <label>Gerar argumentos</label>
-        <locationX>450</locationX>
-        <locationY>360</locationY>
-        <actionName>Argumentos_Comerciais_Oportunidade</actionName>
-        <actionType>generatePromptResponse</actionType>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <outputReference>varOpp</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>StageName</queriedFields>
+        <queriedFields>CloseDate</queriedFields>
+        <queriedFields>Amount</queriedFields>
+        <queriedFields>Probability</queriedFields>
+        <queriedFields>Type</queriedFields>
+        <queriedFields>LeadSource</queriedFields>
+        <queriedFields>IsClosed</queriedFields>
+        <queriedFields>IsWon</queriedFields>
+        <queriedFields>LastActivityDate</queriedFields>
+        <queriedFields>AccountId</queriedFields>
+        <queriedFields>SBQQ__PrimaryQuote__c</queriedFields>
+        <queriedFields>CurrencyIsoCode</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Account</name>
+        <label>Ler conta</label>
+        <locationX>314</locationX>
+        <locationY>520</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
-            <targetReference>Tela_Resultado</targetReference>
+            <targetReference>Decision_Cotacao</targetReference>
         </connector>
         <faultConnector>
             <targetReference>Tela_Erro</targetReference>
         </faultConnector>
-        <inputParameters>
-            <name>OpportunityId</name>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
             <value>
-                <elementReference>Opportunity.Id</elementReference>
+                <elementReference>varOpp.AccountId</elementReference>
             </value>
-        </inputParameters>
-        <outputParameters>
-            <assignToReference>varTextoGerado</assignToReference>
-            <name>promptResponse</name>
-        </outputParameters>
-    </actionCalls>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <outputReference>varAcc</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Industry</queriedFields>
+        <queriedFields>Type</queriedFields>
+        <queriedFields>BillingCity</queriedFields>
+        <queriedFields>BillingState</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Quote</name>
+        <label>Ler cotação primária</label>
+        <locationX>314</locationX>
+        <locationY>560</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Get_Linhas</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Tela_Erro</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varOpp.SBQQ__PrimaryQuote__c</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>SBQQ__Quote__c</object>
+        <outputReference>varQuote</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>SBQQ__Status__c</queriedFields>
+        <queriedFields>SBQQ__NetAmount__c</queriedFields>
+        <queriedFields>SBQQ__PaymentTerms__c</queriedFields>
+        <queriedFields>SBQQ__ExpirationDate__c</queriedFields>
+        <queriedFields>SBQQ__CustomerDiscount__c</queriedFields>
+        <queriedFields>SBQQ__LineItemCount__c</queriedFields>
+        <queriedFields>CurrencyIsoCode</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Linhas</name>
+        <label>Ler linhas da cotação</label>
+        <locationX>314</locationX>
+        <locationY>620</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Loop_Linhas</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Tela_Erro</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>SBQQ__Quote__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>varQuote.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>SBQQ__QuoteLine__c</object>
+        <outputReference>varLinhasCot</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>SBQQ__ProductName__c</queriedFields>
+        <queriedFields>SBQQ__Quantity__c</queriedFields>
+        <queriedFields>SBQQ__NetPrice__c</queriedFields>
+        <queriedFields>SBQQ__NetTotal__c</queriedFields>
+        <queriedFields>SBQQ__Discount__c</queriedFields>
+        <sortField>SBQQ__NetTotal__c</sortField>
+        <sortOrder>Desc</sortOrder>
+    </recordLookups>
+    <runInMode>DefaultMode</runInMode>
     <screens>
         <name>Tela_Escolha</name>
         <label>Escolha do rascunho</label>
-        <locationX>50</locationX>
+        <locationX>314</locationX>
         <locationY>120</locationY>
         <allowBack>true</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <connector>
-            <targetReference>Decision_Tipo</targetReference>
+            <targetReference>Get_Opportunity</targetReference>
         </connector>
         <fields>
             <name>Texto_Introducao</name>
@@ -184,13 +487,13 @@
         <name>Tela_Resultado</name>
         <label>Rascunho gerado</label>
         <locationX>314</locationX>
-        <locationY>480</locationY>
+        <locationY>1320</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>Texto_Aviso_Resultado</name>
-            <fieldText>&lt;p&gt;&lt;strong&gt;Rascunho gerado por IA — revise antes de usar.&lt;/strong&gt; Nenhum campo deste registro foi alterado.&lt;/p&gt;</fieldText>
+            <fieldText>&lt;p&gt;&lt;strong&gt;Rascunho gerado por IA: revise antes de usar.&lt;/strong&gt; Nenhum campo deste registro foi alterado.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <isRequired>false</isRequired>
         </fields>
@@ -209,14 +512,31 @@
     <screens>
         <name>Tela_Erro</name>
         <label>Falha ao gerar</label>
-        <locationX>650</locationX>
-        <locationY>480</locationY>
+        <locationX>314</locationX>
+        <locationY>1320</locationY>
         <allowBack>false</allowBack>
         <allowFinish>true</allowFinish>
         <allowPause>false</allowPause>
         <fields>
             <name>Texto_Erro</name>
             <fieldText>&lt;p&gt;Não foi possível gerar o rascunho agora. Tente novamente em instantes. Nenhum dado deste registro foi alterado.&lt;/p&gt;</fieldText>
+            <fieldType>DisplayText</fieldType>
+            <isRequired>false</isRequired>
+        </fields>
+        <showFooter>true</showFooter>
+        <showHeader>true</showHeader>
+    </screens>
+    <screens>
+        <name>Tela_Negativa</name>
+        <label>Sem acesso à oportunidade</label>
+        <locationX>314</locationX>
+        <locationY>600</locationY>
+        <allowBack>false</allowBack>
+        <allowFinish>true</allowFinish>
+        <allowPause>false</allowPause>
+        <fields>
+            <name>Texto_Negativa</name>
+            <fieldText>&lt;p&gt;Você não tem acesso a esta oportunidade, ou ela não existe. Nenhum rascunho foi gerado.&lt;/p&gt;</fieldText>
             <fieldType>DisplayText</fieldType>
             <isRequired>false</isRequired>
         </fields>
@@ -232,12 +552,43 @@
     </start>
     <status>Active</status>
     <variables>
-        <name>Opportunity</name>
-        <dataType>SObject</dataType>
+        <name>recordId</name>
+        <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varOpp</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
         <objectType>Opportunity</objectType>
+    </variables>
+    <variables>
+        <name>varAcc</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>varQuote</name>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>SBQQ__Quote__c</objectType>
+    </variables>
+    <variables>
+        <name>varLinhasCot</name>
+        <dataType>SObject</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>SBQQ__QuoteLine__c</objectType>
     </variables>
     <variables>
         <name>varTextoGerado</name>
@@ -245,5 +596,23 @@
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varLinhasTxt</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>varContador</name>
+        <dataType>Number</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>0</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
     </variables>
 </Flow>

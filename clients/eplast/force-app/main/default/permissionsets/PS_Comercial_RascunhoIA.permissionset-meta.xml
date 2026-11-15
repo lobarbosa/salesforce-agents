@@ -4,18 +4,10 @@
         <enabled>true</enabled>
         <name>IA_Rascunho_Comercial</name>
     </customPermissions>
-    <description>EPLAST-30. Leitura dos Flows de rascunho comercial (Screen + 2 PromptFlows de grounding), da custom permission IA_Rascunho_Comercial e dos campos em Opportunity, Account, SBQQ__Quote__c, SBQQ__QuoteLine__c.</description>
+    <description>EPLAST-30. Acesso ao Screen Flow de rascunho comercial, custom permission IA_Rascunho_Comercial e leitura (sem edição) da lista permitida de campos de Opportunity, Account, cotação e linha. Sem Contact.</description>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Opportunity_Screen_RascunhoComercial</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>true</enabled>
-        <flow>Opportunity_PromptFlow_CotacaoPrimaria</flow>
-    </flowAccesses>
-    <flowAccesses>
-        <enabled>true</enabled>
-        <flow>Opportunity_PromptFlow_DadosOportunidade</flow>
     </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>PS Comercial Rascunho IA</label>
@@ -55,16 +47,6 @@
         <object>SBQQ__QuoteLine__c</object>
         <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.NextStep</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>Opportunity.Description</field>
-        <readable>true</readable>
-    </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
         <field>Opportunity.Type</field>
@@ -122,11 +104,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SBQQ__QuoteLine__c.SBQQ__Product__c</field>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>SBQQ__QuoteLine__c.SBQQ__Quantity__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -147,7 +124,17 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>SBQQ__QuoteLine__c.SBQQ__Description__c</field>
+        <field>Opportunity.Amount</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Opportunity.Probability</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>SBQQ__QuoteLine__c.SBQQ__ProductName__c</field>
         <readable>true</readable>
     </fieldPermissions>
 </PermissionSet>
