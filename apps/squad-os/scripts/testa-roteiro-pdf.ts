@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { writeFileSync } from "node:fs";
-import { gerarPdfRoteiro, nomeDoArquivoDoRoteiro, textoParaPdf } from "../lib/roteiro-pdf";
+import { gerarPdfRoteiro, textoParaPdf } from "../lib/roteiro-pdf";
 
 // Roteiro de teste em PDF (lib/roteiro-pdf.ts). Não confere desenho — isso é
 // olho humano; confere que o markdown que o agente de QA emite vira um PDF
@@ -79,10 +79,6 @@ async function main() {
   await caso("caractere fora da fonte padrão é trocado ou descartado", () => {
     assert.equal(textoParaPdf("A → B ≤ 10 ✓ ☐ ação — fim"), "A -> B <= 10 (ok) [ ] ação — fim");
     assert.equal(textoParaPdf("emoji 🚀 some"), "emoji  some");
-  });
-
-  await caso("nome do arquivo sai do código da demanda", () => {
-    assert.equal(nomeDoArquivoDoRoteiro("EPLAST-47"), "roteiro-de-teste-eplast-47.pdf");
   });
 
   if (falhas) process.exit(1);

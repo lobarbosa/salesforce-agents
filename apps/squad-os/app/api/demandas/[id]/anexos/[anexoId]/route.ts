@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { BUCKET_ANEXOS, createServiceClient, serviceRoleConfigurado } from "@/lib/supabase/storage";
+import { canManageClientData } from "@/lib/auth";
+import { clienteVeRoteiro, ehAnexoDoRoteiro } from "@/lib/visao-cliente";
 
 // URL assinada curta em vez de link público: o link expira antes de virar
 // algo que se encaminha por aí, e cada download passa de novo pelo gate de
@@ -20,8 +22,15 @@ export async function GET(
     return NextResponse.json({ error: "anexos ainda não configurados" }, { status: 503 });
   }
 
-  const anexo = await prisma.anexo.findFirst({ where: { id: anexoId, demandaId: id } });
-  if (!anexo) {
+  const anexo = await prisma.anexo.findFirst({
+    where: { id: anexoId, demandaId: id },
+    include: { demanda: { select: { status: true } } },
+  });
+  // O roteiro de teste só é do cliente da homologação em diante — a mesma
+  // regra que o tira da lista (lib/visao-cliente.ts). A lista nunca foi o gate.
+  const roteiroAntesDaHora =
+    anexo && ehAnexoDoRoteiro(anexo) && !canManageClientData(acesso.usuario.role) && !clienteVeRoteiro(anexo.demanda.status);
+  if (!anexo || roteiroAntesDaHora) {
     return NextResponse.json({ error: "anexo não encontrado" }, { status: 404 });
   }
 

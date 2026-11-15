@@ -8,7 +8,6 @@ import { DecisaoEstimativa } from "@/components/AprovacaoEstimativa";
 import { QuemAgeChips } from "@/components/DemandCard";
 import { Modal } from "@/components/Modal";
 import { Artefato } from "@/components/Artefato";
-import { RoteiroCliente } from "@/components/RoteiroCliente";
 import { DemandaPainel } from "@/components/DemandaPainel";
 import {
   asPerguntas,
@@ -387,15 +386,6 @@ export function DemandModal({
           aprovada do lado. */}
       {demanda.artefatoNome === "05-testes.md" && demanda.artefatoConteudo && (
         <VereditoQaResumo texto={demanda.artefatoConteudo} visaoCliente={visaoCliente} />
-      )}
-
-      {demanda.roteiroCliente && (
-        <RoteiroCliente
-          texto={demanda.roteiroCliente}
-          demandaId={demanda.id}
-          visaoCliente={visaoCliente}
-          aberto={visaoCliente && podeAprovarEsteGate}
-        />
       )}
 
       {podeAprovarEsteGate && demanda.artefatoConteudo && (

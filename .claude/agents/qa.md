@@ -72,8 +72,8 @@ Tabela: Caso | Passos | Esperado | Obtido | Status.
 Falha é falha — não arredonde para "passou com ressalva". Liste as falhas primeiro.
 
 ## Roteiro do cliente (`05-roteiro-cliente.md`)
-Em toda rodada, aprovada ou reprovada; a sessão não encerra sem ele. O Squad OS o mostra no
-card e o entrega em PDF.
+Em toda rodada, aprovada ou reprovada; a sessão não encerra sem ele. O Squad OS o publica no
+card como anexo em PDF.
 
 É o passo a passo de quem testa à mão: a pessoa do cliente, na homologação, e antes dela o
 time, quando você não conseguiu executar tudo (sandbox com dado real, tela que não abriu,

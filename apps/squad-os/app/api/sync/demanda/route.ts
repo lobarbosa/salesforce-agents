@@ -5,6 +5,8 @@ import { concluirEmVoo, processarFila, enfileirar } from "@/lib/fila-esteira";
 import { ESTAGIOS_DE_DEBITO, estimativaAprovada } from "@/lib/demandas";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
+import { publicarRoteiroComoAnexo } from "@/lib/roteiro-anexo";
+import { caminhoDoRoteiro } from "@/lib/visao-cliente";
 
 // Fecha o laço na direção git → app. `status.yaml` no repositório é a fonte de
 // verdade do estágio (guardrail #5 do CLAUDE.md raiz); o Postgres é espelho, e
@@ -103,7 +105,7 @@ export async function POST(request: NextRequest) {
 
   const demanda = await prisma.demanda.findUnique({
     where: { clientId_code: { clientId: client.id, code } },
-    select: { id: true, perguntas: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true, estimativaDebitadaEm: true },
+    select: { id: true, titulo: true, roteiroCliente: true, perguntas: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true, estimativaDebitadaEm: true },
   });
   if (!demanda) {
     // Acontece quando a demanda nasceu pela CLI (`sfagents demanda nova`) e
@@ -202,6 +204,17 @@ export async function POST(request: NextRequest) {
   // Fim de execução desta demanda: libera a fila do cliente e manda o
   // próximo (lib/fila-esteira.ts). A execução que chama ainda aparece ativa
   // no Actions — por isso é excluída pela URL.
+  // O roteiro vira um anexo em PDF no card (lib/roteiro-anexo.ts). Só refaz o
+  // arquivo quando o texto mudou ou o anexo sumiu: o sync roda em toda etapa,
+  // e regerar a cada vez trocaria a data do anexo sem o roteiro ter mudado.
+  if (typeof body.roteiro_cliente === "string") {
+    const novo = body.roteiro_cliente.slice(0, CONTEUDO_MAX);
+    const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDoRoteiro(demanda.id) }, select: { id: true } });
+    if (novo !== demanda.roteiroCliente || (novo.trim() !== "") !== Boolean(temAnexo)) {
+      await publicarRoteiroComoAnexo({ id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome }, novo);
+    }
+  }
+
   await concluirEmVoo(demanda.id);
   // QA não aprovou (fluxo.py, motivo "refazer"): a demanda voltou para `build`
   // e ninguém vai clicar em nada — o build refeito entra na fila sozinho. Sem
