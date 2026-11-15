@@ -2,7 +2,7 @@ id: EPLAST-39
 client: eplast
 titulo: Origem dos leads e retorno das campanhas
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -68,3 +68,11 @@ historico:
   motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
     resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
     anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T03:02:21.596794+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T03:05:41.085866+00:00'
