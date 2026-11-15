@@ -1,7 +1,15 @@
+**Resultado do build:** concluído
+
 # 04 — Plano de build — SOMOSAGILITY-21: Campo origem do Lead
 
 Org consultada nesta etapa: `sbx-somos-agility-dev` (conferida via `sf org list` em
-2026-10-28, `Connected`). Nenhum comando `sf` de escrita foi executado.
+2026-11-15, `Connected`). Nenhum comando `sf` de escrita foi executado.
+
+**Reconferência de 2026-11-15 (demanda devolvida à esteira para verificar e testar):** a P-2
+continua sem resposta em `comentarios-do-card.md` (a única nota nova é da Equipe, dizendo que
+nada muda no que foi construído). A rede de segurança (Opção F) ficou **pendente do gate**
+e não foi construída. O trabalho Salesforce desta demanda é só a validação (CA-04) e a
+documentação do que depende do middleware. Nenhum arquivo em `force-app` foi criado.
 
 ## Decisão desta etapa: nenhum metadata é criado ou alterado no Salesforce
 
