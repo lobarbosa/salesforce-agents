@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>MeetingSummaryService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>EPLAST-34. Acesso a Apex class MeetingSummaryService (acao ResumoReuniao do SFAgent2). Sem permissao de objeto ou campo: o resumo mostra so o que o perfil do usuario ja le (USER_MODE).</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PS Comercial Resumo Reuniao</label>
+</PermissionSet>
