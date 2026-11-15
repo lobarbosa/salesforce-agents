@@ -40,6 +40,9 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - `05-testes.md` abre com `**Veredito:** aprovado|reprovado` e `**Org de teste:**` com a
   sandbox de QA. Só aprovado, com evidência por caso, chega ao cliente; o resto volta para
   o build, e o roteiro reprovado fica como `05-testes-rodada-<n>.md`.
+- Automação agendada é testada em duas sessões de QA: a primeira arma e grava
+  `**Veredito:** aguardando execução` (a demanda espera em `qa`); a segunda, depois do
+  horário, confere e dá o veredito final.
 - Quem leva o build para a sandbox de QA é a esteira, num passo fixo antes da sessão de QA,
   registrado em `05-deploy-qa.md`. Builder não toca a QA; o agente de QA não implanta.
 - Toda rodada de QA grava também `05-roteiro-cliente.md`: o passo a passo de teste, em
