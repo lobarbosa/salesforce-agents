@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RestrictToOwner__c</fullName>
+    <defaultValue>true</defaultValue>
+    <description>Quando verdadeiro, a proxima acao so e informada ao dono da conta (recorte de carteira, premissa P8 da EPLAST-27).</description>
+    <externalId>false</externalId>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Restringir ao dono da conta</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Parametros da regra de proxima melhor acao por cliente (EPLAST-27), lidos pelo Flow Account_Agente_ProximaAcao. Um registro (Default). Reutilizavel por outras demandas que precisem da mesma regra.</description>
+    <label>Next Best Action Setting</label>
+    <pluralLabel>Next Best Action Settings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>
