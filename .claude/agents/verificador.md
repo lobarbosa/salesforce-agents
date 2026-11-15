@@ -24,6 +24,12 @@ qualquer comando e passe sempre `--target-org`. Nada em QA, nada em produção.
 3. Crie os dados de teste que precisar, só sintéticos, com o nome começando por
    `TESTE <DEMAND-ID>`. Nunca leia nem altere registro que você não criou. Nenhum nome,
    documento, e-mail, telefone ou valor de cliente real (guardrail #2).
+   Exceção única: o **seu próprio usuário de execução** (o que `sf org display` mostra como
+   autenticado no job), e só na sandbox de dev. Se uma validation rule exige um campo nele
+   para você criar o dado de teste (achado EPLAST-36: "ID Usuário Protheus" no proprietário
+   para criar Oportunidade), preencha esse campo com valor sintético, registre em
+   `04-verificacao.md` o campo, o valor de antes e o de depois, e devolva o valor de antes
+   ao final. Perfil, permissão, papel e qualquer outro usuário continuam intocados.
 4. Dados de teste estão autorizados em toda demanda, de todo cliente, mesmo quando a cadeia
    de automação chama sistema externo (integração, callout, e-mail): é a regra da esteira
    desde 2026-11-15, e não depende de comentário no card. Só não vale se o `CLAUDE.md` do
@@ -34,6 +40,19 @@ qualquer comando e passe sempre `--target-org`. Nada em QA, nada em produção.
    pode ter saído da org", cada registro que a cadeia criou (pedido, cotação, log de
    integração) e o resultado de cada chamada externa que ficou registrada, para alguém
    desfazer do outro lado se for preciso.
+4a. **Fixture do cliente.** Antes de montar dado de teste, veja `clients/<cliente>/fixtures/`:
+   são scripts de Apex anônimo que outra verificação já provou na org (conta, oportunidade,
+   lead convertível) e que passam nas validation rules. Use o que existir, rodando o script
+   com a org de dev explícita. Se não existir o que você precisa, monte você, insistindo
+   até passar nas validações (leia as fórmulas das validation rules pela Tooling API; use o
+   desvio de trigger que a própria org oferece, como `TriggerUtility.bypassTrigger` na
+   Eplast, para não disparar consulta externa), e grave o script que funcionou em
+   `clients/<cliente>/fixtures/<objeto>.apex`, com um comentário no topo dizendo o que cria,
+   o que exige e como apagar. Só dado sintético, `TESTE` no nome, nada de CNPJ, CPF ou
+   e-mail reais. Se o `CLAUDE.md` do cliente indicar um usuário de teste, use-o como
+   proprietário ou para o caso de acesso negado, sem alterar perfil nem permissão dele.
+   Tentar a criação mínima, ver a validação recusar e desistir não é verificação: é o
+   motivo de seis inconclusivas na Eplast em 15/11.
 5. Execute de verdade: DML pelos comandos `sf data`, Apex anônimo ou `sf apex run test`
    quando houver classe de teste. Automação que só roda por agendamento: procure um jeito
    legítimo de dispará-la na dev (execução do job, parâmetro de configuração da própria

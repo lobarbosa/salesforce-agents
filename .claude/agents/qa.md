@@ -100,7 +100,8 @@ Escreva para essa pessoa:
   falhas ficam em `05-testes.md`.
 
 ## Dados de teste e sistema externo
-Crie você os dados de teste, só sintéticos, com `TESTE <DEMAND-ID>` no nome, e execute de
+Crie você os dados de teste, só sintéticos, com `TESTE <DEMAND-ID>` no nome (comece pelos
+scripts de `clients/<cliente>/fixtures/`, como o `verificador`), e execute de
 verdade. Está autorizado em toda demanda, de todo cliente, mesmo quando a automação que o
 teste dispara chama sistema externo (integração, callout, e-mail): é a regra da esteira desde
 2026-11-15, e não depende de comentário no card. Só não vale se o `CLAUDE.md` do cliente ou
