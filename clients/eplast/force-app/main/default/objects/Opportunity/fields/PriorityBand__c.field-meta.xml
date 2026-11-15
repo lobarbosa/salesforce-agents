@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PriorityBand__c</fullName>
+    <description>Faixa de prioridade da oportunidade (Alta, Média, Baixa ou Encerrada), derivada de Score de prioridade. Somente leitura. EPLAST-26.</description>
+    <externalId>false</externalId>
+    <formula>IF(IsClosed, "Encerrada",
+  IF(PriorityScore__c &gt;= 70, "Alta",
+    IF(PriorityScore__c &gt;= 40, "Média", "Baixa")))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Alta: 70 ou mais. Média: 40 a 69. Baixa: abaixo de 40. Encerrada: oportunidade fechada, ganha ou perdida.</inlineHelpText>
+    <label>Faixa de prioridade</label>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+</CustomField>
