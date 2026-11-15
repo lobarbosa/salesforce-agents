@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <description>Alerta diario ao dono quando uma oportunidade aberta completa N dias sem atividade nem mudanca de estagio. Nao grava em objetos de negocio; so registra em IntegrationLog__c dono inativo e falha de envio. Parametros em AlertaOportunidadeParadaSetting__mdt. EPLAST-28</description>
+    <environments>Default</environments>
+    <interviewLabel>Opportunity_Scheduled_AlertaParada {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity_Scheduled_AlertaParada</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value><stringValue>LightningFlowBuilder</stringValue></value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>SystemModeWithoutSharing</runInMode>
+    <formulas>
+        <description>Data de referencia de atividade</description>
+        <name>RefAtividade</name>
+        <dataType>Date</dataType>
+        <expression>IF(ISBLANK({!$Record.LastActivityDate}), DATEVALUE({!$Record.CreatedDate}), {!$Record.LastActivityDate})</expression>
+    </formulas>
+    <formulas>
+        <description>Data de referencia de mudanca de estagio</description>
+        <name>RefEstagio</name>
+        <dataType>Date</dataType>
+        <expression>DATEVALUE(IF(ISBLANK({!$Record.LastStageChangeDate}), {!$Record.CreatedDate}, {!$Record.LastStageChangeDate}))</expression>
+    </formulas>
+    <formulas>
+        <description>Data de referencia conforme RegraParada__c</description>
+        <name>Referencia</name>
+        <dataType>Date</dataType>
+        <expression>CASE({!Get_Cfg.RegraParada__c}, "SoAtividade", {!RefAtividade}, "SoEstagio", {!RefEstagio}, IF({!RefAtividade} &gt; {!RefEstagio}, {!RefAtividade}, {!RefEstagio}))</expression>
+    </formulas>
+    <formulas>
+        <name>DiasParado</name>
+        <dataType>Number</dataType>
+        <scale>0</scale>
+        <expression>TODAY() - {!Referencia}</expression>
+    </formulas>
+    <formulas>
+        <description>Verdadeiro no dia em que DiasParado iguala o prazo, ou na carga inicial</description>
+        <name>Alertar</name>
+        <dataType>Boolean</dataType>
+        <expression>OR({!DiasParado} = {!Get_Cfg.DiasSemAcompanhamento__c}, AND(NOT(ISBLANK({!Get_Cfg.DataCargaInicial__c})), TODAY() = {!Get_Cfg.DataCargaInicial__c}, {!DiasParado} &gt;= {!Get_Cfg.DiasSemAcompanhamento__c}))</expression>
+    </formulas>
+    <formulas>
+        <name>TituloAviso</name>
+        <dataType>String</dataType>
+        <expression>"Oportunidade parada ha " &amp; TEXT({!DiasParado}) &amp; " dias"</expression>
+    </formulas>
+    <formulas>
+        <name>CorpoAviso</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Name} &amp; " · " &amp; IF(ISBLANK({!$Record.Account.Name}), "sem conta", {!$Record.Account.Name}) &amp; " · Estagio: " &amp; TEXT({!$Record.StageName}) &amp; " · sem atividade nem mudanca de estagio desde " &amp; TEXT({!Referencia})</expression>
+    </formulas>
+    <formulas>
+        <description>Gestor elegivel: ligado, preenchido, ativo e diferente do dono</description>
+        <name>GestorElegivel</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!Get_Cfg.NotificarGestor__c}, NOT(ISBLANK({!$Record.Owner.ManagerId})), {!$Record.Owner.Manager.IsActive}, {!$Record.Owner.ManagerId} &lt;&gt; {!$Record.OwnerId})</expression>
+    </formulas>
+    <formulas>
+        <name>MensagemFalha</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Id} &amp; " | " &amp; {!$Flow.FaultMessage}</expression>
+    </formulas>
+    <decisions>
+        <name>Chave_Geral</name>
+        <label>Chave geral ativa?</label>
+        <locationX>176</locationX>
+        <locationY>300</locationY>
+        <defaultConnectorLabel>Desligado</defaultConnectorLabel>
+        <rules>
+            <name>Ligado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Cfg.Ativo__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>Deve_Alertar</targetReference></connector>
+            <label>Ligado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Deve_Alertar</name>
+        <label>Alertar hoje?</label>
+        <locationX>176</locationX>
+        <locationY>400</locationY>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>Sim</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Alertar</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>Dono_Ativo</targetReference></connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Dono_Ativo</name>
+        <label>Dono ativo?</label>
+        <locationX>176</locationX>
+        <locationY>500</locationY>
+        <defaultConnector><targetReference>Log_Dono_Inativo</targetReference></defaultConnector>
+        <defaultConnectorLabel>Inativo</defaultConnectorLabel>
+        <rules>
+            <name>Ativo</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record.Owner.IsActive</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>Adiciona_Dono</targetReference></connector>
+            <label>Ativo</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Inclui_Gestor</name>
+        <label>Incluir gestor?</label>
+        <locationX>176</locationX>
+        <locationY>700</locationY>
+        <defaultConnector><targetReference>Envia_Notificacao</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>Sim_Gestor</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GestorElegivel</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>Adiciona_Gestor</targetReference></connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <assignments>
+        <name>Adiciona_Dono</name>
+        <label>Adiciona dono</label>
+        <locationX>176</locationX>
+        <locationY>600</locationY>
+        <assignmentItems>
+            <assignToReference>Destinatarios</assignToReference>
+            <operator>Add</operator>
+            <value><elementReference>$Record.OwnerId</elementReference></value>
+        </assignmentItems>
+        <connector><targetReference>Inclui_Gestor</targetReference></connector>
+    </assignments>
+    <assignments>
+        <name>Adiciona_Gestor</name>
+        <label>Adiciona gestor</label>
+        <locationX>176</locationX>
+        <locationY>800</locationY>
+        <assignmentItems>
+            <assignToReference>Destinatarios</assignToReference>
+            <operator>Add</operator>
+            <value><elementReference>$Record.Owner.ManagerId</elementReference></value>
+        </assignmentItems>
+        <connector><targetReference>Envia_Notificacao</targetReference></connector>
+    </assignments>
+    <actionCalls>
+        <name>Envia_Notificacao</name>
+        <label>Envia notificacao</label>
+        <locationX>176</locationX>
+        <locationY>900</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <faultConnector><targetReference>Log_Falha_Notificacao</targetReference></faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value><elementReference>Get_Tipo_Notificacao.Id</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value><elementReference>Destinatarios</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value><elementReference>TituloAviso</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value><elementReference>CorpoAviso</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value><elementReference>$Record.Id</elementReference></value>
+        </inputParameters>
+    </actionCalls>
+    <recordCreates>
+        <name>Log_Dono_Inativo</name>
+        <label>Log dono inativo</label>
+        <locationX>440</locationX>
+        <locationY>600</locationY>
+        <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
+        <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
+        <inputAssignments><field>RequestBody__c</field><value><elementReference>$Record.Id</elementReference></value></inputAssignments>
+        <inputAssignments><field>ResponseStatus__c</field><value><stringValue>DONO_INATIVO</stringValue></value></inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
+    <recordCreates>
+        <name>Log_Falha_Notificacao</name>
+        <label>Log falha notificacao</label>
+        <locationX>440</locationX>
+        <locationY>1000</locationY>
+        <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
+        <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
+        <inputAssignments><field>RequestBody__c</field><value><elementReference>MensagemFalha</elementReference></value></inputAssignments>
+        <inputAssignments><field>ResponseStatus__c</field><value><stringValue>FALHA_NOTIFICACAO</stringValue></value></inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
+    <recordLookups>
+        <name>Get_Cfg</name>
+        <label>Get parametros</label>
+        <locationX>176</locationX>
+        <locationY>200</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector><targetReference>Get_Tipo_Notificacao</targetReference></connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>Default</stringValue></value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AlertaOportunidadeParadaSetting__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Tipo_Notificacao</name>
+        <label>Get tipo de notificacao</label>
+        <locationX>176</locationX>
+        <locationY>250</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector><targetReference>Chave_Geral</targetReference></connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>Oportunidade_Parada</stringValue></value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>CustomNotificationType</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector><targetReference>Get_Cfg</targetReference></connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>IsClosed</field>
+            <operator>EqualTo</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </filters>
+        <object>Opportunity</object>
+        <schedule>
+            <frequency>Daily</frequency>
+            <startDate>2026-11-16</startDate>
+            <startTime>07:00:00.000Z</startTime>
+        </schedule>
+        <triggerType>Scheduled</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Destinatarios</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

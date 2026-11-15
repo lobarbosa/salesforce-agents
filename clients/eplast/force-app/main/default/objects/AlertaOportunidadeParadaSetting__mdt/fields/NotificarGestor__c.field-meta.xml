@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>NotificarGestor__c</fullName>
+    <label>Notificar Gestor</label>
+    <description>Inclui o gestor direto (User.ManagerId) na notificacao. EPLAST-28</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <externalId>false</externalId>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>
