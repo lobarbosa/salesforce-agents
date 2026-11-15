@@ -50,6 +50,14 @@ export function clienteVeRoteiro(status: string): boolean {
   return CLIENTE_VE_ROTEIRO.has(status);
 }
 
+// O roteiro chega ao card como um anexo em PDF (lib/roteiro-anexo.ts), sempre
+// neste caminho. Upload de gente nunca cai aqui: a chave dele leva um UUID.
+export const caminhoDoRoteiro = (demandaId: string) => `${demandaId}/roteiro-de-teste.pdf`;
+
+export function ehAnexoDoRoteiro(anexo: { caminho: string; demandaId: string }): boolean {
+  return anexo.caminho === caminhoDoRoteiro(anexo.demandaId);
+}
+
 /**
  * Demanda vista pelo cliente: artefato e perguntas só no gate que é dele
  * (a mesma regra de podeAprovarGate), sem histórico de esteira, sem link de
@@ -66,9 +74,12 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     artefatoConteudo: noGateDele ? d.artefatoConteudo : "",
     artefatoTruncado: noGateDele ? d.artefatoTruncado : false,
     perguntas: noGateDele ? d.perguntas : [],
-    // O roteiro foi escrito para ele: fica à mão do gate em diante, para
-    // quem quiser refazer o teste depois de aceitar.
-    roteiroCliente: clienteVeRoteiro(d.status) ? d.roteiroCliente : "",
+    // O roteiro de teste foi escrito para ele, mas só faz sentido do gate dele
+    // em diante: antes disso o anexo fica só com o time.
+    // O texto do roteiro é insumo do PDF, não tela: o cliente recebe o anexo.
+    roteiroCliente: "",
+    // `?.`: nem toda consulta que passa por aqui carrega os anexos.
+    anexos: clienteVeRoteiro(d.status) ? d.anexos : d.anexos?.filter((a) => !ehAnexoDoRoteiro(a)),
     historico: [],
     ultimoRunUrl: "",
     ultimoResultado: "",

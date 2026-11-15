@@ -176,6 +176,9 @@ Desde 2026-11-15 o roteiro sai em toda rodada de QA, não só na aprovada: na EP
 sandbox de QA tem dado real e parte do teste fica para gente, que precisa do passo a passo
 mesmo com o QA automático reprovado. A esteira apaga o roteiro antes de cada rodada, para
 a sessão escrever o novo; o cliente continua vendo só da homologação em diante.
+No mesmo dia o roteiro deixou de ter seção própria no card: o sync gera o PDF e o publica
+como um anexo só, na seção de anexos (`lib/roteiro-anexo.ts`), substituído a cada rodada.
+O cliente não vê esse anexo nem consegue baixá-lo antes da homologação.
 
 **Entregue só com evidência** (2026-11-14): `demands.transition` recusa `entregue` sem
 `05-testes.md` aprovado na sandbox de QA e sem `06-entrega.md` (`EntregaSemEvidenciaError`),

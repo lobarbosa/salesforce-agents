@@ -203,11 +203,6 @@ function corpo(doc: Doc, lista: Bloco[]) {
   }
 }
 
-export function nomeDoArquivoDoRoteiro(codigo: string): string {
-  const limpo = codigo.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  return `roteiro-de-teste-${limpo || "demanda"}.pdf`;
-}
-
 export function gerarPdfRoteiro(markdown: string, cab: CabecalhoDoRoteiro, logo: Buffer | null): Promise<Buffer> {
   const doc = new PDFDocument({
     size: "A4",
