@@ -124,6 +124,15 @@ def test_fora_de_gate_o_payload_continua_sendo_so_o_status(repo):
     assert "artefato" not in revisao.payload_de_sync(d)
 
 
+def test_payload_leva_o_roteiro_do_cliente_e_vazio_quando_nao_ha(repo):
+    d = _demanda_no_gate("aguardando_gate_analise", "01-analise.md")
+    assert revisao.payload_de_sync(d)["roteiro_cliente"] == ""
+
+    (d.path / "05-roteiro-cliente.md").write_text("# Roteiro\n\n1. Abra a conta de teste.", encoding="utf-8")
+
+    assert "Abra a conta de teste" in revisao.payload_de_sync(d)["roteiro_cliente"]
+
+
 def test_artefato_faltando_nao_quebra_o_sync(repo):
     """Quem recusa avançar sem artefato é `demands.transition`. Aqui, informar
     que não há o que mostrar é suficiente — duas vozes recusando a mesma coisa

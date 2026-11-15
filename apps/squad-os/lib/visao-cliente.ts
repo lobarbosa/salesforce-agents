@@ -43,6 +43,13 @@ export function semCustoAgente<T extends DemandaCompleta>(d: T): T {
   return { ...d, ...SEM_CUSTO_AGENTE };
 }
 
+/** Etapas em que o cliente vê o roteiro de teste: a homologação e o que vem depois dela. */
+const CLIENTE_VE_ROTEIRO = new Set<string>([GATE_DO_CLIENTE, "release", "entregue"]);
+
+export function clienteVeRoteiro(status: string): boolean {
+  return CLIENTE_VE_ROTEIRO.has(status);
+}
+
 /**
  * Demanda vista pelo cliente: artefato e perguntas só no gate que é dele
  * (a mesma regra de podeAprovarGate), sem histórico de esteira, sem link de
@@ -59,6 +66,9 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     artefatoConteudo: noGateDele ? d.artefatoConteudo : "",
     artefatoTruncado: noGateDele ? d.artefatoTruncado : false,
     perguntas: noGateDele ? d.perguntas : [],
+    // O roteiro foi escrito para ele: fica à mão do gate em diante, para
+    // quem quiser refazer o teste depois de aceitar.
+    roteiroCliente: clienteVeRoteiro(d.status) ? d.roteiroCliente : "",
     historico: [],
     ultimoRunUrl: "",
     ultimoResultado: "",
