@@ -144,6 +144,26 @@ def create(client: str, titulo: str, texto: str, tipo: str = "sustentacao") -> D
     return demand
 
 
+class EntregaSemEvidenciaError(ArtifactAusenteError):
+    """Tentaram marcar como entregue sem QA aprovado ou sem documento de entrega."""
+
+
+def evidencias_que_faltam_para_entregar(demand: Demand) -> list[str]:
+    from . import ambientes, veredito  # import tardio: ambientes importa este módulo
+
+    faltam: list[str] = []
+    roteiro = demand.path / "05-testes.md"
+    if not roteiro.exists():
+        faltam.append("falta 05-testes.md (roteiro de teste executado)")
+    else:
+        v = veredito.ler(roteiro.read_text(encoding="utf-8"), ambientes.org_alias(demand.client, "qa"))
+        if not v.aprovado:
+            faltam.append(f"05-testes.md não comprova aprovação: {v.motivo}")
+    if not (demand.path / "06-entrega.md").exists():
+        faltam.append("falta 06-entrega.md (documentação de entrega)")
+    return faltam
+
+
 def transition(client: str, demand_id: str, novo_status: str, autor: str) -> Demand:
     if novo_status not in STAGES:
         raise InvalidStatusError(f"status desconhecido: {novo_status}")
@@ -165,6 +185,20 @@ def transition(client: str, demand_id: str, novo_status: str, autor: str) -> Dem
                 f"'{novo_status}' — falta(m) {', '.join(faltando)} em {demand.path}/. "
                 f"O estágio '{demand.status}' não produziu o que deveria; gere o artefato "
                 f"antes de avançar, ou corrija o status manualmente se ele já estava errado."
+            )
+
+    # Entregue é a única transição sem volta para o cliente, e a única que
+    # nunca aceita "depois eu anexo" (decisão de 2026-11-14): exige o QA
+    # aprovado na sandbox de QA e a documentação de entrega, em disco. Vale
+    # para o fluxo e para correção manual — foi por correção manual que
+    # quatro demandas viraram "entregue" só com o texto do pedido.
+    if novo_status == "entregue":
+        faltam = evidencias_que_faltam_para_entregar(demand)
+        if faltam:
+            raise EntregaSemEvidenciaError(
+                f"{client}/{demand_id}: não pode ser marcada como entregue — "
+                + "; ".join(faltam)
+                + ". Rode a etapa de QA (e a de entrega) antes; não existe entrega sem evidência."
             )
 
     demand.historico.append(

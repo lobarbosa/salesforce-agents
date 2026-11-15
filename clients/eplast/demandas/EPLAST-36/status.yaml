@@ -2,7 +2,7 @@ id: EPLAST-36
 client: eplast
 titulo: Segmentação da base e criação de públicos
 tipo: projeto
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -21,3 +21,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-11-12T19:35:28.223283+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T05:02:27.100989+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T05:11:43.865962+00:00'
