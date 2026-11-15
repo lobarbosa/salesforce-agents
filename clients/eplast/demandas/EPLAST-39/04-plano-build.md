@@ -2,7 +2,7 @@
 
 # EPLAST-39 — Plano de build (bloqueado)
 
-**Org conectada nesta sessão:** `sbx-eplast-dev` (Sandbox, `IsSandbox = true`, instância BRA8S), usuário `projetos@konectabr.com.eplast2.qa`, `instanceUrl` `https://eplast--qa.sandbox.my.salesforce.com`. `sf org list` mostra só esse alias; não há `sbx-eplast-qa` conectado para comparar.
+**Org conectada nesta sessão:** alias `sbx-eplast-dev` (Sandbox, `IsSandbox = true`, instância BRA8S), com o usuário de conexão omitido deste artefato, e `instanceUrl` com o sufixo `--qa` (sinal de que pode ser a sandbox de QA). `sf org list` mostra só esse alias; não há `sbx-eplast-qa` conectado para comparar.
 
 **Nada foi construído, implantado ou escrito na org.** Nenhum metadata em `force-app/` foi alterado.
 
