@@ -4,7 +4,7 @@
 
 **Org de build:** `sbx-eplast-dev` (`sf org list` em 2026-11-15: Sandbox, Connected). Nada foi enviado à QA nem à produção.
 **Branch:** `feature/EPLAST-27`. **Decisão:** declarativo, conforme `03-design.md` seção 1. Sem classe Apex, trigger ou DML.
-**Nota (R3 do design):** o username do alias dev é `projetos@konectabr.com.eplast2.qa`. O alias é o permitido, mas a esteira deve confirmar antes do deploy de QA que dev e QA são orgs distintas.
+**Nota (R3 do design):** o alias dev (`sbx-eplast-dev`) aponta para uma sandbox cujo nome de instância sugere o ambiente de QA. O alias é o permitido, mas a esteira deve confirmar antes do deploy de QA que dev e QA são orgs distintas.
 
 ## Componentes criados (deploy na dev: Succeeded)
 
