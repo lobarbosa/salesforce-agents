@@ -2,7 +2,7 @@ id: EPLAST-30
 client: eplast
 titulo: Apoio a propostas, follow-ups e argumentos comerciais
 tipo: projeto
-status: backlog
+status: aguardando_gate_analise
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -68,3 +68,11 @@ historico:
   motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
     resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
     anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:42:17.651258+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:45:07.479017+00:00'

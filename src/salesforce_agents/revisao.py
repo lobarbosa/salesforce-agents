@@ -23,6 +23,7 @@ import hashlib
 import re
 from pathlib import Path
 
+from . import roteiro, verificacao
 from .demands import REQUIRED_ARTIFACTS, STAGES_EXECUCAO, Demand
 
 # Um artefato grande não pode virar uma linha gigante no Postgres nem uma
@@ -103,6 +104,10 @@ def artefato_em_revisao(demanda: Demand) -> dict | None:
         return None
 
     conteudo = caminho.read_text(encoding="utf-8")
+    # No gate de build, quem revisa vê o plano e, logo abaixo, a evidência do
+    # agente que testou a construção — é ela que diz se o build funciona.
+    if nome == verificacao.PLANO:
+        conteudo += verificacao.anexo_para_o_gate(demanda.path)
     truncado = len(conteudo) > LIMITE_CONTEUDO
     return {
         "nome": nome,
@@ -126,4 +131,7 @@ def payload_de_sync(demanda: Demand) -> dict:
     artefato = artefato_em_revisao(demanda)
     if artefato:
         dados["artefato"] = artefato
+    # Sempre presente, vazio quando não há: o espelho no Squad OS precisa
+    # apagar o roteiro de um QA que depois foi reprovado.
+    dados["roteiro_cliente"] = roteiro.conteudo(demanda.path)
     return dados
