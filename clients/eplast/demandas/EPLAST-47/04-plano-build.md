@@ -63,3 +63,12 @@ Fonte: `05-testes-rodada-2.md` (reprovado, `sbx-eplast-qa`). Reconferido nesta s
 
 - **FALHA 1 (build ausente na QA):** não corrigível no build. Guardrail #1 restringe o build à `sbx-eplast-dev`; o deploy dev para QA é do `release` (ou de quem a esteira designar). Ordem a seguir, conforme R3 do design: picklist `Ranking__c` (7 valores) e histórico de campo, depois `RankingRange__mdt` e `ScheduledFlowOpportunitySetting__mdt` com registros (7 faixas e `Default`), depois Flow v2 Active, depois relatório `AccountRankingChanges`. Depois conferir os 7 valores, os 7 registros e a v2 Active e devolver ao QA.
 - **FALHA 2 (dado de teste e risco R5):** não corrigível no build, pois depende de decisão humana. Ficam pendentes: (a) como isolar o teste na QA, que tem dado real e onde o Flow v2 atualizaria `Ranking__c` em massa (R2); (b) conferir para onde aponta a integração Protheus na QA, só metadata; (c) número do teste de volume (P10). Quem responde: arquiteto/responsável pela conta e delivery.
+
+## Refaz do build após volta ao gate de design (2026-11-15)
+O design não mudou (`03-design.md` inalterado, aceite em `gates.md`, commit `a44165a4`). Esta sessão reconferiu na `sbx-eplast-dev` (única org conectada) que o build da seção acima continua íntegro, sem alterar metadata:
+- `ScheduledFlowOpportunity`: v1 Obsolete, v2 Active.
+- `RankingRange__mdt`: 7 registros (MP 10.000, PP 35.000, P 80.000, M 160.000, G 500.000, GG 1.000.000, X3G com valor `3G` sem teto), `SortOrder__c` 1 a 7.
+- `ScheduledFlowOpportunitySetting__mdt` `Default`: dia 14, destinatário vazio.
+- `Account.Ranking__c`: picklist ativa MP, PP, P, M, G, GG, 3G.
+
+Não exercitei o Flow (dev sem contas nem oportunidades; R5): a prova de comportamento fica com o `verificador` e o QA. O deploy na QA é da esteira (`05-deploy-qa.md`); o builder não toca a QA. Pendência de decisão humana antes do QA, vinda do card de 15/11: como testar na QA com 1.217 contas reais (R2) e para onde aponta a integração Protheus dela (R5). Demais pendências (P1, P5, P6, P8, P10, P11, P12) como na seção "Pendências de negócio".

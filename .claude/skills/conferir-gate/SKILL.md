@@ -58,6 +58,10 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 - A pasta tem `05-testes-rodada-<n>.md`? Então este PR é correção de um QA reprovado:
   confira no plano a seção "Correções da rodada <n>", falha por falha, antes de devolver
   ao QA.
+- Leia a verificação, que aparece no card logo abaixo do plano (`04-verificacao.md`).
+  `aprovada`: confira que os critérios principais têm evidência executada, não só descrição.
+  `inconclusiva`: o agente não conseguiu testar; o que ficou sem prova é seu para provar ou
+  para aceitar conscientemente antes de aprovar. `reprovada` não chega a este gate.
 - O plano abre com `**Resultado do build:** concluído`? Plano que diz "bloqueado" não é
   PR para revisar: a esteira devolve a demanda ao gate de design e o portal recusa a
   aprovação aqui.
@@ -76,6 +80,8 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 
 ## Gate de homologação (`aguardando_homologacao`) — o único do cliente
 
+- `05-deploy-qa.md` existe (quando a demanda mudou metadata) e a org é a sandbox de QA: é
+  a prova de que o que foi testado é o que foi construído.
 - `05-roteiro-cliente.md` existe e dá para seguir sem conhecer a construção: rótulos de
   tela, dado de teste explicado, resultado esperado com valor. É o que o cliente vai ler.
 - `05-testes.md` cobre os critérios de aceite do gate de análise um a um, com evidência
