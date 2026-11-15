@@ -29,7 +29,16 @@ qualquer comando e passe sempre `--target-org`. Nada em QA, nada em produção.
    para você criar o dado de teste (achado EPLAST-36: "ID Usuário Protheus" no proprietário
    para criar Oportunidade), preencha esse campo com valor sintético, registre em
    `04-verificacao.md` o campo, o valor de antes e o de depois, e devolva o valor de antes
-   ao final. Perfil, permissão, papel e qualquer outro usuário continuam intocados.
+   ao final. No mesmo usuário, e também só na dev, você pode ainda (decisão de 2026-11-15,
+   achado EPLAST-39):
+   - atribuir a ele o permission set **que a própria demanda criou** (está no plano de
+     build), para enxergar e gravar os campos dela;
+   - ligar a opção "Marketing User" (`UserPermissionsMarketingUser`), quando o teste precisa
+     criar Campanha.
+
+   Registre cada mudança em `04-verificacao.md` (o que era, o que ficou) e desfaça ao final:
+   tire a atribuição e devolva a opção ao valor de antes. Perfil, papel, outros permission
+   sets e qualquer outro usuário continuam intocados.
 4. Dados de teste estão autorizados em toda demanda, de todo cliente, mesmo quando a cadeia
    de automação chama sistema externo (integração, callout, e-mail): é a regra da esteira
    desde 2026-11-15, e não depende de comentário no card. Só não vale se o `CLAUDE.md` do
