@@ -8,12 +8,13 @@ em qual workspace de cliente.
 
 from __future__ import annotations
 
+import os
 from pathlib import Path
 
 import anyio
 from claude_agent_sdk import ClaudeAgentOptions
 
-from . import anexos, ao_vivo, comentarios, demands, sessao
+from . import anexos, ao_vivo, assessment, comentarios, demands, preflight, roteiro, sessao, verificacao
 from .costs import log_usage
 from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
@@ -44,8 +45,90 @@ ALLOWED_TOOLS = [
 # workspace-trust warning by loosening this — it isn't gating anything that matters.
 
 
+# Quem roda cada etapa. Vai no prompt para o orquestrador não gastar turnos
+# lendo status.yaml e o fluxo para descobrir o que o fluxo.py já sabe.
+SUBAGENTE_DA_ETAPA = {
+    "analise": "O subagente desta etapa é `ba-discovery`.",
+    "design": (
+        "Esta etapa tem dois subagentes, nesta ordem: primeiro `recon`, que levanta a org e grava "
+        "`02-recon.md`; depois `arquiteto`, que lê esse arquivo e grava `03-design.md`. Só acione "
+        "o `arquiteto` depois de o `02-recon.md` existir."
+    ),
+    "build": (
+        "Esta etapa tem dois subagentes, nesta ordem. Primeiro o construtor: `builder-declarativo` "
+        "quando o `03-design.md` decide por configuração/Flow, ou `dev-apex` quando decide por "
+        "código — leia só a seção de decisão do design para escolher; ele grava `04-plano-build.md`. "
+        "Depois, só se o plano abrir com `**Resultado do build:** concluído`, o `verificador`, que "
+        "testa na sandbox de dev o que foi construído e grava `04-verificacao.md`. Build bloqueado "
+        "não tem verificação."
+    ),
+    "verificacao": (
+        "Esta é uma reverificação: o build já foi feito e está na sandbox de dev "
+        "(`04-plano-build.md`). O único subagente é o `verificador`, que testa de novo o que foi "
+        "construído e grava `04-verificacao.md`. Não acione construtor nem altere `force-app/`."
+    ),
+    "qa": "O subagente desta etapa é `qa`.",
+    "release": "Os subagentes desta etapa são `release` e, em seguida, `doc`.",
+}
+
+
+def _quem_roda(etapa: str) -> str:
+    return SUBAGENTE_DA_ETAPA.get(etapa, "Acione o subagente da etapa conforme o fluxo do CLAUDE.md.")
+
+
+# 93% dos tokens da esteira são releitura de contexto (medido em 2026-11-14):
+# tudo o que entra numa sessão é relido a cada turno. Estas regras valem para o
+# orquestrador e são repassadas ao subagente no briefing.
+ECONOMIA_DE_CONTEXTO = (
+    "Economia de contexto (tudo o que você lê é relido e cobrado a cada turno seguinte):\n"
+    "- Você é só o roteador: não leia os artefatos da demanda nem refaça o trabalho do "
+    "subagente. Passe a ele este briefing inteiro e, quando ele voltar, confira apenas que "
+    "os arquivos da etapa existem.\n"
+    "- Repasse ao subagente: ler só o que a etapa precisa; usar `rag_consultar` ou Grep para "
+    "achar um trecho em vez de abrir arquivo inteiro (assessment, designs antigos, demandas "
+    "anteriores); não reler arquivo já lido na sessão; em `sf`, pedir campos e metadata "
+    "específicos, com LIMIT, e nunca despejar describe ou retrieve inteiro na conversa; "
+    "devolver ao final um resumo de poucas linhas, não o conteúdo do artefato.\n\n"
+)
+
+
+# Achado real (EPLAST-47, build de 2026-11-14): o orquestrador acionou o
+# `builder-declarativo` em background, a chamada voltou na hora e ele acionou o
+# mesmo subagente de novo. Ficaram dois construtores na mesma pasta e na mesma
+# sandbox, um desfazendo o trabalho do outro, e a etapa terminou sem build. A
+# variável desliga a execução em background no Claude Code; a frase no prompt
+# cobre o caso de ela deixar de valer.
+UM_SUBAGENTE_POR_VEZ = (
+    "Acione cada subagente **uma única vez, em primeiro plano** (nunca em background, nunca "
+    "`run_in_background`) e não acione outro, nem o mesmo de novo, enquanto ele não devolver "
+    "a resposta: dois subagentes escrevendo na mesma demanda e na mesma sandbox se atropelam. "
+    "Se ele voltar sem o artefato, acione-o de novo só depois de ele ter terminado."
+)
+
+
+def _desligar_background() -> None:
+    os.environ["CLAUDE_CODE_DISABLE_BACKGROUND_TASKS"] = "1"
+
+
+def _verificacao_faltando(etapa: str, pasta: Path) -> list[str]:
+    # Build concluído sem a verificação do agente não vai ao gate humano
+    # (ver verificacao.py). Cobrado com a sessão aberta, como os demais.
+    if etapa not in ("build", "verificacao"):
+        return []
+    return verificacao.faltando(pasta)
+
+
+def _roteiro_do_cliente_faltando(etapa: str, pasta: Path) -> list[str]:
+    # Toda rodada de QA deixa o passo a passo de quem testa à mão (ver
+    # roteiro.py). Cobrado com a sessão aberta, como os demais artefatos.
+    if etapa != "qa":
+        return []
+    return roteiro.faltando(pasta)
+
+
 async def run(client: str, demand_id: str, etapa: str) -> None:
     workspace = f"clients/{client}"
+    _desligar_background()
 
     options = ClaudeAgentOptions(
         # Ver sessao.MAX_BUFFER_MENSAGEM.
@@ -58,7 +141,14 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         # impossível saber quanto foi decisão de arquitetura e quanto foi o loop
         # relendo CLAUDE.md. Com Sonnet aqui, os dois passam a ser linhas
         # distintas. Os subagentes seguem o frontmatter e não são afetados.
-        model="claude-sonnet-5",
+        # Haiku desde 2026-11-14: o orquestrador é só roteador — o prompt diz
+        # qual subagente roda e manda não refazer o trabalho dele. Medido antes
+        # da mudança (out/15 a nov/12): rodando em Sonnet, ele custava US$ 0,37
+        # por sessão de análise, contra US$ 0,01 do `ba-discovery` que fazia a
+        # análise, e US$ 0,80 por sessão de design. Efeito colateral aceito: a
+        # linha do orquestrador volta a se somar à dos subagentes Haiku
+        # (`ba-discovery`, `doc`) na telemetria.
+        model="claude-haiku-5-5",
         setting_sources=["project"],
         # O servidor de RAG nasce aqui, por sessão, fechado sobre `client` — ao
         # contrário de salesforce_tools_server (singleton de módulo, sem
@@ -84,13 +174,14 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
     ]
 
     prompt = (
-        f"Continue o ciclo de delivery da demanda {demand_id} do cliente {client}. "
-        f"A história está em demandas/{demand_id}/demanda.md e o estágio atual em "
-        f"demandas/{demand_id}/status.yaml. Siga o fluxo canônico descrito em CLAUDE.md "
-        f"a partir do estágio atual, acionando o subagente correspondente via Task e "
-        f"**esperando ele terminar**, e pare no próximo gate humano.\n\n"
+        f"Demanda {demand_id} do cliente {client}, etapa **{etapa}** (pasta "
+        f"demandas/{demand_id}/). {_quem_roda(etapa)} Acione-o via Task, **espere ele "
+        f"terminar** e pare: depois desta etapa vem um gate humano. {UM_SUBAGENTE_POR_VEZ}\n\n"
+        f"{ECONOMIA_DE_CONTEXTO}"
+        f"{assessment.nota_para_o_prompt(client)}"
         f"{anexos.nota_para_o_prompt(client, demand_id)}"
         f"{comentarios.nota_para_o_prompt(client, demand_id)}"
+        f"{preflight.nota_para_o_prompt(client, demand_id)}"
         f"{sessao.CONTRATO_DA_SESSAO}"
     )
 
@@ -104,7 +195,12 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         await sessao.rodar(
             options,
             prompt,
-            conferir=lambda: sessao.faltantes(esperados) + sessao.pii_nos_artefatos(pasta_da_demanda),
+            conferir=lambda: (
+                sessao.faltantes(esperados)
+                + _roteiro_do_cliente_faltando(etapa, pasta_da_demanda)
+                + _verificacao_faltando(etapa, pasta_da_demanda)
+                + sessao.pii_nos_artefatos(pasta_da_demanda)
+            ),
             ao_terminar=registrar,
             ao_usar_ferramenta=vivo.ferramenta,
         )
