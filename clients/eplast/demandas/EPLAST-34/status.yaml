@@ -2,7 +2,7 @@ id: EPLAST-34
 client: eplast
 titulo: Resumos automáticos para reuniões comerciais, GDD, S&OP e Board
 tipo: projeto
-status: build
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -52,3 +52,10 @@ historico:
   para: build
   autor: Leonardo Barbosa (via Claude)
   em: '2026-11-15T10:00:18.030378+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-11-15T10:51:02.078534+00:00'
+  motivo: 'correção: a verificação não reprovou; a esteira leu a org sem crase como
+    reprovação (defeito corrigido na PR #187). Volta ao gate de build com a verificação
+    original.'
