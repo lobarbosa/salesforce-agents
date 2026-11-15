@@ -14,7 +14,7 @@ from pathlib import Path
 import anyio
 from claude_agent_sdk import ClaudeAgentOptions
 
-from . import anexos, ao_vivo, assessment, comentarios, demands, roteiro, sessao, verificacao
+from . import anexos, ao_vivo, assessment, comentarios, demands, preflight, roteiro, sessao, verificacao
 from .costs import log_usage
 from .rag import criar_rag_tools_server
 from .tools import salesforce_tools_server
@@ -62,6 +62,11 @@ SUBAGENTE_DA_ETAPA = {
         "testa na sandbox de dev o que foi construído e grava `04-verificacao.md`. Build bloqueado "
         "não tem verificação."
     ),
+    "verificacao": (
+        "Esta é uma reverificação: o build já foi feito e está na sandbox de dev "
+        "(`04-plano-build.md`). O único subagente é o `verificador`, que testa de novo o que foi "
+        "construído e grava `04-verificacao.md`. Não acione construtor nem altere `force-app/`."
+    ),
     "qa": "O subagente desta etapa é `qa`.",
     "release": "Os subagentes desta etapa são `release` e, em seguida, `doc`.",
 }
@@ -108,7 +113,7 @@ def _desligar_background() -> None:
 def _verificacao_faltando(etapa: str, pasta: Path) -> list[str]:
     # Build concluído sem a verificação do agente não vai ao gate humano
     # (ver verificacao.py). Cobrado com a sessão aberta, como os demais.
-    if etapa != "build":
+    if etapa not in ("build", "verificacao"):
         return []
     return verificacao.faltando(pasta)
 
@@ -176,6 +181,7 @@ async def run(client: str, demand_id: str, etapa: str) -> None:
         f"{assessment.nota_para_o_prompt(client)}"
         f"{anexos.nota_para_o_prompt(client, demand_id)}"
         f"{comentarios.nota_para_o_prompt(client, demand_id)}"
+        f"{preflight.nota_para_o_prompt(client, demand_id)}"
         f"{sessao.CONTRATO_DA_SESSAO}"
     )
 
