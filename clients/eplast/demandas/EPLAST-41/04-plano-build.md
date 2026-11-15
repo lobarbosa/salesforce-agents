@@ -2,7 +2,7 @@
 
 # EPLAST-41 · Plano de build
 
-**Org:** `sbx-eplast-dev` (usuário `projetos@konectabr.com.eplast2.qa`, conferido com `sf org list`; sandbox "QA" da Eplast, regra 5 da conta). Nada em produção nem na `sbx-eplast-qa`. Branch `feature/EPLAST-41`. API 67.0. Último deploy: `0AfHa00000EI1yVKAT` (Succeeded).
+**Org:** `sbx-eplast-dev` (alias conferido com `sf org list`; sandbox "QA" da Eplast, regra 5 da conta). Nada em produção nem na `sbx-eplast-qa`. Branch `feature/EPLAST-41`. API 67.0. Último deploy: `0AfHa00000EI1yVKAT` (Succeeded).
 Design seguido item a item (`03-design.md`). Nada de Apex, campo, objeto, envio ou Marketing Cloud.
 
 ## Componentes criados e alterados
