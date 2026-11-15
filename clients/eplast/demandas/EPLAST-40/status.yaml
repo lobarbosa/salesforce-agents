@@ -2,10 +2,26 @@ id: EPLAST-40
 client: eplast
 titulo: Ciclo Marketing → SDR → Comercial → Pós-vendas
 tipo: projeto
-status: backlog
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
   em: '2026-11-10T12:00:00Z'
   para: backlog
   autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T17:43:19.794337+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T17:46:21.687870+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T19:28:33.402741+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T19:41:00.519810+00:00'

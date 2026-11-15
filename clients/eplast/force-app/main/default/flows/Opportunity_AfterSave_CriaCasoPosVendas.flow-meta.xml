@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <assignments>
+        <description>Ponto de encerramento do caminho de falha: não afeta a venda; o erro segue para o e-mail de falha de Flow do admin.</description>
+        <name>Encerra_Falha</name>
+        <label>Encerra Falha</label>
+        <locationX>578</locationX>
+        <locationY>611</locationY>
+        <assignmentItems>
+            <assignToReference>vFalha</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.FaultMessage</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <decisions>
+        <description>Se já existe Case para a Oportunidade, encerra sem criar outro.</description>
+        <name>Ja_existe_Case</name>
+        <label>Já existe Case?</label>
+        <locationX>314</locationX>
+        <locationY>287</locationY>
+        <defaultConnectorLabel>Não existe</defaultConnectorLabel>
+        <rules>
+            <name>Nao_existe_Case</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Case_Existente</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Get_Fila_PosVendas</targetReference>
+            </connector>
+            <label>Não existe Case</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>Só cria o Case se a fila PosVendas foi encontrada.</description>
+        <name>Fila_encontrada</name>
+        <label>Fila encontrada?</label>
+        <locationX>182</locationX>
+        <locationY>503</locationY>
+        <defaultConnectorLabel>Sem fila</defaultConnectorLabel>
+        <rules>
+            <name>Tem_fila</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>Get_Fila_PosVendas</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>Cria_Case_PosVendas</targetReference>
+            </connector>
+            <label>Tem fila</label>
+        </rules>
+    </decisions>
+    <description>EPLAST-40: after-save em Opportunity, caminho assíncrono. Quando a Oportunidade passa a Fechado/Ganho, cria 1 Case de Pós-vendas (dono = fila PosVendas, Status New) ligado por Case.Oportunidade__c, sem duplicar. Grava só em Case; sem envio de e-mail.</description>
+    <environments>Default</environments>
+    <interviewLabel>Opportunity_AfterSave_CriaCasoPosVendas {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity_AfterSave_CriaCasoPosVendas</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>Cria o Case de Pós-vendas na fila, ligado à Oportunidade.</description>
+        <name>Cria_Case_PosVendas</name>
+        <label>Cria Case Pós-vendas</label>
+        <locationX>50</locationX>
+        <locationY>611</locationY>
+        <faultConnector>
+            <targetReference>Encerra_Falha</targetReference>
+        </faultConnector>
+        <inputAssignments>
+            <field>AccountId</field>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ContactId</field>
+            <value>
+                <elementReference>$Record.ContactId</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Oportunidade__c</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>Get_Fila_PosVendas.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>New</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>fSubject</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Case</object>
+    </recordCreates>
+    <recordLookups>
+        <description>Procura Case já criado para esta Oportunidade (idempotência).</description>
+        <name>Get_Case_Existente</name>
+        <label>Get Case existente</label>
+        <locationX>314</locationX>
+        <locationY>179</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Ja_existe_Case</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Encerra_Falha</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Oportunidade__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Case</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>Busca a fila Pós-vendas pelo DeveloperName (sem Id fixo).</description>
+        <name>Get_Fila_PosVendas</name>
+        <label>Get Fila Pós-vendas</label>
+        <locationX>182</locationX>
+        <locationY>395</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>Fila_encontrada</targetReference>
+        </connector>
+        <faultConnector>
+            <targetReference>Encerra_Falha</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>PosVendas</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Type</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Queue</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Group</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <formulas>
+        <description>Assunto do Case: Pós-vendas: + nome da Oportunidade.</description>
+        <name>fSubject</name>
+        <dataType>String</dataType>
+        <expression>&quot;Pós-vendas: &quot; &amp; {!$Record.Name}</expression>
+    </formulas>
+    <start>
+        <locationX>188</locationX>
+        <locationY>0</locationY>
+        <doesRequireRecordChangedToMeetCriteria>true</doesRequireRecordChangedToMeetCriteria>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Fechado/Ganho</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <scheduledPaths>
+            <name>Assincrono</name>
+            <connector>
+                <targetReference>Get_Case_Existente</targetReference>
+            </connector>
+            <pathType>AsyncAfterCommit</pathType>
+        </scheduledPaths>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <variables>
+        <description>Mensagem de falha capturada no caminho de falha.</description>
+        <name>vFalha</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+</Flow>

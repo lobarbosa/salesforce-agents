@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Oportunidade__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <description>EPLAST-40: liga o Case de Pós-vendas à Oportunidade ganha que o originou. Preenchido pelo Flow Opportunity_AfterSave_CriaCasoPosVendas; rastreia o ciclo e impede Case duplicado por Oportunidade.</description>
+    <label>Oportunidade</label>
+    <referenceTo>Opportunity</referenceTo>
+    <relationshipLabel>Casos de Pós-vendas</relationshipLabel>
+    <relationshipName>CasosPosVendas</relationshipName>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>Lookup</type>
+</CustomField>
