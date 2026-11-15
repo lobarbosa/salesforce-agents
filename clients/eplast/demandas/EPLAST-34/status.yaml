@@ -2,7 +2,7 @@ id: EPLAST-34
 client: eplast
 titulo: Resumos automáticos para reuniões comerciais, GDD, S&OP e Board
 tipo: projeto
-status: aguardando_gate_design
+status: backlog
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -25,3 +25,10 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-11T15:27:18.333153+00:00'
+- de: aguardando_gate_design
+  para: backlog
+  autor: Leonardo Barbosa
+  em: '2026-11-15T02:13:05.694243+00:00'
+  motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
+    resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
+    anterior guardados em rodada-anterior/
