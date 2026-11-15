@@ -108,8 +108,9 @@ comportamento de quem usa a org sem ninguém ter decidido.
 - **Agente Agentforce.** Nunca altere uma `BotVersion` nem o `GenAiPlannerBundle` de uma
   versão existente: crie a versão seguinte (`vN+1`) a partir da última, com o tópico ou a
   ação novos, e implante-a **inativa**. Ativar a versão nova (e desativar a anterior) é um
-  passo separado, que na sandbox de QA só acontece com autorização no card, porque troca o
-  assistente de quem está testando. Demandas que mexem no mesmo agente partem da versão
+  passo separado. Na sandbox de QA o `qa` pode ativá-la para testar (autorizado para toda a
+  esteira desde 2026-11-15) e registra em `05-testes.md` qual versão entrou e qual saiu,
+  porque isso troca o assistente de quem está testando. Demandas que mexem no mesmo agente partem da versão
   deixada pela anterior e criam a próxima; nunca duas demandas na mesma versão.
 - **Classe Apex.** Classe em uso (chamada por trigger, Flow, ação de agente ou job
   agendado) não é reescrita no lugar quando a mudança altera comportamento: crie a classe
