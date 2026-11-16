@@ -1,81 +1,79 @@
-# EPLAST-28 — Roteiro de teste: alerta de oportunidade parada
+# EPLAST-28 — Alerta de oportunidade parada: roteiro de teste
 
-Foi entregue um aviso automático: todo dia de manhã o Salesforce confere as oportunidades abertas e, quando uma passa do prazo sem nenhuma atividade registrada, o responsável recebe uma notificação no sino do Salesforce. O aviso não muda a oportunidade, a conta nem o pedido, e não sai e-mail.
+Foi entregue um aviso automático, uma vez por dia, para o responsável por uma oportunidade aberta que ficou parada além do prazo. O aviso chega como notificação dentro do Salesforce (o sino), sem e-mail, e não altera nenhuma oportunidade, conta ou pedido.
 
-**Situação do teste automático:** o time armou o teste na sandbox de QA para 20:55 de 15/11 e confere o resultado em seguida. Ainda não está comprovado: o envio da notificação, que o aviso não se repete no dia seguinte, o aviso ao gestor e o caso de dono inativo. Os testes abaixo ficam para quem segue o roteiro. O prazo de teste ficou em 2 dias, só para a conferência; o prazo combinado é 14 dias.
+**Situação do teste automático:** o time montou dados de teste e armou a execução na QAS, mas não conseguiu comprovar que o aviso foi gerado e entregue (nenhuma notificação apareceu para o responsável de teste). Por isso nenhum dos testes abaixo está comprovado: todos ficam para quem segue este roteiro. Prazo de 14 dias, repetição no dia seguinte, gestor e volume também não foram exercitados.
 
 ## Antes de começar
-- Ambiente: sandbox de QA (QAS) da Eplast. Nunca produção.
-- Perfil: usuário que seja dono da oportunidade de teste.
-- Dado de teste: crie uma conta e oportunidades com o nome começando por `TESTE EPLAST-28`. A oportunidade precisa de conta com endereço de cobrança, CNAE e loja preenchidos, e de dono com "ID Usuário Protheus" preenchido.
-- O aviso sai no horário combinado (07:00). Para ver o resultado no mesmo dia, peça ao time técnico para antecipar o horário e informe a hora.
+- Ambiente: QAS (sandbox da Eplast com cópia parcial). Perfil: o de um vendedor que seja dono de oportunidades.
+- O aviso roda uma vez por dia, às 07:00 (horário de Brasília). Os testes precisam ser conferidos depois dessa hora.
+- Dado de teste: use só oportunidades de teste (nome começando por "TESTE EPLAST-28"). Uma oportunidade nova nasce com a data de hoje, então para provar o prazo de 14 dias use uma oportunidade de teste que o time tenha deixado parada, ou combine com o time uma data de teste.
+- Pergunte ao time qual prazo está configurado no momento (o normal é 14 dias).
 
-## Teste 1 — Oportunidade parada alerta o dono
-1. Crie a oportunidade `TESTE EPLAST-28 parada`, aberta, e registre uma tarefa concluída com data de 14 dias atrás.
-2. Aguarde o horário do aviso.
-3. Clique no sino de notificações.
+## Teste 1 — Oportunidade aberta e parada gera aviso
+1. Entre como dono de uma oportunidade de teste aberta, sem nenhuma atividade registrada e sem mudança de estágio há mais dias que o prazo.
+2. No dia seguinte, depois das 07:00, clique no sino no topo da tela.
 
-**Resultado esperado:** notificação "Oportunidade parada ha 14 dias" com nome da oportunidade, nome da conta, estágio e a data da última atividade. Ao clicar, abre a oportunidade.
+**Resultado esperado:** uma notificação "Oportunidade parada" com o nome da oportunidade, o nome da conta, o estágio atual e há quantos dias está sem atividade.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Atividade recente não alerta
-1. Crie `TESTE EPLAST-28 recente`, aberta, com tarefa concluída de 3 dias atrás.
-2. Aguarde o horário do aviso e abra o sino.
+## Teste 2 — Oportunidade com atividade recente não gera aviso
+1. Em uma oportunidade de teste aberta, registre uma tarefa concluída com a data de hoje.
+2. Depois das 07:00 do dia seguinte, abra o sino.
 
-**Resultado esperado:** nenhuma notificação para essa oportunidade.
+**Resultado esperado:** nenhuma notificação sobre essa oportunidade.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Oportunidade fechada não alerta
-1. Crie `TESTE EPLAST-28 fechada` no estágio Fechado/Perdido, com tarefa de 14 dias atrás.
-2. Aguarde o horário do aviso e abra o sino.
+## Teste 3 — Oportunidade fechada nunca gera aviso
+1. Use uma oportunidade de teste com estágio "Fechado/Perdido" ou "Fechado/Ganho" e última atividade antiga.
+2. Depois das 07:00, abra o sino.
 
-**Resultado esperado:** nenhuma notificação.
+**Resultado esperado:** nenhuma notificação sobre essa oportunidade.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Oportunidade sem nenhuma atividade
-1. Crie `TESTE EPLAST-28 sem atividade` e não registre tarefa nem evento. Ela só alerta 14 dias depois de criada; peça ao time técnico para simular essa data.
+## Teste 4 — Oportunidade sem atividade conta a partir da criação
+1. Use uma oportunidade de teste aberta que nunca teve atividade, criada há mais dias que o prazo.
+2. Depois das 07:00, abra o sino.
 
-**Resultado esperado:** o dono recebe o aviso, contando a partir da data de criação.
+**Resultado esperado:** notificação, contando os dias a partir da data de criação. Se foi criada há menos dias que o prazo, nenhuma notificação.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — O aviso não se repete
-1. Depois do Teste 1, aguarde o dia seguinte sem registrar atividade nem mudar o estágio.
-2. Abra o sino.
+## Teste 5 — Sem aviso repetido
+1. Depois do Teste 1, não mexa na oportunidade.
+2. No dia seguinte, depois das 07:00, abra o sino.
 
-**Resultado esperado:** nenhuma nova notificação para a mesma oportunidade.
+**Resultado esperado:** nenhuma segunda notificação para a mesma oportunidade.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 6 — Nada muda nos registros
-1. Antes do aviso, anote a data de "Última modificação" da oportunidade de teste e da conta.
-2. Depois do aviso, confira de novo.
+## Teste 6 — O aviso não altera nada e não sai por e-mail
+1. Antes do horário, anote a data "Última modificação" da oportunidade de teste do Teste 1.
+2. Depois do aviso, abra a oportunidade e a caixa de e-mail do responsável.
 
-**Resultado esperado:** as datas são as mesmas; nenhuma tarefa nova apareceu e nenhum e-mail chegou.
+**Resultado esperado:** "Última modificação" igual à anotada, nenhuma tarefa nova criada pelo aviso e nenhum e-mail recebido.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 7 — Gestor só recebe se ligado
-1. Com a opção de avisar o gestor desligada (padrão), repita o Teste 1 com dono que tenha gestor.
-2. Peça ao time técnico para ligar a opção e repita.
+## Teste 7 — Dono inativo não recebe aviso
+1. Use uma oportunidade parada cujo dono está inativo (combine com o time, pois só o administrador consegue montar).
 
-**Resultado esperado:** desligada, só o dono recebe; ligada, o gestor direto também recebe, e só se estiver ativo.
+**Resultado esperado:** ninguém é notificado e o dono não é trocado.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- Oportunidade parada = sem tarefa ou evento e sem mudança de estágio há 14 dias. Está certo?
-- Tarefas criadas automaticamente pelo sistema contam como acompanhamento, então uma oportunidade com tarefa automática recente pode não alertar. Aceitável?
-- Prazo único de 14 dias para todos os estágios, ajustável sem desenvolvimento.
-- Aviso só dentro do Salesforce (sino), uma vez por episódio de parada, às 07:00. Nada por e-mail; se quiserem e-mail, sai pelo Marketing Cloud, por quem o opera.
-- Só o dono é avisado. O gestor é opcional e começa desligado.
-- Oportunidades fechadas não alertam; todos os tipos de oportunidade entram.
-- Dono inativo não recebe aviso e a oportunidade fica registrada no log de integração, sem troca de dono.
-- Na entrada em produção, pode haver uma varredura única das oportunidades já paradas, numa data a definir. Sem data, não há.
-- O aviso não cria tarefa nem altera nada; não usa o assistente SFAgent2.
+- **Parada** é a oportunidade aberta sem atividade e sem mudança de estágio há 14 dias. Você concorda com 14 dias e com essa regra? (Muda sem programação.)
+- **Tarefas criadas automaticamente** pelo sistema contam como acompanhamento, então podem impedir o aviso mesmo sem contato real.
+- O prazo é **único**, igual para todos os estágios.
+- Recebe o **dono**. O gestor só é avisado se a configuração for ligada, e hoje está desligada.
+- O aviso é só **notificação interna**, uma vez por dia. E-mail ou mensagem, se quiserem, sairia pelo Marketing Cloud, por quem o opera.
+- O alerta **só avisa**: não cria tarefa nem troca o dono.
+- Entram oportunidades de todos os tipos de registro; só ficam de fora as fechadas.
+- O aviso mostra nome da oportunidade, conta, estágio e dias parada, sem dado de contato.
 
 ## O que não dá para conferir pela tela
-Que nenhum objeto foi alterado em massa, o registro de execução do job e o log de dono inativo são conferidos pelo time técnico; evidência em `05-testes.md`. A carga com muitas oportunidades não foi simulada.
+Volume grande de oportunidades, a execução agendada em si (job) e a ausência de e-mail ou chamadas externas só o time técnico comprova. A evidência e as falhas estão em `05-testes.md`.

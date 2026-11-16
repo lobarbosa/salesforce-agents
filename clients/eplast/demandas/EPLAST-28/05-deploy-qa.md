@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EI5QzKAL` (Succeeded)
-- **Quando:** 2026-11-15T23:26Z
-- **Commit:** `88a74296`
+- **Deploy:** `0AfHa00000EI6mrKAD` (Succeeded)
+- **Quando:** 2026-11-16T00:22Z
+- **Commit:** `a98d9d28`
 
 ## Componentes
 - `force-app/main/default/customMetadata/AlertaOportunidadeParadaSetting.Default.md-meta.xml`
