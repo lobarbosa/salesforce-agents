@@ -1,37 +1,38 @@
 **Verificação:** inconclusiva
 **Org de teste:** `sbx-somos-agility-dev`
 
-# Verificação - SOMOSAGILITY-27
+# Verificação do build - SOMOSAGILITY-27
 
-Org conferida com `sf org list`: só `sbx-somos-agility-dev` (sandbox, Connected). Todos os comandos usaram `--target-org sbx-somos-agility-dev`. QA e produção não foram tocadas.
+Org confirmada com `sf org list`: `sbx-somos-agility-dev` (Sandbox, Connected), pelo alias. Usuário de execução: o da sessão de build (identificador omitido). Nenhuma outra org tocada. Nenhum dado criado, nenhum DML, nenhuma alteração no usuário de execução (nada a reverter).
 
-## Resumo
-O que o build entregou (o permission set `PS_Relatorios_ExtrairSalvar`) existe na dev com exatamente as permissões do design, e nada além disso. O efeito para o usuário (A1 salvar, A2 exportar, A6 uso pela colaboradora) **não foi exercitado**: depende do perfil e da pasta da colaboradora, de uma atribuição e de acesso de pasta que são passos humanos, e os critérios foram escritos para a QA. Por isso `inconclusiva`, não `reprovada`: nenhum caso executado falhou.
+Construído (04-plano-build.md): só o permission set `PS_Relatorios_ExtrairSalvar`. Sem Flow, sem Apex.
 
-## Casos
+## Resultado por critério
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| C1 | Design seção 2 / A3 | `sf data query` em `PermissionSet` onde `Name='PS_Relatorios_ExtrairSalvar'` | Existe, com `RunReports`, `CreateCustomizeReports` e `ExportReport` ligadas | 1 registro; as três = true | passou |
-| C2 | A3 (sem ampliação) | Mesma consulta, outras permissões de sistema | `ManageReportsInPubFolders`, `CreateReportFolders`, `ViewAllData`, `ModifyAllData` e `CreateReportInLightning` desligadas | Todas false | passou |
-| C3 | A3 / design (sem objeto, sem campo) | `COUNT` em `ObjectPermissions` e `FieldPermissions` do permission set | 0 e 0 | 0 e 0 | passou |
-| C4 | Design (descrição obrigatória, DoD) | Leitura do campo `Description` na consulta C1 | Descrição preenchida | "Executar, criar/salvar e exportar relatorios. Nao inclui gestao de pastas publicas. SOMOSAGILITY-27." | passou |
-| C5 | A3 ("nenhum usuário ganha acesso novo") | `COUNT` em `PermissionSetAssignment` do permission set | 0 (atribuição é passo humano) | 0 | passou |
-| C6 | A4 (permission set reutilizável, sem exceção no perfil) | Leitura do XML em `force-app/main/default/permissionsets/` e do design seção 2 | Permissão em permission set, sem alteração de perfil | Só o permission set foi criado; o plano de build diz que nenhum perfil foi alterado. Não comparei perfis antes e depois | passou (parcial: perfis não comparados) |
-| C7 | A1 - salvar relatório | Não executado | Salvar sem erro de privilégio e relatório na pasta | - | não executado |
-| C8 | A2 - exportar com contagem de linhas igual à tela | Não executado | Arquivo gerado, linhas batem com a tela | - | não executado |
-| C9 | A6 - roteiro concluído pela colaboradora | Não executado | Passos OK | - | não executado |
-| C10 | A5 - "criar modelo" | Bloqueado pela pergunta 1 da análise; não construído | Fora do escopo | - | não executado |
+| V1 | A3 | SOQL em PermissionSet por Name, com campos de sistema | `RunReports`, `CreateCustomizeReports`, `ExportReport` = true; sem gestão de dashboards | As três = true; `PermissionsCreateCustomizeDashboards` = false; descrição preenchida | passou |
+| V2 | A3 | COUNT em ObjectPermissions e FieldPermissions do PS | 0 (sem acesso a objeto ou campo) | 0 e 0 | passou |
+| V3 | A3 | Consulta da licença do PS | Sem licença | `License.Name` vazio | passou |
+| V4 | A3 | COUNT em PermissionSetAssignment do PS | 0 (ninguém ganha acesso novo) | 0 | passou |
+| V5 | A3 | `git diff --name-only main...HEAD` fora de `demandas/`, filtrando por `clients/somos-agility` | Só o PS novo alterado no projeto do cliente | Único arquivo do cliente: `force-app/.../PS_Relatorios_ExtrairSalvar.permissionset-meta.xml`. Nenhum perfil, Flow, Apex ou outro PS | passou |
+| V6 | A1 | Não executado | Usuário de teste com o perfil da colaboradora, sem as permissões, salva relatório sem erro | Ver abaixo | não executado |
+| V7 | A2 | Não executado | Mesmo usuário exporta relatório; linhas do arquivo batem com a tela | Ver abaixo | não executado |
+| V8 | A4 | Não aplicável a esta verificação (revisão do arquiteto) | Permissão em PS reutilizável por função | Está em PS por função, confirmado em V1 a V5; a decisão é do arquiteto | não executado |
 
-## Alterações feitas na org
-Nenhuma. Nenhum dado de teste criado, nenhum DML, nenhuma atribuição ao usuário de execução, nenhum Apex anônimo. Nada a desfazer. Nenhum dado pessoal consultado (só metadata e contagens).
+Observação sobre A3: a primeira parte (diferença de permissão de relatório limitada ao previsto) foi provada pela metadata e pelo diff. O inventário "antes e depois" de perfis não foi montado por consulta; a prova é que nenhum perfil mudou no repositório e o PS não tem atribuição.
+
+## O que ficou sem prova (A1 e A2)
+
+- Prova de A1 e A2 exige um usuário de teste sem as permissões, com o perfil da colaboradora. Eu só posso alterar o meu próprio usuário de execução, e ele não representa a colaboradora. Se eu criasse o relatório com ele, o resultado não provaria nada sobre o permission set (o perfil dele provavelmente já tem as permissões). Por isso não executei.
+- Criar usuário de teste ou atribuir o PS a outro usuário está fora do que a esteira autoriza ao verificador.
+- Falta também pasta de relatório com acesso Editor (pergunta 7 da análise, sem resposta).
+- Isto bate com a FALHA 1 da rodada 1 de QA: não é defeito de metadata.
+
+O que uma pessoa precisa fazer: indicar ou criar um usuário de teste com o perfil da colaboradora (na dev ou na QA), atribuir `PS_Relatorios_ExtrairSalvar`, dar acesso Editor a uma pasta de relatório e executar o `05-roteiro-cliente.md` (salvar e exportar). Se A1 falhar com o PS atribuído, entra `CreateReportInLightning` (R4 do design).
 
 ## O que pode ter saído da org
-Nada. A demanda não tem automação, integração nem callout.
+Nada. Nenhum registro criado, nenhuma automação disparada, nenhuma chamada externa.
 
-## O que ficou sem prova e o que uma pessoa precisa fazer
-1. **A1 e A2 (efeito real).** Não consegui provar que a colaboradora passa a salvar e exportar. Falta: confirmar o perfil e a licença dela e a mensagem de erro exata (R1 do design). Se o perfil já tem as três permissões, a causa é outra e o design volta. Depois, atribuir o permission set a ela (ou a um usuário de teste com o mesmo perfil na QA), definir a pasta (pergunta 7) com acesso Editor, e rodar salvar e exportar, comparando as linhas do arquivo com as da tela.
-2. **R4 do design.** Se o A1 falhar mesmo com o permission set, avaliar `CreateReportInLightning`, que ficou de fora de propósito e está false.
-3. **A3 (outros usuários).** C5 prova que hoje ninguém tem o permission set na dev. A verificação de que nenhum perfil ou usuário além da colaboradora ganhou acesso depende da atribuição real na QA.
-4. **Reverter a permissão** já adicionada pela equipe ao perfil individual (pergunta 3), se ela existir. É passo humano.
-5. **A6** depende da colaboradora ou do consultor executando o roteiro na QA.
+## Limpeza
+Sem dados de teste. Sem job agendado. Usuário de execução inalterado.
