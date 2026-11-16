@@ -2,7 +2,7 @@ id: EPLAST-30
 client: eplast
 titulo: Apoio a propostas, follow-ups e argumentos comerciais
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -147,3 +147,11 @@ historico:
   em: '2026-11-16T09:30:59.361351+00:00'
   motivo: 'reprovação da rodada 3 foi limite da ferramenta de navegador do QA (corrigida
     no PR #214); o build não muda. CA-08, CA-10 e CA-11 ficam para a homologação (03-design.md).'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T09:38:34.077203+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T09:42:05.333631+00:00'
