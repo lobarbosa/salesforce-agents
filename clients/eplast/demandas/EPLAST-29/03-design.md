@@ -307,3 +307,22 @@ Nenhuma pergunta ficou no caso (c) da regra 4. **Nada bloqueia o build.**
 3. Confirmar que nenhuma mudança de modelo de dados é desejada (seção 3.6).
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável (2026-11-16): versão acumulada do SFAgent2
+
+Decidido por Leonardo Barbosa depois da rodada 2 de QA. Vale acima do que este desenho diz
+sobre versões.
+
+- As versões do `SFAgent2` passam a ser **acumuladas**: cada demanda parte da versão mais
+  nova que existe na org de dev, e não da que estava ativa quando o desenho foi feito.
+- Esta demanda cria a **v12 a partir da v10** (EPLAST-27, já na dev: tem as ações e
+  instruções de 27, 29, 34 e 46). Na v12, a única mudança é levar para o tópico
+  `acoes_comerciais` as instruções reforçadas de confirmação da v11 (correção da FALHA 1 e da
+  FALHA 2 da rodada 2: só dizer que a tarefa foi criada depois de a ação `CriarTarefa` voltar
+  com sucesso; sem data, não criar e pedir a data). Nada das outras demandas é removido.
+- **O pacote leva só a v12**: tirar da branch `genAiPlannerBundles/SFAgent2_v7`,
+  `genAiPlannerBundles/SFAgent2_v11` e `bots/SFAgent2/v7.botVersion-meta.xml` e
+  `v11.botVersion-meta.xml` (a v7 já está na QA e não aceita reimplante).
+- Ordem na QA: EPLAST-46 (v9), EPLAST-27 (v10), esta (v12). O QA ativa a versão que chega, e
+  a v12 fica ativa ao final.
+- Teste sem tela: `sf agent preview start` / `send` / `end`, sem o modo interativo.
