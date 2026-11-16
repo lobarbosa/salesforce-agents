@@ -225,3 +225,18 @@ Org: `sbx-somos-agility-dev` (sandbox, única conectada). Só classes de teste a
 **Evidência (dev):** `sf project deploy start -l RunSpecifiedTests` com as 3 classes de teste: Succeeded, 11 testes, 0 falhas (deploy das 3 classes de teste na dev, só teste; nenhuma outra metadata). A rodada anterior de build/Flow permanece como descrita acima.
 
 **Versões e ativação:** nada de Flow/classe de lógica mudou nesta rework; sem ativação nova.
+
+---
+
+## Correções da verificação 1
+
+Org: `sbx-somos-agility-dev` (sandbox, única conectada). Só `SolicitacaoReembolsoTriggerHandlerTest` mudou; handler, BO e Flow intocados. Sem job agendado, sem ativação.
+
+| Falha | Correção |
+|---|---|
+| FALHA 1: `testMudarEtapaReSalvaLancamento` instável (comparava `LastModifiedDate`, resolução de segundo) | Asserção por relógio removida nos 3 testes que a usavam. Agora um helper `marcarTotal` grava 999 em `Total_de_despesas_realizadas__c` do projeto antes da ação; o Flow só sobrescreve o marcador se o Lançamento for re-salvo. Mudou de etapa: total real (42), não 999. Update sem mudar etapa: continua 999. Trava de recursão: 1ª chamada recalcula (15), marcador 999, 2ª chamada deixa 999. |
+| C5 (incerteza da regra "Favor preencher o JOB", ilegível na dev) | Não corrigível aqui: a regra não existe na dev e a QA é vedada ao builder. Permanece como no registro anterior (`'Não'` é hipótese; só o deploy na QA confirma). |
+
+**Evidência (dev):** teste deployado na dev e rodadas 2 de 2 das 3 classes juntas (`sf apex run test --code-coverage`): 11 testes, 11 Pass, 0 falhas. Cobertura: `SolicitacaoReembolsoTriggerHandler` 100%, `SolicitacaoReembolsoBO` 95% (linha 41), `LancamentoDespesasBO` 88% (linhas 25, 26).
+
+**Versões e ativação:** nada de Flow/classe de lógica mudou; sem ativação nova.

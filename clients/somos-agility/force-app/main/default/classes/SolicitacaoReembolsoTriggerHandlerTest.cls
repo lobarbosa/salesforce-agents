@@ -82,7 +82,13 @@ public class SolicitacaoReembolsoTriggerHandlerTest {
         return (resto < 2) ? 0 : 11 - resto;
     }
 
-    // Mudar de etapa -> o Lançamento é re-salvo (LastModifiedDate muda) e o total passa a incluí-lo.
+    // Grava um valor-marcador no total do projeto. Se o Flow rodar de novo, ele sobrescreve
+    // o marcador; se nada re-salvar o Lançamento, o marcador permanece.
+    private static void marcarTotal(Id projetoId, Decimal valor) {
+        update new PPM_Project__c(Id = projetoId, Total_de_despesas_realizadas__c = valor);
+    }
+
+    // Mudar de etapa -> o Lançamento é re-salvo (o Flow recalcula o total, provado por marcador, sem depender do relógio) e o total passa a incluí-lo.
     @isTest
     static void testMudarEtapaReSalvaLancamento() {
         TriggerHandler.bypass('PPMProjectTriggerHandler');
@@ -93,19 +99,16 @@ public class SolicitacaoReembolsoTriggerHandlerTest {
         Solicitacao_de_Reembolso__c sol = criarSolicitacao(c, 'Pendente - Gerente de Projetos');
         Lancamento_de_Despesas__c l = criarLancamento(sol.Id, p.Id, a.Id, 42.00);
 
-        Lancamento_de_Despesas__c antes = [SELECT Id, LastModifiedDate FROM Lancamento_de_Despesas__c WHERE Id = :l.Id];
+        // Marcador independente do relógio: valor que só o Flow (re-disparado pelo re-save) sobrescreve.
+        marcarTotal(p.Id, 999);
 
         Test.startTest();
         sol.Status_de_Aprovacao_e_Etapas__c = 'Pendente - Gestor';
         update sol;
         Test.stopTest();
 
-        Lancamento_de_Despesas__c depois = [SELECT Id, LastModifiedDate FROM Lancamento_de_Despesas__c WHERE Id = :l.Id];
-        Assert.areNotEqual(antes.LastModifiedDate, depois.LastModifiedDate,
-            'Lançamento deveria ser re-salvo quando a SR muda de etapa de aprovação');
-
         PPM_Project__c projeto = [SELECT Id, Total_de_despesas_realizadas__c FROM PPM_Project__c WHERE Id = :p.Id];
-        Assert.areEqual(42.00, projeto.Total_de_despesas_realizadas__c, 'O re-save deve disparar o Flow e atualizar o total do projeto');
+        Assert.areEqual(42.00, projeto.Total_de_despesas_realizadas__c, 'O re-save deve disparar o Flow e sobrescrever o marcador com o total real do projeto');
     }
 
     // Cenário 5: update na SR sem mudar Status_de_Aprovacao_e_Etapas__c nem Status__c -> nenhum Lançamento re-salvo.
@@ -119,7 +122,7 @@ public class SolicitacaoReembolsoTriggerHandlerTest {
         Solicitacao_de_Reembolso__c sol = criarSolicitacao(c, 'Pendente - Gestor');
         Lancamento_de_Despesas__c l = criarLancamento(sol.Id, p.Id, a.Id, 10.00);
 
-        Lancamento_de_Despesas__c antes = [SELECT Id, LastModifiedDate FROM Lancamento_de_Despesas__c WHERE Id = :l.Id];
+        marcarTotal(p.Id, 999);
 
         Test.startTest();
         // Update que não toca Status__c nem Status_de_Aprovacao_e_Etapas__c: nenhum dos
@@ -127,9 +130,9 @@ public class SolicitacaoReembolsoTriggerHandlerTest {
         update sol;
         Test.stopTest();
 
-        Lancamento_de_Despesas__c depois = [SELECT Id, LastModifiedDate FROM Lancamento_de_Despesas__c WHERE Id = :l.Id];
-        Assert.areEqual(antes.LastModifiedDate, depois.LastModifiedDate,
-            'Lançamento não deveria ser re-salvo quando a SR é atualizada sem mudar de etapa/status');
+        PPM_Project__c projeto = [SELECT Id, Total_de_despesas_realizadas__c FROM PPM_Project__c WHERE Id = :p.Id];
+        Assert.areEqual(999, projeto.Total_de_despesas_realizadas__c,
+            'Lançamento não deveria ser re-salvo quando a SR é atualizada sem mudar de etapa/status (o Flow não pode ter recalculado o total)');
     }
 
     // Cenário 8 (trava de recursão, camada 2 do R1): chamar o BO duas vezes para a MESMA
@@ -148,14 +151,16 @@ public class SolicitacaoReembolsoTriggerHandlerTest {
 
         Test.startTest();
         SolicitacaoReembolsoBO.updateLancamentosDespesas(new List<Solicitacao_de_Reembolso__c>{ sol });
-        Lancamento_de_Despesas__c depoisPrimeiraChamada = [SELECT Id, LastModifiedDate FROM Lancamento_de_Despesas__c WHERE Id = :l.Id];
+        PPM_Project__c aposPrimeira = [SELECT Id, Total_de_despesas_realizadas__c FROM PPM_Project__c WHERE Id = :p.Id];
+        Assert.areEqual(15, aposPrimeira.Total_de_despesas_realizadas__c, 'A primeira chamada deve re-salvar e recalcular o total');
+        marcarTotal(p.Id, 999);
 
         // Mesma SR, mesmo valor de Status_de_Aprovacao_e_Etapas__c: a trava deve bloquear.
         SolicitacaoReembolsoBO.updateLancamentosDespesas(new List<Solicitacao_de_Reembolso__c>{ sol });
-        Lancamento_de_Despesas__c depoisSegundaChamada = [SELECT Id, LastModifiedDate FROM Lancamento_de_Despesas__c WHERE Id = :l.Id];
         Test.stopTest();
 
-        Assert.areEqual(depoisPrimeiraChamada.LastModifiedDate, depoisSegundaChamada.LastModifiedDate,
+        PPM_Project__c aposSegunda = [SELECT Id, Total_de_despesas_realizadas__c FROM PPM_Project__c WHERE Id = :p.Id];
+        Assert.areEqual(999, aposSegunda.Total_de_despesas_realizadas__c,
             'A trava de recursão (SR + etapa) deve impedir reprocessar a mesma SR na mesma etapa dentro da transação');
     }
 
