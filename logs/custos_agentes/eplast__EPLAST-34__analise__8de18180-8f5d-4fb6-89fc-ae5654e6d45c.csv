@@ -1,0 +1,2 @@
+timestamp,client,demand_id,etapa,session_id,model,input_tokens,output_tokens,cache_read_tokens,cache_creation_tokens,cost_usd,duration_ms,num_turns,is_error
+2026-11-15T03:00:52.875856+00:00,eplast,EPLAST-34,analise,8de18180-8f5d-4fb6-89fc-ae5654e6d45c,claude-haiku-5-5,3090,40863,522802,91130,0.037359769999999994,22212,3,False
