@@ -38,7 +38,91 @@ custo de manutenção em projeto Salesforce.
   em QA (achado SOMOSAGILITY-10, `ValidaJOB`). Fixture de teste preenche todo campo exigido
   por validation rule do objeto, não só os que a regra da demanda usa.
 
-## Ordem de execução (resumo operacional)
+## Relatórios e painéis por metadata
+Achado EPLAST-39 (2026-11-12): 5 relatórios e 1 painel custaram quatro vezes um build
+normal, porque o formato foi descoberto deployando e lendo o erro — e o QA ainda reprovou
+o painel. XML de relatório e painel não tem validação local; o que segue foi confirmado
+por erro real de deploy ou por execução na org (API 68.0, Enterprise Edition). Vale como
+ponto de partida, não como referência completa.
+
+**Antes de escrever o XML**
+- Parta de um exemplo da própria org: faça retrieve de um relatório que já use o recurso
+  (filtro relativo de data, bucket, fórmula) e copie a sintaxe dele. Não adivinhe valor de
+  enum: `INTERVAL_THISFISCALQUARTER` e `INTERVAL_THIS_FISCAL_QUARTER` foram os dois
+  recusados em `<timeFrameFilter>` (`UserDateInterval`). Duas tentativas recusadas no
+  mesmo campo → pare, tire o item e registre como pendência no plano de build.
+- Confira o tipo de relatório pelo describe
+  (`/services/data/vNN.0/analytics/report-types/<Tipo>`) antes de desenhar: ele diz as
+  colunas que existem (o `ROI` nativo de `CampaignList` dispensou fórmula própria e já
+  não divide por custo zero) e se o usuário da esteira tem acesso — `CampaignInfluence`
+  existe, mas respondeu "sem permissão aos objetos" e o relatório saiu do escopo.
+- `scope` depende do tipo de relatório: `Opportunity` recusou `org` e aceitou `team`;
+  `OpportunityLead` aceita `org`. Copie o `scope` de um relatório existente do mesmo tipo.
+- `ReportFolder` e `DashboardFolder` não aceitam `<description>`; `Group` aceita.
+
+**Bucket sobre picklist**
+- `bucketType` tem de casar com o tipo da coluna de origem: `text` sobre picklist é
+  recusado.
+- Entrada de bucket para valor vazio (`<sourceValues/>`) com `bucketType` `picklist` deu
+  erro interno opaco. Sem ela, o nulo aparece no relatório com rótulo `-`, não com o
+  texto que o critério de aceite pedir. Se o critério exige um rótulo ("Sem origem"),
+  diga no design que isso é ajuste manual na tela (renomear o grupo), não metadata.
+- `otherBucketLabel` não consolidou valores fora da lista numa picklist não restrita:
+  cada valor solto virou um grupo próprio. Não prometa a linha única "Fora da lista".
+
+**Relatório que alimenta painel**
+- Componente de gráfico exige relatório de **resumo ou matriz** (com `groupingsDown`), ou
+  tabular com limite de linhas e "Configurações do Painel". Tabular puro dá erro 209
+  permanente no componente, com qualquer volume de dado. Decida o formato de cada
+  relatório no design já sabendo qual componente ele alimenta.
+- O teto de painéis dinâmicos (`LoggedInUser`) presumido no design não se confirmou no
+  deploy: confirme limite de edição pelo erro real, não por suposição.
+- Deploy com sucesso não prova que o painel renderiza. Ainda no build, confira cada
+  componente pela Analytics API (`/analytics/dashboards/<id>`): `errorCode` ou `NO_DATA`
+  em todos os componentes é defeito de build, não achado para o QA.
+
+**No QA**
+- O navegador da esteira não clica dentro do iframe do visualizador de relatório e
+  painel. Teste pela Analytics API (`/analytics/reports/<id>`), lendo só rótulos e
+  contagens agregadas (guardrail #2).
+- Sandbox sem registro no objeto não testa relatório: o recon conta os registros dos
+  objetos envolvidos, e o design diz de onde vem o dado de teste (sintético, e quem o
+  apaga depois).
+
+## Alterar o que já existe: nova versão primeiro, ativação depois
+
+Regra do responsável (2026-11-15). Flow, agente Agentforce e classe Apex que já existem na
+org nunca são editados no lugar. Primeiro se cria uma versão nova; ela é implantada sem
+substituir a que está em uso; a troca para a versão nova (ativação) é um passo separado,
+declarado no plano, que só acontece depois de a versão nova ser provada.
+
+Achados que motivaram (EPLAST-27 e EPLAST-33, 2026-11-15): o deploy na QA recusou alterar
+`SFAgent2_v4` porque a versão estava ativa lá, e a validação recusou reimplantar classes
+Apex com job agendado em andamento. Editar o que está ativo trava o deploy ou troca o
+comportamento de quem usa a org sem ninguém ter decidido.
+
+- **Flow.** Implante como versão nova do mesmo Flow com `<status>Draft</status>` (ou
+  Obsolete), não como Active. A ativação é o passo seguinte, depois da verificação, e fica
+  escrita no plano com a versão que entra e a que sai. Para desfazer: reativar a anterior.
+  Flow novo (que não existia) pode nascer Active, porque não substitui nada.
+- **Agente Agentforce.** Nunca altere uma `BotVersion` nem o `GenAiPlannerBundle` de uma
+  versão existente: crie a versão seguinte (`vN+1`) a partir da última, com o tópico ou a
+  ação novos, e implante-a **inativa**. Ativar a versão nova (e desativar a anterior) é um
+  passo separado. Na sandbox de QA o `qa` pode ativá-la para testar (autorizado para toda a
+  esteira desde 2026-11-15) e registra em `05-testes.md` qual versão entrou e qual saiu,
+  porque isso troca o assistente de quem está testando. Demandas que mexem no mesmo agente partem da versão
+  deixada pela anterior e criam a próxima; nunca duas demandas na mesma versão.
+- **Classe Apex.** Classe em uso (chamada por trigger, Flow, ação de agente ou job
+  agendado) não é reescrita no lugar quando a mudança altera comportamento: crie a classe
+  nova (`<Nome>V2` ou nome que diga a mudança), com sua `<Classe>Test`, e troque quem a
+  chama num passo separado. Correção pequena que não muda contrato pode editar a classe,
+  desde que nenhum job agendado ou em andamento a use; se houver, o plano diz quem
+  desagenda e reagenda, e quando.
+- **No plano de build** (`04-plano-build.md`), uma seção "Versões e ativação": o que foi
+  criado como versão nova, o que continua ativo, o passo de ativação (quem, onde, quando)
+  e como desfazer.
+
+
 Validação de sistema → before-save Flows → before triggers → validation rules custom →
 duplicate rules → gravação (sem commit) → after triggers → assignment/auto-response →
 workflow (legado) → after-save Flows → entitlement → roll-up summary e cross-object →
