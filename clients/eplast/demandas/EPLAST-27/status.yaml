@@ -2,7 +2,7 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -214,3 +214,10 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-16T10:42:58.956610+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-11-16T11:16:42.679684+00:00'
+  motivo: 'rodada 5: a pergunta direta por nome e por Id passou; a improvisação na
+    pergunta de continuação fica como limitação conhecida para a homologação (03-design.md).
+    O build não muda.'

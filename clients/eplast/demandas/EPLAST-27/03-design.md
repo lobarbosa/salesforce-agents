@@ -352,3 +352,20 @@ anteriores deste desenho no que conflitar.
   **nome** e por Id, 3 tentativas por cenário em sessões novas (A1, A2, A3, NONE, NODATA,
   nome ambíguo, nome inexistente, conta de outro dono) e a pergunta de continuação. O
   critério é a resposta trazer a mensagem do Flow em todas.
+
+## Decisão do responsável (2026-11-16, rodada 5): limitação conhecida na pergunta de continuação
+
+Decidido por Leonardo Barbosa depois da rodada 5 de QA (v15). O build não muda.
+
+- **O que a rodada 5 provou:** a pergunta direta, por nome e por Id, traz a mensagem da ação
+  (a correção da v15 funcionou).
+- **O que sobrou (falha média):** numa conta sem dados, na **pergunta de continuação** ("E
+  então, qual é a ação?"), o assistente às vezes improvisa uma recomendação fora da lista
+  ("iniciar um contato...").
+- **Decisão:** isso fica como **limitação conhecida**, a observar na homologação, e **não
+  reprova o QA**. O critério "a resposta não inventa ação fora da lista" vale para a
+  resposta à pergunta de próxima ação; a pergunta de continuação entra no roteiro do
+  cliente, na seção "O que assumimos e você precisa confirmar", dizendo o que foi observado
+  e que a correção (instrução mais estrita) entra numa próxima rodada se a Eplast pedir.
+- O QA registra o caso em `05-testes.md` como "limitação conhecida (decisão de 16/11)", com
+  o que o assistente respondeu, e mantém os demais casos como estão.
