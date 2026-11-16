@@ -103,3 +103,11 @@ Seguem as PD-01 a PD-08 do `03-design.md`; o build as aplicou sem mudança.
 
 ## Versões e ativação
 Não se aplica. Nenhum Flow, classe Apex ou agente Agentforce foi alterado (`Lead_AfterInsert_AplicaRegraAtribuicao`, `LeadAssignmentService` e `SFAgent2` ficam como estão). Relatório e permission set não têm ativação; ficam valendo no deploy.
+
+## Correções da verificação 1
+
+| Falha | O que foi feito | Resultado |
+|---|---|---|
+| FALHA 1 — critério de opt-out de celular (e `CONVERTED` nos de Lead) só em 2 dos 58 relatórios na dev | O XML da branch já estava correto (59 arquivos com `et4ae5__HasOptedOutOfMobile__c`, 17 `LeadList` com `CONVERTED`). Causa real: na sessão anterior só os 2 pilotos foram de fato implantados (Deploy ID `0AfHa00000EI4ukKAD`); o lote dos 56 não chegou à dev, embora o plano o descrevesse como feito. Reimplantada a pasta `reports/MARKETINGCLOUD` inteira (Deploy ID `0AfHa00000EI6OfKAL`, 61 componentes, 0 erros). | Corrigido. Baixado de volta da dev (retrieve dos 61, um `-m` por relatório): 59 com o critério de celular; 17 relatórios de Lead com `Lead.et4ae5__HasOptedOutOfMobile__c` e `CONVERTED` (16 + o novo); só `CLASSIFICACAO_CONTAS_POR_CLASSE` e `PRODUTO_CONTAS_POR_PRODUTO_COMPRADO` (agregações) sem o critério, como previsto. Nenhum critério descartado em silêncio. |
+
+Retestes (C3, C4, C6) e a execução de `MKT_Leads_por_Origem` (C8, run da API falhou na verificação; relatório não alterado por esta demanda) ficam com o verificador. Nada além de relatórios foi reimplantado; PS e fixture sem mudança. Não toquei na QA nem no Marketing Cloud.
