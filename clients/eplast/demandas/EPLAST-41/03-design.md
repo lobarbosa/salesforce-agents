@@ -204,3 +204,30 @@ Nenhum. Não há pergunta de caso 3: toda decisão aberta foi resolvida por evid
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável (2026-11-16): alinhar os componentes compartilhados com a EPLAST-30
+
+Decidido por Leonardo Barbosa depois de o deploy na QA falhar (16/11, `0AfHa00000EIB4zKAH`).
+
+- **Achado:** esta branch carrega cópias antigas de componentes da EPLAST-30, ainda **com
+  cotação** (`Input:DadosCotacao` nos modelos de prompt). A EPLAST-30 tirou a cotação
+  (decisão de 16/11) e já está na QA, em homologação. O deploy desta demanda foi recusado:
+  "adicionar entrada obrigatória ... Input:DadosCotacao" nos modelos
+  `Argumentos_Comerciais_Oportunidade`, `Rascunho_Followup_Comercial` e
+  `Rascunho_Proposta_Comercial`.
+- **Correção (sem mudar o que esta demanda entrega):** os componentes que pertencem à
+  EPLAST-30 ficam **idênticos aos da branch `feature/EPLAST-30` de hoje**
+  (`git show origin/feature/EPLAST-30:<caminho>`), sem cotação e sem nada de `SBQQ`:
+  - `customPermissions/IA_Rascunho_Comercial`
+  - `flows/Opportunity_Screen_RascunhoComercial`
+  - `genAiPromptTemplates/Argumentos_Comerciais_Oportunidade`, `Rascunho_Followup_Comercial`,
+    `Rascunho_Proposta_Comercial`
+  - `permissionsets/PS_Comercial_RascunhoIA`
+  - `permissionsetgroups/PSG_Comercial_RascunhoIA`
+  Se esta demanda precisa de alguma mudança num deles (por exemplo, incluir
+  `PS_Comercial_RascunhoRelacionamento` no grupo, ou um ponto de entrada no Flow comercial),
+  reaplique **só essa mudança** em cima da versão da EPLAST-30 e diga qual foi no plano.
+- O que é só desta demanda (`Task_Screen_RascunhoRelacionamento`, `Rascunho_Relacionamento`,
+  `PS_Comercial_RascunhoRelacionamento`, ações rápidas, layouts) fica como está: a correção
+  da tela (botões Anterior e Avançar) já funcionou na QA.
+- Não regredir a EPLAST-30 na QA: nenhum componente dela pode voltar a ter cotação.

@@ -2,7 +2,7 @@ id: EPLAST-41
 client: eplast
 titulo: Apoio à criação de textos comerciais e de relacionamento
 tipo: projeto
-status: aguardando_gate_build
+status: build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -71,3 +71,9 @@ historico:
   em: '2026-11-16T09:30:59.371101+00:00'
   motivo: 'reprovação da rodada 3 foi limite da ferramenta de navegador do QA (corrigida
     no PR #214); a correção da tela já funcionou e o build não muda.'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-16T09:50:03.488134+00:00'
+  motivo: 'deploy na QA falhou: a branch leva cópias antigas dos componentes da EPLAST-30,
+    com cotação. Alinhar com a branch da EPLAST-30 (03-design.md).'
