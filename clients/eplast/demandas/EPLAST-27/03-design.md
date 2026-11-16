@@ -319,3 +319,36 @@ sobre versões do `SFAgent2`.
 - **Verificação e QA:** conversar com o agente sem tela (`sf agent preview start` / `send` /
   `end`), pedindo pelo nome da conta, pelo menos 3 vezes por cenário, e conferir que a
   resposta traz a mensagem da ação.
+
+## Decisão do responsável (2026-11-16, rodada 4): a ação aceita o nome da conta
+
+Decidido por Leonardo Barbosa depois da rodada 4 de QA (v14). Vale acima das decisões
+anteriores deste desenho no que conflitar.
+
+- **Achado (rodada 4):** pelo Id da conta, 10 de 10 respostas trazem a mensagem certa. Pelo
+  **nome**, que é como o vendedor pergunta, falha com frequência ("Please select one option."
+  ou só a frase de abertura). A instrução (v14) não bastou: o problema é o encadeamento de
+  `IdentificarConta` (por nome) com `ProximaAcaoCliente`, que nem sempre acontece.
+- **Correção, declarativa (sem Apex):**
+  1. **Flow `Account_Agente_ProximaAcao`, versão nova:** passa a aceitar também o **nome da
+     conta** como entrada (texto, opcional), além do Id. Com o nome: busca as contas que o
+     usuário enxerga cujo nome contém o texto (respeitando o compartilhamento, como hoje);
+     **uma** conta: segue e devolve a mensagem de sempre; **várias**: devolve em `message` a
+     lista dos nomes encontrados (no máximo 5) pedindo para o usuário dizer qual, sem
+     recomendar nada; **nenhuma**: devolve "Não encontrei conta com esse nome que você possa
+     ver". Com o Id, o comportamento atual não muda. O Flow continua sem gravar nada.
+  2. **Ação `ProximaAcaoCliente` na versão nova do agente:** ganha a entrada do nome da
+     conta, com descrição que diga ao planner para passar o nome quando o usuário não der o
+     Id, **sem precisar chamar `IdentificarConta` antes**.
+  3. **Instrução da EPLAST-27** no tópico de insights: para "próxima ação" de uma conta,
+     chamar `ProximaAcaoCliente` direto, com o Id (se estiver no contexto do registro) ou
+     com o nome dito pelo usuário; apresentar na íntegra a `message` devolvida; em pergunta
+     de continuação ("e então, qual é a ação?"), **chamar a ação de novo** com a mesma
+     conta e repetir a mensagem; nunca recomendar ação fora da devolvida.
+- **Versão do agente:** **v15 a partir da v14** (a mais nova na dev e a ativa na QA). Nada
+  das outras demandas (29, 34, 46) é removido nem editado. Pacote: só a v15 e a versão nova
+  do Flow; tirar a v14 da branch.
+- **Verificação e QA:** conversa sem tela (`sf agent preview start` / `send` / `end`), por
+  **nome** e por Id, 3 tentativas por cenário em sessões novas (A1, A2, A3, NONE, NODATA,
+  nome ambíguo, nome inexistente, conta de outro dono) e a pergunta de continuação. O
+  critério é a resposta trazer a mensagem do Flow em todas.
