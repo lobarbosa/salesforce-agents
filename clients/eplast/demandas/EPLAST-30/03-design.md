@@ -328,3 +328,16 @@ diz sobre cotação.
 - Nada de `SBQQ` na página (`Opportunity_Record_Page`) que dependa desta demanda.
 - O que for de cotação fica como premissa para a homologação: "o rascunho não cita a
   cotação; se a Eplast quiser, entra em demanda própria, com licença de CPQ para quem usa".
+
+## Decisão do responsável (2026-11-16): o que o QA prova e o que fica para a homologação
+
+Decidido por Leonardo Barbosa depois da rodada 3 de QA. O build não muda.
+
+- A rodada 3 parou na ferramenta de navegador do QA, que não mudava a opção do rádio. A
+  ferramenta foi corrigida (PR #214). O QA volta a percorrer os três tipos de texto
+  (proposta, follow-up, argumentos) pela tela.
+- **CA-08 (compartilhamento), CA-10 (falha da IA) e CA-11 (debug log)** não têm como ser
+  provados pelo QA nesta sandbox (não há usuário de teste ativo com login; desativar o
+  modelo de prompt e ler debug log não cabem no teste). Ficam como **conferência da
+  homologação**: o QA os marca como "não executado, confere na homologação", com o passo a
+  passo no roteiro do cliente, e isso **não reprova** a rodada.
