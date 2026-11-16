@@ -1,88 +1,73 @@
-# EPLAST-41 · Roteiro de teste: rascunho de texto com IA
+# EPLAST-41 · Roteiro de teste: rascunho de mensagem de relacionamento e texto comercial
 
-Foi entregue um botão "Rascunho com IA" nas contas e nas oportunidades. Com ele, o vendedor pede à IA um rascunho de mensagem de relacionamento ou de texto comercial, revisa na tela e, se quiser, salva como tarefa no registro. O sistema não envia nada: o envio continua sendo feito pelo Marketing Cloud.
+Foi entregue um botão "Rascunho com IA" na Conta e na Oportunidade. Ele escreve um rascunho de mensagem de relacionamento ou de texto comercial. Nada é enviado pelo Salesforce, e nada é gravado até você clicar em salvar.
 
-**Situação do teste automático:** o time abriu a tela na QA e confirmou que o botão aparece no menu da conta. Não conseguiu comprovar a geração do texto nem o salvamento, porque a tela não avançou do primeiro passo e a geração de texto retornou erro. Todos os testes abaixo ficam para quem segue o roteiro, depois da correção. O caso de oportunidade/comercial não foi testado por falta de licença de cotação para o usuário do time.
+**Situação do teste automático:** comprovado: o modelo gera o texto em cerca de 3 segundos; o botão aparece no menu da Conta; nenhum e-mail é criado. Não comprovado: a navegação da tela, o salvamento e o caso de oportunidade, porque a tela da QA não mostrou botão para avançar. Os testes 1 a 6 ficam para quem segue o roteiro, depois da correção.
 
 ## Antes de começar
-- Ambiente: sandbox QAS (a "QAS" da Eplast).
-- Perfil: um usuário que recebeu o acesso "Rascunho com IA" (pedir ao administrador).
-- Dados de teste: crie uma conta chamada "TESTE EPLAST-41 Conta A" e, nela, uma oportunidade aberta "TESTE EPLAST-41 Opp aberta". Crie também uma conta "TESTE EPLAST-41 Conta B" sem nenhuma oportunidade. Use só dados fictícios.
+- Ambiente: sandbox QAS.
+- Perfil: usuário com a permissão "Rascunho Comercial" (a mesma do rascunho comercial).
+- Crie uma conta de teste chamada "TESTE EPLAST-41 Conta A" com uma oportunidade aberta, e outra chamada "TESTE EPLAST-41 Conta B" sem oportunidade. Use só dados fictícios.
 
-## Teste 1 — O botão aparece
-1. Abra a conta "TESTE EPLAST-41 Conta A".
-2. Clique na seta ao lado de "Excluir" (mais ações).
+## Teste 1 — Gerar mensagem de relacionamento
+1. Abra "TESTE EPLAST-41 Conta A".
+2. Clique em "Mostrar mais ações" e depois em "Rascunho com IA".
+3. Marque "Mensagem de relacionamento".
+4. Clique no botão para avançar e escreva o objetivo, por exemplo "agradecimento pós-venda".
+5. Avance para gerar o texto.
 
-**Resultado esperado:** aparece "Rascunho com IA".
+**Resultado esperado:** o texto aparece na tela em até 30 segundos e pode ser copiado. Nenhuma tarefa nova aparece na conta ainda.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Gerar mensagem de relacionamento
-1. Na conta A, clique em "Rascunho com IA".
-2. Marque "Mensagem de relacionamento" e clique em "Próximo".
-3. Em "Tipo e objetivo da mensagem", escreva "agradecimento pós-venda" (sem nomes, e-mail ou telefone) e avance.
+## Teste 2 — Salvar como tarefa
+1. Com o texto na tela, clique em salvar.
+2. Abra a aba de atividades da conta.
 
-**Resultado esperado:** em até 30 segundos aparece "Rascunho gerado" com um texto editável que você consegue selecionar e copiar. Nada foi criado no registro até agora (confira a linha do tempo da conta: nenhuma tarefa nova).
+**Resultado esperado:** existe uma tarefa nova na conta, com o texto salvo na descrição. Nenhum e-mail foi registrado.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Salvar como tarefa
-1. Na tela do texto, escolha "Salvar como tarefa" e finalize.
-2. Volte para a conta e abra a linha do tempo.
+## Teste 3 — Nada é enviado
+1. Depois dos testes 1 e 2, olhe a conta e suas atividades.
 
-**Resultado esperado:** mensagem "Tarefa criada no registro com o texto do rascunho. Nenhum envio foi feito." Existe uma única tarefa "Rascunho de relacionamento (IA)", aberta, sem data, com o texto na descrição.
+**Resultado esperado:** nenhum e-mail enviado ou agendado, e nada novo no Marketing Cloud.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Fechar sem salvar
-1. Gere um novo rascunho na conta A.
-2. Escolha "Fechar sem salvar" e finalize.
+## Teste 4 — Conta sem oportunidade
+1. Abra "TESTE EPLAST-41 Conta B".
+2. Abra "Rascunho com IA", escolha "Texto comercial" e avance.
 
-**Resultado esperado:** aparece "Nada foi gravado." e nenhuma tarefa nova na conta.
+**Resultado esperado:** a tela avisa que não há oportunidade e não gera texto.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Texto comercial a partir da conta
-1. Na conta A, clique em "Rascunho com IA", marque "Texto comercial (proposta, follow-up, argumentos)" e avance.
-2. Escolha a oportunidade "TESTE EPLAST-41 Opp aberta" se for pedido.
+## Teste 5 — Texto comercial a partir da oportunidade
+1. Abra a oportunidade aberta da Conta A.
+2. Clique em "Rascunho com IA" e escolha o texto comercial (proposta, follow-up ou argumentos).
 
-**Resultado esperado:** o texto comercial é gerado a partir da oportunidade.
+**Resultado esperado:** o texto aparece e pode ser copiado. Pode ser salvo como tarefa na oportunidade quando a versão nova da tela comercial estiver ativa; antes disso, só copiar.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 6 — Conta sem oportunidade
-1. Abra a conta "TESTE EPLAST-41 Conta B".
-2. Clique em "Rascunho com IA", marque "Texto comercial" e avance.
+## Teste 6 — Quem não tem a permissão
+1. Entre com um usuário sem a permissão "Rascunho Comercial".
+2. Abra a Conta A.
 
-**Resultado esperado:** "Esta conta não tem oportunidade aberta. O rascunho comercial depende de uma oportunidade. Nenhum texto foi gerado." Nada é criado.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 7 — A partir da oportunidade
-1. Abra "TESTE EPLAST-41 Opp aberta" e clique em "Rascunho com IA".
-2. Gere um texto comercial e salve como tarefa.
-
-**Resultado esperado:** tarefa "Rascunho comercial (IA)" criada na oportunidade, com o texto.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 8 — Nenhum envio
-1. Depois dos testes 3 e 7, procure e-mails enviados no registro (aba de atividades).
-
-**Resultado esperado:** nenhum e-mail foi criado ou enviado por esta função.
+**Resultado esperado:** o usuário não consegue gerar o rascunho.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- "Textos comerciais" são os três já existentes (proposta, follow-up e argumentos). Não há um quarto tipo.
-- Na mensagem de relacionamento, quem escreve decide livremente o tipo e o objetivo, em texto livre. Não há lista fixa de tipos.
-- O texto só pode ser gerado a partir de conta e oportunidade (não de pedido nem de contato).
-- O texto aprovado vira uma tarefa no registro, aberta e sem data, com assunto "Rascunho de relacionamento (IA)" ou "Rascunho comercial (IA)". Nada é enviado.
-- A IA não recebe nome de contato, e-mail, telefone nem CPF; só dados comerciais da conta. Na mensagem de relacionamento, não vão valores de oportunidade.
-- Quem usa é quem receber o grupo de acesso "Rascunho com IA", definido pelo administrador.
-- O sistema não bloqueia a geração para quem pediu para não receber e-mails. Essa regra é aplicada no envio, pelo Marketing Cloud.
-- A IA generativa está habilitada na QAS.
-- Se alguma dessas decisões não servir, avise na homologação.
+- "Textos comerciais" são os três já existentes: proposta, follow-up e argumentos. Não há um quarto tipo.
+- O tipo de mensagem de relacionamento é texto livre digitado pelo usuário, sem lista fixa.
+- O rascunho sai de Conta e Oportunidade. Pedido e Contato ficam de fora.
+- O texto salvo vira tarefa na Conta ou Oportunidade, sem e-mail registrado.
+- O nome, e-mail, telefone e CPF do contato nunca vão para a IA.
+- Quem usa o rascunho é quem tem a permissão "Rascunho Comercial", a mesma do rascunho comercial.
+- O rascunho não é bloqueado para contato que pediu para não receber e-mail. O Marketing Cloud respeita isso no envio.
+- A geração por IA está habilitada na organização.
 
 ## O que não dá para conferir pela tela
-- Que a conexão com o Marketing Cloud não foi alterada e que o agente "SFAgent2" continua intacto: o time conferiu por contagem e lista de componentes (`05-testes.md`).
+Contagem de e-mails (805 antes e depois), único agente SFAgent2 e ausência de alteração no pacote do Marketing Cloud foram conferidos pelo time técnico; a evidência está em `05-testes.md`.

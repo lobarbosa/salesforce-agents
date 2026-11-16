@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EI7qzKAD` (Succeeded)
-- **Quando:** 2026-11-16T00:44Z
-- **Commit:** `deecf4fe`
+- **Deploy:** `0AfHa00000EI9rBKAT` (Succeeded)
+- **Quando:** 2026-11-16T03:38Z
+- **Commit:** `f8004b81`
 
 ## Componentes
 - `force-app/main/default/customPermissions/IA_Rascunho_Comercial.customPermission-meta.xml`
