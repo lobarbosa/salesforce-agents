@@ -16,3 +16,4 @@ Regras:
 
 Scripts provados na dev:
 - `conta-oportunidade-contato-sinal.apex` (EPLAST-46, 2026-11-16): 6 contas, oportunidades Fechado/Ganho, contatos com opt-out, sinais `CommercialSignal__c`; exige `ProtheusSellerId__c` no usuario de execucao.
+- Na QAS (EPLAST-46, 2026-11-16): a regra de duplicidade de Account bloqueia o insert (`DUPLICATES_DETECTED`). Use `Database.DMLOptions` com `DuplicateRuleHeader.allowSave = true` e telefone/e-mail distintos por conta. Gravar `CommercialSignal__c.Product__c` exige antes atribuir `PS_Marketing_SugestaoCampanha` ao usuario de execucao (sem ele o campo nao compila no Apex anonimo); insira os sinais depois dos testes de acesso negado.
