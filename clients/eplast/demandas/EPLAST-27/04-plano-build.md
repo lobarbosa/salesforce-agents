@@ -40,3 +40,19 @@ Deploy: Deploy ID `0AfHa00000EI0EPKA1`, Succeeded (BotVersion v6 + bundle `SFAge
 
 ## Branch e commit
 Branch `feature/EPLAST-27`; commit `EPLAST-27: criar BotVersion v6 inativa ligada ao planner SFAgent2_v6`.
+
+## Correções da rodada 1
+Fonte: `05-testes-rodada-1.md` (QA reprovou; regra do Flow passou em 12 de 12 casos). Nenhum metadata foi alterado nesta sessão; nada foi reimplantado.
+
+| Falha | Tratamento |
+|---|---|
+| FALHA 1 (crítica): resposta do assistente não comprovada, v6 Inactive na QA | **Não corrigível no build.** Não é defeito de código: é pré-condição de teste. Ativar a BotVersion v6 na QA é passo separado e humano, que exige autorização no card (skill `salesforce-doutrina`; o builder não ativa nem toca a QA). Pendente para quem for autorizado: ativar a v6 na QA, confirmar a licença Agentforce (I3) e conceder o agente ao `PS_Comercial_ProximaAcao`; depois o QA executa T1 (perguntas ao assistente, incluindo as 6 variadas de "não inventa ação"), T3 (vendedor sem permission set) e o 10.7. T2 (limiar 60 dias) depende de implantar o registro CMDT na QA, o que é da esteira, não do QA nem do builder. |
+
+Resposta à observação do QA ("confirmar que a v6 não perde capacidade da v4 ativa"): conferido no histórico do git (commit `1ab0ac60`, diff da v4 para a v6). A v6 mantém os mesmos 4 tópicos e as mesmas ações da v4 (`ConsultarPedidos`, `AgregacaoPedidos`, `IdentificarConta`); a diferença é só o sufixo `_v6` nos nomes, a ação `ProximaAcaoCliente_EPLAST27_v6` e a instrução do design 3.3. Ativar a v6 na QA não retira capacidade da v4.
+
+Atualização do estado na dev (consulta `BotVersion`, 2026-11-16): v1 a v7 e v9 Inactive, **v8 Active**. A v6 segue Inactive na dev. As v7 a v9 são de outras demandas (EPLAST-29, 34, 46); esta demanda não as toca. Isso corrige a linha "v5 segue ativa" das seções acima, que descrevia a dev na rodada anterior. Quem for ativar a v6 em qualquer org decide sobre as capacidades da versão ativa que a v6 não tem (na dev, a v8 traz o que a 29 e a 34 acrescentam; ativar a v6 as desligaria).
+
+Ordem de execução e CPQ: inalterados. O Flow é somente leitura, sem DML, e o QA comprovou nenhuma execução de `AccountTrigger`, `OpportunityTrigger` ou automação do CPQ (G2).
+
+## Versões e ativação (atualização)
+- Nada criado nem ativado nesta rodada. Pendente: ativação da BotVersion v6 na QA (autorização no card). Flow: v2 segue ativa na dev; na QA, versão 1 ativa com o conteúdo do build.
