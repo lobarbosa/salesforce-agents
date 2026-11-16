@@ -72,3 +72,29 @@ Sem a ativação abaixo, a próxima rodada de QA reprova de novo pelo mesmo moti
 3. Alternativa se a esteira preferir entregar já ativo: trocar `status` para `Active` no XML de `Task_Screen_RascunhoRelacionamento` (flow novo, que o design previu nascer ativo, item 13). Não fiz porque é ativação e ficou fora do que me foi autorizado; decisão de quem opera a esteira.
 - FALHA 2 da rodada 1 (`No active template version`) segue corrigida na QA, conforme a rodada 2 (528 caracteres em 2,6 s). Nada mudou no template.
 - C12 (oportunidade e comercial) depende de licença CPQ para atribuir o PSG; não é corrigível no build.
+
+## Alinhamento com a EPLAST-30 (decisão do responsável, 2026-11-16)
+
+Org: `sbx-eplast-dev` (alias conferido com `sf org list`). Nada tocado na QA. Deploy na dev: `0AfHa00000EIAP4KAP` (Succeeded, 9 componentes).
+
+Os 7 componentes da EPLAST-30 foram sobrescritos com `git show origin/feature/EPLAST-30:<caminho>` (sem cotação; modelos de prompt sem `Input:DadosCotacao` na versão ativa; PS sem `SBQQ`):
+
+| Componente | Estado |
+|---|---|
+| `customPermissions/IA_Rascunho_Comercial` | idêntico ao da EPLAST-30 |
+| `genAiPromptTemplates/Argumentos_Comerciais_Oportunidade`, `Rascunho_Followup_Comercial`, `Rascunho_Proposta_Comercial` | idênticos ao da EPLAST-30 |
+| `permissionsets/PS_Comercial_RascunhoIA` | idêntico ao da EPLAST-30 |
+| `flows/Opportunity_Screen_RascunhoComercial` | EPLAST-30 + **só a mudança da 41** (abaixo) |
+| `permissionsetgroups/PSG_Comercial_RascunhoIA` | EPLAST-30 + **só a mudança da 41** (abaixo) |
+
+Mudanças da EPLAST-41 reaplicadas em cima da versão da EPLAST-30:
+1. Flow comercial: `varTextoGerado` com `isOutput=true` e frase de EPLAST-41 no fim da descrição. Mais nada (status segue Draft, como na EPLAST-30).
+2. PSG: `PS_Comercial_RascunhoRelacionamento` incluído como componente e frase na descrição.
+
+Intocado (só da 41): `Task_Screen_RascunhoRelacionamento` (13 telas com `allowFinish=true`), `Rascunho_Relacionamento`, `PS_Comercial_RascunhoRelacionamento`, quick actions, layouts, flexipage.
+
+Observação: os XML dos três modelos mantêm, como na EPLAST-30, uma versão antiga no histórico (`templateVersions`) que cita `DadosCotacao`; a versão ativa de cada um não tem a entrada. Não regride a QA, pois é o mesmo arquivo da EPLAST-30.
+
+### Versões e ativação (atualização)
+- Nada foi ativado. O deploy na dev criou nova versão Draft do Flow comercial a partir do XML da EPLAST-30 mais a saída; a ativação continua passo separado (v2 do `Task_Screen_RascunhoRelacionamento` e a versão do comercial com a saída, conforme seções anteriores).
+- Não ativar na QA nada que faça os componentes da EPLAST-30 voltarem a ter cotação.
