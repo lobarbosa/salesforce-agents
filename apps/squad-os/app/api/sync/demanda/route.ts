@@ -62,6 +62,53 @@ function comRespostasPreservadas(novas: unknown, atuais: unknown): PerguntaSync[
     .filter((p) => p.id && p.texto);
 }
 
+interface DemandaDosAnexos {
+  id: string;
+  titulo: string;
+  roteiroCliente: string;
+  evidenciasHash: string;
+}
+
+/**
+ * Os dois anexos que a esteira de QA publica no card: o roteiro do cliente e as
+ * evidências de teste. Usado pelo sync normal e pelo modo `somente_anexos`
+ * (republicar-anexos.yml), que não toca em status, histórico nem fila.
+ */
+async function publicarAnexosDoQa(body: Record<string, unknown>, demanda: DemandaDosAnexos, code: string, clienteNome: string) {
+  const client = { nome: clienteNome };
+  // O roteiro vira um anexo em PDF no card (lib/roteiro-anexo.ts). Só refaz o
+  // arquivo quando o texto mudou ou o anexo sumiu: o sync roda em toda etapa,
+  // e regerar a cada vez trocaria a data do anexo sem o roteiro ter mudado.
+  if (typeof body.roteiro_cliente === "string") {
+    const novo = body.roteiro_cliente.slice(0, CONTEUDO_MAX);
+    const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDoRoteiro(demanda.id) }, select: { id: true } });
+    if (novo !== demanda.roteiroCliente || (novo.trim() !== "") !== Boolean(temAnexo)) {
+      await publicarRoteiroComoAnexo({ id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome }, novo);
+    }
+  }
+
+  // Evidências de teste (lib/evidencias-anexo.ts): o roteiro executado e as
+  // capturas de tela viram outro anexo em PDF. O hash vem do CLI; só refaz o
+  // arquivo quando ele mudou ou o anexo sumiu, pelo mesmo motivo do roteiro.
+  if (typeof body.evidencias_teste === "string" && typeof body.evidencias_hash === "string") {
+    const texto = body.evidencias_teste.slice(0, CONTEUDO_MAX);
+    const hash = body.evidencias_hash.slice(0, 64);
+    const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDasEvidencias(demanda.id) }, select: { id: true } });
+    if (hash !== demanda.evidenciasHash || (texto.trim() !== "") !== Boolean(temAnexo)) {
+      const r = await publicarEvidenciasComoAnexo(
+        { id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome },
+        texto,
+        imagensDoPayload(body.evidencias_imagens)
+      );
+      // Só guarda o hash do que de fato foi publicado: se o armazenamento
+      // falhou, o próximo sync tenta de novo.
+      if (r !== "ignorado" || !texto.trim()) {
+        await prisma.demanda.update({ where: { id: demanda.id }, data: { evidenciasHash: hash } });
+      }
+    }
+  }
+}
+
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
   if (!body || typeof body !== "object") {
@@ -116,6 +163,21 @@ export async function POST(request: NextRequest) {
       { aviso: `demanda '${code}' não existe no Squad OS — nada a espelhar` },
       { status: 202 }
     );
+  }
+
+  // Republicar só os anexos do QA (republicar-anexos.yml, 2026-11-16): para
+  // demanda que já passou do QA ganhar o anexo de evidências sem rodar sessão.
+  // Não muda status, histórico, último run nem fila.
+  if (body.somente_anexos === true) {
+    await publicarAnexosDoQa(body, demanda, code, client.nome);
+    if (typeof body.roteiro_cliente === "string") {
+      await prisma.demanda.update({ where: { id: demanda.id }, data: { roteiroCliente: body.roteiro_cliente.slice(0, CONTEUDO_MAX) } });
+    }
+    const anexos = await prisma.anexo.findMany({
+      where: { caminho: { in: [caminhoDoRoteiro(demanda.id), caminhoDasEvidencias(demanda.id)] } },
+      select: { nome: true },
+    });
+    return NextResponse.json({ id: demanda.id, anexos: anexos.map((a) => a.nome) });
   }
 
   // Em gate, o payload traz o artefato que está sendo julgado e as pendências
@@ -205,37 +267,7 @@ export async function POST(request: NextRequest) {
   // Fim de execução desta demanda: libera a fila do cliente e manda o
   // próximo (lib/fila-esteira.ts). A execução que chama ainda aparece ativa
   // no Actions — por isso é excluída pela URL.
-  // O roteiro vira um anexo em PDF no card (lib/roteiro-anexo.ts). Só refaz o
-  // arquivo quando o texto mudou ou o anexo sumiu: o sync roda em toda etapa,
-  // e regerar a cada vez trocaria a data do anexo sem o roteiro ter mudado.
-  if (typeof body.roteiro_cliente === "string") {
-    const novo = body.roteiro_cliente.slice(0, CONTEUDO_MAX);
-    const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDoRoteiro(demanda.id) }, select: { id: true } });
-    if (novo !== demanda.roteiroCliente || (novo.trim() !== "") !== Boolean(temAnexo)) {
-      await publicarRoteiroComoAnexo({ id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome }, novo);
-    }
-  }
-
-  // Evidências de teste (lib/evidencias-anexo.ts): o roteiro executado e as
-  // capturas de tela viram outro anexo em PDF. O hash vem do CLI; só refaz o
-  // arquivo quando ele mudou ou o anexo sumiu, pelo mesmo motivo do roteiro.
-  if (typeof body.evidencias_teste === "string" && typeof body.evidencias_hash === "string") {
-    const texto = body.evidencias_teste.slice(0, CONTEUDO_MAX);
-    const hash = body.evidencias_hash.slice(0, 64);
-    const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDasEvidencias(demanda.id) }, select: { id: true } });
-    if (hash !== demanda.evidenciasHash || (texto.trim() !== "") !== Boolean(temAnexo)) {
-      const r = await publicarEvidenciasComoAnexo(
-        { id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome },
-        texto,
-        imagensDoPayload(body.evidencias_imagens)
-      );
-      // Só guarda o hash do que de fato foi publicado: se o armazenamento
-      // falhou, o próximo sync tenta de novo.
-      if (r !== "ignorado" || !texto.trim()) {
-        await prisma.demanda.update({ where: { id: demanda.id }, data: { evidenciasHash: hash } });
-      }
-    }
-  }
+  await publicarAnexosDoQa(body, demanda, code, client.nome);
 
   await concluirEmVoo(demanda.id);
   // QA não aprovou (fluxo.py, motivo "refazer"): a demanda voltou para `build`
