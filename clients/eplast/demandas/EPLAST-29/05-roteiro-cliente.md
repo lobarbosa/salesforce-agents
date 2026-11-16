@@ -1,91 +1,90 @@
-# EPLAST-29 · Roteiro de teste: criar tarefas pelo assistente (SFAgent2)
+# EPLAST-29 · Roteiro de teste: criar tarefas pelo assistente de IA
 
-O assistente de IA (SFAgent2) passa a criar tarefas por pedido em texto: "crie uma tarefa de follow-up para a conta X com vencimento em tal data". Ele mostra um resumo, pede confirmação e só então grava. Não envia e-mail nem cria oportunidade, conta ou pedido.
+O assistente de IA (SFAgent2) agora cria **tarefas** por comando em texto, ligadas a uma conta ou oportunidade. Antes de gravar, ele mostra um resumo e espera a sua confirmação. Ele **não envia** e-mail nem mensagem: guarda o texto como rascunho dentro da tarefa. Não cria contas, oportunidades nem pedidos.
 
-**Situação do teste automático:** o time já exercitou na QA os testes 1, 2, 3, 6 e 7 e a rastreabilidade (teste 8). Os testes 4 e 5 e a gravação do rascunho do teste 5 apresentaram problema no assistente (ele disse que criou a tarefa sem criar) e voltaram para correção; o teste 4 (usuário sem permissão) não foi executado por falta de usuário comum. Siga o roteiro completo depois da correção.
+**Situação do teste automático:** o time executou na QAS os testes 1 a 6 e 8 (criar com confirmação, recusar, conta repetida, pedido sem data, rascunho de e-mail sem envio, pedido fora do escopo), com contas sintéticas, e passaram. O **Teste 7 (usuário sem permissão)** não foi executado: não há na QAS um usuário comercial comum com licença do assistente. Fica para quem segue este roteiro. A consulta de pedidos foi só verificada por amostra.
 
 ## Antes de começar
-- Ambiente: sandbox de homologação (QAS).
-- Perfil: usuário `Comercial - Analista` com licença do assistente e o conjunto de permissões "Assistente de Ações Comerciais". Para o teste 4, um usuário igual, sem esse conjunto.
-- Dados de teste: crie 3 contas: "TESTE EPLAST-29 Conta Unica" e duas chamadas "TESTE EPLAST-29 Conta Dup" (mesmo nome). Anote quantas tarefas cada conta tem antes de começar.
-- Abra o assistente (SFAgent2) e converse com ele.
+- Ambiente: sandbox QAS da Eplast.
+- Perfil: um usuário comercial (ex.: Comercial - Analista) com o conjunto de permissões "Assistente de ações comerciais" e licença do assistente. Para o Teste 7, outro usuário comercial **sem** esse conjunto.
+- Dados: crie 3 contas de teste: uma chamada "TESTE EPLAST-29 Conta Unica" e duas chamadas "TESTE EPLAST-29 Conta Dup" (mesmo nome). Apague-as ao final.
+- Abra o assistente de IA pelo ícone do assistente no Salesforce.
 
-## Teste 1 — Resumo e confirmação antes de gravar
-1. Escreva: "criar tarefa de follow-up para TESTE EPLAST-29 Conta Unica com vencimento em 01/12/2026".
-2. Leia a resposta, sem confirmar.
-3. Abra a conta e veja as Atividades.
+## Teste 1 — Criar tarefa com confirmação
+1. Digite: "Criar tarefa de follow-up para TESTE EPLAST-29 Conta Unica com vencimento em 20/11/2026".
+2. Leia o resumo. Abra a conta e confira a aba Atividades: ainda não há tarefa nova.
+3. Responda "sim" (e confirme se aparecer um cartão de confirmação).
+4. Atualize a conta e veja Atividades.
 
-**Resultado esperado:** o assistente mostra assunto "Follow-up", a conta, responsável "você" e vencimento 01/12/2026, e pede confirmação. A conta continua sem tarefa nova.
-4. Responda "sim, confirmo" e confirme também o cartão de confirmação que aparecer.
-5. Atualize a conta.
-
-**Resultado esperado:** existe uma tarefa "Follow-up", vencimento 01/12/2026, ligada à conta, com você como responsável e criador, e a descrição "Origem: assistente de IA".
+**Resultado esperado:** o resumo mostra assunto "Follow-up" e vencimento 20/11/2026. Após confirmar, existe 1 tarefa "Follow-up", vencimento 20/11/2026, relacionada à conta, com você como responsável e, na descrição, "Origem: assistente de IA".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Recusar o resumo não grava nada
-1. Repita o pedido do teste 1 em nova conversa.
-2. Quando vier o resumo, responda "não, cancele".
+## Teste 2 — Recusar o resumo
+1. Digite: "Criar tarefa de follow-up para TESTE EPLAST-29 Conta Unica com vencimento em 25/11/2026".
+2. Quando aparecer o resumo, responda "não, cancela".
 
-**Resultado esperado:** o assistente diz que não vai criar e a conta não ganha tarefa nova.
+**Resultado esperado:** o assistente diz que a tarefa não foi criada. Na conta não surge tarefa com vencimento 25/11/2026.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 3 — Duas contas com o mesmo nome
-1. Escreva: "criar tarefa de follow-up para TESTE EPLAST-29 Conta Dup com vencimento em 02/12/2026".
+1. Digite: "Criar tarefa para TESTE EPLAST-29 Conta Dup".
 
-**Resultado esperado:** o assistente lista as duas contas com identificador e pede para escolher; nenhuma tarefa é criada antes da escolha.
+**Resultado esperado:** o assistente lista as duas contas com identificador e pede para escolher. Nenhuma tarefa é criada até a escolha.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Usuário sem permissão
-1. Entre com o usuário sem o conjunto de permissões e peça uma tarefa para a Conta Unica.
+## Teste 4 — Pedido sem data
+1. Digite: "Criar tarefa de ligar para TESTE EPLAST-29 Conta Unica".
+2. Responda "sem data".
 
-**Resultado esperado:** o assistente recusa com mensagem de permissão, não cria tarefa e não mostra nome nem dado de contas que o usuário não vê.
+**Resultado esperado:** o assistente pede a data (pode sugerir a de hoje) e insiste nela. Ele não diz que criou a tarefa e nenhuma tarefa aparece na conta.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Falta a data
-1. Escreva: "criar tarefa Ligar para o cliente para TESTE EPLAST-29 Conta Unica" (sem data).
-2. Responda "sem data" e depois "confirmo".
+## Teste 5 — Rascunho de e-mail, sem envio
+1. Digite: "Preciso de um rascunho de e-mail de proposta comercial em tarefa para TESTE EPLAST-29 Conta Unica, vencimento em 11/12/2026. Texto: Prezado, segue proposta de 100 kg de resina."
+2. Responda "sim" e, se pedido, confirme.
+3. Abra a conta e a tarefa criada.
 
-**Resultado esperado:** o assistente continua pedindo a data e não diz que criou a tarefa; a conta não ganha tarefa.
-3. Informe a data 05/12/2026 e confirme.
-
-**Resultado esperado:** a tarefa é criada com vencimento 05/12/2026.
+**Resultado esperado:** a tarefa "Rascunho de e-mail - ..." existe, vencimento 11/12/2026, com o texto na descrição e "Origem: assistente de IA". Nenhum e-mail é enviado (nada em e-mails enviados da conta) e o assistente avisa que o envio é feito fora do Salesforce.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 6 — Pedido de e-mail vira rascunho, sem envio
-1. Escreva: "enviar e-mail de proposta para o contato de TESTE EPLAST-29 Conta Unica, vencimento 03/12/2026".
-2. Confirme o resumo e o cartão de confirmação.
+## Teste 6 — Pedido fora do escopo
+1. Digite: "Criar oportunidade para TESTE EPLAST-29 Conta Unica".
 
-**Resultado esperado:** o assistente avisa que o envio é feito fora do Salesforce; existe uma tarefa "Rascunho de e-mail - proposta", vencimento 03/12/2026, com o texto do rascunho na descrição e "Origem: assistente de IA". Nenhum e-mail aparece como enviado na conta.
+**Resultado esperado:** o assistente informa que criar oportunidades, contas ou pedidos não está disponível e oferece criar uma tarefa. Nenhuma oportunidade nova na conta.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 7 — Pedido fora do escopo
-1. Escreva: "criar oportunidade para TESTE EPLAST-29 Conta Unica".
+## Teste 7 — Usuário sem permissão
+1. Entre com o usuário comercial **sem** o conjunto "Assistente de ações comerciais".
+2. Peça: "Criar tarefa de follow-up para TESTE EPLAST-29 Conta Unica com vencimento em 20/11/2026" e confirme.
 
-**Resultado esperado:** o assistente recusa, diz que não está disponível nesta versão, e nenhuma oportunidade é criada.
+**Resultado esperado:** o pedido é recusado com mensagem de permissão, sem criar tarefa e sem mostrar nomes ou dados de registros que esse usuário não enxerga.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 8 — O que já funcionava continua igual
-1. Pergunte "quais clientes precisam de acompanhamento hoje?" e peça os pedidos de uma conta que tenha pedidos de teste.
+## Teste 8 — Consultas já existentes continuam
+1. Pergunte: "quantos pedidos a conta TESTE EPLAST-29 Conta Unica tem?".
+2. Pergunte sobre uma conta real que você pode ver, por exemplo um total de pedidos.
 
-**Resultado esperado:** respostas iguais às que o assistente dava antes desta entrega.
+**Resultado esperado:** o assistente responde normalmente, como antes.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- Só criamos tarefas, ligadas a conta ou oportunidade. Outros objetos ficam de fora desta versão.
-- O assistente sempre pede confirmação antes de gravar.
-- E-mail e mensagem não saem do Salesforce: viram rascunho na descrição da tarefa; o envio fica com o Marketing Cloud ou o canal que a Eplast usar.
-- Tarefa de check-in ("Check In @") não é criada pelo assistente.
-- Quem usa precisa do conjunto "Assistente de Ações Comerciais" (novo) e de licença do assistente.
-- A tarefa leva "Origem: assistente de IA" na descrição para identificar a origem.
-- Sucesso é medido pelo funcionamento, não por meta de uso.
+- **Só tarefas:** o assistente cria apenas tarefas, ligadas a conta ou oportunidade. Contas, oportunidades, pedidos e eventos ficam de fora. Concorda?
+- **E-mail e mensagem não saem pelo Salesforce:** viram rascunho na tarefa; o envio é feito pelo Marketing Cloud (marketing) ou pelo próprio usuário. Concorda?
+- **Sempre confirmar antes de gravar.** Pode ser afrouxado depois, para tarefas simples.
+- **Responsável é sempre quem pede:** não dá para atribuir a outra pessoa pelo assistente.
+- **Campos obrigatórios:** assunto, registro relacionado e vencimento. Prioridade "Normal" e status "Aberta" por padrão.
+- **Tarefa de check-in não é criada pelo assistente** (ela altera a conta e entra na cadeia de integração).
+- **Marca de origem:** "Origem: assistente de IA" na descrição, sem campo novo.
+- **Acesso:** por um conjunto de permissões novo, atribuído por usuário, mais a licença do assistente. Nenhum perfil novo.
+- **Volume baixo de uso** e sem métrica de negócio no aceite; sem log próprio das conversas.
 
 ## O que não dá para conferir pela tela
-Contexto de execução do Flow por usuário comum e ausência de gravação parcial: evidência em `05-testes.md` (casos C4, C5).
+O comportamento do assistente varia um pouco de conversa para conversa. O time repetiu os pedidos 14 vezes na QAS e registrou o que apareceu em `05-testes.md`. Se numa conversa o assistente disser "criada" e a tarefa não existir, anote como não conforme.
