@@ -1,44 +1,45 @@
 **Verificação:** inconclusiva
-**Org de teste:** `sbx-eplast-dev` (alias conferido com `sf org list`; única org conectada; Org Id `00DHa000006vfMLMAY`)
+**Org de teste:** `sbx-eplast-dev` (sandbox "QA" da Eplast, regra 5; org 00DHa000006vfMLMAY, conferida com `sf org list`)
 
-# EPLAST-41 · Verificação
+# EPLAST-41 · Verificação (após correções da rodada 1)
 
-## Resumo
-O critério principal (gerar o rascunho em tela, salvar como Task e provar que a Account não muda) **não pôde ser exercitado**. Dois motivos, nenhum resolvido pelo builder:
-1. Screen Flow não roda sem interface. `Flow.Interview.start()` recusa: "O Start não pode ser chamado em um fluxo com o tipo de processo Fluxo de tela". Não há comando `sf` nem API que execute tela.
-2. A geração pelo prompt template falhou na dev quando chamada via `ConnectApi.EinsteinLLM.generateMessagesForPromptTemplate('Rascunho_Relacionamento')`: "Failed to generate Einstein LLM generations response". Não sei se a causa é o template ou a org (modelo/Einstein Generative AI na dev). Não consegui separar as duas, então não classifico como falha do build.
+Motivo: o critério principal (tela do Screen Flow, texto, salvar Task) só roda por interface. `Flow.Interview.start()` recusa Screen Flow ("O Start não pode ser chamado em um fluxo com o tipo de processo Fluxo de tela") e não há sessão de usuário com UI. Provei por Apex e metadata o que dá; o resto fica sem prova.
 
-Não houve falha comprovada de caso executado, portanto não é `reprovada`.
+## Dados e ajustes de usuário (dev)
+- Fixture `fixtures/eplast41_dados_teste.apex`: Conta A (`001Ha000016Ux2DIAS`), Conta B (`001Ha000016Ux2EIAS`), Opp aberta (`006Ha00000QWv93IAD`) criadas. Opp ganha falhou (exige Filial com `CodeERP__c`; fixture já documenta, opcional).
+- Usuário de execução `005bJ00000piKAaQAM`: `ProtheusSellerId__c` de null para `TESTE41` (exigido pela regra `CheckAccountOwnerHasProtheusSellerId`) e devolvido a null ao final (conferido). Não atribuí o PS novo nem mexi em Marketing User.
+- Limpeza: Opp e Contas `TESTE EPLAST-41` apagadas; contagem final 0. Task `Rascunho%`: 0 antes e depois.
+- Usuário de serviço da Konecta: o Id citado é o próprio usuário de execução; o outro (`005bJ00000hBJmYQAW`) está inativo. Não usado.
 
-## Ajustes no usuário de execução (dev) e dados
-| O que | Antes | Depois | Devolvido |
-|---|---|---|---|
-| `User.ProtheusSellerId__c` do usuário de execução (`005bJ00000piKAaQAM`) | vazio | valor sintético `TESTE41` (exigido pela regra `CheckAccountOwnerHasProtheusSellerId`) | Sim, voltou a vazio (conferido) |
-Permission set e Marketing User não foram alterados. Perfil, papel e usuário da Konecta intocados.
-
-Fixture rodado de novo com `fixtures/eplast41_dados_teste.apex`: Contas A e B ok, `TESTE EPLAST-41 Opp aberta` criada com sucesso (`006Ha00000QWnmbIAD`, conta `001Ha000016UjHVIA0`). `Opp ganha` continua falhando (exige Filial com `CodeERP__c` e forma de pagamento; objetos de apoio não existem). Cotação CPQ não criada.
-Limpeza: oportunidade e contas `TESTE EPLAST-41%` apagadas; contagem final de contas de teste 0. Nada ficou.
+## Falhas da rodada anterior
+| Falha | Situação |
+|---|---|
+| FALHA 1: `No active template version` | **Corrigida (provada).** Apex com `generateMessagesForPromptTemplate('Rascunho_Relacionamento')` e 3 entradas sintéticas devolveu texto de 440 caracteres em ~1,5 s. |
+| FALHA 2: sem botão "Próximo" | **Não provada em tela.** Metadata da v2 na dev (Tooling): 13 telas, todas `allowFinish=true`. Só um usuário com UI confirma o botão. v2 segue Draft. |
 
 ## Casos
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| C1 | Gerar rascunho a partir de conta (30 s, copiável, sem gravação) | Tentei iniciar o Screen Flow por Apex; tentei gerar pelo template via ConnectApi | Texto devolvido | Flow não inicia sem UI; geração retornou erro genérico | não executado |
-| C2 | Salvar como Task (WhatId, TaskSubtype=Task, Description, sem EmailMessage) | Depende de C1 | 1 Task | `SELECT COUNT() FROM Task WHERE Subject LIKE '%(IA)%'` = 0 (nada gravado; nada exercitado) | não executado |
-| C3 | Nenhum envio pelo CRM / Marketing Cloud | Leitura do Flow (XML do repositório): sem Send Email, `EmailMessage`, agendamento nem escrita `et4ae5`; um único `recordCreates` (a Task); ação de IA `generatePromptResponse` | Sem elementos de envio | Confere por leitura. Sem execução, não prova o comportamento | não executado (só leitura estática) |
-| C4 | Prompt sem dado pessoal de contato | Entradas do template `Rascunho_Relacionamento` no repositório e org (metadata list) | Só `DadosConta`, `DadosOportunidade`, `ObjetivoMensagem`; sem e-mail, telefone, CPF, nome de contato | Entradas são essas três; instrução do template proíbe e-mail, telefone, documento e nome de pessoa (usa "[nome do contato]"). Template existe na dev (`0hfHa000000dBhxIAE`) | passou |
-| C5 | Textos comerciais reaproveitados, sem duplicata | `sf org list metadata -m GenAiPromptTemplate` | Um de cada nome | `Argumentos_Comerciais_Oportunidade`, `Rascunho_Proposta_Comercial`, `Rascunho_Followup_Comercial` e `Rascunho_Relacionamento`: uma ocorrência cada | passou |
-| C6 | Falha do modelo: erro sem texto parcial e sem Task | Foi provocada indiretamente (a geração falhou via ConnectApi), mas não passei pela tela | Tela de erro, 0 Task | Fault do Flow aponta para `Tela_Erro_Geracao` (leitura). Nenhuma Task existe. Sem execução do Flow | não executado |
-| C7 | Conta sem oportunidade avisa e não gera texto | Conta B existia sem oportunidade; Flow não roda sem UI | Aviso, sem texto | Não exercitado | não executado |
-| C8 | SFAgent2 intacto | `SELECT COUNT() FROM BotDefinition WHERE DeveloperName='SFAgent2'` | 1 | 1 | passou (contagem; a não-alteração das 3 ações não foi comparada na org) |
-| C9 | Marketing Cloud (`et4ae5`) intacto | Nenhum componente `et4ae5` entre os arquivos do plano de build | Sem alteração | Conforme o plano; sem comparação na org | não executado (só leitura do plano) |
-| C10 | Estado das versões | Query em `Flow` por versão/status | v2 comercial Draft, Task Flow v1 Active, nada ativado por mim | `Opportunity_Screen_RascunhoComercial` v1 Active, v2 Draft; `Task_Screen_RascunhoRelacionamento` v1 Active | passou |
-| C11 | Ação na Account (limite declarado) | Não testada pela UI | Ação nos layouts de Account e Opportunity | Ação não está na `Account_Record_Page_Three_Column` (erro pré-existente em `CampaignInfluences`, como o builder declarou). Registro como limite, não falha | não executado |
+| 1 | Gerar rascunho da conta, ≤30 s | Apex chamou o template com entradas sintéticas, medindo o tempo | Texto gerado em até 30 s | 440 caracteres, 1,5 s (só o template, não a tela) | passou (parcial: tela não exercitada) |
+| 2 | Texto editável, nada criado antes de salvar | Contagem de Task `Rascunho%` após a geração | 0 | 0 | passou para o template; tela não exercitada |
+| 3 | Salvar como Task (WhatId, Subtype, Description) | Tooling na v2: 1 recordCreate; Flow não executável sem UI | Task com os campos do design | Só leitura da metadata (1 `recordCreate`); nenhuma Task criada | não executado |
+| 4 | Account não muda ao salvar | Exigia salvar via tela | `AccountHasCheckInTask__c`/`LastModifiedDate` iguais | Sem execução | não executado |
+| 5 | Opp aberta: relacionamento e comercial (v2) | Exigia tela e v2 ativa | Task na oportunidade | Opp de teste criada, fluxo não rodado; v2 Draft | não executado |
+| 6 | Conta B sem opp: aviso | Exigia tela | Aviso, sem texto | Sem execução | não executado |
+| 7 | Falha do modelo: erro sem texto, 0 Task | Exigia tela | Tela de erro, 0 Task | Metadata: `Gerar_Relacionamento` é a única action call, com fault para tela de erro; não executado | não executado |
+| 8 | Nenhum envio / Marketing Cloud | grep no XML do Flow por emailSimple, emailAlert, EmailMessage, et4ae5, Send; query de EmailMessage `TESTE EPLAST-41%` | Nenhum | 0 ocorrências no XML; 0 EmailMessage | passou (estático) |
+| 9 | Prompt sem dado pessoal | Leitura do template no repositório | Só `DadosConta`, `DadosOportunidade`, `ObjetivoMensagem` | Exatamente essas 3 entradas | passou |
+| 10 | Textos comerciais reaproveitados, sem duplicata | git diff vs. main e metadata | 3 templates existentes, sem novos de mesmo nome | Os 3 só versionados (recuperados da dev, sem alteração de conteúdo conferida no build); nenhum template comercial novo | passou (estático) |
+| 11 | SFAgent2 único e intacto | Query de `BotDefinition` | 1 | 1 (ações não comparadas) | passou (contagem) |
+| 12 | Acesso negado sem o PS novo | Query de atribuições do `PS_Comercial_RascunhoRelacionamento` | 0 atribuições; sem UI para tentar abrir | 0 atribuições; execução negada não testada | não executado |
+| 13 | Versões do Flow | Query de `Flow` na dev | Comercial v1 Active, v2 Draft; Relacionamento v1 Active, v2 Draft | Confere | passou |
+
+## O que ficou sem prova
+- O fluxo completo na tela: botão "Próximo" (FALHA 2), texto editável, salvar Task, Conta A não alterada, Conta B com aviso, caminho comercial na v2, tela de erro na falha do modelo, acesso negado. Um usuário com UI na dev deve:
+  1. Ativar ou depurar a v2 de `Task_Screen_RascunhoRelacionamento`.
+  2. Atribuir `PSG_Comercial_RascunhoIA` (a nota da QA diz que exige licença CPQ).
+  3. Abrir "Rascunho com IA" na Conta A e na Opp aberta, e percorrer os casos 2 a 7.
+- Conta A, Conta B e a Opp aberta podem ser recriadas com o fixture.
 
 ## O que pode ter saído da org
-Nada pela cadeia de verificação: nenhum Task, EmailMessage ou registro de integração foi criado por mim, nenhuma chamada ao Marketing Cloud. A chamada de geração via ConnectApi usou só texto sintético `TESTE EPLAST-41` e falhou, sem resposta gravada.
-
-## O que ficou sem prova e o que uma pessoa precisa fazer
-Na dev, com a org e um usuário com `PSG_Comercial_RascunhoIA` (ou `PS_Comercial_RascunhoRelacionamento`), pela interface:
-1. Verificar se Einstein Generative AI e o modelo `sfdc_ai__DefaultOpenAIGPT4OmniMini` estão ativos na dev e testar o template `Rascunho_Relacionamento` no Prompt Builder (isso separa causa do erro de geração).
-2. Criar a oportunidade aberta de teste (precisa de `User.ProtheusSellerId__c` no proprietário; o fixture cria) e abrir "Rascunho com IA" a partir da conta e da oportunidade: relacionamento e comercial (a v2 do Flow comercial só devolve texto depois de ativada; hoje v1 Active, v2 Draft, não ativei).
-3. Conferir: texto em até 30 s, nada gravado antes de "Salvar como tarefa", depois exatamente 1 Task (`WhatId`, `TaskSubtype=Task`, `Description` igual ao texto), 0 `EmailMessage`, Account sem alteração; conta sem oportunidade mostra o aviso; falha do modelo mostra erro sem Task.
+Nada saiu pelo CRM. Houve 1 chamada ao modelo (Einstein/Prompt Builder) com texto sintético, sem dado real. Nenhum EmailMessage, nada no Marketing Cloud.
