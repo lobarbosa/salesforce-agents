@@ -167,7 +167,7 @@ disparo segurava o cliente inteiro, e a dev ficava parada enquanto a QA testava;
 #6 é por sandbox. A fila (`lib/fila-esteira.ts`) passou a deixar um disparo em voo por
 cliente e ambiente, e o concurrency group do `run-demand.yml` virou cliente + ambiente.
 Run do cliente que a fila não conhece continua segurando tudo. No QA em duas fases, o
-agente arma para no máximo 1 hora à frente (parâmetro da solução, job agendado para daqui a
+agente arma para no máximo 1 hora à frente (16/11: encurtado para 5–10 minutos, com conferência 10 minutos depois do disparo; a EPLAST-33 segurou a QA por 50 minutos com um job de 20) (parâmetro da solução, job agendado para daqui a
 15–30 min, ou Flow agendado com o horário trocado só na QA, sem commit), e o sync
 reenfileira a segunda sessão com `liberar_em` = `Conferir depois de` + 5 min; a varredura
 roda de 15 em 15 minutos e a dispara.

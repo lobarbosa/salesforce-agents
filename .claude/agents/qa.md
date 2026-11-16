@@ -149,15 +149,16 @@ e o teste é feito em duas sessões:
 **Fase 1 — armar** (quando `05-testes.md` não existe ou não está aguardando execução):
 1. Registre o estado de antes, só por contagens agregadas (por exemplo, quantidade de
    registros por valor do campo que a automação grava, e quantidade de linhas de histórico).
-2. Arme para **o horário mais próximo possível, no máximo 1 hora à frente** (decisão de
-   2026-11-15): enquanto você espera, nenhuma outra demanda do cliente entra na sandbox de
-   QA. Não espere o horário de produção da automação. Conforme o que a solução oferece:
+2. Arme para **daqui a 5–10 minutos** (decisão de 2026-11-16; antes era até 1 hora):
+   enquanto você espera, nenhuma outra demanda do cliente entra na sandbox de QA, e a
+   EPLAST-33 segurou a QA por 50 minutos com um job que disparava em 20. Use o primeiro
+   horário que a plataforma aceita a partir de 5 minutos à frente. Não espere o horário de produção da automação. Conforme o que a solução oferece:
    - **parâmetro de configuração da própria solução** (dia ou hora de execução num
      registro de configuração): implante na sandbox de QA só esse registro alterado;
    - **job Apex que a solução agenda** (`Schedulable`): agende-o na QA com um cron para
-     daqui a 15–30 minutos, por Apex anônimo com `--target-org` explícito;
+     daqui a 5–10 minutos, por Apex anônimo com `--target-org` explícito;
    - **Flow agendado** (horário de início no próprio Flow): implante na QA só esse Flow com
-     o horário de início trocado para daqui a 15–30 minutos, nada mais nele.
+     o horário de início trocado para daqui a 5–10 minutos, nada mais nele.
 
    São as únicas implantações que você faz, sempre com `--target-org` explícito na sandbox de
    QA. Não commite nenhuma delas: a esteira descarta e, ao fim da sessão de conferência,
@@ -165,7 +166,9 @@ e o teste é feito em duas sessões:
    (`CronTrigger.NextFireTime`) que a próxima execução ficou onde você quis.
 3. Calcule, com as mesmas contagens agregadas, o resultado esperado depois da execução.
 4. Grave `05-testes.md` abrindo com `**Veredito:** aguardando execução`, a linha
-   `**Org de teste:**` e `**Conferir depois de:** <data e hora em UTC>`, e nele o estado de
+   `**Org de teste:**` e `**Conferir depois de:** <data e hora em UTC>` (o disparo armado
+   mais 10 minutos, sem margem maior; job em lote que encadeia outro pode somar 5), e nele
+   o estado de
    antes, o que foi alterado para armar, o esperado e como desfazer.
 
 **Fase 2 — conferir** (quando `05-testes.md` existe com `aguardando execução`):
