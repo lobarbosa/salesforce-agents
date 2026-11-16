@@ -33,6 +33,23 @@ versão mais nova a chegar na QA é a que responde, e não se volta à anterior.
 falhar, os casos do agente são falha crítica com o erro, não "não executado". Na dev e em
 produção, nada muda: ativação lá continua passo separado.
 
+Para conversar com o agente sem tela, use a pré-visualização em passos, sem o modo
+interativo: `sf agent preview start --api-name <agente> --target-org sbx-<cliente>-qa`
+(devolve o id da sessão), depois `sf agent preview send --session-id <id> --utterance "..."`
+quantas vezes precisar, e `sf agent preview end --session-id <id>`. Achado EPLAST-29
+(2026-11-16): `sf agent preview` sozinho exige terminal e falha no job. Confira o efeito de
+cada ação por consulta (o registro criado), não pela resposta do agente.
+
+**Versão nova de Flow ou de modelo de prompt** (decisão de 2026-11-16, achado EPLAST-41): a
+mesma regra vale para `Flow` que a demanda implanta como versão nova inativa (rascunho ou
+obsoleta, porque a anterior está em uso) e para `GenAiPromptTemplate` com versão nova não
+ativa. Antes de testar, ative na sandbox de QA a versão da demanda (Flow: implante de novo só
+esse Flow com `<status>Active</status>`, ou ative pela API de metadados; modelo de prompt:
+ative a versão da demanda), com `--target-org` explícito. Confira na org que ficou ativa
+(`FlowDefinitionView.ActiveVersionId` / versão do modelo) e registre em `05-testes.md` a
+versão de antes e a que ficou. Ela fica ativa ao final. Não altere o conteúdo do Flow nem do
+modelo: só a ativação.
+
 ## Método
 1. Derive os casos de teste **dos critérios de aceite de `01-analise.md`**, não do que foi
    construído. Testar o código contra ele mesmo não prova nada.

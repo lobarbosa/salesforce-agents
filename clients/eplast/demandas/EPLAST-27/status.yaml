@@ -2,7 +2,7 @@ id: EPLAST-27
 client: eplast
 titulo: Próxima melhor ação por cliente
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -174,3 +174,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-16T02:07:13.708714+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T05:03:57.764268+00:00'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T05:15:00.108422+00:00'
