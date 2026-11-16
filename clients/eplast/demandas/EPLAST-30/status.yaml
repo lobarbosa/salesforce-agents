@@ -2,7 +2,7 @@ id: EPLAST-30
 client: eplast
 titulo: Apoio a propostas, follow-ups e argumentos comerciais
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -133,3 +133,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-16T05:14:00.132264+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T05:25:19.315563+00:00'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T05:29:24.753067+00:00'

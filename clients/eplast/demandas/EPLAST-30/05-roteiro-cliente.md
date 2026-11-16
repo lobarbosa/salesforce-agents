@@ -1,104 +1,103 @@
-# EPLAST-30 · Roteiro de teste — Rascunho comercial na oportunidade
+# EPLAST-30 — Roteiro de teste: rascunho comercial com IA
 
-Foi entregue uma aba "Rascunho IA" na página da oportunidade. Nela o vendedor pede um texto de proposta, de follow-up ou de argumentos comerciais, feito a partir dos dados da oportunidade. O texto é só um rascunho para editar: nada é gravado, nada é enviado e nenhum e-mail ou tarefa é criado.
+Foi entregue, na página da oportunidade, a aba **Rascunho IA**. Ela gera, a partir dos dados da própria oportunidade e da conta, um rascunho de proposta, de follow-up ou de argumentos comerciais. O texto é só uma sugestão para o vendedor revisar: nada é gravado e nada é enviado. Para o vendedor, muda que não precisa começar do zero. Nesta versão o rascunho **não usa a cotação**.
 
-**Situação do teste automático:** comprovei, na sandbox de testes, que os três modelos de texto respondem certo (data de fechamento citada no follow-up, "[dado ausente: ...]" e "[a preencher]" na proposta, argumentos com fonte, sem e-mail nem telefone). **Não** consegui exercitar a aba "Rascunho IA" em si: o usuário de teste do time não pôde receber a permissão do recurso, que exige a licença de Cotação (CPQ). Os Testes 3 a 9 abaixo ficam para quem seguir o roteiro com um usuário que tenha essa licença. A negativa de acesso para quem não tem a permissão (Teste 1) foi comprovada.
+**Situação do teste automático:** comprovado pelo time: a aba aparece só para quem tem o acesso (grupo "Rascunho Comercial com IA"); sem o acesso, o endereço direto do fluxo mostra "Privilégios insuficientes"; a geração da **proposta** funciona na tela e não criou tarefa nem compromisso. Ficou para quem segue este roteiro: ler o texto completo da proposta, gerar **follow-up** e **argumentos** (a ferramenta de teste não conseguiu escolher essas opções), acesso negado a quem não vê a oportunidade e comportamento se a IA falhar.
 
 ## Antes de começar
-- **Ambiente:** a sandbox "QAS" da Eplast.
-- **Perfis:** (a) um vendedor com o grupo de permissões "Rascunho IA Comercial" e licença de Cotação; (b) um usuário sem esse grupo; (c) um usuário sem acesso à oportunidade "Y" (Teste 8).
-- **Dados de teste** (nunca use cliente real): crie uma conta "TESTE EPLAST-30 Conta" e, nela, a oportunidade "TESTE EPLAST-30 Opp" na etapa Qualificação, com data de fechamento 31/12/2026, e um contato "TESTE Contato" com e-mail e telefone fictícios. Para o Teste 5 crie uma segunda oportunidade sem data de fechamento (se o sistema exigir a data, apague-a depois de criada, se permitido). Para o Teste 6 crie uma cotação primária com valor total R$ 1.234,56.
+- Ambiente: sandbox de QA (QAS) da Eplast.
+- Perfil: usuário comercial que tenha o grupo de permissões **PSG_Comercial_RascunhoIA**. Peça ao administrador para atribuir.
+- Dado de teste: oportunidade "TESTE EPLAST-30 Opp" (já existe, data de fechamento 31/12/2026, sem Valor e sem cotação). Para o teste 5, crie outra oportunidade de teste, com Valor 1000,50 e etapa Qualificação.
+- Um segundo usuário de teste **sem** o grupo de permissões, e outro sem acesso a uma oportunidade de teste.
 
-## Teste 1 — Quem não tem permissão não vê a aba
-1. Entre com o usuário (b), sem o grupo de permissões.
-2. Abra a oportunidade "TESTE EPLAST-30 Opp".
+## Teste 1 — A aba aparece só para quem tem acesso
+1. Entre com o usuário que tem o grupo e abra "TESTE EPLAST-30 Opp".
+2. Entre com o usuário sem o grupo e abra a mesma oportunidade.
 
-**Resultado esperado:** a aba "Rascunho IA" não aparece; só "Detalhes" e "Histórico Da Oportunidade" (entre outras já existentes).
+**Resultado esperado:** com o grupo, a aba "Rascunho IA" aparece ao lado de "Detalhes" e "Histórico Da Oportunidade". Sem o grupo, só essas duas abas aparecem.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Proposta pelo vendedor autorizado
-1. Entre com o usuário (a). Abra "TESTE EPLAST-30 Opp".
-2. Clique na aba "Rascunho IA".
-3. Escolha "Proposta" e peça o rascunho. Conte o tempo.
+## Teste 2 — Rascunho de proposta
+1. Abra a aba "Rascunho IA".
+2. Marque "Proposta comercial" e clique em Avançar.
+3. Conte o tempo até o texto aparecer.
+4. Leia o texto na caixa "Texto gerado".
 
-**Resultado esperado:** em até 15 segundos aparece um texto editável com o nome "TESTE EPLAST-30 Conta" e a etapa "Qualificação".
+**Resultado esperado:** o texto aparece em até 15 segundos, com aviso "Rascunho gerado por IA: revise antes de usar. Nenhum campo deste registro foi alterado." Cita o nome da oportunidade, o nome da conta e a etapa; a data 31/12/2026; o contato aparece como "[nome do contato]"; preço, desconto, prazo e condição aparecem como "[a preencher]"; o Valor ausente aparece como "[dado ausente: ...]" e nenhum valor é inventado. Há a lista de campos usados e a de campos vazios. A caixa pode ser editada.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Follow-up
-1. Na mesma aba, escolha "Follow-up" e peça o rascunho.
+## Teste 3 — Rascunho de follow-up
+1. Na aba "Rascunho IA", marque "Follow-up" e clique em Avançar.
 
-**Resultado esperado:** texto editável com "TESTE EPLAST-30 Conta" e a data de fechamento 31/12/2026. Sem e-mail, telefone nem nome do contato (aparece "[nome do contato]").
+**Resultado esperado:** texto com o nome da conta e a data de fechamento 31/12/2026, sem e-mail, telefone nem nome de contato (aparece "[nome do contato]").
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Argumentos comerciais com fonte
-1. Escolha "Argumentos" e peça o rascunho.
+## Teste 4 — Argumentos comerciais
+1. Marque "Argumentos comerciais" e clique em Avançar.
 
-**Resultado esperado:** cada argumento indica de onde veio, por exemplo "(fonte: Etapa)" ou o nome do produto da cotação.
+**Resultado esperado:** cada argumento indica de qual campo veio, por exemplo "(fonte: ...)".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Dado que falta não é inventado
-1. Abra a oportunidade sem data de fechamento e peça a "Proposta".
+## Teste 5 — Valor sai do registro
+1. Abra a oportunidade de teste com Valor 1000,50.
+2. Gere a proposta.
 
-**Resultado esperado:** onde iria a data aparece "[dado ausente: data de fechamento]", nenhuma data inventada, e há a lista dos campos usados e dos campos vazios.
+**Resultado esperado:** o valor citado é exatamente 1000,50 com a moeda do registro, sem arredondar nem somar.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 6 — Preço sem cotação e com cotação
-1. Na oportunidade sem cotação, peça a "Proposta".
-2. Na oportunidade com cotação de R$ 1.234,56, peça a "Proposta".
+## Teste 6 — Sem dado pessoal
+1. Na oportunidade, cadastre um contato de teste com e-mail e telefone fictícios.
+2. Gere os três rascunhos.
 
-**Resultado esperado:** (1) preço, desconto, prazo e condição de pagamento aparecem como "[a preencher]". (2) o valor citado é exatamente R$ 1.234,56, sem conta nem arredondamento.
+**Resultado esperado:** o texto usa "[nome do contato]" e não contém o e-mail nem o telefone cadastrados.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 7 — Sem dados pessoais do contato
-1. Com o contato "TESTE Contato" (e-mail e telefone fictícios) na oportunidade, peça os três rascunhos.
+## Teste 7 — Quem não vê a oportunidade
+1. Com o usuário que tem o grupo, mas não tem acesso à oportunidade "Y", tente abrir a oportunidade e gerar o rascunho.
 
-**Resultado esperado:** o texto usa "[nome do contato]"; nenhum e-mail ou telefone aparece.
+**Resultado esperado:** a mesma negativa de acesso que o Salesforce já mostra; nenhum texto é gerado.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 8 — Quem não vê a oportunidade não gera rascunho
-1. Entre com o usuário (c), sem acesso à oportunidade "Y".
-2. Tente abrir "Y" e, se souber o endereço, tente chamar o rascunho por ele.
+## Teste 8 — Nada é gravado nem enviado
+1. Depois de gerar os rascunhos, veja a linha do tempo da oportunidade e a conta.
+2. Clique em Concluir e confira o histórico da oportunidade.
 
-**Resultado esperado:** a mesma mensagem de acesso negado que o Salesforce já mostra; nenhum texto é gerado.
+**Resultado esperado:** nenhuma tarefa, compromisso ou e-mail novo; nenhum campo alterado.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 9 — Nada é gravado nem enviado; o registro segue editável
-1. Gere um rascunho e feche a aba sem copiar.
-2. Confira Atividades, e-mails e histórico da oportunidade e da conta.
-3. Edite um campo da oportunidade e salve.
+## Teste 9 — Se a IA falhar
+1. Peça ao administrador para desativar temporariamente o modelo de texto de proposta e gere uma proposta.
 
-**Resultado esperado:** nenhuma tarefa, evento ou e-mail novo e nenhuma alteração nos dados. O salvamento funciona normalmente. Se o serviço de IA estiver indisponível, aparece mensagem de falha e o registro continua editável.
+**Resultado esperado:** aparece mensagem de falha e você continua editando a oportunidade normalmente.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 10 — A página da oportunidade segue com o que já existia
-1. Abra "TESTE EPLAST-30 Opp" e confira os campos e seções de prioridade (outra entrega recente) e a aba "Detalhes".
+## Teste 10 — A página da oportunidade continua inteira
+1. Abra a oportunidade e confira o Caminho, os painéis laterais e os campos de prioridade que já existiam.
 
-**Resultado esperado:** tudo continua visível, além da nova aba "Rascunho IA".
+**Resultado esperado:** tudo o que já existia continua visível, além da aba nova.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- **Motor:** usamos a IA já disponível no Salesforce da Eplast, sem sistema externo; o rascunho é um recurso separado do assistente `SFAgent2`.
-- **Três saídas, só texto:** proposta, follow-up e argumentos; o texto é editável e não é enviado nem gravado. Quem revisa é o próprio vendedor.
-- **Dados usados:** campos da oportunidade, da conta e da cotação primária. Preço só vem da cotação.
-- **Quem usa:** quem receber o grupo de permissões "Rascunho IA Comercial" (exige licença de Cotação). O gestor não vê o rascunho.
-- **Onde aparece:** aba "Rascunho IA" na página da oportunidade.
-- **Tempo:** até 15 segundos é aceitável.
-- **Dados pessoais:** o texto não cita nome, e-mail nem telefone do contato.
-- **Tom e modelo:** texto comercial formal em português, sem modelo oficial da Eplast.
-- **Custo de IA:** segue o consumo da licença atual da conta; não confirmado.
-- **Documento de origem:** a demanda do card; a Solicitação de Proposta não precisa ser anexada.
-Se discordar de algum item, diga na homologação.
+- **Sem cotação.** O rascunho não cita a cotação (decisão de 16/11). Se quiser, entra em demanda própria, com licença de cotação para quem usa.
+- **Valor e condições.** Só o Valor da oportunidade aparece; desconto, prazo, condição comercial e quantidade de itens ficam "[a preencher]".
+- **Produtos.** Os produtos da oportunidade não entram no texto.
+- **Texto neutro e editável.** O tom é neutro; ajuste com a equipe de vendas. A assinatura traz "[Seu Nome]" e "[Seu Cargo]" para preencher.
+- **Oportunidade fechada.** Também gera rascunho; o texto informa a etapa.
+- **Sem conta.** Gera o rascunho mesmo assim, com "[dado ausente: ...]" nos dados da conta.
+- **Quem usa.** Só quem recebe o grupo de permissões; vale para os perfis comerciais.
+- **Aba.** Aparece na página padrão da oportunidade; a de três colunas não foi alterada.
+- **Nada sai do CRM.** Nenhum envio. E-mail de follow-up, se desejado, é passo do Marketing Cloud, fora desta entrega.
+- **Custo de IA.** Fica por conta da licença da Eplast.
 
 ## O que não dá para conferir pela tela
-- Que o rascunho não dispara gatilhos, Flows de gravação nem grava dados: só o registro de execução comprova. O desenho não grava nada (verificação da dev em `04-verificacao.md`); não executado dinamicamente na QA.
-- Limite de 50 linhas de cotação: exige cotação grande; ver `05-testes.md`.
+O registro de execução do sistema (nenhum gatilho ou automação disparado ao gerar o texto) e a execução em volume só o time técnico comprova. Estão pendentes; o que já foi provado está em `05-testes.md`.
