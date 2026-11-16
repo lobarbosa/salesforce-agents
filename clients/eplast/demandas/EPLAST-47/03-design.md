@@ -1,293 +1,297 @@
-# EPLAST-47 — Design: correção do Fluxo Agendado – Oportunidade
+# EPLAST-47 — Design (rodada 2): classificação de contas só declarativa, sem gravar em massa em Account
 
-**Cliente:** Eplast · **Etapa:** 3 (design, `arquiteto`) · **Data:** 2026-11-14
-**Org de referência:** `sbx-eplast-dev` (sandbox, Org ID `00DHa000006vfMLMAY`), a única conectada nesta sessão. Só leitura: nenhum deploy, DML ou anonymous Apex.
-**Entradas:** `01-analise.md` (aprovado em `gates.md`, 2026-11-14), `02-recon.md` (2026-11-14), `comentarios-do-card.md` (respostas P2, P3, P4, P7 e saída do alerta do ex-parceiro), `assessment.md` (trechos por Grep), histórico RAG.
-**Status:** pronto para o **gate bloqueante do arquiteto humano**. Há 3 decisões que este design não toma sozinho (seção 0).
+**Cliente:** Eplast · **Etapa:** 3 (design, `arquiteto`) · **Data:** 2026-11-16
+**Org de referência:** `sbx-eplast-dev` (sandbox, Org ID `00DHa000006vfMLMAY`), a única conectada em `sf org list`. Só leitura: consultas de metadata, retrieve para pasta temporária, describe de relatório. Nenhum deploy, DML ou anonymous Apex. Nada no Marketing Cloud.
+**Entradas:** `01-analise.md` (aprovada em `gates.md`, 14/11), `02-recon.md` (16/11, redesenho), `comentarios-do-card.md` (decisão de 16/11), `05-testes-rodada-3.md` (falha que motivou o redesenho), `00-preflight.md` (sem bloqueios, nenhuma outra demanda nos mesmos componentes), `assessment.md` (trechos por Grep), RAG (EPLAST-27, EPLAST-34).
+**Status:** pronto para o **gate bloqueante do arquiteto humano**. Há 3 decisões de arquitetura que este design não toma sozinho (seção 0). Nenhuma pergunta de negócio bloqueia (caso 3 da regra 4: nenhum).
 
-**Estimativa de esforço:** 26–40 h
+**Estimativa de esforço:** 36–52 h
 
-O que mudou em relação à análise (30–50 h): P2, P3, P4 e P7 foram respondidas no card, e a regra de negócio atual fica como está (sem período configurável, sem trocar média por soma, sem renomear campo). O alerta do ex-parceiro saiu do escopo. O recon confirmou que não há Apex gravando os 4 campos nas classes lidas e que não há concorrência de escrita em `AveragePurchasesThisYear__c`. Isso tira horas. Ficam dentro da faixa, e seguram o topo dela: o relatório por metadata (achado EPLAST-39 da skill `salesforce-doutrina`) e o dado sintético em QA, que dispara a cadeia do `OpportunityFlow` (Order, Quote, CPQ). Se o gate recusar os custom metadata types (decisão D1), a faixa cai cerca de 3 h.
+O que mudou em relação à análise (30–50 h) e ao design anterior (26–40 h): a faixa é o total da demanda. Inclui as horas já gastas no build da rodada 1 (custom metadata, picklist, Flow v2, relatório, 3 rodadas de QA) e soma o retrabalho desta rodada, estimado em 12–16 h: objeto novo com 8 campos e histórico, tipo de relatório, 2 relatórios, permission set, uma alteração de página, Flow v3 trocando o destino da gravação e mais uma rodada de QA sobre a população da QAS. Ficam de fora, e não pesam: Apex, a cadeia Protheus e o Marketing Cloud.
 
 ---
 
 ## 0. Decisões que precisam do aceite do arquiteto humano
 
-| # | Decisão | Proposta deste design | Alternativa se recusada |
+| # | Decisão | Proposta deste design | Se recusada |
 |---|---|---|---|
-| **D1** | **Novos tipos de metadata (custom metadata types)** para faixas e parâmetros. É um tipo de objeto novo na org, não dado de negócio, mas pode ser lido como mudança de modelo de dados: **escalo ao humano, não decido sozinho.** | `RankingRange__mdt` (7 faixas) e `ScheduledFlowOpportunitySetting__mdt` (dia de execução e destinatário da falha). Os dois existentes (`Protheus__mdt`, `TriggerUtility__mdt`) não servem: o segundo só tem `BypassTrigger__c` (confirmado por describe), e o primeiro é da integração. | Faixas fixas em um elemento Decision (7 regras) e destinatário em Custom Label. O critério 12 passa a ser "valores só na Decision nova", e mudar faixa exige nova versão do fluxo. |
-| **D2** | **Ativar histórico de campo em `Account.Ranking__c`** para o relatório de mudanças (critério 14). Hoje `IsFieldHistoryTracked = false` (confirmado). Configuração nativa, mas muda o que a org guarda. | Ativar histórico só em `Ranking__c` e criar 1 relatório sobre o tipo padrão de histórico de conta. | Sem histórico, o critério 14 não tem como mostrar "classificação anterior" sem campo novo. Volta a P12 com a Eplast. |
-| **D3** | **Critério 7 da análise (período configurável) sai desta demanda.** A diretriz do card de 14/11 diz "a regra de negócio atual não muda; muda a execução por conta, as faixas e o alerta de erro", e P2 manteve `ThisYear__c`. | O período continua sendo `Opportunity.ThisYear__c` (data de criação). O critério 7 não é testado. | Se o gate quiser manter o critério 7, o período vira campo do custom metadata, e a fórmula `ThisYear__c` deixa de ser o filtro. Isso **muda regra** e precisa voltar ao cliente. |
+| **D1** | **Mudança de modelo de dados: objeto custom novo `AccountRanking__c` ("Classificação da Conta"), mestre-detalhe com `Account`.** É decisão de arquitetura sênior: **escalo ao humano, não decido sozinho.** A decisão de 16/11 lista essa alternativa, mas não a escolhe. | Um registro vigente por conta, gravado pelo Flow agendado, com histórico de campo. Seções 1 e 2. | Alternativa 1 (fórmula), com as perdas da seção 1.2: muda a cadência de mensal para contínua, perde o histórico (critério 14) e exige recriar `Ranking__c`. Volta ao cliente, porque muda a regra. |
+| **D2** | **`Account.Ranking__c` e `Account.LastMonthPurchaseValue__c` deixam de ser atualizados.** Ficam com o último valor gravado, e a classificação mensal vigente passa a ficar em `AccountRanking__c`. É consequência direta da restrição "não gravar em massa em Account". | Congelar. Os dois campos não são apagados nem tirados de página, relatório ou permission set nesta demanda. A descrição e o texto de ajuda passam a dizer que o valor está congelado e onde fica o vigente. A depreciação fica para depois que os consumidores migrarem (seção 7). | Qualquer forma de manter os dois campos atualizados grava em Account, e isso a restrição de 16/11 proíbe. Só a alternativa da fórmula evita (ver D1). |
+| **D3** | **Alterar a página `Account_Record_Page`** (FlexiPage na linha de base do repo; hoje mostra `Ranking__c` e `LastMonthPurchaseValue__c` como campo) para incluir a lista relacionada de `AccountRanking__c`. | Acrescentar um componente `force:relatedListSingleContainer` de "Classificação da Conta" ao lado da seção onde está `Ranking__c`. Não remover campo da página. | Sem a lista na página, o usuário só vê a classificação vigente pelos relatórios, e na página continua vendo o valor congelado. |
+
+Já aceitas e mantidas da rodada anterior (card, 14/11): `RankingRange__mdt` e `ScheduledFlowOpportunitySetting__mdt` (D1 antiga), histórico em `Account.Ranking__c` (D2 antiga; continua ligado, sem uso novo), período fixo em `Opportunity.ThisYear__c` (D3 antiga, critério 7 fora).
 
 ---
 
-## 1. Solução proposta
+## 1. Solução escolhida
 
-**Nível: declarativo (Flow), ajustando o `ScheduledFlowOpportunity` existente em uma nova versão.** Sem Apex.
+**Nível: configuração + declarativo.** Um objeto custom novo com histórico de campo, campo fórmula e relatórios (configuração). Uma versão nova do Flow `ScheduledFlowOpportunity` (declarativo) passa a gravar nesse objeto, não em `Account`. **Sem Apex novo, sem alterar Apex existente.**
 
-Por que não o nível acima (configuração pura): o cálculo é uma agregação de `Opportunity` sobre `Account` com filtro (`StageName`, `ThisYear__c`), gravada uma vez por mês. Roll-up summary de Account sobre Opportunity existe na plataforma, mas criaria campo novo (modelo de dados) e não faz a classificação nem a checagem do dia. Configuração cobre só parte: picklist, histórico de campo e parâmetros (custom metadata).
+### 1.1 Por que este desenho resolve a falha da rodada 3
 
-Por que não descer para Apex: nenhum critério da doutrina se aplica. Não há callout, rollback complexo nem recursão. O volume é o único ponto, e a mudança **reduz** a carga em relação a hoje (seção 5). Se a medição em QA passar de 70% de um limite (critério de escalonamento da doutrina), o design volta para revisão com a opção Apex (Batch), não antes.
+A QA reprovou porque o Flow gravava em `Account`. Cada update dispara o `AccountTrigger` (after update), e o `AccountTriggerHelper.updateAccountInfoFromCNPJ` enfileira um `SendAccountToProtheus` por conta, sem filtro de campo (`02-recon.md` §3, mesmo achado em EPLAST-27 e EPLAST-34, pelo RAG). Com 555 contas, isso deu "Too many queueable jobs added to the queue: 51" e 162 erros.
 
-### 1.1 Fluxo novo (versão 2 do `ScheduledFlowOpportunity`)
+Inserir ou atualizar um registro filho em mestre-detalhe **não salva o registro pai**. O pai só passa pelo ciclo de save quando há roll-up summary ou workflow entre objetos (ordem de execução, skill `salesforce-doutrina`). O objeto novo não terá roll-up, e a org tem 0 workflow rule custom: as 17 existentes são do `et4ae5` (assessment). Assim, a execução mensal **não toca `Account`**. Também não acionam o `AccountTrigger`, o `AccountBefore` (SBQQ), os Flows `AccountTriggered` e `UpdateParentAccountUsedLimit` nem as 6 validation rules de Account. Fica 0 enfileiramento para o Protheus.
+
+### 1.2 Alternativas descartadas, com o porquê
+
+| Alternativa | Por que não |
+|---|---|
+| **1. `Ranking__c` como fórmula** (seria configuração, o nível acima) | (a) `Ranking__c` é picklist restrita com histórico. A plataforma não converte picklist em fórmula no lugar: seria apagar e recriar o campo, perdendo o histórico e quebrando as referências do permission set `Protheus` e do relatório `CLASSIFICACAO_CONTAS_POR_CLASSE`. (b) A fórmula reclassifica a cada mudança da média, que o `OpportunityFlow` grava a cada save de oportunidade. Hoje a classificação é mensal, no dia 14, e o card de 14/11 manda não mudar a regra. (c) Campo fórmula não tem histórico, então o critério 14 cai. (d) O valor de compras (soma das ganhas do ano) não sai em fórmula. Roll-up de Opportunity em Account não aceita filtro por `ThisYear__c`, que usa `NOW()`. A soma continuaria precisando de quem grave. |
+| **2b. Um registro por conta por mês (snapshot)** | Funciona, mas o "vigente" depende de filtro por data relativa: antes do dia 14, "este mês" fica vazio. Isso complica o segmento do Marketing Cloud e a lista na página. Um registro vigente por conta, com histórico de campo, dá o mesmo rastro com consulta mais simples (premissa PA9). |
+| **Ranking ao vivo dentro do `OpportunityFlow`** (no update de Account que ele já faz) | Exige uma versão nova de um Flow de CPQ com mais de 2.000 linhas. Muda a cadência para contínua. E as contas sem oportunidade salva não seriam reclassificadas pelas faixas novas, o que pediria uma carga em massa em Account. |
+| **Gravar em Account em blocos menores que 50, ou usar o bypass `TriggerUtility__mdt.BypassTrigger__c`** | Proibido pela decisão de 16/11. O tamanho de lote de Flow agendado não é configurável (200). O bypass é chave global e desligaria os triggers de Account e Opportunity da org inteira durante o job. |
+| **Apex (Batch, ou filtrar campo no `AccountTriggerHelper`)** | Proibido pela decisão de 16/11 ("sem Apex novo", "não mexer na AccountTrigger"). Pela doutrina, também não é necessário: sem callout, sem recursão, sem rollback complexo. |
+
+### 1.3 Fluxo: nova versão do `ScheduledFlowOpportunity`
+
+A dev está com a v2 Active (v1 Obsolete). O build cria a **v3 na dev, implantada como Draft**. A QA está com a v5 Active, e o deploy da esteira lá cria a próxima versão. Ativar é passo separado, depois da verificação (seção 8). A v2 continua ativa até lá.
 
 ```
-[Agendado: Daily, 15:47 UTC — mantido]  start: Opportunity, IsWon = true  (mantido: mesma população de contas)
- └─ GetSetting      (Get Records ScheduledFlowOpportunitySetting__mdt, registro Default)          [novo]
- └─ CheckDayMonth   DAY(hoje) = GetSetting.RunDayOfMonth__c (registro = 14)                          [alterado: era 14 fixo]
- └─ CheckAccount    $Record.AccountId vazio → fim                                                    [novo]
- └─ GetRepresentativeOpportunity  Opportunity, AccountId = $Record.AccountId, IsWon = true,
-                                  ordenado por Id crescente, só o primeiro                           [novo]
- └─ IsRepresentative  GetRepresentativeOpportunity.Id = $Record.Id ? senão → fim                      [novo: execução por conta]
- └─ GetOpportunities  (mantido: AccountId, StageName = Fechado/Ganho, ThisYear__c = true)
- └─ LoopOpportunities → AssignSumValue (mantido: SumAmount += Amount)
- └─ [removidos] QuantityOpportunities/Count (sem uso), GetOpportunities2 (sem filtro de conta, sem uso)
- └─ ClassifyRanking  (sobre $Record.Account.AveragePurchasesThisYear__c — mantido, P3)               [reescrito]
-        média vazia → NewRanking = valor atual da conta (não altera; P6, ver seção 7)
-        senão: GetRanges (RankingRange__mdt, ordenado por SortOrder__c) e loop com flag:
-               primeira faixa com média ≤ UpperLimit__c, ou UpperLimit__c vazio (3G) → NewRanking
- └─ HasChanges  SumAmount ≠ conta.LastMonthPurchaseValue__c  OU  NewRanking ≠ conta.Ranking__c ?   [novo]
-        não → fim (não grava)
- └─ UpdateAccount  Account Id = $Record.AccountId:
-        LastMonthPurchaseValue__c = SumAmount, Ranking__c = NewRanking   (1 update só)               [substitui 6 updates]
-        fault → LogFault                                                                              [novo]
- └─ LogFault   cria IntegrationLog__c (IntegrationAction__c = "ScheduledFlowOpportunity",
-               ResponseStatus__c = "Erro", ExecutionDate__c = agora,
-               ResponseBody__c = Id da conta + $Flow.FaultMessage)                                    [novo, reaproveita objeto]
-        destinatário configurado (GetSetting.FaultRecipient__c não vazio) e P5 = operacional ?
-               sim → Send Email (ação padrão) ao destinatário, sem dado de cliente no corpo além do Id
-               não → só o log
+[Agendado: Daily, 15:47 UTC — mantido]  start: Opportunity, IsWon = true  (mantido)
+ └─ GetSetting / CheckDayMonth / CheckAccount                      [mantidos da v2]
+ └─ GetRepresentativeOpportunity / IsRepresentative                [mantidos: 1 interview segue por conta]
+ └─ GetOpportunities / LoopOpportunities / AssignSumValue          [mantidos: soma das ganhas, ThisYear__c]
+ └─ ClassifyRanking / GetRanges / LoopRanges / RangeMatches / AssignRanking   [mantidos: faixas do RankingRange__mdt, pela média]
+ └─ GetCurrentRanking  Get Records AccountRanking__c, Account__c = $Record.AccountId, só o primeiro   [novo]
+ └─ KeepCurrentRanking (média vazia): NewRanking = GetCurrentRanking.Ranking__c,
+                       ou $Record.Account.Ranking__c se ainda não há registro   [alterado: nunca GG]
+ └─ HasCurrentRanking ?                                                         [novo, substitui HasChanges]
+      sim → UpdateRanking  (Update Records no registro encontrado):
+              PreviousRanking__c = GetCurrentRanking.Ranking__c
+              Ranking__c = NewRanking, PurchaseValue__c = SumAmount (0 se vazio),
+              AveragePurchases__c = $Record.Account.AveragePurchasesThisYear__c,
+              ReferenceDate__c = hoje                                        fault → LogFault
+      não → CreateRanking  (Create Records):
+              Account__c = $Record.AccountId, AccountKey__c = $Record.AccountId,
+              PreviousRanking__c = $Record.Account.Ranking__c (valor legado),
+              demais campos como acima                                        fault → LogFault
+ └─ LogFault / HasRecipient / SendFaultEmail                       [mantidos da v2; ResponseBody__c = Id da conta + $Flow.FaultMessage]
+ └─ [removidos] UpdateAccount, HasChanges
 ```
 
 Pontos de desenho:
-- **Execução por conta sem gravar estado.** Cada oportunidade ganha continua gerando uma interview (é assim que o gatilho agendado funciona), mas só a da oportunidade ganha de menor Id da conta segue adiante. As demais terminam antes da soma. Resultado: 1 cálculo e no máximo 1 update por conta por execução (critério 4), sem campo novo de controle. A população de contas não muda: segue "contas com pelo menos 1 oportunidade ganha", como hoje.
-- **Por que não mudar o objeto de início para `Account`.** Mudaria a população (todas as contas, ou exigiria um filtro que hoje não existe sem campo novo), multiplicaria interviews diárias pelo total de contas, e contas sem venda passariam a ser classificadas. Isso é mudança de regra, que o card proibiu.
-- **Por que manter Daily + checagem do dia (P9).** Fluxo agendado só aceita frequência Once, Daily ou Weekly. Mensal não existe. P9 fica respondida pela plataforma: mantém diário com checagem do dia. O dia passa ao custom metadata, o que também permite ao QA rodar em qualquer data (seção 8).
-- **Faixas (P7).** Mesma comparação do card: acima do limite anterior, até o limite inclusive. Registros de `RankingRange__mdt`:
-
-| SortOrder__c | Ranking__c | UpperLimit__c |
-|---|---|---|
-| 1 | MP | 10.000 |
-| 2 | PP | 35.000 |
-| 3 | P | 80.000 |
-| 4 | M | 160.000 |
-| 5 | G | 500.000 |
-| 6 | GG | 1.000.000 |
-| 7 | 3G | (vazio = sem teto) |
-
-  A ordenação é por `SortOrder__c`, não por `UpperLimit__c`: ordenar por limite poria o vazio (3G) em primeiro.
-- **Um update só.** Hoje o fluxo faz 2 updates por interview (valor e depois ranking), cada um disparando a cadeia de Account (seção 4). Passa a 1, e nenhum quando nada mudou.
-
-### 1.2 Achado que o cliente precisa saber antes do QA (não bloqueia)
-
-**A regra PP atual compara com `EqualTo 10000`, não com "até 10.000"** (confirmado no XML da versão ativa). Na prática, hoje toda conta com média **abaixo** de 10.000, ou vazia, cai no resultado padrão e vira **GG**. O card pede "MP até 10.000". Com a correção, essas contas passam de GG para MP. Na primeira execução após a entrega haverá uma troca grande de classificação em contas pequenas, visível no comercial e no Protheus. Isso não é regra nova (o card é explícito), mas o consultor deve avisar a Eplast antes da homologação.
+- **Sempre grava o registro filho**, mesmo sem mudança. É o que zera `RankingChanged__c` (fórmula: anterior ≠ atual) no mês seguinte e marca `ReferenceDate__c`. O objeto não tem automação, então gravar sempre não custa nada além do DML do lote.
+- **`AccountKey__c` único (External ID)** garante 1 registro por conta. Uma criação em duplicidade falha, cai no `LogFault` e não gera um segundo registro. Também serve a um upsert futuro por integração.
+- **Faixas e comparação**: sem mudança desde a rodada 1. A faixa é acima do limite anterior e até o limite inclusive, ordenada por `SortOrder__c`, e `X3G` não tem teto. O XML não carrega nenhum limite fixo (critério 12).
+- **O Flow só lê `Account`** (`AveragePurchasesThisYear__c` e `Ranking__c`, pelo `$Record.Account`), não grava.
 
 ---
 
-## 2. Reaproveita × cria (regra 3 da conta)
+## 2. Reaproveita × cria × altera (regra 3 da conta)
 
-| # | Item | Situação na org (confirmado em `sbx-eplast-dev`) | Decisão |
+Todos os itens marcados como existentes foram conferidos em `sbx-eplast-dev` no recon ou nesta sessão.
+
+| # | Item | Situação na org | Decisão |
 |---|---|---|---|
-| 1 | Flow `ScheduledFlowOpportunity` | Existe. Versão ativa 1, Scheduled, `Opportunity`, `IsWon = true`, Daily | **Reaproveita**: nova versão do mesmo fluxo. Mantém API name, agendamento e horário. Não se cria fluxo novo. |
-| 2 | `GetOpportunities`, `LoopOpportunities`, `AssignSumValue`, `SumAmount` | Existem | **Reaproveita** sem mudar filtro (P2). |
-| 3 | `GetOpportunities2`, `QuantityOpportunities`, variável `Count` | Existem, sem uso (resultado não é lido) | **Remove.** |
-| 4 | `ValuePurchasesLastMonth` e os 5 updates `UpdateAccountPP/P/UpdatAccountM/UpdateAccountG/UpdateAccountGG` + `LastMonthPurchaseValue` | Existem | **Substitui** por `ClassifyRanking` + `UpdateAccount` (1 update). |
-| 5 | `CheckDayMonth` e fórmula `Day` | Existem (descrição diz "dia 1º", regra usa 14) | **Altera**: compara com o parâmetro. Corrige a descrição. |
-| 6 | `Account.Ranking__c` | Existe, picklist **restrita**, 5 valores (PP, P, M, G, GG), descrição vazia | **Altera**: adiciona MP e 3G (ordem MP, PP, P, M, G, GG, 3G). Preenche descrição. |
-| 7 | `Account.LastMonthPurchaseValue__c` | Existe, currency, descrição vazia | **Reaproveita** com o mesmo nome (P4). Só preenche descrição dizendo que guarda a soma das ganhas do ano (`ThisYear__c`), apesar do rótulo "Último Mês". |
-| 8 | `Account.AveragePurchasesThisYear__c` | Existe; gravado pelo `OpportunityFlow` | **Reaproveita só como leitura** (P3). Não altera o `OpportunityFlow`. |
-| 9 | `IntegrationLog__c` | Existe (campos `IntegrationAction__c`, `ResponseStatus__c`, `ResponseBody__c`, `ExecutionDate__c`, entre outros); sem trigger | **Reaproveita** para registrar falha. Não se cria objeto de log. Ressalva: o objeto nasceu para integração HTTP; o uso fica identificado por `IntegrationAction__c = ScheduledFlowOpportunity`. |
-| 10 | Custom metadata de faixas e parâmetros | Não existe (só `Protheus__mdt` e `TriggerUtility__mdt`) | **Cria** `RankingRange__mdt` e `ScheduledFlowOpportunitySetting__mdt`, **sujeito a D1**. |
-| 11 | Histórico de campo em `Ranking__c` | Desativado (`IsFieldHistoryTracked = false`) | **Ativa**, sujeito a D2. |
-| 12 | Relatório de mudança de classificação | Nenhum encontrado por nome entre 379 relatórios (recon). Conteúdo dos relatórios não lido. | **Cria** 1 relatório, salvo se a Eplast apontar um existente (P12). |
-| 13 | Ação de e-mail no fluxo | Não existe hoje | **Cria** dentro do caminho de falha, condicionada a P5 (seção 6). |
-| 14 | Agente `SFAgent2` | Existe | Não se aplica. Não é alterado. |
-| 15 | Apex | Não se cria nem se altera classe ou trigger | n/a |
+| 1 | Flow `ScheduledFlowOpportunity` | v2 Active, v1 Obsolete na dev. O repo difere da v2 só em ordem de elementos e `versionSegment` (diff nesta sessão) | **Altera por versão nova**: v3 Draft na dev, ativação em passo separado. Mantém API name, agendamento e horário. |
+| 2 | Elementos da v2: `GetSetting`, `CheckDayMonth`, `CheckAccount`, `GetRepresentativeOpportunity`, `IsRepresentative`, `GetOpportunities`, `LoopOpportunities`, `AssignSumValue`, `ClassifyRanking`, `GetRanges`, `LoopRanges`, `RangeMatches`, `AssignRanking`, `LogFault`, `HasRecipient`, `SendFaultEmail` | Existem na v2 (lista de elementos conferida nesta sessão) | **Reaproveita** sem mudar a lógica. |
+| 3 | `KeepCurrentRanking` | Existe na v2 | **Altera**: lê a classificação do registro filho, e não a da conta (seção 1.3). |
+| 4 | `UpdateAccount`, `HasChanges` | Existem na v2 | **Remove** da v3. |
+| 5 | `GetCurrentRanking`, `HasCurrentRanking`, `UpdateRanking`, `CreateRanking` | Não existem | **Cria** na v3. |
+| 6 | `RankingRange__mdt` (7 registros) | Existe | **Reaproveita** sem mudança. |
+| 7 | `ScheduledFlowOpportunitySetting__mdt` (`Default`: dia 14, `FaultRecipient__c`) | Existe | **Reaproveita** sem mudança. |
+| 8 | `AccountRanking__c` e campos (seção 2.1) | Não existe. Nenhum objeto com "Ranking" ou "Classifica" no nome, além do `RankingRange` (consulta nesta sessão) | **Cria** (sujeito a D1). |
+| 9 | Tipo de relatório `AccountWithRanking` (Contas com Classificação da Conta) | Não existe | **Cria**, com Account como objeto principal e `AccountRanking__c` (B) obrigatório. Traz os campos de Account que o relatório do Marketing Cloud usa. |
+| 10 | Relatório `AccountRankingChanges` (pasta `EPLAST47`, provisória) | Existe. Tipo `AccountAuditHistory`, **sem filtro** (describe nesta sessão): mostra qualquer histórico de conta, não só o de Ranking | **Altera**: passa para o tipo `AccountWithRanking`, com filtro `RankingChanged__c = true` e colunas conta, classificação anterior, classificação atual, data de referência e valor de compras. Mantém o API name. Se o deploy recusar a troca de tipo de relatório, o builder remove e recria com o mesmo nome, e registra isso no plano. |
+| 11 | Relatório `AccountRankingByClass` ("Classificação Mensal - Contas por Classe") | Não existe | **Cria** na pasta `EPLAST47`, agrupado por `AccountRanking__c.Ranking__c`. É a fonte para o Marketing Cloud (seção 6). Não se altera o `CLASSIFICACAO_CONTAS_POR_CLASSE`, que o Marketing Cloud consome hoje (seção 6). |
+| 12 | Permission set `PS_Comercial_ClassificacaoConta` | Não existe. Há outros `PS_Comercial_*` na dev | **Cria**: leitura em `AccountRanking__c` e nos campos, sem edição (só o Flow grava). |
+| 13 | `Account_Record_Page` (FlexiPage) | Existe no repo, mostra `Record.Ranking__c` e `Record.LastMonthPurchaseValue__c`, tem 7 `relatedListSingleContainer` | **Altera** (sujeito a D3): acrescenta 1 lista relacionada. Parte da versão do repo, com diff restrito ao componente novo. |
+| 14 | `Account.Ranking__c` | Picklist restrita, 7 valores, histórico ligado | **Altera só descrição e texto de ajuda** (D2): "Valor congelado desde EPLAST-47. Classificação mensal vigente em Classificação da Conta". Valores e histórico ficam como estão. |
+| 15 | `Account.LastMonthPurchaseValue__c` | Currency, tem descrição | **Altera só descrição e texto de ajuda** (D2), na mesma linha. |
+| 16 | `Account.AveragePurchasesThisYear__c` | Gravado pelo `OpportunityFlow` (`TotalPurchasesThisYear__c / Count`, XML conferido nesta sessão) | **Reaproveita só como leitura.** |
+| 17 | `IntegrationLog__c` | Existe, já usado pelo `LogFault` da v2 | **Reaproveita.** |
+| 18 | Layouts `Account Layout` e `CPQ Account Layout` | Existem | **Não altera.** A página Lightning (item 13) basta. Mexer no layout acrescentaria risco de sobrescrever dev e QA sem ganho. |
+| 19 | `AccountTrigger`, `AccountTriggerHelper`, `TriggerUtility__mdt`, `OpportunityFlow`, triggers SBQQ | Existem | **Não altera** (decisão de 16/11). |
+| 20 | Agente `SFAgent2` | Existe (v13 é a mais recente na dev) | **Não se aplica.** A demanda não é de assistente. Não é alterado. |
 
-Componentes novos com API name:
-- `RankingRange__mdt`: `Ranking__c` (Text 3), `UpperLimit__c` (Number 16,2, opcional), `SortOrder__c` (Number 2,0). 7 registros (`MP`, `PP`, `P`, `M`, `G`, `GG`, `X3G`; o nome do registro não pode começar com dígito, o valor do campo é `3G`).
-- `ScheduledFlowOpportunitySetting__mdt`: `RunDayOfMonth__c` (Number 2,0), `FaultRecipient__c` (Email, opcional). 1 registro `Default` com dia 14 e destinatário **vazio** até P11.
-- Relatório `AccountRankingChanges` (nome provisório), pasta a definir (P12).
+### 2.1 `AccountRanking__c`: definição
 
-Todo componente novo ou alterado nasce com descrição preenchida (assessment: 153 de 223 campos sem descrição em Account/Order/Opportunity/OrderItem). Os dois campos tocados (`Ranking__c`, `LastMonthPurchaseValue__c`) saem desta demanda com descrição.
+- Label "Classificação da Conta" / "Classificações da Conta". `Name`: numeração automática `CLA-{000000}`. Compartilhamento `ControlledByParent`. `allowReports` = true, `enableHistory` = true, sem atividades e sem busca. Descrição do objeto: "Classificação mensal vigente da conta, gravada pelo Flow ScheduledFlowOpportunity (EPLAST-47). Não criar roll-up para Account: reabriria o update em massa de Account."
+- Campos, todos com descrição (achado 4 do assessment):
 
-Nomenclatura: o padrão do squad seria `Opportunity_Scheduled_...`. Mantém-se `ScheduledFlowOpportunity` porque renomear criaria outro fluxo (regra 3). Campos novos seguem o padrão em inglês dos campos da org (o `CLAUDE.md` da conta não define prefixo).
-
----
-
-## 3. Objetos, campos e automações afetados
-
-| Componente | Tipo | Leitura / escrita nesta demanda | Confirmação |
+| API name | Tipo | Histórico | Conteúdo |
 |---|---|---|---|
-| `Opportunity.IsWon`, `AccountId`, `StageName`, `Amount`, `ThisYear__c` | campos | leitura | recon (describe) |
-| `Opportunity.LastMonth__c` | fórmula | deixa de ser lido (sai com `GetOpportunities2`) | recon |
-| `Account.AveragePurchasesThisYear__c` | currency | leitura | recon + XML |
-| `Account.LastMonthPurchaseValue__c` | currency | escrita | recon + XML |
-| `Account.Ranking__c` | picklist restrita | escrita + 2 valores novos | describe nesta sessão (`restrictedPicklist = true`) |
-| `IntegrationLog__c` | objeto custom | criação, só em falha | describe nesta sessão |
-| `Order` | — | **não é lido nem gravado** pelo fluxo | XML |
-| Permission sets `Protheus` (leitura e edição nos 4 campos), `AncCrmIntegrationUser` e `sfdc_a360_sfcrm_data_extract` (leitura) | permissão | sem mudança | recon |
+| `Account__c` | Mestre-detalhe(Account), `AccountRankings`, sem reparenting | — | conta |
+| `AccountKey__c` | Texto(18), único, External ID | — | Id da conta. Garante 1 registro por conta |
+| `Ranking__c` | Picklist restrita: MP, PP, P, M, G, GG, 3G | sim | classificação vigente |
+| `PreviousRanking__c` | Picklist restrita, mesmos valores | — | classificação antes da última execução. Na primeira, o valor legado de `Account.Ranking__c` |
+| `RankingChanged__c` | Fórmula (caixa de seleção): `TEXT(Ranking__c) <> TEXT(PreviousRanking__c)` | — | mudou na última execução |
+| `PurchaseValue__c` | Moeda(16,2) | sim | soma das ganhas do ano (`ThisYear__c`), a mesma regra que ia para `LastMonthPurchaseValue__c` |
+| `AveragePurchases__c` | Moeda(16,2) | — | média usada na classificação (cópia de `Account.AveragePurchasesThisYear__c` na execução) |
+| `ReferenceDate__c` | Data | — | data da última execução |
 
-**Permissões.** Nenhum perfil ou permission set muda. Valor novo de picklist não exige permissão. O fluxo agendado roda em contexto de sistema e lê custom metadata sem permissão extra. O relatório herda o acesso da pasta (P12). O usuário que vê `Ranking__c` (16 perfis) passa a ver MP e 3G.
-
----
-
-## 4. Ordem de execução em Account, Opportunity e Order
-
-O fluxo roda no job agendado próprio, não no salvar do usuário. O evento alterado é o **update de `Account` feito pelo fluxo**.
-
-**Account (único objeto gravado).** A cada update, na ordem da plataforma (skill `salesforce-doutrina`):
-1. Before-save flows de Account: nenhum ativo entre os 9 flows de Account/Opportunity lidos no recon.
-2. Before triggers: `AccountBefore` (pacote SBQQ, não lido) e `AccountTrigger` (custom, valida CNPJ). **A ordem entre os dois não é garantida pela plataforma** (assessment, achado de automação concorrente).
-3. Validation rules de Account (6 ativas, nomes confirmados nesta sessão): `Celular`, `Contato_Fiscal`, `Telefone`, `WhatsApp`, `CheckUserCanSetLimitDueDate`, `CheckUserCanSetRisk`. Fórmulas não lidas.
-4. After triggers: `AccountTrigger` after update (`updateAccountCNPJInfo`). Não li o helper; não sei se faz callout sempre ou só quando o CNPJ muda.
-5. Workflow field updates: 2 em Account+Opportunity (contagem do recon; campos não verificados).
-6. After-save flows `AccountTriggered` e `UpdateParentAccountUsedLimit`, **ambos sem critério de entrada** (confirmado no XML): rodam em todo update. O segundo atualiza a conta pai, que dispara a mesma cadeia de novo na conta pai.
-
-**Como a mudança lida com isso:**
-- Não acrescenta automação em Account e não depende da ordem acima. Os campos gravados não são lidos por nenhum desses componentes, até onde o recon leu (5 classes, 2 triggers custom, 9 flows). Os triggers do SBQQ não foram lidos: essa é a incerteza que fica.
-- **Reduz** o número de vezes que a cadeia roda: de 2 updates por oportunidade ganha para no máximo 1 por conta, e nenhum quando os valores não mudaram (`HasChanges`). É a melhor mitigação disponível sem tocar em código de outra demanda.
-- Falha de qualquer elo da cadeia (validation rule de telefone em conta antiga, erro do helper de CNPJ, trava na conta pai) cai no caminho de falha e vira log, em vez de falha silenciosa da interview.
-- Não usa `TriggerUtility__mdt.BypassTrigger__c`: é chave global e desligaria triggers da org inteira durante o job.
-
-**Opportunity.** O fluxo só lê `Opportunity`. Nenhum trigger (`OpportunityTrigger`, `OpportunityBefore`, `OpportunityAfter`) ou flow de Opportunity é disparado pela mudança. Não se aplica.
-
-**Order.** Não se aplica: o fluxo não lê nem grava `Order`. A colisão do `OrderTrigger` custom com o do SBQQ e as 23 validation rules de Order não são tocadas nem agravadas pelo fluxo. **Exceção no teste:** criar oportunidade ganha sintética em QA dispara o `OpportunityFlow`, que cria `Order`, `Quote`, chama `CreateQuoteCPQController` e envia aprovação (`submit`) (confirmado no XML). Ver risco R5.
+Os valores da picklist repetem os de `Account.Ranking__c`, que é lista local, não conjunto global. Se uma faixa nova entrar no `RankingRange__mdt`, as duas listas precisam do valor novo, e isso vai na descrição dos dois campos.
 
 ---
 
-## 5. Limites de governador e escala
+## 3. Objetos, automações e ordem de execução
 
-Volume real: desconhecido. A dev tem 0 contas e 0 oportunidades. Produção não pode ser consultada. P10 aberta.
-
-| Cenário | Hoje (versão 1) | Depois (versão 2) |
+| Objeto | O que a solução faz | Automação que dispara |
 |---|---|---|
-| Interviews por dia | 1 por oportunidade ganha, todo dia (terminam na checagem do dia fora do dia 14) | Igual. Limite da plataforma para interviews agendadas em 24 h: o maior entre 250.000 e 200 × licenças (documentação Salesforce; a confirmar pelo volume de P10). |
-| Conta com N oportunidades ganhas (o "pai com muitos filhos" do achado SOMOSAGILITY-10) | N interviews, cada uma lê as N oportunidades (N² linhas) e faz 6 elementos de update possíveis, 2 executados | N interviews leem 1 linha cada (`GetRepresentativeOpportunity`); só 1 lê as N e faz no máximo 1 update |
-| `GetOpportunities2` | Sem filtro de conta: cada interview lê **todas** as oportunidades `LastMonth__c` da org. Risco real de passar de 50.000 linhas no lote. | Removido |
-| DML por lote de 200 interviews | até 400 updates de Account, cada um com a cadeia da seção 4 | até 200, tipicamente menos (`HasChanges`) |
-| Custom metadata | n/a | Get Records em custom metadata não conta no limite de SOQL |
+| `Opportunity` | Só leitura (start do Flow e `GetOpportunities`) | Nenhuma |
+| `Account` | **Só leitura** na execução. Deploy de metadata: descrição e texto de ajuda de 2 campos | Nenhuma em runtime |
+| `AccountRanking__c` | Criação e atualização em lote pelo Flow | Nenhuma: objeto novo, sem trigger, Flow, validation rule ou roll-up |
+| `IntegrationLog__c` | Criação só em falha | Sem trigger (recon da rodada 1) |
+| `Order` | Não lê, não grava | Nenhuma |
 
-A plataforma agrupa Get Records e Update Records das interviews do mesmo lote. A medição do QA confirma (seção 8). Critério de escalonamento: CPU ou SOQL acima de 70% do limite no lote de volume volta o design para revisão, com a opção Apex Batch.
+**Ordem de execução no save de `AccountRanking__c`:** validação de sistema (unicidade de `AccountKey__c`, valor de picklist restrita), gravação, histórico de campo, commit. Sem before ou after de nenhum tipo. No pai, o mestre-detalhe só trava a linha de `Account` durante o DML. Não há save do pai.
 
-Ponto que não consigo medir: a cadeia de Account (seção 4) com conta pai. Se várias contas filhas do mesmo grupo caem no mesmo lote, `UpdateParentAccountUsedLimit` atualiza a mesma pai várias vezes, com risco de `UNABLE_TO_LOCK_ROW` (critério 6). Isso já acontece hoje, em dobro.
+**Os 3 pontos que o recon deixou abertos:**
 
----
-
-## 6. Caminho de falha e Marketing Cloud (regra 2 da conta)
-
-- O aviso de falha é **operacional** (erro técnico de um job), não comunicação com cliente nem campanha. O design o trata assim, mas **P5 continua aberta** e trava só a promoção para QAS (card de 14/11).
-- Se a Eplast responder P5 como **operacional**: fica a ação padrão Send Email do Flow, só para `FaultRecipient__c`, com o Id da conta e a mensagem de erro, sem dado de cliente.
-- Se responder **marketing**: o build remove a ação de e-mail e fica só o `IntegrationLog__c`. O disparo vira **passo de quem opera o Marketing Cloud** (fora da esteira, que só conecta as sandboxes do CRM): ler os registros de log de `IntegrationAction__c = ScheduledFlowOpportunity` e montar o envio lá. O CRM entrega só o dado.
-- Destinatário vazio (P11 ainda sem endereço): o fluxo não envia e só registra o log (critério 16).
-- Nenhum outro passo de Marketing Cloud nesta demanda.
+1. **`AccountTriggerHelper` enfileira `SendAccountToProtheus` em todo update sem mudança de CNPJ.** O desenho **não agrava, elimina a exposição desta demanda**: a execução mensal faz 0 update em Account, contra 1 por conta na v2. A causa de fundo, o filtro por campo no helper, continua. Ela afeta qualquer gravação em massa em Account, e é a mesma achada em EPLAST-27 e EPLAST-34. Fica recomendada como demanda própria de Apex (seção 9), fora deste escopo pela decisão de 16/11. Confirmado nesta sessão: o payload do Protheus (`AccountAdapter.toProtheus`, chamado por `ProtheusAPI.sendClientToProtheus`) **não referencia** `Ranking__c` nem os campos de compra. Então congelar os campos em Account não muda o que o ERP recebe.
+2. **Bypass global em `TriggerUtility__mdt`.** Não é usado, nem na solução nem no teste. Desligaria os triggers de Account e Opportunity da org inteira.
+3. **`OpportunityFlow` v2 com `AccountTrigger` nos campos de compra.** O `OpportunityFlow` continua gravando `AveragePurchasesThisYear__c` e `TotalPurchasesThisYear__c` em Account a cada save de oportunidade, como hoje: um registro por vez, iniciado pelo usuário. A solução só **lê** a média e deixa de ser um segundo escritor de Account. Isso remove a concorrência de escrita. Resta uma corrida de leitura: uma oportunidade salva durante o job muda a média entre a leitura e o fim do lote, e a conta é classificada com o valor do momento da leitura. Severidade baixa. A execução seguinte corrige.
+4. **SBQQ em Account, Opportunity e Order.** Não são acionados: não há gravação nesses objetos. O `OrderTrigger` duplicado (custom e SBQQ) e as 23 validation rules de Order não são tocados. **Exceção, só no teste:** criar oportunidade ganha sintética dispara o `OpportunityFlow`, que cria cotação e pedido via CPQ e pode chegar ao Protheus. Está autorizado em 15/11, nas condições do card (seção 8).
 
 ---
 
-## 7. Perguntas de regra de negócio
+## 4. Limites de governador e escala
 
-**Bloqueantes para o build: nenhuma.** P2, P3, P4 e P7 foram respondidas no card. As que seguem abertas não impedem construir, porque o desenho deixa o ponto parametrizado ou isolado:
+Lote de Flow agendado: 200 interviews por transação. Volume conhecido só na QAS: 555 contas elegíveis e 1.217 contas (rodada 3 e card). A dev não tem dado. Produção não se consulta.
 
-| # | Pergunta | Como o design segue sem a resposta | Bloqueia |
+| Recurso por lote de 200 | v2 (reprovada) | v3 |
+|---|---|---|
+| Update em Account | até 200, cada um com toda a cadeia de Account | **0** |
+| `enqueueJob` (limite 50) | 1 por conta atualizada: estoura com 51 | **0** |
+| DML | 1 update de Account em lote | 1 create e 1 update de `AccountRanking__c` em lote, sem automação |
+| SOQL | Flow agrupa os Get Records das interviews no mesmo elemento | +1 consulta agrupada (`GetCurrentRanking`). Custom metadata não conta |
+| Linhas (50.000) | `GetOpportunities` lê as ganhas do ano de cada conta representante | Igual. **Risco**: um lote com várias contas de muitas oportunidades soma as linhas (R3) |
+| CPU (pai com muitos filhos, achado SOMOSAGILITY-10) | loop de soma por conta + cadeia de Account | Só o loop de soma e de 7 faixas. A cadeia de Account sai, que era o custo dominante |
+
+O fluxo de N oportunidades da mesma conta não é N²: as N interviews leem 1 linha cada no `GetRepresentativeOpportunity`, e só uma faz a soma.
+
+Critério de escalonamento (doutrina): CPU, SOQL ou linhas acima de 70% do limite no lote medido na QA devolve o design para revisão. A saída então seria trocar a soma pelo `TotalPurchasesThisYear__c` que o `OpportunityFlow` já mantém, o que pede confirmação de regra, ou Apex Batch, que pede nova decisão do responsável.
+
+---
+
+## 5. Permissões
+
+- **`PS_Comercial_ClassificacaoConta`** (novo): leitura no objeto e em todos os campos. Sem criar, editar ou apagar. Quem recebe é premissa PA10.
+- O Flow agendado roda em contexto de sistema (Automated Process) e não precisa de permissão.
+- Compartilhamento: `ControlledByParent`. Quem vê a conta vê a classificação, desde que tenha o permission set.
+- **Sem mudança** em perfis, no permission set `Protheus` (o ERP não lê o objeto novo, PA4), em `AncCrmIntegrationUser` ou em `sfdc_a360_sfcrm_data_extract`.
+- Relatórios: herdam o acesso da pasta `EPLAST47` (PA8).
+
+---
+
+## 6. Preparação do Sales Cloud para o Marketing Cloud (regra 2 da conta)
+
+A classificação é dado de segmentação: o relatório `CLASSIFICACAO_CONTAS_POR_CLASSE`, da pasta "MARKETING CLOUD", tem `Account.Ranking__c` como coluna (describe nesta sessão). A esteira **não faz nada no Marketing Cloud**.
+
+- **Dados que o Marketing Cloud vai precisar ler e onde ficam:** `AccountRanking__c.Ranking__c` (classificação vigente), `PreviousRanking__c`, `RankingChanged__c`, `PurchaseValue__c` e `ReferenceDate__c`, ligados à conta por `Account__c`, com chave estável em `AccountKey__c` (Id da conta).
+- **Como o segmento fica identificável no CRM:** relatório `AccountRankingByClass` (contas por classificação vigente) e `AccountRankingChanges` (contas que mudaram na última execução), os dois no tipo `AccountWithRanking`. Também por filtro direto no objeto.
+- **O que muda para o Marketing Cloud:** a coluna `Account.Ranking__c` do relatório atual fica congelada (D2). **O relatório `CLASSIFICACAO_CONTAS_POR_CLASSE` não é alterado** por esta demanda: trocar o tipo dele mudaria o que o Marketing Cloud importa sem quem o opera decidir.
+- **O que o Marketing Cloud devolve e onde é gravado:** nada nesta demanda. Nenhum campo de retorno é criado.
+- **Consentimento e opt-out:** não muda. A classificação é atributo da conta, não canal de contato. Continuam valendo os campos e o tratamento que o Marketing Cloud Connect (`et4ae5`) já usa, sem alteração.
+- **Fica para quem opera o Marketing Cloud:** decidir se o segmento por classificação passa a ler `AccountRankingByClass`, ou o objeto `AccountRanking__c` como fonte sincronizada, em vez da coluna congelada. Depois disso, avisar para que `Account.Ranking__c` possa sair do relatório antigo em demanda futura.
+- O aviso de falha do Flow é operacional, não marketing (PA2). Não passa pelo Marketing Cloud.
+
+---
+
+## 7. Riscos do assessment que tocam o escopo
+
+| Achado do assessment | Como este design lida |
+|---|---|
+| **1. Automação concorrente em Account/Opportunity/Order (alta)** | **Evitada por construção.** A solução não grava em nenhum dos três. A ordem de execução entre `AccountTrigger`, `AccountBefore` (SBQQ) e os Flows after-save deixa de importar para esta demanda. Fica o mesmo aviso de EPLAST-27 (RAG): se o gate pedir para voltar a gravar em Account, o design perde a validade. |
+| **2. Cobertura Apex de ~10%, cadeia Protheus sem teste (alta)** | Não se aplica: nenhuma classe criada ou alterada. A solução tira esta demanda da cadeia Protheus (0 enfileiramento). A recomendação do assessment, priorizar teste da cadeia, vira a demanda sugerida na seção 9. |
+| **3. Validation rules de Order (23)** | Não se aplica: não grava em Order. Só o dado sintético do teste passa por elas, via `OpportunityFlow`. |
+| **4. Campos sem descrição (153 de 223)** | Todo campo novo nasce com descrição. Os 2 de Account tocados ganham descrição atualizada. |
+| **6. Dúvida dev × qa** | Resolvida pela regra 5 da conta. O QA confere o Org ID da QA como sempre. |
+
+Consumidores de `Account.Ranking__c` e `LastMonthPurchaseValue__c` afetados pelo congelamento (D2), conforme o que foi confirmado:
+- a página `Account_Record_Page`, mitigada por D3;
+- o relatório `CLASSIFICACAO_CONTAS_POR_CLASSE`, mitigado pela seção 6;
+- o permission set `Protheus`, que tem leitura e edição, mas cujo payload de saída não leva os campos (PA4).
+
+Não foram varridos: outros relatórios, layouts de outros perfis e classes Apex fora das lidas. Fica como incerteza (seção 10).
+
+---
+
+## 8. Plano de teste (para verificador e QA)
+
+**Ativação:** na dev, o verificador ativa a v3 depois do teste por Debug sobre dado sintético, e registra no `04-verificacao.md` que entra a v3 e sai a v2. Na QA, a esteira implanta e o QA ativa a versão nova, registrando a que entra e a que sai em `05-testes.md`. **Desfazer:** reativar a versão anterior. O objeto pode ficar, porque não tem efeito colateral.
+
+**Estado herdado na QA:** o card de 15/11 deixou `RunDayOfMonth__c` = 15 e o início às 17:10 do fuso da org. A esteira reimplanta o build, e o QA confere e devolve o dia 14 e as 15:47 UTC ao final.
+
+**Linha de base, antes da execução (só contagens agregadas):**
+- `Account` com `LastModifiedDate` na janela;
+- `AsyncApexJob` de `SendAccountToProtheus` na janela;
+- `IntegrationLog__c` por `IntegrationAction__c`;
+- `AccountRanking__c` = 0;
+- distribuição de `Account.Ranking__c` por valor.
+
+| # | Cenário | Critério | Onde o assessment indica fragilidade |
 |---|---|---|---|
-| P1 | Premissa anual, só ganhas (Tatiana) | Mantém a regra atual (`StageName = Fechado/Ganho`, `ThisYear__c`) | Promoção a QAS |
-| P5 | Alerta operacional ou de marketing | Seção 6: e-mail condicionado, log sempre | Promoção a QAS |
-| **P6** | Conta sem compra: zero ou vazio? E **conta com média vazia: qual classificação?** | Valor: mantém o comportamento atual (variável sem valor padrão; o QA registra se grava vazio ou zero). Classificação com média vazia: **não altera `Ranking__c`** (hoje vira GG pelo erro da seção 1.2; o critério 11 proíbe GG). Média zero cai em MP ("até 10.000"). **Pedir confirmação da Eplast antes da homologação.** | Homologação |
-| P8 | Protheus aceita MP e 3G? `Ranking__c` é restrita, e o permission set `Protheus` tem edição: se o ERP gravar valor fora da lista, o update dele falha | Nada no CRM depende disso | Promoção a QAS |
-| P9 | Diário com dia 14 ou mensal | Respondida pela plataforma (seção 1.1). Informar a Eplast. | — |
-| P10 | Números do teste de volume | Seção 8 usa 50 contas (critério 6) como mínimo | Critério 18 |
-| P11 | Endereço do destinatário | Registro `Default` sai com destinatário vazio | Promoção a QAS |
-| P12 | Pasta do relatório ou relatório existente | Builder cria em pasta provisória e registra a pendência no plano de build | Critério 14 em QAS |
+| 1 | **Execução sobre a população da QAS** (autorizada pelo card de 15/11, regra 5): `AccountRanking__c` criados = contas distintas com ganha (`COUNT_DISTINCT(AccountId)` de `Opportunity` com `IsWon = true`) | 4, 18 | — |
+| 2 | **0 update em Account pela execução:** `Account` alterada pelo usuário do processo automatizado na janela = 0; `AsyncApexJob` `SendAccountToProtheus` novo atribuível à execução = 0; `IntegrationLog__c` de erro da ação `ScheduledFlowOpportunity` novo = 0. **É a prova da falha da rodada 3** | 6 e regressão | Achado 1 (Account) e cadeia Protheus |
+| 3 | Distribuição de `AccountRanking__c.Ranking__c` = distribuição esperada, calculada por `COUNT()` de Account em cada faixa de `AveragePurchasesThisYear__c` (os mesmos números da rodada 3: MP 207, PP 138, P 107, M 73, G 30, GG 0, 3G 0, a reconferir na data) | 10, 11 | — |
+| 4 | Segunda execução no mesmo mês: nenhum registro duplicado (contagem igual). `RankingChanged__c` = falso onde nada mudou | 4 | — |
+| 5 | Sintético "TESTE EPLAST-47": ganhas de 3.000 e 2.000 e perdida de 9.000 → `PurchaseValue__c` = 5.000 | 8 | `OpportunityFlow` e CPQ disparam na criação: listar o que saiu (card de 15/11) |
+| 6 | Conta sintética só com ganha de ano anterior → `PurchaseValue__c` = 0 (PA3) | 9 | idem |
+| 7–18 | Média 10.000 / 10.000,01 / 35.000 / 35.000,01 / 80.000 / 80.000,01 / 160.000 / 160.000,01 / 500.000 / 500.000,01 / 1.000.000 / 1.000.000,01 → MP / PP / PP / P / P / M / M / G / G / GG / GG / 3G. Pode usar Debug do Flow sobre a conta sintética, com a média gravada direto nela (1 update individual, autorizado) | 10 | — |
+| 19 | Média 0 → MP. Média vazia → mantém a classificação anterior, nunca GG | 11 | — |
+| 20 | XML da v3 sem limite fixo. Trocar `UpperLimit__c` de uma faixa no custom metadata muda a classificação sem nova versão | 12 | — |
+| 21 | Picklists `Account.Ranking__c` e `AccountRanking__c.Ranking__c` = MP, PP, P, M, G, GG, 3G | 13 | — |
+| 22 | `AccountRankingChanges` mostra N linhas = `COUNT()` de `RankingChanged__c = true`, com anterior e atual. Na primeira execução, o anterior é o legado | 14 | — |
+| 23 | **Falha forçada:** registro sintético de `AccountRanking__c` com `AccountKey__c` = Id da conta sintética B, mas `Account__c` = conta sintética A. Na execução, a criação para B falha por duplicidade → `IntegrationLog__c` criado e as outras contas gravam. Com destinatário vazio, não envia | 16 | — |
+| 24 | Com `FaultRecipient__c` de teste: envio registrado. Conferir a entregabilidade de e-mail da sandbox | 16 | — |
+| 25 | **CPU e linhas:** debug log do usuário do processo automatizado no lote que contém a conta com mais oportunidades ganhas (achada por `COUNT()` agrupado por `AccountId`, sem nome). Anotar CPU, SOQL e linhas. Acima de 70%, escala | 6 e escala | Achado SOMOSAGILITY-10 |
+| 26 | Página da conta mostra a lista "Classificação da Conta". Usuário com `PS_Comercial_ClassificacaoConta` lê e não edita | D3, permissões | — |
+| 27 | Regressão: `Account.Ranking__c` e `LastMonthPurchaseValue__c` com distribuição igual à da linha de base (congelados) | D2 | — |
 
-Nova, sem bloquear: a soma filtra `StageName = Fechado/Ganho`, e a população filtra `IsWon = true`. Se a org tiver outra fase ganha, as duas divergem. Mantido como está (regra atual). Vale uma linha ao cliente junto com P1.
-
----
-
-## 8. Estratégia de teste para o QA
-
-Org: **`sbx-eplast-qa`**. Antes de qualquer caso, o QA confirma com `sf org display` que o Org ID é o da QA e diferente do da dev (`00DHa000006vfMLMAY`). Assessment, achado 6: o alias de dev aponta para uma sandbox cuja instância e cujo usuário de conexão se identificam como "qa". Evidência na dev não vale para o aceite.
-
-**Como rodar o fluxo em qualquer dia:** no registro `Default` de `ScheduledFlowOpportunitySetting__mdt` da QA, `RunDayOfMonth__c` = dia do teste. O job diário das 15:47 UTC processa. Depois do teste, o QA volta o valor para 14 e registra isso. Casos de uma conta só podem usar o Debug do Flow Builder sobre um registro escolhido.
-
-**Dado de teste: sintético, criado e apagado pelo QA.** A dev não tem registro. Fixture preenche todo campo exigido pelas validation rules de Account e de Opportunity (10 de Opportunity listadas no recon, entre elas `CheckAccountOwnerHasProtheusSellerId`, `CheckOppHasBranch`, `CheckOppHasPaymentTermId`), não só os desta demanda (achado SOMOSAGILITY-10 da doutrina). Para os casos de faixa, o QA pode gravar `AveragePurchasesThisYear__c` direto na conta depois de criar a oportunidade, porque o campo é editável e o `OpportunityFlow` o recalcula a cada save de oportunidade.
-
-| # | Cenário | Critério |
-|---|---|---|
-| 1 | Conta A com 3 ganhas, conta B com 1: cada conta recebe 1 update (debug log com trace flag no usuário do processo automatizado; contar o update por conta) | 4 |
-| 2 | XML final: nenhum Get Records de Opportunity sem filtro de `AccountId`; `GetOpportunities2` ausente | 5 |
-| 3 | Lote de 50 contas, várias com conta pai em comum: 0 `UNABLE_TO_LOCK_ROW`, 0 logs de falha não explicados; anotar CPU e SOQL do lote (escala se > 70%) | 6 |
-| 4 | Ganhas de 3.000 e 2.000 + perdida de 9.000 → valor 5.000 | 8 |
-| 5 | Conta só com ganha de ano anterior → valor gravado conforme comportamento atual; registrar vazio ou zero (P6) | 9 |
-| 6–17 | Média = 10.000 / 10.000,01 / 35.000 / 35.000,01 / 80.000 / 80.000,01 / 160.000 / 160.000,01 / 500.000 / 500.000,01 / 1.000.000 / 1.000.000,01 → MP / PP / PP / P / P / M / M / G / G / GG / GG / 3G | 10 |
-| 18 | Média 0 → MP; média vazia → `Ranking__c` não muda (nunca GG) | 11 |
-| 19 | Mudar `UpperLimit__c` de uma faixa no custom metadata, sem nova versão do fluxo → classificação acompanha; XML sem limites antigos (70.000, 150.000) | 12 |
-| 20 | Picklist `Ranking__c` ativa = MP, PP, P, M, G, GG, 3G | 13 |
-| 21 | Relatório de mudanças mostra N contas com valor anterior e novo, após uma execução que muda N | 14 |
-| 22 | Falha forçada em 1 conta (ex.: dado que viola a validation rule `Telefone`, montado na fixture sintética): as outras contas do lote gravam; `IntegrationLog__c` criado; com destinatário vazio não envia | 16 |
-| 23 | Com destinatário de teste preenchido: envio registrado. Conferir a entregabilidade de e-mail da QA, já que sandbox costuma vir com "só e-mail do sistema" | 16 |
-| 24 | Execução sem mudança de valores → nenhum update (`LastModifiedDate` da conta inalterado) | regressão |
-| 25 | Regressão de Account: atualizar conta pelo fluxo não altera dado de CNPJ nem quebra `AccountTriggered`/`UpdateParentAccountUsedLimit` | assessment |
-
-Fragilidades do assessment que o QA cobre: a dúvida dev × qa (pré-checagem do Org ID); a automação concorrente em Account (casos 3, 22, 25); a cadeia Protheus (ver R5; o assessment pede priorizar teste dessa cadeia). A cobertura Apex de 10% não se aplica, porque não há Apex nesta demanda.
+Usuário de teste (regra 6): a conta de serviço da Konecta ativa na org do job, conferida pelo Id. Na dev, o recon achou `005bJ00000piKAaQAM`. Ela tem perfil de administrador, então não serve para o caso de acesso negado. O caso 26 fica restrito a "lê e não edita" pelo permission set, sem prova de negação.
 
 ---
 
-## 9. Riscos
+## 9. Riscos técnicos
 
 | # | Risco | Severidade | Tratamento |
 |---|---|---|---|
-| R1 | **Ordem de execução não garantida entre `AccountBefore` (SBQQ) e `AccountTrigger`, mais 2 flows after-save sem critério de entrada em Account, no mesmo update que o fluxo faz** | **Alta** | A mudança não depende da ordem e reduz o número de updates (seção 4). Triggers do SBQQ não lidos: incerteza declarada. Casos 3, 22 e 25. |
-| R2 | Troca em massa de classificação na primeira execução (erro `EqualTo` atual + faixas novas), visível no comercial e no Protheus | Alta (negócio) | Seção 1.2: avisar a Eplast antes da homologação. O relatório (D2) mostra quem mudou. |
-| R3 | `Ranking__c` é picklist restrita: se o fluxo for para a org antes dos valores MP/3G, ou se o Protheus enviar valor fora da lista, o update falha | Média | Ordem de deploy: picklist → custom metadata e registros → fluxo. P8 antes de QAS. |
-| R4 | Volume de produção desconhecido (P10); limite diário de interviews e CPU da cadeia de Account | Média | A versão 2 é estritamente mais leve que a 1. Medição no caso 3; escala acima de 70%. |
-| R5 | **Dado sintético em QA dispara o `OpportunityFlow`** (cria Order e Quote, chama CPQ, envia aprovação): validation rules de Order, `OrderTrigger` duplicado e possível envio ao Protheus a partir da QA | **Alta (teste)** | Antes de criar dado, o QA confirma para onde aponta a integração Protheus na QA (credencial ou endpoint, só metadata). Se apontar para ERP real, para e devolve ao humano. Limpar Order e Quote sintéticos ao fim. |
-| R6 | Histórico de campo só registra a partir da ativação; não há passado | Baixa | Ativar no deploy, antes da primeira execução no dia 14. |
-| R7 | Ordenação de Get Records por `Id` não oferecida no Flow Builder da versão da org | Baixa | Se não houver, usar `CreatedDate` + `Id` como desempate, ou parar e devolver ao design. Não usar ordenação não determinística. |
-| R8 | `IntegrationLog__c` é usado para algo que não é integração HTTP; pode haver limpeza automática (`Logs_Delete_Records`, não lido) | Baixa | Identificação por `IntegrationAction__c`. O builder confere se `Logs_Delete_Records` apaga esse objeto e em quanto tempo, e registra no plano. |
-| R9 | Validation rules de telefone em contas legadas fazem o update falhar (hoje falha silenciosa) | Média | Passa a gerar log. Não se corrige dado nesta demanda. |
-
-**Rollback:** reativar a versão 1 do `ScheduledFlowOpportunity`. Os valores MP e 3G da picklist podem ficar (inativos não quebram nada), mas as contas já classificadas como MP ou 3G mantêm o valor até a próxima execução da versão 1, que hoje não grava MP nem 3G. Desativar histórico de campo apaga o rastro: não fazer no rollback.
+| R1 | **Consumidores de `Account.Ranking__c` e `LastMonthPurchaseValue__c` passam a ver valor congelado** (página, relatório do Marketing Cloud, eventual leitura do Protheus por API) | **Alta (negócio)** | D2 e D3, seção 6, texto de ajuda nos campos. Avisar a Eplast antes da homologação. |
+| R2 | **A causa de fundo continua: qualquer gravação em massa em Account estoura 50 queueables e reenvia contas ao Protheus** (`AccountTriggerHelper` sem filtro de campo) | **Alta (fora do escopo)** | Esta demanda deixa de gravar em Account. **Recomendação ao responsável:** abrir demanda de Apex para filtrar o enfileiramento por campos que o Protheus usa, com `<Classe>Test` e cobertura de 85%, como o assessment prioriza. Hipótese, sem como confirmar sem tocar produção: a v1 em produção grava em Account por oportunidade e pode já falhar do mesmo jeito. |
+| R3 | Lote com várias contas de muitas oportunidades passa de 50.000 linhas ou do CPU | Média | Caso 25 mede. Acima de 70%, volta ao design (seção 4). |
+| R4 | Alguém cria roll-up de `AccountRanking__c` em Account no futuro e reabre o update em massa | Média | Aviso na descrição do objeto e do campo mestre-detalhe. |
+| R5 | A FlexiPage do repo diverge da que está na QA, e o deploy sobrescreve | Média | O builder parte da versão do repo e limita o diff ao componente novo, registrando o diff no plano. Se o gate recusar D3, o item sai. |
+| R6 | A troca de tipo do relatório `AccountRankingChanges` é recusada no deploy | Baixa | Remover e recriar com o mesmo API name (item 10). |
+| R7 | Duas listas de picklist com os mesmos 7 valores (`Account` e objeto novo) | Baixa | Descrição nos dois campos. Faixa nova exige os dois. |
+| R8 | Dado sintético na QA dispara `OpportunityFlow`, CPQ, pedido e possível envio ao Protheus | Alta (teste) | Autorizado em 15/11, nas condições do card: só "TESTE EPLAST-47", o menor volume, e lista do que saiu ao final. |
+| R9 | A primeira execução cria registro para toda conta elegível da QAS (cerca de 555) | Baixa | São registros da própria solução (regra 5). Nenhum DML do agente sobre registro existente. |
 
 ---
 
 ## 10. O que NÃO será feito nesta demanda
 
-- Período configurável (critério 7), sujeito a D3. Troca de `ThisYear__c` para `CloseDate` (P2) e classificação pela soma (P3).
-- Renomear `LastMonthPurchaseValue__c` ou mudar o rótulo (P4).
-- Procurar ou alterar o alerta do ex-parceiro (resolvido, card de 14/11).
-- Alterar `OpportunityFlow`, `AccountTriggered`, `UpdateParentAccountUsedLimit`, triggers custom ou do SBQQ, `OrderTrigger`, validation rules ou dado de conta legado.
-- Qualquer envio de marketing; qualquer passo dentro do Marketing Cloud.
-- Mapeamento de MP/3G na integração Protheus (P8) e qualquer mudança no ERP.
-- Promoção para QAS ou produção (EPLAST-48).
+- Gravar em `Account`, em massa ou por conta, na execução mensal. Fazer carga ou backfill de `Account.Ranking__c`.
+- Criar ou alterar Apex. Alterar `AccountTrigger`, `AccountTriggerHelper`, `SendAccountToProtheus` ou `TriggerUtility__mdt`, ou usar o bypass.
+- Alterar `OpportunityFlow`, `AccountTriggered`, `UpdateParentAccountUsedLimit`, triggers do SBQQ, `OrderTrigger` ou validation rules.
+- Apagar, renomear ou tirar de página, relatório ou permission set os campos `Account.Ranking__c` e `LastMonthPurchaseValue__c`. A depreciação é demanda futura.
+- Alterar o relatório `CLASSIFICACAO_CONTAS_POR_CLASSE` ou qualquer item da pasta "MARKETING CLOUD". Qualquer passo no Marketing Cloud.
+- Alterar layouts de página (`Account Layout`, `CPQ Account Layout`).
+- Período configurável (critério 7), troca para `CloseDate` ou classificação pela soma: a regra fica como hoje (card de 14/11).
+- Mudança no Protheus ou mapeamento de MP e 3G no ERP. Promoção para QAS final ou produção (EPLAST-48).
 - Alterar o agente `SFAgent2`.
 
-## 11. Incertezas que ficam
+**Incertezas que ficam:** outros relatórios, layouts e classes que leem os 2 campos de Account (só foram varridos Flows, as 2 páginas, o `Account Layout`, o permission set `Protheus` e as classes do envio ao Protheus); se o Protheus lê `Ranking__c` por API de entrada; os critérios de entrada de `AccountTriggered` e `UpdateParentAccountUsedLimit`, que deixam de importar porque não há update em Account.
 
-- Triggers do SBQQ (`AccountBefore`) e helper do `AccountTrigger` não lidos. A ausência de leitura dos 4 campos foi confirmada só nas 5 classes e nos 9 flows do recon.
-- Relatórios, painéis, layouts e páginas que usam os 4 campos: o retrieve do recon não retornou (critério 1 da análise segue parcial).
-- Agendamento ativo do job na dev (`CronTrigger` sem linha no recon). O builder confere após ativar.
-- Divergência de metadata dev × QA: não comparada. O builder retrieve o fluxo da QA antes do deploy e compara com a versão 1 da dev.
-- Fórmulas das 6 validation rules de Account e as 2 workflow field updates: não lidas.
+---
 
-Design pronto. **Gate bloqueante**: preciso do aceite do arquiteto humano para liberar o build.
+## 11. Premissas assumidas (validar na homologação)
 
-## Decisão do responsável (2026-11-16): redesenhar, só declarativo, sem gravar em massa na conta
+Regra 4 da conta. Nenhuma se enquadra no caso 3.
 
-Decidido por Leonardo Barbosa depois da rodada 3 de QA (fase 2). Vale acima do que este
-desenho diz sobre onde a classificação é gravada.
+- [x] **PA1 (P1). Base anual, só oportunidades ganhas?** Decisão: mantém a regra atual, soma das ganhas com `ThisYear__c`. Evidência: v1 e v2 do Flow na org e a diretriz do card de 14/11 ("a regra de negócio atual não muda"). Para mudar: filtro do `GetOpportunities` em nova versão do Flow.
+- [x] **PA2 (P5). O aviso de falha é operacional ou de marketing?** Decisão: operacional. Usa a ação padrão de e-mail do Flow, só para `FaultRecipient__c`, com o Id da conta e a mensagem de erro, sem dado de cliente. Evidência: é erro técnico de job, não comunicação com cliente, e a regra 2 trata de e-mail, campanha e jornada a clientes. Para mudar: deixar `FaultRecipient__c` vazio (só log) e o operador do Marketing Cloud ler `IntegrationLog__c`.
+- [x] **PA3 (P6). Conta sem compra no ano: zero ou vazio? Média vazia classifica como?** Decisão: `PurchaseValue__c` = 0. Média vazia mantém a classificação anterior, do registro ou o legado, nunca GG. Média 0 vira MP. Evidência: a soma de nada é 0 (padrão), e o critério 11 proíbe cair em GG. Para mudar: uma atribuição na nova versão do Flow.
+- [x] **PA4 (P8). O Protheus aceita MP e 3G?** Decisão: a solução não muda o que vai ao Protheus. Evidência: `AccountAdapter.toProtheus` não referencia `Ranking__c` (conferido nesta sessão), e `Account.Ranking__c` fica congelado com os valores atuais. O permission set `Protheus` não muda. Para mudar: se o ERP ler a classificação, dar a ele leitura em `AccountRanking__c` (demanda de integração).
+- [x] **PA5 (P9). Diário com dia 14 ou mensal?** Decisão: diário com checagem do dia configurável. Evidência: Flow agendado só aceita Once, Daily ou Weekly (plataforma).
+- [x] **PA6 (P10). Volume do teste?** Decisão: a população real da QAS (cerca de 555 contas elegíveis, 1.217 contas). Evidência: autorização do card de 15/11 e regra 5. Para mudar: o cliente informa outro número, e o QA repete o caso 1.
+- [x] **PA7 (P11). Destinatário da falha?** Decisão: `FaultRecipient__c` vazio até a Eplast informar. Sem destinatário, só log. Evidência: configuração já existente. Para mudar: preencher o registro `Default`, sem nova versão.
+- [x] **PA8 (P12). Onde ficam os relatórios?** Decisão: pasta `EPLAST47`, que já existe e é provisória. Evidência: é onde está o `AccountRankingChanges` hoje. Para mudar: mover os 2 relatórios de pasta, sem deploy de lógica.
+- [x] **PA9 (nova). Um registro por mês ou um registro vigente por conta?** Decisão: um vigente por conta, com histórico de campo em `Ranking__c` e `PurchaseValue__c` para o rastro mês a mês. Evidência: padrão mais simples para segmento e página (seção 1.2). Para mudar: tirar a unicidade de `AccountKey__c` e criar sempre, em nova versão do Flow.
+- [x] **PA10 (nova). Quem vê a classificação nova?** Decisão: os mesmos usuários que veem `Account.Ranking__c` hoje, pelo permission set `PS_Comercial_ClassificacaoConta`. A atribuição é passo do administrador da Eplast depois do deploy. A esteira não atribui a usuário real. Evidência: padrão de permission set do squad e a família `PS_Comercial_*` da org. Para mudar: atribuir a outro grupo.
+- [x] **PA11 (nova). Classificação anterior na primeira execução?** Decisão: o valor legado de `Account.Ranking__c`, para que o relatório de mudanças já mostre a primeira troca. Evidência: é o único valor anterior que a org tem. Para mudar: deixar vazio no `CreateRanking`.
 
-- **Achado:** a execução na QA sobre 555 contas falhou em todas com "Too many queueable jobs
-  added to the queue: 51". A `AccountTrigger` (after update) enfileira, para **cada** conta
-  atualizada, um `SendAccountToProtheus` (ou `UpdateAccountCompanyInfo` se o CNPJ mudou), que
-  envia a conta ao Protheus. Qualquer atualização em massa de `Account` estoura o limite e
-  dispara envio ao ERP sem necessidade.
-- **Restrição:** a solução tem de ser **declarativa (sem Apex novo)** e **não pode gravar em
-  `Account` em massa**. Não mexer na `AccountTrigger` nem no `TriggerUtility__mdt`.
-- **Alternativas para o arquiteto escolher, com o porquê:**
-  1. `Ranking__c` como **campo fórmula**, se os insumos da classificação já estão em campos
-     da conta (fórmula não salva o registro e não dispara trigger);
-  2. **objeto de classificação** ligado à conta (lookup ou mestre-detalhe), gravado pelo Flow
-     agendado, com a classificação exibida na página da conta (componente de registro
-     relacionado ou lista) e nos relatórios; histórico pelo próprio objeto;
-  3. outra opção declarativa que cumpra a restrição.
-- O que já existe e serve (configuração do dia de execução, relatórios) é reaproveitado.
+---
+
+Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.

@@ -1,6 +1,6 @@
 # Pré-checagem — EPLAST-47
 
-Etapa que vai rodar: `qa` · org: `sbx-eplast-qa`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
+Etapa que vai rodar: `design` · org: `sbx-eplast-dev`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
 
 ## Bloqueios
 - nenhum
@@ -9,4 +9,4 @@ Etapa que vai rodar: `qa` · org: `sbx-eplast-qa`. Gerado pela esteira antes da 
 - nenhuma
 
 ## Estado na org
-- Flow `ScheduledFlowOpportunity`: tem versão ativa nesta org — mudança entra como versão nova.
+- nada a conferir: a demanda ainda não tem componentes no repositório
