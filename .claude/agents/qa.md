@@ -148,8 +148,8 @@ e o teste é feito em duas sessões:
      o horário de início trocado para daqui a 15–30 minutos, nada mais nele.
 
    São as únicas implantações que você faz, sempre com `--target-org` explícito na sandbox de
-   QA. Não commite nenhuma delas: a esteira descarta e, antes da segunda sessão, reimplanta
-   o build original. Calcule o horário no fuso da org, não no da sessão, e confira na org
+   QA. Não commite nenhuma delas: a esteira descarta e, ao fim da sessão de conferência,
+   reimplanta o build original. Calcule o horário no fuso da org, não no da sessão, e confira na org
    (`CronTrigger.NextFireTime`) que a próxima execução ficou onde você quis.
 3. Calcule, com as mesmas contagens agregadas, o resultado esperado depois da execução.
 4. Grave `05-testes.md` abrindo com `**Veredito:** aguardando execução`, a linha
@@ -159,9 +159,12 @@ e o teste é feito em duas sessões:
 **Fase 2 — conferir** (quando `05-testes.md` existe com `aguardando execução`):
 1. Se ainda não passou do horário de `Conferir depois de`, a esteira já reimplantou a
    configuração original: arme de novo e mantenha `aguardando execução`.
-2. Se passou: confira que a automação rodou (job, log ou histórico), compare as contagens
-   de depois com o esperado e leia o histórico do campo. Confirme que a configuração voltou
-   ao valor original (a esteira a reimplanta no início da sessão); se não voltou, desfaça.
+2. Se passou: a org ainda está como você armou (decisão de 2026-11-16, achado EPLAST-28:
+   reimplantar antes da sessão recriava o agendamento e apagava o `PreviousFireTime`).
+   Confira que a automação rodou (`CronTrigger.PreviousFireTime` e `TimesTriggered` do
+   arme, `AsyncApexJob`, log ou histórico), compare as contagens de depois com o esperado e
+   leia o histórico do campo. Não desfaça o arme: a esteira reimplanta o build original
+   logo depois da sua sessão.
    Job Apex que você agendou na fase 1: aborte-o e, se o design pede agendamento na QA,
    agende-o de novo no horário do design, dizendo isso no roteiro.
 3. Reescreva `05-testes.md` com o veredito final, `aprovado` ou `reprovado`, e a evidência
