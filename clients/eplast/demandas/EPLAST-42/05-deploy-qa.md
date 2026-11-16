@@ -1,0 +1,71 @@
+# Deploy na sandbox de QA
+
+- **Org:** `sbx-eplast-qa`
+- **Deploy:** `0AfHa00000EI8rtKAD` (Succeeded)
+- **Quando:** 2026-11-16T02:13Z
+- **Commit:** `b6abb9b0`
+
+## Componentes
+- `force-app/main/default/permissionsets/PS_Marketing_Publicos.permissionset-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD.reportFolder-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/CLASSIFICACAO_CONTAS_POR_CLASSE.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/COMPRA_ULTIMOS_90_DIAS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/CONTAS_E_CONTATOS_RECORRENTES_6PU.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/Cpia_de_CONTAS_E_CONTATOS_SAZONAIS_YaM.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/Cpia_de_LEADS_GERAL_D2D.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/Cpia_de_LEADS_SP_fWa.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/Cpia_de_PROSPECTS_MG_Kk0.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/Cpia_de_RECORRENTES_ATIVOS_SP_hLD.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/Cpia_de_SAZONAIS_ES_u17.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/INATIVOS_GERAL.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_ES_SQz.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_MG_26H.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_OlB.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_PROSPECCAO_PRIORIDADE.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_RJ_24t.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_ALIMENTOS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_BEBIDAS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_DISTRIBUIDOR_VAREJO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_FARMACEUTICO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_HIGIENE_LIMPEZA.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_INDUSTRIAL.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_INDUSTRIA_DE_SOPRO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SEGMENTO_INDUSTRIA_DE_TRANSFORMACAO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SP_2yf.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/LEADS_SUL_0EK.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/POTENCIAIS_SEM_COMPRA.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PRODUTO_CONTAS_POR_PRODUTO_COMPRADO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_CO_D3n.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_ES_iu8.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_GERAL_vjU.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_MG_4jm.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_NONE_xn7.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_NOVO_lId.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_SP_kvL.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/PROSPECTS_SUL_OQ5.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/REATIVOS_GERAL_rbp.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/RECORRENTES_ATIVOS_CO_I98.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/RECORRENTES_ATIVOS_ES_cG0.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/RECORRENTES_ATIVOS_MG_dSH.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/RECORRENTES_ATIVOS_NORTE_E_NORDESTE_1nd.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/RECORRENTES_ATIVOS_RJ_yuH.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/RECORRENTES_ATIVOS_SUL_lXr.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SAZONAIS_CO_tKS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SAZONAIS_MG_Jfz.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SAZONAIS_MG_X7D.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SAZONAIS_NONE_lJc.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SAZONAIS_RJ_IxD.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SAZONAIS_SP_qII.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SAZONAIS_SUL_dZZ.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_ALIMENTOS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_BEBIDAS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_DISTRIBUIDOR_VAREJO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_FARMACEUTICO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_HIGIENE_LIMPEZA.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_INDUSTRIAL.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_INDUSTRIA_DE_SOPRO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_INDUSTRIA_DE_TRANSFORMACAO.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEGMENTO_PET_BEM_ESTAR_ANIMAL.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEM_COMPRA_181_A_365_DIAS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEM_COMPRA_91_A_180_DIAS.report-meta.xml`
+- `force-app/main/default/reports/MARKETINGCLOUD/SEM_COMPRA_MAIS_DE_365_DIAS.report-meta.xml`
