@@ -2,7 +2,7 @@ id: EPLAST-28
 client: eplast
 titulo: Alertas de oportunidade parada ou sem acompanhamento
 tipo: projeto
-status: qa
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -135,3 +135,7 @@ historico:
   para: qa
   autor: Leonardo Barbosa (via Claude)
   em: '2026-11-16T03:49:36.532642+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T04:25:04.553122+00:00'

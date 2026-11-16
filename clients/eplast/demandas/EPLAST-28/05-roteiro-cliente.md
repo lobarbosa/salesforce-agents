@@ -1,76 +1,54 @@
-# Roteiro de teste — Alerta de oportunidade parada (EPLAST-28)
+# EPLAST-28 — Roteiro de teste: alerta de oportunidade parada
 
-Foi entregue um aviso diário dentro do Salesforce (sino de notificações): quando uma oportunidade aberta fica parada, sem atividade registrada e sem mudança de etapa, durante o número de dias configurado (padrão 14), o dono da oportunidade recebe uma notificação com o nome da oportunidade, a conta, a etapa e os dias parada. O aviso não altera nenhuma oportunidade, não envia e-mail e sai uma única vez por período de parada.
+Foi entregue um aviso automático, uma vez por dia, que notifica o dono de cada oportunidade aberta que ficou parada (sem atividade e sem mudança de estágio) por mais tempo que o prazo configurado. O aviso aparece no sino do Salesforce. Nada é alterado nas oportunidades, contas ou pedidos.
 
-**Situação do teste automático:** a configuração do aviso para teste (3 dias, só atividade) foi armada na sandbox de QA, com disparo às 04:05 UTC de 16/11/2026. Até a escrita deste roteiro nada tinha sido comprovado: o resultado do disparo é conferido pelo time em uma segunda sessão (veja `05-testes.md`). Os testes abaixo, feitos à mão, não foram executados por mim. O comportamento do dia seguinte (Teste 5) e do gestor (Teste 6) só se conferem à mão.
+**Situação do teste automático:** comprovado pelo time na sandbox de QA: o aviso é gerado só para a oportunidade aberta parada no prazo (registrado no log de integração), não para as recentes nem para as fechadas, e nada nas oportunidades muda. Ficou para quem segue este roteiro: ver o aviso no sino, o dia seguinte sem repetição e o aviso ao gestor, porque o time não consegue ver a tela do sino do dono nem esperar até o dia seguinte.
 
 ## Antes de começar
-- Ambiente: sandbox de QA da Eplast (a "QAS"). Perfil: o usuário dono das oportunidades de teste, ou um usuário comum de vendas.
-- Dados de teste: na Conta "TESTE EPLAST-28" existem quatro oportunidades de teste (nomes começam por "TESTE EPLAST-28"). Se precisar recriar, crie uma conta e quatro oportunidades com esse prefixo. Registre uma tarefa (atividade) com data de 13/11 na primeira e na quarta, e outra com data de 14/11 na segunda. Deixe a terceira sem atividade. Feche a quarta como "Fechado/Perdido".
-- Os avisos só saem na hora do disparo agendado; depois dele, abra o sino de notificações no topo do Salesforce.
+- Ambiente: sandbox de QA da Eplast (a "QAS").
+- Perfil: o dono das oportunidades de teste (as de nome "TESTE EPLAST-28") ou um administrador.
+- Dado de teste: existem 4 oportunidades "TESTE EPLAST-28". Para criar outra: crie uma oportunidade aberta, registre uma atividade (tarefa ou evento) com data de 3 dias atrás e peça ao time técnico para ajustar a data de referência, pois a tela não permite datas de criação no passado. O prazo hoje está em 14 dias na versão final, e em 3 dias durante o teste.
 
-## Teste 1 — Oportunidade parada alerta o dono
-1. Entre como dono das oportunidades de teste.
-2. Clique no sino de notificações.
-3. Procure o aviso "Oportunidade parada há 3 dias".
-4. Clique no aviso.
+## Teste 1 — Oportunidade parada recebe o aviso
+1. Entre como o dono da oportunidade "TESTE EPLAST-28" com última atividade há 3 dias.
+2. Clique no sino de notificações no topo da tela.
+3. Procure o aviso "Oportunidade parada".
 
-**Resultado esperado:** aviso mostrando o nome da oportunidade parada (a de atividade em 13/11), a conta, a etapa "Qualificado" e "3 dias"; o clique abre essa oportunidade.
+**Resultado esperado:** um aviso com nome da oportunidade, nome da conta, estágio, quantos dias parada e link para abrir a oportunidade.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Oportunidade com atividade recente não alerta
-1. No sino de notificações, procure aviso para a oportunidade com atividade em 14/11.
+## Teste 2 — Oportunidade recente ou fechada não gera aviso
+1. No sino, confira as oportunidades "TESTE EPLAST-28" com atividade há 1 ou 2 dias e a fechada.
 
-**Resultado esperado:** nenhum aviso para ela.
+**Resultado esperado:** nenhum aviso para elas.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Oportunidade sem atividade
-1. No sino, procure aviso para a oportunidade criada sem atividade.
+## Teste 3 — Sem repetição no dia seguinte
+1. No dia seguinte ao aviso, abra o sino de novo.
 
-**Resultado esperado:** nenhum aviso enquanto ela tiver menos dias que o prazo (3). Com prazo vencido, o aviso usa a data de criação.
+**Resultado esperado:** o aviso da mesma oportunidade parada não aparece de novo se nada mudou.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Oportunidade fechada nunca alerta
-1. No sino, procure aviso para a oportunidade "Fechado/Perdido".
+## Teste 4 — A oportunidade não é alterada
+1. Abra a oportunidade que recebeu o aviso e olhe o histórico e a data de última modificação.
 
-**Resultado esperado:** nenhum aviso.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 5 — Sem repetição no dia seguinte
-1. No dia seguinte ao Teste 1, abra o sino.
-
-**Resultado esperado:** nenhum segundo aviso para a mesma oportunidade parada.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 6 — Gestor só recebe se ligado
-1. Com a opção de avisar o gestor desligada (padrão), confira que o gestor do dono não recebe aviso.
-2. Peça ao time para ligar a opção "Notificar gestor" e repita no disparo seguinte.
-
-**Resultado esperado:** desligada, só o dono recebe; ligada, o gestor direto também.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 7 — Nada é alterado nas oportunidades
-1. Abra a oportunidade parada e veja "Última modificação" no histórico.
-
-**Resultado esperado:** a data não mudou por causa do aviso; nenhuma tarefa nova apareceu.
+**Resultado esperado:** nenhuma alteração causada pelo aviso (sem tarefa nova, sem campo mudado).
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- "Parada" significa sem atividade registrada e sem mudança de etapa há N dias; qualquer atividade conta, inclusive tarefa criada automaticamente.
+- Oportunidade parada = sem atividade e sem mudança de estágio por N dias; vale a mais recente das duas.
+- Tarefas criadas automaticamente também contam como acompanhamento.
 - Prazo único de 14 dias, ajustável sem desenvolvimento.
-- O aviso é só interno (sino), uma vez por período de parada, ao dono; gestor desligado por padrão.
-- O aviso só informa: não cria tarefa nem altera a oportunidade.
-- Fechadas nunca alertam; todos os tipos de registro de oportunidade entram.
-- Cada aviso enviado fica registrado em um log técnico, sem nome nem valor.
-- Dono inativo não recebe aviso; fica registrado no log, sem reatribuição.
-- O aviso não substitui a pergunta ao assistente de acompanhamento de clientes; os dois se complementam.
+- Aviso só dentro do Salesforce (sino), uma vez por episódio, avaliado uma vez por dia; nada de e-mail.
+- Só o dono é avisado; o aviso ao gestor vem desligado.
+- Toda oportunidade aberta entra, de qualquer tipo de registro.
+- O aviso só avisa: não cria tarefa nem altera campos.
+- O aviso mostra nome da oportunidade, conta, estágio, dias e link, sem dados de contato.
+- O alerta complementa o assistente de acompanhamento de clientes e não o substitui.
 
 ## O que não dá para conferir pela tela
-Volume (dezenas de oportunidades paradas de uma vez), limites da plataforma, o registro técnico dos avisos enviados e a ausência de e-mail ficam com o time técnico; a evidência estará em `05-testes.md` (rodada 3, fase 2).
+Execução agendada, carga sobre toda a base e ausência de falhas: evidência em `demandas/EPLAST-28/05-testes.md`.
