@@ -2,7 +2,7 @@ id: EPLAST-33
 client: eplast
 titulo: Cross-sell, aumento de volume e recuperação de clientes
 tipo: projeto
-status: build
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -109,3 +109,7 @@ historico:
     todos os testes de CommercialSignalBatchTest com System.QueryException "No such
     column ''SignalKey__c'' on entity ''CommercialSignal__c''". Na dev os testes passam.
     Refazer o build investigando por que o campo não existe para o teste na QA.'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T00:02:44.785938+00:00'
