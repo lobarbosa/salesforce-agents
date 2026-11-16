@@ -2,7 +2,7 @@ id: EPLAST-44
 client: eplast
 titulo: Jornadas automáticas de comunicação
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -45,3 +45,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-16T00:27:14.241847+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T02:19:06.563246+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T02:23:18.427755+00:00'
