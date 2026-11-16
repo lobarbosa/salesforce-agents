@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EI7CfKAL` (Succeeded)
-- **Quando:** 2026-11-16T00:34Z
-- **Commit:** `01c0a31b`
+- **Deploy:** `0AfHa00000EI8jpKAD` (Succeeded)
+- **Quando:** 2026-11-16T02:02Z
+- **Commit:** `1fafee98`
 
 ## Componentes
 - `force-app/main/default/bots/SFAgent2/SFAgent2.bot-meta.xml`
