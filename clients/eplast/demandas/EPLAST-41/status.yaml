@@ -2,7 +2,7 @@ id: EPLAST-41
 client: eplast
 titulo: Apoio à criação de textos comerciais e de relacionamento
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -57,3 +57,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-16T03:47:52.362954+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T05:17:16.333523+00:00'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T05:22:46.761065+00:00'
