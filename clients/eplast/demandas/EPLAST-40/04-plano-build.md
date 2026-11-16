@@ -49,3 +49,9 @@ Plano de testes do design (seção 9): conversão do Lead (RN3, PD5/PD6), promo�
 
 ## Commit
 Branch `feature/EPLAST-40`; commit `EPLAST-40: construir ciclo de pos-vendas`. Sem PR nesta etapa.
+
+## Correções da rodada 1
+Lida `05-testes-rodada-1.md` (reprovado). Nenhuma alteração de metadata nesta rodada: as duas falhas não são corrigíveis no build, e os casos aprovados (T1, T2, T4 a T10, T12) não foram tocados.
+
+- **FALHA 1 (conversão de Lead barrada pela validation rule `PriceBook`):** não corrigível aqui. A regra é pré-existente e o design (seção 10 e PD5) deixa explícito que revisar as validation rules que barram a conversão está fora do escopo. Alterá-la mudaria o comportamento de Opportunity da Eplast inteira, o que não está na solução aprovada. Nenhum componente da EPLAST-40 participa da falha: a conversão falha antes de qualquer Flow novo. Caminho para provar o critério: converter com usuário cujo RT padrão seja `Industria` (a regra só barra RT diferente de `Industria`), conforme o plano de testes do design (item 2, conversão com RT `Industria`), como ajuste de fixture e de execução do QA, não de build. Se a Eplast quiser a conversão no RT Venda, é decisão dela sobre a regra (PD5), registrada como premissa a confirmar na homologação.
+- **FALHA 2 (fila `PosVendas` sem membros):** não corrigível aqui. É a PD4 do design: a fila nasce sem membros e a Eplast define quem atende, sem username no metadata (LGPD, guardrail 2). Adicionar membro exigiria escolher pessoas, o que é decisão do cliente. O Case já cai na fila e fica visível na list view `PosVendas_Fila`. Segue como pendência de homologação do cliente.
