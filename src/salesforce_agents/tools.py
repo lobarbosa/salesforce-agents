@@ -21,12 +21,14 @@ Três famílias de ferramentas:
 from __future__ import annotations
 
 import base64
+import os
 import uuid
 from pathlib import Path
 from urllib.parse import quote
 
 from claude_agent_sdk import create_sdk_mcp_server, tool
 
+from . import evidencias
 from .guarda import CliAusenteError, recusa_de_alias, recusa_de_escrita, sf, url_de_login
 
 
@@ -296,6 +298,42 @@ async def _achar_campo(page, rotulo: str):
     return None
 
 
+async def _marcar(page, item, texto: str) -> bool:
+    """Marca rádio ou caixa de seleção e devolve se ficou marcado.
+
+    Três tentativas, da mais direta à que imita a pessoa. Achado EPLAST-30
+    (2026-11-16, rodada 4): no Screen Flow do Lightning, marcar o `<input>` escondido
+    com `force` falhou com "Clicking the checkbox did not change its state".
+    """
+    tentativas = (
+        lambda: item.check(timeout=5_000, force=True),
+        lambda: item.evaluate("e => e.click()"),
+        lambda: _clicar_rotulo(page, item, texto),
+    )
+    for tentar in tentativas:
+        try:
+            await tentar()
+        except Exception:  # noqa: BLE001 — a próxima tentativa decide
+            pass
+        try:
+            if await item.is_checked():
+                return True
+        except Exception:  # noqa: BLE001
+            return False
+    return False
+
+
+async def _clicar_rotulo(page, item, texto: str) -> None:
+    """Clica no rótulo desenhado da opção: o `label[for]` do input ou, sem ele, o texto ao lado."""
+    ident = await item.get_attribute("id")
+    if ident:
+        rotulo = page.locator(f'label[for="{ident}"]')
+        if await rotulo.count():
+            await rotulo.first.click(timeout=5_000)
+            return
+    await item.locator("xpath=..").get_by_text(texto, exact=False).first.click(timeout=5_000)
+
+
 @tool(
     "qa_browser_click",
     "Clica no elemento com este texto visível, na sessão aberta por qa_browser_open: opção "
@@ -317,8 +355,7 @@ async def qa_browser_click(args: dict) -> dict:
         elif papel in ("radio", "checkbox"):
             # No Lightning o <input> fica escondido atrás do rótulo desenhado: o clique
             # comum é interceptado. `force` marca o próprio input, e o estado é conferido.
-            await item.check(timeout=10_000, force=True)
-            marcado = await item.is_checked()
+            marcado = await _marcar(page, item, args["texto"])
             aviso = f"[{papel} {args['texto']!r}: {'marcado' if marcado else 'NÃO ficou marcado'}]\n\n"
         else:
             await item.click(timeout=10_000)
@@ -366,12 +403,24 @@ async def qa_browser_fill(args: dict) -> dict:
     return _text_result(f"[OK] {args['rotulo']!r} preenchido com {args['valor']!r}.")
 
 
+def _pasta_da_demanda() -> Path | None:
+    """Pasta da demanda do job (CLIENT e DEMAND_ID vêm do run-demand.yml), se existir."""
+    cliente, demanda = os.environ.get("CLIENT", ""), os.environ.get("DEMAND_ID", "")
+    if not cliente or not demanda:
+        return None
+    pasta = Path("clients") / cliente / "demandas" / demanda
+    return pasta if pasta.is_dir() else None
+
+
 @tool(
     "qa_browser_screenshot",
-    "Tira um screenshot da sessão aberta por qa_browser_open — evidência pra 05-testes.md. "
-    "Nunca screenshote uma tela com dado real de cliente (guardrail #2 do CLAUDE.md): use só "
-    "registros de teste que você mesmo criou, nunca abra um Contact/Account real pra olhar.",
-    {"session_id": str},
+    "Tira um screenshot da sessão aberta por qa_browser_open e o guarda como evidência da "
+    "demanda (pasta evidencias/): as capturas vão para o PDF 'Evidências de teste' anexado ao "
+    "card. 'legenda' diz o que a tela prova (ex.: 'CA-03: rascunho gerado para a conta de "
+    "teste'). Cite no 05-testes.md o arquivo devolvido. Nunca screenshote uma tela com dado "
+    "real de cliente (guardrail #2 do CLAUDE.md): use só registros de teste que você mesmo "
+    "criou, nunca abra um Contact/Account real pra olhar.",
+    {"session_id": str, "legenda": str},
 )
 async def qa_browser_screenshot(args: dict) -> dict:
     sessao = _SESSOES.get(args["session_id"])
@@ -382,9 +431,21 @@ async def qa_browser_screenshot(args: dict) -> dict:
         png = await page.screenshot(type="png")
     except Exception as exc:  # noqa: BLE001
         return _text_result(f"Não consegui capturar o screenshot: {exc}")
+
+    # A evidência guardada é JPEG: cabe no sync e no PDF. O agente continua vendo o PNG.
+    aviso = "Captura não guardada: sem pasta de demanda neste processo."
+    pasta = _pasta_da_demanda()
+    if pasta is not None:
+        try:
+            jpeg = await page.screenshot(type="jpeg", quality=60)
+            caminho = evidencias.salvar_captura(pasta, jpeg, str(args.get("legenda") or "tela"))
+            aviso = f"[OK] evidência guardada em demandas/{pasta.name}/{evidencias.PASTA}/{caminho.name}"
+        except Exception as exc:  # noqa: BLE001 — guardar a evidência nunca derruba o teste
+            aviso = f"Captura não guardada: {exc}"
     return {
         "content": [
-            {"type": "image", "data": base64.b64encode(png).decode("ascii"), "mimeType": "image/png"}
+            {"type": "text", "text": aviso},
+            {"type": "image", "data": base64.b64encode(png).decode("ascii"), "mimeType": "image/png"},
         ]
     }
 
