@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>68.0</apiVersion>
-    <description>Alerta diario ao dono quando uma oportunidade aberta completa N dias sem atividade nem mudanca de estagio. Nao grava em objetos de negocio; so registra em IntegrationLog__c dono inativo e falha de envio. Parametros em AlertaOportunidadeParadaSetting__mdt. EPLAST-28</description>
+    <description>Alerta diario ao dono quando uma oportunidade aberta completa N dias sem atividade nem mudanca de estagio. Nao grava em objetos de negocio; so registra em IntegrationLog__c dono inativo, falha de envio e, como rastro de execucao, cada alerta enviado (ALERTA_ENVIADO). Parametros em AlertaOportunidadeParadaSetting__mdt. EPLAST-28</description>
     <environments>Default</environments>
     <interviewLabel>Opportunity_Scheduled_AlertaParada {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity_Scheduled_AlertaParada</label>
@@ -61,6 +61,11 @@
         <name>MensagemFalha</name>
         <dataType>String</dataType>
         <expression>{!$Record.Id} &amp; " | " &amp; {!$Flow.FaultMessage}</expression>
+    </formulas>
+    <formulas>
+        <name>MensagemRastro</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Id} &amp; " | DiasParado=" &amp; TEXT({!DiasParado})</expression>
     </formulas>
     <decisions>
         <name>Chave_Geral</name>
@@ -167,6 +172,7 @@
         <locationY>900</locationY>
         <actionName>customNotificationAction</actionName>
         <actionType>customNotificationAction</actionType>
+        <connector><targetReference>Log_Alerta_Enviado</targetReference></connector>
         <faultConnector><targetReference>Log_Falha_Notificacao</targetReference></faultConnector>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
         <inputParameters>
@@ -190,6 +196,18 @@
             <value><elementReference>$Record.Id</elementReference></value>
         </inputParameters>
     </actionCalls>
+    <recordCreates>
+        <description>Rastro de execucao: um registro por alerta enviado, so com o Id da oportunidade e os dias parada (EPLAST-28, correcao da rodada 2)</description>
+        <name>Log_Alerta_Enviado</name>
+        <label>Log alerta enviado</label>
+        <locationX>176</locationX>
+        <locationY>1000</locationY>
+        <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
+        <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
+        <inputAssignments><field>RequestBody__c</field><value><elementReference>MensagemRastro</elementReference></value></inputAssignments>
+        <inputAssignments><field>ResponseStatus__c</field><value><stringValue>ALERTA_ENVIADO</stringValue></value></inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
     <recordCreates>
         <name>Log_Dono_Inativo</name>
         <label>Log dono inativo</label>
@@ -264,7 +282,7 @@
         </schedule>
         <triggerType>Scheduled</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>Destinatarios</name>
         <dataType>String</dataType>

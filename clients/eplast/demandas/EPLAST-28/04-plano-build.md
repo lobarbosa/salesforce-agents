@@ -39,3 +39,15 @@ Start em Opportunity com `IsClosed = false`, diário. Lê o CMDT `Default` e o t
 
 ## Premissas assumidas
 Seguem as P1 a P18 do `03-design.md` seção 8; nenhuma nova no build.
+
+## Correções da rodada 2
+Fonte: `05-testes-rodada-2.md` (a rodada 1 tinha a mesma falha de falta de rastro).
+
+- **FALHA 1 (sem prova de que o aviso foi gerado; flow rodou, sino vazio, sem log):** corrigida na parte que cabe ao build. O Flow não deixava rastro de execução bem-sucedida. A nova versão grava um `IntegrationLog__c` por alerta enviado (`IntegrationAction__c` = `Opportunity_Scheduled_AlertaParada`, `ResponseStatus__c` = `ALERTA_ENVIADO`, `RequestBody__c` = Id da oportunidade e `DiasParado`, sem nome nem valor), logo depois da ação de notificação com sucesso. Com isso a QA prova CA-02 e CA-07 consultando o log, sem depender do sino. Fault continua em `FALHA_NOTIFICACAO`. Ausência de log para CA-03 e CA-04 só prova algo se houver `ALERTA_ENVIADO` para a Opp B no mesmo disparo. O Flow não grava rastro de oportunidade avaliada e não alertada (seriam milhares de linhas por dia); isso não é corrigível aqui sem mudar o design.
+- Causa raiz do sino vazio: **não confirmada.** Dev tem 0 oportunidades abertas e o Flow não pôde ser exercitado aqui; não afirmo qual das hipóteses da QA (a, b ou c) é a real. O rastro novo as distingue: `ALERTA_ENVIADO` presente e sino vazio indica problema de entrega ou leitura da notificação; nenhum log indica Opp não elegível.
+- **Premissa assumida P19 (validar na homologação):** registrar também o alerta enviado em `IntegrationLog__c`. Evidência: o objeto já é log de automação agendada (P15); pedido da QA nas duas rodadas. Volume: no máximo um registro por alerta enviado (a carga inicial, P16, gera um por oportunidade parada). Para desfazer, remover o elemento `Log_Alerta_Enviado` e religar o conector da notificação ao fim.
+- Revisão estática: `recordUpdates` 0, `recordDeletes` 0, `recordCreates` só em `IntegrationLog__c` (3).
+
+## Versões e ativação
+- Flow `Opportunity_Scheduled_AlertaParada`: na dev, versão 1 Active (em uso, intocada). A correção foi implantada como versão **2 em Draft** (deploy `0AfHa00000EI9kjKAD`, Succeeded), commit desta branch.
+- **Ativação não feita aqui.** Passo separado: ativar a versão com rastro na dev e, para a QA, depois do deploy da esteira, antes de armar o teste. Sem ativar, o Flow que roda continua sem o rastro.
