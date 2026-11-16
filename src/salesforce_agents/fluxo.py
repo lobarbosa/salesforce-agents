@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import ambientes, bloqueio, demands, gates, roteiro, veredito, verificacao
+from . import ambientes, bloqueio, demands, evidencias, gates, roteiro, veredito, verificacao
 
 # Etapas de execução que acionam uma sessão de agente. As `aguardando_*` são
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
@@ -77,6 +77,14 @@ GATE_QUANDO_O_QA_NAO_FECHA = "aguardando_gate_design"
 
 def _rodadas_reprovadas(d: demands.Demand) -> int:
     return len(list(d.path.glob("05-testes-rodada-*.md")))
+
+
+def _aguardando_execucao(d: demands.Demand) -> bool:
+    """A demanda está na conferência do QA em duas fases (roteiro armado em disco)."""
+    arquivo = d.path / ROTEIRO_DE_TESTE
+    if not arquivo.exists():
+        return False
+    return veredito.ler(arquivo.read_text(encoding="utf-8"), ambientes.org_alias(d.client, "qa")).pendente
 
 
 def _arquivar_roteiro_reprovado(d: demands.Demand) -> None:
@@ -281,6 +289,10 @@ def rodar(
         # sem escrever outro.
         if d.status == "qa":
             roteiro.descartar(d.path)
+            # As capturas de tela são da rodada (evidencias.py). Na conferência
+            # do QA em duas fases ficam: são a evidência do que foi armado.
+            if not _aguardando_execucao(d):
+                evidencias.descartar(d.path)
 
         rodadas_antes = set(d.path.glob("0[45]-*-rodada-*.md"))
         # Na reverificação, a primeira sessão é só do verificador; se ele

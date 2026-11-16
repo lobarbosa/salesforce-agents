@@ -203,12 +203,75 @@ function corpo(doc: Doc, lista: Bloco[]) {
   }
 }
 
-export function gerarPdfRoteiro(markdown: string, cab: CabecalhoDoRoteiro, logo: Buffer | null): Promise<Buffer> {
+/** Captura de tela que entra no fim do documento (evidências de teste). */
+export interface ImagemDoDocumento {
+  legenda: string;
+  dados: Buffer;
+}
+
+/** O que muda entre o roteiro do cliente e as evidências de teste (lib/evidencias-anexo.ts). */
+export interface TipoDeDocumento {
+  /** Rótulo no canto do cabeçalho e no título do PDF. */
+  rotulo: string;
+  /** Depois do cliente e do código, na linha abaixo do título. */
+  contexto: string;
+  /** Texto do rodapé, entre o código e a data. */
+  rodape: string;
+  /** Mensagem quando não há conteúdo. */
+  vazio: string;
+  imagens?: ImagemDoDocumento[];
+}
+
+const ROTEIRO: TipoDeDocumento = {
+  rotulo: "Roteiro de teste",
+  contexto: "homologação",
+  rodape: "roteiro de teste para homologação",
+  vazio: "Este roteiro está vazio.",
+};
+
+/** Capturas de tela, uma por bloco: legenda e imagem ajustada à largura da página. */
+function capturas(doc: Doc, imagens: ImagemDoDocumento[]) {
+  const ALTURA_MAX = 330;
+  doc.addPage();
+  doc.font("Helvetica-Bold").fontSize(12.5).fillColor(COR.texto);
+  doc.rect(M, doc.y + 1, 3, 12.5).fill(COR.azul);
+  doc.fillColor(COR.texto).text("Capturas de tela", M + 10, doc.y, { width: LARG - 10 });
+  doc.x = M;
+  doc.y += 8;
+  imagens.forEach((img, i) => {
+    garantir(doc, ALTURA_MAX + 34);
+    doc.font("Helvetica-Bold").fontSize(9.5).fillColor(COR.suave);
+    doc.text(textoParaPdf(`${i + 1}. ${img.legenda || "Tela"}`), M, doc.y, { width: LARG, lineGap: 2 });
+    doc.y += 4;
+    const y = doc.y;
+    try {
+      // pdfkit não devolve a altura desenhada: mede antes para avançar o cursor.
+      const medida = (doc as unknown as { openImage: (b: Buffer) => { width: number; height: number } }).openImage(img.dados);
+      const escala = Math.min(LARG / medida.width, ALTURA_MAX / medida.height, 1);
+      const largura = medida.width * escala;
+      const altura = medida.height * escala;
+      doc.image(img.dados, M, y, { width: largura, height: altura });
+      doc.rect(M, y, largura, altura).lineWidth(0.5).strokeColor(COR.borda).stroke();
+      doc.y = y + altura + 16;
+    } catch {
+      doc.font("Helvetica-Oblique").fontSize(9).fillColor(COR.suave).text("(imagem ilegível)", M, y);
+      doc.y += 12;
+    }
+    doc.x = M;
+  });
+}
+
+export function gerarPdfRoteiro(
+  markdown: string,
+  cab: CabecalhoDoRoteiro,
+  logo: Buffer | null,
+  tipo: TipoDeDocumento = ROTEIRO
+): Promise<Buffer> {
   const doc = new PDFDocument({
     size: "A4",
     margins: { top: M, left: M, right: M, bottom: M + RODAPE },
     bufferPages: true,
-    info: { Title: textoParaPdf(`Roteiro de teste — ${cab.codigo} — ${cab.clienteNome}`), Author: cab.emissor },
+    info: { Title: textoParaPdf(`${tipo.rotulo} — ${cab.codigo} — ${cab.clienteNome}`), Author: cab.emissor },
   });
   const partes: Buffer[] = [];
   doc.on("data", (b: Buffer) => partes.push(b));
@@ -225,14 +288,14 @@ export function gerarPdfRoteiro(markdown: string, cab: CabecalhoDoRoteiro, logo:
     }
   }
   if (!comLogo) doc.font("Helvetica-Bold").fontSize(15).fillColor(COR.azul).text(cab.emissor, M, M, { lineBreak: false });
-  doc.font("Helvetica").fontSize(9).fillColor(COR.suave).text("Roteiro de teste", M, M + 8, { width: LARG, align: "right", lineBreak: false });
+  doc.font("Helvetica").fontSize(9).fillColor(COR.suave).text(tipo.rotulo, M, M + 8, { width: LARG, align: "right", lineBreak: false });
   doc.rect(M, M + 34, LARG / 2, 3).fill(COR.azul);
   doc.rect(M + LARG / 2, M + 34, LARG / 2, 3).fill(COR.laranja);
 
   doc.font("Helvetica-Bold").fontSize(17).fillColor(COR.texto);
   doc.text(textoParaPdf(cab.titulo), M, M + 50, { width: LARG, lineGap: 2 });
   doc.font("Helvetica").fontSize(10).fillColor(COR.suave);
-  doc.text(textoParaPdf(`${cab.clienteNome}  ·  ${cab.codigo}  ·  homologação`), M, doc.y + 4, { width: LARG });
+  doc.text(textoParaPdf(`${cab.clienteNome}  ·  ${cab.codigo}  ·  ${tipo.contexto}`), M, doc.y + 4, { width: LARG });
   doc.x = M;
   doc.y += 14;
 
@@ -240,10 +303,11 @@ export function gerarPdfRoteiro(markdown: string, cab: CabecalhoDoRoteiro, logo:
   const lista = blocos(markdown);
   if (lista[0]?.tipo === "titulo" && lista[0].nivel === 1) lista.shift();
   if (lista.length === 0) {
-    doc.font("Helvetica").fontSize(11).fillColor(COR.suave).text("Este roteiro está vazio.", M, doc.y);
+    doc.font("Helvetica").fontSize(11).fillColor(COR.suave).text(tipo.vazio, M, doc.y);
   } else {
     corpo(doc, lista);
   }
+  if (tipo.imagens?.length) capturas(doc, tipo.imagens);
 
   // Rodapé em todas as páginas (só depois de saber quantas são).
   const paginas = doc.bufferedPageRange();
@@ -252,7 +316,7 @@ export function gerarPdfRoteiro(markdown: string, cab: CabecalhoDoRoteiro, logo:
     doc.page.margins.bottom = 0; // senão o texto do rodapé, rente à margem, abre página nova
     const y = PAG_A - M - 8;
     doc.font("Helvetica").fontSize(8).fillColor(COR.suave);
-    doc.text(textoParaPdf(`${cab.emissor}  ·  ${cab.codigo}  ·  roteiro de teste para homologação  ·  gerado em ${dataBr(cab.geradoEm)}`), M, y, {
+    doc.text(textoParaPdf(`${cab.emissor}  ·  ${cab.codigo}  ·  ${tipo.rodape}  ·  gerado em ${dataBr(cab.geradoEm)}`), M, y, {
       width: LARG - 60,
       lineBreak: false,
     });

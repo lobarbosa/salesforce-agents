@@ -561,3 +561,12 @@ empiricamente. O que o hook **não** cobre são as ferramentas `sf_*` do MCP, qu
 passam pela ferramenta Bash: quem guarda aquele caminho é `guarda.py` (guardrail #1).
 Não "resolva" esse aviso afrouxando permissão; ele não protege nada
 que já não esteja protegido por hook ou pela lista `deny`.
+
+Evidências de teste no card (2026-11-16, decisão do responsável): a evidência do QA ficava só
+no git (`05-testes.md`), e a captura de tela era mostrada ao agente e descartada. Agora
+`qa_browser_screenshot` guarda a captura (JPEG, com legenda) em
+`demandas/<ID>/evidencias/`, o sync manda o roteiro executado e as capturas
+(`evidencias.py`, teto de 12 imagens e 2,5 MB), e o Squad OS publica o anexo "Evidências de
+teste" em PDF (`lib/evidencias-anexo.ts`), no desenho do roteiro do cliente e com a mesma
+regra de quem vê. A pasta é esvaziada a cada rodada de QA, menos na conferência do QA em duas
+fases. `demandas.evidencias_hash` evita regerar o PDF quando nada mudou.

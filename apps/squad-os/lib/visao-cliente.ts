@@ -58,6 +58,20 @@ export function ehAnexoDoRoteiro(anexo: { caminho: string; demandaId: string }):
   return anexo.caminho === caminhoDoRoteiro(anexo.demandaId);
 }
 
+// Evidências de teste (lib/evidencias-anexo.ts, 2026-11-16): o roteiro que o QA
+// executou e as capturas de tela, no mesmo desenho e com a mesma regra de
+// quem vê — o time sempre, o cliente da homologação em diante.
+export const caminhoDasEvidencias = (demandaId: string) => `${demandaId}/evidencias-de-teste.pdf`;
+
+export function ehAnexoDasEvidencias(anexo: { caminho: string; demandaId: string }): boolean {
+  return anexo.caminho === caminhoDasEvidencias(anexo.demandaId);
+}
+
+/** Anexo publicado pela esteira de QA (roteiro ou evidências), e não por gente. */
+export function ehAnexoDoQa(anexo: { caminho: string; demandaId: string }): boolean {
+  return ehAnexoDoRoteiro(anexo) || ehAnexoDasEvidencias(anexo);
+}
+
 /**
  * Demanda vista pelo cliente: artefato e perguntas só no gate que é dele
  * (a mesma regra de podeAprovarGate), sem histórico de esteira, sem link de
@@ -79,7 +93,7 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     // O texto do roteiro é insumo do PDF, não tela: o cliente recebe o anexo.
     roteiroCliente: "",
     // `?.`: nem toda consulta que passa por aqui carrega os anexos.
-    anexos: clienteVeRoteiro(d.status) ? d.anexos : d.anexos?.filter((a) => !ehAnexoDoRoteiro(a)),
+    anexos: clienteVeRoteiro(d.status) ? d.anexos : d.anexos?.filter((a) => !ehAnexoDoQa(a)),
     historico: [],
     ultimoRunUrl: "",
     ultimoResultado: "",
