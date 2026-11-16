@@ -620,6 +620,33 @@ jobs:
       # Um comentário por gate, no PR onde a demanda vive. Não substitui o
       # quadro (é lá que a pessoa aprova), mas é o aviso que chega a quem já
       # acompanha o PR.
+      # QA em duas fases: a conferência entra na fila com `liberar_em`, e nada
+      # processa a fila nesse horário (o schedule do varrer-demandas.yml é
+      # atrasado pelo GitHub). Dispara fila-adiada.yml, que espera e processa.
+      - name: Agendar o processamento da fila para a conferência do QA
+        if: always() && steps.fluxo.outputs.motivo == 'aguardar'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PYTHONPATH: src
+        run: |
+          QUANDO=$(python3 - <<'PY'
+          import datetime, os, pathlib
+          from salesforce_agents import veredito
+          p = pathlib.Path("clients", os.environ["CLIENT"], "demandas", os.environ["DEMAND_ID"], "05-testes.md")
+          q = veredito.conferir_depois_de(p.read_text(encoding="utf-8")) if p.exists() else ""
+          if q:
+              t = datetime.datetime.fromisoformat(q.replace("Z", "+00:00")) + datetime.timedelta(minutes=5)
+              print(t.strftime("%Y-%m-%dT%H:%M:%SZ"))
+          PY
+          )
+          if [ -z "$QUANDO" ]; then
+            echo "::warning::Sem 'Conferir depois de' em 05-testes.md; a conferência depende da varredura."
+            exit 0
+          fi
+          gh workflow run fila-adiada.yml --ref main -f liberar_em="$QUANDO"
+          echo "Fila agendada para $QUANDO."
+
       - name: Avisar no PR que tem gate esperando
         if: steps.fluxo.outputs.motivo == 'gate'
         env:

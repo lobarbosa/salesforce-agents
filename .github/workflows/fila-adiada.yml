@@ -1,0 +1,45 @@
+name: Processar a fila no horário (QA em duas fases)
+
+# A conferência do QA em duas fases entra na fila com `liberar_em` (Conferir
+# depois de + 5 min), e a fila só anda quando alguém a processa: o fim de um
+# run-demand, uma aprovação no app ou a varredura agendada. Achado real
+# (2026-11-16, EPLAST-28/29/47): o agendamento de varrer-demandas.yml, que
+# devia rodar de 15 em 15 minutos, rodou de 3 em 3 a 7 em 7 horas (o GitHub
+# atrasa e descarta schedule frequente), e a conferência ficava parada até
+# alguém disparar à mão. Este workflow é chamado pelo run-demand.yml quando a
+# sessão termina em `aguardar`: espera até o horário e processa a fila.
+
+on:
+  workflow_dispatch:
+    inputs:
+      liberar_em:
+        description: "Instante ISO 8601 em UTC (ex.: 2026-11-16T03:21:00Z) a partir do qual a fila deve ser processada"
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  esperar-e-processar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - name: Esperar o horário e processar a fila do Squad OS
+        env:
+          LIBERAR_EM: ${{ inputs.liberar_em }}
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::warning::SQUAD_OS_SYNC_URL/SQUAD_OS_SYNC_TOKEN não configurados — nada a fazer."
+            exit 0
+          fi
+          ALVO=$(date -u -d "$LIBERAR_EM" +%s) || { echo "::error::liberar_em inválido: $LIBERAR_EM"; exit 1; }
+          ESPERA=$(( ALVO - $(date -u +%s) ))
+          # Teto de 60 minutos: o QA arma no máximo 10 minutos à frente (qa.md).
+          if [ "$ESPERA" -gt 3600 ]; then ESPERA=3600; fi
+          if [ "$ESPERA" -gt 0 ]; then
+            echo "Esperando $ESPERA s até $LIBERAR_EM."
+            sleep "$ESPERA"
+          fi
+          curl -fsS -X POST "${SYNC_URL%/demanda}/fila" -H "Authorization: Bearer $SYNC_TOKEN"
