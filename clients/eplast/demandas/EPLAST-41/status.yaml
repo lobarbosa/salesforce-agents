@@ -2,7 +2,7 @@ id: EPLAST-41
 client: eplast
 titulo: Apoio à criação de textos comerciais e de relacionamento
 tipo: projeto
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -65,3 +65,9 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-16T05:22:46.761065+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-11-16T09:30:59.371101+00:00'
+  motivo: 'reprovação da rodada 3 foi limite da ferramenta de navegador do QA (corrigida
+    no PR #214); a correção da tela já funcionou e o build não muda.'
