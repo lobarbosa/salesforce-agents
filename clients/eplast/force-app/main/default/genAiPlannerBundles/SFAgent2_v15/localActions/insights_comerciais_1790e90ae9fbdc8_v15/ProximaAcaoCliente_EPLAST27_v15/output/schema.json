@@ -11,7 +11,7 @@
     },
     "actionCode" : {
       "title" : "Codigo da acao",
-      "description" : "Codigo da acao (A1, A2, A3, NONE, NODATA, NOT_OWNER)",
+      "description" : "Codigo da acao (A1, A2, A3, NONE, NODATA, NOT_OWNER, NOT_FOUND, AMBIGUOUS)",
       "lightning:type" : "lightning__textType",
       "lightning:isPII" : false,
       "copilotAction:isDisplayable" : false,

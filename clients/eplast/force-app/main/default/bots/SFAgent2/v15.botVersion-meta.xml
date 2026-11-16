@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BotVersion xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>v14</fullName>
+    <fullName>v15</fullName>
     <articleAnswersGPTEnabled>false</articleAnswersGPTEnabled>
     <botDialogs>
         <botSteps>
@@ -22,7 +22,7 @@
     </botDialogs>
     <citationsEnabled>false</citationsEnabled>
     <conversationDefinitionPlanners>
-        <genAiPlannerName>SFAgent2_v14</genAiPlannerName>
+        <genAiPlannerName>SFAgent2_v15</genAiPlannerName>
     </conversationDefinitionPlanners>
     <conversationVariables>
         <dataType>Text</dataType>

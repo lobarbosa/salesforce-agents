@@ -1,0 +1,20 @@
+{
+  "unevaluatedProperties" : false,
+  "properties" : {
+    "recordId" : {
+      "title" : "Id da conta",
+      "description" : "Id da conta (15 ou 18 caracteres). Passe so se o Id ja estiver no contexto do registro ou na conversa. Se o usuario falou so o nome da conta, deixe vazio e preencha accountName.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : false
+    },
+    "accountName" : {
+      "title" : "Nome da conta",
+      "description" : "Nome (ou parte do nome) da conta, exatamente como o usuario disse. Passe quando o usuario nao deu o Id; nao precisa chamar IdentificarConta antes.",
+      "lightning:type" : "lightning__textType",
+      "lightning:isPII" : false,
+      "copilotAction:isUserInput" : true
+    }
+  },
+  "lightning:type" : "lightning__objectType"
+}
