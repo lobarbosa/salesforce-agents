@@ -40,3 +40,17 @@ EPLAST-27 (aguardando_gate_build) e EPLAST-34 (aguardando_gate_design) também m
 - Confirmação obrigatória antes de gravar; recusa de assunto `Check In @`; registro ambíguo; AC-4 (acesso negado) e licença Agentforce (R9).
 - Pendências já conhecidas da rodada anterior: caminho de sucesso exige Account/Opportunity de teste (gatilho com callout Protheus, R8) e usuário `Comercial - Analista`; usar `fixtures/` e o usuário de teste da conta de serviço da Konecta (regra 6 do CLAUDE.md da Eplast, resolvido por consulta na org de dev).
 - Premissas assumidas do design (seção 9) construídas como decididas; nada bloqueado.
+
+## Correções da rodada 1
+Org de build: `sbx-eplast-dev` (única em `sf org list`). QA não tocada. Nenhum componente novo ou alterado nesta sessão.
+
+| Falha | Tratamento |
+|---|---|
+| FALHA 1 (crítica): v7 implantada na QA mas inativa; o agente ativo (v4) não tem `acoes_comerciais`, então AC-1 a AC-9 não rodaram | **Não é corrigível no build.** O bundle, o Flow e o PS chegaram à QA corretos (QA confirmou BotVersion v7, Flow ativo e PS). O que falta é ativar a versão na QA, passo separado que o builder não executa (builder não toca a QA; ativação é do release, conforme "Versões e ativação"). Ação necessária antes da nova sessão de QA: ativar na QA a versão do `SFAgent2` que contém `acoes_comerciais`, combinando com EPLAST-27 e EPLAST-34 (a v6 da EPLAST-27 está inativa e a v7 já a contém). |
+
+### Estado da dev conferido nesta sessão (`sf`, só metadata)
+- `BotVersion` do `SFAgent2` na dev: v1 a v7 Inactive, **v8 Active**, v9 Inactive. A numeração avançou depois do build da v7 (v8 em 2026-11-15 20:38 UTC e v9 em 2026-11-16 00:44 UTC; não criadas nesta sessão).
+- `GenAiPluginDefinition` com `acoes_comerciais_EPLAST29` existe nas versões `_v7`, `_v8` e `_v9`: o tópico segue presente nas versões mais novas. Não abri o conteúdo da v8 e da v9 item a item; quem ativar na QA deve conferir qual versão leva a QA e que ela contém o tópico e as 4 ações de `insights_comerciais`.
+- Flow `Task_Agente_CriarTarefa`: versão 1, Active, sem versão nova (nada a mudar no Flow).
+- Dependência de ordem na QA: o bundle referencia o Flow `Account_Agente_ProximaAcao` (EPLAST-27); ativar só com ele presente.
+- Para a rodada 2 de QA: AC-4 precisa de usuário comum sem o PS. A QA só achou administradores da Konecta; usar o usuário de teste da regra 6 do CLAUDE.md da Eplast (`projetos@konectabr.com%`) e, se for administrador, declarar que AC-4 fica sem prova em vez de simular.
