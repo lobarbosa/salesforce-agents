@@ -2,7 +2,7 @@ id: SOMOSAGILITY-27
 client: somos-agility
 titulo: Problemas de extair dados e criar modelos
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-11-05T18:18:58.723Z'
 historico:
 - de: null
@@ -25,3 +25,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-10T23:22:32.297253+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-16T18:33:56.802473+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T18:35:44.376688+00:00'
