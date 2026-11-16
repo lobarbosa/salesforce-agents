@@ -14,4 +14,5 @@ Regras:
   `CLAUDE.md` da conta, se houver; senão, o verificador pode preencher esse campo no
   próprio usuário de execução, só na dev, e devolve o valor ao final.
 
-Ainda vazio: o primeiro a precisar monta e grava aqui.
+Scripts provados na dev:
+- `conta-oportunidade-contato-sinal.apex` (EPLAST-46, 2026-11-16): 6 contas, oportunidades Fechado/Ganho, contatos com opt-out, sinais `CommercialSignal__c`; exige `ProtheusSellerId__c` no usuario de execucao.
