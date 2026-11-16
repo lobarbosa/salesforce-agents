@@ -313,3 +313,18 @@ Nenhuma. Nenhuma pergunta caiu no caso 3 da regra 4.
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável (2026-11-16): tirar a cotação
+
+Decidido por Leonardo Barbosa depois da rodada 2 de QA (o permission set exigia licença de
+CPQ por dar acesso a `SBQQ__Quote__c` e `SBQQ__QuoteLine__c`). Vale acima do que este desenho
+diz sobre cotação.
+
+- O rascunho comercial **não usa mais dados de cotação**. Sai do Flow
+  `Opportunity_Screen_RascunhoComercial` a busca da cotação primária e das linhas, e sai dos
+  templates o bloco de cotação. Oportunidade, conta, produtos e o resto do desenho seguem.
+- Sai do `PS_Comercial_RascunhoIA` toda permissão de objeto e campo `SBQQ__*`. O
+  `PSG_Comercial_RascunhoIA` não pode trazer licença de CPQ.
+- Nada de `SBQQ` na página (`Opportunity_Record_Page`) que dependa desta demanda.
+- O que for de cotação fica como premissa para a homologação: "o rascunho não cita a
+  cotação; se a Eplast quiser, entra em demanda própria, com licença de CPQ para quem usa".
