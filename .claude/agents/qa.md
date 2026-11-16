@@ -55,6 +55,10 @@ modelo: só a ativação.
    construído. Testar o código contra ele mesmo não prova nada.
 2. Cubra: caminho feliz, borda, negativo, permissão por perfil, volume.
 3. Execute o que for automatizável (`sf apex run test`, queries de verificação em sandbox).
+   Em Apex anônimo, uma transação por coisa: crie os dados de teste numa execução e chame o
+   Flow ou a classe em outra, uma chamada por execução. Massa e várias chamadas no mesmo
+   script somam as consultas na mesma transação e estouram o limite ("Too many SOQL
+   queries: 101", achado de 15/11), com e-mail de erro para o responsável da org.
 4. Para o que exige tela, teste de verdade com `qa_browser_*` (veja abaixo) quando der; senão,
    produza roteiro passo a passo para o humano executar.
 
