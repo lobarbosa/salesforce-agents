@@ -109,7 +109,24 @@ teste dispara chama sistema externo (integração, callout, e-mail): é a regra 
 prova o critério e liste em `05-testes.md`, numa seção "O que pode ter saído da org", o que a
 cadeia criou e o resultado das chamadas externas registradas.
 A sandbox de QA pode ter dado real copiado: não leia nem altere registro que você não
-criou. Ação em massa sobre os registros existentes só a que a própria solução faz ao rodar
+criou.
+
+**Seu próprio usuário de execução** (o que `sf org display` mostra como autenticado no job)
+é a exceção, como o do `verificador` na dev (decisão de 2026-11-16, achados EPLAST-33 e
+EPLAST-39). Na sandbox de QA, e só nele, você pode:
+- atribuir o permission set **que a própria demanda criou ou alterou** (está em
+  `05-deploy-qa.md` ou no plano de build), para enxergar e gravar os campos dela e testar
+  o caso de quem tem a permissão;
+- preencher, com valor sintético, campo que uma validation rule exige no proprietário para
+  você criar o dado de teste (por exemplo, "ID Usuário Protheus");
+- ligar a opção "Marketing User", quando o teste precisa criar Campanha.
+
+Registre cada mudança em `05-testes.md` (o que era, o que ficou) e desfaça ao final, mesmo
+depois de erro: tire a atribuição e devolva os valores de antes. Perfil, papel, outros
+permission sets e qualquer outro usuário continuam intocados, inclusive o usuário de teste
+indicado no `CLAUDE.md` do cliente: a proibição de alterar permissão vale para ele, não para
+você. Teste de "sem permissão" se faz com esse usuário de teste ou antes de atribuir o
+permission set a você. Ação em massa sobre os registros existentes só a que a própria solução faz ao rodar
 (por exemplo, o Flow agendado da demanda), nunca DML seu sobre eles.
 
 ## Automação que só roda por agendamento (QA em duas fases)
@@ -131,8 +148,8 @@ e o teste é feito em duas sessões:
      o horário de início trocado para daqui a 15–30 minutos, nada mais nele.
 
    São as únicas implantações que você faz, sempre com `--target-org` explícito na sandbox de
-   QA. Não commite nenhuma delas: a esteira descarta e, antes da segunda sessão, reimplanta
-   o build original. Calcule o horário no fuso da org, não no da sessão, e confira na org
+   QA. Não commite nenhuma delas: a esteira descarta e, ao fim da sessão de conferência,
+   reimplanta o build original. Calcule o horário no fuso da org, não no da sessão, e confira na org
    (`CronTrigger.NextFireTime`) que a próxima execução ficou onde você quis.
 3. Calcule, com as mesmas contagens agregadas, o resultado esperado depois da execução.
 4. Grave `05-testes.md` abrindo com `**Veredito:** aguardando execução`, a linha
@@ -142,9 +159,12 @@ e o teste é feito em duas sessões:
 **Fase 2 — conferir** (quando `05-testes.md` existe com `aguardando execução`):
 1. Se ainda não passou do horário de `Conferir depois de`, a esteira já reimplantou a
    configuração original: arme de novo e mantenha `aguardando execução`.
-2. Se passou: confira que a automação rodou (job, log ou histórico), compare as contagens
-   de depois com o esperado e leia o histórico do campo. Confirme que a configuração voltou
-   ao valor original (a esteira a reimplanta no início da sessão); se não voltou, desfaça.
+2. Se passou: a org ainda está como você armou (decisão de 2026-11-16, achado EPLAST-28:
+   reimplantar antes da sessão recriava o agendamento e apagava o `PreviousFireTime`).
+   Confira que a automação rodou (`CronTrigger.PreviousFireTime` e `TimesTriggered` do
+   arme, `AsyncApexJob`, log ou histórico), compare as contagens de depois com o esperado e
+   leia o histórico do campo. Não desfaça o arme: a esteira reimplanta o build original
+   logo depois da sua sessão.
    Job Apex que você agendou na fase 1: aborte-o e, se o design pede agendamento na QA,
    agende-o de novo no horário do design, dizendo isso no roteiro.
 3. Reescreva `05-testes.md` com o veredito final, `aprovado` ou `reprovado`, e a evidência

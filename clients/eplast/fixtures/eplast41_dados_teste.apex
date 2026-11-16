@@ -19,7 +19,16 @@ for (Account a : contas.values()) {
     a.CNAE__c = '0000-0/00'; a.CompanyName__c = a.Name; a.Email__c = 'teste.eplast41@example.invalid';
     a.Phone = '(11)99999999'; a.Store__c = '01';
 }
-for (Database.UpsertResult r : Database.upsert(contas.values(), false)) {
+// Na QA (Partial Copy) a regra de duplicidade de Account pode barrar a conta sintetica contra dado real copiado;
+// por isso grava com allowSave (so as contas TESTE EPLAST-41 deste script).
+Database.DMLOptions dml = new Database.DMLOptions();
+dml.DuplicateRuleHeader.allowSave = true;
+List<Account> novasContas = new List<Account>(); List<Account> velhasContas = new List<Account>();
+for (Account x : contas.values()) { if (x.Id == null) { novasContas.add(x); } else { velhasContas.add(x); } }
+for (Database.SaveResult r : Database.insert(novasContas, dml)) {
+    if (!r.isSuccess()) { System.debug('FIXTURE ERRO conta: ' + r.getErrors()); }
+}
+for (Database.SaveResult r : Database.update(velhasContas, dml)) {
     if (!r.isSuccess()) { System.debug('FIXTURE ERRO conta: ' + r.getErrors()); }
 }
 Account a = contas.get(nA);
