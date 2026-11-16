@@ -1,41 +1,49 @@
 **Verificação:** inconclusiva
-**Org de teste:** `sbx-eplast-dev`
+**Org de teste:** sbx-eplast-dev (alias da esteira; sandbox, org 00DHa000006vfMLMAY, única org em `sf org list`)
 
-# EPLAST-29 · Verificação do build (SFAgent2 v7, tópico `acoes_comerciais`)
+# EPLAST-29 · Verificação do build (v7 do SFAgent2 e Flow `Task_Agente_CriarTarefa`)
 
-Org confirmada com `sf org list`: única conectada, `sbx-eplast-dev` (sandbox, Org Id 00DHa000006vfMLMAY). Nada em QA, produção ou Marketing Cloud. `BotVersion` SFAgent2: v7 Active, v1 a v6 Inactive.
+## Resumo
+Os componentes determinísticos (Flow, guardas, gravação, rastreabilidade, ações do agente, confirmação obrigatória, PS) foram exercitados na dev e passaram. Não foi possível exercitar a camada conversacional do agente (resumo, recusa do resumo, ambiguidade, roteamento) nem o AC-4 com usuário comum. Por isso a verificação é inconclusiva, não reprovada: nenhum caso executado falhou.
 
-Método: sessões programáticas `sf agent preview start/send -n SFAgent2` (agente publicado, ações reais) como o usuário de execução do job, e conferência por SOQL (contagens e campos de Task sintética). Dado de teste pelo fixture novo `clients/eplast/fixtures/account.apex` (3 Accounts `TESTE EPLAST-29`, com `TriggerUtility.bypassTrigger = true` para não chamar o Protheus). Não existia `fixtures/` no cliente; o script funcionou de primeira e foi gravado lá.
+## Ambiente
+- Org conferida com `sf org list`: só `sbx-eplast-dev`. QA e produção não tocadas.
+- Versão ativa do `SFAgent2` na dev: **v8** (v1 a v7 e v9 Inactive). A v7 (build desta demanda) está inativa, mas a v8 carrega o tópico `acoes_comerciais_EPLAST29_v8`. Nenhuma ativação feita por mim.
+- Usuário de execução do job (Id `005bJ00000piKAaQAM`) é a conta de serviço da Konecta (regra 6), perfil Administrador do sistema. Há também um segundo usuário da mesma conta (`005bJ00000hBJmYQAW`, inativo, Administrador). Não há usuário comum disponível. Nada alterado em usuário, perfil, permission set ou opção de usuário.
+- Estado inicial: Task 0, EmailMessage 0, Opportunity 0, atribuições do `PS_Comercial_AssistenteAcoes` 0.
 
-**Resumo:** AC-1, 2, 3, 5, 6, 7, 8 passaram. AC-4 (acesso negado) não pôde ser exercitado. AC-9 passou só em parte. Por isso inconclusiva, não aprovada. Nenhum caso executado falhou.
+## Como exercitei
+Fixture `fixtures/account.apex` (já existente, funcionou sem mudança, com `TriggerUtility.bypassTrigger`) criou 1 Account `TESTE EPLAST-29 Conta Unica` e 2 `TESTE EPLAST-29 Conta Dup`. O Flow foi chamado por Apex anônimo (`Flow.Interview.createInterview('Task_Agente_CriarTarefa', ...)`), com a mesma interface que o agente usa, e as contagens foram feitas por SOQL. O Flow rodou como o usuário administrador; isso prova a lógica, não o contexto de execução do Agentforce (R5).
 
-## Usuário de teste
-Consulta de usuário da conta de serviço da Konecta na org de dev (`SELECT Id, IsActive, Profile.Name`, filtro pelo username da regra 6, não citado aqui) devolveu 2 usuários, ambos com perfil Administrador do sistema: `005bJ00000hBJmYQAW` (inativo) e `005bJ00000piKAaQAM` (ativo, é o usuário de execução do job). Nenhum dado de usuário, perfil, papel ou permission set foi alterado. `PS_Comercial_AssistenteAcoes` tem 0 atribuições, e o usuário de execução, sem o PS, criou Task pelo agente (por ser administrador).
-
-## Resultados
-
+## Casos
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| C1 | AC-1 | "criar tarefa de follow-up para TESTE EPLAST-29 Conta Unica com vencimento em 2026-12-01". Contagem de Task da conta antes: 1 (Task da automação "Conta Nova Cadastrada", pré-existente). Depois, "sim" | Resumo com assunto, registro, responsável e vencimento; sem gravar até confirmar; depois N+1 com ActivityDate, WhatId e OwnerId certos | Resumo trouxe os 4 itens. Contagem seguiu 1 após o resumo. Prompt `Confirm` (`copilotActionInput/CriarTarefa_EPLAST29_v7`); após "sim", contagem 2. Task: `Follow-up`, ActivityDate 2026-12-01, WhatId = conta de teste, OwnerId = usuário do job | passou |
-| C2 | AC-2 | Mesmo pedido (2026-12-05), "sim" ao resumo, depois "não, cancele" | Contagem igual a N | Agente respondeu "Tarefa cancelada"; contagem continuou 2 | passou |
-| C3 | AC-3 | "criar tarefa para TESTE EPLAST-29 Conta Dup" (2 contas homônimas) | Lista os dois candidatos com identificador; nada gravado | Listou as 2 contas com Id (`001Ha000016USpWIAW`, `001Ha000016USpVIAW`) e pediu número. Tasks nas duas: só as 2 da automação de criação de conta, nenhuma do agente | passou |
-| C4 | AC-4 | Não executado | Usuário sem permissão de criar Task é recusado, sem vazar dado | Só há um usuário ativo da Konecta e ele é administrador; o preview roda como o usuário do job. Não há usuário `Comercial - Analista` nem sem acesso para testar, e atribuir/retirar permissão de outro usuário está fora da regra | não executado |
-| C5 | AC-5 | "criar tarefa para TESTE EPLAST-29 Conta Unica" (sem assunto e data), depois "confirmo" | Pergunta o campo faltante; nada gravado | Perguntou assunto e data duas vezes; contagem seguiu 2 | passou |
-| C6 | AC-6 | "enviar e-mail de proposta para o contato de ..." com vencimento 2026-12-10 e texto, "sim", "sim" | EmailMessage não muda; Task guarda o rascunho na descrição; avisa que o envio é fora do CRM | `COUNT(EmailMessage)` = 0 antes e depois. Task `Rascunho de e-mail - Proposta`, Description "Olá, segue proposta de teste.<br><br>Origem: assistente de IA". Agente avisou que o envio é fora do CRM | passou |
-| C7 | AC-7 | "criar oportunidade para TESTE EPLAST-29 Conta Unica" | Recusa; nada criado | Recusou ("Não está disponível nesta versão"); `Opportunity` `TESTE EPLAST-29%` = 0 | passou |
-| C8 | AC-8 | Consulta das Tasks criadas em C1 e C6 | CreatedById = solicitante; descrição com "Origem: assistente de IA" | CreatedById `005bJ00000piKAaQAM` (usuário do job) nas duas; marca presente nas duas | passou |
-| C9a | AC-9 | "quais clientes precisam de acompanhamento hoje?" e "consultar pedidos da conta ..." | Respostas como na versão anterior | Agente roteou para `insights_comerciais`, pediu escopo na primeira e identificou a conta na segunda (ação `IdentificarConta` funciona). Sem comparação lado a lado com a v6 nem dado de pedido sintético | passou em parte (sem comparação) |
-| C9b | AC-9 | Leitura do bundle `SFAgent2_v7` | `insights_comerciais` mantém as ações anteriores | Bundle com `IdentificarConta`, `ConsultarPedidos`, `AgregacaoPedidos` e `ProximaAcaoCliente` (esta última veio da v6/EPLAST-27, o AC-9 fala em 3). Nenhuma foi removida | passou |
-| C10 | Regra de design (assunto `Check In @`) | "criar tarefa com assunto Check In @ ..." e "sim" | Recusa | Recusou e pediu outro assunto; Tasks `Check In @%` nas contas de teste = 0 | passou |
+| C1 | AC-1 (gravação), AC-8 | Flow com assunto comum, vencimento hoje+3, Account sintética | Sucesso; 1 Task; `ActivityDate` informada, `WhatId` = Account, `OwnerId` = quem executa; `Description` com marca | Sucesso=true, delta +1; `ActivityDate` = hoje+3; `WhatId` = Conta Unica; `OwnerId` = `CreatedById` = `005bJ00000piKAaQAM`; Priority Normal, Status Open, TaskSubtype Task; `Description` = "Origem: assistente de IA" | passou |
+| C2 | Guarda 2 (check-in, seção 5) | Assunto `Check In @ TESTE EPLAST-29`, Account sintética | Recusa; 0 Task | Sucesso=false, "Nao e possivel criar tarefa de check-in pelo assistente..."; delta 0; `AccountHasCheckInTask__c` das 3 contas continua false; 0 Account com `SystemModstamp` > `CreatedDate` depois dos casos | passou |
+| C3 | AC-5 | Sem `DataVencimento` | Recusa pedindo a data; 0 Task | Sucesso=false, "Informe a data de vencimento da tarefa."; delta 0 | passou |
+| C4 | AC-5 | Sem `Assunto` | Recusa; 0 Task | Sucesso=false, "Informe o assunto da tarefa."; delta 0 | passou |
+| C5 | AC-7 (escopo) | `RegistroRelacionadoId` com prefixo `003` (Contact) | Recusa; 0 Task | Sucesso=false, "A tarefa so pode ser ligada a uma conta ou a uma oportunidade."; delta 0 | passou |
+| C6 | AC-4 (parcial: registro não encontrado) | Id de Account inexistente (prefixo `001`) | Mensagem genérica sem nome nem campo; 0 Task | Sucesso=false, "Registro nao encontrado ou sem acesso."; delta 0 | passou |
+| C7 | Guarda 3/5 para Opportunity | Id de Opportunity inexistente (prefixo `006`) | Mesma mensagem genérica; 0 Task | Sucesso=false, "Registro nao encontrado ou sem acesso."; delta 0 | passou |
+| C8 | AC-6 (lado do Flow), PD-3 | Assunto `Rascunho de e-mail - ...`, `Descricao`, `Prioridade` High, vencimento hoje | Task Open, TaskSubtype Task, texto no `Description` + marca; sem EmailMessage | Sucesso=true; Priority High; `TaskSubtype` Task; `Description` = texto + "Origem: assistente de IA"; EmailMessage continuou 0 | passou |
+| C9 | Contrato (prioridade inválida) | `Prioridade` = `Urgente` | Vira `Normal` | Task criada com Priority Normal | passou |
+| C10 | AC-7 (nenhum registro de outro objeto) | Contagens após os casos | Opportunity e EmailMessage inalterados | Opportunity 0, EmailMessage 0; nenhuma Account alterada pelo Flow | passou |
+| C11 | Confirmação obrigatória (P4, AC-1/AC-2) | `GenAiFunctionDefinition` das ações v8 | `CriarTarefa` com confirmação, alvo Flow; `IdentificarRegistro` só leitura | `CriarTarefa_EPLAST29_v8`: tipo `flow`, `IsConfirmationRequired = true`; `IdentificarRegistro_EPLAST29_v8`: `identifyRecordByName`, `IsConfirmationRequired = false` | passou (metadata; comportamento conversacional não exercitado) |
+| C12 | AC-9 (estrutura) | `GenAiPluginFunctionDef` do `insights_comerciais` | Mantém `IdentificarConta`, `ConsultarPedidos`, `AgregacaoPedidos` | v7: 4 ações (3 originais + `ProximaAcaoCliente_EPLAST27`). v8 (ativa): 5 ações (as 3 originais + `ProximaAcaoCliente_EPLAST27` + `ResumoReuniao_EPLAST34`) | passou (estrutura; respostas não comparadas) |
+| C13 | Tópico e PS | `GenAiPluginDefinition`, `PermissionSet`, `SetupEntityAccess` | Tópico presente; PS com Flow e agente | `acoes_comerciais_EPLAST29_v7`/`_v8` existem, com 2 ações (`CriarTarefa`, `IdentificarRegistro`); PS tem 1 `FlowDefinition` e 1 `BotDefinition`; Flow `Task_Agente_CriarTarefa` ativo (301Ha000016Tf4LIAS, AutoLaunchedFlow) | passou |
+| C14 | AC-1 e AC-2 conversacionais | Pedido em linguagem natural, resumo, confirmar e recusar | Resumo antes de gravar; recusa não grava | Não há como conduzir conversa com o agente neste job (sem sessão de chat; licença de Agentforce não verificada, R9) | não executado |
+| C15 | AC-3 ambiguidade | "criar tarefa para TESTE EPLAST-29 Conta Dup" (2 candidatos) | Lista os dois, não grava | Dados criados, mas o agente não pôde ser acionado. O Flow, chamado direto, não trata ambiguidade (isso é do tópico) | não executado |
+| C16 | AC-4 (usuário sem o PS) | Pedido por usuário comum sem `PS_Comercial_AssistenteAcoes` | Recusa por permissão, sem vazar dado | Só existem usuários Administrador do sistema com o prefixo; não simulei. Também não provado o contexto de execução do Flow chamado pelo agente (R5, PD-8) | não executado |
+| C17 | AC-6/AC-7 conversacionais, roteamento do `agent_router` | "enviar e-mail...", "criar oportunidade..." | Redige rascunho/recusa na conversa | Depende do agente | não executado |
+| C18 | AC-9 (respostas iguais às da versão anterior) | Perguntas de leitura | Mesmas respostas | Depende do agente | não executado |
 
-## O que ficou sem prova
-- **AC-4 (acesso negado, sem vazamento):** exige um usuário sem permissão de criar Task ou sem acesso ao registro, e outro que seja `Comercial - Analista`. Quem prova: alguém com esse usuário na dev ou na QA (para a homologação), abrindo o SFAgent2 e pedindo a tarefa para um registro que ele não enxerga. Confirmar também se o PS `PS_Comercial_AssistenteAcoes` é necessário para um usuário que não é administrador.
-- **AC-9, comparação com a v6:** não há base sintética de pedidos nem execução lado a lado. Só ficou provado que o roteamento e a identificação de conta funcionam e que as ações existem.
-- **Caso do usuário não administrador com o PS atribuído:** não exercitado (mesmo motivo do AC-4).
-- Observação, não é defeito: no primeiro "sim" de C2 e C5/C6 o agente pede mais dados antes do `Confirm` da plataforma; o gate de confirmação só dispara na etapa final, e nada foi gravado antes dele.
+## O que ficou sem prova e o que uma pessoa precisa fazer
+1. Conversa real com o agente (C14, C15, C17, C18): abrir o Agent Builder ou o chat do SFAgent2 na dev (ou na QA, na sessão de QA) com um usuário com licença de Agentforce e o `PS_Comercial_AssistenteAcoes`, e rodar os cenários AC-1, AC-2, AC-3, AC-6, AC-7 e AC-9. Conferir também que o tópico `acoes_comerciais` aparece no builder (o graph da v7 não foi gerado).
+2. AC-4 (C16): usuário comum (`Comercial - Analista`) sem o PS, ou usuário com o PS mas sem acesso ao registro, para confirmar o contexto de execução do Flow (R5). Com Administrador não há como provar.
+3. A versão ativa na dev é a v8 (inclui ações de EPLAST-27 e EPLAST-34), não a v7 desta demanda. Quem ativar na QA deve conferir qual versão leva.
 
 ## O que pode ter saído da org
-Nada. O `AccountTrigger` foi desviado por `bypassTrigger` (sem callout ao Protheus); `EmailMessage` ficou em 0. A criação das contas gerou 3 Tasks da automação interna "Conta Nova Cadastrada", todas apagadas.
+Nada. O Flow não chama sistema externo. As Accounts foram criadas com `TriggerUtility.bypassTrigger = true`, sem callout Protheus. A única automação que atuou foi uma Task de "Conta Nova Cadastrada" que a org gera por conta criada (3 Tasks de crédito ligadas às contas de teste, apagadas junto com elas). Nenhum e-mail, pedido, cotação ou log de integração foi criado (EmailMessage 0).
 
-## Dados de teste
-Criados: 3 Accounts `TESTE EPLAST-29 ...`, 3 Tasks da automação e 2 Tasks do agente (`Follow-up` e `Rascunho de e-mail - Proposta`). Apagados ao final (Task e Account `TESTE EPLAST-29` = 0 em consulta). Não ficou nada. Sessões de preview não deixaram registro. Nenhuma alteração em usuário, permission set ou opção de usuário. Job Apex agendado: não se aplica.
+## Limpeza
+Apagadas as 3 Accounts `TESTE EPLAST-29%` e todas as Tasks ligadas a elas. Conferido por consulta: Account `TESTE EPLAST-29%` = 0, Task = 0 (estado igual ao inicial). Nenhuma mudança em usuário, perfil, permission set ou opção de usuário; nada a devolver. Nenhum fixture novo gravado (`fixtures/account.apex` funcionou como está).
