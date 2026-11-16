@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EI5h8KAD` (Succeeded)
-- **Quando:** 2026-11-16T00:38Z
-- **Commit:** `58a84fa8`
+- **Deploy:** `0AfHa00000EI9j7KAD` (Succeeded)
+- **Quando:** 2026-11-16T03:29Z
+- **Commit:** `82f54bde`
 
 ## Componentes
 - `force-app/main/default/flows/Opportunity_AfterSave_CriaCasoPosVendas.flow-meta.xml`
