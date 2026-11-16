@@ -1,0 +1,104 @@
+name: Republicar anexos do QA no card
+
+# Publica (ou refaz) no card do Squad OS os dois anexos que a esteira de QA
+# gera, sem rodar sessão de agente e sem mudar status, histórico ou fila:
+# "Roteiro de teste" e "Evidências de teste". Existe para as demandas que já
+# tinham passado do QA quando o anexo de evidências foi criado (2026-11-16).
+#
+# Lê `05-testes.md`, `05-roteiro-cliente.md` e `evidencias/` da branch
+# `feature/<ID>` de cada demanda e manda só isso ao sync, com `somente_anexos`.
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: "Slug do cliente (ex.: eplast)"
+        required: true
+      demand_ids:
+        description: "IDs separados por espaço (ex.: EPLAST-26 EPLAST-28). Vazio = todas as que estão nos status abaixo"
+        required: false
+        default: ""
+      status:
+        description: "Com demand_ids vazio: status (em status.yaml) das demandas a republicar, separados por espaço"
+        required: false
+        default: "aguardando_homologacao release entregue"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: republicar-anexos-${{ inputs.client }}
+  cancel-in-progress: false
+
+jobs:
+  republicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      CLIENT: ${{ inputs.client }}
+      DEMAND_IDS: ${{ inputs.demand_ids }}
+      STATUS: ${{ inputs.status }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Instalar o CLI da esteira
+        run: pip install -e . >/dev/null
+
+      - name: Republicar
+        env:
+          SYNC_URL: ${{ secrets.SQUAD_OS_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.SQUAD_OS_SYNC_TOKEN }}
+        run: |
+          if [ -z "$SYNC_URL" ] || [ -z "$SYNC_TOKEN" ]; then
+            echo "::error::SQUAD_OS_SYNC_URL/SQUAD_OS_SYNC_TOKEN não configurados."
+            exit 1
+          fi
+          case "$CLIENT" in *[!a-z0-9-]*|"") echo "::error::client inválido"; exit 1;; esac
+          PREFIXO=$(echo "$CLIENT" | tr 'a-z' 'A-Z' | tr -d '-')
+
+          if [ -n "$DEMAND_IDS" ]; then
+            IDS="$DEMAND_IDS"
+          else
+            IDS=$(git ls-remote --heads origin "feature/${PREFIXO}-*" | sed 's|.*refs/heads/feature/||' | sort -V | tr '\n' ' ')
+          fi
+
+          FEITAS=0; PULADAS=0; FALHAS=0
+          for ID in $IDS; do
+            case "$ID" in *[!A-Z0-9-]*) echo "::warning::id inválido: $ID"; continue;; esac
+            PASTA="clients/$CLIENT/demandas/$ID"
+            if ! git fetch -q --depth 1 origin "feature/$ID" 2>/dev/null; then
+              echo "$ID: sem branch feature/$ID, pulada."; PULADAS=$((PULADAS+1)); continue
+            fi
+            rm -rf "$PASTA"
+            if ! git checkout -q FETCH_HEAD -- "$PASTA" 2>/dev/null; then
+              echo "$ID: a branch não tem $PASTA, pulada."; PULADAS=$((PULADAS+1)); continue
+            fi
+            ATUAL=$(grep -m1 '^status:' "$PASTA/status.yaml" | awk '{print $2}')
+            if [ -z "$DEMAND_IDS" ] && ! echo " $STATUS " | grep -q " $ATUAL "; then
+              PULADAS=$((PULADAS+1)); continue
+            fi
+            RESPOSTA=$(sfagents demanda status-json --client "$CLIENT" "$ID" \
+              | jq -c '{client, id, status, roteiro_cliente, evidencias_teste, evidencias_imagens, evidencias_hash, somente_anexos: true}' \
+              | curl -sS -X POST "$SYNC_URL" -H "Authorization: Bearer $SYNC_TOKEN" \
+                  -H "Content-Type: application/json" --data-binary @- -w '\n%{http_code}') || true
+            CODIGO=$(echo "$RESPOSTA" | tail -1)
+            CORPO=$(echo "$RESPOSTA" | sed '$d')
+            if [ "$CODIGO" = "200" ] && echo "$CORPO" | jq -e 'has("anexos")' >/dev/null 2>&1; then
+              echo "$ID ($ATUAL): $(echo "$CORPO" | jq -r '.anexos | join(" | ")')"
+              FEITAS=$((FEITAS+1))
+            elif [ "$CODIGO" = "200" ]; then
+              echo "::error::$ID: o Squad OS respondeu sem 'anexos' — o deploy com o modo somente_anexos ainda não está no ar. Parando."
+              exit 1
+            else
+              echo "::warning::$ID: HTTP $CODIGO — $(echo "$CORPO" | head -c 200)"
+              FALHAS=$((FALHAS+1))
+            fi
+          done
+          echo "Republicadas: $FEITAS · puladas: $PULADAS · falhas: $FALHAS"
+          [ "$FALHAS" -eq 0 ]
