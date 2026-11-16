@@ -31,6 +31,46 @@ set +e
 sf project deploy start "${ARGS[@]}" --target-org "$TARGET_ORG" --wait 30 --json > /tmp/deploy-qa.json
 RC=$?
 set -e
+# Nova rodada de QA de demanda cuja versão do agente o QA já ativou na rodada
+# anterior (achado EPLAST-27, 2026-11-16): a plataforma recusa reimplantar versão
+# de agente ativa ("o agente está ativo" / "versão do bot ativa") e o deploy
+# inteiro cai, sem o build ter mudado. Se TODAS as falhas forem essas, a versão
+# já está na QA como foi implantada (ativa não aceita edição): reimplanta o
+# resto do pacote sem os arquivos do agente.
+AGENTE_JA_ATIVO=""
+ATIVO='agente est[aá] ativo|vers[aã]o do bot ativa|agent is active|active bot version'
+if [ "$RC" -ne 0 ] && jq -e --arg re "$ATIVO" '
+      [(.result.details.componentFailures // []) | if type=="array" then .[] else . end]
+      | length > 0 and all(.[]; (.problem // "") | test($re; "i"))' /tmp/deploy-qa.json >/dev/null 2>&1; then
+  AGENTE_JA_ATIVO=$(jq -r '[(.result.details.componentFailures // []) | if type=="array" then .[] else . end | "\(.componentType) \(.fullName)"] | unique | join(", ")' /tmp/deploy-qa.json)
+  echo "Versão do agente já ativa na QA ($AGENTE_JA_ATIVO): reimplantando o pacote sem os arquivos do agente."
+  SEM_AGENTE=()
+  i=0
+  while [ "$i" -lt "${#ARGS[@]}" ]; do
+    if [ "${ARGS[$i]}" = "--source-dir" ]; then
+      case "${ARGS[$((i+1))]}" in
+        */bots/*|*/genAiPlannerBundles/*) ;;
+        *) SEM_AGENTE+=("--source-dir" "${ARGS[$((i+1))]}") ;;
+      esac
+      i=$((i+2))
+    else
+      SEM_AGENTE+=("${ARGS[$i]}")
+      i=$((i+1))
+    fi
+  done
+  printf '%s\n' "${SEM_AGENTE[@]}" > /tmp/pacote-args.txt
+  if printf '%s\n' "${SEM_AGENTE[@]}" | grep -qx -- "--source-dir"; then
+    ARGS=("${SEM_AGENTE[@]}")
+    set +e
+    sf project deploy start "${ARGS[@]}" --target-org "$TARGET_ORG" --wait 30 --json > /tmp/deploy-qa.json
+    RC=$?
+    set -e
+  else
+    echo "O pacote só tinha a versão do agente, que já está ativa na QA: nada a reimplantar."
+    echo '{"result":{"id":"sem deploy","status":"versão do agente já ativa"}}' > /tmp/deploy-qa.json
+    RC=0
+  fi
+fi
 ID=$(jq -r '.result.id // "sem id"' /tmp/deploy-qa.json)
 ESTADO=$(jq -r '.result.status // .name // "desconhecido"' /tmp/deploy-qa.json)
 if [ "$RC" -ne 0 ]; then
@@ -53,6 +93,9 @@ fi
   echo "- **Deploy:** \`$ID\` ($ESTADO)"
   echo "- **Quando:** $(date -u +%Y-%m-%dT%H:%MZ)"
   echo "- **Commit:** \`$(git rev-parse --short HEAD)\`"
+  if [ -n "$AGENTE_JA_ATIVO" ]; then
+    echo "- **Agente:** já ativo na QA desde a rodada anterior, não reimplantado ($AGENTE_JA_ATIVO)"
+  fi
   echo
   echo "## Componentes"
   grep -v '^--' /tmp/pacote-args.txt | grep '^force-app/' | sed 's/^/- `/; s/$/`/'

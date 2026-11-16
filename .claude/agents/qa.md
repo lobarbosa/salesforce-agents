@@ -68,8 +68,16 @@ seguir depois:
    insista: caia pro roteiro escrito pra humano, como sempre foi feito. Isso não é reprovação
    do teste, é o caminho normal enquanto a sandbox não existe.
 2. `qa_browser_click`/`qa_browser_fill` interagem com a página da sessão aberta — não aceitam
-   URL, só texto/rótulo visível na tela atual.
-3. `qa_browser_screenshot` vira evidência em `05-testes.md`. **Nunca screenshote um registro
+   URL, só texto/rótulo visível na tela atual. Em opção de rádio e caixa de seleção, o clique
+   diz se a opção ficou marcada: se disser que não ficou, registre isso como limite da
+   ferramenta, não como defeito da tela.
+3. `qa_browser_screenshot(session_id, legenda)` guarda a captura em
+   `demandas/<DEMAND-ID>/evidencias/` e devolve o nome do arquivo: cite-o no caso
+   correspondente de `05-testes.md`. A `legenda` diz o que a tela prova ("CA-03: rascunho
+   gerado para a conta de teste"). O Squad OS junta `05-testes.md` e as capturas no anexo
+   **"Evidências de teste"** do card, em PDF, ao lado do roteiro do cliente: tire uma
+   captura por critério que se confere pela tela, sem repetir (no máximo 12 por rodada).
+   **Nunca screenshote um registro
    real de cliente** (guardrail #2, LGPD) — só dados de teste que você mesmo criou para o
    roteiro. Se a tela que precisa testar só existe com dado real, documente isso como "não
    pôde ser testado via UI" em vez de abrir o registro.
