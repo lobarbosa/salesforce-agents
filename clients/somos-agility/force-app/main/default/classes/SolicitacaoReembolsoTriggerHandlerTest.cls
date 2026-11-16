@@ -39,6 +39,7 @@ public class SolicitacaoReembolsoTriggerHandlerTest {
         sol.Solicitante__c = solicitante.Id;
         sol.PIN__c = solicitante.PIN__c;
         sol.Status__c = 'Rascunho';
+        sol.Possui_JOB_investimento_ou_treinamento__c = 'Não'; // exigido por validation rule (QA)
         sol.Status_de_Aprovacao_e_Etapas__c = etapaInicial;
         insert sol;
         return sol;

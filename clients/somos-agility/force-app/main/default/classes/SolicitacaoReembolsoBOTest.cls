@@ -40,6 +40,7 @@ public class SolicitacaoReembolsoBOTest {
         sol.Solicitante__c = solicitante.Id;
         sol.PIN__c = solicitante.PIN__c;
         sol.Status__c = 'Rascunho';
+        sol.Possui_JOB_investimento_ou_treinamento__c = 'Não'; // exigido por validation rule (QA)
         sol.Status_de_Aprovacao_e_Etapas__c = etapaInicial;
         insert sol;
         return sol;
@@ -257,6 +258,7 @@ public class SolicitacaoReembolsoBOTest {
             sol.Solicitante__c = contatos[i].Id;
             sol.PIN__c = contatosComPin.get(contatos[i].Id).PIN__c;
             sol.Status__c = 'Rascunho';
+            sol.Possui_JOB_investimento_ou_treinamento__c = 'Não'; // exigido por validation rule (QA)
             sol.Status_de_Aprovacao_e_Etapas__c = 'Pendente - Gerente de Projetos';
             solicitacoes.add(sol);
         }

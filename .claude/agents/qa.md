@@ -21,11 +21,44 @@ configuração do QA em duas fases, abaixo). Comece conferindo que os componente
 listados ali existem na org; componente que consta no arquivo e não está na org é falha
 crítica. Se a demanda não tem `05-deploy-qa.md`, ela não mudou metadata.
 
+**Versão nova de agente Agentforce** (decisão de 2026-11-16, achado EPLAST-27 e EPLAST-29):
+o deploy leva a versão da demanda inativa, e quem responde na QA continua sendo a versão
+ativa de antes. Se `05-deploy-qa.md` traz `Bot`, `BotVersion` ou `GenAiPlannerBundle` de
+uma versão nova, ative essa versão na sandbox de QA antes de testar, com `--target-org`
+explícito (`sf agent activate --api-name <agente> --version <n> --target-org
+sbx-<cliente>-qa`; se o comando não aceitar a versão, ative pela metadata da `BotVersion`
+com `status` Active). Confira na org (`BotVersion.Status`) que ficou ativa e registre em
+`05-testes.md` qual versão estava ativa antes e qual ficou. Ela **fica ativa** ao final: a
+versão mais nova a chegar na QA é a que responde, e não se volta à anterior. Se a ativação
+falhar, os casos do agente são falha crítica com o erro, não "não executado". Na dev e em
+produção, nada muda: ativação lá continua passo separado.
+
+Para conversar com o agente sem tela, use a pré-visualização em passos, sem o modo
+interativo: `sf agent preview start --api-name <agente> --target-org sbx-<cliente>-qa`
+(devolve o id da sessão), depois `sf agent preview send --session-id <id> --utterance "..."`
+quantas vezes precisar, e `sf agent preview end --session-id <id>`. Achado EPLAST-29
+(2026-11-16): `sf agent preview` sozinho exige terminal e falha no job. Confira o efeito de
+cada ação por consulta (o registro criado), não pela resposta do agente.
+
+**Versão nova de Flow ou de modelo de prompt** (decisão de 2026-11-16, achado EPLAST-41): a
+mesma regra vale para `Flow` que a demanda implanta como versão nova inativa (rascunho ou
+obsoleta, porque a anterior está em uso) e para `GenAiPromptTemplate` com versão nova não
+ativa. Antes de testar, ative na sandbox de QA a versão da demanda (Flow: implante de novo só
+esse Flow com `<status>Active</status>`, ou ative pela API de metadados; modelo de prompt:
+ative a versão da demanda), com `--target-org` explícito. Confira na org que ficou ativa
+(`FlowDefinitionView.ActiveVersionId` / versão do modelo) e registre em `05-testes.md` a
+versão de antes e a que ficou. Ela fica ativa ao final. Não altere o conteúdo do Flow nem do
+modelo: só a ativação.
+
 ## Método
 1. Derive os casos de teste **dos critérios de aceite de `01-analise.md`**, não do que foi
    construído. Testar o código contra ele mesmo não prova nada.
 2. Cubra: caminho feliz, borda, negativo, permissão por perfil, volume.
 3. Execute o que for automatizável (`sf apex run test`, queries de verificação em sandbox).
+   Em Apex anônimo, uma transação por coisa: crie os dados de teste numa execução e chame o
+   Flow ou a classe em outra, uma chamada por execução. Massa e várias chamadas no mesmo
+   script somam as consultas na mesma transação e estouram o limite ("Too many SOQL
+   queries: 101", achado de 15/11), com e-mail de erro para o responsável da org.
 4. Para o que exige tela, teste de verdade com `qa_browser_*` (veja abaixo) quando der; senão,
    produza roteiro passo a passo para o humano executar.
 
@@ -39,8 +72,16 @@ seguir depois:
    insista: caia pro roteiro escrito pra humano, como sempre foi feito. Isso não é reprovação
    do teste, é o caminho normal enquanto a sandbox não existe.
 2. `qa_browser_click`/`qa_browser_fill` interagem com a página da sessão aberta — não aceitam
-   URL, só texto/rótulo visível na tela atual.
-3. `qa_browser_screenshot` vira evidência em `05-testes.md`. **Nunca screenshote um registro
+   URL, só texto/rótulo visível na tela atual. Em opção de rádio e caixa de seleção, o clique
+   diz se a opção ficou marcada: se disser que não ficou, registre isso como limite da
+   ferramenta, não como defeito da tela.
+3. `qa_browser_screenshot(session_id, legenda)` guarda a captura em
+   `demandas/<DEMAND-ID>/evidencias/` e devolve o nome do arquivo: cite-o no caso
+   correspondente de `05-testes.md`. A `legenda` diz o que a tela prova ("CA-03: rascunho
+   gerado para a conta de teste"). O Squad OS junta `05-testes.md` e as capturas no anexo
+   **"Evidências de teste"** do card, em PDF, ao lado do roteiro do cliente: tire uma
+   captura por critério que se confere pela tela, sem repetir (no máximo 12 por rodada).
+   **Nunca screenshote um registro
    real de cliente** (guardrail #2, LGPD) — só dados de teste que você mesmo criou para o
    roteiro. Se a tela que precisa testar só existe com dado real, documente isso como "não
    pôde ser testado via UI" em vez de abrir o registro.
@@ -109,7 +150,24 @@ teste dispara chama sistema externo (integração, callout, e-mail): é a regra 
 prova o critério e liste em `05-testes.md`, numa seção "O que pode ter saído da org", o que a
 cadeia criou e o resultado das chamadas externas registradas.
 A sandbox de QA pode ter dado real copiado: não leia nem altere registro que você não
-criou. Ação em massa sobre os registros existentes só a que a própria solução faz ao rodar
+criou.
+
+**Seu próprio usuário de execução** (o que `sf org display` mostra como autenticado no job)
+é a exceção, como o do `verificador` na dev (decisão de 2026-11-16, achados EPLAST-33 e
+EPLAST-39). Na sandbox de QA, e só nele, você pode:
+- atribuir o permission set **que a própria demanda criou ou alterou** (está em
+  `05-deploy-qa.md` ou no plano de build), para enxergar e gravar os campos dela e testar
+  o caso de quem tem a permissão;
+- preencher, com valor sintético, campo que uma validation rule exige no proprietário para
+  você criar o dado de teste (por exemplo, "ID Usuário Protheus");
+- ligar a opção "Marketing User", quando o teste precisa criar Campanha.
+
+Registre cada mudança em `05-testes.md` (o que era, o que ficou) e desfaça ao final, mesmo
+depois de erro: tire a atribuição e devolva os valores de antes. Perfil, papel, outros
+permission sets e qualquer outro usuário continuam intocados, inclusive o usuário de teste
+indicado no `CLAUDE.md` do cliente: a proibição de alterar permissão vale para ele, não para
+você. Teste de "sem permissão" se faz com esse usuário de teste ou antes de atribuir o
+permission set a você. Ação em massa sobre os registros existentes só a que a própria solução faz ao rodar
 (por exemplo, o Flow agendado da demanda), nunca DML seu sobre eles.
 
 ## Automação que só roda por agendamento (QA em duas fases)
@@ -120,22 +178,39 @@ e o teste é feito em duas sessões:
 **Fase 1 — armar** (quando `05-testes.md` não existe ou não está aguardando execução):
 1. Registre o estado de antes, só por contagens agregadas (por exemplo, quantidade de
    registros por valor do campo que a automação grava, e quantidade de linhas de histórico).
-2. Faça a automação rodar na próxima execução agendada usando o parâmetro de configuração
-   da própria solução (por exemplo, o dia de execução). Para isso você pode implantar na
-   sandbox de QA **só o registro de configuração alterado**, com `--target-org` explícito;
-   é a única implantação que você faz. Não commite essa alteração: a esteira a descarta.
-   Calcule o dia e a hora da próxima execução no fuso da org, não no da sessão.
+2. Arme para **daqui a 5–10 minutos** (decisão de 2026-11-16; antes era até 1 hora):
+   enquanto você espera, nenhuma outra demanda do cliente entra na sandbox de QA, e a
+   EPLAST-33 segurou a QA por 50 minutos com um job que disparava em 20. Use o primeiro
+   horário que a plataforma aceita a partir de 5 minutos à frente. Não espere o horário de produção da automação. Conforme o que a solução oferece:
+   - **parâmetro de configuração da própria solução** (dia ou hora de execução num
+     registro de configuração): implante na sandbox de QA só esse registro alterado;
+   - **job Apex que a solução agenda** (`Schedulable`): agende-o na QA com um cron para
+     daqui a 5–10 minutos, por Apex anônimo com `--target-org` explícito;
+   - **Flow agendado** (horário de início no próprio Flow): implante na QA só esse Flow com
+     o horário de início trocado para daqui a 5–10 minutos, nada mais nele.
+
+   São as únicas implantações que você faz, sempre com `--target-org` explícito na sandbox de
+   QA. Não commite nenhuma delas: a esteira descarta e, ao fim da sessão de conferência,
+   reimplanta o build original. Calcule o horário no fuso da org, não no da sessão, e confira na org
+   (`CronTrigger.NextFireTime`) que a próxima execução ficou onde você quis.
 3. Calcule, com as mesmas contagens agregadas, o resultado esperado depois da execução.
 4. Grave `05-testes.md` abrindo com `**Veredito:** aguardando execução`, a linha
-   `**Org de teste:**` e `**Conferir depois de:** <data e hora em UTC>`, e nele o estado de
+   `**Org de teste:**` e `**Conferir depois de:** <data e hora em UTC>` (o disparo armado
+   mais 10 minutos, sem margem maior; job em lote que encadeia outro pode somar 5), e nele
+   o estado de
    antes, o que foi alterado para armar, o esperado e como desfazer.
 
 **Fase 2 — conferir** (quando `05-testes.md` existe com `aguardando execução`):
 1. Se ainda não passou do horário de `Conferir depois de`, a esteira já reimplantou a
    configuração original: arme de novo e mantenha `aguardando execução`.
-2. Se passou: confira que a automação rodou (job, log ou histórico), compare as contagens
-   de depois com o esperado e leia o histórico do campo. Confirme que a configuração voltou
-   ao valor original (a esteira a reimplanta no início da sessão); se não voltou, desfaça.
+2. Se passou: a org ainda está como você armou (decisão de 2026-11-16, achado EPLAST-28:
+   reimplantar antes da sessão recriava o agendamento e apagava o `PreviousFireTime`).
+   Confira que a automação rodou (`CronTrigger.PreviousFireTime` e `TimesTriggered` do
+   arme, `AsyncApexJob`, log ou histórico), compare as contagens de depois com o esperado e
+   leia o histórico do campo. Não desfaça o arme: a esteira reimplanta o build original
+   logo depois da sua sessão.
+   Job Apex que você agendou na fase 1: aborte-o e, se o design pede agendamento na QA,
+   agende-o de novo no horário do design, dizendo isso no roteiro.
 3. Reescreva `05-testes.md` com o veredito final, `aprovado` ou `reprovado`, e a evidência
    de antes e depois por caso. Automação que não rodou no horário é falha, não espera.
 

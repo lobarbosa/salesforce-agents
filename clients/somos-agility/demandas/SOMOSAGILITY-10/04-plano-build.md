@@ -1,3 +1,5 @@
+**Resultado do build:** concluído
+
 # SOMOSAGILITY-10 — Build (dev-apex)
 
 **Org:** `sbx-somos-agility-dev` (orgId `00DHa0000070wxfMAA`, sandbox confirmada via
@@ -202,3 +204,24 @@ partir desta branch.
 6. **Dívida identificada:** ver seção 5 (testes pré-existentes de `LancamentoDespesasBOTest`
    quebrados por falta de `Phone` no fixture de `Contact`, não corrigido por estar fora do
    escopo desta demanda).
+
+---
+
+## Correções da rework (2026-11-16) — testes recusados no deploy da QA
+
+Org: `sbx-somos-agility-dev` (sandbox, única conectada). Só classes de teste alteradas; lógica de
+`SolicitacaoReembolsoBO`, handler e Flow intocadas. Nenhuma validation rule alterada ou desativada.
+
+| Falha | Correção |
+|---|---|
+| `LancamentoDespesasBOTest.testOne` (telefone) | Contact com `Phone` sintético (regra `Checa_telefone_vazio_se_nao_for_gp`, lida via retrieve) e CPF sintético novo (o fixo foi removido). |
+| `LancamentoDespesasBOTest.testOne` (achado na dev ao corrigir) | A SR passa a ter `Possui_JOB_investimento_ou_treinamento__c = 'Não'`, e o Lançamento ganha `Tipo_da_Despesa__c = 'Alimentação'` (o padrão disparava `Especificar_Tipo_de_Despesa`) e `Valor_da_Despesa__c = 10` (regra "Favor informar o Valor da Despesa"). |
+| `SolicitacaoReembolsoBOTest` (6 métodos) | Toda SR (helper e bulk de 200) com `Possui_JOB_investimento_ou_treinamento__c = 'Não'`. |
+| `SolicitacaoReembolsoTriggerHandlerTest` (4 métodos) | Idem, no helper `criarSolicitacao`. |
+| Cobertura 0% | Efeito dos inserts recusados. Com os testes passando: handler 100%, `SolicitacaoReembolsoBO` 84% só pelo seu teste e 95% com o teste do handler junto (linhas 17, 24, 41 são defensivas), `LancamentoDespesasBO` 88%. |
+
+**Limite conhecido:** a validation rule "Favor preencher o JOB" NÃO existe na dev (consulta Tooling: só `Verifica_status_do_JOB`, em outro objeto), então não pude ler a fórmula. Preenchi o campo citado na mensagem com `'Não'`, valor válido do picklist e que também vale na dev. Se a regra da QA exigir outro campo junto (ex.: JOB de investimento/treinamento), o deploy da QA vai mostrar.
+
+**Evidência (dev):** `sf project deploy start -l RunSpecifiedTests` com as 3 classes de teste: Succeeded, 11 testes, 0 falhas (deploy das 3 classes de teste na dev, só teste; nenhuma outra metadata). A rodada anterior de build/Flow permanece como descrita acima.
+
+**Versões e ativação:** nada de Flow/classe de lógica mudou nesta rework; sem ativação nova.
