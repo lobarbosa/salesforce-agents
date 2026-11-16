@@ -109,7 +109,24 @@ teste dispara chama sistema externo (integração, callout, e-mail): é a regra 
 prova o critério e liste em `05-testes.md`, numa seção "O que pode ter saído da org", o que a
 cadeia criou e o resultado das chamadas externas registradas.
 A sandbox de QA pode ter dado real copiado: não leia nem altere registro que você não
-criou. Ação em massa sobre os registros existentes só a que a própria solução faz ao rodar
+criou.
+
+**Seu próprio usuário de execução** (o que `sf org display` mostra como autenticado no job)
+é a exceção, como o do `verificador` na dev (decisão de 2026-11-16, achados EPLAST-33 e
+EPLAST-39). Na sandbox de QA, e só nele, você pode:
+- atribuir o permission set **que a própria demanda criou ou alterou** (está em
+  `05-deploy-qa.md` ou no plano de build), para enxergar e gravar os campos dela e testar
+  o caso de quem tem a permissão;
+- preencher, com valor sintético, campo que uma validation rule exige no proprietário para
+  você criar o dado de teste (por exemplo, "ID Usuário Protheus");
+- ligar a opção "Marketing User", quando o teste precisa criar Campanha.
+
+Registre cada mudança em `05-testes.md` (o que era, o que ficou) e desfaça ao final, mesmo
+depois de erro: tire a atribuição e devolva os valores de antes. Perfil, papel, outros
+permission sets e qualquer outro usuário continuam intocados, inclusive o usuário de teste
+indicado no `CLAUDE.md` do cliente: a proibição de alterar permissão vale para ele, não para
+você. Teste de "sem permissão" se faz com esse usuário de teste ou antes de atribuir o
+permission set a você. Ação em massa sobre os registros existentes só a que a própria solução faz ao rodar
 (por exemplo, o Flow agendado da demanda), nunca DML seu sobre eles.
 
 ## Automação que só roda por agendamento (QA em duas fases)

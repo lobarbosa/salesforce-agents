@@ -1,4 +1,5 @@
 // EPLAST-43 - massa fictícia para os públicos de marketing. Só dev/QA. Números e e-mails fictícios.
+TriggerUtility.bypassTrigger = true; // exigido na Eplast para nao disparar a cadeia de AccountTrigger (provado na verificacao 2026-11-16)
 Id owner = [SELECT Id FROM User WHERE Username LIKE 'projetos@konectabr.com%' AND IsActive = true LIMIT 1].Id;
 List<Account> accs = new List<Account>();
 for (Integer i = 1; i <= 2; i++) {

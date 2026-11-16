@@ -10,4 +10,4 @@ Todo registro criado leva o prefixo `EPLAST<n>-TESTE`; quem cria apaga, e só o 
 
 Uso: `sf apex run --file fixtures/eplast43_publicos.apex --target-org sbx-eplast-dev`.
 Limpeza: bloco comentado no fim do script.
-Status: escrito pelo builder em 2026-11-15, **ainda não executado**; o verificador grava aqui o que funcionar.
+Status: executado na dev em 2026-11-16 pelo verificador da EPLAST-43 (passou com a linha de bypass de TriggerUtility no topo; limpeza por Apex anônimo conferida).

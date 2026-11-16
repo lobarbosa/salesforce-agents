@@ -6,7 +6,9 @@ Etapa que vai rodar: `build` · org: `sbx-eplast-dev`. Gerado pela esteira antes
 - nenhum
 
 ## Outras demandas mexendo nos mesmos componentes
-- nenhuma
+- EPLAST-36 (aguardando_homologacao) também mexe em: permissionsets/PS_Marketing_Publicos, reports/MARKETINGCLOUD.
+- EPLAST-37 (aguardando_homologacao) também mexe em: permissionsets/PS_Marketing_Publicos, reports/MARKETINGCLOUD.
+- EPLAST-42 (aguardando_gate_build) também mexe em: permissionsets/PS_Marketing_Publicos, reports/MARKETINGCLOUD.
 
 ## Estado na org
 - nada a conferir: a demanda ainda não tem componentes no repositório
