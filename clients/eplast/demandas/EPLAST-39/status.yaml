@@ -2,7 +2,7 @@ id: EPLAST-39
 client: eplast
 titulo: Origem dos leads e retorno das campanhas
 tipo: projeto
-status: build
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -132,3 +132,7 @@ historico:
   para: build
   autor: pipeline
   em: '2026-11-15T22:57:05.036606+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T00:05:49.581628+00:00'
