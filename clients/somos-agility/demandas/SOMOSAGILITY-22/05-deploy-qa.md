@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-somos-agility-qa`
-- **Deploy:** `0AfHa00000EI0SvKAL` (Succeeded)
-- **Quando:** 2026-11-15T19:21Z
-- **Commit:** `e6e77ad4`
+- **Deploy:** `0AfHa00000EIaPyKAL` (Succeeded)
+- **Quando:** 2026-11-16T18:21Z
+- **Commit:** `ed6c0d89`
 
 ## Componentes
 - `force-app/main/default/approvalProcesses/JOB_de_Solicita_o_de_Investimento__c.JOB_de_solicitacoes_de_investimento.approvalProcess-meta.xml`

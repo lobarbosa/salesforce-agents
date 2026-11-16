@@ -1,63 +1,51 @@
-# Roteiro de teste — Status "Pendente" nos Jobs de Solicitação de Investimento
+# Roteiro de teste — SOMOSAGILITY-22: status de qualificação dos Jobs no painel financeiro
 
-Foi ajustado o processo de aprovação dos Jobs: ao enviar um Job para aprovação, o campo Status da Qualificação passa a ficar "Pendente" (antes continuava "Não Enviado" até a decisão final). Com isso, o relatório de Jobs e o painel do financeiro passam a mostrar os Jobs em aprovação no grupo correto.
+Foi entregue o ajuste no processo de aprovação dos Jobs de Solicitação de Investimento e no relatório e painel (dashboard) de Jobs do financeiro. Para quem usa: ao enviar um Job para aprovação, o campo de status de qualificação passa a mostrar o valor correto, e o relatório e o painel contam todos os Jobs por esse status.
 
-**Situação do teste automático:** comprovado que o ajuste está presente na sandbox de QA. Não foi comprovado o comportamento de envio, aprovação e rejeição: o usuário de teste do time não entra nos critérios do processo (a regra depende de quem criou o Job). Por isso os testes 1 a 4 ficam para quem segue o roteiro, com um usuário que crie Jobs normalmente. Relatório e painel não foram abertos, pois a QA tem dados reais copiados.
+**Situação do teste automático:** comprovei só que os itens existem na QA e que a configuração grava "Pendente" no envio. Não consegui enviar um Job de teste para aprovação (o processo só se aplica a pessoas e grupos específicos do cliente) nem abrir relatório e painel (a QA tem dados reais copiados). Os Testes 1 a 5 abaixo ficam para quem segue o roteiro.
 
 ## Antes de começar
-- Ambiente: sandbox de QA (nunca produção).
-- Perfil: usuário do financeiro que costuma criar e enviar Jobs para aprovação, e um aprovador.
-- Dado de teste: crie 1 Job novo com o texto "TESTE SOMOSAGILITY-22" no campo Observação e preencha os campos obrigatórios. Não use Jobs reais.
+- Ambiente: sandbox de QA (`sbx-somos-agility-qa`), nunca produção.
+- Perfil: use um usuário do financeiro que possa criar Jobs e que conste entre os solicitantes do processo de aprovação (pergunte ao time qual usuário de teste usar). Para aprovar, use o aprovador da etapa.
+- Crie um Job de teste: aba Jobs de Solicitação de Investimento, botão Novo, e no campo Observação escreva "TESTE SOMOSAGILITY-22 manual". Preencha os campos obrigatórios com valores inventados. Crie dois: "TESTE ... A" e "TESTE ... B".
 
 ## Teste 1 — Enviar para aprovação grava "Pendente"
-1. Abra o Job de teste.
+1. Abra o Job de teste A.
 2. Confira que o campo Status da Qualificação está "Não Enviado".
 3. Clique em "Enviar para aprovação".
-4. Atualize a página.
-
-**Resultado esperado:** Status da Qualificação = "Pendente". O campo Status Previsão de Gastos não muda.
+**Resultado esperado:** o envio é aceito e o campo Status da Qualificação mostra "Pendente". O campo de status da previsão de gastos não muda.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Aprovar
-1. Com o aprovador, abra o Job de teste e clique em "Aprovar".
-2. Atualize a página.
-
-**Resultado esperado:** Status da Qualificação = "Aprovado".
+## Teste 2 — Aprovar leva a "Aprovado"
+1. Entre como aprovador da etapa e abra o item de aprovação do Job A.
+2. Clique em Aprovar (todas as etapas, se houver mais de uma).
+**Resultado esperado:** Status da Qualificação "Aprovado".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 3 — Rejeitar e reenviar
-1. Crie um segundo Job de teste e envie para aprovação.
-2. Com o aprovador, clique em "Rejeitar".
-3. Confira o status, depois reenvie o Job para aprovação.
-
+1. Envie o Job B para aprovação.
+2. Como aprovador, clique em Rejeitar.
+3. Confira o status e reenvie o Job.
 **Resultado esperado:** após rejeitar, "Rejeitado"; após reenviar, "Pendente".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Relatório de Jobs mostra os pendentes
-1. Abra o relatório "JOBs de Investimento" (pasta Financeiro).
-2. Procure os Jobs de teste.
-
-**Resultado esperado:** o Job de teste enviado e ainda em aprovação aparece no grupo "Pendente", e em nenhum outro. A soma dos grupos do gráfico é igual ao total de linhas.
+## Teste 4 — Relatório de Jobs não perde registros
+1. Abra Relatórios, pasta Financeiro, relatório "JOBs de Investimento".
+2. Anote o total de linhas e o total do gráfico de rosca.
+3. Compare os grupos (Pendente, Aprovado, Rejeitado, Não Enviado, Recall) com os Jobs de teste A e B.
+**Resultado esperado:** total de linhas igual ao total da rosca; cada Job de teste aparece só no grupo do seu status atual; nenhum status válido fica de fora.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Painel financeiro bate com o relatório
-1. Abra o painel de controle financeiro e atualize.
-2. Compare a contagem de cada status com a do relatório do teste 4.
-
-**Resultado esperado:** as contagens por status são iguais.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 6 — Campos obrigatórios na aprovação (pedido de 30/10)
-1. Tente enviar um Job de teste para aprovação com "Classificação gerencial" e "Denominação" vazios.
-
-**Resultado esperado:** o envio é bloqueado pedindo esses campos. Este item ainda não foi confirmado como parte da entrega; se não bloquear, informe ao time.
+## Teste 5 — Painel bate com o relatório
+1. Abra o painel de Projetos Atuais que usa esse relatório e clique em Atualizar.
+2. Compare a contagem de cada status com a do Teste 4.
+**Resultado esperado:** as contagens são iguais.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que não dá para conferir pela tela
-A presença do ajuste no processo de aprovação da QA foi conferida pelo time técnico (ver `05-testes.md`). Apague os Jobs de teste ao terminar.
+O resultado do envio de teste feito pelo time técnico e as contagens por status na QA estão em `05-testes.md`. O pedido de 30/10 (tornar "Classificação gerencial" e "Denominação" obrigatórias na aprovação) não foi construído e depende de decisão do time; por isso não há teste dele aqui.
