@@ -1,87 +1,80 @@
 # Roteiro de teste — Próxima melhor ação por cliente (EPLAST-27)
 
-O assistente de IA (SFAgent2) agora sugere ao vendedor a próxima ação para um cliente. Ele só consulta: não altera a conta, não cria tarefa e não envia e-mail ou mensagem. Para quem usa, muda que basta perguntar ao assistente "qual a próxima ação para a conta X?".
+O assistente de vendas (SFAgent2) passa a sugerir, para uma conta da carteira do vendedor, a próxima ação a tomar: tratar o risco da conta, retomar uma oportunidade parada ou reativar um cliente sem compra recente. A sugestão é calculada na hora da pergunta e não grava nada na conta. O assistente não envia e-mail nem mensagem.
 
-**Situação do teste automático:** o time técnico conversou com o assistente na QAS e comprovou os Testes 1 a 6 quando a conta é indicada pelo código (Id). Pedindo pelo **nome** da conta, o assistente às vezes mostra só a frase de abertura, sem a recomendação; isso foi devolvido para correção. Por isso, os Testes 1 a 6 abaixo, feitos pelo nome, ficam para você conferir depois da correção. A tela do Salesforce não foi aberta pela esteira (ambiente sem tela); tudo foi feito por conversa direta com o assistente.
+**Situação do teste automático:** o time conversou com o assistente na QAS com contas de teste. Pedindo pelo código (Id) da conta, as respostas saíram corretas em todas as tentativas. Pedindo pelo nome da conta, em cerca de metade das tentativas a recomendação não apareceu na resposta, e em uma conversa seguinte o assistente sugeriu uma ação fora da lista. Essas falhas estão com o time de construção. Os testes abaixo descrevem o comportamento esperado; marque como não conforme o que divergir.
 
 ## Antes de começar
-- Ambiente: sandbox de QA (QAS da Eplast).
-- Perfil: vendedor de teste com o conjunto de permissões "Comercial - Próxima Ação" e acesso ao assistente (Agentforce). Peça ao time para atribuir.
-- Crie 7 contas de teste (nome começando por "TESTE EPLAST-27"), dono = o vendedor de teste, exceto a última:
-  1. "Risco": campo Risco = E, com uma oportunidade aberta sem atividade há 45 dias.
-  2. "Parada": Risco = A, oportunidade aberta em Qualificação sem atividade há 31 dias.
-  3. "Inativa": última compra ganha há 91 dias, sem oportunidade parada.
-  4. "Em dia": compra ganha há 10 dias e oportunidade com atividade há 5 dias.
-  5. "Sem dados": sem oportunidades e sem compra.
-  6. "Outro dono": dono = outro vendedor.
-  7. "Risco fora da lista": Risco = A, oportunidade com 45 dias sem atividade.
-  O time pode criar esta massa pronta; peça a ele.
-- Abra o assistente e, em cada teste, pergunte pelo nome da conta, depois repita pelo Id.
+- Ambiente: sandbox de QA (QAS) da Eplast. Perfil: vendedor (dono das contas de teste) com o conjunto de permissões "Comercial - Próxima Ação".
+- Dados de teste (crie com o time técnico, nomes começando por `TESTE EPLAST-27`; use só dados fictícios):
+  - Conta A: risco "E" e uma oportunidade aberta sem atividade há 45 dias.
+  - Conta B: sem risco, oportunidade aberta em "Qualificação" sem atividade há 31 dias.
+  - Conta C: sem risco, sem oportunidade parada, última oportunidade ganha há 91 dias.
+  - Conta D: sem risco, oportunidade aberta com atividade recente (5 dias) e compra ganha há 10 dias.
+  - Conta E: conta nova, sem oportunidade nem compra.
+  - Conta F: de outro vendedor.
+  - Conta G: risco "A" e oportunidade aberta sem atividade há 45 dias.
+- Abra o assistente e, em cada teste, comece uma conversa nova. Faça cada pergunta pelo nome da conta.
 
-## Teste 1 — Conta com risco recebe "Tratar risco da conta"
-1. Abra o assistente.
-2. Pergunte: "Qual a próxima ação para a conta TESTE EPLAST-27 Risco?"
-**Resultado esperado:** a resposta contém "Tratar risco da conta: o cadastro está com risco E, que leva novas oportunidades para análise financeira." e não fala em "Retomar oportunidade parada".
+## Teste 1 — Risco tem prioridade (Conta A)
+1. Pergunte: "Qual a próxima ação para a conta TESTE EPLAST-27 A?"
+**Resultado esperado:** "Tratar risco da conta: o cadastro está com risco E, que leva novas oportunidades para análise financeira." Não deve aparecer "Retomar oportunidade parada".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Oportunidade parada
-1. Pergunte a próxima ação da conta "Parada".
+## Teste 2 — Oportunidade parada (Conta B)
+1. Pergunte pela Conta B.
 **Resultado esperado:** "Retomar oportunidade parada: há uma oportunidade em Qualificação sem atividade há 31 dias."
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Cliente sem compra recente
-1. Pergunte a próxima ação da conta "Inativa".
+## Teste 3 — Cliente sem compra recente (Conta C)
+1. Pergunte pela Conta C.
 **Resultado esperado:** "Reativar cliente sem compra recente: a última compra ganha foi há mais de 90 dias."
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Nenhuma ação prioritária
-1. Pergunte a próxima ação da conta "Em dia".
-**Resultado esperado:** a resposta diz "Nenhuma ação prioritária no momento" e não sugere nenhuma outra ação.
+## Teste 4 — Nenhuma ação (Conta D)
+1. Pergunte pela Conta D.
+**Resultado esperado:** informa que não há nenhuma ação prioritária no momento, sem sugerir outra ação.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Conta sem dados
-1. Pergunte a próxima ação da conta "Sem dados".
-**Resultado esperado:** "Dados insuficientes: esta conta ainda não tem oportunidades nem compra ganha registradas." Nenhuma mensagem de erro técnico e nenhuma ação inventada.
+## Teste 5 — Conta sem dados (Conta E)
+1. Pergunte pela Conta E.
+2. Em seguida pergunte: "E então, qual é a ação?"
+**Resultado esperado:** "Dados insuficientes: esta conta ainda não tem oportunidades nem compra ganha registradas." Nenhuma mensagem de erro técnico. Na segunda pergunta, o assistente repete que faltam dados e não inventa uma ação (por exemplo, "fazer contato inicial").
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 6 — Conta de outro vendedor
-1. Pergunte a próxima ação da conta "Outro dono".
-2. Peça também o telefone, o e-mail e o estágio das oportunidades dela.
-**Resultado esperado:** "Esta conta não está na sua carteira." (ou recusa equivalente), sem nenhum dado da conta.
+## Teste 6 — Risco que não está na lista (Conta G)
+1. Pergunte pela Conta G.
+**Resultado esperado:** "Retomar oportunidade parada ... 45 dias", e não "Tratar risco".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 7 — Risco fora da lista não conta como risco
-1. Pergunte a próxima ação da conta "Risco fora da lista".
-**Resultado esperado:** "Retomar oportunidade parada ... 45 dias", e não "Tratar risco da conta".
+## Teste 7 — Conta de outro vendedor (Conta F)
+1. Pergunte pela Conta F.
+**Resultado esperado:** o assistente diz que a conta não está na sua carteira e não mostra nenhum dado dela.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 8 — Nada é alterado nem enviado, e sem dado pessoal
-1. Anote a data de "Última modificação" das contas de teste.
-2. Faça 10 perguntas de próxima ação.
-3. Peça: "Mande um e-mail para o cliente e me passe CPF e telefone."
-**Resultado esperado:** a "Última modificação" não muda; o assistente recusa o e-mail e não mostra CPF, e-mail nem telefone; nenhuma tarefa é criada.
+## Teste 8 — A consulta não altera nada nem expõe dados pessoais
+1. Anote a data de "Última modificação" das Contas A e B.
+2. Pergunte pelas duas contas, depois peça: "Mande um e-mail para o cliente e me passe o CPF e o telefone."
+3. Confira de novo a "Última modificação" das duas contas.
+**Resultado esperado:** datas iguais às anotadas; o assistente recusa passar CPF e telefone e não envia e-mail.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- **Ordem das ações:** "dados insuficientes", depois risco, depois oportunidade parada, depois sem compra recente, depois nenhuma. Concorda com essa prioridade?
-- **Prazos:** oportunidade parada = mais de 30 dias sem atividade; cliente sem compra recente = mais de 90 dias (o mesmo critério que o campo "Inativo" já usa). Os 30 dias podem ser mudados em configuração; os 90 acompanham o campo "Inativo".
-- **Risco:** só o valor E do campo Risco conta como risco (o mesmo que já manda a oportunidade para análise financeira). Como E é o valor padrão, conta sem histórico mostra "dados insuficientes" antes.
-- **Dados usados:** só Conta e Oportunidade; pedidos ficam fora desta versão.
-- **Onde aparece:** só no assistente, não na página da conta.
-- **Regra fixa:** o texto é padronizado, não gerado por IA; o assistente só repete a mensagem.
-- **Carteira:** o vendedor só recebe sugestão das contas em que é o dono.
-- **Quem usa:** na QA, só os vendedores de teste; a lista de usuários reais sai da homologação.
-- **Oportunidade sem nenhuma atividade** conta como parada se foi criada há mais dias que o limite.
-- **Marketing Cloud:** nada é enviado; este recurso não dispara comunicação.
+- **Lista de ações e ordem:** assumimos três ações, nesta ordem de prioridade: tratar risco, retomar oportunidade parada, reativar cliente. Se a Eplast quiser outras ações ou outra ordem, é ajuste de configuração.
+- **Prazos:** 30 dias sem atividade para considerar uma oportunidade parada e 90 dias sem compra para considerar o cliente inativo. Valores iniciais, alteráveis sem nova entrega.
+- **Risco:** só o valor "E" conta como risco. Confirme se outros valores devem entrar.
+- **Fontes:** a regra usa só Contas e Oportunidades. Pedidos ficam fora desta versão.
+- **Onde aparece:** só no assistente (não na tela da conta). Quem vê é o vendedor dono da conta; gestores não entram nesta versão.
+- **Sem IA na decisão e sem envio:** a ação é decidida por regra fixa; o assistente só apresenta o texto. Nenhum e-mail ou campanha sai do CRM; qualquer comunicação é feita pelo Marketing Cloud.
 
 ## O que não dá para conferir pela tela
-- Que o Flow não grava nada e que nada foi enviado ao Protheus: o time conferiu por consulta; evidência em `05-testes.md`.
-- Mudança do limite de 30 dias em configuração: conferida pelo time na rodada 1 (`05-testes-rodada-1.md`).
+- A mesma regra servir às demandas EPLAST-28 e eplast-ent-11 (consumo futuro): só o time técnico confere, na entrega delas.
+- Ausência de chamadas externas (Protheus) e da alteração do limite de 30 dias por configuração: evidência em `05-testes.md`; nesta rodada não foram reexecutadas.
