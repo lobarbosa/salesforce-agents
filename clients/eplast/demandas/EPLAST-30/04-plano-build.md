@@ -111,3 +111,33 @@ Org: `sbx-eplast-dev` (conferida com `sf org list`; Org Id `00DHa000006vfMLMAY`)
 - **FALHA 1 (Screen Flow não exercitado na QA: atribuição do PS recusada por falta de licença CPQ): não corrigível no build.** É limitação do ambiente de teste, não defeito do pacote. O PS leva leitura de `SBQQ__Quote__c` e `SBQQ__QuoteLine__c`, exigidas pelo design (seções 3.4 e 6: cotação primária e linhas), e a plataforma só atribui o PS a quem tem a licença `SalesforceCPQ_CPQStandardPerm`. Tirar essas permissões para contornar o teste quebraria o critério de preço com cotação e divergiria do design aprovado, então não foi feito. O caso C-08 (follow-up com data de fechamento) já passou; C-01 a C-07 passaram.
 - **Encaminhamento (delivery):** atribuir a licença CPQ ao usuário do job na QA, ou usar usuário de teste que já tenha a licença e login, e dar a ele o `PSG_Comercial_RascunhoIA`; ou o time executar `05-roteiro-cliente.md` (C-09 a C-12).
 - **Ponto de rollout para o design e o PR:** `PSG_Comercial_RascunhoIA` só pode ser atribuído a usuários com licença CPQ (a org tem 4 de 5 em uso). Registrar na lista de atribuição pós-deploy (PA-06).
+
+## Mudança da decisão do responsável (2026-11-16): sem cotação
+Org: `sbx-eplast-dev` (conferida com `sf org list`; Org Id `00DHa000006vfMLMAY`). Design lido: seção "Decisão do responsável (2026-11-16): tirar a cotação", que vale acima do que o design diz sobre cotação. Sem Apex, sem classe nova. Deploy na dev com sucesso (`0AfHa00000EIAgnKAH`; o Flow foi reimplantado depois, ver abaixo).
+
+| Componente | O que mudou |
+|---|---|
+| `Opportunity_Screen_RascunhoComercial` | **Versão 2, Draft** (a v1 segue ativa, não foi editada). Saíram `Get_Quote`, `Get_Linhas`, o loop de linhas, `Decision_Cotacao`, `Decision_Limite`, `Assign_Linha`, as fórmulas `fDadosCotacao`/`fLinhaAtual`, as variáveis de cotação e o campo `SBQQ__PrimaryQuote__c` da leitura da Opportunity. As 3 ações passam só `Input:DadosOportunidade`. Zero referência a `SBQQ` no Flow (só a frase da descrição). Segue só leitura, com fault paths e tela de negativa |
+| `Rascunho_Followup_Comercial` | Versão `_3` (a `_1` e a `_2` ficam como estão: versão publicada é imutável). Sem a entrada `DadosCotacao` nem o bloco de cotação. Regra 2 reescrita (ver PE-01). `activeVersionIdentifier` aponta para a `_3` |
+| `Rascunho_Proposta_Comercial` | Versão `_2`, mesmas mudanças. Ativa |
+| `Argumentos_Comerciais_Oportunidade` | Versão `_2`. A fonte do argumento passa a ser só `Oportunidade.<campo>` ou `Conta.<campo>`. Ativa |
+| `PS_Comercial_RascunhoIA` | Saíram as permissões de objeto de `SBQQ__Quote__c` e `SBQQ__QuoteLine__c` e os 11 campos `SBQQ__*`. Ficam Opportunity e Account (leitura), `IA_Rascunho_Comercial` e o acesso ao Flow. Descrição encurtada (limite de 255) |
+| `PSG_Comercial_RascunhoIA` | Sem mudança de arquivo: só traz o PS e `force__EinsteinGPTPromptTemplateUser`, sem licença CPQ (0 ocorrência de `SBQQ`) |
+| `Opportunity_Record_Page` | Sem mudança. O diff contra a `main` não traz nenhuma linha com `SBQQ`; os `SBQQ` que existem na página (campo de cotação primária, lista de cotações) já eram da org, não desta demanda |
+
+**Prova na dev:** os 3 templates, chamados pela API de geração com texto sintético só em `DadosOportunidade`, responderam usando os dados (nome, etapa, data de fechamento, valor, conta); campo vazio entrou em "Campos vazios"; nenhum bloco de cotação, nenhum preço inventado. O Flow v2 passou na validação como Active (dry-run) e está salvo como Draft. Primeiro deploy do Flow deixou a v2 como `InvalidDraft` (foi enviado junto com os templates, antes de a versão nova deles valer); reenviado sozinho, a v2 ficou `Draft` válida. O Screen Flow segue sem execução de ponta a ponta (limite de ambiente já registrado nas rodadas anteriores).
+
+### Versões e ativação
+- **Flow `Opportunity_Screen_RascunhoComercial`: v1 Active (com cotação), v2 Draft (sem cotação).** A v2 **não foi ativada**: a ativação é passo separado, de quem aprova o PR/release.
+- **Atenção à ordem:** os templates já estão na versão nova (sem `DadosCotacao`) e o PS sem `SBQQ`. A v1 ativa ainda envia `Input:DadosCotacao` e lê `SBQQ`, então **na dev a v1 deixou de ser utilizável até a v2 ser ativada**. Ativar a v2 junto com a implantação dos templates e do PS em qualquer org (QA inclusive). Na QA, o deploy da esteira leva o Flow como Draft (o arquivo está Draft); a ativação lá é passo manual.
+- Templates: ativação já vai no `activeVersionIdentifier` do arquivo; a versão antiga fica preservada na org.
+- Rollback: reativar a v1 do Flow e voltar o `activeVersionIdentifier` dos templates para a versão anterior (`_1` ou `_2` no followup); o PS volta pelo Git (a v1 do Flow precisa de `SBQQ` e de licença CPQ).
+
+### Premissas assumidas (validar na homologação)
+- **PE-01 · O rascunho não cita a cotação (decisão do responsável, 2026-11-16).** Se a Eplast quiser, entra em demanda própria, com licença de CPQ para quem usa.
+- **PE-02 · Valor e condições sem cotação.** Pergunta: de onde vem o preço agora? **Decisão:** só `Opportunity.Amount` ("Valor da oportunidade", com moeda), como está; desconto, prazo de pagamento, condição comercial e quantidade de itens ficam `[a preencher]` (proposta e follow-up) ou sem argumento (argumentos). **Evidência:** são os únicos dados que restam depois da decisão; opção mais simples. **Como mudar:** regra 2 de cada template (nova versão de template).
+- **PE-03 · "Produtos".** A decisão diz que oportunidade, conta, produtos e o resto seguem. No design aprovado, produto só entrava pelas linhas da cotação; não há leitura de `OpportunityLineItem` no desenho. **Decisão:** não criei leitura de produto da oportunidade (seria desenho novo, com permissão e campos novos). **Como mudar:** demanda própria ou ajuste de design que liste os campos de `OpportunityLineItem`/`Product2`, leitura no Flow e FLS no PS.
+- **PE-04 · Limite de 50 linhas (PD-01) e CA-13 deixam de se aplicar**, por não haver mais linhas. A massa sintética de cotação com mais de 50 linhas não é necessária.
+
+### Para o verificador (muda em relação à seção 7)
+Os itens 1 a 3 (preço da cotação, `SBQQ__NetAmount__c`) e 9 (50 linhas) deixam de valer: conferir que o texto traz o valor da oportunidade e não cita cotação. Item 6/CA-09 e o login com o PSG ficam mais simples: o PS não exige mais licença CPQ, então a atribuição do PSG a um usuário de teste deixa de falhar por isso (a falha da rodada 2 de QA). Conferir na dev que o PS não tem objeto `SBQQ`. A v2 do Flow está Draft: para exercitar, ativar a v2 na dev (passo à parte).
