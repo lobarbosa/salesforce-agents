@@ -1,92 +1,93 @@
-# Roteiro de teste — Origem dos leads e retorno das campanhas (EPLAST-39)
+# Roteiro de teste — Origem dos leads e retorno das campanhas
 
-Foi entregue um painel de Marketing, com cinco relatórios, que mostra de onde vêm os leads, quantos viram oportunidade e quanto cada campanha retornou sobre o que custou. Quem tem acesso só consulta: não edita lead nem campanha. Nada é enviado por e-mail e nada muda no Marketing Cloud.
+Foi entregue um painel de Marketing com relatórios que mostram de onde vêm os leads, quais origens viram oportunidade e quanto cada campanha retorna. Para quem usa: leads sem origem aparecem como "Sem origem" e origens fora da lista padrão aparecem juntas como "Fora da lista".
 
-**Situação do teste automático:** o time conferiu que os relatórios, o painel e o acesso existem na sandbox QAS e que as permissões são só de leitura. Não conseguiu abrir os relatórios de origem e de conversão com dado, porque o usuário técnico do teste não tem o acesso de Marketing (e não pode recebê-lo). Hoje dois dos cinco quadros do painel dão erro para quem não tem esse acesso. Os testes 2 a 7 abaixo ficam para quem segue o roteiro, com o acesso atribuído.
+**Situação do teste automático:** o time já executou na QA os testes de soma por origem, "Sem origem", "Fora da lista", período, conversão, retorno da campanha e campanha sem custo, com dado de teste, e todos passaram. Ficou para quem segue este roteiro conferir a tela e o acesso de um usuário real de Marketing (o time só testou com administrador).
 
 ## Antes de começar
-- Ambiente: sandbox QAS (`eplast--qas`).
-- Perfil: um usuário de Marketing a quem foi atribuído o conjunto de permissões "PS Marketing Análise de Campanhas" e que está no grupo "Marketing Origem Retorno". Peça ao administrador para atribuir (Configuração > Usuários > o usuário > Conjuntos de permissões).
-- Dados de teste: crie 6 leads com "TESTE EPLAST-39" no sobrenome e na empresa: 2 com origem "Google Ads", 1 com "SDR", 2 sem origem preenchida e 1 convertido (use "Converter" num dos de Google Ads). Se o valor de origem fora da lista não puder ser digitado, peça ao administrador para criá-lo. Crie uma campanha "TESTE EPLAST-39 Com custo" com Custo real 1.000 e uma "TESTE EPLAST-39 Sem custo" sem custo. Vincule à primeira uma oportunidade de teste ganha de R$ 3.000.
+- Ambiente: sandbox de homologação (QAS).
+- Perfil: usuário de Marketing com o conjunto de permissões "PS Marketing Análise de Campanhas" atribuído (a Eplast atribui). Sem ele, dois quadros do painel mostram erro; isso é esperado.
+- Dado de teste: crie uma campanha "TESTE EPLAST-39 Com Custo" com Custo real 1.000 e uma oportunidade ganha de 2.500 ligada a ela; outra campanha "TESTE EPLAST-39 Sem Custo" com uma oportunidade ganha de 700. Crie um lead de teste sem Origem e outro com Origem preenchida por um texto fora da lista.
 
-## Teste 1 — O painel abre sem erro
-1. Abra Painéis > pasta "Origem e Retorno - Paineis".
-2. Abra "Marketing - Origem e Retorno de Campanhas".
-3. Clique em Atualizar.
+## Teste 1 — Leads por origem somam o total
+1. Abra Relatórios e a pasta "Marketing Origem e Retorno".
+2. Abra "MKT Leads por Origem".
+3. Some as linhas de origem e compare com o total do relatório.
 
-**Resultado esperado:** os 5 quadros mostram dado, nenhum com mensagem de erro.
+**Resultado esperado:** a soma das linhas é igual ao total.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — A soma por origem fecha com o total
-1. Abra Relatórios > pasta "Origem e Retorno" > "MKT Leads por Origem".
-2. Some as contagens de cada origem.
+## Teste 2 — Lead sem origem
+1. No mesmo relatório, procure a linha "Sem origem".
 
-**Resultado esperado:** a soma é igual ao Total geral. Há linhas para as origens usadas, mais "Sem origem" e "Fora da lista".
+**Resultado esperado:** existe a linha "Sem origem" com o número de leads sem origem; nenhuma linha aparece com "-".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Lead sem origem aparece como "Sem origem"
-1. No mesmo relatório, procure a linha dos leads sem origem.
+## Teste 3 — Origem fora da lista
+1. No mesmo relatório, procure "Fora da lista".
 
-**Resultado esperado:** a linha se chama "Sem origem" (nunca "-") e conta pelo menos os 2 leads de teste.
+**Resultado esperado:** o lead de teste com origem inventada está contado em "Fora da lista", e o texto inventado não aparece como linha própria.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Origem fora da lista
-1. Confira se existe um lead com origem que não é uma das 13 do campo Origem do lead.
-2. No relatório, procure a linha "Fora da lista".
+## Teste 4 — Período
+1. No relatório, altere o filtro de data de criação para "Este mês" e depois "Mês passado".
 
-**Resultado esperado:** esse lead é contado em "Fora da lista" e o valor não aparece como linha própria.
+**Resultado esperado:** os números mudam conforme o período e a soma das linhas continua igual ao total.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Mudar o período
-1. No relatório de leads, mude o filtro de data de criação para um mês sem leads, e depois para o mês atual.
-
-**Resultado esperado:** o total muda com o período e a soma por origem continua igual ao total.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 6 — Conversão por origem
+## Teste 5 — Conversão por origem
 1. Abra "MKT Conversão de Leads por Origem".
 
-**Resultado esperado:** para cada origem, taxa = convertidos ÷ total daquela origem. Nos dados de teste, "Google Ads" mostra 50%.
+**Resultado esperado:** a taxa de cada origem é leads convertidos dividido pelo total de leads daquela origem.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 7 — Retorno por campanha
+## Teste 6 — Retorno da campanha
 1. Abra "MKT Desempenho de Campanhas".
-2. Veja a linha "TESTE EPLAST-39 Com custo" e a "TESTE EPLAST-39 Sem custo".
+2. Localize "TESTE EPLAST-39 Com Custo".
 
-**Resultado esperado:** na campanha com custo, o retorno é 3,0 (R$ 3.000 ÷ R$ 1.000). Na campanha sem custo, o retorno fica em branco e não aparece erro.
+**Resultado esperado:** a coluna "Receita ganha / custo real" mostra 2,50.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 8 — Só leitura
-1. Entre com o usuário que só tem o acesso de Marketing.
-2. Abra um lead e uma campanha e tente editar.
-3. Abra os relatórios da pasta "Origem e Retorno".
+## Teste 7 — Campanha sem custo
+1. No mesmo relatório, localize "TESTE EPLAST-39 Sem Custo".
 
-**Resultado esperado:** a edição não é permitida e os relatórios abrem.
+**Resultado esperado:** a coluna "Receita ganha / custo real" fica em branco ("-"), sem mensagem de erro.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 9 — Os relatórios não mostram dado pessoal
-1. Abra "MKT Leads por Origem".
+## Teste 8 — Painel
+1. Abra Painéis e "Marketing - Origem e Retorno de Campanhas".
+2. Clique em Atualizar.
 
-**Resultado esperado:** só há totais por origem e mês, sem nome, e-mail, telefone ou CPF e sem lista de leads.
+**Resultado esperado:** os cinco quadros mostram dado, sem mensagem de erro.
+- [ ] Conforme
+- [ ] Não conforme — o que apareceu:
+
+## Teste 9 — Só leitura
+1. Com o usuário de Marketing, tente editar um lead e uma campanha.
+2. Abra um relatório da pasta.
+
+**Resultado esperado:** a edição é negada e o relatório abre.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- A origem vem do campo Origem do lead. Lead sem origem aparece como "Sem origem"; valor fora das 13 origens da lista vira "Fora da lista". Os dados não são corrigidos.
-- O retorno da campanha é receita ganha ÷ custo real, e ao lado aparece o ROI nativo ((ganho − custo) ÷ custo). Campanha sem custo fica em branco, não com "n/a".
-- O relatório de oportunidades por origem usa a origem da própria oportunidade; vazio aparece como "-".
-- O período é escolhido no filtro de data de cada relatório.
-- Quem abre os relatórios precisa do acesso de Marketing (inclui executar relatórios), atribuído pela Eplast. Quem não o tem vê erro em dois quadros do painel.
-- Quem entra no grupo e recebe o acesso é decidido pela Eplast, depois da entrega.
-- Não há métrica do Marketing Cloud nesses relatórios.
+- **Origem vazia:** decidimos o rótulo "Sem origem". Para mudar, é troca de um texto.
+- **Origem fora da lista:** decidimos agrupar em "Fora da lista". Para ver cada uma separada, ajusta-se o relatório.
+- **Retorno da campanha:** decidimos receita das oportunidades ganhas dividida pelo custo real. Para usar custo estimado ou margem, ajusta-se a fórmula.
+- **Campanha sem custo:** fica em branco, não "n/a". Mostrar texto exigiria um campo novo.
+- **Período:** filtro em cada relatório, não no painel; relatórios de desempenho e de resposta ficam sem filtro de período.
+- **Origem da oportunidade:** o relatório de oportunidades usa a origem como está, e vazio aparece como "-".
+- **Atribuição:** vale a origem do lead (primeiro contato), sem multi-toque.
+- **Quem acessa:** a Eplast atribui o conjunto de permissões aos usuários de Marketing depois do deploy.
+- **Qualidade da origem:** o painel não corrige dado; quem corrige as origens vazias a Eplast define.
+- **Marketing Cloud:** nada foi feito nele; o painel usa só dados do CRM.
 
 ## O que não dá para conferir pela tela
-- Que nada existente foi alterado, que não há envio nem automação nova e que o acesso é só de leitura nas permissões: o time conferiu por consulta à org e ao repositório, em `05-testes.md`.
+Que nenhum relatório ou painel existente foi alterado e que não há envio de e-mail nem automação nova: a evidência está em `05-testes.md` (casos T10 e T12).

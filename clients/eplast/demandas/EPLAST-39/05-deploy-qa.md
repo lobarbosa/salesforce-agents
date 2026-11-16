@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EI4zZKAT` (Succeeded)
-- **Quando:** 2026-11-15T22:51Z
-- **Commit:** `26c16418`
+- **Deploy:** `0AfHa00000EI9BFKA1` (Succeeded)
+- **Quando:** 2026-11-16T02:36Z
+- **Commit:** `5ed69e1d`
 
 ## Componentes
 - `force-app/main/default/dashboards/Marketing_Origem_Retorno_Dash.dashboardFolder-meta.xml`
