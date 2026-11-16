@@ -1,45 +1,50 @@
 **Verificação:** inconclusiva
-**Org de teste:** `sbx-eplast-dev` (sandbox "QA" da Eplast, regra 5; org 00DHa000006vfMLMAY, conferida com `sf org list`)
+**Org de teste:** sbx-eplast-dev (00DHa000006vfMLMAY)
 
-# EPLAST-41 · Verificação (após correções da rodada 1)
+# EPLAST-41 · Verificação na dev (rodada 3 do build)
 
-Motivo: o critério principal (tela do Screen Flow, texto, salvar Task) só roda por interface. `Flow.Interview.start()` recusa Screen Flow ("O Start não pode ser chamado em um fluxo com o tipo de processo Fluxo de tela") e não há sessão de usuário com UI. Provei por Apex e metadata o que dá; o resto fica sem prova.
+Org conferida com `sf org list`: alias `sbx-eplast-dev` (sandbox "QA" da Eplast, regra 5). Nada em QA, nada ativado, nenhuma metadata alterada, nenhum dado criado nem alterado.
 
-## Dados e ajustes de usuário (dev)
-- Fixture `fixtures/eplast41_dados_teste.apex`: Conta A (`001Ha000016Ux2DIAS`), Conta B (`001Ha000016Ux2EIAS`), Opp aberta (`006Ha00000QWv93IAD`) criadas. Opp ganha falhou (exige Filial com `CodeERP__c`; fixture já documenta, opcional).
-- Usuário de execução `005bJ00000piKAaQAM`: `ProtheusSellerId__c` de null para `TESTE41` (exigido pela regra `CheckAccountOwnerHasProtheusSellerId`) e devolvido a null ao final (conferido). Não atribuí o PS novo nem mexi em Marketing User.
-- Limpeza: Opp e Contas `TESTE EPLAST-41` apagadas; contagem final 0. Task `Rascunho%`: 0 antes e depois.
-- Usuário de serviço da Konecta: o Id citado é o próprio usuário de execução; o outro (`005bJ00000hBJmYQAW`) está inativo. Não usado.
+## Resumo
+O critério principal (percorrer o Screen Flow "Rascunho com IA" até o texto e "Salvar como tarefa") não pôde ser exercitado. Screen Flow só roda com interface; não há como dirigi-lo por `sf`, Apex ou API. A correção da FALHA 2 (botão de avanço) existe só na v2, que está em Draft. A versão ativa é a v1, que tem o defeito. Isto não é falha nova: é o passo de ativação que o plano de build já registra.
 
-## Falhas da rodada anterior
-| Falha | Situação |
+## Versão ativa de fato (Tooling, `Flow`)
+| Flow | Versões na dev |
 |---|---|
-| FALHA 1: `No active template version` | **Corrigida (provada).** Apex com `generateMessagesForPromptTemplate('Rascunho_Relacionamento')` e 3 entradas sintéticas devolveu texto de 440 caracteres em ~1,5 s. |
-| FALHA 2: sem botão "Próximo" | **Não provada em tela.** Metadata da v2 na dev (Tooling): 13 telas, todas `allowFinish=true`. Só um usuário com UI confirma o botão. v2 segue Draft. |
+| `Task_Screen_RascunhoRelacionamento` | v1 **Active**, v2 Draft |
+| `Opportunity_Screen_RascunhoComercial` | v1 **Active**, v2 Draft |
 
-## Casos
+Telas com `allowFinish=true` (Metadata via Tooling):
+- v1 Active: 9 de 13 telas. A quick action abre esta versão.
+- v2 Draft: 13 de 13 telas. Esta é a correção do builder, presente mas inativa.
+
+Conclusão: a correção está no repositório e na dev como Draft, e **não está ativa**. Quem usar a ação na dev hoje cai na v1. Se a v1 reproduz o rodapé vazio da QA (rodada 2) não foi confirmado em tela, porque não há interface. A diferença de metadata (4 telas intermediárias) é coerente com a hipótese do builder.
+
+## Casos (design, seção 11)
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| 1 | Gerar rascunho da conta, ≤30 s | Apex chamou o template com entradas sintéticas, medindo o tempo | Texto gerado em até 30 s | 440 caracteres, 1,5 s (só o template, não a tela) | passou (parcial: tela não exercitada) |
-| 2 | Texto editável, nada criado antes de salvar | Contagem de Task `Rascunho%` após a geração | 0 | 0 | passou para o template; tela não exercitada |
-| 3 | Salvar como Task (WhatId, Subtype, Description) | Tooling na v2: 1 recordCreate; Flow não executável sem UI | Task com os campos do design | Só leitura da metadata (1 `recordCreate`); nenhuma Task criada | não executado |
-| 4 | Account não muda ao salvar | Exigia salvar via tela | `AccountHasCheckInTask__c`/`LastModifiedDate` iguais | Sem execução | não executado |
-| 5 | Opp aberta: relacionamento e comercial (v2) | Exigia tela e v2 ativa | Task na oportunidade | Opp de teste criada, fluxo não rodado; v2 Draft | não executado |
-| 6 | Conta B sem opp: aviso | Exigia tela | Aviso, sem texto | Sem execução | não executado |
-| 7 | Falha do modelo: erro sem texto, 0 Task | Exigia tela | Tela de erro, 0 Task | Metadata: `Gerar_Relacionamento` é a única action call, com fault para tela de erro; não executado | não executado |
-| 8 | Nenhum envio / Marketing Cloud | grep no XML do Flow por emailSimple, emailAlert, EmailMessage, et4ae5, Send; query de EmailMessage `TESTE EPLAST-41%` | Nenhum | 0 ocorrências no XML; 0 EmailMessage | passou (estático) |
-| 9 | Prompt sem dado pessoal | Leitura do template no repositório | Só `DadosConta`, `DadosOportunidade`, `ObjetivoMensagem` | Exatamente essas 3 entradas | passou |
-| 10 | Textos comerciais reaproveitados, sem duplicata | git diff vs. main e metadata | 3 templates existentes, sem novos de mesmo nome | Os 3 só versionados (recuperados da dev, sem alteração de conteúdo conferida no build); nenhum template comercial novo | passou (estático) |
-| 11 | SFAgent2 único e intacto | Query de `BotDefinition` | 1 | 1 (ações não comparadas) | passou (contagem) |
-| 12 | Acesso negado sem o PS novo | Query de atribuições do `PS_Comercial_RascunhoRelacionamento` | 0 atribuições; sem UI para tentar abrir | 0 atribuições; execução negada não testada | não executado |
-| 13 | Versões do Flow | Query de `Flow` na dev | Comercial v1 Active, v2 Draft; Relacionamento v1 Active, v2 Draft | Confere | passou |
+| 1 | Conta A, relacionamento, texto editável, nenhum registro antes de salvar | Não há como abrir o Screen Flow. Contas `TESTE EPLAST-41` também não existem na dev (0 registros). | Texto na tela | Sem execução | não executado |
+| 2 | Salvar gera 1 Task com campos esperados | Dependia do caso 1. Contagem de Task `Rascunho%(IA)` na dev: 0. | 1 Task | Sem execução | não executado |
+| 3 | Account não muda | Dependia do caso 2 | Campos iguais | Sem execução | não executado |
+| 4 | Opportunity, relacionamento e comercial | Sem fixture (falta `ProtheusSellerId__c` e CPQ) e sem UI | Texto e Task | Sem execução | não executado |
+| 5 | Conta B, aviso sem texto | Sem UI | Aviso | Sem execução | não executado |
+| 6 | Falha do modelo, sem Task | Sem UI | Erro, 0 Task | Sem execução | não executado |
+| 7 | Acesso negado sem o PS | Atribuições de `PS_Comercial_RascunhoRelacionamento` na dev: 0 (PermissionSetAssignment). Execução do Flow sem o PS não testável sem UI. | Flow não executa | Só a contagem | não executado |
+| 8 | Parâmetros do template | Apex anônimo com `generateMessagesForPromptTemplate('Rascunho_Relacionamento')` e só as 3 entradas (`DadosConta`, `DadosOportunidade`, `ObjetivoMensagem`), valores sintéticos | Texto sem erro | Devolveu 567 caracteres | passou |
+| 9 | Intactos | `BotDefinition` com `DeveloperName='SFAgent2'`: 1. Revalidação de versões acima: v1 do comercial continua Active (reativável). Não comparei por diff `Task_Agente_CriarTarefa`, templates nem `et4ae5`. | Sem alteração | Bot único; resto não verificado | passou em parte |
+| 10 | Tempo ≤ 30 s | Mesma chamada Apex do caso 8, medida | ≤ 30 s | 1,9 s (só a geração, não o Flow completo) | passou em parte |
+| FALHA 2 (rodada 2) | Botão de avanço corrigido | Comparação de metadata v1 x v2 | Versão ativa com botão | Ativa é a v1 (9/13); v2 Draft (13/13) | não executado (correção não ativa) |
+
+Usuário de teste da conta (conta de serviço da Konecta, localizada por Username na org): existem 2 usuários, `005bJ00000piKAaQAM` (ativo, Administrador do sistema, também o de execução) e `005bJ00000hBJmYQAW` (inativo). Nenhum foi alterado.
 
 ## O que ficou sem prova
-- O fluxo completo na tela: botão "Próximo" (FALHA 2), texto editável, salvar Task, Conta A não alterada, Conta B com aviso, caminho comercial na v2, tela de erro na falha do modelo, acesso negado. Um usuário com UI na dev deve:
-  1. Ativar ou depurar a v2 de `Task_Screen_RascunhoRelacionamento`.
-  2. Atribuir `PSG_Comercial_RascunhoIA` (a nota da QA diz que exige licença CPQ).
-  3. Abrir "Rascunho com IA" na Conta A e na Opp aberta, e percorrer os casos 2 a 7.
-- Conta A, Conta B e a Opp aberta podem ser recriadas com o fixture.
+- Todo o percurso do Screen Flow (casos 1 a 7): interface necessária, e a versão ativa é a v1 defeituosa.
+- Confirmação em tela de que a v2 mostra o botão de avanço.
+- Caminho comercial (casos 4 e 5): falta fixture (usuário sem `ProtheusSellerId__c`, Filial, CPQ) e licença CPQ para o PSG.
+
+## O que uma pessoa precisa fazer
+1. Na dev, abrir `Task_Screen_RascunhoRelacionamento` v2 no Flow Builder, depurar para confirmar o botão e ativar (passo separado, desfaz reativando a v1). Alternativa de pacote: `status` Active no XML.
+2. Rodar `fixtures/eplast41_dados_teste.apex` e executar os casos 1 a 7 pela interface com usuário que tenha o PS. Fazer o mesmo na QA depois da ativação.
 
 ## O que pode ter saído da org
-Nada saiu pelo CRM. Houve 1 chamada ao modelo (Einstein/Prompt Builder) com texto sintético, sem dado real. Nenhum EmailMessage, nada no Marketing Cloud.
+Nada. Nenhum registro foi criado. Uma chamada ao modelo (Einstein) com texto sintético; sem Task, sem e-mail, sem Marketing Cloud. Sem job agendado.
