@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenAiPromptTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <activeVersionIdentifier>XoWlw1EnsalFHvQ/FPapRWufTDKWjrKOjy9TirXPjlU=_1</activeVersionIdentifier>
     <description>EPLAST-41. RASCUNHO de mensagem de relacionamento a partir de dados de conta e oportunidade (texto montado pelo Flow Task_Screen_RascunhoRelacionamento). Sem dado de pessoa nem valores. Não grava nem envia (envio: Marketing Cloud).</description>
     <developerName>Rascunho_Relacionamento</developerName>
     <masterLabel>Rascunho de Relacionamento</masterLabel>
@@ -49,6 +50,7 @@ Gere o rascunho agora, seguindo rigorosamente as regras acima.</content>
         <isCitationEnabled>false</isCitationEnabled>
         <primaryModel>sfdc_ai__DefaultOpenAIGPT4OmniMini</primaryModel>
         <status>Published</status>
+        <versionIdentifier>XoWlw1EnsalFHvQ/FPapRWufTDKWjrKOjy9TirXPjlU=_1</versionIdentifier>
     </templateVersions>
     <type>einstein_gpt__flex</type>
     <visibility>Global</visibility>

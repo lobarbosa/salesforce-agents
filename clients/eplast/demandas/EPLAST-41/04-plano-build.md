@@ -40,3 +40,19 @@ Se o subflow não devolver texto (v1 do comercial ativa), a tela diz que o texto
 - **Fixture parcial.** Contas A e B criadas na dev. Oportunidade aberta falha só porque o usuário de execução não tem `User.ProtheusSellerId__c` (regra `CheckAccountOwnerHasProtheusSellerId`); o builder não mexe no usuário. O verificador pode ajustar o próprio usuário e rodar o script de novo. Oportunidade ganha exige Filial com `CodeERP__c`, forma e condição de pagamento (opcional). Cotação CPQ não criada: comercial testado "sem cotação". Detalhe em `fixtures/README.md`.
 - O deploy com a v1 do comercial ainda ativa aceitou a atribuição da saída `varTextoGerado` no subflow; só o valor só chega ao Flow novo depois da ativação da v2.
 - Premissas PA-41-x seguidas como no design; nenhuma pergunta de negócio ficou aberta.
+
+## Correções da rodada 1
+
+Org: `sbx-eplast-dev` (alias conferido). Nada tocado na QA.
+
+| Falha | Correção | Prova |
+|---|---|---|
+| FALHA 1: `No active template version` | Confirmado na dev: o template `Rascunho_Relacionamento` não tinha `activeVersionIdentifier` (só `versionIdentifier`, gerado pela org). Acrescentados `activeVersionIdentifier` e `versionIdentifier` (`XoWlw1En...XjlU=_1`, o da versão que a dev gerou) ao XML do repositório e redeploy na dev. | Retrieve da dev depois do deploy traz os dois campos. Apex anônimo com `generateMessagesForPromptTemplate('Rascunho_Relacionamento')` e as 3 entradas sintéticas (`TESTE EPLAST-41`) devolveu texto (422 caracteres). Resolve também o erro genérico visto na verificação (C1). |
+| FALHA 2: tela sem botão "Próximo" | Causa não confirmada (não há UI aqui). Hipótese mais forte: as 5 telas intermediárias estavam com `allowFinish=false`, diferente do Flow comercial existente e do que o Flow Builder grava (`allowFinish=true` em toda tela; o Próximo vem do conector). Todas as 13 telas passaram a `allowFinish=true`. Nada mais mudou na lógica. | Deploy ok na dev. **Não provado em tela**: o verificador/QA precisa abrir a ação com usuário real e confirmar o botão. Se persistir, o próximo suspeito é renderização do Flow em Quick Action no modal ou permissão do PS. |
+
+Premissa de versionamento: a mudança do Flow entrou como **v2 Draft** (v1 segue Active), sem editar a versão em uso.
+
+### Versões e ativação (atualização)
+- Dev: `Task_Screen_RascunhoRelacionamento` v1 Active, v2 Draft. **Ativar a v2** (passo separado) é necessário para a ação mostrar o botão; antes disso só a v1 roda. Testar a v2 como Draft por depuração na dev, depois ativar. Desfazer: reativar a v1.
+- QA: levar o template com as duas identificações de versão e a v2 do Flow; ativar a v2 lá. O `activeVersionIdentifier` é o da dev: se a QA gerar identificador próprio na publicação, conferir com Apex sintético que a versão ativa existe (a falha 1 só se resolve na QA se a versão ficar ativa).
+- Limite: `PSG_Comercial_RascunhoIA` não atribui sem licença CPQ (nota da QA); caminho comercial fica para quem tem a licença.
