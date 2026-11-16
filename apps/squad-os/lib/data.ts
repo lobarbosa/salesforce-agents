@@ -52,6 +52,15 @@ export async function demandasPorEntregavel(clientId: string) {
   return mapa;
 }
 
+// O que o progresso do projeto precisa de cada demanda — só três colunas, sem
+// o conteúdo do card (lib/contrato.ts, progressoDoProjeto).
+export function demandasDoProgresso(clientId: string) {
+  return prisma.demanda.findMany({
+    where: { clientId, tipo: "projeto" },
+    select: { status: true, tipo: true, entregavelId: true },
+  });
+}
+
 // Só aqui o conteúdo do card vem junto: é a tela que abre o modal da demanda.
 // getAllDemandas() alimenta a Visão Geral, que mostra só o resumo — carregar
 // conversa, subtarefas e anexos de todas as demandas lá seria puxar o card

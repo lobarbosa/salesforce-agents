@@ -45,7 +45,7 @@ caso("projeto mostra progresso e horas acumuladas", () => {
     contrato: {
       tipo: "projeto",
       nome: "Ondas 1–2",
-      progresso: { pct: 67, pesoConcluido: 8, pesoTotal: 12, concluidos: 8, total: 12 },
+      progresso: { pct: 67, pesoConcluido: 8, pesoTotal: 12, concluidos: 8, total: 12, demandas: 0, demandasEntregues: 0, porEntregavel: {} },
       horasDoMes: 30,
       horasAcumuladas: 68,
       horasContratadas: 120,

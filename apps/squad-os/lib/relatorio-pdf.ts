@@ -1,4 +1,5 @@
 import PDFDocument from "pdfkit";
+import { legendaDoProgresso } from "@/lib/contrato";
 import { nomeDoMes, formatarHoras as h, type DadosRelatorio } from "@/lib/relatorio-mensal";
 
 // PDF detalhado do relatório mensal (2026-10-31). O e-mail leva os tópicos
@@ -114,7 +115,7 @@ export function gerarPdfRelatorio(d: DadosRelatorio, logo: Buffer | null): Promi
       ks.push({ valor: `${pct}%`, rotulo: c.cicloHoras === "mensal" ? "do contratado no mês" : "do ciclo", cor: pct > 100 ? COR.laranja : COR.texto });
     }
   } else if (c?.tipo === "projeto") {
-    ks.push({ valor: `${c.progresso.pct}%`, rotulo: "do escopo entregue", cor: COR.azul });
+    ks.push({ valor: `${c.progresso.pct}%`, rotulo: "de avanço do projeto", cor: COR.azul });
     ks.push({ valor: h(c.horasDoMes), rotulo: "horas no mês" });
   }
   kpis(doc, ks);
@@ -212,7 +213,7 @@ export function gerarPdfRelatorio(d: DadosRelatorio, logo: Buffer | null): Promi
     }
   } else if (c?.tipo === "projeto") {
     titulo(doc, `Projeto${c.nome ? ` · ${c.nome}` : ""}`);
-    barra(doc, c.progresso.pct, COR.azul, `Escopo: ${c.progresso.concluidos} de ${c.progresso.total} entregáveis (${c.progresso.pct}%, ponderado pelo peso)`);
+    barra(doc, c.progresso.pct, COR.azul, `Avanço: ${c.progresso.pct}% — ${legendaDoProgresso(c.progresso)}`);
     if (c.horasContratadas > 0) {
       const pctH = (c.horasAcumuladas / c.horasContratadas) * 100;
       barra(doc, pctH, pctH > 100 ? COR.laranja : COR.verde, `Horas: ${h(c.horasAcumuladas)} de ${h(c.horasContratadas)} contratadas`);

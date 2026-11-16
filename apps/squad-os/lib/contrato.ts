@@ -1,4 +1,4 @@
-import type { Contrato, Entregavel, TipoContrato } from "@/lib/generated/prisma/client";
+import type { Contrato, Demanda, Entregavel, StatusDemanda, TipoContrato } from "@/lib/generated/prisma/client";
 import { chaveDia, cicloDoMes } from "@/lib/horas";
 
 // Puro de propósito: sem Prisma, importável de Server e Client Components —
@@ -211,29 +211,106 @@ export interface Progresso {
   pct: number;
   pesoConcluido: number;
   pesoTotal: number;
+  /** Entregáveis concluídos (todas as demandas entregues, ou marcado à mão se não tem demanda). */
   concluidos: number;
   total: number;
+  /** Demandas de projeto que entram na conta (sem as canceladas) e quantas já foram entregues. */
+  demandas: number;
+  demandasEntregues: number;
+  /** Avanço de cada entregável (0 a 1) e se ele vem das demandas ou da marcação manual. */
+  porEntregavel: Record<string, { fracao: number; automatico: boolean }>;
 }
 
 /**
- * Progresso ponderado pelo peso dos entregáveis.
- *
- * Ponderado e não contagem simples porque "migrar 12 Flows" e "ajustar um
- * layout" contariam igual numa média — e o número mentiria exatamente quando
- * mais importa, perto do fim.
+ * Quanto do caminho cada etapa da esteira representa. Só `entregue` vale 1:
+ * homologação pendente ainda não é entrega. Os valores acompanham o esforço
+ * típico até ali (o build é a maior fatia), não o número de etapas.
  */
-export function progressoDoProjeto(entregaveis: Pick<Entregavel, "peso" | "concluido">[]): Progresso {
-  const pesoTotal = entregaveis.reduce((s, e) => s + Math.max(1, e.peso), 0);
-  const pesoConcluido = entregaveis
-    .filter((e) => e.concluido)
-    .reduce((s, e) => s + Math.max(1, e.peso), 0);
+export const AVANCO_POR_STATUS: Record<StatusDemanda, number> = {
+  backlog: 0,
+  planejada: 0,
+  recorrente: 0,
+  standby: 0,
+  cancelada: 0,
+  analise: 0.1,
+  aguardando_gate_analise: 0.15,
+  design: 0.25,
+  aguardando_gate_design: 0.3,
+  build: 0.5,
+  aguardando_gate_build: 0.6,
+  qa: 0.7,
+  aguardando_homologacao: 0.85,
+  release: 0.95,
+  entregue: 1,
+};
+
+export type DemandaDoProgresso = Pick<Demanda, "status" | "tipo" | "entregavelId">;
+
+/**
+ * Progresso do projeto, calculado das demandas (decisão de 2026-11-16: o número
+ * não depende de alguém lembrar de marcar entregável).
+ *
+ * - Entram as demandas de projeto não canceladas; sustentação não é escopo.
+ * - Entregável com demanda avança pela média do avanço delas e conclui sozinho
+ *   quando todas estão entregues.
+ * - Entregável sem demanda (feito fora da esteira) segue a marcação manual.
+ * - Demanda de projeto sem entregável conta como uma unidade de peso 1, para o
+ *   escopo que entrou depois do contrato não ficar fora da conta.
+ *
+ * Ponderado pelo peso e não contagem simples porque "migrar 12 Flows" e
+ * "ajustar um layout" contariam igual numa média — e o número mentiria
+ * exatamente quando mais importa, perto do fim.
+ */
+export function progressoDoProjeto(
+  entregaveis: Pick<Entregavel, "id" | "peso" | "concluido">[],
+  demandas: DemandaDoProgresso[] = []
+): Progresso {
+  const validas = demandas.filter((d) => d.tipo === "projeto" && d.status !== "cancelada");
+  const ids = new Set(entregaveis.map((e) => e.id));
+  const fracoes = new Map<string, number[]>();
+  const soltas: number[] = [];
+  for (const d of validas) {
+    const f = AVANCO_POR_STATUS[d.status] ?? 0;
+    if (d.entregavelId && ids.has(d.entregavelId)) {
+      fracoes.set(d.entregavelId, [...(fracoes.get(d.entregavelId) ?? []), f]);
+    } else {
+      soltas.push(f);
+    }
+  }
+
+  const porEntregavel: Progresso["porEntregavel"] = {};
+  let pesoTotal = 0;
+  let pesoConcluido = 0;
+  let concluidos = 0;
+  for (const e of entregaveis) {
+    const peso = Math.max(1, e.peso);
+    const fs = fracoes.get(e.id);
+    const fracao = fs ? fs.reduce((s, f) => s + f, 0) / fs.length : e.concluido ? 1 : 0;
+    porEntregavel[e.id] = { fracao, automatico: !!fs };
+    pesoTotal += peso;
+    pesoConcluido += peso * fracao;
+    if (fracao >= 1) concluidos += 1;
+  }
+  pesoTotal += soltas.length;
+  pesoConcluido += soltas.reduce((s, f) => s + f, 0);
+
   return {
     pct: pesoTotal === 0 ? 0 : Math.round((pesoConcluido / pesoTotal) * 100),
-    pesoConcluido,
+    pesoConcluido: Math.round(pesoConcluido * 100) / 100,
     pesoTotal,
-    concluidos: entregaveis.filter((e) => e.concluido).length,
+    concluidos,
     total: entregaveis.length,
+    demandas: validas.length,
+    demandasEntregues: validas.filter((d) => d.status === "entregue").length,
+    porEntregavel,
   };
+}
+
+/** "8 de 12 entregáveis · 0 de 20 demandas entregues" — a legenda do percentual. */
+export function legendaDoProgresso(p: Progresso): string {
+  const partes = [`${p.concluidos} de ${p.total} entregáveis`];
+  if (p.demandas > 0) partes.push(`${p.demandasEntregues} de ${p.demandas} demandas entregues`);
+  return partes.join(" · ");
 }
 
 export type ContratoCompleto = Contrato & { entregaveis: Entregavel[] };

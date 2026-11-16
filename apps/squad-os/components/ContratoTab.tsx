@@ -4,8 +4,8 @@ import { BotaoRemover } from "@/components/BotaoRemover";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { Contrato, Entregavel, TipoContrato } from "@/lib/generated/prisma/client";
-import type { MesDeHoras, LinhaSla } from "@/lib/contrato";
-import { asSla, progressoDoProjeto } from "@/lib/contrato";
+import type { DemandaDoProgresso, MesDeHoras, LinhaSla } from "@/lib/contrato";
+import { asSla, legendaDoProgresso, progressoDoProjeto } from "@/lib/contrato";
 import { HorasChart } from "@/components/HorasChart";
 
 type ContratoCompleto = Contrato & { entregaveis: Entregavel[] };
@@ -16,6 +16,7 @@ export function ContratoTab({
   contrato,
   horas,
   demandasPorEntregavel,
+  demandasDoProgresso,
   canManage,
 }: {
   clientId: string;
@@ -24,6 +25,8 @@ export function ContratoTab({
   horas: MesDeHoras[];
   /** Quantas demandas já nasceram de cada entregável, e quantas já foram entregues. */
   demandasPorEntregavel: Record<string, { total: number; entregues: number }>;
+  /** Status das demandas de projeto: é delas que o progresso sai. */
+  demandasDoProgresso: DemandaDoProgresso[];
   canManage: boolean;
 }) {
   const router = useRouter();
@@ -36,7 +39,7 @@ export function ContratoTab({
   const tipo = contrato?.tipo ?? null;
   const sla = asSla(contrato?.sla);
   const entregaveis = contrato?.entregaveis ?? [];
-  const progresso = progressoDoProjeto(entregaveis);
+  const progresso = progressoDoProjeto(entregaveis, demandasDoProgresso);
 
   async function chamar(url: string, init: RequestInit): Promise<unknown | null> {
     setSalvando(true);
@@ -314,7 +317,7 @@ export function ContratoTab({
             <div className="bloco-head">
               <h3>Progresso</h3>
               <span className="save-note">
-                ponderado pelo peso — {progresso.concluidos} de {progresso.total} entregáveis
+                calculado das demandas — {legendaDoProgresso(progresso)}
               </span>
             </div>
             <div className="progresso-grande">
@@ -412,9 +415,13 @@ export function ContratoTab({
               <ul className="entregaveis">
                 {entregaveis.map((e) => {
                   const d = demandasPorEntregavel[e.id] ?? { total: 0, entregues: 0 };
+                  // Com demanda, o estado vem delas; a marcação manual só vale
+                  // para o que foi feito fora da esteira.
+                  const av = progresso.porEntregavel[e.id] ?? { fracao: e.concluido ? 1 : 0, automatico: false };
+                  const feito = av.fracao >= 1;
                   return (
-                    <li key={e.id} className={e.concluido ? "feito" : undefined}>
-                      {canManage ? (
+                    <li key={e.id} className={feito ? "feito" : undefined}>
+                      {canManage && !av.automatico ? (
                         <label>
                           <input
                             type="checkbox"
@@ -431,13 +438,14 @@ export function ContratoTab({
                         </label>
                       ) : (
                         <span className="ent-titulo">
-                          <span aria-hidden="true">{e.concluido ? "✓" : "○"}</span>{" "}
-                          <span className="sr-only">{e.concluido ? "Concluído: " : "Pendente: "}</span>
+                          <span aria-hidden="true">{feito ? "✓" : "○"}</span>{" "}
+                          <span className="sr-only">{feito ? "Concluído: " : "Pendente: "}</span>
                           {e.titulo}
                         </span>
                       )}
                       <span className="ent-meta mono">
                         peso {e.peso}
+                        {av.automatico && ` · ${Math.round(av.fracao * 100)}%`}
                         {d.total > 0 && ` · ${d.entregues}/${d.total} demandas`}
                       </span>
                       {canManage && (

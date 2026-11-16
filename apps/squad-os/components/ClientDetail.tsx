@@ -9,6 +9,7 @@ import type { CurrentUsuario } from "@/lib/current-user";
 import { ConhecimentoTab } from "@/components/ConhecimentoTab";
 import { ConexaoTab } from "@/components/ConexaoTab";
 import { ContratoTab } from "@/components/ContratoTab";
+import type { DemandaDoProgresso } from "@/lib/contrato";
 import { DemandasTab } from "@/components/DemandasTab";
 import { AprovacoesTab } from "@/components/AprovacaoEstimativa";
 import { aguardaAprovacaoEstimativa } from "@/lib/demandas";
@@ -22,6 +23,7 @@ export function ClientDetail({
   usuario,
   horas,
   demandasPorEntregavel,
+  demandasDoProgresso,
   initialTab,
   openDemandId,
   bloqueiosExclusao = [],
@@ -32,6 +34,7 @@ export function ClientDetail({
   };
   horas: MesDeHoras[];
   demandasPorEntregavel: Record<string, { total: number; entregues: number }>;
+  demandasDoProgresso: DemandaDoProgresso[];
   demandas: DemandaCompleta[];
   usuario: CurrentUsuario;
   initialTab?: Tab;
@@ -145,6 +148,7 @@ export function ClientDetail({
               contrato={client.contrato}
               horas={horas}
               demandasPorEntregavel={demandasPorEntregavel}
+              demandasDoProgresso={demandasDoProgresso}
               canManage={false}
             />
           </div>
@@ -270,6 +274,7 @@ export function ClientDetail({
             contrato={client.contrato}
             horas={horas}
             demandasPorEntregavel={demandasPorEntregavel}
+              demandasDoProgresso={demandasDoProgresso}
             canManage={podeGerenciarClientes}
           />
         </div>

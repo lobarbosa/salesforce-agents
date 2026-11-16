@@ -1,7 +1,7 @@
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { prisma } from "@/lib/prisma";
-import { demandasPorEntregavel, horasPorMes } from "@/lib/data";
+import { demandasDoProgresso, demandasPorEntregavel, horasPorMes } from "@/lib/data";
 import { mesAnterior, progressoDoProjeto } from "@/lib/contrato";
 import { chaveDia } from "@/lib/horas";
 import { entreguesNoMes, textoDoRelatorio, type DadosRelatorio } from "@/lib/relatorio-mensal";
@@ -62,21 +62,22 @@ export async function montarRelatorioDoCliente(clientId: string, mes: string): P
     contrato = { tipo: "ams", cicloHoras: k.cicloHoras, doMes: meses.find((m) => m.mes === mes) ?? null, historico: ate.slice(-6) };
   } else if (k?.tipo === "projeto") {
     const porEntregavel = await demandasPorEntregavel(c.id);
+    const progresso = progressoDoProjeto(k.entregaveis, await demandasDoProgresso(c.id));
     const desde = k.inicioEm ? chaveDia(k.inicioEm).slice(0, 7) : mes;
     const meses = await horasPorMes(c.id, Math.max(distanciaAte(desde), distancia) + 1);
     const ate = meses.filter((m) => m.mes >= desde && m.mes <= mes);
     contrato = {
       tipo: "projeto",
       nome: k.projetoNome,
-      progresso: progressoDoProjeto(k.entregaveis),
+      progresso,
       horasDoMes: meses.find((m) => m.mes === mes)?.horasGastas ?? 0,
       horasAcumuladas: ate.reduce((s, m) => s + m.horasGastas, 0),
       horasContratadas: k.horasContratadas,
-      entregaveisConcluidos: k.entregaveis.filter((e) => e.concluido).map((e) => e.titulo),
+      entregaveisConcluidos: k.entregaveis.filter((e) => (progresso.porEntregavel[e.id]?.fracao ?? 0) >= 1).map((e) => e.titulo),
       entregaveis: k.entregaveis.map((e) => ({
         titulo: e.titulo,
         peso: e.peso,
-        concluido: e.concluido,
+        concluido: (progresso.porEntregavel[e.id]?.fracao ?? 0) >= 1,
         demandas: porEntregavel[e.id] ?? { total: 0, entregues: 0 },
       })),
       historico: ate,
