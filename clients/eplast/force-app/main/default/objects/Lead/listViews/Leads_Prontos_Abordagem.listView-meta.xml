@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Leads_Prontos_Abordagem</fullName>
+    <columns>FULL_NAME</columns>
+    <columns>LEAD.COMPANY</columns>
+    <columns>Sector__c</columns>
+    <columns>LEAD.LEAD_SOURCE</columns>
+    <columns>LEAD.STATUS</columns>
+    <columns>PriorityScore__c</columns>
+    <columns>PriorityBand__c</columns>
+    <columns>MKT_MC_Engajamento__c</columns>
+    <columns>MKT_MC_EngajamentoData__c</columns>
+    <columns>CORE.USERS.FIRST_NAME</columns>
+    <columns>CORE.USERS.LAST_NAME</columns>
+    <filterScope>Everything</filterScope>
+    <filters>
+        <field>MKT_Nutricao_ProntoAbordagem__c</field>
+        <operation>equals</operation>
+        <value>1</value>
+    </filters>
+    <label>Leads prontos para abordagem</label>
+</ListView>

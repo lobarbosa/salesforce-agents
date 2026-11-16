@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MKT_MC_EngajamentoData__c</fullName>
+    <description>EPLAST-45. Data e hora da ultima devolucao de engajamento pelo Marketing Cloud. Gravado pelo Marketing Cloud. Nao editar a mao. Lido pelo vendedor.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>Quando o Marketing Cloud atualizou o engajamento. Nao editar a mao.</inlineHelpText>
+    <label>Engajamento - data (Marketing Cloud)</label>
+    <required>false</required>
+    <trackTrending>false</trackTrending>
+    <type>DateTime</type>
+</CustomField>

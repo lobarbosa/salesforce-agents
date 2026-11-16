@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MKT_Nutricao_Elegivel__c</fullName>
+    <description>EPLAST-45. Lead em nutricao: nao convertido e com Status Aberto - Nao contatado ou Contatado. Calculado na leitura. Lido pelos relatorios de publico do Marketing Cloud e pelo vendedor. Opt-out nao entra aqui, fica no filtro de cada canal.</description>
+    <externalId>false</externalId>
+    <formula>AND(NOT(IsConverted), OR(ISPICKVAL(Status, &quot;Aberto - Não contatado&quot;), ISPICKVAL(Status, &quot;Contatado&quot;)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Lead nao convertido, aberto ou contatado: entra na nutricao.</inlineHelpText>
+    <label>Elegível para nutrição</label>
+    <trackTrending>false</trackTrending>
+    <type>Checkbox</type>
+</CustomField>
