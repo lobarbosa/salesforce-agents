@@ -293,3 +293,29 @@ Herdadas da análise (P1 a P7) com o que o design fixou, e novas (P8 a P12).
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável (2026-11-16): corrigir a instrução do agente numa versão nova
+
+Decidido por Leonardo Barbosa depois da rodada 3 de QA. Vale acima do que este desenho diz
+sobre versões do `SFAgent2`.
+
+- **Defeito (rodada 3, v10 ativa na QA):** o assistente chama `ProximaAcaoCliente`, a ação
+  devolve a mensagem certa (campo `result`), mas a resposta ao usuário sai só como "Próxima
+  ação para a conta X.", sem a mensagem. Na pergunta seguinte, inventa ação fora da lista
+  A1 a A3 ("contato inicial").
+- **Correção:** criar a **v14 a partir da v13** (a mais nova na dev e a ativa na QA; tem as
+  ações e instruções de 27, 29, 34 e 46 e a correção de confirmação de tarefa da 29). Nada
+  das outras demandas é removido nem editado. Única mudança, no tópico de insights
+  comerciais, na instrução da EPLAST-27:
+  1. depois de chamar `ProximaAcaoCliente`, **apresentar sempre, na íntegra, a mensagem
+     devolvida pela ação** (inclusive "Dados insuficientes: ..."), sem resumir a uma frase
+     de título;
+  2. **nunca recomendar ação fora do que a ação devolveu**; se a ação diz que não há dados
+     suficientes, dizer isso e parar, sem sugerir "contato inicial" nem outra ação;
+  3. em pergunta de continuação ("e então, qual é a ação?"), repetir a mensagem da ação ou
+     chamá-la de novo, nunca improvisar.
+- **Pacote:** só a v14 (`genAiPlannerBundles/SFAgent2_v14` e `bots/SFAgent2/v14.botVersion`).
+  Tirar a v10 da branch: ela já está na QA.
+- **Verificação e QA:** conversar com o agente sem tela (`sf agent preview start` / `send` /
+  `end`), pedindo pelo nome da conta, pelo menos 3 vezes por cenário, e conferir que a
+  resposta traz a mensagem da ação.
