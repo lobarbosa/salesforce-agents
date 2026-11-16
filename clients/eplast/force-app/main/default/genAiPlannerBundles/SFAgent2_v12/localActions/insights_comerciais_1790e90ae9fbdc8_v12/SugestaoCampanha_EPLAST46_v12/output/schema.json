@@ -3,15 +3,15 @@
   "properties" : {
     "message" : {
       "title" : "Mensagem",
-      "description" : "Texto pronto da proxima acao",
+      "description" : "Texto pronto com as campanhas sugeridas, motivo, publico e contatos elegiveis por canal",
       "lightning:type" : "lightning__textType",
       "lightning:isPII" : false,
       "copilotAction:isDisplayable" : true,
       "copilotAction:isUsedByPlanner" : true
     },
-    "actionCode" : {
-      "title" : "Codigo da acao",
-      "description" : "Codigo da acao (A1, A2, A3, NONE, NODATA, NOT_OWNER)",
+    "suggestionCode" : {
+      "title" : "Codigo da sugestao",
+      "description" : "Codigo da sugestao de maior prioridade (REATIVACAO, AMPLIACAO_MIX, NONE, SEM_HISTORICO, NODATA, NO_ACCESS, ERRO)",
       "lightning:type" : "lightning__textType",
       "lightning:isPII" : false,
       "copilotAction:isDisplayable" : false,
