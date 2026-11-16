@@ -3,7 +3,7 @@ client: eplast
 titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
   de contas)
 tipo: sustentacao
-status: qa
+status: aguardando_gate_design
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
 - de: null
@@ -112,3 +112,7 @@ historico:
   em: '2026-11-16T08:16:53.591738+00:00'
   motivo: 'retomada pelo responsável (16/11): rodar a fase 2 do QA (conferir o resultado
     do arme de 15/11 e devolver a configuração original).'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T08:27:05.694926+00:00'

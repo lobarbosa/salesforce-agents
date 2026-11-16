@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EI0cbKAD` (Succeeded)
-- **Quando:** 2026-11-15T19:33Z
-- **Commit:** `9e6f7cea`
+- **Deploy:** `0AfHa00000EIB09KAH` (Succeeded)
+- **Quando:** 2026-11-16T08:27Z
+- **Commit:** `edcbe3a9`
 
 ## Componentes
 - `force-app/main/default/customMetadata/RankingRange.G.md-meta.xml`
