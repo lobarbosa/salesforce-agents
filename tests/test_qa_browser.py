@@ -44,6 +44,23 @@ PAGINA = """
     <label for="r2"><span class="slds-radio_faux"></span><span>Follow-up</span></label>
   </span>
 </fieldset>
+<fieldset>
+  <legend>Canal preferido</legend>
+  <!-- Como no Screen Flow: o clique direto no input não muda a opção; só pelo rótulo. -->
+  <span class="slds-radio">
+    <input type="radio" id="c1" name="canal_pref" value="email" checked
+           style="position:absolute;opacity:0;width:1px;height:1px">
+    <label for="c1"><span>Somente e-mail</span></label>
+  </span>
+  <span class="slds-radio">
+    <input type="radio" id="c2" name="canal_pref" value="fone"
+           style="position:absolute;opacity:0;width:1px;height:1px">
+    <label for="c2" onmousedown="window.viaRotulo = true"><span>Somente telefone</span></label>
+  </span>
+  <script>
+    document.getElementById('c2').addEventListener('click', (e) => { if (!window.viaRotulo) e.preventDefault(); });
+  </script>
+</fieldset>
 <div>
   <button type="button" aria-label="Ajuda: Tipo e objetivo da mensagem">?</button>
   <label for="obj">Tipo e objetivo da mensagem</label>
@@ -157,3 +174,38 @@ def test_click_em_botao_continua_funcionando():
             await _fechar(pw, browser)
 
     assert asyncio.run(rodar()) == "avançou"
+
+
+def test_screenshot_guarda_a_evidencia_na_pasta_da_demanda(tmp_path, monkeypatch):
+    pasta = tmp_path / "clients" / "x" / "demandas" / "X-1"
+    pasta.mkdir(parents=True)
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setenv("CLIENT", "x")
+    monkeypatch.setenv("DEMAND_ID", "X-1")
+
+    async def rodar():
+        pw, browser, _page = await _sessao()
+        try:
+            return await tools.qa_browser_screenshot({"session_id": "t", "legenda": "Tela de teste"})
+        finally:
+            await _fechar(pw, browser)
+
+    r = asyncio.run(rodar())
+    assert "evidencias/01-tela-de-teste.jpg" in r["content"][0]["text"]
+    assert r["content"][1]["type"] == "image"
+    salvo = pasta / "evidencias" / "01-tela-de-teste.jpg"
+    assert salvo.read_bytes()[:2] == b"\xff\xd8"  # JPEG
+
+
+def test_click_marca_o_radio_pelo_rotulo_quando_o_input_nao_aceita_o_clique():
+    async def rodar():
+        pw, browser, page = await _sessao()
+        try:
+            r = await tools.qa_browser_click({"session_id": "t", "texto": "Somente telefone"})
+            return _texto(r), await page.is_checked("#c2")
+        finally:
+            await _fechar(pw, browser)
+
+    texto, marcado = asyncio.run(rodar())
+    assert marcado
+    assert "[radio 'Somente telefone': marcado]" in texto, texto[:200]

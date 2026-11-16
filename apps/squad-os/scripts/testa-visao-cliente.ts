@@ -4,7 +4,7 @@
 // consultor.
 import assert from "node:assert/strict";
 import type { DemandaCompleta } from "@/lib/data";
-import { caminhoDoRoteiro, demandaParaCliente, ehAnexoDoRoteiro, semCustoAgente } from "@/lib/visao-cliente";
+import { caminhoDasEvidencias, caminhoDoRoteiro, demandaParaCliente, ehAnexoDasEvidencias, ehAnexoDoQa, ehAnexoDoRoteiro, semCustoAgente } from "@/lib/visao-cliente";
 
 let falhas = 0;
 function caso(nome: string, fn: () => void) {
@@ -96,6 +96,18 @@ caso("cliente só vê o anexo do roteiro de teste da homologação em diante", (
   // o texto do roteiro é insumo do PDF: nunca desce para o cliente
   assert.equal(demandaParaCliente({ ...comAnexos, status: "entregue" } as DemandaCompleta).roteiroCliente, "");
   assert.equal(semCustoAgente(comAnexos).anexos.length, 2);
+});
+
+caso("evidências de teste seguem a regra do roteiro: o cliente só as vê da homologação em diante", () => {
+  const evidencias = { id: "a3", demandaId: "d1", caminho: caminhoDasEvidencias("d1"), nome: "Evidências de teste - X-1.pdf" };
+  const outro = { id: "a2", demandaId: "d1", caminho: "d1/9f3c-print.png", nome: "print.png" };
+  const comAnexos = { ...base, anexos: [evidencias, outro] } as unknown as DemandaCompleta;
+  assert.equal(ehAnexoDasEvidencias(evidencias), true);
+  assert.equal(ehAnexoDoQa(evidencias), true);
+  assert.equal(ehAnexoDoQa(outro), false);
+  assert.deepEqual(demandaParaCliente(comAnexos).anexos.map((a) => a.id), ["a2"]);
+  const d = demandaParaCliente({ ...comAnexos, status: "aguardando_homologacao" } as DemandaCompleta);
+  assert.deepEqual(d.anexos.map((a) => a.id), ["a3", "a2"]);
 });
 
 caso("consultor mantém horas mas perde custo de agente", () => {

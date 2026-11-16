@@ -373,6 +373,11 @@ model Demanda {
   // no mesmo sync; vazio enquanto não houver QA aprovado.
   roteiroCliente String @default("") @map("roteiro_cliente")
 
+  // Evidências de teste (2026-11-16): hash do roteiro executado e das capturas
+  // de tela que viraram o anexo "Evidências de teste" (lib/evidencias-anexo.ts).
+  // Serve só para o sync não regerar o PDF quando nada mudou.
+  evidenciasHash String @default("") @map("evidencias_hash")
+
   // Estimativa (2026-10-17), espelhada pelo mesmo sync (estimativa.py).
   // Horas: esforço humano estimado pelo agente na análise, refinado no
   // design — nulo até alguma etapa escrever a linha. Visível pra delivery,

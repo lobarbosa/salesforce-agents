@@ -76,6 +76,28 @@ async function main() {
     assert.equal(paginas(pdf), 1);
   });
 
+  await caso("evidências de teste: mesmo desenho, rótulo próprio e capturas de tela no fim", async () => {
+    // PNG 1x1 válido: basta para o pdfkit embutir a imagem.
+    const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==", "base64");
+    const tipo = {
+      rotulo: "Evidências de teste",
+      contexto: "testes executados na sandbox de QA",
+      rodape: "evidências de teste",
+      vazio: "Não há evidência registrada.",
+      imagens: [
+        { legenda: "CA-03: rascunho gerado para a conta de teste", dados: png },
+        { legenda: "imagem corrompida não derruba o PDF", dados: Buffer.from("não é imagem") },
+      ],
+    };
+    const pdf = await gerarPdfRoteiro("**Veredito:** aprovado\n\n| Caso | Status |\n|---|---|\n| C1 | passou |\n", CAB, null, tipo);
+    assert.equal(pdf.subarray(0, 5).toString(), "%PDF-");
+    assert.equal(paginas(pdf), 2, "o texto numa página, as capturas em outra");
+    assert.ok(pdf.toString("latin1").includes("/Subtype /Image"), "a captura entrou no PDF");
+    const semImagem = await gerarPdfRoteiro("**Veredito:** aprovado", CAB, null, { ...tipo, imagens: [] });
+    assert.equal(paginas(semImagem), 1);
+    if (process.argv[4]) writeFileSync(process.argv[4], pdf);
+  });
+
   await caso("caractere fora da fonte padrão é trocado ou descartado", () => {
     assert.equal(textoParaPdf("A → B ≤ 10 ✓ ☐ ação — fim"), "A -> B <= 10 (ok) [ ] ação — fim");
     assert.equal(textoParaPdf("emoji 🚀 some"), "emoji  some");

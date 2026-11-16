@@ -6,7 +6,8 @@ import { ESTAGIOS_DE_DEBITO, estimativaAprovada } from "@/lib/demandas";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
 import { publicarRoteiroComoAnexo } from "@/lib/roteiro-anexo";
-import { caminhoDoRoteiro } from "@/lib/visao-cliente";
+import { imagensDoPayload, publicarEvidenciasComoAnexo } from "@/lib/evidencias-anexo";
+import { caminhoDasEvidencias, caminhoDoRoteiro } from "@/lib/visao-cliente";
 
 // Fecha o laço na direção git → app. `status.yaml` no repositório é a fonte de
 // verdade do estágio (guardrail #5 do CLAUDE.md raiz); o Postgres é espelho, e
@@ -105,7 +106,7 @@ export async function POST(request: NextRequest) {
 
   const demanda = await prisma.demanda.findUnique({
     where: { clientId_code: { clientId: client.id, code } },
-    select: { id: true, titulo: true, roteiroCliente: true, perguntas: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true, estimativaDebitadaEm: true },
+    select: { id: true, titulo: true, roteiroCliente: true, evidenciasHash: true, perguntas: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true, estimativaDebitadaEm: true },
   });
   if (!demanda) {
     // Acontece quando a demanda nasceu pela CLI (`sfagents demanda nova`) e
@@ -212,6 +213,27 @@ export async function POST(request: NextRequest) {
     const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDoRoteiro(demanda.id) }, select: { id: true } });
     if (novo !== demanda.roteiroCliente || (novo.trim() !== "") !== Boolean(temAnexo)) {
       await publicarRoteiroComoAnexo({ id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome }, novo);
+    }
+  }
+
+  // Evidências de teste (lib/evidencias-anexo.ts): o roteiro executado e as
+  // capturas de tela viram outro anexo em PDF. O hash vem do CLI; só refaz o
+  // arquivo quando ele mudou ou o anexo sumiu, pelo mesmo motivo do roteiro.
+  if (typeof body.evidencias_teste === "string" && typeof body.evidencias_hash === "string") {
+    const texto = body.evidencias_teste.slice(0, CONTEUDO_MAX);
+    const hash = body.evidencias_hash.slice(0, 64);
+    const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDasEvidencias(demanda.id) }, select: { id: true } });
+    if (hash !== demanda.evidenciasHash || (texto.trim() !== "") !== Boolean(temAnexo)) {
+      const r = await publicarEvidenciasComoAnexo(
+        { id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome },
+        texto,
+        imagensDoPayload(body.evidencias_imagens)
+      );
+      // Só guarda o hash do que de fato foi publicado: se o armazenamento
+      // falhou, o próximo sync tenta de novo.
+      if (r !== "ignorado" || !texto.trim()) {
+        await prisma.demanda.update({ where: { id: demanda.id }, data: { evidenciasHash: hash } });
+      }
     }
   }
 
