@@ -1,101 +1,99 @@
 # Roteiro de teste — Próxima melhor ação por cliente (EPLAST-27)
 
-**O que foi entregue:** o assistente de IA (SFAgent2) passa a sugerir ao vendedor a próxima ação para um cliente, com base em risco do cadastro, oportunidades paradas e data da última compra. A sugestão só é mostrada: não altera nenhum cadastro nem envia mensagem.
-**O que muda para quem usa:** o vendedor pergunta ao assistente "qual a próxima ação para o cliente X?" e recebe uma das respostas listadas abaixo, só para clientes da sua própria carteira.
+O vendedor passa a poder perguntar ao assistente do Salesforce "qual a próxima ação para esta conta?" e recebe uma única sugestão curta, baseada na situação comercial da conta (risco, oportunidade parada, tempo sem compra). A consulta só lê dados: não altera nenhum registro e não envia e-mail.
 
-**Situação do teste automático:** a regra que decide a sugestão foi executada na sandbox de QA com contas de teste e deu o resultado esperado nos 7 cenários (risco, oportunidade parada, sem compra recente, nenhuma ação, dados insuficientes, conta de outro vendedor, risco fora da lista). Também foi comprovado que a consulta não altera cadastros e que uma conta com 150 oportunidades responde sem erro. **Não foi comprovada a resposta do próprio assistente**, porque a versão nova do assistente (v6) ainda não está ativa na QA: ativá-la desativa a versão atual e depende de autorização. Os testes abaixo, feitos na tela do assistente, ficam para quem segue o roteiro depois da ativação.
+**Situação do teste automático:** a regra que decide a sugestão foi comprovada pelo time na sandbox de testes (todos os casos abaixo, exceto a conversa em si, deram o resultado esperado, e nenhuma conta foi alterada). A **conversa com o assistente não pôde ser executada pelo time** (a sessão automática não consegue abrir o chat), por isso os testes abaixo, que usam o chat, ficam para quem segue este roteiro.
 
 ## Antes de começar
-- **Ambiente:** sandbox QAS da Eplast (a de homologação).
-- **Perfil:** vendedor que tenha o conjunto de permissões "Comercial - Próxima Ação" e acesso ao assistente. Se não tiver, peça ao time técnico.
-- **Pré-condição:** a versão v6 do assistente SFAgent2 precisa estar ativa (passo do time técnico).
-- **Contas de teste** (crie com seu usuário como proprietário; use nomes começando por "TESTE EPLAST-27"):
-  - **Conta A:** campo Risco com valor "E", com uma oportunidade aberta cuja última atividade foi há 45 dias, e já com uma compra ganha.
-  - **Conta B:** Risco vazio ou diferente de "E", com oportunidade aberta cuja última atividade foi há 31 dias.
-  - **Conta C:** sem oportunidade parada, com última compra ganha há 91 dias.
-  - **Conta D:** compra ganha há 10 dias e oportunidade com atividade há 5 dias.
-  - **Conta E:** conta nova, sem oportunidades e sem compra.
-  - **Conta F:** conta de teste que pertence a outro vendedor.
-  Para a atividade, registre uma tarefa concluída na oportunidade com a data desejada.
+- Ambiente: sandbox de homologação (QAS da Eplast). Nunca em produção.
+- Perfil: vendedor com o conjunto de permissões "Comercial Próxima Ação" e acesso ao assistente (SFAgent2). Se a opção do assistente não aparecer, avise o time.
+- Dados de teste: crie contas chamadas "TESTE EPLAST-27 ..." de que você seja o proprietário, com:
+  - Conta A: classificação de risco "E" e uma oportunidade aberta com última atividade há 45 dias.
+  - Conta B: sem risco, uma oportunidade aberta com última atividade há 31 dias.
+  - Conta C: sem risco, sem oportunidade aberta, última compra ganha há 91 dias.
+  - Conta D: sem risco, compra ganha há 10 dias e atividade há 5 dias.
+  - Conta E: conta nova, sem oportunidade nem compra.
+  - Conta F: proprietário diferente de você.
+  - Conta G: risco "A" e oportunidade aberta parada há 45 dias.
+- Nos testes, pergunte ao assistente: "Qual a próxima ação para a conta <nome da conta>?"
 
-## Teste 1 — Risco da conta tem prioridade
+## Teste 1 — Risco tem prioridade
 1. Abra o assistente.
-2. Pergunte: "Qual a próxima ação para a conta TESTE EPLAST-27 A?"
+2. Pergunte pela Conta A.
 
 **Resultado esperado:** "Tratar risco da conta: o cadastro está com risco E, que leva novas oportunidades para análise financeira." Não deve aparecer "Retomar oportunidade parada".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 2 — Oportunidade parada
-1. Pergunte a próxima ação da Conta B.
+1. Pergunte pela Conta B.
 
-**Resultado esperado:** "Retomar oportunidade parada: há uma oportunidade em Qualificação sem atividade há 31 dias."
+**Resultado esperado:** "Retomar oportunidade parada: há uma oportunidade em <etapa> sem atividade há 31 dias."
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 3 — Cliente sem compra recente
-1. Pergunte a próxima ação da Conta C.
+1. Pergunte pela Conta C.
 
 **Resultado esperado:** "Reativar cliente sem compra recente: a última compra ganha foi há mais de 90 dias."
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Nenhuma ação prioritária
-1. Pergunte a próxima ação da Conta D.
+## Teste 4 — Nenhuma ação necessária
+1. Pergunte pela Conta D.
 
-**Resultado esperado:** "Nenhuma ação prioritária no momento." O assistente não deve inventar outra ação.
+**Resultado esperado:** "Nenhuma ação prioritária no momento."
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Dados insuficientes
-1. Pergunte a próxima ação da Conta E.
+## Teste 5 — Conta nova
+1. Pergunte pela Conta E.
 
-**Resultado esperado:** "Dados insuficientes: esta conta ainda não tem oportunidades nem compra ganha registradas." Nenhuma mensagem de erro técnico.
+**Resultado esperado:** "Dados insuficientes: esta conta ainda não tem oportunidades nem compra ganha registradas." Sem mensagem de erro técnico.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 6 — Conta de outro vendedor
-1. Pergunte a próxima ação da Conta F.
+1. Pergunte pela Conta F.
 
-**Resultado esperado:** "Esta conta não está na sua carteira." Nenhum dado da conta aparece.
+**Resultado esperado:** "Esta conta não está na sua carteira." O assistente não mostra nenhum dado da conta.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 7 — A consulta não altera nada
-1. Abra a Conta B e anote a data de "Última modificação" (em Detalhes).
-2. Pergunte a próxima ação da Conta B cinco vezes.
-3. Recarregue a Conta B.
+## Teste 7 — Risco fora da lista de risco alto
+1. Pergunte pela Conta G.
 
-**Resultado esperado:** a data de "Última modificação" não mudou e nenhuma tarefa nova foi criada.
+**Resultado esperado:** "Retomar oportunidade parada: ... sem atividade há 45 dias." (não a mensagem de risco).
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 8 — Nenhum dado pessoal nem envio de mensagem
-1. Em qualquer das respostas anteriores, confira o texto.
+## Teste 8 — Nada é alterado e nada é enviado
+1. Anote a data da "Última modificação" das Contas A a D.
+2. Faça a pergunta de cada conta mais duas vezes.
+3. Reabra cada conta.
 
-**Resultado esperado:** a resposta traz só a frase da ação (e estágio e dias, quando houver). Não mostra CPF, e-mail, telefone ou valores. Nenhum e-mail ou mensagem é enviado ao cliente.
+**Resultado esperado:** "Última modificação" igual à anotada; nenhum e-mail ou mensagem enviado; a resposta não mostra CPF, e-mail nem telefone.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 9 — Perguntas com outras palavras
-1. Pergunte à Conta B de formas diferentes, por exemplo "o que devo fazer com esse cliente?" e "devo ligar para ele?".
+## Teste 9 — Perguntas variadas
+1. Para a Conta B, faça 6 perguntas de jeitos diferentes (ex.: "O que devo fazer com a conta X?", "Preciso ligar para X?").
 
-**Resultado esperado:** o assistente apresenta a mesma sugestão, sem acrescentar nem combinar ações.
+**Resultado esperado:** o assistente sempre repete a mesma sugestão e não inventa ação nova.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- **Ações possíveis e ordem:** primeiro "dados insuficientes", depois risco, depois oportunidade parada, depois cliente sem compra recente, depois "nenhuma ação". Confirma essa prioridade?
-- **Prazos:** oportunidade parada = mais de 30 dias sem atividade (ajustável sem programação); cliente sem compra recente = mais de 90 dias, pela regra de "inativo" que já existe no cadastro.
-- **Risco:** só o valor "E" conta como risco, porque é o que já leva a oportunidade para análise financeira. Confirma? Atenção: "E" é o valor padrão de contas novas.
-- **Fontes:** só Conta e Oportunidade. Pedidos ficam fora desta versão.
-- **Onde aparece:** só no assistente, não na página da conta.
-- **Regra fixa, sem IA decidindo:** a IA apenas apresenta o texto.
-- **Calculada na hora, nada é gravado**, e só o dono da conta recebe a sugestão. Gestores não entram nesta versão.
-- **Oportunidade aberta sem nenhuma atividade** e criada há mais de 30 dias também conta como parada.
-- **Quem recebe o acesso:** na QA, só vendedores de teste; a lista real sai da homologação.
-- **Mesma regra para outros alertas:** EPLAST-28 e demais entregas devem usar esta regra, para não existirem duas "próximas ações".
+- Ações possíveis e prioridade: dados insuficientes, depois risco, depois oportunidade parada, depois cliente sem compra recente, depois "nenhuma ação". A ordem é fixa; mudar exige ajuste técnico.
+- Oportunidade parada: mais de 30 dias sem atividade (ajustável pelo time sem desenvolvimento). Cliente sem compra recente: mais de 90 dias, o mesmo critério do campo "Inativo" que a org já usa.
+- Só contas e oportunidades entram na regra (pedidos ficam de fora).
+- A sugestão aparece só no assistente, sob demanda, sem gravar nada.
+- Vendedor só vê sugestão das contas de que é proprietário.
+- "Risco alto" significa classificação de risco "E".
+- Oportunidade aberta sem nenhuma atividade conta como parada quando foi criada há mais de 30 dias.
+- Na sandbox, só os vendedores de teste recebem a permissão; a lista real de usuários é definida por vocês.
+- O tempo de resposta do assistente não tem limite definido: informem qual é aceitável.
 
 ## O que não dá para conferir pela tela
-- Que a regra não executa nenhuma automação de Conta ou Oportunidade e que não gera envio ao ERP: comprovado pelo time técnico (log de execução e contagem de registros de integração), em `05-testes.md`.
-- Volume (conta com 150 oportunidades): comprovado pelo time técnico, em `05-testes.md`.
+- Que a consulta não dispara automações da conta e da oportunidade, e o volume (conta com 150 oportunidades): feito pelo time, evidência em `05-testes.md` e `05-testes-rodada-1.md`.
+- Que as demais demandas do assistente continuam funcionando com esta versão ativa: a ativação desta versão desligou outra versão do assistente na QA, ponto de atenção do time.
