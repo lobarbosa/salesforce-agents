@@ -41,5 +41,5 @@ EPLAST-27, EPLAST-34 e EPLAST-46 também mexem no `SFAgent2`. Nada deles foi edi
 
 ## Para a verificação
 - Tópico `acoes_comerciais` na v12 ativa; teste sem tela com `sf agent preview start` / `send` / `end`.
-- Casos da rodada 2: pedido sem data (não cria, pede a data); resumo confirmado seguido de chamada real de `CriarTarefa` e só então "criada" (conferir Task por contagem/Id, sem dado real); `Check In @` recusado; registro ambíguo; AC-4 (acesso negado, usuário `projetos@konectabr.com%`); licença Agentforce (R9).
+- Casos da rodada 2: pedido sem data (não cria, pede a data); resumo confirmado seguido de chamada real de `CriarTarefa` e só então "criada" (conferir Task por contagem/Id, sem dado real); `Check In @` recusado; registro ambíguo; AC-4 (acesso negado, usuário de teste da Konecta, resolvido por Id na org); licença Agentforce (R9).
 - `insights_comerciais` ainda com as 6 ações.
