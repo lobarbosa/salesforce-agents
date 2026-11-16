@@ -1,46 +1,35 @@
-# Roteiro de teste — Origem do Lead vinda do site
+# Roteiro de teste — SOMOSAGILITY-21: Origem do Lead vinda do site
 
-**O que foi entregue:** Leads que chegam do site da Agility devem aparecer com o campo **Origem do lead** igual a **Web Site Agility Networks**. Para quem usa, isso permite relatórios de Marketing por canal sem Leads vindos do site "perdidos" em outra origem.
+Esta demanda trata de Leads que chegam do site da Agility. O esperado é que o campo **Origem do lead** venha como **Web Site Agility Networks**, e que Leads de outros canais não mudem.
 
-**Situação do teste automático:** a equipe criou Leads de teste na sandbox de QA. Eles comprovaram que, hoje, um Lead sem origem informada fica com **Prospecção - Gerente de Contas**. A correção em si (o site passar a enviar a origem certa) depende de ajuste fora do Salesforce e ainda não pôde ser comprovada. Os Testes 1 a 3 ficam para quem segue este roteiro, depois que o ajuste do site estiver feito.
+**Situação do teste automático:** o time só comprovou o comportamento do Salesforce ao criar Leads direto na QA (sem origem: assume "Prospecção - Gerente de Contas"; com "Web Site Agility Networks": mantém). A correção em si ainda não está entregue (depende do ajuste no envio do site ou de decisão pendente), então os testes abaixo valem para quando ela existir.
 
 ## Antes de começar
-- Ambiente: sandbox de QA (nunca produção).
-- Perfil: usuário com permissão de criar e ver Leads.
-- Dado de teste: use só Leads com nome e empresa começando por "TESTE SOMOSAGILITY-21", sem dados reais.
-- Para o Teste 1, peça à TI Agility que dispare um envio de teste do formulário do site para a sandbox de QA, com o nome "TESTE SOMOSAGILITY-21 Site".
+- Ambiente: sandbox de QA, com um perfil que crie Leads.
+- Crie 2 Leads de teste: "TESTE SOMOSAGILITY-21 Manual" (pela tela, sem alterar a Origem) e use o envio de teste do site, com dados fictícios, para o segundo.
 
-## Teste 1 — Lead vindo do site chega com a origem correta
-1. Peça o envio de teste do formulário do site (veja "Antes de começar").
-2. No Salesforce de QA, abra a aba **Leads**.
-3. Procure por "TESTE SOMOSAGILITY-21 Site" e abra o Lead.
-4. Olhe o campo **Origem do lead**.
+## Teste 1 — Lead vindo do site
+1. Dispare o envio de teste do formulário do site com dados fictícios.
+2. Abra o Lead criado e veja o campo **Origem do lead**.
 
-**Resultado esperado:** **Web Site Agility Networks**.
+**Resultado esperado:** Origem do lead = **Web Site Agility Networks**.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Leads criados à mão continuam como antes
-1. Na aba **Leads**, clique em **Novo**.
-2. Preencha Sobrenome e Empresa com "TESTE SOMOSAGILITY-21 Manual". Não mexa na Origem do lead.
-3. Salve.
-4. Veja o campo **Origem do lead**.
+## Teste 2 — Lead criado manualmente não muda
+1. Clique em Novo na lista de Leads.
+2. Preencha só os campos obrigatórios com dados fictícios, sem mexer na Origem do lead, e salve.
 
-**Resultado esperado:** **Prospecção - Gerente de Contas** (o valor padrão de sempre), e não Web Site Agility Networks.
+**Resultado esperado:** Origem do lead continua **Prospecção - Gerente de Contas** (padrão), e não "Web Site Agility Networks".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Outro canal escolhido manualmente não é alterado
-1. Crie outro Lead de teste ("TESTE SOMOSAGILITY-21 Evento").
-2. Escolha **Evento** em Origem do lead e salve.
-3. Reabra o Lead e veja a Origem do lead.
+## Teste 3 — Origem escolhida à mão é respeitada
+1. Crie um Lead fictício escolhendo **Email Marketing** em Origem do lead e salve.
 
-**Resultado esperado:** **Evento**.
+**Resultado esperado:** Origem do lead = **Email Marketing**.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
-
-Ao terminar, exclua os Leads de teste.
 
 ## O que não dá para conferir pela tela
-- O ajuste no envio do formulário do site é feito fora do Salesforce, pela TI Agility. Só o time técnico confirma que ele está em produção.
-- A evidência da checagem automática (valor padrão e valores de origem) está em `05-testes.md`.
+O formato exato do envio do site (valor enviado pelo sistema do site) e o comportamento em produção só o time técnico e a TI Agility comprovam. Evidência da parte feita na plataforma está em `05-testes.md`.
