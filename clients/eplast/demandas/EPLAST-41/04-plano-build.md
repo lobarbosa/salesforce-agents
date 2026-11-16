@@ -56,3 +56,19 @@ Premissa de versionamento: a mudança do Flow entrou como **v2 Draft** (v1 segue
 - Dev: `Task_Screen_RascunhoRelacionamento` v1 Active, v2 Draft. **Ativar a v2** (passo separado) é necessário para a ação mostrar o botão; antes disso só a v1 roda. Testar a v2 como Draft por depuração na dev, depois ativar. Desfazer: reativar a v1.
 - QA: levar o template com as duas identificações de versão e a v2 do Flow; ativar a v2 lá. O `activeVersionIdentifier` é o da dev: se a QA gerar identificador próprio na publicação, conferir com Apex sintético que a versão ativa existe (a falha 1 só se resolve na QA se a versão ficar ativa).
 - Limite: `PSG_Comercial_RascunhoIA` não atribui sem licença CPQ (nota da QA); caminho comercial fica para quem tem a licença.
+
+## Correções da rodada 2
+
+Org: `sbx-eplast-dev` (alias conferido com `sf org list`; Org Id `00DHa000006vfMLMAY`). Nada tocado na QA. **Nenhum metadata foi alterado nesta rodada**, e o motivo está abaixo.
+
+| Falha | Correção | Prova |
+|---|---|---|
+| FALHA 1 (crítica): tela "Rascunho com IA" sem botão para avançar, persiste da rodada 1 | **Não corrigível por metadata nesta etapa; é passo de ativação.** A correção (13 telas com `allowFinish=true`) já está no repositório e na v2 de `Task_Screen_RascunhoRelacionamento` (`status` Draft no XML). A causa que a QA apontou procede: a quick action abre a versão **ativa**, e a ativa é a v1 defeituosa (dev: v1 Active, v2 Draft; QA: v1 Active, v2 Draft). Corrigir a v1 no lugar é proibido (versão ativa não se edita) e ativar a v2 é passo separado, que não faço. Mesma situação em `Opportunity_Screen_RascunhoComercial` (dev: v1 Active, v2 Draft; QA: v3 Active, v4 Draft). | Conferido por Tooling em `Flow` na dev (`Task_Screen_RascunhoRelacionamento` v1 Active e v2 Draft; `Opportunity_Screen_RascunhoComercial` v1 Active e v2 Draft). XML do repositório: 13 de 13 telas com `allowFinish=true`. **Ainda não provado em tela**: a correção só vale depois que a v2 estiver ativa. |
+
+### Versões e ativação (atualização da rodada 2)
+Sem a ativação abaixo, a próxima rodada de QA reprova de novo pelo mesmo motivo. Os dois passos são de quem ativa Flow (humano ou etapa de ativação da esteira), e nenhum foi feito aqui:
+1. **Dev:** depurar a v2 de `Task_Screen_RascunhoRelacionamento` e confirmar o botão de avanço; depois ativar a v2 (a v1 sai). Desfazer: reativar a v1. A v1 nunca foi usada por vendedor (PSG com 0 atribuições), então a troca não afeta ninguém.
+2. **QA:** ativar a v2 de `Task_Screen_RascunhoRelacionamento` antes de a QA retestar. Em `Opportunity_Screen_RascunhoComercial` a v4 (só expõe `varTextoGerado` como saída) pode ficar Draft: sem ela o Flow novo funciona e só não oferece salvar o texto comercial (PA-41-13).
+3. Alternativa se a esteira preferir entregar já ativo: trocar `status` para `Active` no XML de `Task_Screen_RascunhoRelacionamento` (flow novo, que o design previu nascer ativo, item 13). Não fiz porque é ativação e ficou fora do que me foi autorizado; decisão de quem opera a esteira.
+- FALHA 2 da rodada 1 (`No active template version`) segue corrigida na QA, conforme a rodada 2 (528 caracteres em 2,6 s). Nada mudou no template.
+- C12 (oportunidade e comercial) depende de licença CPQ para atribuir o PSG; não é corrigível no build.
