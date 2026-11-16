@@ -2,7 +2,7 @@ id: EPLAST-28
 client: eplast
 titulo: Alertas de oportunidade parada ou sem acompanhamento
 tipo: projeto
-status: aguardando_gate_build
+status: qa
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -119,3 +119,7 @@ historico:
   motivo: 'QA reprovou por defeito da esteira (reimplante antes da conferência apagou
     o CronTrigger do arme), corrigido no PR #209; o build não tem defeito e volta
     ao gate de build sem reconstrução.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T02:43:59.974331+00:00'
