@@ -2,7 +2,7 @@ id: SOMOSAGILITY-10
 client: somos-agility
 titulo: Erro no campo total de despesas realizadas - PRJ
 tipo: sustentacao
-status: aguardando_gate_build
+status: build
 criado_em: '2026-10-14T22:31:28.434Z'
 historico:
 - de: null
@@ -61,3 +61,9 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T19:06:23.404141+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T18:26:08.166905+00:00'
+  motivo: 'deploy na sandbox de QA falhou: testes Apex recusados por validation rules
+    da QA; corrigir os testes (ver 03-design.md, decisão de 2026-11-16)'

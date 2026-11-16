@@ -283,3 +283,30 @@ possibilidade de um ajuste de roll-up ou filtro (ponta P), e o recon descartou i
 disparo que exige Apex + Flow + testes de recursão, numa sandbox sem massa de dados. O teto se
 manteve em 16 h porque a mudança é pequena, não há modelo de dados novo e **o recálculo retroativo
 saiu do escopo (D2)**. Se D2 for puxado para dentro desta demanda, a estimativa precisa ser refeita.
+
+## Decisão do responsável (2026-11-16) — testes Apex têm de passar na sandbox de QA
+
+O gate de build foi aprovado em 16/11 e o deploy fixo na sandbox de QA falhou (deploy
+`0AfHa00000EIUR0KAP`): as classes de teste do pacote criam dados que as validation rules
+da QA recusam, e a cobertura das classes novas ficou em 0%. Nada foi implantado. A demanda
+volta para a construção só para corrigir os testes; a regra de negócio aprovada não muda.
+
+Falhas devolvidas pelo deploy:
+- `LancamentoDespesasBOTest.testOne`: `FIELD_CUSTOM_VALIDATION_EXCEPTION, Preencha o campo
+  telefone (phone)` no insert do dado de teste.
+- `SolicitacaoReembolsoBOTest` (6 métodos) e `SolicitacaoReembolsoTriggerHandlerTest`
+  (4 métodos): `FIELD_CUSTOM_VALIDATION_EXCEPTION, Favor preencher o JOB:
+  [Possui_JOB_investimento_ou_treinamento__c]` no insert do dado de teste.
+- Cobertura de `SolicitacaoReembolsoBO` e `SolicitacaoReembolsoTriggerHandler`: 0%.
+
+O que o builder faz:
+1. Os dados de teste das três classes passam a preencher o que essas validações exigem
+   (telefone no registro que a regra cobra; `Possui_JOB_investimento_ou_treinamento__c` e o
+   que a regra pedir junto). Leia a fórmula de cada validation rule pela Tooling API antes
+   de escolher o valor; não desative regra nem crie desvio na org.
+2. As validation rules da dev e da QA podem diferir: o dado de teste deve satisfazer as
+   duas. Se a regra só existir na QA e não der para ler daqui, preencha os campos citados
+   nas mensagens acima de forma que também valha na dev, e diga isso no plano de build.
+3. Não altere a lógica de `SolicitacaoReembolsoBO`, do handler nem do Flow; só as classes
+   de teste (e a fábrica de dados de teste, se houver).
+4. Cobertura mínima de 85% por classe, como sempre.
