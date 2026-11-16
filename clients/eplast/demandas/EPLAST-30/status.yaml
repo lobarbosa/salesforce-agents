@@ -2,10 +2,156 @@ id: EPLAST-30
 client: eplast
 titulo: Apoio a propostas, follow-ups e argumentos comerciais
 tipo: projeto
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-  - de: null
-    em: '2026-11-10T12:00:00Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:34:32.796601+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:36:45.991379+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-11T15:28:39.324372+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T15:41:19.858504+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-11T22:18:34.080197+00:00'
+- de: build
+  para: design
+  autor: pipeline
+  em: '2026-11-12T19:09:29.493882+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-12T19:17:04.372940+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-12T19:17:40.579545+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Carlos Sordi
+  em: '2026-11-12T19:58:17.611462+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T20:07:46.855298+00:00'
+- de: aguardando_homologacao
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T20:09:45.048452+00:00'
+- de: aguardando_homologacao
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-13T15:11:11.813401+00:00'
+  motivo: 'QA reprovou com falha crítica: o que foi construído não funciona de ponta
+    a ponta na sandbox de QA. Volta ao gate de design para decidir a correção antes
+    de refazer o build. O roteiro reprovado fica como 05-testes-rodada-1.md para o
+    builder ler; o próximo QA escreve um 05-testes.md novo.'
+- de: aguardando_gate_design
+  para: backlog
+  autor: Leonardo Barbosa
+  em: '2026-11-15T02:12:32.099897+00:00'
+  motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
+    resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
+    anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:42:17.651258+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:45:07.479017+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T04:14:52.098388+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T04:22:13.708400+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T10:17:20.274697+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T10:29:22.336648+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T13:22:12.384708+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T13:24:13.327518+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T22:41:37.298554+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-15T22:46:59.206698+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T01:01:54.210514+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T02:32:12.457857+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-16T02:34:42.709046+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T02:39:06.117140+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-16T04:50:43.074965+00:00'
+  motivo: decisão do responsável registrada em 03-design.md (2026-11-16)
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T05:14:00.132264+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T05:25:19.315563+00:00'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T05:29:24.753067+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-11-16T09:30:59.361351+00:00'
+  motivo: 'reprovação da rodada 3 foi limite da ferramenta de navegador do QA (corrigida
+    no PR #214); o build não muda. CA-08, CA-10 e CA-11 ficam para a homologação (03-design.md).'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T09:38:34.077203+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T09:42:05.333631+00:00'
