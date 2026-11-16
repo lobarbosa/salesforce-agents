@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getClientById, getDemandasByClient, demandasPorEntregavel, horasPorMes, fatorDeCalibracao } from "@/lib/data";
+import { getClientById, getDemandasByClient, demandasPorEntregavel, demandasDoProgresso, horasPorMes, fatorDeCalibracao } from "@/lib/data";
 import { estimativaCalibrada, sugestaoParaConsultor } from "@/lib/estimativa";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { ClientDetail } from "@/components/ClientDetail";
@@ -28,10 +28,11 @@ export default async function ClientPage({
   // Encerrado: só o admin abre (histórico, reativar, excluir).
   if (!enxergaCliente(usuario.role, client)) notFound();
 
-  const [brutas, horas, porEntregavel, calibracao, historico] = await Promise.all([
+  const [brutas, horas, porEntregavel, doProgresso, calibracao, historico] = await Promise.all([
     getDemandasByClient(id),
     horasPorMes(id),
     demandasPorEntregavel(id),
+    demandasDoProgresso(id),
     fatorDeCalibracao(id),
     // Só o admin de um cliente encerrado vê o botão de excluir — e o porquê
     // de ele estar bloqueado.
@@ -60,6 +61,7 @@ export default async function ClientPage({
       usuario={usuario}
       horas={horas}
       demandasPorEntregavel={porEntregavel}
+      demandasDoProgresso={doProgresso}
       initialTab={sp.tab as "conhecimento" | "contrato" | "conexao" | "demandas" | undefined}
       openDemandId={sp.demand}
       bloqueiosExclusao={historico ? bloqueiosDeExclusao(historico) : []}

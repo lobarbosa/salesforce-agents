@@ -1,5 +1,5 @@
 import { chaveDia } from "@/lib/horas";
-import type { MesDeHoras, Progresso } from "@/lib/contrato";
+import { legendaDoProgresso, type MesDeHoras, type Progresso } from "@/lib/contrato";
 
 // Relatório mensal ao cliente (2026-10-31): no dia 1, cada cliente recebe o
 // que foi concluído no mês anterior e como está o contrato — AMS (horas do
@@ -93,7 +93,7 @@ export function textoDoRelatorio(d: DadosRelatorio): { assunto: string; texto: s
       b.push(saldo >= 0 ? `• Saldo: ${h(saldo)}` : `• Excedente: ${h(-saldo)} acima do contratado`);
     }
   } else if (c?.tipo === "projeto") {
-    b.push(`• Progresso do projeto: ${c.progresso.pct}% (${c.progresso.concluidos} de ${c.progresso.total} entregáveis)`);
+    b.push(`• Progresso do projeto: ${c.progresso.pct}% (${legendaDoProgresso(c.progresso)})`);
     b.push(`• Horas no mês: ${h(c.horasDoMes)}`);
     b.push(
       c.horasContratadas > 0

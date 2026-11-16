@@ -6,6 +6,9 @@ import {
   montarHorasPorMes,
   ContratoInvalidoError,
   type ContratoGuardado,
+  progressoDoProjeto,
+  AVANCO_POR_STATUS,
+  type DemandaDoProgresso,
 } from "@/lib/contrato";
 
 const guardado = (p: Partial<ContratoGuardado> = {}): ContratoGuardado => ({
@@ -118,6 +121,61 @@ caso("trimestral: o mês carrega o acumulado do ciclo contra o teto do ciclo", (
     r.map((m) => [m.mes, m.horasGastas, m.horasNoCiclo, m.horasContratadas]),
     [["2026-08", 50, 100, 120], ["2026-09", 50, 150, 120], ["2026-10", 10, 10, 120]]
   );
+});
+
+// --- Progresso automático, das demandas ----------------------------------
+
+const ent = (id: string, peso: number, concluido = false) => ({ id, peso, concluido });
+const dem = (status: string, entregavelId: string | null = null, tipo = "projeto") =>
+  ({ status, tipo, entregavelId }) as DemandaDoProgresso;
+
+caso("progresso: sem demanda, vale a marcação manual do entregável", () => {
+  const p = progressoDoProjeto([ent("a", 3, true), ent("b", 1)]);
+  assert.equal(p.pct, 75);
+  assert.equal(p.concluidos, 1);
+  assert.equal(p.porEntregavel.a.automatico, false);
+});
+
+caso("progresso: entregável com demanda segue as demandas, não a marcação", () => {
+  const p = progressoDoProjeto([ent("a", 2, true)], [dem("build", "a"), dem("entregue", "a")]);
+  assert.equal(p.porEntregavel.a.automatico, true);
+  assert.equal(p.porEntregavel.a.fracao, 0.75);
+  assert.equal(p.pct, 75);
+  assert.equal(p.concluidos, 0);
+});
+
+caso("progresso: entregável conclui sozinho quando todas as demandas são entregues", () => {
+  const p = progressoDoProjeto([ent("a", 2)], [dem("entregue", "a"), dem("entregue", "a")]);
+  assert.equal(p.pct, 100);
+  assert.equal(p.concluidos, 1);
+});
+
+caso("progresso: homologação pendente não é entrega", () => {
+  const p = progressoDoProjeto([], [dem("aguardando_homologacao")]);
+  assert.equal(p.pct, 85);
+  assert.equal(p.demandasEntregues, 0);
+});
+
+caso("progresso: demanda de projeto sem entregável conta como peso 1", () => {
+  const p = progressoDoProjeto([ent("a", 1, true)], [dem("backlog"), dem("entregue")]);
+  assert.equal(p.pesoTotal, 3);
+  assert.equal(p.pct, 67);
+});
+
+caso("progresso: cancelada e sustentação ficam fora", () => {
+  const p = progressoDoProjeto([ent("a", 1)], [dem("cancelada", "a"), dem("entregue", null, "sustentacao")]);
+  assert.equal(p.demandas, 0);
+  assert.equal(p.pct, 0);
+  assert.equal(p.porEntregavel.a.automatico, false);
+});
+
+caso("progresso: toda etapa tem avanço entre 0 e 1 e não anda para trás", () => {
+  const ordem = ["analise", "aguardando_gate_analise", "design", "aguardando_gate_design", "build",
+    "aguardando_gate_build", "qa", "aguardando_homologacao", "release", "entregue"] as const;
+  ordem.forEach((s, i) => {
+    assert.ok(AVANCO_POR_STATUS[s] > 0 && AVANCO_POR_STATUS[s] <= 1);
+    if (i) assert.ok(AVANCO_POR_STATUS[s] > AVANCO_POR_STATUS[ordem[i - 1]]);
+  });
 });
 
 console.log(falhas === 0 ? "\ntodos ok" : `\n${falhas} falha(s)`);

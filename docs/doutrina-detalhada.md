@@ -59,6 +59,11 @@ coisas diferentes porque as perguntas são diferentes:
 - **Projeto** — cadastro, entregáveis com peso e progresso ponderado. A pergunta é "quanto
   do escopo já saiu?". O peso existe porque "migrar 12 Flows" e "ajustar um layout"
   contariam igual numa média simples, e o progresso mentiria perto do fim.
+  O progresso é calculado das demandas, não marcado à mão (decisão de 2026-11-16): cada
+  demanda de projeto não cancelada avança conforme a etapa (`AVANCO_POR_STATUS` em
+  `lib/contrato.ts`; homologação pendente vale 85%, só `entregue` vale 100%). Entregável
+  com demanda segue a média delas; entregável sem demanda (feito fora da esteira) segue a
+  marcação manual; demanda de projeto sem entregável conta como peso 1.
 
 As horas vêm dos `RegistroTempo` das demandas do cliente, agrupadas pelo mês em que o
 trabalho aconteceu (`inicioEm`), não pelo mês do lançamento. Cronômetro ainda rodando não

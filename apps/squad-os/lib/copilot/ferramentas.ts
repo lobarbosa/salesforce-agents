@@ -1,6 +1,6 @@
 import { tool } from "ai";
 import { z } from "zod";
-import { getDemandasByClient, demandasPorEntregavel, horasPorMes, getClientById } from "@/lib/data";
+import { getDemandasByClient, demandasPorEntregavel, demandasDoProgresso, horasPorMes, getClientById } from "@/lib/data";
 import { estadoDoCliente, ESTADO_CLIENTE_LABEL, progressoDaDemanda, timeAgo } from "@/lib/demandas";
 import { progressoDoProjeto } from "@/lib/contrato";
 import { criarDemanda } from "@/lib/demandas-server";
@@ -68,7 +68,7 @@ export function criarFerramentasCliente({
 
     consultar_contrato: tool({
       description:
-        "Traz o contrato do cliente: em AMS, horas consumidas por mês contra as contratadas; em projeto, o progresso ponderado dos entregáveis (quanto do escopo já saiu). Use para perguntas sobre consumo de horas, prazo ou quanto falta do projeto.",
+        "Traz o contrato do cliente: em AMS, horas consumidas por mês contra as contratadas; em projeto, o progresso calculado das demandas e ponderado pelo peso dos entregáveis (demanda em homologação conta 85%; só entregue conta 100%). Use para perguntas sobre consumo de horas, prazo ou quanto falta do projeto.",
       inputSchema: z.object({}),
       execute: async () => {
         const client = await getClientById(clientId);
@@ -86,7 +86,7 @@ export function criarFerramentasCliente({
           };
         }
 
-        const progresso = progressoDoProjeto(contrato.entregaveis);
+        const progresso = progressoDoProjeto(contrato.entregaveis, await demandasDoProgresso(clientId));
         const porEntregavel = await demandasPorEntregavel(clientId);
         return {
           existe: true as const,
@@ -95,7 +95,8 @@ export function criarFerramentasCliente({
           progresso,
           entregaveis: contrato.entregaveis.map((e) => ({
             titulo: e.titulo,
-            concluido: e.concluido,
+            concluido: (progresso.porEntregavel[e.id]?.fracao ?? 0) >= 1,
+            avancoPct: Math.round((progresso.porEntregavel[e.id]?.fracao ?? 0) * 100),
             demandas: porEntregavel[e.id] ?? { total: 0, entregues: 0 },
           })),
         };
