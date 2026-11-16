@@ -270,3 +270,24 @@ Fragilidades do assessment que o QA cobre: a dúvida dev × qa (pré-checagem do
 - Fórmulas das 6 validation rules de Account e as 2 workflow field updates: não lidas.
 
 Design pronto. **Gate bloqueante**: preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável (2026-11-16): redesenhar, só declarativo, sem gravar em massa na conta
+
+Decidido por Leonardo Barbosa depois da rodada 3 de QA (fase 2). Vale acima do que este
+desenho diz sobre onde a classificação é gravada.
+
+- **Achado:** a execução na QA sobre 555 contas falhou em todas com "Too many queueable jobs
+  added to the queue: 51". A `AccountTrigger` (after update) enfileira, para **cada** conta
+  atualizada, um `SendAccountToProtheus` (ou `UpdateAccountCompanyInfo` se o CNPJ mudou), que
+  envia a conta ao Protheus. Qualquer atualização em massa de `Account` estoura o limite e
+  dispara envio ao ERP sem necessidade.
+- **Restrição:** a solução tem de ser **declarativa (sem Apex novo)** e **não pode gravar em
+  `Account` em massa**. Não mexer na `AccountTrigger` nem no `TriggerUtility__mdt`.
+- **Alternativas para o arquiteto escolher, com o porquê:**
+  1. `Ranking__c` como **campo fórmula**, se os insumos da classificação já estão em campos
+     da conta (fórmula não salva o registro e não dispara trigger);
+  2. **objeto de classificação** ligado à conta (lookup ou mestre-detalhe), gravado pelo Flow
+     agendado, com a classificação exibida na página da conta (componente de registro
+     relacionado ou lista) e nos relatórios; histórico pelo próprio objeto;
+  3. outra opção declarativa que cumpra a restrição.
+- O que já existe e serve (configuração do dia de execução, relatórios) é reaproveitado.

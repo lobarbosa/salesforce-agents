@@ -3,7 +3,7 @@ client: eplast
 titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
   de contas)
 tipo: sustentacao
-status: aguardando_gate_design
+status: design
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
 - de: null
@@ -116,3 +116,9 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-16T08:27:05.694926+00:00'
+- de: aguardando_gate_design
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-16T08:38:46.602477+00:00'
+  motivo: 'redesenhar: só declarativo e sem gravar em massa na conta (AccountTrigger
+    enfileira envio ao Protheus por conta). Ver decisão em 03-design.md.'
