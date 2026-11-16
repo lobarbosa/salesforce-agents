@@ -2,7 +2,7 @@ id: EPLAST-34
 client: eplast
 titulo: Resumos automáticos para reuniões comerciais, GDD, S&OP e Board
 tipo: projeto
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -74,3 +74,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T20:43:29.537922+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T01:45:26.689021+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T01:52:15.514117+00:00'
