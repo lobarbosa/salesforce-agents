@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomPermission xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-46. Libera a acao de sugestao de campanhas por conta no assistente SFAgent2 (Flow Account_Agente_SugestaoCampanha). Sem esta permissao o Flow devolve NO_ACCESS sem ler a conta. Concedida pelo permission set PS_Marketing_SugestaoCampanha.</description>
+    <isLicensed>false</isLicensed>
+    <label>Sugestao de campanha (EPLAST-46)</label>
+</CustomPermission>
