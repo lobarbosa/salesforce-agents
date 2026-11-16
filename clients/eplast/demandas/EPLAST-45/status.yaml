@@ -2,7 +2,7 @@ id: EPLAST-45
 client: eplast
 titulo: Nutrição de leads até o momento da abordagem comercial
 tipo: projeto
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -37,3 +37,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-15T23:29:41.592194+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T00:28:48.698734+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T00:33:45.260420+00:00'

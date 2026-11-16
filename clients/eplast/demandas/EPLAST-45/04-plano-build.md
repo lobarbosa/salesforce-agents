@@ -2,7 +2,7 @@
 
 # EPLAST-45 · Plano de build: nutrição de leads até a abordagem comercial
 
-**Org:** `sbx-eplast-dev` (`projetos@konectabr.com.eplast2.qa`, Org Id `00DHa000006vfMLMAY`, a "QA" da Eplast; regra 5 da conta). Única conectada em `sf org list`.
+**Org:** `sbx-eplast-dev` (Org Id `00DHa000006vfMLMAY`, a "QA" da Eplast; regra 5 da conta). Única conectada em `sf org list`.
 **Branch:** `feature/EPLAST-45`. Deploy de validação (`--dry-run`) e deploy real: Succeeded (Deploy ID `0AfHa00000EI6zlKAD`). Sem Apex, então sem testes. Nada tocado no Marketing Cloud, em produção, em `et4ae5` nem na `Marketing_Cloud_Connected_App`.
 Build conforme `03-design.md` (PD-01 a PD-07). Nenhum ponto do design ficou sem resposta.
 
