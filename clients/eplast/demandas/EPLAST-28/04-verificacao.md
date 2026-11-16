@@ -1,53 +1,44 @@
 **Verificação:** inconclusiva
-**Org de teste:** `sbx-eplast-dev` (sandbox `eplast--qa` da Eplast, Org Id 00DHa000006vfMLMAY), conferida com `sf org list`: única org conectada, não é produção. Nome com "qa" não é bloqueio (regra 5 da conta).
+**Org de teste:** `sbx-eplast-dev`
 
-# EPLAST-28 — Verificação (reverificação, 2026-11-15)
+Org conferida com `sf org list`: alias `sbx-eplast-dev`, Org Id 00DHa000006vfMLMAY, Connected. Usuário de teste da conta (regra 6): dois Ids resolvidos, `005bJ00000hBJmYQAW` (inativo) e `005bJ00000piKAaQAM` (ativo). Não foram usados; não houve alteração de usuário, permission set nem Marketing User.
 
-O preflight diz "Etapa que vai rodar: build", mas esta sessão é a verificação; tratada como reverificação. O plano de build abre com `**Resultado do build:** concluído`. O comentário do card de 2026-11-15 10:51 confirma que a verificação anterior não reprovou.
+## Por que inconclusiva
+1. A dev tem 0 Account e 0 Opportunity (contagens agregadas). Não existe `clients/eplast/fixtures/` no repositório, então não há script previsto de conta ou oportunidade.
+2. O Flow é Schedule-Triggered. Não achei jeito legítimo de disparar um Flow agendado sob demanda na dev, e o Debug de Flow agendado não é executável por `sf`.
+3. A correção desta rodada (rastro `ALERTA_ENVIADO`) está na versão 2, que está em Draft. Só a versão 1 está Active, e ela não tem o rastro. Ativar versão é passo separado e fora do meu papel.
+4. Não montei fixture de Account e Opportunity: mesmo com dado, os pontos 2 e 3 impedem exercitar o Flow.
 
-## Resumo
-A construção existe na dev como descrita e a revisão estática passa de novo. O comportamento do alerta (CA-01 a CA-09 e CA-11) **continua sem prova de execução**. Nenhum caso executado falhou, então não é reprovação.
+## Evidência obtida (sem execução do Flow)
+- Versões do Flow `Opportunity_Scheduled_AlertaParada` (consulta a `FlowVersionView`): v2 Draft, v1 Active.
+- `CronTrigger` `0 0 7 ? * * *`: 1 registro na dev (agendamento presente).
+- `IntegrationLog__c` com `ALERTA_ENVIADO`, `DONO_INATIVO` ou `FALHA_NOTIFICACAO`: 0 registros. O Flow nunca rodou sobre oportunidade nesta org.
+- Revisão estática do XML da v2 na branch: `recordUpdates` 0, `recordDeletes` 0, `recordCreates` 3 (o plano diz que são só em `IntegrationLog__c`; só contei os elementos, não conferi o objeto de cada um), `actionCalls` 1, `ALERTA_ENVIADO` 2 ocorrências, nenhuma referência a e-mail nem a `et4ae5`.
 
-## Por que ficou sem prova
-- O Flow `Opportunity_Scheduled_AlertaParada` é Schedule-Triggered. Tentei dispará-lo na dev por Apex anônimo (`Flow.Interview.createInterview(...).start()`). Aceitou sem erro, mas a org não tem nenhuma Opportunity aberta (contagem agregada 0), e o Apex não injeta registro no `$Record` de um Flow agendado. O resultado não prova nenhum critério e não conto como execução. Não apareceu nenhum `IntegrationLog__c` novo causado por mim (os 4 logs de hoje são "Consulta CNPJ", das 13:26 UTC, anteriores a esta sessão).
-- Não existe forma legítima de rodar o job sobre registros sintéticos antes do disparo agendado (próximo: 2026-11-16T10:00Z, 07:00 da org). Debug de Flow só existe na interface.
-- Também não existe `clients/eplast/fixtures/` neste branch (ls devolve erro), então não há script de fixture a reutilizar. Criar Account (CNPJ fictício, `TriggerUtility.bypassTrigger`, autorizado no card de 2026-11-15 18:15) e Opportunity com `CreatedDate` de 14 dias atrás só serve se alguém puder rodar o job depois. Não criei esses dados, para não deixar registro na dev sem como provar nada hoje.
-- O alerta só sai com `DiasParado` igual a 14 exato (ou na carga inicial), então o teste precisa de dado datado e do disparo do job.
-
-## O que uma pessoa precisa fazer para provar
-1. Criar, na dev ou na QA pela esteira, Account `TESTE EPLAST-28` (CNPJ fictício válido, com bypass) e Opportunities `TESTE EPLAST-28 ...` com dono que passe nas validation rules (campo "ID Usuário Protheus"), `CreatedDate` ou Task concluída datada em hoje menos 14 dias. Para CA-09 usar como dono o usuário inativo `005bJ00000hBJmYQAW`; o ativo é `005bJ00000piKAaQAM` (ambos Administrador do sistema, perfil não alterado).
-2. Rodar o Flow (debug na interface ou esperar o disparo das 07:00) e conferir notificação, `IntegrationLog__c` e contagens e `LastModifiedDate` de Opportunity, Account, Order, Task e Event antes e depois (CA-06; fragilidade do achado 1 do assessment).
-3. Para a automação agendada, duas sessões (arma e confere depois do horário).
-4. Conferir na documentação oficial os limites de notificação personalizada e de interviews diários antes da carga inicial (o builder também não conferiu).
-
-## Tabela de casos
+## Casos
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| V1 | Build existe | Query Tooling no Flow por DeveloperName | Versão ativa | `Opportunity_Scheduled_AlertaParada` v1, Active, AutoLaunchedFlow | passou |
-| V2 | P4, P6 (parâmetros) | Revisão do metadata do CMDT no branch (`git diff --stat`) | CMDT com 5 campos e registro `Default` | 5 campos e `Default` presentes no diff | passou |
-| V3 | CA-07 (canal) | Query Tooling em `CustomNotificationType` | Tipo `Oportunidade_Parada` | 1 registro | passou |
-| V4 | CA-06 (estático) | grep no XML: recordUpdates, recordDeletes, emailSimple, emailAlert, apex | 0 ocorrências | 0 | passou |
-| V5 | CA-07 (estático) | grep de `customNotificationAction` | Única ação de saída | 2 linhas (abertura e fechamento da tag); sem e-mail | passou |
-| V6 | Agendamento | Query em `CronTrigger` | Diário 07:00 | WAITING, `0 0 7 ? * * *`, próximo 2026-11-16T10:00Z | passou |
-| V7 | CA-10 | `git diff --stat main...HEAD -- force-app` | Nenhum agente criado ou alterado | 9 arquivos, todos CMDT, notificação e o Flow; nenhum GenAi | passou |
-| V8 | CA-12 | n/a | Sem Apex | Nenhum Apex no diff | n/a |
-| C0 | Disparo sob demanda | Apex anônimo `Flow.Interview...start()` na dev | Avaliar oportunidades | Aceito sem erro; 0 Opportunity e sem `$Record`; sem efeito observável | não executado |
-| C1 | CA-01 | Não exercitado (0 Opportunity) | Fechada não alerta | Start filtra `IsClosed = false` (só XML) | não executado |
-| C2 | CA-02 | Não exercitado | Dono notificado com o texto do design | — | não executado |
-| C3 | CA-03 | Não exercitado | Sem notificação | — | não executado |
-| C4 | CA-04 | Não exercitado | Alerta com CreatedDate | — | não executado |
-| C5 | CA-05 | Não exercitado | Sem repetição | — | não executado |
-| C6 | CA-06 (runtime) | Não exercitado | Contagens e LastModifiedDate iguais | — | não executado |
-| C7 | CA-08 | Não exercitado | Gestor só com a chave ligada | — | não executado |
-| C8 | CA-09 | Contagem de `IntegrationLog__c` com DONO_INATIVO ou FALHA_NOTIFICACAO | Log por dono inativo | 0 (Flow nunca rodou sobre registro) | não executado |
-| C9 | CA-11 | Não exercitado | Sem erro de governador | — | não executado |
+| 1 | CA-01 fechada não alerta, aberta é avaliada | Nada exercitável: 0 Opportunity na dev | — | — | não executado |
+| 2 | CA-02 parada em N dias alerta o dono | Idem | — | — | não executado |
+| 3 | CA-03 atividade recente não alerta | Idem | — | — | não executado |
+| 4 | CA-04 sem atividade, criada há N dias, alerta | Idem | — | — | não executado |
+| 5 | CA-05 sem repetição | Idem | — | — | não executado |
+| 6 | CA-06 sem alteração de dados | Contagem de `recordUpdates` e `recordDeletes` no XML da v2 | 0 e 0 | 0 e 0 (só estático; sem prova de execução) | não executado |
+| 7 | CA-07 sem e-mail nem Marketing Cloud | Busca por e-mail e `et4ae5` no XML | nenhuma | nenhuma (só estático) | não executado |
+| 8 | CA-08 gestor | Sem dado nem execução | — | — | não executado |
+| 9 | CA-09 dono inativo, `DONO_INATIVO` | Sem dado nem execução | — | — | não executado |
+| 10 | CA-10 sem agente novo | Não consultei `GenAiPluginDefinition`. O plano diz que não há | — | — | não executado |
+| 11 | CA-11 carga e limites | Sem dado; limites oficiais também não conferidos pelo build | — | — | não executado |
+| 12 | CA-12 | Não se aplica (sem Apex), conforme o design | — | — | não executado |
+
+## O que ficou sem prova e o que uma pessoa precisa fazer
+- Que a v2 notifica e grava `ALERTA_ENVIADO`, e que a causa do sino vazio das rodadas de QA não é problema de entrega. Para provar: ativar a v2 numa org com oportunidades abertas (a QAS tem), esperar o disparo das 07:00 e consultar `IntegrationLog__c` (`ALERTA_ENVIADO`) junto com o sino do dono.
+- CA-01 a CA-11, por execução. Para provar: uma fixture sintética de Account e Opportunity (`TESTE EPLAST-28`) na dev, com a v2 ativada, ou a execução agendada na QA.
+- Limites de notificação e de interviews (design 5.2): ainda não conferidos, conforme o plano.
 
 ## Dados de teste
-Nenhum criado, nenhum alterado. Nenhum usuário modificado (só consulta de Id). Nada a apagar. O job agendado do Flow (`Opportunity_Scheduled_AlertaParada-1`) é da construção e foi mantido; é agendamento nativo de Flow, não job Apex, e não bloqueia deploy de classe.
+Nenhum criado e nada a apagar. Nenhuma alteração em usuário, nenhum job agendado por mim, nenhum registro lido além de contagens e campos técnicos.
 
 ## O que pode ter saído da org
-Nada. Nenhum registro criado por esta verificação. A tentativa de start por Apex não gerou notificação nem log.
-
-## Premissas exercitadas
-P1 a P18 do `03-design.md` seguidas; nenhuma foi motivo de reprovação. Nenhuma foi exercitada em runtime (P2, P3, P6 e P10 dependem do disparo do job).
+Nada. Nenhum registro foi criado e nenhuma chamada externa foi feita.
