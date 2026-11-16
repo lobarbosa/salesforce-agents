@@ -21,6 +21,18 @@ configuração do QA em duas fases, abaixo). Comece conferindo que os componente
 listados ali existem na org; componente que consta no arquivo e não está na org é falha
 crítica. Se a demanda não tem `05-deploy-qa.md`, ela não mudou metadata.
 
+**Versão nova de agente Agentforce** (decisão de 2026-11-16, achado EPLAST-27 e EPLAST-29):
+o deploy leva a versão da demanda inativa, e quem responde na QA continua sendo a versão
+ativa de antes. Se `05-deploy-qa.md` traz `Bot`, `BotVersion` ou `GenAiPlannerBundle` de
+uma versão nova, ative essa versão na sandbox de QA antes de testar, com `--target-org`
+explícito (`sf agent activate --api-name <agente> --version <n> --target-org
+sbx-<cliente>-qa`; se o comando não aceitar a versão, ative pela metadata da `BotVersion`
+com `status` Active). Confira na org (`BotVersion.Status`) que ficou ativa e registre em
+`05-testes.md` qual versão estava ativa antes e qual ficou. Ela **fica ativa** ao final: a
+versão mais nova a chegar na QA é a que responde, e não se volta à anterior. Se a ativação
+falhar, os casos do agente são falha crítica com o erro, não "não executado". Na dev e em
+produção, nada muda: ativação lá continua passo separado.
+
 ## Método
 1. Derive os casos de teste **dos critérios de aceite de `01-analise.md`**, não do que foi
    construído. Testar o código contra ele mesmo não prova nada.
