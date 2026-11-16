@@ -172,6 +172,14 @@ agente arma para no máximo 1 hora à frente (parâmetro da solução, job agend
 reenfileira a segunda sessão com `liberar_em` = `Conferir depois de` + 5 min; a varredura
 roda de 15 em 15 minutos e a dispara.
 
+Conferência sobre o arme (2026-11-16, achado EPLAST-28): o passo de deploy em QA reimplantava o
+build antes da sessão de conferência; recriar o Flow agendado trocou o `CronTrigger` do arme
+por um novo, sem `PreviousFireTime`, e o QA reprovou sem como provar que o alerta rodou.
+Agora, quando `05-testes.md` está em `aguardando execução` e já passou do `Conferir depois
+de`, o deploy é pulado antes da sessão e feito depois dela (passo "Reimplantar o build
+original na QA", `scripts/implantar-build-qa.sh`). Antes do horário continua como era:
+reimplanta antes, e o QA arma de novo.
+
 Usuário de execução na dev (2026-11-15, decisão do responsável): na reverificação da EPLAST-36
 a Oportunidade de teste não pôde ser criada porque a validation rule exige "ID Usuário
 Protheus" no proprietário, e o proprietário é o usuário com que o job autentica, que o agente
