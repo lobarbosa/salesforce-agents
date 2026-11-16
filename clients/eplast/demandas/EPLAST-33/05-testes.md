@@ -1,6 +1,6 @@
 **Veredito:** aguardando execução
 **Org de teste:** `sbx-eplast-qa` (sandbox `eplast--qas`, Partial Copy; usuário de execução `005bJ00000piKAaQAM`)
-**Conferir depois de:** 2026-11-16 01:50 UTC
+**Conferir depois de:** 2026-11-16T01:35:00Z (antecipado de 01:50 pelo responsável; o job dispara às 01:20)
 
 # EPLAST-33 — Testes na QA, fase 1 (armar)
 
