@@ -27,3 +27,12 @@ Nao se aplica (sem Flow, agente ou classe). Permission set nao exige ativacao.
 2. Dar acesso Editor na pasta de relatorio onde ela salva (pasta ainda nao definida, pergunta 7).
 3. Reverter a permissao ja adicionada pela equipe, se foi no perfil individual (pergunta 3).
 4. R1: confirmar perfil/erro exato da colaboradora; se o perfil ja tem as permissoes, a causa e outra e o design volta.
+
+## Correções da rodada 1
+Fonte: `05-testes-rodada-1.md` (reprovado so por falta de evidencia de A1/A2; T1-T6 passaram, o permission set esta correto na QA).
+
+| Falha | Tratamento |
+|---|---|
+| FALHA 1 (critica) - A1 e A2 nao exercitados por falta de usuario de teste na QA sem as permissoes, e de pasta com acesso Editor | **Nao corrigivel no build.** O que falta nao e metadata: e usuario de teste com o perfil da colaboradora (dado, `PermissionSetAssignment` e criacao de usuario, passo humano, guardrail #2; builder nao toca a QA) e pasta de relatorio (pergunta 7 da analise, sem resposta). Nenhuma mudanca no permission set: nao ha defeito a corrigir e `CreateReportInLightning` so entra se A1 falhar de fato (R4). |
+
+Encaminhamento ao humano: indicar/criar na QA um usuario de teste com o perfil da colaboradora e responder as perguntas 3, 5 e 7 da analise, ou executar o `05-roteiro-cliente.md` a mao na homologacao. Metadata do build inalterado nesta rodada.
