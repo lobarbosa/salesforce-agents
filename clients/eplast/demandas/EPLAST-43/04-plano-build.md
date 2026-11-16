@@ -62,3 +62,86 @@ Nada a ativar: sem Flow, agente ou classe.
 - Rodar o fixture na dev, medir só contagens pela Analytics API e apagar o que criou (prefixo `EPLAST43-TESTE`).
 - O `ReportFolder` não está no `force-app`.
 - O Flow de atribuição de Lead pode trocar o dono do lead de teste; não é defeito.
+
+## Correções da verificação 1
+
+**Falha 1 (CA-03, Q10): lista dos públicos ausente do plano.** Corrigida só em documentação, sem alterar configuração nem reimplantar nada. A lista abaixo foi lida da dev em 2026-11-16 (`sf org list metadata -m Report --folder MARKETINGCLOUD` e retrieve para pasta temporária, descartada). Org: `sbx-eplast-dev`.
+
+- Contagem hoje na dev: **68** relatórios na pasta `MARKETINGCLOUD`. A verificação contou 64 (63 do design mais `LEADS_PROSPECCAO_PRIORIDADE` da EPLAST-42); os 4 a mais entraram depois na dev, por outras demandas que mexem na mesma pasta (preflight: EPLAST-36, 37, 42, 44, 45, 46). Não identifiquei qual demanda criou cada um; não é desta demanda.
+- Criados pela EPLAST-43: `MSG_CONTATOS_CELULAR_APTOS`, `MSG_LEADS_CELULAR_APTOS`, `LEADS_PROSPECCAO_ORIGEM_PRIORIDADE`. Ajustados (`CONVERTED = 0`): os 15 da seção B5. Os demais não foram tocados.
+- Colisão a registrar: os 15 relatórios ajustados diferem dos XMLs da branch na dev. Conferi o conteúdo em `LEADS_ES_SQz`: a dev traz o filtro `et4ae5__HasOptedOutOfMobile__c = Falso`, que **não está** no XML versionado (é o que o verificador viu em Q1 e Q2). Nos outros 14 não abri o diff; a diferença pode ser a mesma ou só de formatação. Quem acrescentou o filtro não foi esta demanda. **Não reimplantar os XMLs da branch sobre a dev nem sobre a QA sem antes baixar de novo a versão da org**, ou o filtro seria removido. Arquivos afetados: `Cpia_de_LEADS_GERAL_D2D`, `Cpia_de_LEADS_SP_fWa`, `LEADS_ES_SQz`, `LEADS_MG_26H`, `LEADS_RJ_24t`, os 8 `LEADS_SEGMENTO_*` e `LEADS_SP_2yf`, `LEADS_SUL_0EK`. Fica para o arquiteto e o roteiro de homologação, como a verificação já indicou.
+
+### Públicos da pasta MARKETINGCLOUD (nome, tipo de relatório, filtro)
+
+Filtros no formato `campo operador valor`, como estão na dev. Operadores: `equals`, `notEqual`, `greaterThan`, `lessThan` etc. do metadata.
+
+| Relatório (API name) | Tipo | Filtro |
+|---|---|---|
+| `AMPLIACAO_MIX_CONTATOS` | ContactList | EMAIL_OPT_OUT equals 0; EMAIL notEqual  |
+| `CLASSIFICACAO_CONTAS_POR_CLASSE` | AccountList | (sem filtro) |
+| `COMPRA_ULTIMOS_90_DIAS` | ContactList | Account.LastPurchase__c greaterOrEqual N_DAYS_AGO:90; Account.LastPurchase__c lessOrEqual TODAY; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `CONTAS_E_CONTATOS_RECORRENTES_6PU` | ContactList | TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `Cpia_de_CONTAS_E_CONTATOS_SAZONAIS_YaM` | ContactList | TYPE equals Sazonal; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `Cpia_de_LEADS_GERAL_D2D` | LeadList | STATUS equals Fechado - Não convertido; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `Cpia_de_LEADS_SP_fWa` | LeadList | STATE equals GO,DF,MT,MS,TO; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `Cpia_de_PROSPECTS_MG_Kk0` | ContactList | TYPE equals Prospect; ACCOUNT.ADDRESS1_STATE equals RJ; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `Cpia_de_RECORRENTES_ATIVOS_SP_hLD` | ContactList | ACCOUNT.ADDRESS1_STATE equals SP; TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `Cpia_de_SAZONAIS_ES_u17` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals ES; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `INATIVOS_GERAL` | ContactList | TYPE equals Inativo; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `LEADS_BOAS_VINDAS` | LeadList | CONVERTED equals 0; EMAIL_OPT_OUT equals 0; STATUS notEqual Fechado - Não convertido |
+| `LEADS_ES_SQz` | LeadList | STATE equals ES; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_MG_26H` | LeadList | STATE equals MG; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_OlB` | LeadList | EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_PROSPECCAO_ORIGEM_PRIORIDADE` | LeadList | EMAIL_OPT_OUT equals 0; CONVERTED equals 0; STATUS equals Aberto - Não contatado,Contatado; Lead.PriorityBand__c notEqual Sem dados suficientes |
+| `LEADS_PROSPECCAO_PRIORIDADE` | LeadList | Lead.PriorityBand__c notEqual Sem dados suficientes; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_RJ_24t` | LeadList | STATE equals RJ; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_ALIMENTOS` | LeadList | Lead.Sector__c equals Alimentos; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_BEBIDAS` | LeadList | Lead.Sector__c equals Bebidas; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_DISTRIBUIDOR_VAREJO` | LeadList | Lead.Sector__c equals Distribuidor & Varejo; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_FARMACEUTICO` | LeadList | Lead.Sector__c equals Farmacêutico; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_HIGIENE_LIMPEZA` | LeadList | Lead.Sector__c equals Higiene & Limpeza; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_INDUSTRIAL` | LeadList | Lead.Sector__c equals Industrial; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_INDUSTRIA_DE_SOPRO` | LeadList | Lead.Sector__c equals Indústria de Sopro; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SEGMENTO_INDUSTRIA_DE_TRANSFORMACAO` | LeadList | Lead.Sector__c equals Indústria de Transformação; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SP_2yf` | LeadList | STATE equals SP; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `LEADS_SUL_0EK` | LeadList | STATE equals PR,SC,RS; EMAIL_OPT_OUT equals 0; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0 |
+| `MSG_CONTATOS_CELULAR_APTOS` | ContactList | Contact.et4ae5__HasOptedOutOfMobile__c equals 0; PHONE3 notEqual  |
+| `MSG_LEADS_CELULAR_APTOS` | LeadList | Lead.et4ae5__HasOptedOutOfMobile__c equals 0; CONVERTED equals 0; MOBILE_PHONE notEqual  |
+| `NUTRICAO_LEADS_EMAIL` | LeadList | Lead.MKT_Nutricao_Elegivel__c equals 1; EMAIL_OPT_OUT equals 0; EMAIL notEqual  |
+| `NUTRICAO_LEADS_MENSAGEM` | LeadList | Lead.MKT_Nutricao_Elegivel__c equals 1; Lead.et4ae5__HasOptedOutOfMobile__c equals 0; MOBILE_PHONE notEqual  |
+| `POTENCIAIS_SEM_COMPRA` | ContactList | Account.RelationshipClass__c equals Potencial; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PRODUTO_CONTAS_POR_PRODUTO_COMPRADO` | OrderItemList | (sem filtro) |
+| `PROSPECTS_CO_D3n` | ContactList | TYPE equals Prospect; ACCOUNT.ADDRESS1_STATE equals GO,DF,MT,MS,TO; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PROSPECTS_ES_iu8` | ContactList | TYPE equals Prospect; ACCOUNT.ADDRESS1_STATE equals ES; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PROSPECTS_GERAL_vjU` | ContactList | TYPE equals Prospect; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PROSPECTS_MG_4jm` | ContactList | TYPE equals Prospect; ACCOUNT.ADDRESS1_STATE equals MG; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PROSPECTS_NONE_xn7` | ContactList | TYPE equals Prospect; ACCOUNT.ADDRESS1_STATE equals AC,AP,AM,PA,RO,RR,AL,BA,CE,MA,PB,PE,PI,RN,SE; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PROSPECTS_NOVO_lId` | ContactList | TYPE equals Novo; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PROSPECTS_SP_kvL` | ContactList | TYPE equals Prospect; ACCOUNT.ADDRESS1_STATE equals SP; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `PROSPECTS_SUL_OQ5` | ContactList | TYPE equals Prospect; ACCOUNT.ADDRESS1_STATE equals PR,SC,RS; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `REATIVOS_GERAL_rbp` | ContactList | TYPE equals Reativo; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `RECORRENTES_ATIVOS_CO_I98` | ContactList | ACCOUNT.ADDRESS1_STATE equals GO,DF,MT,MS,TO; TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `RECORRENTES_ATIVOS_ES_cG0` | ContactList | ACCOUNT.ADDRESS1_STATE equals ES; TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `RECORRENTES_ATIVOS_MG_dSH` | ContactList | ACCOUNT.ADDRESS1_STATE equals MG; TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `RECORRENTES_ATIVOS_NORTE_E_NORDESTE_1nd` | ContactList | ACCOUNT.ADDRESS1_STATE equals AC,AP,AM,PA,RO,RR,AL,BA,CE,MA,PB,PE,PI,RN,SE; TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `RECORRENTES_ATIVOS_RJ_yuH` | ContactList | ACCOUNT.ADDRESS1_STATE equals RJ; TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `RECORRENTES_ATIVOS_SUL_lXr` | ContactList | ACCOUNT.ADDRESS1_STATE equals PR,SC,RS; TYPE equals Recorrente; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SAZONAIS_CO_tKS` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals GO,DF,MT,MS,TO; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SAZONAIS_MG_Jfz` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals MG; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SAZONAIS_MG_X7D` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals MG; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SAZONAIS_NONE_lJc` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals AC,AP,AM,PA,RO,RR,AL,BA,CE,MA,PB,PE,PI,RN,SE; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SAZONAIS_RJ_IxD` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals RJ; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SAZONAIS_SP_qII` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals SP; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SAZONAIS_SUL_dZZ` | ContactList | TYPE equals Sazonal; ACCOUNT.ADDRESS1_STATE equals PR,SC,RS; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_ALIMENTOS` | ContactList | Account.Sector__c equals Alimentos; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_BEBIDAS` | ContactList | Account.Sector__c equals Bebidas; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_DISTRIBUIDOR_VAREJO` | ContactList | Account.Sector__c equals Distribuidor & Varejo; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_FARMACEUTICO` | ContactList | Account.Sector__c equals Farmacêutico; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_HIGIENE_LIMPEZA` | ContactList | Account.Sector__c equals Higiene & Limpeza; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_INDUSTRIAL` | ContactList | Account.Sector__c equals Industrial; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_INDUSTRIA_DE_SOPRO` | ContactList | Account.Sector__c equals Indústria de Sopro; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_INDUSTRIA_DE_TRANSFORMACAO` | ContactList | Account.Sector__c equals Indústria de Transformação; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEGMENTO_PET_BEM_ESTAR_ANIMAL` | ContactList | Account.Sector__c equals PET (Bem-estar animal); EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEM_COMPRA_181_A_365_DIAS` | ContactList | Account.LastPurchase__c lessOrEqual N_DAYS_AGO:181; Account.LastPurchase__c greaterOrEqual N_DAYS_AGO:365; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEM_COMPRA_91_A_180_DIAS` | ContactList | Account.LastPurchase__c lessOrEqual N_DAYS_AGO:91; Account.LastPurchase__c greaterOrEqual N_DAYS_AGO:180; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
+| `SEM_COMPRA_MAIS_DE_365_DIAS` | ContactList | Account.LastPurchase__c lessThan N_DAYS_AGO:365; EMAIL_OPT_OUT equals 0; Contact.et4ae5__HasOptedOutOfMobile__c equals 0 |
