@@ -1,64 +1,52 @@
 **Verificação:** inconclusiva
-**Org de teste:** `sbx-eplast-dev`
+**Org de teste:** sbx-eplast-dev (`usuário de teste da Konecta (username omitido)`, org 00DHa000006vfMLMAY, `sf org list`: única org, Sandbox, Connected)
 
-# Verificação — EPLAST-27: Próxima melhor ação por cliente (v6)
+# Verificação — EPLAST-27: Próxima melhor ação por cliente
 
-Org conferida com `sf org list` antes de tocar em algo: única org, `sbx-eplast-dev` (usuário de execução: conta de serviço da Konecta, Id `005bJ00000piKAaQAM`, Administrador do sistema, ativo), Connected. É a "QA" da Eplast (regra 5 da conta). Nada em QA da esteira, produção ou Marketing Cloud. Nada do que o builder construiu foi alterado.
+Resumo: o Flow e a estrutura da v10 foram exercitados e passaram. A resposta real do assistente não pôde ser exercitada (v10 inativa, sem concessão do agente ao permission set, licença Agentforce não confirmada). Nenhum caso falhou. Por isso o veredito é inconclusiva, não aprovada: o critério principal do usuário final (o assistente responde) está sem prova.
 
-## Resumo
-- A regra do Flow `Account_Agente_ProximaAcao` v2 foi exercitada de verdade na dev e passou nos casos executados (A1, A2, A3, NONE, NODATA, NOT_OWNER, risco fora da lista, sem gravação, sem e-mail).
-- A metadata da v6 (BotVersion, planner, ação, instrução) foi conferida.
-- **Sem prova:** a resposta do assistente em linguagem natural (critério principal dos cenários 1 a 6). A v6 está Inactive e não deve ser ativada por mim. Na dev a v8 (de outras demandas) é a ativa; ativar a v6 a desligaria. Por isso o veredito é inconclusivo, não reprovado: nenhum caso executado falhou.
-
-## Estado da metadata na dev (consulta)
-| Item | Obtido |
-|---|---|
-| BotVersion de `SFAgent2` | v1 a v7 e v9 Inactive, **v8 Active**, **v6 Inactive** (`SELECT VersionNumber,Status FROM BotVersion ...`) |
-| Ligação BotVersion v6 a planner | `v6.botVersion-meta.xml` do repositório traz `genAiPlannerName` = `SFAgent2_v6`; planner `SFAgent2_v6` existe na org (`GenAiPlannerDefinition`, Id `16jHa0000005RHJIA2`). Não consegui consultar o vínculo direto na org (BotVersion não é exposto pela Tooling API); a confirmação é pelo arquivo implantado (Deploy `0AfHa00000EI0EPKA1`, Succeeded, segundo o plano) |
-| Ação | `GenAiFunctionDefinition` `ProximaAcaoCliente_EPLAST27_v6` existe na org; no bundle aponta para o Flow `Account_Agente_ProximaAcao` (`invocationTargetType` flow) |
-| Instrução | `instruction2_EPLAST27_v6` no bundle, tópico `insights_comerciais`: pede identificar a conta, chamar a ação, repetir a mensagem sem acrescentar ações e, em `NOT_OWNER`, não revelar dados |
-| Flow | v1 Obsolete, **v2 Active** (`Flow` pela Tooling API) |
-| Flow sem DML nem e-mail | 0 ocorrências de `actionCalls`, `recordCreates`, `recordUpdates`, `recordDeletes`, `emailSimple`, `emailAlert` no arquivo do Flow. Objetos lidos: Account, Opportunity, `NextBestActionSetting__mdt` |
-| Campos de Account usados | `Risk__c`, `LastPurchase__c`, `Inactive__c`, `OwnerId` (nenhum CPF, e-mail ou telefone) |
-
-## Dados de teste e mudanças no usuário de execução
-- Fixture: `fixtures/conta-oportunidade-proxima-acao.apex` (2 etapas, org explícita). Criou 7 contas `TESTE EPLAST-27 C1..C7`, oportunidades, tasks, filial e condição de pagamento sintéticas.
-- Usuário `005bJ00000piKAaQAM`, campo `ProtheusSellerId__c`: antes `null`; durante o teste `TESTE27`; **devolvido a `null` ao final** (contagem de usuários com `TESTE27` = 0). Nenhuma mudança em perfil, papel ou permission set.
-- Não atribuí `PS_Comercial_ProximaAcao` nem liguei Marketing User: não foram necessários para chamar o Flow por Apex.
+## Execução
+- Usuário de execução: Id `005bJ00000piKAaQAM` (Administrador do sistema, ativo), a conta de serviço `usuário de teste da Konecta (username omitido)`; há um segundo usuário com o mesmo prefixo (`005bJ00000hBJmYQAW`) inativo, não usado. Ele foi o proprietário das contas de teste; a conta C6 tem outro proprietário (usuário ativo qualquer, definido pelo fixture).
+- Massa: `fixtures/conta-oportunidade-proxima-acao.apex` (7 contas `TESTE EPLAST-27 C1..C7`, oportunidades e tarefas sintéticas), com `TriggerUtility.bypassTrigger = true`.
+- Flow chamado por Apex anônimo (`Flow.Interview.createInterview('Account_Agente_ProximaAcao', recordId)`), versão ativa 2. CMDT `Default`: 30 dias, `RiskValues__c = E`, `RestrictToOwner__c = true`.
 
 ## Casos
-Execução: Apex anônimo `Flow.Interview.createInterview('Account_Agente_ProximaAcao', {recordId})` por conta, lendo `actionCode` e `message`, com `LastModifiedDate` das contas lido antes e depois.
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| V1 | Cenário 1: risco alto, A1 sobre A2 | Flow na C1 (Risk E, oportunidade com 45 dias) | A1, sem A2 | `A1`: "Tratar risco da conta: o cadastro está com risco E..." | passou |
-| V2 | Cenário 2: oportunidade parada, A2 com estágio | Flow na C2 (31 dias, sem risco) | A2 citando estágio | `A2`: "Retomar oportunidade parada: há uma oportunidade em Qualificação sem atividade há 31 dias." | passou |
-| V3 | Cenário 3: sem compra há 91 dias, A3 | Flow na C3 (ganha há 91 dias) | A3 | `A3`: "Reativar cliente sem compra recente: a última compra ganha foi há mais de 90 dias." | passou |
-| V4 | Cenário 4: nenhuma condição casada | Flow na C4 (5 dias, compra há 10 dias) | "Nenhuma ação prioritária", sem ação fora de A1 a A3 | `NONE`: "Nenhuma ação prioritária no momento." | passou |
-| V5 | Cenário 5: dado insuficiente, sem erro técnico | Flow na C5 (sem oportunidade nem compra) | "Dados insuficientes", sem erro | `NODATA`: "Dados insuficientes: esta conta ainda não tem oportunidades nem compra ganha registradas." | passou |
-| V6 | Cenário 6: conta de outro vendedor, sem revelar dados | Flow na C6 (dona outro usuário) | Mensagem sem dados da conta | `NOT_OWNER`: "Esta conta não está na sua carteira." | passou (Flow); resposta do assistente não executada |
-| V7 | Cenário 7: consulta não grava | 10 chamadas na C1 e 1 em cada outra; `LastModifiedDate` das 7 contas antes e depois; contagem de DML na transação | Nenhuma alteração | `accountsChanged=0`, `dml=0` | passou (contas); oportunidades e tasks não comparadas individualmente, mas o Flow não tem DML |
-| V8 | Cenário 8: sem comunicação pelo CRM | Contagem de e-mails na transação; busca por ação de e-mail no Flow | 0 e-mails, sem e-mail alert | `emails=0`; 0 ações de e-mail no Flow | passou |
-| V9 | Cenário 9: sem dado pessoal | Leitura das mensagens retornadas e dos campos do Flow | Sem CPF, e-mail ou telefone | Mensagens só com texto fixo, estágio e dias; campos listados acima | passou |
-| V10 | Risco fora da lista (regra de P2/design) | Flow na C7 (Risk A, oportunidade com 45 dias) | Risco A não aciona A1; cai em A2 | `A2` ("... sem atividade há 45 dias") | passou |
-| V11 | Cenário 10: mudar limiar para 60 dias sem deploy de código | Não executado | A2 deixa de ser sugerida com 45 dias | Alterar o registro `Default` do `NextBestActionSetting__mdt` na dev exige deploy de metadata, que é alterar o que o builder construiu; não fiz | não executado |
-| V12 | Cenário 11: mesma regra para EPLAST-28 e eplast-ent-11 | Não executado | Mesmo resultado nos três consumidores | Os outros consumidores não existem na dev | não executado |
-| V13 | Cenários 1 a 6, parte do assistente: resposta em linguagem natural, incluindo "não inventa ação" e vendedor sem permission set | Não executado | Assistente chama a ação e repete a mensagem | v6 Inactive; v8 é a ativa na dev; ativar a v6 é passo humano e a ativaria desligaria v7 a v9 de outras demandas. Depende também de licença Agentforce (I3) e da concessão do agente ao `PS_Comercial_ProximaAcao` (não confirmada como metadata) | não executado |
-| V14 | Metadata da v6 (BotVersion, planner, ação, instrução, sem conteúdo de EPLAST-29 e 34) | Consultas e leitura dos arquivos acima | v6 Inactive, 4 tópicos, ação e instrução presentes | Conforme a tabela de metadata. Contagem de 4 tópicos pelo arquivo (`localTopics`): insights_comerciais, agent_router, ambiguous_question, off_topic. Ausência de 29 e 34 por leitura do bundle, não por diff completo | passou |
+| F1 | Precedência A1 (risco) sobre A2 | C1: `Risk__c = E`, oportunidade aberta com 45 dias sem atividade | A1 | `A1`, "Tratar risco da conta: o cadastro está com risco E..." | passou |
+| F2 | A2 por limiar (31 > 30) | C2: oportunidade aberta, atividade há 31 dias, sem risco | A2 | `A2`, "...em Qualificação sem atividade há 31 dias." | passou |
+| F3 | A3 inativo | C3: `Inactive__c = true`, ganha há 91 dias, sem oportunidade parada | A3 | `A3`, "...última compra ganha foi há mais de 90 dias." | passou |
+| F4 | NONE | C4: compra há 10 dias, oportunidade com atividade há 5 dias | NONE | `NONE`, "Nenhuma ação prioritária no momento." | passou |
+| F5 | NODATA antes de A1 | C5: sem oportunidade e sem compra | NODATA | `NODATA`, "Dados insuficientes..." | passou |
+| F6 | Carteira (RestrictToOwner = true) | C6: proprietário é outro usuário | NOT_OWNER sem dado da conta | `NOT_OWNER`, "Esta conta não está na sua carteira." | passou |
+| F7 | Risco fora da lista não dispara A1 | C7: `Risk__c = A`, oportunidade com 45 dias | A2 | `A2` (45 dias) | passou |
+| F8 | Id inexistente/sem acesso | Id `001000000000000AAA` | NOT_OWNER neutro | `NOT_OWNER`, mensagem neutra | passou |
+| F9 | Não grava nada (design 10.1) | `LastModifiedDate` máximo das contas e oportunidades de teste antes e depois das 8 execuções; limites da execução | Iguais; DML 0 | Iguais (conta 02:04:31Z, oportunidade 02:04:30Z); "Number of DML statements: 0 out of 150" | passou |
+| F10 | Sem dado pessoal e sem envio (10.7) | Leitura das mensagens devolvidas | Só texto fixo, estágio e dias | Nenhum CPF, e-mail, telefone, valor ou nome de contato nas mensagens; nenhum e-mail enviado (Flow sem DML nem ação de envio) | passou |
+| F11 | Massa não gera envio ao Protheus (10.8) | `COUNT(IntegrationLog__c)` antes e depois da massa | Sem aumento | 13 antes, 13 depois | passou |
+| S1 | Estrutura v10: ação ligada ao tópico | Retrieve de `GenAiPlannerBundle:SFAgent2_v10` da org (descartado depois), leitura do tópico `insights_comerciais_..._v10` | `ProximaAcaoCliente_EPLAST27_v10` no tópico, alvo `Account_Agente_ProximaAcao`, tipo flow | Presente; entrada `recordId` obrigatória; saída `message` exibível e `actionCode` | passou |
+| S2 | Instrução do tópico | Mesmo retrieve | `instruction2_EPLAST27_v10` com IdentificarConta, apresentar a mensagem sem alterar, NOT_OWNER sem outras ações | Presente com os três pontos | passou |
+| S3 | Ações de EPLAST-29, 34 e 46 preservadas | Mesmo retrieve | `IdentificarRegistro` e `CriarTarefa` (29, tópico `acoes_comerciais_EPLAST29_v10`), `ResumoReuniao` (34), `SugestaoCampanha` (46) | Todas presentes, mais `ConsultarPedidos`, `AgregacaoPedidos`, `IdentificarConta`; 5 tópicos | passou |
+| S4 | v8 intacta e ativa; v10 inativa | `SELECT VersionNumber, Status FROM BotVersion` e retrieve da v8 | v8 Active, v9 e v10 Inactive; v8 sem alteração | v8 Active, v9 Inactive, v10 Inactive; v8 sem a instrução 27 (como antes do build) e sem `SugestaoCampanha` | passou |
+| A1 | Assistente responde com a v10 | Não executado | Resposta com a mensagem do Flow | Não executado: v10 inativa (não ativo, passo do humano), `PS_Comercial_ProximaAcao` com 0 atribuições e 0 concessões de agente (`SetupEntityAccess` do agente), licença Agentforce não confirmada (I3) | não executado |
+| C1 | Limiar por CMDT (60 dias com 45 dias de atividade não dá A2) | Não executado | Sem A2 | Exigiria alterar o CMDT `Default`, metadata fora da massa de teste | não executado |
+| C2 | `RestrictToOwner = false` | Não executado | Conta de outro dono é lida | Mesma razão do C1 | não executado |
+| C3 | 150 oportunidades numa conta (10.2) | Não executado | Sem erro de limite | Não criei 150 oportunidades para reduzir o que a cadeia dispara. Evidência indireta: o Flow faz sempre 4 consultas com 1 registro (29 SOQL no total das 8 chamadas, 30 linhas) | não executado |
+| C4 | Pergunta variada ao agente ("não inventa ação", R6) | Não executado | Mesma razão de A1 | Depende do assistente | não executado |
 
-Observação (não reprova): o texto de A1 cita o código de risco ("risco E"). Se o cliente preferir o rótulo, é ajuste na mensagem do Flow, a validar na homologação.
-
-Conflito com EPLAST-29, 34 e 46: nenhum observado nos casos executados. O Flow não é alterado por elas; o conflito possível é na ativação (v8 ativa na dev traz o que 29 e 34 acrescentam).
+## Alterações no usuário de execução (dev) e devolução
+- `User.ProtheusSellerId__c` do `005bJ00000piKAaQAM`: antes `null`, durante `TESTE27` (exigido pelo fixture), depois `null` (conferido).
+- `UserPermissionsMarketingUser`: não alterado (false). Permission set da demanda: não atribuído.
 
 ## O que pode ter saído da org
-- A criação das oportunidades ganhas da fixture (C3 e C4) disparou automação própria da dev que criou 2 Cases: `00001221` ("Pós-vendas: TESTE EPLAST-27 ganha C4") e `00001222` ("Pós-vendas: TESTE EPLAST-27 ganha C3"), status New. Foram criados pela cadeia a partir de registros de teste e **apagados por mim**; contagem de Cases com TESTE EPLAST-27 no assunto = 0.
-- Primeira tentativa de limpeza falhou por causa desses Cases (transação revertida, nada apagado); refeita apagando Cases, Tasks, Oportunidades, Contas, Filial e Condição de pagamento.
-- Chamadas externas registradas: não verifiquei log de integração; a fixture usa `TriggerUtility.bypassTrigger = true` e o Flow não tem callout. Nenhum e-mail na transação de teste.
+- A criação da massa (bypass de trigger ativo) gerou 2 Cases de pós-vendas por automação das oportunidades Fechado/Ganho (`00001425` e `00001426`, títulos `Pós-vendas: TESTE EPLAST-27 ganha C3/C4`), apagados na limpeza.
+- Chamada externa: nenhuma registrada. `IntegrationLog__c` 13 antes e 13 depois (sem registro novo). Nada para desfazer do outro lado.
+- Marketing Cloud: não tocado.
 
 ## Limpeza
-Contagens finais (consulta `COUNT`): Account, Opportunity, Task, Case, Branch__c e PaymentTerms__c com `TESTE EPLAST-27`: 0. `ProtheusSellerId__c` do usuário: de volta a `null`. Nada ficou. Nenhum job Apex agendado por mim.
+Contas, oportunidades, tarefas, Cases, `Branch__c` e `PaymentTerms__c` com `TESTE EPLAST-27`: 0 restantes (contagem por consulta). Nada ficou na org. Sem job agendado. Observação: o fixture ganhou aviso de que os Cases devem ser apagados antes das contas (primeira tentativa de limpeza falhou por isso e foi refeita).
 
-## O que ficou sem prova e o que uma pessoa precisa fazer
-1. **Resposta do assistente (V13).** Uma pessoa autorizada ativa a BotVersion v6 na sandbox escolhida (decidindo sobre as capacidades da versão ativa que a v6 não tem), confirma a licença Agentforce (I3), concede o agente ao `PS_Comercial_ProximaAcao` e executa as perguntas dos cenários 1 a 6, incluindo o vendedor sem permission set.
-2. **Limiar por Custom Metadata (V11).** Alterar `NextBestActionSetting.Default` para 60 dias na sandbox (deploy de metadata, passo da esteira) e repetir a consulta da C2/C1 com 45 dias.
-3. **Mesma regra para outros consumidores (V12).** Só quando EPLAST-28 e eplast-ent-11 existirem.
+## O que fica sem prova e o que fazer
+1. Resposta real do assistente (A1, C4): alguém precisa ativar a v10 (desativa a v8, decidir junto com EPLAST-29, 34 e 46), conceder o agente `SFAgent2` ao `PS_Comercial_ProximaAcao`, atribuí-lo a um usuário com licença Agentforce e perguntar "qual a próxima ação para a conta X" em conta de teste.
+2. Variações de CMDT (C1, C2) e conta com 150 oportunidades (C3): podem ser feitas na QA ou na dev com autorização para alterar o CMDT e criar a massa grande.

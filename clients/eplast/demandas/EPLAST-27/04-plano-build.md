@@ -2,7 +2,7 @@
 
 # Plano de build — EPLAST-27: Próxima melhor ação por cliente
 
-Org: `sbx-eplast-dev` (`sf org list`: única org, Sandbox, Connected, username `projetos@konectabr.com.eplast2.qa`; é a "QA" da Eplast, regra 5 da conta). QA da esteira e produção não tocadas. Nada ativado. Fonte de decisão: `03-design.md` atual; os planos e roteiros de ciclos anteriores não foram usados para decidir.
+Org: `sbx-eplast-dev` (`sf org list`: única org, Sandbox, Connected, username `usuário de teste da Konecta (username omitido)`; é a "QA" da Eplast, regra 5 da conta). QA da esteira e produção não tocadas. Nada ativado. Fonte de decisão: `03-design.md` atual; os planos e roteiros de ciclos anteriores não foram usados para decidir.
 
 ## Estado encontrado (pré-checagem e org)
 - `SFAgent2`: v1 a v10 depois deste build; **v8 ativa** (não editada, não reimplantada). v9 inativa (EPLAST-46).

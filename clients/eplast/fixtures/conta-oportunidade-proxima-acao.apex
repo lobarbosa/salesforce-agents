@@ -3,7 +3,7 @@
 // Exige: usuario de execucao Administrador (Risk__c so muda por admin/Financeiro) com User.ProtheusSellerId__c preenchido
 //        (valor sintetico 'TESTE27'; registre o anterior e devolva ao final). Usa TriggerUtility.bypassTrigger = true.
 // Atencao: Risk__c nasce com 'E' por padrao; o script zera nas contas que nao devem ter risco.
-// Apagar: DELETE de Task/Opportunity/Account/Branch__c/PaymentTerms__c com Name LIKE 'TESTE EPLAST-27%' e devolver ProtheusSellerId__c.
+// Apagar: DELETE de Task/Opportunity/Account/Branch__c/PaymentTerms__c com Name LIKE 'TESTE EPLAST-27%' e devolver ProtheusSellerId__c. ATENCAO: as oportunidades Fechado/Ganho geram Case 'Pos-vendas: ...' por automacao; apagar Case (Account.Name LIKE 'TESTE EPLAST-27%') ANTES das Accounts, senao o DELETE falha.
 // Rodar em duas etapas: (1) bloco SELLER, (2) bloco MASSA (ambos Apex anonimo, org de dev explicita).
 // --- (1) SELLER (rodar antes; DML em User nao pode misturar com objetos de negocio na mesma transacao) ---
 // User u=[SELECT Id FROM User WHERE Id=:UserInfo.getUserId()]; u.ProtheusSellerId__c='TESTE27'; update u;
