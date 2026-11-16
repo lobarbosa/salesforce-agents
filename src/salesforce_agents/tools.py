@@ -239,10 +239,69 @@ async def qa_browser_open(args: dict) -> dict:
     )
 
 
+# Papéis que o agente quer dizer quando pede "clique em X". A ordem importa: opção
+# de rádio e caixa de seleção primeiro, porque no Lightning o texto delas também
+# aparece em outros pontos da tela (achado EPLAST-30, 2026-11-16: o clique por texto
+# não mudou o rádio do Screen Flow e o QA reprovou sem defeito no build).
+_PAPEIS_CLICAVEIS = ("radio", "checkbox", "button", "tab", "menuitem", "option", "link")
+_PAPEIS_PREENCHIVEIS = ("textbox", "combobox", "spinbutton", "searchbox")
+
+
+async def _primeiro_visivel(localizador):
+    """Primeiro elemento visível do localizador, ou None."""
+    for i in range(min(await localizador.count(), 20)):
+        item = localizador.nth(i)
+        try:
+            if await item.is_visible():
+                return item
+        except Exception:  # noqa: BLE001 — elemento saiu da página entre o count e o teste
+            continue
+    return None
+
+
+async def _achar_clicavel(page, texto: str):
+    """(elemento, papel) para o texto pedido: por papel acessível, nome exato antes de parcial."""
+    for exato in (True, False):
+        for papel in _PAPEIS_CLICAVEIS:
+            item = await _primeiro_visivel(page.get_by_role(papel, name=texto, exact=exato))
+            if item is not None:
+                return item, papel
+    return None, ""
+
+
+async def _achar_campo(page, rotulo: str):
+    """Campo de entrada com este rótulo. Nunca o botão de ajuda ao lado dele.
+
+    Achado EPLAST-41 (2026-11-16): `get_by_label(rotulo).first` devolvia o botão de
+    ajuda do campo (aria-label "Ajuda: <rótulo>"), que vem antes do campo no DOM.
+    """
+    for exato in (True, False):
+        for papel in _PAPEIS_PREENCHIVEIS:
+            item = await _primeiro_visivel(page.get_by_role(papel, name=rotulo, exact=exato))
+            if item is not None:
+                return item
+    candidatos = page.get_by_label(rotulo, exact=False)
+    for i in range(min(await candidatos.count(), 20)):
+        item = candidatos.nth(i)
+        try:
+            if not await item.is_visible():
+                continue
+            preenchivel = await item.evaluate(
+                "e => ['INPUT','TEXTAREA','SELECT'].includes(e.tagName) || e.isContentEditable"
+            )
+        except Exception:  # noqa: BLE001
+            continue
+        if preenchivel:
+            return item
+    return None
+
+
 @tool(
     "qa_browser_click",
-    "Clica no primeiro elemento com este texto visível, na sessão aberta por "
-    "qa_browser_open. Devolve o texto da página depois do clique.",
+    "Clica no elemento com este texto visível, na sessão aberta por qa_browser_open: opção "
+    "de rádio, caixa de seleção, botão, aba, item de menu ou link com esse nome; se não "
+    "houver, o primeiro texto igual na página. Em rádio e caixa de seleção, marca a opção e "
+    "diz se ficou marcada. Devolve o texto da página depois do clique.",
     {"session_id": str, "texto": str},
 )
 async def qa_browser_click(args: dict) -> dict:
@@ -250,18 +309,30 @@ async def qa_browser_click(args: dict) -> dict:
     if not sessao:
         return _text_result(f"Sessão {args['session_id']!r} não existe ou já foi fechada.")
     _, _, page = sessao
+    aviso = ""
     try:
-        await page.get_by_text(args["texto"], exact=False).first.click(timeout=10_000)
+        item, papel = await _achar_clicavel(page, args["texto"])
+        if item is None:
+            await page.get_by_text(args["texto"], exact=False).first.click(timeout=10_000)
+        elif papel in ("radio", "checkbox"):
+            # No Lightning o <input> fica escondido atrás do rótulo desenhado: o clique
+            # comum é interceptado. `force` marca o próprio input, e o estado é conferido.
+            await item.check(timeout=10_000, force=True)
+            marcado = await item.is_checked()
+            aviso = f"[{papel} {args['texto']!r}: {'marcado' if marcado else 'NÃO ficou marcado'}]\n\n"
+        else:
+            await item.click(timeout=10_000)
         await page.wait_for_load_state("load", timeout=10_000)
     except Exception as exc:  # noqa: BLE001
         return _text_result(f"Não consegui clicar em {args['texto']!r}: {exc}")
-    return _text_result(await _texto_visivel(page))
+    return _text_result(aviso + await _texto_visivel(page))
 
 
 @tool(
     "qa_browser_fill",
-    "Preenche o campo cujo rótulo (label) bate com este texto, na sessão aberta por "
-    "qa_browser_open.",
+    "Preenche o campo de entrada (texto, área de texto, número ou lista) cujo rótulo bate "
+    "com este texto, na sessão aberta por qa_browser_open. Confere o valor depois de "
+    "preencher.",
     {"session_id": str, "rotulo": str, "valor": str},
 )
 async def qa_browser_fill(args: dict) -> dict:
@@ -270,10 +341,28 @@ async def qa_browser_fill(args: dict) -> dict:
         return _text_result(f"Sessão {args['session_id']!r} não existe ou já foi fechada.")
     _, _, page = sessao
     try:
-        campo = page.get_by_label(args["rotulo"], exact=False).first
-        await campo.fill(args["valor"], timeout=10_000)
+        campo = await _achar_campo(page, args["rotulo"])
+        if campo is None:
+            return _text_result(
+                f"Não achei campo de entrada com o rótulo {args['rotulo']!r}. Confira o rótulo "
+                "exato no texto da página."
+            )
+        if await campo.evaluate("e => e.tagName === 'SELECT'"):
+            await campo.select_option(label=args["valor"], timeout=10_000)
+            eh_lista = True
+        else:
+            await campo.fill(args["valor"], timeout=10_000)
+            eh_lista = False
+        try:
+            obtido = await campo.input_value()
+        except Exception:  # noqa: BLE001 — campo editável sem value (contenteditable)
+            obtido = args["valor"]
     except Exception as exc:  # noqa: BLE001
         return _text_result(f"Não consegui preencher {args['rotulo']!r}: {exc}")
+    if obtido != args["valor"] and not eh_lista:
+        return _text_result(
+            f"Preenchi {args['rotulo']!r}, mas o campo ficou com {obtido!r} em vez de {args['valor']!r}."
+        )
     return _text_result(f"[OK] {args['rotulo']!r} preenchido com {args['valor']!r}.")
 
 
