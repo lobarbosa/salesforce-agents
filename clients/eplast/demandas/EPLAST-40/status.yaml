@@ -2,7 +2,7 @@ id: EPLAST-40
 client: eplast
 titulo: Ciclo Marketing → SDR → Comercial → Pós-vendas
 tipo: projeto
-status: aguardando_gate_build
+status: build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -33,3 +33,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-15T20:35:21.787736+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T00:38:44.370732+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-16T00:42:16.029431+00:00'
