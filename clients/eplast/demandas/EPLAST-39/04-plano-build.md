@@ -1,4 +1,4 @@
-**Resultado do build:** concluído
+**Resultado do build:** bloqueado
 
 # EPLAST-39 — Plano de build (rodada 2)
 
@@ -68,3 +68,23 @@ Atribuir o PS aos usuários de Marketing e incluir membros no grupo `Marketing_O
 
 ## Commits
 Registrados na branch `feature/EPLAST-39`: ver `git log` (commit `EPLAST-39: corrigir origem agrupada, relatórios, painel e permission set`).
+
+## Correções da rodada 1
+
+Fonte: `05-testes-rodada-1.md` (QA na `sbx-eplast-qa`, veredito reprovado). Nenhum metadata foi alterado nesta sessão: as duas falhas não têm correção de build dentro do desenho aprovado. Conferi na dev (`sbx-eplast-dev`, só leitura) que `FieldPermissions` de `Lead.MKT_Origem_Agrupada__c` traz só permission sets (`PS_Marketing_AnaliseCampanhas`, `PS_Marketing_Publicos`, `sfdc_a360_sfcrm_data_extract`) e nenhum perfil, igual ao que o QA viu na QA.
+
+| Falha | Situação | Por quê |
+|---|---|---|
+| FALHA 1: componentes 1 e 3 do painel com erro 406/209 para quem não tem o PS | **Não corrigível aqui, sem decisão do arquiteto** | O desenho (seção 8) afirma que o administrador vê o campo novo; não vê. Campo criado por metadata não ganha FLS em perfil. O metadata entregue está correto: com o PS atribuído os relatórios agrupam pela fórmula (verificação na dev). O que falta é acesso. As duas saídas mexem no que o desenho aprovado deixou de fora, e escolher uma é decisão de desenho, não de build. |
+| FALHA 2: CA-01, 02, 03, 05, 06, 07 (dado), 08, 09, 11 (tela) não executados | **Depende da FALHA 1** | Sem um usuário que enxergue o campo, o QA não exercita os relatórios. Nada a corrigir no metadata. |
+
+## O que falta e quem responde
+
+Decisão do arquiteto humano (volta ao gate de design), entre:
+1. **Usuário de teste com o PS atribuído** na QA (e na dev), fora do usuário de serviço da Konecta, que a regra 6 do cliente proíbe alterar. É o caminho que respeita o desenho (PA-07, acesso por permission set) e a recomendação do assessment (achados 7 e 8: permissão por PS, não por perfil). Não exige mudança de metadata. Quem executa: esteira/QA ou administrador da QAS.
+2. **FLS de leitura do campo no perfil Administrador** (`profiles/Admin.profile-meta.xml`, alteração de componente existente, exceção ao CA-10 e à seção 8). Faz o painel funcionar para o administrador sem PS, mas é mexer em perfil, o que o assessment desaconselha, e vale para todos os administradores. Só entra com aceite explícito no design.
+
+Recomendação do builder: opção 1. É a mais simples de desfazer e não toca perfil. Não apliquei nenhuma das duas por não ser a escolha do build.
+
+## Commits
+Esta atualização: `EPLAST-39: registrar bloqueio de acesso ao campo na rodada 1 de QA`.
