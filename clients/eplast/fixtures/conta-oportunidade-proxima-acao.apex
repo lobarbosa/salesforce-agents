@@ -23,7 +23,7 @@ for(Integer i=0;i<7;i++){
   CNAE__c='0000000',CompanyName__c='TESTE EPLAST-27 SA',Email__c='teste27@example.invalid',Store__c='001',Phone='(11)99999999',
   BillingStreet='Rua Teste 1',BillingCity='Teste',BillingState='SP',BillingPostalCode='01000000',BillingNeighborhood__c='Centro'));
 }
-insert accs;
+Database.DMLOptions dml=new Database.DMLOptions(); dml.DuplicateRuleHeader.allowSave=true; Database.insert(accs,dml); // allowSave: a QAS tem regra de duplicidade (provado na QA 2026-11-16)
 accs[0].Risk__c='E'; accs[6].Risk__c='A';
 update new List<Account>{accs[0],accs[6]};
 List<Opportunity> opps=new List<Opportunity>();
