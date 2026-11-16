@@ -1,38 +1,55 @@
 **Verificação:** inconclusiva
-**Org de teste:** `sbx-eplast-dev` (Org Id `00DHa000006vfMLMAY`, conferida com `sf org list`; sandbox, conectada)
+**Org de teste:** `sbx-eplast-dev` (Org Id `00DHa000006vfMLMAY`, Sandbox, Connected, conferido com `sf org list`; usuário de execução identificado só pelo alias)
 
-# EPLAST-30 · Verificação (rodada 2 do build)
+# EPLAST-30 · Verificação do build (dev)
 
-Nada foi tocado na QA nem em produção. Nenhum registro foi criado, alterado ou apagado na dev (a dev tem 0 Opportunity). Nenhuma permissão de usuário foi alterada.
-Usuário de teste (conta de serviço Konecta): `005bJ00000piKAaQAM`, ativo, perfil Administrador do sistema, é o usuário do job. Existe também um registro inativo com o mesmo prefixo (`005bJ00000hBJmYQAW`), não usado. Perfil, papel e permissões não foram alterados.
+Escopo testado: o build após a decisão do responsável de 2026-11-16 (rascunho sem cotação), conforme `04-plano-build.md`. Nada feito fora da dev. Não ativei versão de Flow. Não criei registro algum (a dev tem 0 Opportunity e a cadeia de Account/Opportunity dispara automação, R6); não houve dado de teste a apagar. Não existe `clients/eplast/fixtures/` neste checkout. Não alterei usuário, perfil nem permission set. Nada do Marketing Cloud foi tocado.
 
-## O que ficou sem prova (e por quê)
-O critério principal é o Screen Flow `Opportunity_Screen_RascunhoComercial` rodando na aba "Rascunho IA". Não deu para exercitá-lo:
-- Screen Flow só executa pela interface. A CLI, o Apex anônimo e a API REST de ações não o rodam.
-- Não há fixture em `clients/eplast/fixtures/` (a pasta não existe), e a dev não tem Opportunity, conta nem cotação CPQ.
-- Atribuir `PS_Comercial_RascunhoIA` ao usuário do job é permitido na dev. Não tentei: o plano registra que a atribuição foi recusada na QA por falta da licença CPQ (`SalesforceCPQ_CPQStandardPerm`). Mesmo com a atribuição, o job não renderiza a aba, e os casos de acesso (CA-08/09) pedem um usuário diferente, com login, que não existe.
-- Não montei massa sintética, porque sem como abrir a página ela não provaria o Flow.
+## Por que inconclusiva
 
-O que uma pessoa precisa fazer: atribuir a licença CPQ e o `PSG_Comercial_RascunhoIA` a um usuário de teste com login (ou executar `05-roteiro-cliente.md`, C-09 a C-12) e conferir CA-01 a 10 e CA-13 na página, com oportunidade sintética.
+O critério principal é o Screen Flow na aba "Rascunho IA", e ele **não foi executado de ponta a ponta**:
+- Screen Flow não roda por `sf`/API/Apex anônimo (só pela interface, com usuário logado com o PSG).
+- Estado real do Flow na dev: v1 **Active** (ainda lê SBQQ e passa `DadosCotacao`, que os templates novos não têm mais) e v2 **Draft** (a versão sem cotação). Exercitar exigiria ativar a v2, passo separado que não me cabe. Mesmo ativada, falta login interativo com o PSG.
+- Os casos de acesso (CA-08 negativa de acesso, CA-09 aba oculta e Flow negado), erro do serviço de IA na tela (CA-10) e debug log sem trigger/Flow (CA-11/12) dependem da execução do Flow e ficaram sem prova.
+
+Não há falha de caso executado: o que rodou passou.
 
 ## Casos
+
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| V-01 | CA-04 / follow-up com data de fechamento (FALHA 1 da rodada 1) | `POST /einstein/prompt-templates/Rascunho_Followup_Comercial/generations` com entradas sintéticas (`TESTE EPLAST-30`, data 31/12/2026, cotação `sem cotação`) | Texto cita conta, etapa e data; sem cotação tratado; contato só `[nome do contato]` | Texto cita conta, etapa `Proposta` e `31/12/2026`; diz que não há cotação; assina `[nome do contato]`. A rodada 1 reprovada (data em 0 de 3) foi corrigida: a versão `_2` está efetiva | passou |
-| V-02 | Follow-up: uso dos dados | Mesma chamada | O valor fornecido aparece | O modelo listou "Valor" em "Campos vazios" embora a entrada trouxesse `Valor: 1000,00 BRL`. Qualidade do modelo, em texto sintético e rascunho editável; não reprova | observação |
-| V-03 | Qualidade do template | Leitura do campo `prompt` devolvido pela API | Sem entidades HTML | A regra 1 ainda chega ao modelo com `&quot;[dado ausente: ...]&quot;` literal (o plano disse ter trocado as entidades). O modelo ignorou isso na chamada acima; sinalizo ao builder | observação |
-| V-04 | CA-14 PromptFlows depreciados | Tooling: `SELECT COUNT(Id) FROM Flow WHERE ProcessType='PromptFlow'` | 0 | 0 | passou |
-| V-05 | Flow ativo | Tooling `FlowDefinition` `Opportunity_Screen_RascunhoComercial` | Versão ativa | Versão 1, Active | passou |
-| V-06 | CA-11/12 sem gravação/e-mail | Grep de `recordCreates`/`recordUpdates`/`recordDeletes` no Flow da branch | 0 | 0 (verificação estática; execução não feita) | passou (estático) |
-| V-07 | PSG existe | `PermissionSetGroup` `PSG_Comercial_RascunhoIA` | Updated | `0PGHa000000IzjNOAS`, Updated | passou |
-| V-08 | Plano item 11: página mantém campos da EPLAST-26 | Grep de `PriorityScore__c`/`PriorityBand__c` em `Opportunity_Record_Page.flexipage-meta.xml` da branch | Presentes | 2 ocorrências (só o arquivo da branch; a versão da dev não foi baixada) | passou (estático) |
-| V-09 | Atribuição do PS ao usuário do job | `PermissionSetAssignment` do `PS_Comercial_RascunhoIA`: contagem | Informativo | 0 | informativo |
-| V-10 | CA-01 a 03 (3 tipos, tempo, argumentos), CA-05 a 07, CA-13 (50 linhas) | Não executado | Conforme `01-analise.md` | Exigem o Screen Flow na página e massa CPQ | não executado |
-| V-11 | CA-08 (negativa sem acesso), CA-09 (sem PSG não vê a aba) | Não executado | Conforme `01-analise.md` | Exigem usuário de teste com login e licença CPQ | não executado |
-| V-12 | CA-10 (erro sem travar o registro) | Não executado | Tela de erro | Exige o Flow na interface | não executado |
+| V-01 | Estado do Flow | Tooling `SELECT VersionNumber, Status FROM Flow WHERE Definition.DeveloperName='Opportunity_Screen_RascunhoComercial'` | v2 Draft, v1 ativa (plano) | v1 Active (`301Ha000016TlxgIAC`), v2 Draft (`301Ha000016VKS0IAO`) | passou (estado conferido; v1 não utilizável até a v2 ser ativada, como o plano avisa) |
+| V-02 | Sem cotação na v2 | Grep no arquivo do Flow (branch) | Sem SBQQ, sem DML | 1 ocorrência de "SBQQ", só na descrição; 0 `recordCreates/Updates/Deletes`; `status` Draft | passou (estático, no arquivo; não é a versão salva lida da org) |
+| V-03 | CA-14 | Tooling `COUNT()` de Flow `ProcessType='PromptFlow'` | 0 | 0 | passou |
+| V-04 | PS sem SBQQ, só leitura | `ObjectPermissions` e `FieldPermissions` de `PS_Comercial_RascunhoIA` na org | Só Opportunity e Account, sem edição | Account e Opportunity: leitura true, edição/criação/exclusão false; 6 campos (Account.Industry, Account.Type, Opportunity.Amount, LeadSource, Probability, Type), todos sem edição; 0 campo SBQQ; 0 objeto SBQQ | passou |
+| V-05 | PSG | Consulta `PermissionSetGroup` e atribuições | Existe, status Updated, sem atribuição | `PSG_Comercial_RascunhoIA` Updated; 0 atribuições (nada atribuído por mim) | passou |
+| V-06 | CA-01/02/03 (texto) | API de geração de cada template com texto sintético só em `Input:DadosOportunidade` (nome TESTE EPLAST-30, etapa, data 31/12/2026, valor `BRL 1000,50`, conta) | Cita conta, etapa, data de fechamento e valor; sem cotação | Proposta, follow-up e argumentos citaram conta, etapa, `31/12/2026` e `BRL 1000,50` (valor igual ao entregue, sem arredondar); argumentos citam fonte (`Oportunidade.(Etapa)` etc.); lista de campos usados/vazios presente; nenhum bloco de cotação. Tempo 4 a 5 s por chamada | passou (só o template; não o Flow) |
+| V-07 | CA-04 | Idem com data e valor como `[dado ausente: ...]` | Marcador no lugar, sem data inventada, lista de vazios | Marcadores mantidos, nada inventado, "Campos vazios" lista data e valor; desconto/prazo/condição ficaram `[a preencher]` | passou (template) |
+| V-08 | CA-07 | Contato sintético com e-mail e telefone injetado no texto de entrada | Texto usa `[nome do contato]`, sem e-mail/telefone | Saudação `[nome do contato]`; e-mail e telefone não aparecem nas 3 saídas | passou (template; no Flow o Contact nem é lido, pelo desenho, não executado) |
+| V-09 | CA-10 (parcial) | Chamada a template inexistente pela API | Erro claro | `INVALID_ARGUMENT_TYPE: Template Not found` | passou como erro de API; tela de erro do Flow não exercitada |
+| V-10 | CA-01 a 04 no Flow | Abrir aba "Rascunho IA" e gerar | Texto na tela em até 15 s | Não executado | não executado |
+| V-11 | CA-08 | Usuário sem acesso à oportunidade | Negativa, modelo não chamado | Não executado | não executado |
+| V-12 | CA-09 | Usuário sem o PSG | Aba oculta, Flow negado | Não executado | não executado |
+| V-13 | CA-10 (tela) | Template desativado, Flow executado | Tela de erro, registro livre | Não executado | não executado |
+| V-14 | CA-11/12 | Debug log e contagem de Task/Event | Sem trigger/Flow de gravação; nada criado | Não executado (sem execução do Flow; a dev tem 0 Opportunity) | não executado |
+| V-15 | CA-05/06/13 | Preço com cotação, linha da cotação, 50 linhas | Deixam de valer pela decisão de 2026-11-16 (PE-01, PE-04) | Sem cotação no desenho; V-06 confirma o valor da oportunidade | não se aplica |
+| V-16 | Página (item 11 do plano) | Grep no arquivo `Opportunity_Record_Page` da branch por `PriorityScore__c` e `PriorityBand__c` | Mantidos | 2 ocorrências no arquivo; a página salva na org não foi relida | passou (arquivo), não conferido na org |
+
+## Observações
+
+- Os textos gerados trazem `[Seu Nome]`, `[Seu Cargo]` e `Eplast` na assinatura. Está dentro da PB-01 do plano (marcadores de remetente) e não reprova.
+- O modelo respondeu só ao texto sintético passado; o que o Flow monta nesse texto (fórmula `fDadosOportunidade`) não foi observado em execução.
+
+## O que fica sem prova e o que uma pessoa precisa fazer
+
+1. Quem aprova o PR/release ativa a v2 do Flow na dev (hoje a v1, com cotação, está ativa e não funciona com os templates novos).
+2. Atribuir `PSG_Comercial_RascunhoIA` a um usuário de teste com login (o PS não exige mais licença CPQ) e rodar o roteiro `05-roteiro-cliente.md` (C-09 a C-12) numa oportunidade sintética: gerar os 3 rascunhos, ver tempo, tela de negativa para quem não tem acesso, aba oculta sem o PSG, tela de erro e conferência de Task/Event e debug log.
+3. Na QA, a v2 chega como Draft e a ativação é manual, junto com os templates e o PS (ordem no plano de build).
 
 ## O que pode ter saído da org
-Nenhum registro foi criado na org. Foram feitas 4 chamadas à API de geração de prompt (1 com resposta lida, 3 sem leitura de saída por falha minha no filtro de saída; as 3 foram com texto sintético `TESTE EPLAST-30`) ao modelo `sfdc_ai__DefaultOpenAIGPT4OmniMini`. Nada a desfazer. Nada de Marketing Cloud foi acionado.
 
-## Limpeza
-Nada a apagar. Nenhuma atribuição de permission set, opção de usuário ou campo foi alterado.
+Nada. Nenhum registro criado nem automação disparada. Houve 5 chamadas à API de geração de IA da própria org (modelo `sfdc_ai__DefaultOpenAIGPT4OmniMini`) com texto 100% sintético (`TESTE EPLAST-30`, e-mail e telefone fictícios); sem integração externa da cadeia de Account/Opportunity.
+
+## Restauração
+
+Usuário de execução não foi alterado (nenhum campo, permission set ou opção). Nada a devolver.
