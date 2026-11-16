@@ -3,7 +3,7 @@ client: eplast
 titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
   de contas)
 tipo: sustentacao
-status: standby
+status: qa
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
 - de: null
@@ -106,3 +106,9 @@ historico:
     prioridade, decisão de 15/11 20h). O teste armado fica como está: o job rodou
     às 20:10Z com a v4; para retomar, voltar a qa e rodar a fase 2, que confere o
     resultado e devolve a configuração (dia 14, horário 15:47).'
+- de: standby
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-11-16T08:16:53.591738+00:00'
+  motivo: 'retomada pelo responsável (16/11): rodar a fase 2 do QA (conferir o resultado
+    do arme de 15/11 e devolver a configuração original).'
