@@ -2,10 +2,127 @@ id: EPLAST-29
 client: eplast
 titulo: Ações por linguagem natural no assistente de IA
 tipo: projeto
-status: backlog
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-  - de: null
-    em: '2026-11-10T12:00:00Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:31:13.407136+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:32:54.926706+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:33:04.460394+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-11T15:01:18.909320+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T15:18:34.292453+00:00'
+- de: aguardando_gate_design
+  para: backlog
+  autor: Leonardo Barbosa
+  em: '2026-11-15T02:12:20.285278+00:00'
+  motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
+    resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
+    anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:36:24.559806+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:40:42.494383+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T04:04:56.576547+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T04:13:31.280312+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T09:50:42.454293+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T09:58:42.091218+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-15T12:38:35.636740+00:00'
+  motivo: 'refazer o build em cima da versão nova do SFAgent2 que a EPLAST-27 vai
+    criar (regra de 15/11): o build anterior criou a v5 na dev junto com a ação da
+    27, e a QA só tem a v4. Plano e verificação anteriores em rodada-anterior/build-agente-v5/.'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T19:42:35.994321+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T19:53:09.312541+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T00:34:29.171963+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-16T00:36:28.277389+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T01:23:52.416015+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T02:02:21.490614+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-16T02:10:43.598512+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T02:16:22.865251+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-16T04:50:43.060814+00:00'
+  motivo: decisão do responsável registrada em 03-design.md (2026-11-16)
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T05:25:42.356791+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T06:06:44.183064+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T06:14:47.898229+00:00'
+- de: aguardando_homologacao
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T09:57:40.267930+00:00'
+  motivo: redesenhar com as respostas do cliente recebidas em 17/11 (seção "Respostas
+    do cliente" do 03-design.md). Build e QA da rodada anterior arquivados em rodada-anterior/premissas-assumidas/.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T10:16:17.110488+00:00'

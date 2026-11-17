@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <agentAccesses>
+        <agentName>SFAgent2</agentName>
+        <enabled>true</enabled>
+    </agentAccesses>
+    <description>EPLAST-29. Da acesso ao agente SFAgent2 e ao Flow Task_Agente_CriarTarefa (criar tarefa por linguagem natural, com confirmacao). Sem objeto nem campo. Atribuir por usuario; licenca de Agentforce a parte.</description>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Task_Agente_CriarTarefa</flow>
+    </flowAccesses>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PS Comercial Assistente Acoes</label>
+</PermissionSet>

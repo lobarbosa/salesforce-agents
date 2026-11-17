@@ -1,0 +1,467 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <name>FalhaAssunto</name>
+        <label>Falha assunto vazio</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Informe o assunto da tarefa.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>FalhaCheckIn</name>
+        <label>Falha check-in</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Nao e possivel criar tarefa de check-in pelo assistente. Use o registro no Salesforce.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>FalhaRegistro</name>
+        <label>Falha registro invalido</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Nao consegui identificar o registro. A tarefa so pode ser ligada a uma conta ou a uma oportunidade.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>FalhaData</name>
+        <label>Falha data vazia</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Informe a data de vencimento da tarefa.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>FalhaNaoEncontrado</name>
+        <label>Falha registro nao encontrado</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Registro nao encontrado ou sem acesso.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>FalhaGravacao</name>
+        <label>Falha na gravacao</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Nao foi possivel criar a tarefa agora. Tente novamente ou crie pelo Salesforce.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>SetSucesso</name>
+        <label>Resultado sucesso</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>true</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Tarefa criada com sucesso.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <description>EPLAST-29. Autolaunched chamado pelo agente SFAgent2 (topico acoes_comerciais). Cria UMA Task para o usuario que pediu, ligada a Account ou Opportunity, depois de confirmacao no chat. Nao grava em nenhum outro objeto, nao envia e-mail. Recusa assunto vazio, assunto Check In @, registro que nao seja Account/Opportunity e data vazia.</description>
+    <decisions>
+        <name>DecAssuntoVazio</name>
+        <label>Assunto vazio?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 1: recusa assunto vazio.</description>
+        <defaultConnector><targetReference>DecCheckIn</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>DecAssuntoVazio_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AssuntoVazio</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaAssunto</targetReference></connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecCheckIn</name>
+        <label>Assunto de check-in?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 2: recusa assunto Check In @ para nao acionar TaskCreatedOrUpdated -> Account.</description>
+        <defaultConnector><targetReference>DecRegistroValido</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>DecCheckIn_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AssuntoCheckIn</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaCheckIn</targetReference></connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecRegistroValido</name>
+        <label>Registro e Account ou Opportunity?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 3: so prefixo 001 (Account) ou 006 (Opportunity), 15 ou 18 caracteres.</description>
+        <defaultConnector><targetReference>DecData</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>DecRegistroValido_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RegistroInvalido</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaRegistro</targetReference></connector>
+            <label>Invalido</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecData</name>
+        <label>Data vazia?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 4: recusa data de vencimento vazia.</description>
+        <defaultConnector><targetReference>DecObjeto</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>DecData_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>DataVazia</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaData</targetReference></connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecObjeto</name>
+        <label>Qual objeto?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Direciona o Get Records para Account (001) ou Opportunity (006).</description>
+        <defaultConnector><targetReference>GetOportunidade</targetReference></defaultConnector>
+        <defaultConnectorLabel>Opportunity</defaultConnectorLabel>
+        <rules>
+            <name>DecObjeto_Conta</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EhConta</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>GetConta</targetReference></connector>
+            <label>Account</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecContaAchada</name>
+        <label>Conta encontrada?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 5 (Account): registro inexistente ou invisivel ao usuario.</description>
+        <defaultConnector><targetReference>CriarTarefa</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>DecContaAchada_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>ContaNaoAchada</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaNaoEncontrado</targetReference></connector>
+            <label>Nao encontrada</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecOppAchada</name>
+        <label>Oportunidade encontrada?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 5 (Opportunity): registro inexistente ou invisivel ao usuario.</description>
+        <defaultConnector><targetReference>CriarTarefa</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>DecOppAchada_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>OppNaoAchada</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaNaoEncontrado</targetReference></connector>
+            <label>Nao encontrada</label>
+        </rules>
+    </decisions>
+    <formulas>
+        <name>AssuntoVazio</name>
+        <description>Verdadeiro se o assunto estiver vazio ou so com espacos.</description>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK(TRIM({!Assunto}))</expression>
+    </formulas>
+    <formulas>
+        <name>AssuntoCheckIn</name>
+        <description>Verdadeiro se o assunto comecar com Check In @ (sem diferenciar maiusculas).</description>
+        <dataType>Boolean</dataType>
+        <expression>BEGINS(LOWER(TRIM({!Assunto})), "check in @")</expression>
+    </formulas>
+    <formulas>
+        <name>EhConta</name>
+        <description>Verdadeiro se o Id comeca com 001 (Account).</description>
+        <dataType>Boolean</dataType>
+        <expression>LEFT({!RegistroRelacionadoId}, 3) = "001"</expression>
+    </formulas>
+    <formulas>
+        <name>RegistroInvalido</name>
+        <description>Verdadeiro se o Id nao for de Account (001) nem de Opportunity (006), ou nao tiver 15/18 caracteres.</description>
+        <dataType>Boolean</dataType>
+        <expression>OR(ISBLANK({!RegistroRelacionadoId}), AND(LEN({!RegistroRelacionadoId}) &lt;&gt; 15, LEN({!RegistroRelacionadoId}) &lt;&gt; 18), AND(LEFT({!RegistroRelacionadoId}, 3) &lt;&gt; "001", LEFT({!RegistroRelacionadoId}, 3) &lt;&gt; "006"))</expression>
+    </formulas>
+    <formulas>
+        <name>DataVazia</name>
+        <description>Verdadeiro se a data de vencimento nao foi informada.</description>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!DataVencimento})</expression>
+    </formulas>
+    <formulas>
+        <name>ContaNaoAchada</name>
+        <description>Verdadeiro se o Get da Account nao devolveu registro.</description>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!RegistroConta.Id})</expression>
+    </formulas>
+    <formulas>
+        <name>OppNaoAchada</name>
+        <description>Verdadeiro se o Get da Opportunity nao devolveu registro.</description>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!RegistroOportunidade.Id})</expression>
+    </formulas>
+    <formulas>
+        <name>PrioridadeFinal</name>
+        <description>High somente se o agente enviou High; qualquer outro valor vira Normal.</description>
+        <dataType>String</dataType>
+        <expression>IF(LOWER(TRIM({!Prioridade})) = "high", "High", "Normal")</expression>
+    </formulas>
+    <formulas>
+        <name>DescricaoFinal</name>
+        <description>Descricao recebida + linha final de origem (rastreabilidade, P8).</description>
+        <dataType>String</dataType>
+        <expression>IF(ISBLANK({!Descricao}), "", {!Descricao} &amp; BR() &amp; BR()) &amp; "Origem: assistente de IA"</expression>
+    </formulas>
+    <interviewLabel>Task_Agente_CriarTarefa {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Task - Agente - Criar Tarefa</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value><stringValue>LightningFlowBuilder</stringValue></value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <runInMode>DefaultMode</runInMode>
+    <recordLookups>
+        <name>GetConta</name>
+        <label>Buscar conta</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Confirma que a conta existe e esta visivel ao usuario. Le so o Id.</description>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector><targetReference>DecContaAchada</targetReference></connector>
+        <faultConnector><targetReference>FalhaNaoEncontrado</targetReference></faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value><elementReference>RegistroRelacionadoId</elementReference></value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <outputReference>RegistroConta</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>GetOportunidade</name>
+        <label>Buscar oportunidade</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Confirma que a oportunidade existe e esta visivel ao usuario. Le so o Id.</description>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector><targetReference>DecOppAchada</targetReference></connector>
+        <faultConnector><targetReference>FalhaNaoEncontrado</targetReference></faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value><elementReference>RegistroRelacionadoId</elementReference></value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <outputReference>RegistroOportunidade</outputReference>
+        <queriedFields>Id</queriedFields>
+    </recordLookups>
+    <recordCreates>
+        <name>CriarTarefa</name>
+        <label>Criar tarefa</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Unico DML do Flow: cria 1 Task. Responsavel = usuario que pediu; status Open; subtype Task.</description>
+        <assignRecordIdToReference>TarefaId</assignRecordIdToReference>
+        <connector><targetReference>SetSucesso</targetReference></connector>
+        <faultConnector><targetReference>FalhaGravacao</targetReference></faultConnector>
+        <inputAssignments><field>ActivityDate</field><value><elementReference>DataVencimento</elementReference></value></inputAssignments>
+        <inputAssignments><field>Description</field><value><elementReference>DescricaoFinal</elementReference></value></inputAssignments>
+        <inputAssignments><field>OwnerId</field><value><elementReference>$User.Id</elementReference></value></inputAssignments>
+        <inputAssignments><field>Priority</field><value><elementReference>PrioridadeFinal</elementReference></value></inputAssignments>
+        <inputAssignments><field>Status</field><value><stringValue>Open</stringValue></value></inputAssignments>
+        <inputAssignments><field>Subject</field><value><elementReference>Assunto</elementReference></value></inputAssignments>
+        <inputAssignments><field>TaskSubtype</field><value><stringValue>Task</stringValue></value></inputAssignments>
+        <inputAssignments><field>WhatId</field><value><elementReference>RegistroRelacionadoId</elementReference></value></inputAssignments>
+        <object>Task</object>
+    </recordCreates>
+    <start>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <connector><targetReference>DecAssuntoVazio</targetReference></connector>
+    </start>
+    <status>Active</status>
+    <variables>
+        <name>Assunto</name>
+        <description>Assunto da tarefa, em portugues, como o usuario pediu. Obrigatorio. Nao pode comecar com Check In @.</description>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>DataVencimento</name>
+        <description>Data de vencimento absoluta (AAAA-MM-DD). Obrigatoria. Converta datas relativas como amanha ou sexta antes de chamar.</description>
+        <dataType>Date</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>RegistroRelacionadoId</name>
+        <description>Id (15 ou 18 caracteres) da conta (comeca com 001) ou da oportunidade (comeca com 006) a que a tarefa se liga. Obrigatorio. Nunca informe o nome.</description>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Descricao</name>
+        <description>Texto opcional da tarefa. Para rascunho de e-mail ou mensagem, coloque aqui o texto redigido. O rascunho nao e enviado.</description>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Prioridade</name>
+        <description>Prioridade opcional: Normal ou High. Qualquer outro valor vira Normal.</description>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>true</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>Sucesso</name>
+        <description>Verdadeiro se a tarefa foi criada.</description>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>TarefaId</name>
+        <description>Id da tarefa criada. Vazio se houve falha.</description>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>Mensagem</name>
+        <description>Mensagem em portugues para o agente repassar ao usuario, com o resultado ou o motivo da recusa.</description>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>true</isOutput>
+    </variables>
+    <variables>
+        <name>RegistroConta</name>
+        <description>Resultado interno do Get da Account.</description>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Account</objectType>
+    </variables>
+    <variables>
+        <name>RegistroOportunidade</name>
+        <description>Resultado interno do Get da Opportunity.</description>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Opportunity</objectType>
+    </variables>
+</Flow>
