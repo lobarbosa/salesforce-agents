@@ -1,135 +1,115 @@
-# EPLAST-29 · Recon da org — Ações por linguagem natural no assistente de IA
+# EPLAST-29 · Recon da org (refeito após as respostas do cliente de 17/11)
 
-**Coleta:** 2026-11-15 · **Org:** `sbx-eplast-dev` (Org ID 00DHa000006vfMLMAY, `IsSandbox = true`, instância BRA8S, status Connected). Confirmada com `sf org list`; foi a única org listada. Nenhuma org de produção foi tocada.
-**Método:** só leitura. Metadata por `sf project retrieve` (pasta temporária dentro do projeto e apagada ao fim; o `sf` recusa `--output-dir /tmp/recon` por "OutputDirOutsideProjectError") e contagens por `COUNT()`. Nenhum registro foi lido. Nada foi escrito em `force-app/`.
-**Escopo lido de:** `01-analise.md` (Task-only, estende `SFAgent2`, e-mail e mensagem não saem do CRM) e `comentarios-do-card.md`.
-
----
+**Data:** 2026-11-17. **Org:** `sbx-eplast-dev`, sandbox (Org ID 00DHa000006vfMLMAY), status Connected. Confirmada com `sf org list`; foi a única org listada. O username termina em `.qa`, o que é esperado pela regra 5 da conta (dev da esteira = `eplast--qa` da Eplast). Produção não foi tocada.
+**Método:** só leitura. `sf data query` (metadata e `COUNT()`), `sf project retrieve` numa pasta temporária dentro do projeto (apagada ao fim; nada ficou em `force-app/`). Nenhum registro foi lido.
+**Entrada:** `comentarios-do-card.md` e o fim do `03-design.md` (respostas do cliente de 17/11): tarefas vinculadas a **lead**, cliente ou oportunidade; confirmação mostrando registro relacionado, responsável, descrição e prazo; e-mail e mensagem só como rascunho; acesso para SDR, vendedores, pós-vendas e gestão comercial.
+**Aviso:** o `02-recon.md` anterior (coleta de 15/11) estava defasado (dizia v4 e 3 tópicos). Este o substitui.
 
 ## 1. O que já cobre o pedido
 
 | Item | Status | Prova |
 |---|---|---|
-| Agente `SFAgent2` (`AgentType = AgentforceEmployeeAgent`, `Type = InternalCopilot`) | confirmado, único agente da org | `sf data query "SELECT DeveloperName, AgentType, Type FROM BotDefinition"` retornou 1 linha |
-| Planner `SFAgent2_v4`, referenciado pela versão `v4` do bot | confirmado | `sf project retrieve start -m Bot:SFAgent2 -m GenAiPlannerBundle:SFAgent2_v4`; `v4.botVersion-meta.xml` aponta `genAiPlannerName = SFAgent2_v4` |
-| Tópicos locais do planner: `ambiguous_question`, `insights_comerciais` ("Insights Comerciais e Acompanhamento"), `off_topic` | confirmado (3 `localTopics` no bundle) | retrieve acima |
-| Ações do `insights_comerciais`: `AgregacaoPedidos` (`queryRecordsWithAggregate`), `IdentificarConta` (`identifyRecordByName`), `ConsultarPedidos` (`queryRecords`), todas `standardInvocableAction` | confirmado | `invocationTarget` e `invocationTargetType` no `.genAiPlannerBundle` |
-| Ação de escrita ou de criação de Task no agente | **não encontrado**: nenhuma das 3 ações grava | mesmo retrieve |
-| Ação de envio de e-mail ou mensagem no agente | **não encontrado** | mesmo retrieve |
-| Agente `agent_router` citado na análise como subagente | **não confirmado como `localTopic`** neste retrieve: só 3 `localTopics` apareceram. A contagem "4 tópicos" do CLAUDE.md pode incluir o roteador, que não vi declarado como tópico local | retrieve acima |
-| Versões do bot | **todas `Inactive`** (v1 a v4), inclusive a v4 | `sf data query "SELECT DeveloperName, Status, VersionNumber FROM BotVersion"` |
-| Permission set `PS_Comercial_ResumoClienteAgente` | confirmado, mas **não cobre o pedido**: concede só `classAccesses` de `CustomerSummaryService`. A descrição diz "Sem acesso a objeto/campo. Falta Flow de busca + licenca do agente" | retrieve `PermissionSet:PS_Comercial_ResumoClienteAgente` |
-| Atribuições desse permission set | 0 | `SELECT COUNT() FROM PermissionSetAssignment WHERE PermissionSetId = ...` |
-| Atribuição de qualquer licença de permission set com "Agentforce" no nome | 0 | `SELECT COUNT() FROM PermissionSetLicenseAssign WHERE PermissionSetLicense.DeveloperName LIKE '%Agentforce%'` |
-| Flow de criação de tarefa por comando, relatório ou painel de Task | não procurado em relatório e painel nesta etapa (ver seção 7) | n/d |
+| Agente `SFAgent2`, tópico `acoes_comerciais_EPLAST29` (9 instruções) com ações `IdentificarRegistro` (`identifyRecordByName`, standardInvocableAction) e `CriarTarefa` (Flow `Task_Agente_CriarTarefa`) | confirmado no planner v15 (e v13/v14) | retrieve `GenAiPlannerBundle:SFAgent2_v13/v14/v15` |
+| Planner v15 (o mais novo) tem 5 tópicos: `insights_comerciais`, `agent_router`, `acoes_comerciais_EPLAST29`, `ambiguous_question`, `off_topic`. Ações de outras demandas em `insights_comerciais`: `ProximaAcaoCliente_EPLAST27`, `ResumoReuniao_EPLAST34` (`MeetingSummaryService`), `SugestaoCampanha_EPLAST46` (`Account_Agente_SugestaoCampanha`), mais as 3 originais | confirmado | retrieve v15, `invocationTarget` |
+| Versões do bot na dev: v1 a v15. **Só a v13 está `Active`**; v1 a v12, v14 e v15 `Inactive` | confirmado | `SELECT DeveloperName, Status, VersionNumber FROM BotVersion` |
+| Planners existentes: `SFAgent2_v1` a `SFAgent2_v15` (15) | confirmado | `SELECT DeveloperName FROM GenAiPlannerDefinition` |
+| Flow `Task_Agente_CriarTarefa`: `AutoLaunchedFlow`, API 67.0, `Active`, `runInMode = DefaultMode`, versão ativa = última | confirmado | `FlowDefinition` + retrieve |
+| Entradas da ação `CriarTarefa` (v15): `Assunto`, `DataVencimento`, `RegistroRelacionadoId` obrigatórias; `Descricao` e `Prioridade` opcionais. **Não há entrada de responsável**: o Flow grava `OwnerId = $User.Id` | confirmado | `input/schema.json` e XML do Flow |
+| Guardas do Flow: assunto vazio, assunto `Check In @`, data vazia, prefixo do Id só `001` (Account) ou `006` (Opportunity), registro não achado. Mensagem de falha cita "conta ou oportunidade". O Flow grava o Id recebido em `WhatId` e **não preenche `WhoId`** | confirmado | XML do Flow (guarda `DecRegistroValido`, `FalhaRegistro`, campo `WhatId`) |
+| Instrução do tópico: "só cria tarefas... ligadas a uma conta ou a uma oportunidade"; busca com `objectApiName = Account ou Opportunity`; "criar tarefa para outra pessoa" listado como não disponível; resumo antes de `CriarTarefa` cita assunto, registro, responsável (o próprio usuário), vencimento e texto do rascunho | confirmado | XML do planner v15 (`acoes_comerciais_EPLAST29_v15`) |
+| Permission set `PS_Comercial_AssistenteAcoes`: concede só o Flow `Task_Agente_CriarTarefa`, sem objeto nem campo. **0 atribuições** na dev | confirmado | retrieve do PS e `COUNT()` em `PermissionSetAssignment` |
+| Ação de e-mail ou envio no agente | não existe nas ações do tópico; as instruções mandam recusar envio | planner v15 |
 
-Leitura para o design: o ponto de partida é o `SFAgent2`, como manda a regra 3 da conta. Não existe hoje nenhuma ação de escrita para reaproveitar. Também não há agente ativo na dev (todas as versões inativas), o que muda o que o verificador consegue exercitar.
+Leitura para o design: o pedido de lead exige mudar três pontos já construídos: a guarda de prefixo do Flow (hoje recusa `00Q`), o campo gravado (lead vai em `WhoId`, não em `WhatId`) e as instruções do tópico, a descrição da ação e do schema de `RegistroRelacionadoId` (todos citam só conta e oportunidade). O agente não tem ação que grave por outro responsável.
 
 ## 2. O que será tocado
 
-| Objeto ou componente | Detalhe confirmado | Prova |
+| Componente | Detalhe confirmado | Prova |
 |---|---|---|
-| `Task` | `createable = true`. Campos padrão úteis: `Subject` (combobox), `ActivityDate` (date), `WhatId`, `WhoId`, `OwnerId`, `Description` (textarea), `Status`, `Priority`. O describe não marca nenhum deles como obrigatório sem default. Campos custom: nenhum do cliente. Só 3 do namespace `maps` (`maps__BaseObjectId__c`, `maps__LayerId__c`, `maps__WA_AdvRouteWaypoint__c`) | `sf sobject describe --sobject Task` |
-| Descrição dos campos de Task usados | campos padrão, sem campo custom do cliente a descrever. A marca "Origem: assistente de IA" (P8) vai em `Description`, sem campo novo | mesmo describe |
-| `Account.AccountHasCheckInTask__c` | boolean, label "Conta possui tarefa de Check-In?", **sem help text**. É escrito pelo Flow de Task (seção 3). Entra no escopo só se a Task criada tiver `Subject` começando com `Check In @` | `sf sobject describe --sobject Account` |
-| `SFAgent2_v4` (planner) | receberá a nova ação de escrita | seção 1 |
-| `EmailMessage` | 0 registros. Alvo do AC-6 (contagem não muda) | `SELECT COUNT() FROM EmailMessage` |
+| `Task.WhoId` | referência a `Contact` e `Lead`, polimórfico, não obrigatório | `sf sobject describe --sobject Task` |
+| `Task.WhatId` | referência a Account, Opportunity, Order, Quote, Campaign, Case e muitos outros; **Lead não está na lista** | idem |
+| `Task.Subject` (combobox), `ActivityDate` (date), `Description` (textarea), `OwnerId` (User ou Group) | existem; nenhum é obrigatório sem default no describe | idem |
+| Objeto `Lead` | existe; 0 registros | `COUNT()` |
+| Flow `Task_Agente_CriarTarefa` (ativo) | alvo de ajuste; versão ativa não se edita no lugar (nova versão) | seção 1 |
+| Planner e versão do bot | a v15 é a mais nova e é inativa; v13 ativa | seção 1 |
+| `PS_Comercial_AssistenteAcoes` | existe, sem atribuição | seção 1 |
 
 ## 3. Automação concorrente
 
-### 3.1 Em Task (objeto gravado por este build)
-
-| Componente | Status | Detalhe | Prova |
-|---|---|---|---|
-| Trigger Apex em Task | nenhuma | 0 linhas | `sf data query -t "SELECT Name, Status FROM ApexTrigger WHERE TableEnumOrId='Task'"` |
-| Validation rules em Task | 0 | | `sf data query -t "SELECT COUNT() FROM ValidationRule WHERE EntityDefinition.QualifiedApiName='Task'"` |
-| Flow `TaskCreatedOrUpdated` ("[Tarefa] - Criado ou Atualizado") | **ativo**, `RecordAfterSave`, `CreateAndUpdate`, API 61.0, `AutoLaunchedFlow` | retrieve `Flow:TaskCreatedOrUpdated` |
-
-O que o Flow faz, lido do XML:
-1. Decisão `TaskRelatedToAnAccount`: `$Record.WhatId` começa com `001` (prefixo de Account).
-2. Decisão `CheckInTask`: `$Record.Subject` começa com `Check In @`.
-3. Se as duas forem verdadeiras, atualiza a Account de `WhatId`: `AccountHasCheckInTask__c = true`.
-
-Consequência: uma Task criada pelo assistente só dispara esse efeito se o assunto começar com `Check In @` **e** o `WhatId` for uma Account. Fora disso o Flow roda e não grava nada. Em caso afirmativo, o Flow faz DML em Account e entra a cadeia da seção 3.2.
-
-### 3.2 Em Account (gravada indiretamente pelo Flow acima)
-
-| Componente | Status | Prova |
+| Componente | Detalhe | Prova |
 |---|---|---|
-| Triggers ativos: `AccountBefore` (SBQQ) e `AccountTrigger` (custom) | confirmado, 2 triggers | `sf data query -t "SELECT Name FROM ApexTrigger WHERE TableEnumOrId='Account' AND Status='Active'"` |
-| Flows record-triggered de Account (`AccountTriggered`, `UpdateParentAccountUsedLimit`) | **não reconfirmados nesta etapa**; vêm da análise (seção 5) | n/d |
+| Trigger Apex em `Task` | 0 | `SELECT Name FROM ApexTrigger WHERE TableEnumOrId='Task'` (tooling) |
+| Trigger Apex em `Lead` | 0 | idem, `Lead` |
+| Validation rules em `Task` | 0 | `SELECT ... FROM ValidationRule WHERE EntityDefinition.QualifiedApiName IN ('Lead','Task')` (tooling) retornou só 2 linhas, ambas de Lead |
+| Validation rules ativas em `Lead` | 2: `Celular` e `Telefone` (formato). Rodam ao salvar Lead, não ao criar Task com `WhoId` | mesma query; `Celular.validationRule-meta.xml` (mensagem de formato) |
+| Flow `TaskCreatedOrUpdated` (ativo, `RecordAfterSave`, create e update) | só age se `WhatId` começa com `001` e o assunto começa com `Check In @`; então marca `Account.AccountHasCheckInTask__c`. Com `WhoId` de lead e sem `Check In @` não grava nada | retrieve do Flow |
+| Flows record-triggered de Lead | nenhum encontrado no repositório da linha de base (`grep` de `<object>Lead</object>` em `force-app/.../flows`: 0). Não consultei a org diretamente (ver seção 8) | grep |
+| Outros Flows que criam `Task` (não disparam em Task): `AccountTriggered` (after-save em Account), `Oportunidade_Industria` e `OpportunityFlow` (after-save em Opportunity) | existem na linha de base | grep em `force-app` |
+| Flows ativos na org | 52 | `COUNT()` em `FlowDefinition` com `ActiveVersionId != null` |
 
-### 3.3 Ordem de execução
+### Ordem de execução
 
-| Evento | O que roda, até onde provei | Ordem |
+| Evento | O que roda | Ordem |
 |---|---|---|
-| Task create ou update | só o Flow after-save `TaskCreatedOrUpdated`. Sem trigger, sem validation rule | determinística (um único componente) |
-| Account update disparado pelo Flow (só caso `Check In @`) | `AccountBefore` e `AccountTrigger` (before, mesmo objeto) e Flows after-save de Account | **não provada**. Ordem entre os dois triggers não é garantida pela plataforma, e a sandbox não tem dado para traçar |
+| Task create pelo Flow do agente | só `TaskCreatedOrUpdated` (after-save), sem trigger, sem validation rule | determinística (um único componente) |
+| Account (só se um dia entrar `Check In @`) | `AccountBefore` (SBQQ), `AccountTrigger` (custom) e Flows de Account | não mapeada agora. O Flow do agente bloqueia `Check In @`, então o caminho não é acionado; Opportunity e Order fora do escopo e não relidos |
 
-Opportunity e Order: fora do escopo (P2) e **não foram reconfirmados** nesta etapa. O mapa fica o da análise.
+Para lead: nada na Account é disparado (`WhoId` de Lead, `WhatId` vazio). Se a tarefa de lead for vinculada também a Account ou Opportunity por `WhatId`, a regra acima vale igual.
 
 ## 4. Marketing Cloud Connect (`et4ae5`)
 
-A demanda cria texto de e-mail e mensagem como rascunho em Task, sem disparar. Por isso a regra 2 da conta pede o levantamento do conector.
+A demanda não dispara e-mail; só rascunho em Task. A análise já mantém isso fora do conector. Sem levantamento novo nesta rodada.
 
 | Item | Status | Prova |
 |---|---|---|
-| Conector instalado | confirmado: 523 `ApexClass` com `NamespacePrefix = et4ae5` | `sf data query -t "SELECT NamespacePrefix, COUNT(Id) FROM ApexClass WHERE NamespacePrefix='et4ae5' GROUP BY NamespacePrefix"` |
-| Objetos do pacote | confirmado, 13 itens retornados de `CustomObject` do namespace. Primeira linha da lista, entre os 27 nomes impressos pelo describe do tooling: `SendDefinition`, `SendJunction`, `IndividualEmailResult`, `IndividualLink`, `Automated_Send`, `Triggered_Send_Execution`, `SMSDefinition`, `SMSJunction`, `Campaign_Member_Configuration`, `Business_Unit`, `Email_Linkage`, `JB_Event`, `JB_Flow_Event` e config (`ET4AE_*`). A query retornou um total de 13 mas imprimiu mais nomes: **não confio na contagem, só na lista** | `sf data query -t "SELECT DeveloperName FROM CustomObject WHERE NamespacePrefix='et4ae5'"` |
-| Flows `MCC_*` com versão ativa | 13 | `sf data query -t "SELECT COUNT() FROM FlowDefinition WHERE DeveloperName LIKE 'MCC%' AND ActiveVersionId != null"` |
-| Campos que o conector usa em Task, Account ou Contact | **não levantado** | n/d |
-| Consentimento e opt-out (campo e objeto no CRM) | **não levantado** | n/d |
-
-O build não toca o conector. O `et4ae5` não tem trigger em Task (seção 3.1, 0 triggers de qualquer origem).
+| Conector instalado | `WhatId` de Task aceita `et4ae5__Triggered_Send_Execution__c` (objeto do pacote presente) | describe de Task |
+| Campos do conector em Task, Lead e Contact, e consentimento/opt-out | **não levantado** | n/d |
 
 ## 5. Volume e dados de teste
 
 | Objeto | Contagem | Prova |
 |---|---|---|
-| Task | 0 | `SELECT COUNT() FROM Task` |
-| Event | 0 | idem |
-| EmailMessage | 0 | idem |
+| Lead | 0 | `SELECT COUNT() FROM Lead` |
+| Task | 0 | idem |
 | Account | 0 | idem |
-| Contact | 0 | idem |
 | Opportunity | 0 | idem |
-| Order | 0 | idem |
-| User ativo | 22 | `SELECT COUNT() FROM User WHERE IsActive = true` |
+| Campaign / CampaignMember | 0 / 0 | idem |
 
-A sandbox de dev não tem dado para testar. Os registros sintéticos `REG-TESTE-01` e `REG-TESTE-DUP` (AC-1 a AC-9) precisam ser criados pelo build ou pelo QA.
+A dev não tem dado. Lead, Account e Opportunity de teste saem dos scripts de `fixtures/` (regra 6 da conta). Conta criada pela tela passa pela `AccountTrigger` (Protheus); use o desvio `TriggerUtility.bypassTrigger` das fixtures. Lead não tem trigger (seção 3).
 
 ## 6. Permissões
 
 | Item | Status | Prova |
 |---|---|---|
-| OWD de Task | interno `Private`, externo `Private` (valor retornado pela API) | `sf data query -t "SELECT QualifiedApiName, InternalSharingModel, ExternalSharingModel FROM EntityDefinition WHERE QualifiedApiName IN ('Task','Account')"` |
-| OWD de Account | interno `ReadWrite`, externo `Private` | idem |
-| `PS_Comercial_ResumoClienteAgente` | só acesso à classe `CustomerSummaryService`, sem objeto, campo ou acesso ao agente. 0 atribuições | seção 1 |
-| `SetupEntityAccess` ligado a esse permission set | 1 linha. Não identifiquei o que ela libera (a classe, provavelmente); não inferi | `SELECT COUNT() FROM SetupEntityAccess WHERE Parent.Name = ...` |
-| Permissão de criar Task por perfil ou permission set | **não levantada** | n/d |
-| Licença `Salesforce` completa 14 de 14 | vem da análise; não reconsultada | n/d |
-| Licença de permission set de Agentforce atribuída | 0 atribuições | seção 1 |
+| OWD: Lead interno `ReadWriteTransfer`, externo `Private`; Task `Private`/`Private`; Account `ReadWrite`/`Private`; Opportunity `Read`/`Private` | confirmado | `SELECT QualifiedApiName, InternalSharingModel, ExternalSharingModel FROM EntityDefinition` (tooling) |
+| `PS_Comercial_AssistenteAcoes`: só acesso ao Flow; sem acesso a objeto, Task, Lead ou ao agente; atribuições: 0 | confirmado | retrieve do PS |
+| Permission sets `PS_*` da org (15), entre eles `PS_PosVendas_Atendimento`, `PS_Comercial_ProximaAcao`, `PS_Comercial_ResumoReuniao`, `PS_Comercial_RascunhoIA`, `PSG_Comercial_RascunhoIA` | existem; conteúdo não lido | `SELECT Name FROM PermissionSet WHERE Name LIKE 'PS_%'` |
+| Quem hoje cria Task e vê Lead, por perfil dos 4 públicos (SDR, vendedores/executivos, pós-vendas, gestão comercial) | **não levantado** | n/d |
+| Licença de Agentforce atribuída a usuário | não reconsultado nesta rodada | n/d |
 
-Leitura: P5 da análise ("reaproveitar `PS_Comercial_ResumoClienteAgente` se cobrir o agente") **não se sustenta como está**. O permission set não cobre o agente nem Task, e não está atribuído a ninguém. O arquiteto decide entre estender esse permission set ou criar outro.
+Como Task é `Private`, o dono vê só as próprias tarefas; o Flow grava `OwnerId = $User.Id`, então o responsável da tarefa é quem pediu.
 
-## 7. Riscos do assessment que tocam o escopo
+## 7. Outras demandas que tocam o SFAgent2
 
-| Risco | Estado confirmado agora |
-|---|---|
-| Automação concorrente em Account, Opportunity e Order | Account: 2 triggers ativos reconfirmados. Opportunity e Order não reconfirmados. Entra no escopo só pelo caminho `Check In @` (seção 3.1) |
-| Alias `sbx-eplast-dev` com nome de QA | `sf org list` mostra só `sbx-eplast-dev`, e o username dele termina em `.qa` (não transcrevo o username). Não há alias de QA conectado nesta sessão, então **não comparei dev e QA** |
-| Campos custom sem descrição | `AccountHasCheckInTask__c` sem help text. Os campos de Task usados são padrão |
-| Cobertura Apex de 10% | não reconfirmada. Sem Apex novo previsto na análise |
-| Sandbox sem registros | confirmado (seção 5) |
+| Demanda | O que consta no planner v15 | Estado |
+|---|---|---|
+| EPLAST-27 | `ProximaAcaoCliente_EPLAST27` (Flow `Account_Agente_ProximaAcao`), instrução `instruction2_EPLAST27` em `insights_comerciais` | aguardando_homologacao (preflight) |
+| EPLAST-34 | `ResumoReuniao_EPLAST34` (`MeetingSummaryService`), `instruction1_EPLAST34` | idem |
+| EPLAST-46 | `SugestaoCampanha_EPLAST46` (`Account_Agente_SugestaoCampanha`), `instruction1_EPLAST46` | idem |
+
+- A v15 é composta (traz as ações das quatro demandas); a v13 ativa também tem as quatro e a EPLAST-29 com `CriarTarefa`. A v14 não foi aberta em detalhe além de existir com `acoes_comerciais`.
+- Qualquer mudança nesta demanda vira versão nova do planner e do `botVersion` (v16 ou a numeração que a esteira indicar), partindo da última versão e sem tocar a ativa (v13). A decisão de estratégia de versões é do arquiteto; o histórico de 16/11 (pacote só com a v12) está em `03-design.md`.
+- Também existem `GenAiFunction` por versão (ex.: `CriarTarefa_EPLAST29`, `_v7`, `_v8`), então cada versão nova acarreta funções novas.
 
 ## 8. O que não consegui confirmar
 
-1. **Qual versão do planner está ativa:** todas as versões do bot aparecem `Inactive` (inclusive a v4). Não sei se isso reflete o estado real de uso, nem se o agente responde na dev hoje.
-2. **Se `agent_router` é um tópico:** só 3 `localTopics` aparecem no retrieve; a contagem de 4 tópicos do CLAUDE.md da conta não fechou com o que li.
-3. **O que o `SetupEntityAccess` do permission set libera:** 1 linha, não detalhada.
-4. **Quem tem permissão de criar Task e acesso ao agente:** não levantei perfis nem permission sets que alcançam Task. Precisa de leitura de `ObjectPermissions` agregada.
-5. **Flows de Account, Opportunity e Order, e validation rules de Account:** não relidos. Valem os números da análise.
-6. **Campos e consentimento do conector `et4ae5` em Task, Account e Contact, e a lista exata de objetos do pacote** (a query de contagem e a lista impressa não bateram).
-7. **Relatórios e painéis de Task ou de atividade** que já cubram o acompanhamento do vendedor: não procurados.
-8. **Diferença entre dev e QA:** a QA não está conectada nesta sessão.
-9. **Ordem de execução real** entre `AccountBefore`, `AccountTrigger` e Flows de Account no caminho `Check In @`: não provável sem dado e sem trace.
-10. **Licença de Agentforce disponível para o usuário de teste:** 0 atribuições; disponibilidade no catálogo vem da análise e não foi reconsultada.
+1. Se há Flow record-triggered de Lead ativo na org. O `FlowDefinitionView` não aceitou o filtro por objeto e `Flow` não tem `TriggerType` na consulta; só o `grep` do repositório (0 resultados) vale.
+2. Quem entre os 4 públicos já tem criar Task, ler Lead e Opportunity: não levantei `ObjectPermissions` por perfil e permission set.
+3. O que o `PS_Comercial_AssistenteAcoes` e os outros `PS_*` concedem além do Flow; e como o acesso ao agente SFAgent2 é dado (o PS atual não tem objeto nem referência explícita ao agente).
+4. Licença de Agentforce disponível e atribuída aos usuários de teste.
+5. Conteúdo da v14 e a causa de a v13, e não a v15, estar ativa na dev.
+6. Campos e consentimento do conector `et4ae5` em Lead, Contact e Task.
+7. Comportamento real do `identifyRecordByName` com `objectApiName = Lead` (a ação é padrão; não exercitei, a dev não tem Lead).
+8. Se a resposta do cliente exige mostrar o responsável com opção de escolha: hoje o responsável é sempre o usuário, e o Flow não aceita outro. Isso é decisão do design.
+9. Ordem entre `AccountBefore`, `AccountTrigger` e Flows de Account; Opportunity e Order não relidos, pois o caminho `Check In @` está bloqueado.
+10. Usuário de teste da conta de serviço (regra 6): não consultei o Id nesta rodada.
