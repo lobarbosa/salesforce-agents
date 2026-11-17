@@ -100,3 +100,28 @@ A seção 2 diz que o Flow "nasce ativo". O XML do pacote tem `<status>Draft</st
 
 ### Ainda sem prova em runtime
 O rodízio nunca rodou com sucesso em nenhuma org (verificação 1 reprovou; o reteste na DEV ficou inconclusivo por Flow em Draft). A correção do `Get_Membros` (seção "Correções da verificação 1") segue sem confirmação. T17 (3 processos de aprovação sem mudança) ficou inconclusivo no QA porque `ProcessDefinition` não é consultável por `sf data query`; o verificador pode conferir por Tooling ou retrieve de `approvalProcesses`.
+
+## Correções da rodada 1 (ajuste de metadata pela decisão do responsável, 2026-11-17)
+
+**Org:** `sbx-eplast-dev` (única conectada em `sf org list`). Nada tocado em QA, QAS, produção ou Marketing Cloud. A decisão de Leonardo Barbosa (`03-design.md`, final) vale acima da PA-30 e substitui a opção do bloco anterior: a EPLAST-35 é homologada junto com a EPLAST-38 e o pacote vai ligado.
+
+| Falha | Correção | Estado |
+|---|---|---|
+| FALHA 1 (crítica): cadeia inalcançável na QAS | Três ajustes de metadata, sem mexer na lógica do Flow: (1) Flow `Lead_AfterSave_DistribuiDonoRodizio` com `<status>Active</status>` (era Draft); (2) `Lead.assignmentRules`: `Distribuicao_Regional_Leads` (v1 da 38) `active=false` e `Distribuicao_Regional_Leads_v2` `active=true`; (3) `DistribuicaoLeadSetting.Padrao.DistribuicaoAtiva__c = true`. Fila `Leads_RJ_ES` segue sem membros no pacote: pela decisão (item 4), quem testa inclui usuários ativos existentes pelo tempo do teste e remove ao fim. | Corrigido no XML. DEV: `--dry-run` aprovado e deploy real Succeeded (`0AfHa00000EJUiIKAX`). |
+
+### Estado conferido na DEV depois do deploy
+- Flow: v1 Obsolete, v2 Obsolete, **v3 Active** (o deploy criou a versão nova com a lógica corrigida do `Get_Membros`; nenhuma versão editada no lugar).
+- Regra de Lead: v1 `false`, **v2 `true`**.
+- CMDT `Padrao`: `DistribuicaoAtiva__c = true`.
+
+### Versões e ativação
+| Item | Antes | Depois | Desfazer |
+|---|---|---|---|
+| Flow `Lead_AfterSave_DistribuiDonoRodizio` | pacote em Draft | Active (ativação vem no deploy, autorizada pelo item 2 da decisão) | Desativar o Flow ou desmarcar o interruptor |
+| Regra de Lead ativa | v1 `Distribuicao_Regional_Leads` (EPLAST-38) | **v2 `Distribuicao_Regional_Leads_v2`** (v1 deixa de ser a ativa; continua no org) | Setup > Regras de atribuição de Lead: reativar a v1 |
+| `DistribuicaoAtiva__c` | false | true | Desmarcar no CMDT `Padrao` (basta para o Flow não agir) |
+
+Impacto na QAS quando o esteira levar o pacote: todo Lead novo passa a ser distribuído pela v2 (região, RJ e ES juntos em `Leads_RJ_ES`) e pelo Flow (dono da conta, rodízio). Quem homologa a EPLAST-38 passa a ver esta distribuição (aceito pelo responsável). O Flow antigo `Lead_AfterInsert_AplicaRegraAtribuicao` e `LeadAssignmentService` (38) não foram tocados.
+
+### Ainda sem prova em runtime
+O rodízio não foi exercitado com sucesso em nenhuma org; a correção do `Get_Membros` e a medição do lote de 200 dependem do verificador (casos T1 a T18, seção 12 do design). T17 (3 processos de aprovação) deve ser conferido por Tooling ou retrieve de `approvalProcesses`. `Leads_RJ_ES` precisa de membros de teste antes de T1 (decisão, item 4).

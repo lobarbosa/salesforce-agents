@@ -788,7 +788,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Draft</status>
+    <status>Active</status>
     <triggerOrder>500</triggerOrder>
     <variables>
         <description>EPLAST-35. Variavel de trabalho do Flow.</description>
