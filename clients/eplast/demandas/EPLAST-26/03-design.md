@@ -387,3 +387,16 @@ rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
 2. Faixa: AA, A, B, C, D e "Não classificado" no lugar de Alta/Média/Baixa. Ajustar list
    views, texto de ajuda e o que as demandas 28, 30 e 39 leem de `PriorityBand__c`, se lerem.
 3. Risco e inadimplência não entram no score. Campo Einstein não é tocado.
+
+---
+
+## Decisão do responsável (2026-11-17) depois da rodada 1 de QA — acesso ao campo de engajamento no teste
+
+A rodada 1 de QA desta rodada de desenho foi reprovada sem defeito no build: o usuário de execução da esteira na sandbox de QA não tem permissão no campo `Lead.MKT_MC_Engajamento__c`, e os casos de Lead com engajamento preenchido (1, 2 e 4b) não puderam ser executados. O permission set que dá esse acesso, `PS_Marketing_RetornoMC`, não é desta demanda.
+
+Decisão de Leonardo Barbosa, responsável pela conta:
+
+1. **O build não muda.** Não há o que corrigir no pacote. O builder confere, registra em `04-plano-build.md` que nada foi alterado por esta decisão e conclui. Não incluir `PS_Marketing_RetornoMC` nem permissão desse campo no pacote da demanda, e não ampliar `PS_Comercial_ScorePrioridade`.
+2. **Exceção autorizada só para o teste, só na sandbox de QA:** o agente de QA pode atribuir o permission set `PS_Marketing_RetornoMC` ao **próprio usuário de execução do job** em `sbx-eplast-qa`, pelo tempo do teste, para executar os casos de Lead com engajamento. Deve registrar em `05-testes.md` o estado de antes (atribuição inexistente), a atribuição feita e a remoção ao final, com a consulta que prova que voltou ao estado de antes. Nenhum outro usuário, perfil ou permission set é tocado.
+3. **Vale também para a verificação na dev**, se o verificador precisar do mesmo acesso em `sbx-eplast-dev`, com o mesmo registro de antes e depois.
+4. No roteiro do cliente, dizer em linguagem de usuário que quem homologa os testes de Lead com engajamento precisa ter acesso ao campo de engajamento do Marketing Cloud (perfil de marketing ou o permission set acima).
