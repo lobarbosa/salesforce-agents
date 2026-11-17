@@ -11,4 +11,5 @@ Etapa que vai rodar: `build` · org: `sbx-eplast-dev`. Gerado pela esteira antes
 
 ## Estado na org
 - Flow `Lead_AfterInsert_AplicaRegraAtribuicao`: tem versão ativa nesta org — mudança entra como versão nova.
+- Flow `Lead_AfterSave_DistribuiDonoRodizio`: tem versão ativa nesta org — mudança entra como versão nova.
 - Classes da demanda sem job pendente nesta org (2 conferidas).
