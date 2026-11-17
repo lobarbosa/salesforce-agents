@@ -1,0 +1,4 @@
+timestamp,client,demand_id,etapa,session_id,model,input_tokens,output_tokens,cache_read_tokens,cache_creation_tokens,cost_usd,duration_ms,num_turns,is_error
+2026-11-17T10:06:36.070476+00:00,eplast,EPLAST-28,design,2f8d12c0-4975-4483-8297-371d3fe1134f,claude-haiku-5-5,3250,5004,153687,34878,0.008723620000000001,402477,6,False
+2026-11-17T10:06:36.070476+00:00,eplast,EPLAST-28,design,2f8d12c0-4975-4483-8297-371d3fe1134f,claude-sonnet-5-5,26,12293,447185,54223,0.3032580000000001,402477,6,False
+2026-11-17T10:06:36.070476+00:00,eplast,EPLAST-28,design,2f8d12c0-4975-4483-8297-371d3fe1134f,claude-opus-5-5,22,21694,407119,68727,0.8590268000000001,402477,6,False

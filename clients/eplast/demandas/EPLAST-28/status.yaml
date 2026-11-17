@@ -2,10 +2,166 @@ id: EPLAST-28
 client: eplast
 titulo: Alertas de oportunidade parada ou sem acompanhamento
 tipo: projeto
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-  - de: null
-    em: '2026-11-10T12:00:00Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:26:53.677893+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:29:51.812330+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Carlos Sordi
+  em: '2026-11-10T18:42:48.148138+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-10T18:53:54.253039+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-10T18:54:05.767415+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-11T22:12:57.258937+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-11T22:16:50.817290+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Carlos Sordi
+  em: '2026-11-12T13:36:34.193394+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T13:42:09.668511+00:00'
+- de: aguardando_homologacao
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-13T15:10:52.958955+00:00'
+  motivo: 'Nada foi construído: o build ficou bloqueado por decisões pendentes (escopo
+    da Onda 3 e perguntas de negócio) e a demanda chegou à homologação só com documentos,
+    reprovada pelo QA. Volta ao gate de design até as respostas chegarem pelo card.
+    04-plano-build.md e 05-testes.md (registros do bloqueio) removidos para as etapas
+    serem refeitas.'
+- de: aguardando_gate_design
+  para: backlog
+  autor: Leonardo Barbosa
+  em: '2026-11-15T02:12:08.598960+00:00'
+  motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
+    resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
+    anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:32:07.441584+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:35:03.755741+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T03:21:04.369697+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T03:30:07.715444+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T09:04:49.557609+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-11-15T10:50:55.644866+00:00'
+  motivo: 'correção: a verificação não reprovou; a esteira leu a org sem crase como
+    reprovação (defeito corrigido na PR #187). Volta ao gate de build com a verificação
+    original.'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T13:19:12.291886+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T13:20:40.041493+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T18:34:28.344462+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T18:36:21.245623+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T23:26:47.414533+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-16T00:25:30.600296+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa
+  em: '2026-11-16T01:17:57.321319+00:00'
+  motivo: 'QA reprovou por defeito da esteira (reimplante antes da conferência apagou
+    o CronTrigger do arme), corrigido no PR #209; o build não tem defeito e volta
+    ao gate de build sem reconstrução.'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T02:43:59.974331+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-16T03:27:44.930018+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T03:32:10.907003+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T03:49:36.532642+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T04:25:04.553122+00:00'
+- de: aguardando_homologacao
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T09:57:34.922509+00:00'
+  motivo: redesenhar com as respostas do cliente recebidas em 17/11 (seção "Respostas
+    do cliente" do 03-design.md). Build e QA da rodada anterior arquivados em rodada-anterior/premissas-assumidas/.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T10:06:36.590016+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T10:57:21.794249+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-17T11:00:24.076121+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T11:03:45.114643+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-17T11:37:40.488886+00:00'

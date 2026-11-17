@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DiasEscalarGestor__c</fullName>
+    <label>Dias Escalar Gestor</label>
+    <description>Dias sem atividade para avisar o gestor direto do dono (ManagerId). Só vale com NotificarGestor__c ligado e se maior que DiasSemAcompanhamento__c. EPLAST-28</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <externalId>false</externalId>
+    <precision>3</precision>
+    <scale>0</scale>
+    <required>false</required>
+    <type>Number</type>
+</CustomField>
