@@ -1,51 +1,49 @@
 **Verificação:** aprovada
-**Org de teste:** `sbx-eplast-dev`
+**Org de teste:** `sbx-eplast-dev` (sandbox `eplast--qa` da Eplast, Org ID `00DHa000006vfMLMAY`)
 
-# EPLAST-47 — Verificação do build (nova rodada, depois da rodada 4 de QA)
+# EPLAST-47 — Verificação (rodada 2: Flow `Opportunity_AfterSave_ClassificaConta` e agendado inativo)
 
-`sf org list` mostrou só `sbx-eplast-dev` (Org ID `00DHa000006vfMLMAY`, a "QA" da Eplast, regra 5 da conta), conectada. Todo comando com `--target-org` explícito. Nada na QA, em produção ou no Marketing Cloud. Sem deploy. Casos derivados dos critérios da análise e do design (V1 a V7), não do plano de build.
+`sf org list` mostrou só `sbx-eplast-dev`, conectada. Usuário de execução: `005bJ00000piKAaQAM` (conta de serviço Konecta, ativa). Nada na QA, em produção ou no Marketing Cloud. Todo dado sintético, "TESTE EPLAST-47", pelas fixtures `eplast47-base.apex` e `eplast47-cotacao.apex`. Cada oportunidade foi levada a Fechado/Ganho em execução de Apex própria (uma transação por coisa).
 
-## Resultado
+## Mudanças temporárias no usuário de execução (desfeitas)
+| Campo | Antes | Durante | Depois |
+|---|---|---|---|
+| `User.ProtheusSellerId__c` (`005bJ00000piKAaQAM`) | vazio | `TESTE47` (exigido pela VR do proprietário) | vazio (conferido) |
 
-Aprovada. As duas falhas da rodada 1 estão corrigidas, o agendado antigo está desativado na dev e as 14 classificações (12 bordas do critério 10 mais 3.000 e 5.000) saíram certas. Critério 16 (falha forçada) segue **sem prova**, por decisão do design de 2026-11-17: fica para a homologação.
+Sem permission set nem Marketing User alterados.
 
-## Falhas da rodada 1 (`04-verificacao-rodada-1.md`)
+## Rodada 1: falhas anteriores
+- FALHA 1 (faixas fora de `SortOrder__c`, 3.000 virava G): **corrigida**. Casos C1 e C10 abaixo.
+- FALHA 2 (filtro do relatório): **corrigida**. Caso C14 (valor do filtro `Ranking`, 13 linhas = 13 mudanças feitas).
 
-- **FALHA 1 (faixas fora de ordem): corrigida.** Média 3.000 e 5.000 agora dão `MP` (antes `G`); as 12 bordas passam (tabela).
-- **FALHA 2 (filtro do relatório): corrigida.** `AccountRankingChanges` tem o filtro `field_key` igual a `Ranking` e a Analytics API devolve 14 linhas com 14 históricos de `Ranking__c` das contas de teste.
+## Estado dos Flows na dev
+- `Opportunity_AfterSave_ClassificaConta`: Tooling API `Flow` v1 e v2 Obsolete, **v3 Active**; `FlowDefinition.ActiveVersionId` = `301Ha000016aVfiIAE`. (O plano cita v2 como a mais recente; a ativa hoje é a v3. Observação, não defeito.)
+- `ScheduledFlowOpportunity`: v1 e v2 Obsolete, nenhuma Active; `FlowDefinition.ActiveVersionId` = null; `CronTrigger` com nome `ScheduledFlowOpportunity%` = 0 linhas. `flowDefinition` do repositório com `activeVersionNumber` 0 e `flows/ScheduledFlowOpportunity.flow-meta.xml` sem diferença contra a `main` (fora do pacote).
 
 ## Casos
-
-Dados sintéticos "TESTE EPLAST-47": 14 contas (criadas com `TriggerUtility.bypassTrigger`), 14 oportunidades Indústria, cada uma com cotação padrão `Approved` e `SBQQ__Quote__c` primária. Scripts em `fixtures/eplast47-base.apex` (base) e `fixtures/eplast47-cotacao.apex` (cotação, novo). Cada oportunidade foi salva para `Fechado/Ganho` em execução de Apex anônimo própria (uma transação por conta). Primeira tentativa sem cotação: média não é calculada pelo `OpportunityFlow`, nada classificado; apaguei tudo e refiz com cotação.
-
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| D1 estado | 15 e design | `Flow` por Tooling API; `CronTrigger` `ScheduledFlowOpportunity%` | Flow novo v2 Active; agendado sem versão ativa e sem agendamento | `Opportunity_AfterSave_ClassificaConta` v1 Obsolete, v2 Active; `ScheduledFlowOpportunity` v1 e v2 Obsolete; `CronTrigger`: 0 | passou |
-| C10 bordas | 10 | Ganha única com valor 10.000; 10.000,01; 35.000; 35.000,01; 80.000; 80.000,01; 160.000; 160.000,01; 500.000; 500.000,01; 1.000.000; 1.000.000,01 | MP, PP, PP, P, P, M, M, G, G, GG, GG, 3G | SOQL em `Account.Ranking__c`: MP, PP, PP, P, P, M, M, G, G, GG, GG, 3G | passou |
-| FALHA 1 reteste | 10 | Ganha única de 3.000 e de 5.000 | MP | MP e MP; `LastMonthPurchaseValue__c` 3000 e 5000, média igual | passou |
-| V1 soma e histórico | 8, 14 | Mesma massa | Soma = valor ganho; 1 linha de histórico por conta | Somas iguais aos valores; `AccountHistory` `Field='Ranking__c'` das contas de teste: 14 | passou |
-| V2 ordem/média (R1) | design R1 | Média gravada pelo `OpportunityFlow` já visível ao Flow novo, pois a classificação bate com a média da própria venda em todas as 14 contas | Flow novo depois do `OpportunityFlow` | Classificação correta nas 14 (só possível com a média nova). Log de ordem não refeito; a rodada 1 já provou (linhas 182 e 776 do log) e o Flow novo não mudou de ordem | passou |
-| C11 média vazia | 11 | Conta 0 (3.000): oportunidade passou a `Fechado/Perdido` | Soma 0; média vazia mantém o ranking, sem cair em GG | `LastMonthPurchaseValue__c` 0; média vazia; Ranking `MP` mantido; histórico segue 1 linha | passou |
-| C11 média 0 | 11 | Não provocado: o `OpportunityFlow` não grava média 0 neste cenário | MP | — | não executado (já registrado em QA; PA3) |
-| C14 relatório | 14 | `GET /analytics/reports/00OHa000002z8ifMAA?includeDetails=true` (só contagem e filtro) | Filtro `Ranking`; 1 linha por mudança | Filtro `field_key equals Ranking`; 14 linhas com 14 mudanças de teste | passou |
-| V3 só `Description` | design 1.3 | Não repetido nesta rodada | — | A rodada 1 passou; o Flow novo não mudou | não executado (coberto na rodada 1) |
-| V5 20 ganhas | design 3.2 | Não repetido | — | Rodada 1: 20 interviews, CPU 3%, sem "Duplicate id". Lógica de soma não mudou | não executado (coberto na rodada 1) |
-| Limites de fila | 6 | Contagem de `IntegrationLog__c` de hoje por ação | 0 da ação `Opportunity_AfterSave_ClassificaConta`; 14 saves sem erro | 0 da ação nova; 14 saves completos sem exceção | passou |
-| V7 XML | 12, 15 | Rodada 1 (grep sem faixa nem e-mail); faixas só em `RankingRange__mdt` (7 faixas, `SortOrder__c` 1 a 7) | Sem limites nem e-mail fixos | Conforme na rodada 1; XML da v2 muda só a seleção de faixa | passou (rodada 1) |
-| V6 / 16 | 16 | Falha forçada de `UpdateAccount` | `IntegrationLog__c`, venda salva, e-mail só com destinatário | Não exercitável pela esteira (decisão 2026-11-17: validation rules impedem conta inválida; leitura do Flow mostra fault, `LogFault`, `HasRecipient`; `FaultRecipient__c` vazio) | não executado — validar na homologação |
+| C0 | 16 (agendado) / design | Consulta de `FlowDefinition`, `Flow` (Tooling) e `CronTrigger` | Agendado sem versão ativa e sem job | ActiveVersionId null, 0 Active, 0 CronTrigger | passou |
+| C1 | 8, 10 (faixa), FALHA 1 | Conta A, Opp 1 (3.000) para Ganho | `LastMonthPurchaseValue__c`=3.000, `Ranking__c`=MP | 3.000 e MP; média 3.000 | passou |
+| C8 | 8 | Conta A: Opp 2 (7.000) ganha e Opp 3 (9.000) perdida | Compras = 10.000 (perdida fora); ranking MP (média 5.000) | Depois da perdida: 3.000 (sem mudança). Depois da ganha: 10.000, média 5.000, MP | passou |
+| C10 | 10 | 12 contas "Borda 1..12", cada uma com 1 oportunidade ganha de 10.000; 10.000,01; 35.000; 35.000,01; 80.000; 80.000,01; 160.000; 160.000,01; 500.000; 500.000,01; 1.000.000; 1.000.000,01 | MP/PP/PP/P/P/M/M/G/G/GG/GG/3G | MP/PP/PP/P/P/M/M/G/G/GG/GG/3G, nessa ordem; soma e média iguais ao valor | passou |
+| C12/C15 | 12, 15 | Grep no XML do Flow novo por limites antigos/novos (10000, 35000, 70000, 80000, 150000, 160000, 500000, 1000000) e por e-mail | 0 ocorrências | 0 ocorrências; limites vêm de `RankingRange__mdt` (7 faixas por SOQL: UpperLimit 10.000, 35.000, 80.000, 160.000, 500.000, 1.000.000, vazio) | passou |
+| C14 | 14 | Analytics API (só contagem) no relatório `AccountRankingChanges` | N mudanças = N | 13 (Conta A + 12 bordas, todas passaram de vazio para uma classe), filtro `field_key` = `Ranking` | passou |
+| C4 | 4 | Contas distintas, cada uma ganha uma vez; Conta A com 2 ganhas em saves separados | Uma atualização de classificação por salvamento, sem erro | 14 saves de ganha sem erro; sem "Too many queueable"; 13 linhas de histórico para 13 mudanças | passou (ver nota) |
+| C5 ordem | design R1/V2 | Verificado na rodada 1 (Flow novo depois de `OpportunityFlow`, média já recalculada) e confirmado agora pelo resultado: o Flow classifica pela média recém-gravada (C8 e C10) | Classe da média do save | Correta em todos | passou |
+| C11 | 11 | Média vazia mantém; média 0 vira MP | — | Não exercitado: exigiria forçar média vazia/0 na conta, o que `OpportunityFlow` recalcula | não executado |
+| V3 | design 1.3 | Mudar só `Description` da Opp 1 e conferir que o Flow novo não inicia | Flow novo ausente | O log de Apex anônimo não trouxe eventos de Flow (0 linhas `FLOW_START_INTERVIEW_BEGIN`), então não há prova | não executado |
+| V6/C16 | 16 | Falha forçada de `UpdateAccount` | `IntegrationLog__c` e sem e-mail | Não executado: as VRs de telefone impedem gravar dado inválido e não há dado legado inválido na dev. Pelo design (2026-11-17) fica para a homologação; destinatário vazio = só log (`FaultRecipient__c` vazio) | não executado |
+| C13 | 13 | Picklist `Ranking__c` com 7 valores ativos | — | Os 7 valores (MP a 3G) foram gravados nos casos C10 sem erro; contagem do picklist não consultada à parte | passou (indireto) |
+| C17, C18 | 17, 18 | Execução em QA e volume | — | QA e números de volume não são da dev (P10 em aberto) | não executado |
 
-Critérios 5, 7, 17 e 18 não se aplicam a esta etapa (design, seção 8, e QA).
-
-## Alterações no usuário de execução (revertidas)
-
-- `User` `005bJ00000piKAaQAM` (conta de serviço, identificado só pelo Id): `ProtheusSellerId__c` de vazio para `T47` (necessário para a validation rule `CheckAccountOwnerHasProtheusSellerId`). **Devolvido a vazio** e conferido por SOQL (nulo). Sem mudança de perfil, permission set, papel ou "Marketing User". Usuário `005bJ00000hBJmYQAW` inativo, não usado.
+Nota C4: o critério 4 original (dia 14, lote por conta) pertence ao Flow agendado, agora inativo; o caminho novo atualiza a conta por salvamento de oportunidade e só grava se mudou (HasChanges). A contagem exata de updates por save foi medida na rodada 1 (V2/V4/V5), e o Flow novo não mudou de lógica além das faixas.
 
 ## O que pode ter saído da org
-
-- A cadeia do save de ganha criou, ligados às contas de teste: 14 pedidos, 14 cotações padrão (as que criei), 14 casos, 14 tarefas. Todos apagados.
-- `IntegrationLog__c` de hoje: 105, todos `Send Client To Protheus` com `Erro(Unauthorized)`: o Protheus recusou, nada foi aceito do outro lado. **Não apaguei**: não separo os meus dos de outras execuções do dia (só apago o que criei).
-- Nenhum e-mail enviado (destinatário de falha vazio). Nada no Marketing Cloud.
+Cadeia de salvar a oportunidade como ganha na dev (CPQ, Pedido, Caso, Tarefa, Protheus). Registros criados pela cadeia, todos ligados às contas de teste: 14 Casos, 14 Pedidos, 13 Tarefas, 15 Cotações (`Quote`) e 15 `SBQQ__Quote__c` (estas duas são do fixture). Todos apagados. Chamadas externas: `AccountTrigger` foi desviada com `TriggerUtility.bypassTrigger` na criação das contas, mas o save de oportunidade ganha roda a cadeia normal; **não conferi o resultado de chamada ao Protheus** nem logs de `IntegrationLog__c` gerados (a org tem 179 registros do dia, de origem não atribuída por mim; não consultei seus conteúdos). Se for preciso desfazer do outro lado, procure no Protheus pedidos de contas "TESTE EPLAST-47 Conta A" e "TESTE EPLAST-47 Borda 1..12".
 
 ## Limpeza
+Apagados: Casos, Tarefas, Pedidos, `SBQQ__Quote__c`, `Quote`, 15 Oportunidades, 13 Contas, `Branch__c` e `PaymentTerms__c` com "TESTE EPLAST-47". Conferido: 0 contas e 0 filhos restantes. Usuário revertido (ver acima). Nenhum job agendado criado nem pendente. Nada ficou.
 
-Contagem final por SOQL: 0 conta, 0 oportunidade, 0 cotação, 0 pedido, 0 caso de teste; filial e condição de pagamento de teste apagadas. Ficaram na dev só os `IntegrationLog__c` acima. Nenhum job agendado a remover (`CronTrigger` 0).
+## Sem prova
+V3 (Flow não dispara em salvamento sem mudança relevante), C11 (média vazia/0), V6/C16 (falha forçada, destinatário), C17/C18 (QA e volume), resultado das chamadas externas ao Protheus. Os critérios principais (classificação por faixa, bordas, soma sem perdida, relatório, agendado inativo) foram executados e passaram.
