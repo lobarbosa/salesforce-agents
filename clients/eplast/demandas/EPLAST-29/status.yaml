@@ -2,7 +2,7 @@ id: EPLAST-29
 client: eplast
 titulo: Ações por linguagem natural no assistente de IA
 tipo: projeto
-status: design
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -188,3 +188,7 @@ historico:
   em: '2026-11-17T18:01:52.517108+00:00'
   motivo: redesenhar para a versão 18 do assistente, conforme "Decisão do responsável
     (2026-11-17) depois da rodada 4 de QA" no 03-design.md.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T18:15:11.376439+00:00'
