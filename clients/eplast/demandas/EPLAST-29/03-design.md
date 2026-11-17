@@ -324,3 +324,14 @@ Reproduzida da rodada anterior deste arquivo; é a entrada desta rodada. A rodad
 - **Bloqueio por pergunta de negócio (caso 3 da regra 4):** nenhum.
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Aceite do gate de design (2026-11-17, rodada 5) — por Leonardo Barbosa (via Claude)
+
+Aprovado dentro da diretriz do responsável de 17/11 (seção 13), que delegou o aceite do desenho da versão 18 quando ele seguisse a diretriz. O aceite cobre os pontos listados no gate:
+
+- **Alternativa C**, com o limite declarado na seção 2.2: o risco de o modelo afirmar criação sem chamar a ação não chega a zero e é medido pelo critério 5 de 5. Se falhar no QA, o próximo passo é levar a alternativa D ao responsável, não reforçar texto de instrução.
+- **Ação nova `PrepararTarefa`** (Flow `Task_Agente_PrepararTarefa`, sem gravação) no tópico existente, e texto fixo do resumo e do sucesso vindo do Flow, com a linha `Código da tarefa`.
+- **Ativação na dev para a verificação (seção 4.4):** aceita. O verificador ativa as versões novas na `sbx-eplast-dev`, na ordem da seção 4.4, roda o 5 de 5 e registra o estado de antes e de depois. Vale só para a dev; na QA quem ativa é o QA, como já é regra.
+- Sem Apex, sem campo, objeto ou permission set novo. Estimativa 10–16 h.
