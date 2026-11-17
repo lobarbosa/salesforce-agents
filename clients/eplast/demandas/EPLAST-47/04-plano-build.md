@@ -78,3 +78,20 @@ Fonte: `05-testes-rodada-4.md` (reprovado) e a seção "Decisão do responsável
 | `ScheduledFlowOpportunity` | Desativado (versão ativa 0), sem apagar | Feito na dev; na QA, pelo deploy da esteira | Ativar a v2 (`activeVersionNumber` 2) e reagendar |
 
 Sem prova nesta sessão: efeito na QA (o QA confere Q8 depois do deploy da esteira).
+
+## Correções da rodada 5
+
+Fonte: `05-testes-rodada-5.md` e a seção "Decisão do responsável (2026-11-17, depois da rodada 5 de QA)" do `03-design.md`. Org: `sbx-eplast-dev` (única do `sf org list`; sandbox `eplast--qa`). Nada na QA, em produção ou no Marketing Cloud.
+
+- **FALHA (agendado ficou ativo na QA, v8 ativa com `CronTrigger`): corrigida pelo caminho (b).** O pacote levava `flows/ScheduledFlowOpportunity.flow-meta.xml` com `<status>Active</status>` junto da definição com `activeVersionNumber` 0, e o arquivo do Flow reativava a versão. O arquivo voltou ao conteúdo da `main` (`git checkout main -- ...`), então deixa de fazer parte do que o branch mudou e sai do pacote. Sobra só `flowDefinitions/ScheduledFlowOpportunity.flowDefinition-meta.xml` com `activeVersionNumber` 0. O Flow novo, as faixas, o relatório e o metadado não foram tocados; o Flow agendado e suas versões não foram apagados.
+
+### Versões e ativação (rodada 5): prova na dev com o conjunto da QA
+1. Partida: definição com `activeVersionNumber` 2 implantada (deploy `0AfHa00000EJ41RKAT`, Succeeded). `FlowDefinitionView.ActiveVersionId` do agendado = `301Ha000016RPxQIAW` (uma versão ativa, como a QA estava).
+2. Implantados juntos, `sf project deploy start --target-org sbx-eplast-dev -d <flowDefinition do agendado> -d <Opportunity_AfterSave_ClassificaConta.flow-meta.xml>`: Succeeded. O arquivo `flows/ScheduledFlowOpportunity` não está no conjunto.
+3. Conferido depois: `FlowDefinitionView.ActiveVersionId` do `ScheduledFlowOpportunity` = null; `Flow` (Tooling) com `Status='Active'` para o agendado = 0 linhas; `CronTrigger` com nome `ScheduledFlowOpportunity%` = 0 linhas; `Opportunity_AfterSave_ClassificaConta` segue ativo (`301Ha000016aVfiIAE`).
+
+| Componente | Ação | Estado | Como desfazer |
+|---|---|---|---|
+| `ScheduledFlowOpportunity` | Sem versão ativa (definição 0, arquivo do Flow fora do pacote) | Feito e provado na dev; na QA, pelo próximo deploy da esteira (a v8 ativa de lá cai com a definição 0) | Ativar a versão anterior (`activeVersionNumber` 2) e reagendar |
+
+Sem prova nesta sessão: efeito real na QA (o QA reconfere Q8). Critério 16 segue para a homologação.
