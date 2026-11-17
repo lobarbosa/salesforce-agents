@@ -2,7 +2,7 @@ id: EPLAST-35
 client: eplast
 titulo: Fluxos de aprovação, distribuição de leads e encaminhamento
 tipo: projeto
-status: aguardando_gate_design
+status: build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -66,3 +66,7 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-17T14:23:40.940745+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T14:57:40.646682+00:00'

@@ -1,6 +1,6 @@
 # Pré-checagem — EPLAST-35
 
-Etapa que vai rodar: `design` · org: `sbx-eplast-dev`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
+Etapa que vai rodar: `build` · org: `sbx-eplast-dev`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
 
 ## Bloqueios
 - nenhum
@@ -10,4 +10,5 @@ Etapa que vai rodar: `design` · org: `sbx-eplast-dev`. Gerado pela esteira ante
 - EPLAST-38 (aguardando_homologacao) também mexe em: assignmentRules/Lead, classes/LeadAssignmentService, classes/LeadAssignmentServiceTest, customPermissions/Lead_DistribuicaoAutomaticaViaApi, flows/Lead_AfterInsert_AplicaRegraAtribuicao, layouts/Lead-Lead Layout, permissionsets/PS_Integracao_DistribuicaoLead, queues/Leads_CO, queues/Leads_ES, queues/Leads_MG, queues/Leads_NO_NE, queues/Leads_RJ, queues/Leads_SP, queues/Leads_Sul, queues/Leads_Triagem.
 
 ## Estado na org
-- nada a conferir: a demanda ainda não tem componentes no repositório
+- Flow `Lead_AfterInsert_AplicaRegraAtribuicao`: tem versão ativa nesta org — mudança entra como versão nova.
+- Classes da demanda sem job pendente nesta org (2 conferidas).

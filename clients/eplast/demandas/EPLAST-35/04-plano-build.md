@@ -2,7 +2,7 @@
 
 # EPLAST-35 — Plano de build (rodada 3: distribuição de Leads sem Apex)
 
-**Org conectada:** `sbx-eplast-dev` (`projetos@konectabr.com.eplast2.qa`, Sandbox, Connected; é a `eplast--qa` da Eplast, DEV da esteira pela regra 5). Única org em `sf org list`. Nada tocado em QA, QAS, produção ou Marketing Cloud.
+**Org conectada:** `sbx-eplast-dev` (alias; usuário de conexão omitido, Sandbox, Connected; é a `eplast--qa` da Eplast, DEV da esteira pela regra 5). Única org em `sf org list`. Nada tocado em QA, QAS, produção ou Marketing Cloud.
 **Branch:** `feature/EPLAST-35`. **Commit do build:** `47fe6348`. **Design seguido:** `03-design.md` (aceite do gate de 17/11 em `gates.md`), seções 1, 2, 3, 5, 13 e 15.
 **Deploy:** `--dry-run` aprovado e depois deploy real, ambos com sucesso (Deploy ID do real: `0AfHa00000EJO09KAH`). Os 14 componentes foram na mesma implantação.
 
@@ -48,7 +48,7 @@ O design (seção 13, passo 8) prevê a ativação na DEV para a verificação, 
 ## 4. Como o verificador deve testar
 Casos T1 a T18 da seção 12 do `03-design.md` (T6b é só da QAS). Componentes e nomes exatos:
 - Flow `Lead_AfterSave_DistribuiDonoRodizio`; campo `Lead.DIST_SequenciaRodizio__c`; CMDT `DistribuicaoLeadSetting__mdt.Padrao`; fila `Leads_RJ_ES`; regra `Distribuicao_Regional_Leads_v2`.
-- **Antes de T1:** ativar a v2 e depois marcar `DistribuicaoAtiva__c` (seção 2). Pôr membros diretos nas filas de teste (`Leads_MG`, `Leads_SP`, `Leads_RJ_ES`). O usuário de teste é a conta `projetos@konectabr.com%` (resolver o Id na org; citar só `005…`).
+- **Antes de T1:** ativar a v2 e depois marcar `DistribuicaoAtiva__c` (seção 2). Pôr membros diretos nas filas de teste (`Leads_MG`, `Leads_SP`, `Leads_RJ_ES`). O usuário de teste é a conta de serviço da Konecta (resolver o Id na org pela query da regra 6; citar só `005…`).
 - Medir SOQL, DML e CPU do lote de 200 (T3 e T3b) e registrar; acima de 70% de qualquer limite, volta ao design (seção 4 do design traz a saída declarativa).
 - T13 prova o interruptor: com `DistribuicaoAtiva__c = false`, nada acontece.
 - T16 e T17 provam isolamento e versões: `COUNT()` agregado de Account, Opportunity e Order, `AsyncApexJob` agregado, e que os 3 `ApprovalProcess`, `LeadAssignmentService` e o Flow antigo não mudaram.
