@@ -299,3 +299,42 @@ O que mudou em relação à análise (16–36 h):
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Respostas do cliente (2026-11-17) — valem acima das premissas assumidas deste desenho
+
+A Eplast respondeu por escrito ("Respostas Konecta/Eplast", recebido em 17/11) aos pontos que
+este desenho tinha resolvido como premissa assumida. Registrado por Leonardo Barbosa, que
+mandou redesenhar com as respostas. **Onde a resposta abaixo diverge de uma premissa deste
+arquivo, vale a resposta.** O que o cliente marcou como "a validar" continua premissa, a
+repetir no roteiro em "O que assumimos e você precisa confirmar". Os parâmetros ficam
+configuráveis (pedido do cliente), sem deploy para ajustar. Reaproveite o que já foi
+construído e passou no QA; mude só o que a resposta pede. Os artefatos de build e QA da
+rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
+
+**Resposta do cliente (EPLAST-26 — scoring de leads e oportunidades):**
+- Modelo: regras com pesos definidos pelo comercial, em campo fórmula, com critérios
+  transparentes. Preditivo fica para depois. Escala de 0 a 100.
+- Lead (peso máximo): potencial de compra mensal 30; aderência da demanda ao portfólio 25;
+  prazo previsto para a primeira compra 20; engajamento (resposta, reunião, solicitação de
+  cotação) 15; cadastro qualificado e contato com o decisor 10.
+- Oportunidade (peso máximo): estágio comercial com evidências de avanço 25; interação
+  recente e próximo passo confirmado 20; prazo de compra confirmado pelo cliente 20; margem
+  em relação à política comercial 20; disponibilidade e viabilidade de atendimento 15.
+- Informação ausente não gera pontuação positiva. O score é prioridade comercial, não
+  probabilidade de fechamento.
+- Conversão: lead efetivamente convertido e oportunidade efetivamente ganha ("Fechado/Ganho").
+- Classificação: **AA 90–100; A 75–89; B 60–74; C 40–59; D 0–39**; não avaliado = "Não
+  classificado". Validar compatibilidade com a classificação atual.
+- Risco e inadimplência: alertas separados do score, depois de validados com o Financeiro.
+  O score não libera venda bloqueada por crédito.
+- Campo Einstein: a validar; não aposentar.
+
+**O que muda neste desenho:**
+1. Trocar critérios e pesos das fórmulas de score pelos acima. **Para cada critério, o recon
+   confirma na org o campo que o representa.** Critério com campo existente entra; critério
+   sem campo na org **não é inventado**: fica com 0 ponto nesta versão e listado no desenho
+   e no roteiro como "depende de campo a criar ou preencher" (a criação de campo novo é
+   decisão do responsável, pedir no gate com a lista).
+2. Faixa: AA, A, B, C, D e "Não classificado" no lugar de Alta/Média/Baixa. Ajustar list
+   views, texto de ajuda e o que as demandas 28, 30 e 39 leem de `PriorityBand__c`, se lerem.
+3. Risco e inadimplência não entram no score. Campo Einstein não é tocado.

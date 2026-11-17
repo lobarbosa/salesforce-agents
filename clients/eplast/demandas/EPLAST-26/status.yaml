@@ -2,7 +2,7 @@ id: EPLAST-26
 client: eplast
 titulo: Scoring de leads e oportunidades
 tipo: projeto
-status: aguardando_homologacao
+status: design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -133,3 +133,9 @@ historico:
   para: aguardando_homologacao
   autor: pipeline
   em: '2026-11-15T21:05:15.550480+00:00'
+- de: aguardando_homologacao
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T09:58:05.569406+00:00'
+  motivo: redesenhar com as respostas do cliente recebidas em 17/11 (seção "Respostas
+    do cliente" do 03-design.md). Build e QA da rodada anterior arquivados em rodada-anterior/premissas-assumidas/.
