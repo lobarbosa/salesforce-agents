@@ -2,7 +2,7 @@ id: EPLAST-35
 client: eplast
 titulo: Fluxos de aprovação, distribuição de leads e encaminhamento
 tipo: projeto
-status: design
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -51,3 +51,7 @@ historico:
   em: '2026-11-17T09:58:14.663191+00:00'
   motivo: redesenhar com as respostas do cliente recebidas em 17/11 (seção "Respostas
     do cliente" do 03-design.md). Build e QA da rodada anterior arquivados em rodada-anterior/premissas-assumidas/.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T13:23:39.102057+00:00'

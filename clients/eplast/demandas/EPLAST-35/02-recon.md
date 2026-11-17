@@ -1,163 +1,97 @@
-# EPLAST-35 — Recon da org
+# EPLAST-35 — Recon da org (rodada 2, redesenho com as respostas de 17/11)
 
-Levantamento só de leitura (metadata e `COUNT()`), em 2026-11-15. Não decide solução.
-Fontes: `sf org list`, `sf org list metadata`, `sf data query` (com e sem `-t`), `sf sobject describe`, `sf project retrieve start` num diretório temporário fora do repositório. O pedido é de aprovação, distribuição de Leads e encaminhamento (ver `01-analise.md`). Nenhuma resposta às dúvidas D1 a D12 chegou nos comentários do card.
+Só leitura (metadata e contagens agregadas), em 2026-11-17. Não decide solução. Substitui o recon de 2026-11-15.
 
-## 0. Org confirmada
+**Org conferida:** alias `sbx-eplast-dev` (única org listada por `sf org list`, status Connected), sandbox da Eplast `eplast--qa`, que a regra 5 do CLAUDE.md do cliente define como a DEV da esteira. Retrieve feito em diretório temporário fora do repositório, já descartado.
 
-| Item | Valor | Comando |
-|---|---|---|
-| Alias | `sbx-eplast-dev` (única org listada; `sbx-eplast-qa` NÃO aparece) | `sf org list` |
-| Tipo | Sandbox (`IsSandbox = true`), instância BRA8S | `sf data query ... FROM Organization` |
-| URL | `https://eplast--qa.sandbox.my.salesforce.com` (o nome da sandbox é `qa`) | `sf org display` |
-| API da org | 68.0 (o briefing dizia v67) | `sf org display` |
+**Foco desta rodada** (respostas do cliente no fim de `03-design.md`): regionais com RJ+ES juntas, rodízio dentro da região, respeitar conta com proprietário, e não construir aprovação nem encaminhamento interno.
 
 ## 1. O que já cobre o pedido
 
-| Frente | O que existe | Cobre? | Prova |
-|---|---|---|---|
-| Aprovação | 3 Approval Processes ativos: `Opportunity.FinancialAnalysis`, `Order.LiberationFinancial`, `Quote.AssignPricing` | Parcial, no motor nativo | `sf org list metadata -t ApprovalProcess`; retrieve |
-| Aprovação, `Opportunity.FinancialAnalysis` | Entrada: `StageName = Análise Financeira`. 1 etapa, aprovadores são usuários nomeados (2). Ações finais: alertas e field updates (`Atualizar_Fase_Fechado_Perdido`, `Atualizar_Motivo_de_Perda`). `allowRecall=false` | Aprova por etapa do funil, não por desconto | retrieve do XML |
-| Aprovação, `Order.LiberationFinancial` | 1 etapa, mesmos 2 aprovadores, cria Task `FinancialBlock`, field updates `ChangeStatusStock` e `ChangeStatusReview` | Liberação financeira de pedido | retrieve do XML |
-| Aprovação, `Quote.AssignPricing` | 1 etapa, 1 aprovador usuário. Field updates `SubmittedApproval` e `SubmittedApproval2`. Último ajuste 2026-08-31 | Aprovação do Pricing na cotação CPQ | retrieve do XML |
-| Alçada por desconto | Nenhum processo, validation rule ou Flow com critério de desconto encontrado. Existem campos de desconto do CPQ (`SBQQ__QuoteLine__c.SBQQ__Discount__c`, `SBQQ__Quote__c.SBQQ__CustomerDiscount__c`, entre outros). `Opportunity` não tem campo de desconto, aprovação ou margem | Não | describe; retrieve |
-| Distribuição de Lead | `AssignmentRules` de Lead existe, mas o XML recuperado é um conjunto **vazio** (sem `ruleEntry`). A de Case não foi inspecionada | Não (sem regra) | `sf org list metadata -t AssignmentRules`; retrieve |
-| Distribuição de Lead, automação | Nenhum trigger custom, nenhum Flow custom ativo e nenhuma validation rule de automação em Lead. Só as VRs `Lead.Celular` e `Lead.Telefone` (formato de telefone) | Não | Tooling `ApexTrigger`, `Flow`; `list metadata -t ValidationRule` |
-| Filas | 0 Groups `Type='Queue'`. Groups existentes: 2 Regular, 2 Role, 2 RoleAndSubordinatesInternal, 1 Organization, 18 ManagedContentSpaceRole. Agora confirmado: não há filas na dev | Não | `SELECT Type, COUNT(Id) FROM Group GROUP BY Type` |
-| Encaminhamento | Nada identificado. O termo "demanda" continua indefinido (D6). `Case` tem `AssignmentRules` e 0 registros | Não | Idem |
-| Agente `SFAgent2` | Existe `Bot SFAgent2` (v4) com o planner `SFAgent2_v4`. Tópicos encontrados: `insights_comerciais`, `agent_router`, `ambiguous_question`, `off_topic`. Ações: `ConsultarPedidos` (`queryRecords`), `AgregacaoPedidos` (`queryRecordsWithAggregate`), `IdentificarConta` (`identifyRecordByName`). Só consulta de pedidos e conta. Não toca aprovação, Lead nem encaminhamento | Não (consulta apenas) | retrieve `Bot`, `GenAiPlannerBundle` |
-| Relatórios e painéis | **Não levantados** (ver seção final) | ? | — |
+A DEV já tem o build da rodada anterior (distribuição regional). O recon não distingue, na org, o que veio da EPLAST-35 do que veio da EPLAST-38 (ver seção 5).
 
-Observação: `CLAUDE.md` do cliente diz 4 tópicos. O planner traz 4 (`insights_comerciais`, `agent_router`, `ambiguous_question`, `off_topic`) e 3 ações. Coincide.
+| Item | Status | Fato confirmado | Comando |
+|---|---|---|---|
+| 3 Approval Processes | Existem, ativos | `Opportunity.FinancialAnalysis`, `Quote.AssignPricing`, `Order.LiberationFinancial` | `sf org list metadata -m ApprovalProcess` |
+| Relatórios `Histrico_de_Aprovao_XNR` e `Aprovacoes_Pendentes_Por_Processo` (pasta Geral) | Existem | os dois aparecem na org | `SELECT DeveloperName, FolderName FROM Report WHERE ...` |
+| Regra de atribuição de Lead `Distribuicao_Regional_Leads` | Existe, ativa | 8 entradas por `Lead.State` igual a: SP; RJ; MG; ES; PR,SC,RS; GO,DF,MT,MS,TO; AC,AP,AM,PA,RO,RR,AL,BA,CE,MA,PB,PE,PI,RN,SE; sem critério (Triagem). **Diverge da resposta:** RJ e ES estão em entradas e filas separadas | `sf project retrieve start -m AssignmentRules:Lead` |
+| Filas de Lead | Existem 8 | `Leads_SP`, `Leads_RJ`, `Leads_MG`, `Leads_ES`, `Leads_Sul`, `Leads_CO`, `Leads_NO_NE`, `Leads_Triagem`. Existe também `PosVendas`, fora desta demanda. **0 membros em qualquer fila** | `SELECT DeveloperName FROM Group WHERE Type='Queue'`; `SELECT COUNT() FROM GroupMember WHERE Group.Type='Queue'` |
+| Fila para RJ+ES juntas | Não existe | só `Leads_RJ` e `Leads_ES` | idem |
+| Flow `Lead_AfterInsert_AplicaRegraAtribuicao` | Existe, ativo | record-triggered, after save, Create, chama a ação `LeadAssignmentService`, API 68.0, versão ativa modificada em 2026-11-15 | Tooling `FlowDefinition`; retrieve |
+| Classe `LeadAssignmentService` e `LeadAssignmentServiceTest` | Existem, Active | `without sharing`, `useDefaultRule = true`, um `Database.update(leads, options)`; sem trigger em Lead | Tooling `ApexClass`; leitura do `.cls` |
+| Custom permission `Lead_DistribuicaoAutomaticaViaApi` e permission set `PS_Integracao_DistribuicaoLead` | Existem | PS habilita a classe e a custom permission; **1 atribuição** do PS | retrieve; `COUNT()` em `PermissionSetAssignment` |
+| Layout `Lead-Lead Layout` | Existe | `runAssignmentRulesDefault = true` (já alterado) | retrieve |
+| Histórico de campo em Lead | Existe | `OwnerId` e `Status` com `IsFieldHistoryTracked = true`; `CompanyDocument__c` false | Tooling `FieldDefinition` |
+| Rodízio (round robin) | Não existe | nenhuma classe custom com nome Round/Rodizio/Distrib (só `LeadAssignmentService*`); regra de atribuição nativa só atribui a fila ou usuário fixo; sem objeto ou metadata de rodízio na lista de objetos custom | Tooling `ApexClass LIKE`; `sf org list metadata -m CustomObject` |
+| Configuração de elegíveis por região (nomes, lista) | Não existe | não há objeto custom nem custom metadata type de região ou elegíveis. Existem `__mdt` de outras demandas (`CampaignSuggestionSetting__mdt`, `NextBestActionSetting__mdt`, `RankingRange__mdt`, `CommercialSignalSetting__mdt`, `AlertaOportunidadeParadaSetting__mdt`, `ScheduledFlowOpportunitySetting__mdt`, `AssistenteTarefaSetting__mdt`) e `TriggerUtility__mdt`, `Protheus__mdt`; nenhum é de região | `sf org list metadata -m CustomObject` |
+| Territory Management (`Territory2`) | Não habilitado | `Territory2Model` "not supported" | `sf data query` |
+| Omni-Channel | Não confirmado | consulta de `ServiceChannel` não retornou saída utilizável | ver seção 6 |
+| Salesforce Maps (`maps__AssignmentRule__c`) | Existe o pacote, 0 registros (recon anterior) | não reconfirmado | — |
+| Agente `SFAgent2` | Existe | `Bot` e planners `SFAgent2_v14` e `SFAgent2_v16` listados (era v4 no recon anterior). A demanda não pede assistente; nada a estender | `sf org list metadata -m Bot`, `-m GenAiPlannerBundle` |
 
 ## 2. O que será tocado
 
-| Objeto | Campos e fatos relevantes confirmados | Prova |
-|---|---|---|
-| `Lead` | Standard: `OwnerId`, `Status`, `LeadSource`, `Rating`. Custom: `CNAE__c`, `CompanyDocument__c`, `CompanyName__c`, `Sector__c`, `Subsector__c`, `WhatsApp__c`, `Facebook__c`, `Instagram__c`, `LinkedIn__c`. Conector: `et4ae5__HasOptedOutOfMobile__c`, `et4ae5__Mobile_Country_Code__c`. Pacote Maps: `maps__AssignmentRule__c`. OWD interno `ReadWriteTransfer` | describe; consulta de `InternalSharingModel` |
-| `Lead.Status` (ativos) | `Aberto - Não contatado`, `Contatado`, `Fechado - Convertido`, `Fechado - Não convertido` | describe |
-| `Lead.LeadSource` (ativos) | Campanha, WhatsApp, Indicação, Evento, Google Ads, Google Orgânico, Instagram, Facebook, Prospecção ativa, Prospecção passiva, Econodata, E-mail MKT, SDR | describe |
-| `Lead.Rating` | AA, A, B, C, D | describe |
-| Território, região, produto, capacidade no `Lead` | **Nenhum campo com esse nome**; só `Sector__c` e `Subsector__c`. Não inferi equivalência | describe |
-| `Opportunity` | Etapas ativas: Qualificação, Análise Técnica, Precificação, Qualificado, Cotação, Execução técnica do projeto, Envio Cotação, Amostra, Análise Fiscal, Análise Financeira, Negociação Comercial, Fechado/Ganho, Fechado/Perdido. OWD `Read` | describe |
-| `SBQQ__Quote__c` e `SBQQ__QuoteLine__c` | Campos de desconto do CPQ (ver seção 1). OWD da cotação `ReadWrite` | describe |
-| `Order` | OWD `ReadWrite` | consulta |
-
-Descrição dos campos custom: não levantada campo a campo (assessment cita 68% sem descrição em Account, Order e Opportunity). Lead não foi medido.
+| Objeto / campo | Tipo | Fato | Comando |
+|---|---|---|---|
+| `Lead.State` | string 80, texto livre (sem picklist de estado) | Hoje é o critério da régua. Valor por extenso, minúsculo ou vazio cai na Triagem. Dos 4 Leads da DEV, os 4 têm `State` nulo | describe; `SELECT State, COUNT(Id) FROM Lead GROUP BY State` |
+| `Lead.Country` | string 80, texto livre | Sem picklist | describe |
+| `Lead.CompanyDocument__c` (CNPJ) | string 18, não único, não externalId | Sem descrição verificada (não medi). Histórico de campo desligado | describe |
+| `Lead.CompanyName__c` (Razão Social), `Lead.Company` | string 255 | Existem | describe |
+| `Account.CompanyDocument__c` (CNPJ) | string 18, **externalId = true, unique = false** | Pode haver mais de uma conta com o mesmo CNPJ | describe |
+| `Account.OwnerId`, `Account.BillingState` | reference; string 80 | Existem | describe |
+| Campo de região/território em Lead ou Account | Não existe | só `State`/`BillingState`; não inferi equivalência | describe |
+| Formato do CNPJ (com ou sem máscara) | Desconhecido | Account tem 0 CNPJ preenchido; Lead tem 0. Sem amostra para ver o formato. Length 18 sugere máscara `00.000.000/0000-00`, mas é só o tamanho do campo | `SELECT COUNT() ... WHERE CompanyDocument__c != null` (0 e 0) |
+| `Lead.et4ae5__HasOptedOutOfMobile__c`, `Lead.et4ae5__Mobile_Country_Code__c` | Existem (conector Marketing Cloud Connect) | Só esses 2 campos `et4ae5` em Lead. Não há mudança de Marketing nesta rodada | Tooling `FieldDefinition LIKE 'et4ae5%'` |
+| Validation rules de Lead | 2 ativas: `Celular`, `Telefone` | Exigem formato de telefone na criação de Lead de teste | Tooling `ValidationRule` |
+| Record types de Lead | 0 | Sem record type | `SELECT COUNT() FROM RecordType WHERE SobjectType='Lead'` |
 
 ## 3. Automação concorrente e ordem de execução
 
-Custom (sem namespace):
+| Objeto | Automação | Fato | Comando |
+|---|---|---|---|
+| Lead | Trigger custom | Nenhum | Tooling `ApexTrigger` |
+| Lead | Flow | Só `Lead_AfterInsert_AplicaRegraAtribuicao` encontrado. Os demais Flows com "Lead" no nome são do pacote `trailheadapp`. **Flows de Lead com outro nome não foram descartados** (a consulta ao tipo de gatilho do Flow não é suportada) | `sf org list metadata -m Flow` (55 Flows) |
+| Lead | Regra de atribuição | `Distribuicao_Regional_Leads` ativa; roda quando o salvamento pede (caixa do layout agora marcada por padrão, ou cabeçalho da API) | retrieve |
+| Lead | Validation rules | `Celular`, `Telefone` | Tooling |
+| Account | Trigger custom `AccountTrigger` | before/after insert e update, Active. Integração Protheus (regra do CLAUDE.md do cliente): conta inserida ou atualizada enfileira `UpdateAccountCompanyInfo` ou `SendAccountToProtheus`, um job por conta | Tooling `ApexTrigger`; CLAUDE.md do cliente |
+| Account | Trigger do pacote `AccountBefore` (SBQQ) | Existe (recon anterior) | não reconfirmado hoje |
 
-| Objeto | Trigger custom | Eventos | API | Prova |
-|---|---|---|---|---|
-| Account | `AccountTrigger` | before e after insert, before e after update | 58 | Tooling `ApexTrigger` |
-| Opportunity | `OpportunityTrigger` | after insert, after update | 59 | idem |
-| Order | `OrderTrigger` | before update, after update | 59 | idem |
-| Lead | nenhum | — | — | idem |
-
-Triggers do pacote SBQQ nos mesmos objetos: `AccountBefore` (Account), `OpportunityBefore` e `OpportunityAfter` (Opportunity), `OrderTrigger` (Order, mesmo nome do custom em outro namespace), `QuoteBefore` e `QuoteAfter` (Quote). Nenhum trigger de pacote encontrado em Lead.
-
-Flows custom ativos por objeto de disparo (retrieve; status Active):
-
-| Objeto | Flow | Tipo de disparo |
-|---|---|---|
-| Account | `PaymentTermAccount` | before delete |
-| Account | `SetPaymentTermsChangesinAccount` | after save, create |
-| Account | `TaskCreatedOrUpdated` | after save, create e update |
-| Account | `UpdateParentAccountUsedLimit` | after save, create e update |
-| Opportunity | `Order` (o nome engana: o objeto é Opportunity) | after save, create e update |
-| Opportunity | `Opportunity_PromptFlow_DadosOportunidade` | Capability (agente) |
-| Order | `Acionado_por_registro_Antes_de_atualizar_Pedido_Atribui_Id_externo_para_update_p` | before save, create e update |
-| Quote (CPQ) | `Quote_AfterUpdate_SyncToCPQ` | after save, update |
-| Quote | `OpportunityFlow`, `CPQQuoteFlow` | after save (objeto exibido como `Quote`; não confirmei se é `SBQQ__Quote__c` ou a Quote standard) |
-| Quote | `EventQuoteUpdated` | Platform Event |
-| Task | `Oportunidade_Industria` | after save |
-| `SBQQ__Quote__c` | `Opportunity_PromptFlow_CotacaoPrimaria` | Capability (agente) |
-
-Outros ativos, sem relação direta: `ScheduledFlowOpportunity` (objeto `IntegrationLog__c`, agendado), `OrderScheduledFlow` (agendado), `Logs_Delete_Records`, `CreationPriceBook`, `ProductFlowNewOrUpdated`, `QuoteLineCPQFlow`, `QuoteLineItemFlowCreatedOrUpdated`, `EventQuoteLineItemUpdated`, `DeleteLineItemCPQFlow`, `AccountUpdateEconomicGroup`, `AccountTriggered`. Foram classificados só pelo `ProcessType` e pelo objeto inicial quando lido. O `Flow` chamado `Account` está `Obsolete` e `DefaultQuote` também.
-
-Validation rules custom por objeto (nomes confirmados):
-- `Order`: 14 ou mais regras `Check*` (por exemplo `CheckOrderHasDeliveryDate`, `CheckAccountHasProtheusId`, `CheckOrderCanHaveSecondStatus` a `...SixthStatus`), `ChangeOrderToCanceled`, `MotivoPerda`. A contagem exata e quantas estão ativas **não foram confirmadas** (a lista de metadata não traz o campo `Active`).
-- `Opportunity`: `CheckAccountHasEmail`, `CheckAccountHasCNAE`, `CheckAccountHasStore`, `CheckAccountHasBillingAddress`, `CheckAccountOwnerHasProtheusSellerId`, `CheckOppHasPaymentTermId`, `CheckOppHasBranch`, `FinancialAnalysis`, `TaxAnalysis`, `LossReason`, `PriceBook`. Algumas se ligam à etapa e podem interagir com `Opportunity.FinancialAnalysis`.
-- `Account`: `Contato_Fiscal`, `WhatsApp`, `Telefone`, `CheckUserCanSetLimitDueDate` (modificadas em 2026-11-14).
-- `Lead`: `Celular`, `Telefone`.
-
-**Ordem de execução (pré-requisito do assessment): NÃO foi mapeada além do inventário acima.** Não consegui determinar a ordem relativa entre `OpportunityTrigger`, `OpportunityBefore` e `OpportunityAfter` do SBQQ e os Flows after save. Pela plataforma, before triggers e before-save flows rodam antes das validation rules, e after triggers e after-save flows depois, mas a ordem entre vários after-save flows no mesmo objeto não é garantida. Dependências lidas do corpo dos triggers e das classes não foram verificadas.
-
-Lead, a frente de distribuição, **não** tem concorrência de trigger ou Flow custom hoje. Aprovação em Opportunity, Quote e Order concorre com o descrito acima.
+Consequência para esta rodada: ler `Account` (por CNPJ, para achar o dono) não dispara a `AccountTrigger`; só gravar dispara. Nenhuma gravação em `Account` é necessária para os pedidos de 17/11. Ordem de execução de Opportunity, Order e Quote não importa mais (não serão tocados).
 
 ## 4. Volume e dados de teste
 
-| Objeto | `COUNT()` | Prova |
+| Objeto | Contagem | Comando |
 |---|---|---|
-| Lead | 0 | `SELECT COUNT() FROM Lead` |
-| Opportunity | 0 | idem |
-| Order | 0 | idem |
-| Account | 0 | idem |
-| `SBQQ__Quote__c` | 0 | idem |
-| Case | 0 | idem |
-| Queue (Group) | 0 | `Group WHERE Type='Queue'` |
+| Lead | 4 (todos com `State` nulo, nenhum com CNPJ, nenhum em fila; donos são usuários) | `SELECT COUNT() FROM Lead` e variações |
+| Account | 2 (nenhuma com `CompanyDocument__c`) | `SELECT COUNT() FROM Account` |
+| Membros de fila (Lead) | 0 | `SELECT COUNT() FROM GroupMember WHERE Group.Type='Queue'` |
+| Usuários ativos Standard | 19: Administrador do sistema 9, Comercial - Analista 4, Financeiro 1, 5 de integração/analytics | `SELECT Profile.Name, COUNT(Id) FROM User ... GROUP BY Profile.Name` |
+| Usuário de teste da Konecta (conta de serviço, filtro por username conforme regra 6 do CLAUDE.md do cliente) | 2 linhas: `005bJ00000hBJmYQAW` (inativo) e `005bJ00000piKAaQAM` (ativo, perfil Administrador do sistema). Usar o ativo | `SELECT Id, IsActive, Profile.Name FROM User WHERE Username LIKE <filtro da regra 6>` |
 
-A sandbox não tem dado de teste. O QA e o build precisarão criar registros sintéticos. Sem dado, o comportamento real das aprovações e das regras de Lead não pode ser observado.
+A DEV tem dado para testar a casagem lead x conta só se o build criar fixtures (`clients/eplast/fixtures/` **não existe** no repositório; o README citado na regra 6 não está lá). Conta de teste criada pela tela passa pela `AccountTrigger`; o desvio é `TriggerUtility.bypassTrigger` (CLAUDE.md do cliente).
 
-## 5. Marketing Cloud Connect (`et4ae5`)
+## 5. Permissões e conflitos com outras demandas
 
-| Item | Achado | Prova |
+| Item | Fato | Comando |
 |---|---|---|
-| Pacote instalado | Sim. 28 objetos custom `et4ae5__` (por exemplo `Automated_Send`, `Business_Unit`, `Campaign_Member_Configuration`, `Configuration`, `IndividualEmailResult`, `SendDefinition`, `SMSDefinition`, `Triggered_Send_Execution`, `UEBU`, `JB_Event`) | Tooling `CustomObject` |
-| Flows do conector | Ativos ou instalados: série `et4ae5__MCC_*` (envio, backup, tracking). Não toquei | `list metadata -t Flow` |
-| Campos do conector em Lead e Contact | Só `et4ae5__HasOptedOutOfMobile__c` e `et4ae5__Mobile_Country_Code__c` | describe |
-| Origem `E-mail MKT` | Existe em `Lead.LeadSource` | describe |
-| Opt-out de e-mail | `HasOptedOutOfEmail` não consultado. Não afirmo | — |
-| Conexão e jornadas do lado do Marketing Cloud | Fora do escopo do recon (regra 2 do cliente) | — |
+| OWD Lead | `ReadEditTransfer` (público leitura/gravação/transferência) | `SELECT DefaultLeadAccess FROM Organization` |
+| OWD Account | `Edit` (público leitura/gravação) | idem |
+| `PS_Integracao_DistribuicaoLead` | habilita `LeadAssignmentService` e a custom permission; 1 atribuição | retrieve; `COUNT()` |
+| Perfil comercial | `Comercial - Analista` (4 usuários ativos) | `GROUP BY Profile.Name` |
 
-Nada foi lido ou alterado no Marketing Cloud. Se a distribuição ou o encaminhamento de Lead tocar marketing, a seção "Preparação do Sales Cloud para o Marketing Cloud" é do arquiteto. Os campos de opt-out acima são os únicos do conector em Lead.
+**Conflitos declarados pelo preflight (não alterei nada):**
 
-## 6. Permissões
-
-Não levantei perfis e permission sets por objeto. Confirmado: OWD `Lead = ReadWriteTransfer`, `Opportunity = Read`, `Order = ReadWrite`, `Account = ReadWrite`, `SBQQ__Quote__c = ReadWrite`. O assessment cita 4 variações de perfil comercial; não reconferi.
-
-## 7. Riscos do assessment que tocam a demanda (reconferidos)
-
-| Risco | Reconferido? | Evidência |
+| Demanda | Componentes em comum | Observação |
 |---|---|---|
-| Concorrência de automação em Account, Opportunity e Order | Sim, inventário na seção 3 | Triggers custom e SBQQ nos mesmos objetos; Flows after save |
-| `OrderTrigger` custom colide em nome com o do SBQQ | Sim | Mesmo nome, namespaces distintos |
-| API desatualizada das classes e triggers | Parcial | Triggers custom em v58 e v59; a org está em v68. Contagem por versão de classes: consulta falhou, não obtida. Classes custom sem namespace: 56 |
-| Cobertura Apex em 10% | Não reconferido | Só assessment |
-| Dev vs QA | Parcial | Só `sbx-eplast-dev` conectada; a URL contém `--qa`. `sbx-eplast-qa` não aparece em `sf org list` |
+| EPLAST-38 (aguardando_homologacao) | `assignmentRules/Lead`, `LeadAssignmentService`, `LeadAssignmentServiceTest`, `Lead_DistribuicaoAutomaticaViaApi`, `Lead_AfterInsert_AplicaRegraAtribuicao`, `PS_Integracao_DistribuicaoLead`, layout `Lead-Lead Layout`, filas `Leads_*` e `Leads_Triagem` | É praticamente toda a distribuição de Lead que a org tem. Qualquer mudança na regra, nas filas ou no Flow nesta rodada colide com o que a EPLAST-38 está homologando. O arquiteto precisa decidir a quem pertencem e como sequenciar (versão nova antes de editar o que está ativo) |
+| EPLAST-26 (aguardando_gate_design) | `layouts/Lead-Lead Layout` | Só o layout. Esta rodada não precisa mexer nele (a caixa de atribuição já está marcada) |
 
 ## O que não consegui confirmar
 
-1. **Ordem de execução** entre `OpportunityTrigger`, triggers SBQQ e Flows after save. Só o inventário foi feito.
-2. **Relatórios e painéis** que cubram aprovação ou distribuição de Lead: não consultados.
-3. **Quantas validation rules de Order estão ativas** e quais interagem com um novo status de aprovação (a listagem não traz `Active`).
-4. **Permission sets e perfis** que alcançam Lead, Opportunity, Quote e Order, e quem pode submeter ou aprovar.
-5. **`AssignmentRules` de Case**, e se a de Lead vazia reflete a org ou limitação do retrieve com o usuário técnico (a análise anterior notou o mesmo risco para filas).
-6. **Se existe fila de Lead** em produção: aqui há 0 filas.
-7. **Objeto de disparo de `OpportunityFlow` e `CPQQuoteFlow`**: exibido como `Quote`, sem distinguir `SBQQ__Quote__c` de `Quote`.
-8. **Cobertura de teste** e distribuição de API version das classes (consulta falhou).
-9. **`HasOptedOutOfEmail`** no Lead e o consentimento usado pelo Marketing Cloud.
-10. **Respostas de negócio D1 a D12**: nenhuma nos comentários. A org só aponta caminhos de reaproveitamento (motor nativo, três aprovações existentes, `Lead.LeadSource` e `Status`); não decide critério de alçada, régua de distribuição, aprovadores nem o significado de "encaminhamento".
-11. **Se dev e QA são sandboxes distintas**: só uma org é visível.
-
-## Complemento do arquiteto (2026-11-15, `sbx-eplast-dev`, só leitura)
-
-Linhas acrescentadas na etapa de design, porque mudam a decisão. Comandos: `FlowDefinitionView` com `TriggerObjectOrEvent.QualifiedApiName`, Tooling `ApexTrigger` e `ValidationRule`, `sf package installed list`, retrieve em diretório temporário fora do repositório, `COUNT()`.
-
-| Item | Achado | Prova |
-|---|---|---|
-| Objeto real dos Flows record-triggered (corrige a seção 3) | `Order` (Flow chamado `Order`) e `Acionado_por_registro_..._Pedido_...` disparam em **Order**; `OpportunityFlow` e `Oportunidade_Industria` (update) em **Opportunity**; `CPQQuoteFlow` em **`SBQQ__Quote__c`**; `Quote_AfterUpdate_SyncToCPQ` em **Quote** padrão (update); `QuoteLineItemFlowCreatedOrUpdated` em `QuoteLineItem`; `QuoteLineCPQFlow` e `DeleteLineItemCPQFlow` em `SBQQ__QuoteLine__c`; `TaskCreatedOrUpdated` em Task; `PaymentTermAccount` e `SetPaymentTermsChangesinAccount` em `RelationshipAccountsPaymentTerm__c`; `AccountTriggered` e `UpdateParentAccountUsedLimit` em Account. Nenhum Flow ativo em Lead | `FlowDefinitionView` |
-| Triggers SBQQ `QuoteBefore`/`QuoteAfter` | Estão em `SBQQ__Quote__c`, não na Quote padrão. A Quote padrão não tem trigger | Tooling `ApexTrigger.TableEnumOrId` |
-| Validation rules ativas | Order 17 ativas + 6 inativas (23); Opportunity 16 ativas; `SBQQ__Quote__c` 3 ativas + 1 inativa; Quote 1 ativa; Lead 2 ativas | Tooling `ValidationRule` (`COUNT` por objeto e `Active`) |
-| Critério de entrada das aprovações | `Quote.AssignPricing` e `Order.LiberationFinancial`: **sem critério de entrada** (todo registro submetido entra). `Opportunity.FinancialAnalysis`: `StageName = Análise Financeira`. Aprovador: usuário nomeado nos três. `recordEditability = AdminOrCurrentApprover` nos três | retrieve `ApprovalProcess` |
-| Gestor dos usuários | 0 de 19 usuários padrão ativos têm `ManagerId` | `COUNT()` em User |
-| Pacotes | CPQ (`SBQQ`), Marketing Cloud (`et4ae5`), Salesforce Maps (`maps`); **sem** Advanced Approvals (`sbaa`). `maps__AssignmentRule__c`: 0 registros | `sf package installed list`; `COUNT()` |
-| Regra de atribuição de Lead e layout | Regra vazia confirmada. Layout `Lead-Lead Layout`: `showRunAssignmentRulesCheckbox = true`, `runAssignmentRulesDefault = false`; `HasOptedOutOfEmail` está no layout | retrieve |
-| Régua regional já usada pela Eplast | Pasta `MARKETING CLOUD`: relatórios `LEADS - SP/RJ/MG/SUL/GERAL` (Lead, filtro `STATE`) e `RECORRENTES (ATIVOS)` por região de conta: SP; RJ; MG; ES; SUL = PR,SC,RS; CO = GO,DF,MT,MS,TO; NO/NE = AC,AP,AM,PA,RO,RR,AL,BA,CE,MA,PB,PE,PI,RN,SE | retrieve `Report` (só filtros) |
-| Estado no Lead | `State` texto livre; picklists de estado/país **não** habilitadas (`StateCode` ausente) | describe |
-| Histórico de campo em Lead | Nenhum campo rastreado (`OwnerId`, `Status`, `LeadSource` com `IsFieldHistoryTracked = false`) | `FieldDefinition` |
-| Relatório de aprovação existente | `Histrico_de_Aprovao_XNR` (pasta Geral, tabular), tipo custom `Inst_ncias_do_processo_de_aprova_o__c`, filtrado em "Análise financeira" | retrieve |
-| Papéis, grupos, custom permissions, CMDT | 2 papéis (`Coordination`, `Financeiro`); grupos Regular `DEV` e `Marketing_Origem_Retorno`; 1 custom permission (`IA_Rascunho_Comercial`); nenhum CMDT custom | SOQL de metadata |
-| Volume | Quote 0, Campaign 0, CampaignMember 0; 380 relatórios e 20 painéis na org | `COUNT()` |
+1. **Quem é o dono de cada componente na org** (EPLAST-35 da rodada anterior ou EPLAST-38). Nomes e datas coincidem com o design anterior da 35, e o preflight lista os mesmos na 38. A org não registra a demanda de origem.
+2. **Outros Flows de Lead.** Só filtrei os 55 Flows por nome; um Flow de Lead com outro nome ficaria de fora. Tipo de gatilho do Flow não é consultável por `sf data query` nesta versão.
+3. **Formato do CNPJ** em Lead e Account (máscara ou só dígitos), e se há CNPJ repetido entre contas: 0 registros com CNPJ na DEV, e não leio o valor (guardrail #2). A QAS (Partial Copy) tem dado real; só contagem agregada lá, e nesta etapa só toquei a DEV.
+4. **Omni-Channel** (consulta de `ServiceChannel` sem retorno utilizável) e **Salesforce Maps** (`maps__AssignmentRule__c` não recontado hoje). Não sei se há licença ou configuração que sirva a rodízio.
+5. **Quem são os elegíveis por região**: nenhuma fila tem membro, e a Eplast ainda vai informar os nomes.
+6. **Descrição dos campos custom de Lead** (assessment cita 68% sem descrição em Account, Order e Opportunity; Lead não foi medido).
+7. **Trigger `AccountBefore` do SBQQ** em Account: vem do recon anterior, não reconfirmado hoje.
