@@ -48,6 +48,9 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - Toda rodada de QA grava também `05-roteiro-cliente.md`: o passo a passo de teste, em
   linguagem de usuário, que o Squad OS publica como anexo em PDF no card. O time o vê
   sempre; o cliente, da homologação em diante.
+- A evidência do teste também vai para o card: o Squad OS publica o anexo "Evidências de
+  teste" (PDF) com o `05-testes.md` e as capturas de tela que o QA guardou em `evidencias/`.
+  Mesma regra de quem vê. Só tela de registro de teste.
 - **Nada é marcado como entregue sem evidência**: `entregue` exige `05-testes.md` aprovado
   na sandbox de QA e `06-entrega.md`, no fluxo ou em correção manual.
 - `gates.md` e `status.yaml` são escritos pela esteira (`sfagents`), nunca pelo agente.
