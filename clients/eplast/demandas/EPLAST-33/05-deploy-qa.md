@@ -1,16 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EJKsbKAH` (Succeeded)
-- **Quando:** 2026-11-17T14:27Z
-- **Commit:** `ebbccee3`
-
-## Trabalhos agendados cancelados antes do deploy
-
-A plataforma recusa atualizar classe com trabalho pendente. Estes trabalhos das classes do pacote, deixados por rodada anterior, foram cancelados na sandbox de QA e **não foram rearmados**: o teste arma de novo o que precisar.
-
-- 08eHa00000Xr4SZ EPLAST33 Sinais Comerciais, agenda 0 0 1 * * ?, estado WAITING
-- 707Ha00001E4RF1 sem agenda registrada (trabalho assíncrono em andamento)
+- **Deploy:** `0AfHa00000EJIMBKA5` (Succeeded)
+- **Quando:** 2026-11-17T15:08Z
+- **Commit:** `32bc6529`
 
 ## Componentes
 - `force-app/main/default/classes/CommercialSignalBatch.cls`
