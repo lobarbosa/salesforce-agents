@@ -82,3 +82,13 @@ Nada ativado por este build. Pendente, nesta ordem: esteira implanta v17 inativa
 
 ### Para a verificação na dev
 Ativar o Flow e o agente v17 na dev e exercitar FALHAS 1 a 3, R3 (busca com `objectApiName = Lead`) e Q-13, como listado em "O que o build não provou".
+
+## Conciliação de versões (sessão de build, 2026-11-17)
+Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Nada tocado em QA, produção ou Marketing Cloud. Nenhum componente novo ou alterado nesta sessão; nenhuma versão criada nem ativada.
+
+Divergência entre preflight e design, conferida por query na dev:
+- `SFAgent2`: v1 a v17 existem; **ativa só a v13**; v14 a v17 Inactive. O preflight está certo. O design cita base v15 e nova v16 porque foi escrito antes: a v16 (desta demanda) e a v17 (correção das falhas 1 a 3 da QA) já foram criadas nas rodadas anteriores. A base correta para qualquer ajuste novo é a v17; nenhuma outra demanda criou versão acima dela, então não há versão a inventar.
+- Flow `Task_Agente_CriarTarefa` na dev: v1 Active, v2 Obsolete (a v2 foi substituída depois do deploy da rodada 1). A numeração da QA (v1 a v5, v4 Active) difere e é esperada.
+- EPLAST-27, 34 e 46 (mesmo agente): nada delas foi editado. Esta demanda muda só o tópico `acoes_comerciais_EPLAST29_v17` e a ação `CriarTarefa`; os demais tópicos e as 6 ações de `insights_comerciais` seguem como na v15.
+
+Pendência fora do builder: a FALHA 5 da QA (v17 ausente na QA) é do passo de deploy da esteira (`scripts/implantar-build-qa.sh`, com alteração já staged na árvore, não minha e não incluída neste commit). Pacote da v17 está completo na branch. Ativação segue separada: dev na verificação, QA depois do deploy.
