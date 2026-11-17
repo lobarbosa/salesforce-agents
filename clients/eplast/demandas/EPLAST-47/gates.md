@@ -75,3 +75,12 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Commit:** `afe5e370`
 - **Artefatos revisados:**
   - `04-plano-build.md` — sha256 `4934fb58d250df46` (13994 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-17T07:11:53.017641+00:00
+- **Commit:** `7bc549de`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `277e74fc581a6779` (17829 bytes)
+  - `03-design.md` — sha256 `b726c6bdc38c0699` (35150 bytes)
