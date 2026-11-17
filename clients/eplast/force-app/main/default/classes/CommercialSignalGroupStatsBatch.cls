@@ -1,9 +1,10 @@
 /**
- * EPLAST-33, fase 1. Para as contas com grupo preenchido, mede o tamanho de cada grupo e quantas
- * contas do grupo compraram cada produto na janela de historico. No finish, encadeia a fase 2
- * (CommercialSignalBatch) levando so os produtos que passam nos limites.
+ * EPLAST-33, fase 1. Para as contas com segmento preenchido (Account.Sector__c, por parametro), mede o
+ * tamanho de cada segmento e quantas contas do segmento compraram cada familia (ou produto, conforme
+ * CrossSellLevel__c) na janela de historico. No finish, encadeia a fase 2 (CommercialSignalBatch)
+ * levando so os itens que passam nos limites.
  *
- * without sharing: a participacao do grupo precisa da base inteira de contas, independente de quem
+ * without sharing: a participacao do segmento precisa da base inteira de contas, independente de quem
  * dispara o job. O resultado e agregado (contagens) e a visibilidade e aplicada na leitura, porque
  * CommercialSignal__c e controlado pelo pai (PA-17).
  */
@@ -15,7 +16,7 @@ public without sharing class CommercialSignalGroupStatsBatch implements Database
     private final Boolean chainNext;
 
     @TestVisible private Map<String, Integer> groupSizes = new Map<String, Integer>();
-    @TestVisible private Map<String, Map<Id, Integer>> buyersByGroup = new Map<String, Map<Id, Integer>>();
+    @TestVisible private Map<String, Map<String, Integer>> buyersByGroup = new Map<String, Map<String, Integer>>();
 
     public CommercialSignalGroupStatsBatch() {
         this(CommercialSignalService.loadSettings(), Date.today(), true);
@@ -36,7 +37,7 @@ public without sharing class CommercialSignalGroupStatsBatch implements Database
         collect((List<Account>) scope);
     }
 
-    /** Acumula tamanho de grupo e compradores por produto para um lote de contas. */
+    /** Acumula tamanho de segmento e compradores por item para um lote de contas. */
     @TestVisible
     private void collect(List<Account> accounts) {
         Map<Id, String> groupByAccount = new Map<Id, String>();
@@ -51,34 +52,35 @@ public without sharing class CommercialSignalGroupStatsBatch implements Database
         if (groupByAccount.isEmpty()) {
             return;
         }
-        Set<Id> accountIds = new Set<Id>(groupByAccount.keySet());
-        List<String> statuses = settings.purchaseStatuses;
-        Date fromDate = today.addMonths(-settings.crossSellLookbackMonths);
-        // Uma linha por (conta, produto): cada conta pertence a um unico lote, entao nao conta em dobro.
-        for (AggregateResult ar : [
-            SELECT Order.AccountId acc, Product2Id prod, COUNT(Id) n
-            FROM OrderItem
-            WHERE Order.AccountId IN :accountIds
-              AND Order.Status IN :statuses
-              AND Order.EffectiveDate >= :fromDate
-              AND Order.EffectiveDate <= :today
-              AND Product2Id != null
-            GROUP BY Order.AccountId, Product2Id
-        ]) {
+        String df = settings.purchaseDateField;
+        String item = CommercialSignalService.itemExpression(settings);
+        Map<String, Object> binds = new Map<String, Object>{
+            'accountIds' => groupByAccount.keySet(),
+            'statuses' => settings.purchaseStatuses,
+            'fromDate' => CommercialSignalService.bound(today.addMonths(-settings.crossSellLookbackMonths), df),
+            'toDate' => CommercialSignalService.bound(today.addDays(1), df)
+        };
+        String soql = 'SELECT Order.AccountId acc, ' + item + ' item, COUNT(Id) n FROM OrderItem'
+            + ' WHERE Order.AccountId IN :accountIds AND Order.Status IN :statuses'
+            + ' AND Order.' + df + ' >= :fromDate AND Order.' + df + ' < :toDate'
+            + ' GROUP BY Order.AccountId, ' + item;
+        // Uma linha por (conta, item): cada conta pertence a um unico lote, entao nao conta em dobro.
+        for (SObject row : Database.queryWithBinds(soql, binds, AccessLevel.SYSTEM_MODE)) {
+            AggregateResult ar = (AggregateResult) row;
+            String key = CommercialSignalService.groupKey(ar.get('item'));
             String g = groupByAccount.get((Id) ar.get('acc'));
-            if (g == null) {
+            if (g == null || key == null) {
                 continue;
             }
             if (!buyersByGroup.containsKey(g)) {
-                buyersByGroup.put(g, new Map<Id, Integer>());
+                buyersByGroup.put(g, new Map<String, Integer>());
             }
-            Map<Id, Integer> byProduct = buyersByGroup.get(g);
-            Id prod = (Id) ar.get('prod');
-            byProduct.put(prod, (byProduct.containsKey(prod) ? byProduct.get(prod) : 0) + 1);
+            Map<String, Integer> byItem = buyersByGroup.get(g);
+            byItem.put(key, (byItem.containsKey(key) ? byItem.get(key) : 0) + 1);
         }
     }
 
-    /** Produtos elegiveis por grupo, ja filtrados por tamanho minimo e participacao minima. */
+    /** Itens elegiveis por segmento, ja filtrados por tamanho minimo e participacao minima. */
     @TestVisible
     private Map<String, List<CommercialSignalService.Candidate>> qualify() {
         Map<String, List<CommercialSignalService.Candidate>> result = new Map<String, List<CommercialSignalService.Candidate>>();

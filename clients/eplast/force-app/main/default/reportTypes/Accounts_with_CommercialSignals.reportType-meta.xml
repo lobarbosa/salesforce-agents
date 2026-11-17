@@ -13,6 +13,8 @@
         <columns><checkedByDefault>true</checkedByDefault><field>Id</field><table>Account</table></columns>
         <columns><checkedByDefault>true</checkedByDefault><field>Name</field><table>Account</table></columns>
         <columns><checkedByDefault>true</checkedByDefault><field>Ranking__c</field><table>Account</table></columns>
+        <columns><checkedByDefault>true</checkedByDefault><field>Sector__c</field><table>Account</table></columns>
+        <columns><checkedByDefault>true</checkedByDefault><field>BillingState</field><table>Account</table></columns>
         <masterLabel>Contas</masterLabel>
     </sections>
     <sections>
@@ -25,6 +27,10 @@
         <columns><checkedByDefault>true</checkedByDefault><field>LastPurchaseDate__c</field><table>Account.CommercialSignals__r</table></columns>
         <columns><checkedByDefault>true</checkedByDefault><field>Reason__c</field><table>Account.CommercialSignals__r</table></columns>
         <columns><checkedByDefault>true</checkedByDefault><field>CalculationDate__c</field><table>Account.CommercialSignals__r</table></columns>
+        <columns><checkedByDefault>true</checkedByDefault><field>ProductFamily__c</field><table>Account.CommercialSignals__r</table></columns>
+        <columns><checkedByDefault>true</checkedByDefault><field>CurrentPeriodQuantity__c</field><table>Account.CommercialSignals__r</table></columns>
+        <columns><checkedByDefault>true</checkedByDefault><field>BasePeriodQuantity__c</field><table>Account.CommercialSignals__r</table></columns>
+        <columns><checkedByDefault>true</checkedByDefault><field>UnitOfMeasure__c</field><table>Account.CommercialSignals__r</table></columns>
         <masterLabel>Sinais Comerciais</masterLabel>
     </sections>
 </ReportType>

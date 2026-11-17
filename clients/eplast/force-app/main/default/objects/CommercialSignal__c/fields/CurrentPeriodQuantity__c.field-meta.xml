@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CurrentPeriodQuantity__c</fullName>
+    <description>EPLAST-33. Soma de OrderItem.Quantity da familia no ultimo mes fechado. Preenchido so quando a familia tem uma unica unidade no periodo; com unidades mistas fica vazio e a unidade e MISTA.</description>
+    <label>Quantidade ultimo mes fechado</label>
+    <precision>16</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>

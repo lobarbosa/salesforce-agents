@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PurchaseDateField__c</fullName>
+    <description>EPLAST-33. Campo de data de Order que define quando houve a compra. Permitidos: EffectiveDate, IssuanceDate__c, ActivatedDate. Outro valor volta para EffectiveDate.</description>
+    <label>Campo de data da compra</label>
+    <length>40</length>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Text</type>
+</CustomField>

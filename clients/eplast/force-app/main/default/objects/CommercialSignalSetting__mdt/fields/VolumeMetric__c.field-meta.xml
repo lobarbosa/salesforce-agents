@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VolumeMetric__c</fullName>
+    <description>EPLAST-33. Metrica do alerta de queda ou alta: Valor, Quantidade ou ValorOuQuantidade. Outro valor volta para Valor.</description>
+    <label>Metrica do volume</label>
+    <length>30</length>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Text</type>
+</CustomField>

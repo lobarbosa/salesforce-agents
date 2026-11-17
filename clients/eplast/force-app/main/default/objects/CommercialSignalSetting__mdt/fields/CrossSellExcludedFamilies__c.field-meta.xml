@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CrossSellExcludedFamilies__c</fullName>
+    <description>EPLAST-33. Familias que nunca sao sugeridas na venda cruzada, separadas por ponto e virgula. Vazio: nenhuma excluida.</description>
+    <label>Familias fora da cruzada</label>
+    <length>255</length>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Text</type>
+</CustomField>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CrossSellLevel__c</fullName>
+    <description>EPLAST-33. Nivel da venda cruzada: Familia (sugere familia nao comprada) ou Produto (sugere item). Outro valor volta para Familia.</description>
+    <label>Nivel da cruzada</label>
+    <length>20</length>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Text</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>VolumeMinBaseMonths__c</fullName>
+    <description>EPLAST-33. Minimo de meses da base em que a conta comprou a familia para comparar volume. Abaixo disso grava HistoricoInsuficiente. De 1 ate o total de meses da base.</description>
+    <label>Minimo de meses da base</label>
+    <precision>2</precision>
+    <scale>0</scale>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Number</type>
+</CustomField>

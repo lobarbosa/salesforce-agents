@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Type__c</fullName>
-    <description>Tipo do sinal: Recuperacao, NuncaComprou, QuedaVolume, AltaVolume ou Cruzada.</description>
+    <description>Tipo do sinal: Recuperacao, NuncaComprou, QuedaVolume, AltaVolume, HistoricoInsuficiente ou Cruzada.</description>
     <label>Tipo</label>
     <required>true</required>
     <valueSet>
@@ -12,6 +12,7 @@
             <value><fullName>NuncaComprou</fullName><default>false</default><label>Nunca comprou</label></value>
             <value><fullName>QuedaVolume</fullName><default>false</default><label>Queda de volume</label></value>
             <value><fullName>AltaVolume</fullName><default>false</default><label>Alta de volume</label></value>
+            <value><fullName>HistoricoInsuficiente</fullName><default>false</default><label>Historico insuficiente</label></value>
             <value><fullName>Cruzada</fullName><default>false</default><label>Cruzada</label></value>
         </valueSetDefinition>
     </valueSet>

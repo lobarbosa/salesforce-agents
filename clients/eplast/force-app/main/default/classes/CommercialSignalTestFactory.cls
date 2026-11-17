@@ -12,12 +12,18 @@ public class CommercialSignalTestFactory {
         public Date effectiveDate;
         public Decimal amount;
         public Id productId;
+        public Decimal quantity = 1;
         public OrderSpec(Id accountId, String status, Date effectiveDate, Decimal amount, Id productId) {
             this.accountId = accountId;
             this.status = status;
             this.effectiveDate = effectiveDate;
             this.amount = amount;
             this.productId = productId;
+        }
+        /** Valor total do item = amount; a quantidade so muda o preco unitario (UnitPrice = amount / quantity). */
+        public OrderSpec withQuantity(Decimal quantity) {
+            this.quantity = quantity;
+            return this;
         }
     }
 
@@ -43,12 +49,13 @@ public class CommercialSignalTestFactory {
         }
     }
 
-    public static List<Account> createAccounts(Integer count, String industry, String prefix) {
+    /** `sector` e o segmento (Account.Sector__c, lista restrita: ex. Alimentos, Bebidas); null deixa sem segmento. */
+    public static List<Account> createAccounts(Integer count, String sector, String prefix) {
         List<Account> accounts = new List<Account>();
         for (Integer i = 0; i < count; i++) {
             accounts.add(new Account(
                 Name = prefix + ' ' + i,
-                Industry = industry,
+                Sector__c = sector,
                 ProtheusId__c = prefix + '-' + i
             ));
         }
@@ -62,9 +69,17 @@ public class CommercialSignalTestFactory {
     }
 
     public static List<Product2> createProducts(Integer count) {
+        return createProducts(count, null, null);
+    }
+
+    /** Produtos da familia (Product2.Group__c) e unidade (QuantityUnitOfMeasure: UN ou KG) informadas; null deixa vazio. */
+    public static List<Product2> createProducts(Integer count, String family, String unit) {
         List<Product2> products = new List<Product2>();
         for (Integer i = 0; i < count; i++) {
-            products.add(new Product2(Name = 'Produto CS ' + i, IsActive = true));
+            products.add(new Product2(
+                Name = 'Produto CS ' + (family == null ? '' : family + ' ') + i, IsActive = true,
+                Group__c = family, QuantityUnitOfMeasure = unit
+            ));
         }
         insert products;
         List<PricebookEntry> entries = new List<PricebookEntry>();
@@ -159,8 +174,8 @@ public class CommercialSignalTestFactory {
                 items.add(new OrderItem(
                     OrderId = orders[i].Id,
                     PricebookEntryId = entryByProduct.get(specs[i].productId),
-                    Quantity = 1,
-                    UnitPrice = specs[i].amount
+                    Quantity = specs[i].quantity,
+                    UnitPrice = specs[i].amount / specs[i].quantity
                 ));
             }
             insert items;
@@ -187,8 +202,9 @@ public class CommercialSignalTestFactory {
 
     public static List<CommercialSignal__c> signals(Id accountId, String type) {
         return [
-            SELECT Id, Type__c, Product__c, DaysWithoutPurchase__c, VariationPercent__c, BasePeriodAmount__c,
-                   CurrentPeriodAmount__c, LastPurchaseDate__c, Reason__c, CalculationDate__c, SignalKey__c
+            SELECT Id, Type__c, Product__c, ProductFamily__c, DaysWithoutPurchase__c, VariationPercent__c,
+                   BasePeriodAmount__c, CurrentPeriodAmount__c, BasePeriodQuantity__c, CurrentPeriodQuantity__c,
+                   UnitOfMeasure__c, LastPurchaseDate__c, Reason__c, CalculationDate__c, SignalKey__c
             FROM CommercialSignal__c
             WHERE Account__c = :accountId AND Type__c = :type
         ];

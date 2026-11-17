@@ -3,10 +3,16 @@
     <columns><field>Account$Id</field></columns>
     <columns><field>Account$Name</field></columns>
     <columns><field>Account$Ranking__c</field></columns>
+    <columns><field>Account$Sector__c</field></columns>
+    <columns><field>Account$BillingState</field></columns>
+    <columns><field>Account.CommercialSignals__r$ProductFamily__c</field></columns>
     <columns><field>Account.CommercialSignals__r$Product__c</field></columns>
     <columns><field>Account.CommercialSignals__r$DaysWithoutPurchase__c</field></columns>
     <columns><field>Account.CommercialSignals__r$BasePeriodAmount__c</field></columns>
     <columns><field>Account.CommercialSignals__r$CurrentPeriodAmount__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$CurrentPeriodQuantity__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$BasePeriodQuantity__c</field></columns>
+    <columns><field>Account.CommercialSignals__r$UnitOfMeasure__c</field></columns>
     <columns><field>Account.CommercialSignals__r$VariationPercent__c</field></columns>
     <columns><field>Account.CommercialSignals__r$LastPurchaseDate__c</field></columns>
     <columns><field>Account.CommercialSignals__r$Reason__c</field></columns>
