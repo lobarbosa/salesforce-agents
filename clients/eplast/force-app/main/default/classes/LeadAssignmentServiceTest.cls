@@ -2,16 +2,19 @@
  * EPLAST-35. Testes de LeadAssignmentService e do Flow Lead_AfterInsert_AplicaRegraAtribuicao.
  * Dados sinteticos (sem CPF, e-mail ou telefone). Phone e MobilePhone ficam vazios porque as
  * validation rules ativas de Lead (Celular, Telefone) exigem formato especifico quando preenchidos.
- * A regra Distribuicao_Regional_Leads e as filas Leads_* sao metadata do mesmo pacote.
+ * A regra de Lead ativa e as filas Leads_* sao metadata do mesmo pacote.
+ * EPLAST-35 (decisao do responsavel, 2026-11-17): ajustado para a regra Distribuicao_Regional_Leads_v2
+ * (RJ e ES na fila Leads_RJ_ES) e para o Flow Lead_AfterSave_DistribuiDonoRodizio, que roda na mesma
+ * transacao. Artefato da EPLAST-38; LeadAssignmentService nao mudou.
  */
 @IsTest
 private class LeadAssignmentServiceTest {
 
     private static final Map<String, String> FILA_POR_UF = new Map<String, String>{
         'SP' => 'Leads_SP',
-        'RJ' => 'Leads_RJ',
+        'RJ' => 'Leads_RJ_ES',
         'MG' => 'Leads_MG',
-        'ES' => 'Leads_ES',
+        'ES' => 'Leads_RJ_ES',
         'PR' => 'Leads_Sul',
         'GO' => 'Leads_CO',
         'BA' => 'Leads_NO_NE'
@@ -107,8 +110,12 @@ private class LeadAssignmentServiceTest {
         Integer soqls = Limits.getQueries();
         Test.stopTest();
 
-        System.assertEquals(1, dmls, 'Um unico DML para o lote inteiro');
-        System.assertEquals(1, soqls, 'Uma unica SOQL para o lote inteiro');
+        // O Flow do rodizio (Lead_AfterSave_DistribuiDonoRodizio) roda na mesma transacao e soma
+        // suas proprias consultas e gravacoes (Flow em lote nao multiplica por Lead). Por isso o
+        // teste afirma um teto com folga, bem abaixo de 200 (um por Lead) e dos limites da
+        // plataforma (100 SOQL, 150 DML), em vez de "exatamente 1". Prova que o lote segue em bloco.
+        System.assert(dmls <= 10, 'DML do lote deve ser em bloco (teto 10), obtido ' + dmls);
+        System.assert(soqls <= 20, 'SOQL do lote deve ser em bloco (teto 20), obtido ' + soqls);
         Set<Id> idsFilas = new Set<Id>(filas.values());
         Integer distribuidos = 0;
         for (Lead l : [SELECT OwnerId FROM Lead WHERE Id IN :leads]) {

@@ -125,3 +125,19 @@ Impacto na QAS quando o esteira levar o pacote: todo Lead novo passa a ser distr
 
 ### Ainda sem prova em runtime
 O rodízio não foi exercitado com sucesso em nenhuma org; a correção do `Get_Membros` e a medição do lote de 200 dependem do verificador (casos T1 a T18, seção 12 do design). T17 (3 processos de aprovação) deve ser conferido por Tooling ou retrieve de `approvalProcesses`. `Leads_RJ_ES` precisa de membros de teste antes de T1 (decisão, item 4).
+
+## Correções da rodada 1 (ajuste do teste `LeadAssignmentServiceTest`, decisão de 2026-11-17)
+
+**Org:** `sbx-eplast-dev` (única conectada em `sf org list`). Nada tocado em QA, QAS, produção ou Marketing Cloud. **Esta mudança altera um artefato da EPLAST-38** (a classe de teste); quem homologa as duas juntas deve saber. `LeadAssignmentService` (produção) não mudou; nenhuma classe nova; nenhuma lógica nova em Apex.
+
+| Falha (deploy em QA `0AfHa00000EJYvaKAH`) | Correção | Estado |
+|---|---|---|
+| `caminhoFelizDistribuiPorRegiao`: "UF RJ deve cair em Leads_RJ" | Mapa `FILA_POR_UF`: RJ e ES agora esperam `Leads_RJ_ES` (regra v2) | Passa |
+| `loteDe200DistribuiTodos`: SOQL esperado 1, obtido 5 (consultas do Flow do rodízio na mesma transação) | Troca de "exatamente 1" por teto com folga, justificado em comentário no teste: DML <= 10 e SOQL <= 20 (bem abaixo de 200 e dos limites 150/100; prova que o lote segue em bloco) | Passa |
+| Demais métodos (5) | Conferidos contra a regra v2: não afirmam a régua antiga (Triagem, lista vazia, Lead inexistente, custom permission, acesso do PS). Sem mudança | Passam |
+
+- Arquivo alterado: `force-app/main/default/classes/LeadAssignmentServiceTest.cls` (cabeçalho do comentário também atualizado).
+- Comandos: `sf project deploy start --target-org sbx-eplast-dev --source-dir <classe de teste> --test-level RunSpecifiedTests --tests LeadAssignmentServiceTest` (Succeeded, Deploy ID `0AfHa00000EJf2bKAD`, 7/7); `sf apex run test -o sbx-eplast-dev -n LeadAssignmentServiceTest -c`: 7 Pass, cobertura de `LeadAssignmentService` **100%** (mínimo 85%).
+- Estado da DEV em que o teste rodou (o mesmo que vai à QA): Flow `Lead_AfterSave_DistribuiDonoRodizio` v3 Active, regra v2 ativa, `DistribuicaoAtiva__c = true` (conferidos por query).
+- Risco registrado: o teste do caminho feliz espera a fila como dono; se uma fila `Leads_*` tiver membro direto ativo no momento do deploy, o rodízio dá dono usuário e o teste falha. Hoje as filas têm 0 membros diretos (QA e verificação); membros de teste do verificador/QA devem ser removidos ao fim.
+- Sem prova em runtime ainda: rodízio e lote de 200 (T1 a T18) seguem para o verificador, com o estado acima.
