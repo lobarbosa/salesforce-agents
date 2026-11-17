@@ -82,3 +82,11 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Commit:** `68036059`
 - **Artefatos revisados:**
   - `04-plano-build.md` — sha256 `61ff42045a26046f` (6261 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-17T15:11:52.640024+00:00
+- **Commit:** `0f66a345`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `a052c86954c81a99` (8539 bytes)

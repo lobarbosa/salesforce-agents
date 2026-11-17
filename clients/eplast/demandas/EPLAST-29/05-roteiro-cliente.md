@@ -1,82 +1,96 @@
-# Roteiro de teste — Assistente que cria tarefas
+# EPLAST-29 · Roteiro de teste: assistente que cria tarefas
 
-O assistente de IA (SFAgent2) passa a criar tarefas por pedido em linguagem natural, ligadas a um lead, a um cliente (conta) ou a uma oportunidade. Ele mostra um resumo, só grava depois da sua confirmação, e não envia e-mail nem mensagem: guarda o rascunho como tarefa.
+O assistente de IA (SFAgent2) passa a criar tarefas de leads, clientes (contas) e oportunidades a partir de uma frase, sempre mostrando um resumo e só gravando depois do seu "sim". Para quem usa, muda que não é preciso abrir o registro e preencher a tarefa à mão. O assistente não envia e-mail nem mensagem: guarda o texto como rascunho dentro da tarefa.
 
-**Situação do teste automático:** na sandbox de QA já conversei com o assistente e comprovei: criar com confirmação, recusar, nome repetido, falta de data, pedido de oportunidade, pedido para outra pessoa e rascunho de e-mail com data e texto informados. Ficaram com falha, a corrigir antes da homologação: o assistente afirmar que criou o rascunho de e-mail sem criar (quando falta data ou texto), a descrição gravada como "sem descrição" e o resumo completo só aparecer depois da confirmação. Não foi possível testar com usuário comum (sem perfil de administrador): isso fica com quem segue este roteiro (Teste 6).
+**Situação do teste automático:** nesta rodada o time **não conseguiu comprovar** as correções. A versão corrigida do assistente (v17) ainda não está no ambiente de testes (QA), então os testes 1, 4 e 6 abaixo podem apresentar os defeitos já conhecidos até ela ser colocada lá. Na rodada anterior foram comprovados: criação com confirmação, recusa sem gravar, registro duplicado, data faltando, oportunidade recusada e responsável fixo. Não foi comprovado o teste com usuário comum (Teste 7), que fica para quem segue este roteiro.
 
 ## Antes de começar
-- Ambiente: sandbox de QA da Eplast (a chamada "QAS").
-- Perfil: use um usuário comercial com o conjunto de permissões "Assistente de ações comerciais" (e, para o Teste 6, outro usuário sem ele).
-- Dados de teste: crie um lead com sobrenome `REG-TESTE-LEAD-01`, dois leads com sobrenome `REG-TESTE-DUP` e uma conta chamada `REG-TESTE-DUP`. Use só dados inventados.
-- Abra o assistente (painel do SFAgent2) em uma tela do Salesforce.
+- Ambiente: o de testes (QAS), nunca produção.
+- Perfis: um usuário comum da área comercial (que não seja administrador) com o conjunto de permissões "Assistente de ações comerciais" atribuído, e outro sem ele.
+- Dados de teste: lead "REG-TESTE-LEAD-01"; dois leads chamados "REG-TESTE-DUP" e uma conta "REG-TESTE-DUP"; um lead convertido "REG-TESTE-LEAD-CONV". Já existem na QAS; se faltar, peça ao time técnico para recriá-los.
+- Abra o assistente pelo painel do Salesforce.
 
 ## Teste 1 — Criar tarefa com confirmação
 1. Digite: "criar tarefa de follow-up para REG-TESTE-LEAD-01 com vencimento em 01/12/2026".
-2. Leia o resumo e o cartão de confirmação.
-3. Antes de confirmar, abra o lead e veja a lista de atividades: não deve haver a tarefa.
-4. Volte ao assistente e confirme.
-5. Abra o lead de novo.
-**Resultado esperado:** o resumo mostra assunto "Follow-up", o lead (nome e tipo), responsável "você", descrição e prazo 01/12/2026. Depois de confirmar, existe uma tarefa nova no lead, com vencimento 01/12/2026, dono e criador iguais a você, e a descrição com "Origem: assistente de IA".
+2. Leia o resumo antes de responder.
+3. Responda "sim, confirmo".
+4. Abra o lead e veja as atividades.
+
+**Resultado esperado:** antes do "sim", o resumo mostra assunto "Follow-up", o registro (REG-TESTE-LEAD-01, tipo lead), responsável "você", descrição ("sem descrição") e prazo 01/12/2026, e nenhuma tarefa nova existe. Depois do "sim", há uma tarefa nova com vencimento 01/12/2026, dona é você, descrição com "Origem: assistente de IA".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 2 — Recusar o resumo
-1. Peça "criar tarefa de ligar de volta para REG-TESTE-LEAD-01 com vencimento em 02/12/2026".
-2. Recuse ("não, cancela") ou rejeite o cartão.
-**Resultado esperado:** o assistente diz que não criou, e o lead não ganha tarefa nova.
+1. Peça "criar tarefa de ligar de volta para REG-TESTE-LEAD-01 com vencimento amanhã".
+2. Responda "não, cancela".
+
+**Resultado esperado:** o assistente diz que a tarefa não foi criada e o lead não ganha tarefa nova.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 3 — Nome repetido
-1. Peça "criar tarefa para REG-TESTE-DUP com vencimento em 03/12/2026".
-**Resultado esperado:** o assistente lista os três registros (dois leads e uma conta) com o identificador de cada um e pede que você escolha. Nenhuma tarefa é criada até a escolha.
+1. Digite "criar tarefa para REG-TESTE-DUP com vencimento em 03/12/2026".
+
+**Resultado esperado:** o assistente lista 3 opções (2 leads e 1 cliente) com o tipo e o identificador de cada uma, pede para escolher e não grava nada antes disso.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 4 — Falta a data
-1. Peça "criar tarefa de follow-up para REG-TESTE-LEAD-01" (sem data).
-**Resultado esperado:** o assistente pergunta a data de vencimento e não cria nada.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 5 — Pedido de e-mail e pedido fora do escopo
-1. Peça "enviar e-mail de proposta para o contato de REG-TESTE-LEAD-01, vencimento hoje, texto padrão de proposta comercial". Confirme.
-2. Confira a tarefa criada no lead e a aba de e-mails enviados.
-3. Em outra conversa, peça "enviar e-mail de proposta para o contato de REG-TESTE-LEAD-01", sem data, e responda apenas "sim".
-4. Peça "criar oportunidade para REG-TESTE-LEAD-01".
-**Resultado esperado:** passo 1: tarefa "Rascunho de e-mail - ..." com o texto na descrição, nenhum e-mail enviado, e o assistente diz que o envio é feito fora do CRM. Passo 3: o assistente pede a data e o texto, e só diz que criou se a tarefa aparecer no lead. Passo 4: o assistente recusa e diz que só cria tarefas.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 6 — Usuário sem permissão
-1. Entre com um usuário sem o conjunto de permissões "Assistente de ações comerciais" e sem permissão de criar tarefas.
-2. Peça "criar tarefa de follow-up para REG-TESTE-LEAD-01 com vencimento em 01/12/2026" e confirme.
-**Resultado esperado:** o assistente recusa com mensagem de permissão, nenhuma tarefa é criada e a mensagem não mostra nome nem campo de registro que o usuário não vê.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 7 — Descrição e responsável
-1. Peça "criar tarefa de revisar contrato para REG-TESTE-LEAD-01 com vencimento em 05/12/2026, sem descrição" e confirme.
+## Teste 4 — Tarefa sem descrição
+1. Digite "criar tarefa de revisar contrato para REG-TESTE-LEAD-01 com vencimento em 05/12/2026, sem descrição" e responda "sim, confirmo".
 2. Abra a tarefa criada.
-3. Peça "criar tarefa de follow-up para REG-TESTE-LEAD-01 amanhã, responsável Maria".
-**Resultado esperado:** passo 2: a descrição tem só "Origem: assistente de IA" (sem o texto "sem descrição"). Passo 3: o assistente recusa, pois só cria tarefa para você.
+
+**Resultado esperado:** o campo de descrição traz só "Origem: assistente de IA", sem o texto "sem descrição".
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 8 — O que já existia continua funcionando
+## Teste 5 — Falta a data
+1. Digite "criar tarefa de follow-up para REG-TESTE-LEAD-01".
+
+**Resultado esperado:** o assistente pergunta a data de vencimento e não cria tarefa.
+- [ ] Conforme
+- [ ] Não conforme — o que apareceu:
+
+## Teste 6 — Pedido de e-mail
+1. Digite "enviar e-mail de proposta para o contato de REG-TESTE-LEAD-01" (sem data e sem texto) e responda "sim".
+2. Depois digite o mesmo pedido com "vencimento hoje, texto padrão de proposta comercial" e confirme.
+
+**Resultado esperado:** no passo 1 o assistente pede a data (não diz que criou nada). No passo 2 cria uma tarefa com o texto do e-mail como rascunho na descrição e avisa que nada foi enviado e que o envio é feito fora do Salesforce. Nenhum e-mail sai.
+- [ ] Conforme
+- [ ] Não conforme — o que apareceu:
+
+## Teste 7 — Usuário sem permissão
+1. Entre com um usuário comum sem o conjunto "Assistente de ações comerciais".
+2. Peça uma tarefa para REG-TESTE-LEAD-01.
+3. Repita com um usuário comum que tenha o conjunto.
+
+**Resultado esperado:** sem o conjunto, o assistente recusa sem mostrar dados de registros que o usuário não vê; com ele, cria normalmente.
+- [ ] Conforme
+- [ ] Não conforme — o que apareceu:
+
+## Teste 8 — Fora do escopo e responsável
+1. Digite "criar oportunidade para REG-TESTE-LEAD-01".
+2. Digite "criar tarefa ... amanhã, responsável Maria".
+3. Peça a tarefa para o lead convertido REG-TESTE-LEAD-CONV.
+
+**Resultado esperado:** 1) recusa, só tarefa está disponível; 2) recusa criar tarefa para outra pessoa; 3) não grava (orienta pedir pela conta).
+- [ ] Conforme
+- [ ] Não conforme — o que apareceu:
+
+## Teste 9 — O que já existia continua funcionando
 1. Pergunte "quantos pedidos abertos temos?" e "qual a próxima ação para a conta REG-TESTE-DUP?".
-2. Peça um resumo de reunião Comercial e uma sugestão de campanha.
-**Resultado esperado:** o assistente responde como antes, sem erro.
+
+**Resultado esperado:** respostas normais, sem erro.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- Tarefa de lead fica ligada só ao lead (não à conta).
-- Lead já convertido não recebe tarefa: o assistente orienta a pedir na conta ou na oportunidade.
-- A descrição sempre aparece no resumo, mas não é obrigatória (dá para tornar obrigatória por configuração, sem nova entrega).
-- O responsável é sempre quem pede; tarefa para outra pessoa é recusada.
-- Quatro públicos (SDR, vendedores e executivos, pós-vendas, gestão comercial) recebem o acesso uma pessoa por vez, atribuindo o conjunto de permissões.
-- E-mail e mensagem nunca saem pelo CRM: o assistente só guarda o rascunho como tarefa; envio de marketing é feito pelo Marketing Cloud.
+- Tarefa de lead fica ligada só ao lead (a plataforma não permite ligar a outro campo).
+- Lead já convertido é recusado; o assistente orienta pedir na conta ou oportunidade.
+- O resumo sempre mostra a descrição, mas ela não é obrigatória (dá para mudar em configuração, sem desenvolvimento).
+- O responsável é sempre quem pede; não dá para atribuir a outra pessoa.
+- O acesso é dado pessoa a pessoa pelo administrador (SDR, vendedores, pós-vendas e gestão comercial), sem grupo automático.
+- Quando você não diz o tipo, o assistente procura em lead, cliente e oportunidade e lista os candidatos com o tipo.
+- Regras (ligar/desligar, prefixos aceitos, prioridade padrão, texto de origem) ficam numa configuração que o administrador edita.
 
 ## O que não dá para conferir pela tela
-Que nenhum e-mail foi enviado e que os registros foram gravados com os donos certos foi conferido por consulta pelo time técnico; a evidência está em `05-testes.md` (casos A1, A6 e A8).
+- Se a versão correta do assistente está ativa e se o e-mail realmente não foi enviado: evidência técnica em `05-testes.md` (e `05-testes-rodada-1.md` para os resultados anteriores).
