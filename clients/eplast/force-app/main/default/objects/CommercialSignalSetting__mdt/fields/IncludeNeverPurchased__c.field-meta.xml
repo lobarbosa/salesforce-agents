@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>IncludeNeverPurchased__c</fullName>
+    <description>Gera o tipo NuncaComprou para contas sem compra valida.</description>
+    <label>Incluir Nunca comprou</label>
+    <defaultValue>true</defaultValue>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Checkbox</type>
+</CustomField>

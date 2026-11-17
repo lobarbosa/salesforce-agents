@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ProductFamily__c</fullName>
+    <description>EPLAST-33. Familia (Product2.Group__c por padrao) do sinal de volume, historico insuficiente ou cruzada por familia. Vazio nos sinais de conta (Recuperacao, NuncaComprou).</description>
+    <label>Familia de produto</label>
+    <length>40</length>
+    <required>false</required>
+    <type>Text</type>
+</CustomField>

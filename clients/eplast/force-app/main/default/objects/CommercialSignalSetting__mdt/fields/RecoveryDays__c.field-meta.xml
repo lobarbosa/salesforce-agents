@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RecoveryDays__c</fullName>
+    <description>Dias sem compra acima dos quais a conta entra em recuperacao (estrito: 90 significa a partir de 91 dias sem compra faturada).</description>
+    <label>Dias de recuperacao</label>
+    <precision>4</precision>
+    <scale>0</scale>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Number</type>
+</CustomField>

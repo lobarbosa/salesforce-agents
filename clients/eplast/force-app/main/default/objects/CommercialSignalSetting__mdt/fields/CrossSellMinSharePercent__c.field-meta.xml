@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>CrossSellMinSharePercent__c</fullName>
+    <description>Percentual minimo (inclusive) de contas do grupo que compraram o produto.</description>
+    <label>Participacao minima do grupo (%)</label>
+    <precision>5</precision>
+    <scale>1</scale>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Number</type>
+</CustomField>

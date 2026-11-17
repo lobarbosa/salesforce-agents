@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DaysWithoutPurchase__c</fullName>
+    <description>Dias entre a ultima compra valida e a data do calculo. Tipo Recuperacao.</description>
+    <label>Dias sem compra</label>
+    <precision>6</precision>
+    <scale>0</scale>
+    <type>Number</type>
+</CustomField>

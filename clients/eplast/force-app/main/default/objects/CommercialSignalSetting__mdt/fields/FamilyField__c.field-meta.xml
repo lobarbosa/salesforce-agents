@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FamilyField__c</fullName>
+    <description>EPLAST-33. Campo de Product2 que define a familia. Permitidos: Group__c, Family. Outro valor volta para Group__c.</description>
+    <label>Campo de familia de produto</label>
+    <length>40</length>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <type>Text</type>
+</CustomField>

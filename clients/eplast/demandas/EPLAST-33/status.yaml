@@ -2,10 +2,148 @@ id: EPLAST-33
 client: eplast
 titulo: Cross-sell, aumento de volume e recuperação de clientes
 tipo: projeto
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
-  - de: null
-    em: '2026-11-10T12:00:00Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-10T12:00:00Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T01:41:26.411849+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:43:46.695796+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T01:44:52.266978+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-11T16:03:49.947684+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T16:15:30.050420+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-11T16:16:28.278559+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-12T03:34:43.190558+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-12T03:38:07.220036+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Carlos Sordi
+  em: '2026-11-12T13:30:01.079988+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T13:34:01.206946+00:00'
+- de: aguardando_homologacao
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-12T13:34:52.242675+00:00'
+- de: aguardando_homologacao
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-13T15:11:04.711884+00:00'
+  motivo: 'Nada foi construído: o build ficou bloqueado por decisões pendentes (escopo
+    da Onda 3 e perguntas de negócio) e a demanda chegou à homologação só com documentos,
+    reprovada pelo QA. Volta ao gate de design até as respostas chegarem pelo card.
+    04-plano-build.md e 05-testes.md (registros do bloqueio) removidos para as etapas
+    serem refeitas.'
+- de: aguardando_gate_design
+  para: backlog
+  autor: Leonardo Barbosa
+  em: '2026-11-15T02:12:55.018099+00:00'
+  motivo: refazer análise e desenho pela regra 4 da conta (pergunta de negócio sem
+    resposta vira premissa assumida, pela org e pelo padrão); artefatos da rodada
+    anterior guardados em rodada-anterior/
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-15T02:50:59.668290+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-15T02:54:49.919802+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T04:36:01.674536+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-15T04:44:34.818118+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T10:52:57.469612+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T11:22:21.139282+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-15T12:43:10.587414+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T12:47:04.551057+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-15T22:53:03.205001+00:00'
+  motivo: 'deploy na sandbox de QA falhou nos testes Apex (deploy 0AfHa00000EI4Q6KAL):
+    todos os testes de CommercialSignalBatchTest com System.QueryException "No such
+    column ''SignalKey__c'' on entity ''CommercialSignal__c''". Na dev os testes passam.
+    Refazer o build investigando por que o campo não existe para o teste na QA.'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-16T00:02:44.785938+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-16T00:56:27.306123+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-16T01:41:58.491395+00:00'
+- de: aguardando_homologacao
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T09:57:47.190665+00:00'
+  motivo: redesenhar com as respostas do cliente recebidas em 17/11 (seção "Respostas
+    do cliente" do 03-design.md). Build e QA da rodada anterior arquivados em rodada-anterior/premissas-assumidas/.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T10:43:38.407639+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T13:25:21.421893+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-17T13:46:57.498742+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T14:27:31.010818+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-17T15:04:34.240865+00:00'
