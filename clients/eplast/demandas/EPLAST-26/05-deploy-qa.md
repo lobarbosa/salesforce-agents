@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EJBR9KAP` (Succeeded)
-- **Quando:** 2026-11-17T14:14Z
-- **Commit:** `0ea434ee`
+- **Deploy:** `0AfHa00000EJGqdKAH` (Succeeded)
+- **Quando:** 2026-11-17T15:47Z
+- **Commit:** `b2695652`
 
 ## Componentes
 - `force-app/main/default/customMetadata/PriorityScoreSetting.Default.md-meta.xml`
