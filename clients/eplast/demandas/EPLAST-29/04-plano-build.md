@@ -43,3 +43,15 @@ Nada foi ativado nesta etapa.
 ## Notas
 - O deploy com `-m Bot:SFAgent2` falha ("não é possível editar uma versão do bot ativa", v13); usado `-d` só nos arquivos da v16. O pacote da branch traz só a v16 (a v15 baixada foi removida do working tree; a v13 e anteriores já estavam no repositório).
 - A retrieve do `SFAgent2.bot-meta.xml` só reordenou `contextVariableMappings`; revertido, sem alteração no commit.
+
+## Correções da rodada 1 (QA reprovou; `05-testes-rodada-1.md`)
+Org de build: `sbx-eplast-dev` (única em `sf org list`). Na QA a v16 ficou Active (ativada pelo QA), e versão ativa não aceita deploy; por isso a correção entra como **SFAgent2 v17** (BotVersion `v17`, planner `SFAgent2_v17`), cópia da v16 com ajuste só nas instruções e no schema do tópico `acoes_comerciais_EPLAST29_v17`, deployed **Inactive** na dev (conferido por query). A v16 não foi alterada. O Flow `Task_Agente_CriarTarefa` não mudou (as três falhas são de instrução do agente).
+
+- FALHA 1 (crítica, "criado" sem a ação): instrução RESULTADO proíbe dizer que tarefa ou rascunho foi criado antes do retorno `Sucesso`, e manda chamar a ação ou pedir o dado quando o usuário só diz "sim". CONFIRMAÇÃO trata "sim" a uma pergunta de dado como resposta a essa pergunta, não como confirmação. RASCUNHO: sem texto, redige um padrão curto; sem data, segue a regra DATA e pergunta (AC-5), não grava nem afirma criação.
+- FALHA 2 ("sem descrição" gravado): CONFIRMAÇÃO diz que a expressão é só do resumo e que o parâmetro `Descricao` fica vazio; o schema de `Descricao` da ação ganhou a mesma orientação. A marca "Origem: assistente de IA" continua vindo do Flow.
+- FALHA 3 (resumo só depois do "sim"): CONFIRMAÇÃO agora manda escrever o resumo completo (assunto, registro e tipo, responsável, descrição, prazo) no texto, antes de chamar a ação. Limite: o cartão da ação mostra só os parâmetros do Flow, e o texto antes do cartão só se confere pela tela; fica para a homologação.
+- AC-4 (sem prova, usuário não administrador): não corrigível pelo build; não há usuário comum na QA e a regra 6 proíbe alterar perfil. Fica para a homologação, com usuário comum com e sem `PS_Comercial_AssistenteAcoes`.
+- Instrução não prova comportamento do modelo: a v17 só foi deployed, não exercitada. Reteste na QA (FALHA 1 a 3) depende de o release levar a v17 e de a esteira ativá-la; a v16 ativa na QA tem de ser substituída pela v17 (rollback: reativar v16).
+
+### Versões e ativação (rodada 1)
+Nada ativado por este build. Ordem: Flow v2/v4 como já está, depois ativar `SFAgent2` v17 (dev na verificação; QA após `05-deploy-qa.md`).
