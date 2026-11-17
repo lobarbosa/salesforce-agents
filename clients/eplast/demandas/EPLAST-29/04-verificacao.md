@@ -1,47 +1,43 @@
 **Verificação:** inconclusiva
-**Org de teste:** sbx-eplast-dev (00DHa000006vfMLMAY)
+**Org de teste:** sbx-eplast-dev (sandbox, Org ID 00DHa000006vfMLMAY, única conectada em `sf org list`)
 
-# EPLAST-29 · Verificação do build (Flow v2, SFAgent2 v17)
+# EPLAST-29 · Verificação do build (dev)
 
-Org confirmada com `sf org list`: único alias `sbx-eplast-dev`, sandbox, conectada (usuário de conexão omitido de propósito). Nada foi implantado, ativado nem alterado por esta verificação. Não toquei na QA.
+## Resumo
+Os critérios AC-1 a AC-9 exigem executar o Flow `Task_Agente_CriarTarefa` v2 e o agente `SFAgent2` v16/v17. Nenhum dos dois pode ser executado na dev sem ativá-los, e ativação é passo separado, fora desta etapa. Só foi possível conferir o que está implantado. Nenhum caso funcional foi executado; nenhum falhou.
 
-## Estado da dev encontrado (consultas por `sf data query`)
-| Item | Consulta | Obtido |
-|---|---|---|
-| SFAgent2 ativa | `BotVersion` com `Status='Active'` | só a **v13** (v14 a v17 Inactive) |
-| Flow `Task_Agente_CriarTarefa` | `Flow` (Tooling) | **v1 Active**, v2 **Obsolete** |
-| Dados de teste | `Lead` com `LastName LIKE 'REG-TESTE%'` (contagem) | 4 |
-| Tarefas de teste | `Task` com `Subject LIKE 'REG-TESTE%'` (contagem) | 0 |
+## Estado encontrado na dev (consultas, sem DML)
+- Flow `Task_Agente_CriarTarefa`: v1 **Active**; v2 **Obsolete** (descrição da v2 presente, versão mais nova). O plano de build diz v2 em Draft. Está Obsolete, não Draft, e a plataforma só executa a versão ativa (v1: só conta e oportunidade, sem lead). O build testado não é o que roda hoje.
+- Agente `SFAgent2`: v13 Active; v14 a v17 Inactive. A v16/v17 não responde a conversa na dev.
+- `AssistenteTarefaSetting__mdt.Padrao` existe: Ativo=true, prefixos `001;006;00Q`, prioridade `Normal`, descrição obrigatória=false, marca `Origem: assistente de IA` (confere com o plano).
+- Fixture de lead presente na dev: 4 leads `REG-TESTE%`, 1 convertido (confere com o plano).
+- Usuário de teste da conta (CLAUDE.md, regra 6): consulta devolve dois, `005bJ00000hBJmYQAW` (inativo) e `005bJ00000piKAaQAM` (ativo, Administrador do sistema). Nenhum é usuário comum, logo AC-4 não é exercitável como pede o critério.
 
-## Por que não foi possível exercitar
-- O Flow v2 (que traz a lógica de lead, configuração e prioridade) não é a versão ativa na dev: a plataforma só roda a v1, que é a versão antiga. Executá-la não prova a construção. A v2 está Obsolete, então ativá-la exigiria reativar a versão, o que é ativação de metadata (passo separado do plano, item 1 de "Versões e ativação") e foge de "só exercito, não implanto".
-- O agente v17 está Inactive; a ativa é a v13, sem as instruções da demanda. O comportamento do tópico `acoes_comerciais_EPLAST29_v17` só aparece com a v17 ativa, e depende do modelo, não só de metadata.
-- Sem ativação, nada foi criado pelo agente: 0 tarefas de teste.
+## Casos
 
-## Tabela por critério
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| V-1 | AC-1 criar tarefa com confirmação | Conferido estado de versões | Flow v2 e v17 ativos para exercitar | v1 ativo, v17 inativo | não executado |
-| V-2 | AC-2 recusa do resumo não grava | idem | 0 tarefas após recusa | sem execução | não executado |
-| V-3 | AC-3 registro ambíguo (`REG-TESTE-DUP`) | Dados existem (leads e conta), busca não rodada | lista candidatos, não grava | sem execução | não executado |
-| V-4 | AC-4 usuário sem permissão | Não executado: depende de usuário comum e de ativação | recusa sem vazar dado | sem execução | não executado |
-| V-5 | AC-5 campo obrigatório faltando | Não executado | pergunta e não grava | sem execução | não executado |
-| V-6 | AC-6 e-mail/mensagem não envia pelo CRM | Não executado | rascunho, nada enviado | sem execução | não executado |
-| V-7 | AC-7 fora do escopo | Não executado | não grava | sem execução | não executado |
-| V-8 | AC-8 rastreabilidade (`Origem: assistente de IA`) | Não executado | marca na descrição, dono = usuário | sem execução | não executado |
-| V-9 | AC-9 não quebra o existente | Só estado: a v13 segue ativa e a v1 do Flow ativa, intocadas | ações de EPLAST-27/34/46 intactas | sem regressão observada por metadata; sem execução | não executado |
-| V-10 | Falhas 1 a 3 da rodada 1 (QA) | Não executado | v17 corrige | v17 só deployed | não executado |
+| V-0 | Build implantado | Query de Flow, BotVersion, mdt e Lead | Componentes do plano presentes | Presentes; Flow v2 Obsolete, agente v16/v17 Inactive | passou (só presença) |
+| V-1 | AC-1 criar com confirmação | não executado | Task criada só após confirmar, com WhatId, OwnerId, data | sem prova: Flow v2 e agente v16/v17 não executáveis sem ativar | não executado |
+| V-2 | AC-2 recusa não grava | não executado | contagem de Task inalterada | sem prova (mesmo motivo) | não executado |
+| V-3 | AC-3 registro ambíguo | não executado | lista candidatos com tipo e Id, nada gravado | sem prova (mesmo motivo); fixture `REG-TESTE-DUP` pronta | não executado |
+| V-4 | AC-4 usuário sem permissão | não executado | recusa sem vazar dado | sem prova: não há usuário não administrador e a regra 6 proíbe alterar perfil | não executado |
+| V-5 | AC-5 campo obrigatório faltando | não executado | pergunta o campo, nada gravado | sem prova (mesmo motivo de V-1) | não executado |
+| V-6 | AC-6 e-mail não enviado, rascunho na descrição | não executado | EmailMessage inalterado | sem prova | não executado |
+| V-7 | AC-7 fora do escopo | não executado | recusa criar Opportunity | sem prova | não executado |
+| V-8 | AC-8 rastreabilidade | não executado | marca "Origem: assistente de IA", OwnerId = usuário | sem prova na Task; só o valor do mdt foi conferido (V-0) | não executado |
+| V-9 | AC-9 não regressão | não executado | respostas e 3 ações do `insights_comerciais` iguais | sem prova; v13 ativa não traz a mudança | não executado |
+| V-10 | R3 busca com `objectApiName = Lead` | não executado | busca aceita Lead | sem prova (agente inativo) | não executado |
+| V-11 | Ramo lead convertido recusado | não executado | recusa orientada | sem prova; fixture `REG-TESTE-LEAD-CONV` pronta | não executado |
 
-Nenhum caso falhou; nenhum foi executado.
+## O que ficou sem prova e o que uma pessoa precisa fazer
+1. Ativar na dev, em passo separado e autorizado, o Flow `Task_Agente_CriarTarefa` v2 (hoje Obsolete: precisa ser reativada; rollback: reativar a v1) e depois o `SFAgent2` v17 (a v17 inclui as correções das rodadas 1 e 2; rollback: reativar a v13). Rodar então a verificação de novo, com a massa de `fixtures/lead.apex` (já na dev).
+2. Para AC-4, um usuário comum com e sem `PS_Comercial_AssistenteAcoes` (homologação, como já registrado no plano).
+3. O comportamento do modelo (FALHAS 1 a 3 da QA: dizer "criado" sem chamar a ação, gravar "sem descrição", resumo antes do "sim") só se prova numa conversa real com a v17 ativa.
+4. Atenção ao estado do Flow: v2 Obsolete contradiz o plano (Draft). Confirmar com o builder ou a esteira como ele chegou a esse estado e se o conteúdo é o do plano.
 
-## Sem prova (o que uma pessoa precisa fazer)
-1. Ativar na dev o Flow `Task_Agente_CriarTarefa` v2 (rollback: v1) e depois `SFAgent2` v17 (`sf agent activate`; rollback: v13). Depois reexecutar esta verificação com os dados `REG-TESTE-*` que já existem (fixtures/lead.apex, account.apex).
-2. R3 (busca `identifyRecordByName` aceitar `Lead`), R4 (Flow com usuário comum) e Q-12 continuam sem prova.
-3. AC-4 exige usuário comum, com e sem `PS_Comercial_AssistenteAcoes`: fica para a homologação.
-4. O texto do resumo antes do cartão da ação (FALHA 3) só se confere na tela.
-
-## Dados de teste
-Nada criado nesta verificação. Permanecem os 4 leads `REG-TESTE%` (1 convertido) e a conta `REG-TESTE-DUP` do build. Nenhuma alteração em usuário (Marketing User, permission set, campo).
+## Mudanças em usuário, dados e org
+Nenhuma. Nenhum dado de teste novo foi criado, nenhum usuário alterado, nada ativado, e não há job agendado. Os dados `REG-TESTE%` na dev são do build e foram mantidos para o reteste.
 
 ## O que pode ter saído da org
-Nada: nenhuma automação foi disparada por esta verificação.
+Nada. Nenhum registro foi criado e nenhuma chamada externa foi feita.
