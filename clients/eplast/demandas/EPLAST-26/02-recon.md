@@ -1,163 +1,153 @@
-# EPLAST-26 — Recon da org (score e faixa de prioridade, Lead e Opportunity)
+# EPLAST-26 — Recon da org (rodada 3: redesenho com as respostas do cliente de 17/11)
 
-**Org:** `sbx-eplast-dev`, Sandbox, Connected (`sf org list`, nesta sessão, 2026-11-15). Só leitura. Só metadata e contagens agregadas; nenhum registro lido.
-**Insumos:** `01-analise.md` (rodada 2), `comentarios-do-card.md`, regras 1 a 4 do `CLAUDE.md` da Eplast. Os artefatos de `rodada-anterior/` não foram usados como fato.
-**Observação de ambiente:** o `instanceUrl` do alias dev tem host com "qa" (já apontado no assessment, achado 6). Não consegui provar daqui que dev e QA são sandboxes distintas (ver "O que não consegui confirmar").
+**Org:** `sbx-eplast-dev`, Sandbox, Connected (`sf org list`, nesta sessão, 2026-11-17). Só leitura. Só metadata e contagens agregadas; nenhum registro lido. Os retrieves foram feitos em diretório temporário, descartado.
+**Insumos:** `01-analise.md`, `comentarios-do-card.md`, seção "Respostas do cliente (2026-11-17)" do `03-design.md`, `00-preflight.md`, regras 2 a 5 do `CLAUDE.md` da Eplast.
+**O que mudou desde o recon de 15/11:** os campos de score já existem na dev (build da rodada anterior), há consumidores novos de `PriorityBand__c` (demandas 42 a 45) e há automação nova em Lead e Opportunity. Esta versão substitui o recon anterior, que ficou no histórico do git.
 
 ---
 
 ## 1. O que já cobre o pedido
 
-Resultado: **nada na org calcula score ou faixa de prioridade de Lead ou Opportunity.** Há peças vizinhas para reaproveitar.
-
-| Elemento | O que existe | Cobre o pedido? | Prova |
+| Elemento | O que existe na dev | Cobre o pedido novo? | Prova |
 |---|---|---|---|
-| Campo de score/faixa em Lead | Nenhum. Os 12 custom de Lead são: `CNAE`, `CompanyDocument`, `CompanyName`, `Facebook`, `Instagram`, `LinkedIn`, `Subsector`, `WhatsApp`, `Sector`, mais `et4ae5__HasOptedOutOfMobile__c`, `et4ae5__Mobile_Country_Code__c` e `maps__AssignmentRule__c` | Não | `sf data query --use-tooling-api` em `CustomField` (Lead) |
-| Campo de score/faixa em Opportunity | Nenhum campo de score. O mais próximo é `Previs_o_Eintein__c` (rótulo "Previsão Einstein", double, sem descrição) | Parcial, não comprovado | `CustomField` (Opportunity) e `sf sobject describe` |
-| Quem escreve `Previs_o_Eintein__c` | Nenhum Apex nem Flow do repositório o referencia; só aparece no field-meta e na list view `AllOpportunities`. Não consegui consultar dependência na org | Indeterminado | `grep -rl` em `force-app`; `MetadataComponentDependency` recusou o filtro |
-| Agente `SFAgent2` | Existe. Bot `SFAgent2` e 4 planner bundles (`SFAgent2_v1` a `v4`). Na v4 retrieve: **4 tópicos** (`agent_router`, `ambiguous_question`, `off_topic`, `insights_comerciais`) e **3 ações**, todas no tópico `insights_comerciais`: `ConsultarPedidos` (`queryRecords`), `AgregacaoPedidos` (`queryRecordsWithAggregate`) e `IdentificarConta` (`identifyRecordByName`) | Não para score (nenhuma ação lê Lead ou score). Ponto de extensão se vier pedido de assistente | `sf org list metadata -m Bot` e `-m GenAiPlannerBundle`; `sf project retrieve start -m GenAiPlannerBundle:SFAgent2_v4` em diretório temporário, já removido |
-| Relatórios | 380 relatórios na org. Úteis à medição pós-go-live: "Taxa de Conversão de Leads", "Leads Convertidos e Ganhos", "Oportunidades Abertas no Pipeline", "Oportunidades ganhas AF/T", "Oportunidades Perdidas", "Pipeline de Produtos de Oportunidades", "Marketing Exec Leads by Campaigns" (pasta "Sales and Marketing Reports") | Não calculam faixa; servem de base | `sf data query` em `Report` (COUNT e `Name LIKE`, LIMIT 30) |
-| Painéis | 20 painéis. Eplast: "Leads & Oportunidades" e "Pedidos". Marketing: "Marketing - Origem e Retorno de Campanhas" | Não calculam faixa; "Leads & Oportunidades" é o candidato a receber a faixa | `sf data query` em `Dashboard` |
-| List views Lead | `AllOpenLeads`, `My_Leads`, `TodaysLeads`, `RecentlyViewedLeads`, `C_pia_de_Todos_os_leads_Abertos`, `C_pia_de_Todos_os_leads_Abertos2` | Servem de base para coluna e ordenação | `ListView` (SobjectType Lead) |
-| List views Opportunity | `AllOpportunities`, `MyOpportunities`, `ClosingThisMonth`, `ClosingNextMonth`, `NewThisWeek`, `Won`, `Default_Opportunity_Pipeline`, mais 6 cópias pessoais (nomes de usuário) | Idem | `ListView` (SobjectType Opportunity) |
-| Prompt Flows de Opportunity | `Opportunity_PromptFlow_DadosOportunidade` (PromptFlow, Capability) | Não é score | `FlowDefinitionView` com `ApiName LIKE '%portunidade%'` |
+| `Lead.PriorityScore__c` (Number, fórmula) e `Lead.PriorityBand__c` (Text, fórmula) | Existem, da rodada anterior. Score: Setor 30 + Origem 30 + Status Contatado/convertido 40. Faixa: Alta, Média, Baixa, "Sem dados suficientes". Descrição e texto de ajuda preenchidos | Não: pesos e rótulos são os antigos. Os campos são o ponto de partida (alterar fórmula, não recriar) | `sf sobject describe -s Lead`; `sf project retrieve start -m CustomField:Lead.PriorityScore__c` e `...PriorityBand__c` (temp) |
+| `Opportunity.PriorityScore__c` e `Opportunity.PriorityBand__c` | Existem, mesma estrutura. Score: Probabilidade x 0,4 + Valor>0 20 + Fechamento até 60 dias 20 + Origem 20; encerrada = 0. Faixa: Alta, Média, Baixa, "Encerrada" | Não: pesos e rótulos antigos | idem, objeto Opportunity |
+| Equivalência org x repositório | Fórmulas iguais ao `force-app` da branch (diferem só no escape XML). Na `Opportunity.PriorityScore__c` a precisão no retrieve da org é 18 e no repositório é 3; não investiguei | Informativo | `diff` entre o retrieve e `force-app/main/default/objects/*/fields/Priority*` |
+| List views da demanda | Lead `Leads_Abertos_Prioridade` (colunas score e faixa); Opportunity `Oportunidades_Abertas_Prioridade` e `Oportunidades_Prioridade_Alta` (esta filtra `PriorityBand__c equals Alta`) | Ajustar: o filtro "Alta" deixa de existir com AA/A | `grep` em `force-app/.../listViews` (repositório; não reconsultei na org) |
+| Layouts e páginas | `Lead-Lead Layout` e `Opportunity-Opportunity Layout` com 2 referências aos campos cada; `Lead_Record_Page` e `Opportunity_Record_Page` com 4 | Reaproveitar; rótulos de campo não mudam | `grep -c` em `force-app` (repositório) |
+| Permission set | `PS_Comercial_ScorePrioridade` com FLS de leitura dos 4 campos | Reaproveitar; mesmos API names | `grep` no `permissionset-meta.xml` do repositório |
+| Classificação atual AA/A/B/C/D | **`Lead.Rating` ("Classificação", padrão) e `Account.Rating` têm as picklists `AA`, `A`, `B`, `C`, `D`**, os mesmos rótulos que o cliente pediu para as faixas. Não achei Flow nem trigger em Lead que grave `Rating` (Lead tem só 1 Flow, de atribuição, e 0 trigger). Quem escreve `Account.Rating` não foi apurado | Informativo para "validar compatibilidade com a classificação atual". Não afirmo que `Rating` seja a classificação a que o cliente se refere | `sf sobject describe -s Lead` / `-s Account` (picklistValues de `Rating`); seção 3 |
+| `Account.Ranking__c` (picklist `MP, PP, P, M, G, GG, 3G`) | Classificação da conta por média de compras do ano; gravada pelo Flow agendado a partir de `RankingRange__mdt` (descrição do campo, EPLAST-47). Escala diferente (porte), não é prioridade | Não é score. Citado para o arquiteto não confundir | `sf sobject describe -s Account`; `CustomField.Description` (Tooling) |
+| Campo Einstein | `Opportunity.Previs_o_Eintein__c` (double, sem descrição). Cliente: "a validar; não aposentar". Quem o alimenta segue desconhecido | Não tocar | Tooling `CustomField`; recon anterior |
+| Padrão de parâmetro configurável | Custom metadata já usada na conta: `RankingRange__mdt` (`Ranking__c`, `SortOrder__c`, `UpperLimit__c`), `AlertaOportunidadeParadaSetting__mdt` (`Ativo__c`, `DiasSemAcompanhamento__c`, `NotificarGestor__c`, `RegraParada__c`, `DataCargaInicial__c`) e `ScheduledFlowOpportunitySetting__mdt` (citado pelo Flow `Opportunity_AfterSave_ClassificaConta`; não descrevi) | Candidato ao pedido "parâmetros configuráveis sem deploy" | `sf sobject describe -s <tipo>__mdt`; retrieve dos Flows |
+| SFAgent2 | Existe (recon de 15/11: 4 tópicos e 3 ações, só em `insights_comerciais`: `ConsultarPedidos`, `AgregacaoPedidos`, `IdentificarConta`). Nenhuma ação lê score. Não repeti nesta sessão | Não é pedido de assistente; sem extensão | recon de 15/11 (`GenAiPlannerBundle:SFAgent2_v4`) |
+| Relatórios/painéis | Sem relatório de score na org; os de medição citados na análise seguem valendo. EPLAST-42 e 43 têm relatórios novos que usam `Lead.PriorityBand__c` (seção 6) | Ver seção 6 | `git grep` nas branches `origin/feature/EPLAST-4x` |
 
-### Campos de entrada propostos pela análise (confirmados por describe)
+## 2. Critério a critério: qual campo representa na org
 
-| Objeto.campo | Tipo | Observação |
-|---|---|---|
-| `Lead.Sector__c` | picklist, rótulo "Setor" | 8 valores. Sem descrição. A análise cita `Sector`; o API name real é `Sector__c` |
-| `Lead.Subsector__c` | multipicklist, "Subsetor" | Sem descrição |
-| `Lead.LeadSource` | picklist, "Origem do lead" | Inclui "Campanha", "E-mail MKT", "WhatsApp", "Google Ads" etc. |
-| `Lead.Status` | picklist | Valores: "Aberto - Não contatado", "Contatado", "Fechado - Convertido", "Fechado - Não convertido". "Contatado" existe com esse texto |
-| `Lead.IsConverted` | boolean | Existe |
-| `Opportunity.Probability` | percent | Existe |
-| `Opportunity.Amount` | currency | Existe |
-| `Opportunity.CloseDate` | date | Existe |
-| `Opportunity.LeadSource` | picklist | Existe |
-| `Opportunity.StageName`, `IsClosed`, `IsWon` | picklist, boolean, boolean | Existem |
-| `Opportunity.CampaignId` | reference | Existe |
+Esta é a lista pedida pelo desenho. "Confirmado" = o campo existe por `sf` e a descrição ou o contexto na org diz que representa o critério. "Candidato" = existe, mas a org não prova que representa o critério; não decidi por similaridade de nome. "Sem campo" = nada achado.
 
-Prova: `sf sobject describe -s Lead` e `-s Opportunity`, filtrando por nome de campo.
-Opportunity tem 28 custom segundo a análise; nesta sessão a consulta de `CustomField` listou 41 linhas entre Opportunity (inclusive 9 do namespace `SBQQ`); não reconciliei a contagem da análise.
+**Lead (peso máximo)**
 
-## 2. O que será tocado
+| Critério (peso) | Campo na org | Situação | Prova |
+|---|---|---|---|
+| Potencial de compra mensal (30) | Nenhum em Lead. Existe `Account.VolumeByMonth__c` ("Volume/Mês", sem descrição), mas é da Conta e Lead não lê Account em fórmula. `Lead.AnnualRevenue`, `NumberOfEmployees` e `Industry` são padrão e não medem compra mensal | **Sem campo** em Lead | `FieldDefinition` por rótulo (Lead e Opportunity, 13 termos); `describe` de Lead e Account |
+| Aderência da demanda ao portfólio (25) | Nenhum. `Lead.Sector__c` ("Setor") e `Subsector__c` ("Subsetor") existem, mas sem descrição: não provam aderência a portfólio | **Sem campo** (Setor é candidato, não confirmado) | idem; Tooling `CustomField.Description` |
+| Prazo previsto para a primeira compra (20) | Nenhum | **Sem campo** | idem |
+| Engajamento: resposta, reunião, solicitação de cotação (15) | `Lead.MKT_MC_Engajamento__c` (picklist `Sem engajamento`, `Baixo`, `Médio`, `Alto`) e `MKT_MC_EngajamentoData__c` (datetime). Descrição: "Engajamento devolvido pelo Marketing Cloud. Nao editar a mao." Mede engajamento do Marketing Cloud, não reunião nem pedido de cotação | **Candidato parcial**: existe e é o retorno do Marketing Cloud (EPLAST-45); não cobre "reunião" nem "cotação". Task/Event: 0 registros, sem como medir atividade | `sf sobject describe -s Lead` (descrição e picklist); `COUNT()` de Task e Event |
+| Cadastro qualificado e contato com o decisor (10) | `CompanyDocument__c` (CNPJ), `CompanyName__c`, `Title` (padrão), contatos (`Email`, `Phone`, `MobilePhone`, `WhatsApp__c`). Nenhum marca "decisor" ou "cadastro qualificado" | **Sem campo** para "decisor"; "cadastro qualificado" é regra a definir, não campo | `describe` de Lead |
 
-| Objeto | Campo/Componente | Tipo | Descrição? | Prova |
+**Opportunity (peso máximo)**
+
+| Critério (peso) | Campo na org | Situação | Prova |
+|---|---|---|---|
+| Estágio comercial com evidências de avanço (25) | `StageName` (13 valores: Qualificação, Análise Técnica, Precificação, Qualificado, Cotação, Execução técnica do projeto, Envio Cotação, Amostra, Análise Fiscal, Análise Financeira, Negociação Comercial, Fechado/Ganho, Fechado/Perdido). Evidências: `Discovery_Completed__c`, `Budget_Confirmed__c`, `ROI_Analysis_Completed__c` (booleans, sem descrição). O Flow `Opportunity_BeforeSave_QualificaOportunidade` (EPLAST-40) já usa `Discovery_Completed__c` e `Budget_Confirmed__c` para promover Qualificação a Qualificado | **Confirmado** para estágio; **evidências: confirmado para Discovery e Budget** pelo uso no Flow da EPLAST-40; `ROI_Analysis_Completed__c` é candidato (sem uso nem descrição). A tabela estágio x pontos não existe na org: é decisão do design | describe; retrieve do Flow (descrição e `<field>`) |
+| Interação recente e próximo passo confirmado (20) | `LastActivityDate` ("Última atividade", date), `NextStep` ("Próxima etapa", string), `LastStageChangeDate`, `LastStageChangeInDays`, `HasOpenActivity`, `HasOverdueTask` (padrão). `NextStep` é texto livre: dá "preenchido", não "confirmado" | **Confirmado que os campos existem**; "interação" e "próximo passo preenchido" são mensuráveis, "confirmado" não. Task/Event: 0 registros na dev | `sf sobject describe -s Opportunity` |
+| Prazo de compra confirmado pelo cliente (20) | `CloseDate` (padrão). Nenhum campo "prazo confirmado" | **Candidato** (`CloseDate` é previsão do vendedor, não confirmação do cliente); sem campo de confirmação | describe; busca por rótulo |
+| Margem em relação à política comercial (20) | Nenhum em Opportunity. `SBQQ__QuoteLine__c.SBQQ__GrossProfit__c` ("Lucro bruto", CPQ) existe na linha da cotação; nenhum campo de política de margem foi achado. Não há campo de margem agregado na Opportunity | **Sem campo** em Opportunity; sem política de margem na org | `FieldDefinition` em `SBQQ__Quote__c`, `SBQQ__QuoteLine__c`, `OpportunityLineItem`, `Quote`, `Product2`, `Account` |
+| Disponibilidade e viabilidade de atendimento (15) | Nenhum. As validation rules `FinancialAnalysis` e `TaxAnalysis` e os campos `FinancialAnalysis__c`/`TaxAnalysis__c` (booleans, sem descrição) são análise financeira e fiscal, não viabilidade de atendimento | **Sem campo** (não inferido) | describe; lista de validation rules (seção 3) |
+
+Resumo: com campo confirmado ou candidato razoável existem hoje só estágio com evidências (Discovery e Budget), interação e próximo passo (parcial), prazo (`CloseDate`, candidato) e engajamento do Marketing Cloud (parcial). Os demais critérios não têm campo; pela regra do desenho, ficam com 0 ponto e entram na lista "depende de campo a criar ou preencher".
+
+## 3. O que será tocado
+
+| Objeto | Componente | Tipo | Descrição? | Prova |
 |---|---|---|---|---|
-| Lead | campos novos de score e faixa | a criar (ausentes hoje) | n/a | Tooling `CustomField` |
-| Opportunity | campos novos de score e faixa | a criar (ausentes hoje) | n/a | Tooling `CustomField` |
-| Lead | `Sector__c`, `LeadSource`, `Status` (leitura) | picklist | `Sector__c` sem descrição; `LeadSource` e `Status` são padrão | describe e `CustomField` |
-| Opportunity | `Probability`, `Amount`, `CloseDate`, `LeadSource` (leitura) | padrão | n/a | describe |
-| Opportunity | `Previs_o_Eintein__c` | double | sem descrição | `CustomField` |
-| Lead e Opportunity | layouts de página | não inspecionados | n/a | Ver incertezas |
+| Lead | `PriorityScore__c`, `PriorityBand__c` (alterar fórmula e texto) | Number fórmula, Text fórmula | Sim (citam os pesos antigos; precisam ser reescritas) | retrieve (temp) |
+| Opportunity | `PriorityScore__c`, `PriorityBand__c` | idem | Sim (idem) | retrieve (temp) |
+| Lead | `Sector__c`, `Subsector__c`, `LeadSource`, `Status`, `MKT_MC_Engajamento__c` (leitura) | picklists | `Sector__c` e `Subsector__c` sem descrição | Tooling `CustomField.Description` |
+| Opportunity | `StageName`, `Discovery_Completed__c`, `Budget_Confirmed__c`, `ROI_Analysis_Completed__c`, `LastActivityDate`, `NextStep`, `CloseDate` (leitura) | padrão e custom | 3 booleans sem descrição | idem |
+| Lead | **`MKT_Nutricao_ProntoAbordagem__c`** (fórmula da EPLAST-45) | Checkbox fórmula, na org | Sim | retrieve: `AND(MKT_Nutricao_Elegivel__c, PriorityBand__c = "Alta")` |
+| Opportunity | list view `Oportunidades_Prioridade_Alta` (filtro `Alta`) | list view | n/a | repositório |
 
-### Preparação do Sales Cloud para o Marketing Cloud (o que já existe no CRM)
+**Quebra a tratar no desenho.** A fórmula `Lead.MKT_Nutricao_ProntoAbordagem__c` compara a faixa com o texto literal `"Alta"`. Com o rótulo novo (AA, A, ...), ela passa a ser sempre falsa. Ela alimenta a list view `Leads_Prontos_Abordagem` e os relatórios de nutrição da EPLAST-45. O mesmo vale para o filtro `Alta` da list view de Opportunity desta demanda. Os relatórios das EPLAST-42 e 43 filtram `PriorityBand__c notEqual "Sem dados suficientes"`; o novo "Não classificado" muda esse resultado.
 
-O score é de Sales, mas toca origem e status de lead, então registro o que há para o Marketing Cloud.
+### Preparação do Sales Cloud para o Marketing Cloud (o que a org mostra)
 
 | Fato | Resultado | Prova |
 |---|---|---|
-| Pacote Marketing Cloud (namespace `et4ae5`) | Instalado, versão 264.1.0.1. Também `MarketingCloudConnectedApp` (namespace `MCCA5PROD`) | `sf package installed list` |
-| Objetos `et4ae5` | `et4ae5__Email_Linkage__c`, `et4ae5__IndividualEmailResult__c`, `et4ae5__IndividualLink__c`, `et4ae5__MC_CDC_Journey__c`, `et4ae5__ET4AE_User_Information__c` e as variantes Share, OwnerSharingRule e ChangeEvent. A lista foi cortada em 50 linhas, então pode haver mais objetos | `EntityDefinition WHERE NamespacePrefix='et4ae5'` LIMIT 50 |
-| Campos `et4ae5` em objetos de CRM | `Lead.et4ae5__HasOptedOutOfMobile__c`, `Lead.et4ae5__Mobile_Country_Code__c`, `Contact` (os mesmos 2), `CampaignMember.et4ae5__Activity__c`. Nenhum em Campaign | `CustomField WHERE NamespacePrefix='et4ae5'` em Campaign, CampaignMember, Contact e Lead |
-| Opt-out de e-mail no Lead | `Lead.HasOptedOutOfEmail` (padrão) existe | describe |
-| Campanha e membro no CRM | `Opportunity.CampaignId` existe; `LeadSource` tem "Campanha" e "E-mail MKT". Campaign e CampaignMember têm 0 registros | describe; `COUNT()` |
-| Flows do conector | Dezenas de Flows `MCC_*` ativos (RecordBeforeSave e RecordAfterSave) em objetos de envio e rastreio do pacote (`Envio de email`, `Envio acionado`, `Resultado de email individual`, `Solicitação de suporte`). Nenhum visto em Lead ou Opportunity | `FlowDefinitionView` (IsActive) LIMIT 100; corte de 100 linhas |
-| Flows em Lead | 0 | `FlowDefinitionView WHERE TriggerObjectOrEventLabel='Lead'` |
+| Conector `et4ae5` | Instalado, 264.1.0.1; `MCCA5PROD` também (recon de 15/11, não repeti) | `sf package installed list` |
+| Campos `et4ae5` em Lead | `et4ae5__HasOptedOutOfMobile__c`, `et4ae5__Mobile_Country_Code__c` | `describe -s Lead` (esta sessão) |
+| Campos de retorno do Marketing Cloud em Lead | `MKT_MC_Engajamento__c`, `MKT_MC_EngajamentoData__c` (não editar à mão) | `describe -s Lead` |
+| Lead pronto para nutrição | `MKT_Nutricao_Elegivel__c` (`NOT(IsConverted)` e Status Aberto - Não contatado ou Contatado) e `MKT_Nutricao_ProntoAbordagem__c` | retrieve (temp) |
+| Opt-out de e-mail | `Lead.HasOptedOutOfEmail` (padrão) | repositório (`force-app`, `objects/Lead/fields`) |
 
 Nada foi feito no Marketing Cloud.
 
-## 3. Automação concorrente
+## 4. Automação concorrente e ordem de execução
 
-### Opportunity (objeto com concorrência; Lead quase não tem)
-
-| Componente | Tipo | Evento | Prova |
-|---|---|---|---|
-| `OpportunityBefore` (SBQQ) | ApexTrigger do pacote, Active | Eventos não verificados | Tooling `ApexTrigger` (Lead, Opportunity) |
-| `OpportunityTrigger` (custom) | ApexTrigger, Active | `after insert, after update` (cabeçalho do arquivo no repositório; o código da org não foi baixado) | Tooling `ApexTrigger`; `head` de `force-app/main/default/triggers/OpportunityTrigger.trigger` |
-| `OpportunityAfter` (SBQQ) | ApexTrigger do pacote, Active | Eventos não verificados | Tooling `ApexTrigger` |
-| `Oportunidade_Industria` | Flow, RecordAfterSave | after save | `FlowDefinitionView WHERE TriggerObjectOrEventLabel='Oportunidade'` |
-| `OpportunityFlow` | Flow, RecordAfterSave | after save | idem |
-| `ScheduledFlowOpportunity` | Flow, Scheduled | agendado | idem |
-| Classes | `OpportunityTriggerHandler` e `OpportunityTriggerHelper` (API 59); `FlowOpportunityController` e `FlowOpportunityControllerTest` (API 64) | n/a | Tooling `ApexClass` |
-| Validation rules | 16 ativas, de 16 totais (inclui `CheckHasAccount`, `CheckOppHasBranch`, `CheckOppHasPaymentMethods`, `CheckOppHasPaymentTermId`, `FinancialAnalysis`, `TaxAnalysis`, `LossReason`, `PriceBook`, `Industria_Fase_Cotacao_Sem_Catalogo`, `CheckAccountOwnerHasProtheusSellerId`; as 6 restantes não foram listadas) | before save | Tooling `ValidationRule` (COUNT total e com `Active=true`) |
-
-Nenhum Flow before-save foi encontrado em Opportunity. Os nomes de Flow vêm de `ApiName` (a análise cita os rótulos "Oportunidade Indústria" e "Fluxo Oportunidade"; o vínculo rótulo para API name não foi conferido).
-
-**Ordem de execução esperada em Opportunity** (ordem padrão da plataforma aplicada ao que foi listado; não executei nada): validation rules do sistema, triggers before (`OpportunityBefore`), regras de validação, `OpportunityTrigger` e `OpportunityAfter` (after), Flows after-save (`Oportunidade_Industria`, `OpportunityFlow`). O Salesforce não garante ordem entre triggers do mesmo evento, nem entre Flows do mesmo tipo (ver incertezas).
-
-**Para campo de fórmula (proposta da análise):** fórmula não entra na ordem de execução porque não grava nem dispara automação. Isso é fato de plataforma, não verificado na org.
+Fórmula não grava nem dispara automação, então o score continua fora da ordem de execução se o design mantiver fórmula. O mapa abaixo é para o caso de o design gravar algo ou criar objeto de parâmetro.
 
 ### Lead
 
-| Componente | Resultado | Prova |
-|---|---|---|
-| ApexTrigger | 0 | Tooling `ApexTrigger WHERE TableEnumOrId IN ('Lead','Opportunity')` retornou só os 3 de Opportunity |
-| Flows | 0 | `FlowDefinitionView` |
-| Validation rules | `Celular` e `Telefone`, ativas | Tooling `ValidationRule` (Lead) |
-| Regra de atribuição | Campo `maps__AssignmentRule__c` (pacote com namespace `maps`) existe. Regras de atribuição de Lead não foram consultadas | `CustomField` |
+| Componente | Tipo | Evento | Prova |
+|---|---|---|---|
+| `Lead_AfterInsert_AplicaRegraAtribuicao` | Flow, RecordAfterSave, Create (EPLAST-35); só entra com a custom permission `Lead_DistribuicaoAutomaticaViaApi` | after insert | `FlowDefinitionView` + retrieve |
+| ApexTrigger | 0 | | Tooling `ApexTrigger` |
+| Validation rules | `Celular`, `Telefone` (ativas) | before save | Tooling `ValidationRule` |
 
-## 4. Volume e dados de teste
+### Opportunity
+
+| # | Componente | Tipo | Evento | Prova |
+|---|---|---|---|---|
+| 1 | `OpportunityBefore` (SBQQ) | ApexTrigger | before insert, before update | Tooling `ApexTrigger` (agora com eventos) |
+| 2 | `Opportunity_BeforeSave_QualificaOportunidade` | Flow, RecordBeforeSave, CreateAndUpdate (EPLAST-40); grava `StageName` | before save | `FlowDefinitionView` + retrieve |
+| 3 | 16 validation rules ativas (`CheckAccountHasBillingAddress`, `CheckAccountHasCNAE`, `CheckAccountHasCompanyName`, `CheckAccountHasEmail`, `CheckAccountHasPhone`, `CheckAccountHasStore`, `CheckAccountOwnerHasProtheusSellerId`, `CheckHasAccount`, `CheckOppHasBranch`, `CheckOppHasPaymentMethods`, `CheckOppHasPaymentTermId`, `FinancialAnalysis`, `LossReason`, `PriceBook`, `TaxAnalysis`, `Industria_Fase_Cotacao_Sem_Catalogo`) | ValidationRule | before save | Tooling `ValidationRule` (lista completa agora) |
+| 4 | `OpportunityTrigger` (custom, sem namespace) | ApexTrigger | after insert, after update | Tooling `ApexTrigger` |
+| 5 | `OpportunityAfter` (SBQQ) | ApexTrigger | after insert, after update | idem |
+| 6 | `Oportunidade_Industria` ("Oportunidade Indústria") | Flow, RecordAfterSave, Update | after save | `FlowDefinitionView` |
+| 6 | `OpportunityFlow` ("Fluxo Oportunidade") | Flow, RecordAfterSave, CreateAndUpdate | after save | idem |
+| 6 | `Opportunity_AfterSave_ClassificaConta` (EPLAST-47; grava `Account.Ranking__c`, `IntegrationLog__c`) | Flow, RecordAfterSave, CreateAndUpdate | after save | idem + retrieve |
+| 6 | `Opportunity_AfterSave_CriaCasoPosVendas` (cria Case) | Flow, RecordAfterSave, CreateAndUpdate | after save | idem + retrieve |
+| agendado | `Opportunity_Scheduled_AlertaParada` (EPLAST-28; só `IntegrationLog__c`) | Flow, Scheduled | diário | idem + retrieve |
+
+Ordem padrão da plataforma aplicada a essa lista (não executei nada): before triggers e before-save Flows, validação, triggers after, Flows after-save. O Salesforce não garante ordem entre os 4 Flows after-save, nem entre `OpportunityBefore` e o Flow before-save. Em Opportunity, o Flow `Opportunity_BeforeSave_QualificaOportunidade` grava `StageName`: se o score usa `StageName`, a fórmula já lê o valor promovido.
+
+## 5. Volume e dados de teste
 
 | Objeto | Contagem | Comando |
 |---|---|---|
 | Lead | 0 | `sf data query -q "SELECT COUNT() FROM Lead"` |
-| Lead convertido | 0 | `... WHERE IsConverted=true` |
-| Opportunity | 0 | `SELECT COUNT() FROM Opportunity` |
-| Account | 0 | `SELECT COUNT() FROM Account` |
-| Campaign | 0 | `SELECT COUNT() FROM Campaign` |
-| CampaignMember | 0 | `SELECT COUNT() FROM CampaignMember` |
+| Opportunity | 0 | idem, `Opportunity` |
+| Account | 0 | idem, `Account` |
+| Task / Event | 0 / 0 | idem |
 
-A dev não tem dado nenhum nesses objetos: todo teste precisa de registro sintético, sem dado pessoal. Não há como ver o que `Previs_o_Eintein__c` guarda nem calibrar pesos com histórico.
+A dev não tem dado nenhum nesses objetos: todo teste usa registro sintético, pelas fixtures (`fixtures/README.md`), com desvio `TriggerUtility.bypassTrigger` para Account. Sem histórico, nenhum peso pode ser calibrado agora. Não consultei o usuário de teste da regra 6 (o design define se usa).
 
-## 5. Permissões
+## 6. Sobreposição com outras demandas (preflight) e consumidores dos campos
+
+| Demanda | Estado | Componente em comum | O que isso pede ao design |
+|---|---|---|---|
+| EPLAST-30 | aguardando_homologacao | `flexipages/Opportunity_Record_Page` (campo `PriorityBand__c` no card, `Record.PriorityBand__c` na linha 378 da branch dela) | Não alterar a página no lugar; o rótulo do campo não muda, só os valores |
+| EPLAST-35 | design | `layouts/Lead-Lead Layout` | Não editar no lugar; mudança só se o design exigir campo novo no layout |
+| EPLAST-38 | aguardando_homologacao | `layouts/Lead-Lead Layout` | idem |
+| EPLAST-40 | aguardando_gate_build | `layouts/Opportunity-Opportunity Layout`; também é dona do Flow `Opportunity_BeforeSave_QualificaOportunidade` | Se o score ler `Discovery_Completed__c` e `Budget_Confirmed__c`, depende do significado definido ali |
+| EPLAST-41 | aguardando_homologacao | `layouts/Opportunity-Opportunity Layout` | Não editar no lugar |
+| EPLAST-45 | aguardando_homologacao | `permissionsets/PS_Comercial_ScorePrioridade`; também dona de `MKT_Nutricao_ProntoAbordagem__c`, `Leads_Prontos_Abordagem` e relatórios `NUTRICAO_LEADS_*` | **Quebra direta** por `"Alta"` literal (seção 3). Mudar a fórmula dela exige coordenar com a EPLAST-45 |
+| EPLAST-42, 43 | fora do preflight | Relatórios `LEADS_PROSPECCAO_PRIORIDADE` e `LEADS_PROSPECCAO_ORIGEM_PRIORIDADE` agrupam por `Lead.PriorityBand__c` e filtram `notEqual "Sem dados suficientes"`; `PS_Marketing_Publicos` dá leitura de `Lead.PriorityBand__c` | Impacto de "Não classificado". Achado por `git grep` nas branches remotas; não confirmei se estão na org |
+| EPLAST-44 | fora do preflight | Relatório `LEADS_BOAS_VINDAS` usa a coluna `PriorityBand__c` | Só coluna; sem filtro por valor |
+| EPLAST-28, 39 | não conferi | A análise prevê que consumam o score | `PriorityBand__c` não aparece em `force-app` das branches 28 e 39 que busquei. Nada a ajustar até ver o contrário |
+
+Prova: `git grep -n "PriorityBand__c"` nas branches `origin/feature/EPLAST-<n>`, em `clients/eplast/force-app`. É leitura do repositório, não da org. Nenhum desses componentes foi alterado.
+
+## 7. Permissões
 
 | Fato | Resultado | Prova |
 |---|---|---|
-| OWD Lead | Externo `Private`, interno `ReadWriteTransfer` | Tooling `EntityDefinition` |
-| OWD Opportunity | Externo `Private`, interno `Read` | idem |
-| Perfis na org | 33 | `COUNT()` em `Profile` |
-| Permission sets (não de perfil) | 180 | `COUNT()` em `PermissionSet WHERE IsOwnedByProfile=false` |
-| Perfis com leitura em Lead e Opportunity (consulta com LIMIT 60 retornou 41 linhas, completa) | Administrador do sistema, Gerente de soluções, Gerente do contrato, Usuário do Marketing, Usuário Padrão, Read Only (só leitura), Executive Sponsor, End User, Comercial, Engenharia de Produtos, Financeiro, Marketing, Pricing, Comercial - Analista, SalesforceIQ Integration User, Sales Insights Integration User, Analytics Cloud Integration User e Security User (só leitura). Em Lead, `Comercial Padrão` e `Comercial - Analistas` editam; em Opportunity, só leem | `ObjectPermissions` por perfil (`IsOwnedByProfile=true`) |
-| Perfis só com Opportunity | `CPQ Integration User` (edita) | idem |
-
-O assessment cita perfil custom `Financeiro` e perfis comerciais duplicados; ambos aparecem na lista acima (`Comercial`, `Comercial Padrão`, `Comercial - Analista`, `Comercial - Analistas`, `Financeiro`). Field-level security dos campos novos não existe ainda; permission sets de campo não foram inspecionados.
-
-## 6. Riscos do assessment que tocam a demanda
-
-| Risco | Confirmado na org? |
-|---|---|
-| Automação concorrente em Opportunity (trigger custom, triggers CPQ, Flows) | Sim: 3 triggers e 3 Flows em Opportunity (seção 3). Ordem real entre eles não foi medida |
-| Cobertura Apex de 10% | Não medida nesta sessão. Existem `FlowOpportunityControllerTest` e classes de handler/helper de Opportunity; cobertura por classe não consultada |
-| `OpportunityTrigger` com nome colidindo com o pacote CPQ | Parcial: os triggers do CPQ têm nomes diferentes (`OpportunityBefore`, `OpportunityAfter`) e namespace `SBQQ`; `OpportunityTrigger` não tem namespace |
-| API version antiga em classes | Sim: `OpportunityTriggerHandler` e `OpportunityTriggerHelper` em API 59 (as de Flow em 64) |
-| Campos custom sem descrição | Sim para os campos de Lead e Opportunity listados: sem descrição, exceto os de `SBQQ` (com descrição). Sem descrição inclui `Lead.Sector__c` e `Opportunity.Previs_o_Eintein__c` |
-| Perfil `Financeiro` e perfis comerciais duplicados | Sim, existem (seção 5) |
-| Dev apontando para QA | Indício: host com "qa" no `instanceUrl`; username do alias também termina em `.qa` (não transcrito aqui). Não provado |
-| Validation rules (assessment cita 23 em Order) | Order não é tocado. Em Opportunity, 16 ativas |
-| Classes de teste fora do padrão `<Classe>Test`, Account e Order | Fora do escopo desta demanda; não verificado |
-
-## 7. O que está ausente (candidato a criação)
-
-- Campos de score e de faixa em Lead e em Opportunity.
-- List view de Lead ordenada por score, e list view de Opportunity filtrada por faixa (as existentes podem receber a coluna, mas as 6 cópias pessoais de Opportunity são de usuários e não devem ser alteradas por padrão).
-- Estágio de "encerrada" tratado por `IsClosed`: o campo existe, então não é preciso criar nada.
-- Nenhuma ação de agente para ler score (ver SFAgent2 na seção 1).
-
----
+| OWD | Lead: interno `ReadWriteTransfer`, externo `Private`. Opportunity: interno `Read`, externo `Private` (recon de 15/11) | Tooling `EntityDefinition` |
+| FLS dos campos de score | `PS_Comercial_ScorePrioridade` dá leitura dos 4 campos (repositório). Fórmula é somente leitura por natureza | `grep` no permissionset |
+| Perfis com leitura em Lead e Opportunity | Lista no recon de 15/11 (`Comercial`, `Comercial Padrão`, `Comercial - Analista`, `Comercial - Analistas`, `Financeiro`, etc.); não repeti | `ObjectPermissions` |
+| Leitura de `Lead.PriorityBand__c` por Marketing | `PS_Marketing_Publicos` (branches 42 e 43) | `git grep` |
 
 ## O que não consegui confirmar
 
-1. **Quem alimenta `Previs_o_Eintein__c`.** O repositório não o referencia em Apex ou Flow e a consulta de dependência foi recusada. Pode ser populado por pacote, integração ou carga manual. Com 0 Opportunity, o conteúdo não é observável.
-2. **Eventos dos triggers `OpportunityBefore` e `OpportunityAfter` (SBQQ)** e o corpo atual de `OpportunityTrigger` na org. Só vi o cabeçalho do arquivo do repositório, que pode diferir da org.
-3. **Ordem real de execução** entre os triggers e os 2 Flows after-save de Opportunity: não executei nada; a ordem acima é a padrão da plataforma, e a ordem entre triggers e entre Flows do mesmo tipo é indefinida.
-4. **Rótulos dos Flows citados na análise** ("Oportunidade Indústria", "Fluxo Oportunidade") versus os API names encontrados (`Oportunidade_Industria`, `OpportunityFlow`). Não conferi o rótulo.
-5. **6 das 16 validation rules de Opportunity** não foram listadas por nome.
-6. **Layouts de página, FLS e permission sets** de Lead e Opportunity não foram inspecionados; também não sei qual perfil os usuários-alvo (vendedor e gestor) usam.
-7. **Lista completa de objetos `et4ae5`** (corte em 50 linhas) e se o conector usa algum campo de Lead além dos 2 de celular listados.
-8. **Dev distinta de QA.** O host e o username do alias sugerem "qa". Não tenho como provar a separação pela CLI; fica como checagem de pré-build.
-9. **Cobertura Apex real por classe** de Opportunity: não medida.
-10. **Tópicos e ações do SFAgent2 na QA.** Confirmei só na dev (v4). A comparação com a QA é do briefing; não a repeti.
-11. **Contagem de campos custom de Opportunity.** A análise diz 28; esta consulta trouxe 41 linhas (com os 9 do `SBQQ`). Não reconciliei a diferença; a lista de nomes acima vale.
-12. **Regras de atribuição de Lead** (`maps__AssignmentRule__c` existe, mas as regras não foram lidas); relevante para a EPLAST-35, não para esta demanda.
+1. **Se os campos que o cliente cita têm outro nome ou vivem noutro objeto.** A busca foi por rótulo (Lead, Opportunity) e por palavras-chave em outros 6 objetos, em `FieldDefinition`. Pode haver campo com rótulo diferente que escapou, ou dado em objeto que não consultei (ex.: produto ou cotação). Por isso "sem campo" na seção 2 vale como "não achei".
+2. **Se `Lead.Rating` é a "classificação atual" do cliente**, quem o grava e se `Account.Rating` é mantido por alguma automação. Só vi que as picklists têm AA, A, B, C, D.
+3. **O que `Previs_o_Eintein__c` guarda e quem o alimenta** (sem descrição, 0 registros, sem Flow ou Apex encontrado).
+4. **Significado de `ROI_Analysis_Completed__c`, `Discovery_Completed__c`, `Budget_Confirmed__c`** além do uso do Flow da EPLAST-40; nenhum tem descrição. `Discovery` e `Budget` estão confirmados só pelo uso no Flow.
+5. **Se a org tem os relatórios e list views das EPLAST-42, 43, 44 e 45.** Vi o `MKT_Nutricao_ProntoAbordagem__c` na org, mas os relatórios, as list views e o permission set `PS_Marketing_Publicos` só li nas branches remotas.
+6. **Estado das list views da EPLAST-26 na org.** Li o repositório, não consultei `ListView` na org nesta sessão.
+7. **Ordem real de execução** entre os triggers e os 4 Flows after-save de Opportunity: é a ordem padrão da plataforma, não medida. Corpo atual de `OpportunityTrigger` não baixado.
+8. **`ScheduledFlowOpportunitySetting__mdt`**: só o Flow o referencia; não descrevi o tipo. E `Opportunity.IqScore` aparece no `force-app`, mas a consulta `FieldDefinition` não o retornou; não o uso.
+9. **Cobertura Apex** das classes de Opportunity, **SFAgent2 na QA** e **dev distinta de QA** (resolvido pela regra 5 do cliente): não repeti nesta sessão.
+10. **Precisão `18` x `3`** de `Opportunity.PriorityScore__c` entre org e repositório: não apurei a causa.

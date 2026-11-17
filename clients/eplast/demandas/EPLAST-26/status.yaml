@@ -2,7 +2,7 @@ id: EPLAST-26
 client: eplast
 titulo: Scoring de leads e oportunidades
 tipo: projeto
-status: design
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -139,3 +139,7 @@ historico:
   em: '2026-11-17T09:58:05.569406+00:00'
   motivo: redesenhar com as respostas do cliente recebidas em 17/11 (seção "Respostas
     do cliente" do 03-design.md). Build e QA da rodada anterior arquivados em rodada-anterior/premissas-assumidas/.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T10:55:46.937927+00:00'

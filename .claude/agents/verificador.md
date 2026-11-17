@@ -66,6 +66,12 @@ qualquer comando e passe sempre `--target-org`. Nada em QA, nada em produção.
    quando houver classe de teste. Automação que só roda por agendamento: procure um jeito
    legítimo de dispará-la na dev (execução do job, parâmetro de configuração da própria
    solução). Não altere o que o builder construiu para conseguir testar.
+   **Uma transação por coisa** (achado de 15/11, EPLAST-27 e EPLAST-46: "Too many SOQL
+   queries: 101" em Flow que só faz 5 a 7 consultas, e e-mail de erro para o responsável):
+   crie os dados de teste numa execução de Apex anônimo e chame o Flow ou a classe em
+   **outra**, uma chamada por execução (`Flow.Interview` de uma conta por vez). Montar a
+   massa e chamar o Flow para várias contas no mesmo script soma as consultas de tudo na
+   mesma transação, estoura o limite e não prova nada sobre a solução.
 6. Confira o resultado por consulta aos registros de teste e registre o que voltou.
 7. Apague os dados de teste que criou e diga o que ficou, se algo ficou. Job Apex agendado
    na dev (pelo build ou por você) sai também, depois de provar o agendamento: classe com job
