@@ -1,6 +1,6 @@
 # Pré-checagem — EPLAST-35
 
-Etapa que vai rodar: `qa` · org: `sbx-eplast-qa`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
+Etapa que vai rodar: `build` · org: `sbx-eplast-dev`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
 
 ## Bloqueios
 - nenhum
@@ -11,5 +11,5 @@ Etapa que vai rodar: `qa` · org: `sbx-eplast-qa`. Gerado pela esteira antes da 
 
 ## Estado na org
 - Flow `Lead_AfterInsert_AplicaRegraAtribuicao`: tem versão ativa nesta org — mudança entra como versão nova.
-- Flow `Lead_AfterSave_DistribuiDonoRodizio`: existe nesta org, sem versão ativa.
+- Flow `Lead_AfterSave_DistribuiDonoRodizio`: tem versão ativa nesta org — mudança entra como versão nova.
 - Classes da demanda sem job pendente nesta org (2 conferidas).
