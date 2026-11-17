@@ -318,3 +318,44 @@ cliente em "O que assumimos e você precisa confirmar".
 ativa e sem `CronTrigger` em espera na QA depois do deploy) e uma amostra de regressão da
 classificação (3 bordas bastam). Os demais casos da rodada 4 valem como evidência; cite-os.
 Se o deploy da esteira não desativar o agendado na QA, isso é defeito do pacote (reprova).
+
+## Decisão do responsável (2026-11-17, depois da rodada 5 de QA): o pacote tem de desativar o agendado na QA de verdade
+
+Registrada por autorização de Leonardo Barbosa para conduzir a demanda (17/11). É correção
+de defeito do pacote; não muda o desenho nem regra de negócio.
+
+**O que a rodada 5 mostrou.** O deploy da esteira na QA (`0AfHa00000EJ3yDKAT`) levou juntos
+`flowDefinitions/ScheduledFlowOpportunity.flowDefinition-meta.xml` (`activeVersionNumber` 0)
+e `flows/ScheduledFlowOpportunity.flow-meta.xml`, que ainda traz `<status>Active</status>`.
+Resultado: a QA criou a v8 **ativa**, com `CronTrigger` em espera. Na dev a desativação
+funcionou porque o builder implantou só a definição. O pacote que vai à QA é montado pela
+esteira com **todo arquivo de `force-app` que o branch mudou em relação à `main`**, e o
+arquivo do Flow agendado está nesse conjunto desde a rodada 1.
+
+**O que o builder faz (só isto):**
+1. Corrigir o pacote para que o conjunto que a esteira implanta na QA deixe o
+   `ScheduledFlowOpportunity` **sem versão ativa**. Dois caminhos aceitos; escolha o que
+   provar na dev:
+   - (a) no `flows/ScheduledFlowOpportunity.flow-meta.xml`, trocar `<status>Active</status>`
+     por `<status>Obsolete</status>` (ou `Draft`, se `Obsolete` for recusado), mantendo a
+     definição com `activeVersionNumber` 0; ou
+   - (b) devolver `flows/ScheduledFlowOpportunity.flow-meta.xml` ao conteúdo que está na
+     `main` (o arquivo deixa de fazer parte do que o branch mudou e sai do pacote), deixando
+     só a definição com `activeVersionNumber` 0.
+2. **Provar na dev com o mesmo conjunto que irá à QA**, não só com a definição: reativar a
+   v2 do agendado na dev (para partir do estado em que a QA está: uma versão ativa),
+   implantar **juntos** todos os arquivos que `05-deploy-qa.md` lista para o agendado e o
+   Flow novo, e conferir: `FlowDefinitionView.ActiveVersionId` nulo para
+   `ScheduledFlowOpportunity`, nenhuma versão `Active` em `Flow` (Tooling), e 0 linhas em
+   `CronTrigger` com nome `ScheduledFlowOpportunity%`. Registrar comandos e resultados em
+   "Versões e ativação" do `04-plano-build.md`.
+3. Não tocar no Flow novo, nas faixas, no relatório nem no metadado. Não apagar o Flow
+   agendado nem suas versões.
+
+**Para o verificador.** Repetir a prova do item 2 por consulta (estado do agendado na dev) e
+conferir que `Opportunity_AfterSave_ClassificaConta` segue ativo. Não é preciso refazer as
+bordas: valem as evidências das rodadas anteriores.
+
+**Para o QA.** Reconferir Q8 (agendado sem versão ativa e sem `CronTrigger` em espera na QA
+depois do deploy) e 3 bordas da classificação. O critério 16 segue para a homologação, sem
+reprovar (decisão anterior).
