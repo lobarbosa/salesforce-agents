@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FilasSemRodizio__c</fullName>
+    <description>EPLAST-35. Nomes da API das filas sem rodízio, separados por ponto e vírgula. Padrão: Leads_Triagem.</description>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>EPLAST-35. Nomes da API das filas sem rodízio, separados por ponto e vírgula. Padrão: Leads_Triagem.</inlineHelpText>
+    <length>255</length>
+    <label>Filas sem rodízio</label>
+    <type>Text</type>
+</CustomField>

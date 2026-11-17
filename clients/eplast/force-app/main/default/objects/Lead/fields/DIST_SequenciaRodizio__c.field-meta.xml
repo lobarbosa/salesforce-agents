@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DIST_SequenciaRodizio__c</fullName>
+    <description>EPLAST-35. Número técnico sequencial usado pelo rodízio de Leads. Não editar nem usar em relatório de negócio.</description>
+    <displayFormat>{0}</displayFormat>
+    <externalId>false</externalId>
+    <label>Sequência do rodízio</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <type>AutoNumber</type>
+</CustomField>
