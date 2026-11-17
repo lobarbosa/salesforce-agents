@@ -45,3 +45,17 @@ Não há Flow, agente nem classe. Fórmula e list view não têm versão: o roll
 ## Premissas assumidas
 
 As do design (PD-09 a PD-14 e seção 9) foram construídas como decididas; nenhuma pergunta ficou em aberto.
+
+## Correções da rodada 1
+
+Rodada 1 de QA (`05-testes-rodada-1.md`) reprovada sem defeito no build. Decisão do responsável de 2026-11-17 (`03-design.md`, final): o build não muda.
+
+| Falha | Tratamento |
+|---|---|
+| FALHA 1 (crítica): casos de Lead com engajamento (1, 2, 4b) e o caso 11 não executáveis na QA, porque o usuário de execução do job não tem permissão no campo `Lead.MKT_MC_Engajamento__c` | **Nada alterado por esta decisão.** Não é corrigível no pacote: o acesso vem de `PS_Marketing_RetornoMC`, que não é desta demanda. O pacote não inclui `PS_Marketing_RetornoMC` nem permissão do campo de engajamento, e `PS_Comercial_ScorePrioridade` não foi ampliado. A exceção (atribuir o permission set ao usuário do job na QA, só durante o teste, com registro de antes e depois) é do agente de QA, e na dev do verificador, se precisar. |
+
+Conferência feita nesta sessão:
+- `git log 92d22928..HEAD -- force-app`: nenhum commit em `force-app` depois do build; nenhuma metadata alterada, nada novo deployado.
+- `grep` em `force-app`: 0 ocorrências de `PS_Marketing_RetornoMC`; 0 ocorrências de `MKT_MC_Engajamento` em `PS_Comercial_ScorePrioridade`.
+- Org conferida com `sf org list`: `sbx-eplast-dev`, Sandbox, Connected. Nada foi tocado na org nesta sessão. Nada na QA, nada no Marketing Cloud.
+- O resultado do build continua `concluído`. O caso 11 (`MKT_Nutricao_ProntoAbordagem__c`, campo da EPLAST-45) tem a mesma causa de permissão e fica com o QA, que repete os casos depois da atribuição temporária.
