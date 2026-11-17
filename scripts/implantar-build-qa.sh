@@ -71,6 +71,41 @@ if [ "$RC" -ne 0 ] && jq -e --arg re "$ATIVO" '
     RC=0
   fi
 fi
+# Rodada nova de demanda com classe agendável ou batch (achado EPLAST-33,
+# 2026-11-17): o trabalho que o QA armou na rodada anterior continua na QA, e a
+# plataforma recusa atualizar classe com trabalho pendente; o deploy inteiro
+# cai sem o build ter defeito. Se TODAS as falhas forem essa, cancela só os
+# trabalhos que a própria plataforma citou (são os das classes do pacote),
+# registra o que foi cancelado e reimplanta. Quem arma de novo é o QA, no teste,
+# ou a ativação, que é passo separado.
+JOBS_CANCELADOS=""
+if [ "$RC" -ne 0 ] && python3 ../../scripts/jobs_pendentes.py /tmp/deploy-qa.json > /tmp/jobs-ids.txt; then
+  mapfile -t JOBS < /tmp/jobs-ids.txt
+  LISTA=$(printf "'%s'," "${JOBS[@]}")
+  LISTA=${LISTA%,}
+  echo "Deploy travado por trabalho Apex pendente na QA (${JOBS[*]}): cancelando e reimplantando."
+  sf data query --query "SELECT Id, CronJobDetail.Name, CronExpression, State FROM CronTrigger WHERE Id IN ($LISTA)" \
+    --target-org "$TARGET_ORG" --json > /tmp/jobs-antes.json 2>/dev/null || true
+  DESCRITOS=$(jq -r '(.result.records // [])[] | "\(.Id[0:15]) \(.CronJobDetail.Name // "sem nome"), agenda \(.CronExpression // "?"), estado \(.State // "?")"' /tmp/jobs-antes.json 2>/dev/null || true)
+  : > /tmp/abortar.apex
+  for J in "${JOBS[@]}"; do
+    echo "try { System.abortJob('$J'); } catch (Exception e) { System.debug(e.getMessage()); }" >> /tmp/abortar.apex
+    if ! printf '%s\n' "$DESCRITOS" | grep -q "^${J:0:15} "; then
+      DESCRITOS=$(printf '%s\n%s sem agenda registrada (trabalho assíncrono em andamento)' "$DESCRITOS" "${J:0:15}")
+    fi
+  done
+  if sf apex run --file /tmp/abortar.apex --target-org "$TARGET_ORG" --json > /tmp/abortar.json; then
+    JOBS_CANCELADOS=$(printf '%s\n' "$DESCRITOS" | sed '/^$/d')
+    sleep 20
+    set +e
+    sf project deploy start "${ARGS[@]}" --target-org "$TARGET_ORG" --wait 30 --json > /tmp/deploy-qa.json
+    RC=$?
+    set -e
+  else
+    echo "::warning::Não consegui cancelar os trabalhos pendentes na QA; o deploy continua falho."
+    jq -r '.message // empty' /tmp/abortar.json | head -5 || true
+  fi
+fi
 ID=$(jq -r '.result.id // "sem id"' /tmp/deploy-qa.json)
 ESTADO=$(jq -r '.result.status // .name // "desconhecido"' /tmp/deploy-qa.json)
 if [ "$RC" -ne 0 ]; then
@@ -95,6 +130,14 @@ fi
   echo "- **Commit:** \`$(git rev-parse --short HEAD)\`"
   if [ -n "$AGENTE_JA_ATIVO" ]; then
     echo "- **Agente:** já ativo na QA desde a rodada anterior, não reimplantado ($AGENTE_JA_ATIVO)"
+  fi
+  if [ -n "$JOBS_CANCELADOS" ]; then
+    echo
+    echo "## Trabalhos agendados cancelados antes do deploy"
+    echo
+    echo "A plataforma recusa atualizar classe com trabalho pendente. Estes trabalhos das classes do pacote, deixados por rodada anterior, foram cancelados na sandbox de QA e **não foram rearmados**: o teste arma de novo o que precisar."
+    echo
+    printf '%s\n' "$JOBS_CANCELADOS" | sed 's/^/- /'
   fi
   echo
   echo "## Componentes"
