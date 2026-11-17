@@ -1,0 +1,46 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "Pronto": {
+      "title": "Pronto",
+      "description": "Verdadeiro só se tudo estiver válido e a tarefa puder ser criada.",
+      "lightning:type": "lightning__booleanType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "Resumo": {
+      "title": "Resumo",
+      "description": "Quando Pronto: resumo para repetir ao usuário antes da confirmação.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": true,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "Mensagem": {
+      "title": "Mensagem",
+      "description": "Quando não Pronto: o que falta ou o motivo da recusa. Repita ao usuário sem alterar.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": true,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "RegistroNome": {
+      "title": "Nome do registro",
+      "description": "Nome do registro identificado.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    },
+    "RegistroTipo": {
+      "title": "Tipo do registro",
+      "description": "lead, cliente ou oportunidade.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isDisplayable": false,
+      "copilotAction:isUsedByPlanner": true
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}

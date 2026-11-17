@@ -1,94 +1,57 @@
 **Resultado do build:** concluído
 
-# EPLAST-29 · Plano de build (rodada 4: Flow v2 e SFAgent2 v16, a partir da v15)
+# EPLAST-29 · Plano de build (rodada 5: SFAgent2 v18, Flow PrepararTarefa e CriarTarefa v3)
 
-Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Branch `feature/EPLAST-29`. Nada tocado em produção, QA ou Marketing Cloud. Sem Apex. Deploy só na dev, `--test-level NoTestRun` no agente.
+Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, username `projetos@konectabr.com.eplast2.qa`, Org ID 00DHa000006vfMLMAY). Branch `feature/EPLAST-29`. Nada tocado em produção, QA ou Marketing Cloud. Sem Apex (decisão do design, seção 2). Deploy só na dev, `--test-level NoTestRun`. Nenhum dado lido ou gravado; só deploy de metadata e consultas de status.
+
+Escopo: diretrizes 1 a 4 do responsável (design, seção 13), alternativa C (seção 2). A gravação da Task não mudou de comportamento; mudam a validação (movida para um Flow sem DML), o texto de resumo e de sucesso (vêm do Flow) e a sequência do tópico.
 
 ## Base de versões usada
-Conferido por query na dev no momento do build: `SFAgent2` tem v1 a v15, ativa só a v13. Base = **v15** (mais nova, reúne ações de EPLAST-27, 34 e 46), baixada da org por retrieve. A v16 é a seguinte; nenhuma outra demanda a criou antes. Flow `Task_Agente_CriarTarefa`: só existia a v1 (Active); a nova é a v2 (Draft). Aviso do preflight sobre EPLAST-27, 34 e 46 tratado: nada delas foi editado (grep: `insights_comerciais_v16` mantém as 6 ações da v15, e os 4 tópicos restantes são cópia sem mudança de conteúdo).
+Conferido por query na dev: `SFAgent2` tem v1 a v17; ativa só a v13 (v14 a v17 inativas). Base = **v17** (a mais nova; reúne EPLAST-27, 34, 46 e as correções do 29). Nenhuma outra demanda criou a v18 antes. Flow `Task_Agente_CriarTarefa` na dev: v1 Active, v2 Obsolete; a nova é a **v3**.
 
 ## Componentes
-| Tipo | API name | Estado | Observação |
+| Tipo | API name | Estado na dev | Observação |
 |---|---|---|---|
-| CustomObject (custom metadata type) | `AssistenteTarefaSetting__mdt` | criado, deployed na dev | Item C do design (decisão do arquiteto humano, aprovada no gate). Visibilidade Public, com descrição |
-| CustomField | `Ativo__c` (Checkbox, padrão true), `PrefixosPermitidos__c` (Text 50), `PrioridadePadrao__c` (Text 20), `DescricaoObrigatoria__c` (Checkbox, padrão false), `MarcaOrigem__c` (Text 80) | criados | Todos com descrição e help text |
-| CustomMetadata | `AssistenteTarefaSetting.Padrao` | criado | `Ativo=true`, `001;006;00Q`, `Normal`, `DescricaoObrigatoria=false`, `Origem: assistente de IA` |
-| Flow | `Task_Agente_CriarTarefa` **versão 2** | deployed como **Draft** (v1 segue Active, confirmado por query) | Ver abaixo |
-| PermissionSet | `PS_Comercial_AssistenteAcoes` | alterado | Ganha `customMetadataTypeAccesses` de `AssistenteTarefaSetting__mdt`. Continua concedendo agente e Flow. Descrição reduzida a 255 caracteres |
-| GenAiPlannerBundle | `SFAgent2_v16` | criado, deployed | Cópia da v15 com nomes `_v16`; muda só o tópico `acoes_comerciais_EPLAST29_v16` e o schema da ação `CriarTarefa` |
-| BotVersion | `SFAgent2.v16` | criado, **Inactive** | Ligada ao planner `SFAgent2_v16` |
-| Fixture | `fixtures/lead.apex` e `fixtures/README.md` | criados e executados na dev | Ver "Dados de teste" |
+| Flow (novo, sem DML) | `Task_Agente_PrepararTarefa` v1 | **Draft** | Valida na ordem do design 4.1 (parâmetros, registro identificado, existência e tipo, assunto, check-in, prazo, descrição obrigatória e marcador "sem descrição"). Saídas `Pronto`, `Resumo`, `Mensagem`, `RegistroNome`, `RegistroTipo`. Toda recusa termina em "Nada foi criado." Lê só Lead (`Name`, `IsConverted`), Account ou Opportunity (`Name`) e o custom metadata. Descrição em todos os elementos e variáveis |
+| Flow (versão nova) | `Task_Agente_CriarTarefa` v3 | **Draft** (v1 segue Active, v2 Obsolete) | Primeiro passo é o subflow `Task_Agente_PrepararTarefa`; `Pronto` falso recusa sem gravar. Com `Pronto`, grava como na v2 (lead em `WhoId`, conta/oportunidade em `WhatId`, `OwnerId = $User.Id`, `Status = Open`, `TaskSubtype = Task`, prioridade e marca de origem do custom metadata, 1 DML, fault path). Mensagem de sucesso montada pelo Flow: `Tarefa criada: "<Assunto>" para <Nome> (<tipo>), prazo <dd/mm/aaaa>, responsável: você.` + `Código da tarefa: <Id>` (+ aviso de rascunho). Mesmas entradas e saídas da v2 |
+| PermissionSet | `PS_Comercial_AssistenteAcoes` | alterado | Ganha `flowAccesses` de `Task_Agente_PrepararTarefa`. Sem objeto, campo, perfil nem PS novo. Descrição 237 caracteres |
+| GenAiPlannerBundle | `SFAgent2_v18` | criado | Cópia da v17 com sufixo `_v18`; muda só o tópico `acoes_comerciais_EPLAST29_v18` |
+| BotVersion | `SFAgent2.v18` | criado, **Inactive** (conferido por query) | Ligada ao planner `SFAgent2_v18` |
+| Ação local | `PrepararTarefa_EPLAST29_v18` | criada no tópico | Alvo `Task_Agente_PrepararTarefa`, `isConfirmationRequired = false`; entradas todas opcionais; saídas `Resumo` e `Mensagem` com `isDisplayable = true` |
+| Ação local | `CriarTarefa_EPLAST29_v18` | copiada da v17 | `isConfirmationRequired = true` mantido; saída `Mensagem` `isDisplayable = true` com descrição "Repita este texto ao usuário sem alterar" |
 
-### Flow v2 (mudanças sobre a v1)
-Entradas e saídas iguais às da v1. Início: Get Records do `Padrao` (custom metadata); sem registro, falha do Get ou `Ativo__c = false` recusa com "A criação de tarefas pelo assistente está desligada." Depois, na ordem: assunto vazio, `Check In @`, prefixo (tem de ser 001, 006 ou 00Q **e** estar em `PrefixosPermitidos__c`), data vazia, descrição vazia com `DescricaoObrigatoria__c`. Ramo Lead (`00Q`): Get Records de `Id` e `IsConverted`; não achado devolve a mensagem genérica "Registro não encontrado ou sem acesso."; convertido recusa orientando a pedir na conta ou na oportunidade; senão grava Task com `WhoId` = lead e `WhatId` vazio. Ramo conta e oportunidade: igual à v1 (`WhatId`). Prioridade (`High`/`Normal` aceitos, qualquer outro valor ou vazio vira `PrioridadePadrao__c`) e marca de origem (`MarcaOrigem__c`) vêm dos parâmetros. Mantidos: `OwnerId = $User.Id`, `Status = Open`, `TaskSubtype = Task`, fault path, 1 DML por execução, `DefaultMode`. Todos os elementos e variáveis novos com descrição.
+### Tópico `acoes_comerciais_EPLAST29_v18` (único com mudança de conteúdo)
+- Instrução 1: sequência numerada (a) `IdentificarRegistro` sempre, única exceção o `currentRecordId` de lead/conta/oportunidade; (b) `PrepararTarefa` com o Id; (c) `Pronto` falso repete a `Mensagem` e para; (d) `Pronto` verdadeiro repete o `Resumo` e chama `CriarTarefa` na mesma resposta (o cartão é a confirmação); (e) repete a `Mensagem` do retorno.
+- Instrução 4: toda resposta do usuário, inclusive "sim", recomeça em (b); "sim" não é confirmação.
+- Instrução 5: o assistente nunca escreve que criou; mensagem de criação sem `Código da tarefa` é proibida.
+- Instrução 3: palavras do assunto (contrato, pedido, proposta, reunião) não indicam o tipo do registro (FALHA 7).
+- Instruções 2, 6, 7 e 8 mantidas no que importa (data relativa, descrição vazia vai vazia, rascunho só como tarefa, recusas do "não disponível", ambiguidade lista candidatos).
 
-### SFAgent2 v16 (só o tópico `acoes_comerciais`)
-Escopo passa a lead, cliente (conta) ou oportunidade; busca com `objectApiName` `Lead`, `Account` ou `Opportunity` conforme o usuário disser, nos três se não disser, listando nome, **tipo** e identificador quando houver mais de um candidato (inclusive mesmo nome em tipos diferentes); resumo de confirmação sempre com registro (nome e tipo), responsável (você), descrição ("sem descrição" quando vazia) e prazo; rascunho de e-mail ou mensagem com pedido de revisão antes de enviar; recusa por regra repassada sem insistir; lista de "não disponível" inclui compromisso. Descrição da ação e schema de `RegistroRelacionadoId` dizem "lead (00Q), conta (001) ou oportunidade (006)". `agentScript/SFAgent2_v16_definition.agent` é cópia byte a byte da v15 (arquivo gerado pela plataforma, não editado).
+## Conferência de EPLAST-27, 34 e 46 (design 4.3 e seção 5)
+Comparação programática dos tópicos v17 × v18 (só com sufixo normalizado): `insights_comerciais`, `agent_router`, `ambiguous_question` e `off_topic` **idênticos**; `insights_comerciais_v18` mantém as 6 ações (`ConsultarPedidos`, `AgregacaoPedidos`, `IdentificarConta`, `ProximaAcaoCliente_EPLAST27`, `ResumoReuniao_EPLAST34`, `SugestaoCampanha_EPLAST46`) e as instruções `instruction2_EPLAST27`, `instruction1_EPLAST34`, `instruction1_EPLAST46`. Só o tópico desta demanda difere.
 
-## Dados de teste
-`fixtures/lead.apex` rodou na dev (bypass de trigger ligado): leads sintéticos `REG-TESTE-LEAD-01`, 2x `REG-TESTE-DUP` e `REG-TESTE-LEAD-CONV` (convertido por `Database.convertLead`, sem oportunidade), mais a conta `REG-TESTE-DUP`. Contagem na dev: 4 leads `REG-TESTE%`, 1 convertido. Nenhum dado real lido; só contagens. A conversão cria conta e contato sintéticos a partir do lead de teste.
+## Deploy
+1. Dry-run dos dois Flows e do PS: Succeeded. Deploy real: Succeeded (Flow novo `Created`, `CriarTarefa` `Changed` como versão nova, PS `Changed`).
+2. Agente: `-d` nos arquivos da v18 (`-m Bot:SFAgent2` falha com versão ativa, como nas rodadas anteriores). A primeira tentativa falhou ("Plugin not found") por erro meu na geração do XML (substituição que apagou tópicos do bundle); corrigi regenerando a partir da v17 e o deploy seguinte passou. Nada ficou na org da tentativa falha.
+3. Estado conferido por query: BotVersion v13 Active, v14 a v18 Inactive; Flow `CriarTarefa` v1 Active, v2 Obsolete, v3 Draft; `PrepararTarefa` v1 Draft.
 
-## Versões e ativação (pendente, passo separado)
-Nada foi ativado nesta etapa.
-1. Ativar o Flow `Task_Agente_CriarTarefa` v2 na dev antes da verificação (rollback: reativar a v1).
-2. Ativar o agente `SFAgent2` v16 na dev (`sf agent activate`) depois do Flow (rollback: reativar a v13).
-3. Na QA: ordem do release 46, 27, 34, depois esta; `05-deploy-qa.md` confere os Flows e a classe das outras demandas antes (R2 do design).
+## Versões e ativação (passo separado, nada ativado por este build)
+| Org | Ordem | Rollback |
+|---|---|---|
+| dev (verificação) | 1. ativar `Task_Agente_PrepararTarefa` v1; 2. ativar `Task_Agente_CriarTarefa` v3 (o subflow precisa estar ativo); 3. `sf agent activate` da v18 | reativar `CriarTarefa` v1 e a v13 do agente |
+| QA (esteira, `05-deploy-qa.md`) | mesma ordem; a v18 substitui a v17 ativa | reativar `CriarTarefa` v5 e a v17 |
 
-## O que o build não provou (fica para a verificação)
-- Flow v2 não foi executado: só existe em Draft e a plataforma só roda a versão ativa. Foi validado pelo deploy (sintaxe e referências), não por execução. Q-1, Q-4, Q-10 e Q-11 dependem de ativá-lo.
-- R3 (a busca padrão `identifyRecordByName` aceitar `objectApiName = Lead`) não foi exercitada: a v16 está inativa. A verificação exercita com o lead `REG-TESTE-LEAD-01`; se a busca não aceitar Lead, volta ao gate de design (alternativa: Flow de busca de lead), sem improvisar.
-- R4 (contexto de execução do Flow com usuário não administrador) e Q-12: não executados.
-- `identifyRecordByName` e demais ações de EPLAST-27, 34 e 46 na v16 (Q-13): conferidas só por grep no bundle.
+Ativar os Flows antes da v18 é seguro: a v17 chama `CriarTarefa` com o mesmo contrato e passa a ganhar a validação e a mensagem novas.
 
-## Notas
-- O deploy com `-m Bot:SFAgent2` falha ("não é possível editar uma versão do bot ativa", v13); usado `-d` só nos arquivos da v16. O pacote da branch traz só a v16 (a v15 baixada foi removida do working tree; a v13 e anteriores já estavam no repositório).
-- A retrieve do `SFAgent2.bot-meta.xml` só reordenou `contextVariableMappings`; revertido, sem alteração no commit.
+## Pacote da branch
+`SFAgent2_v18` e `bots/SFAgent2/v18.botVersion-meta.xml` (v17 e anteriores já estão nas orgs), `Task_Agente_PrepararTarefa`, `Task_Agente_CriarTarefa` (versão nova) e `PS_Comercial_AssistenteAcoes`. Branch `feature/EPLAST-29`; commit e PR registrados na sessão (ver histórico da branch).
 
-## Correções da rodada 1 (QA reprovou; `05-testes-rodada-1.md`)
-Org de build: `sbx-eplast-dev` (única em `sf org list`). Na QA a v16 ficou Active (ativada pelo QA), e versão ativa não aceita deploy; por isso a correção entra como **SFAgent2 v17** (BotVersion `v17`, planner `SFAgent2_v17`), cópia da v16 com ajuste só nas instruções e no schema do tópico `acoes_comerciais_EPLAST29_v17`, deployed **Inactive** na dev (conferido por query). A v16 não foi alterada. O Flow `Task_Agente_CriarTarefa` não mudou (as três falhas são de instrução do agente).
+## O que não foi provado neste build (para a verificação)
+- Nenhum Flow foi executado: estão em Draft e só a versão ativa roda; foram validados pelo deploy (sintaxe, referências, subflow). Verificação precisa ativar na dev (acima) e exercitar os casos críticos 5 de 5, em sessões novas (design, seção 10).
+- R3 do design: `isDisplayable = true` pode não garantir exibição literal do texto; o verificador confere o `Código da tarefa` na resposta.
+- Fórmulas com acento e aspas escapadas (`\"`) passaram no deploy; o resultado do texto (data dd/mm/aaaa, quebra de linha) só se vê na execução.
+- Se o 5 de 5 falhar, o próximo degrau é a alternativa D (variáveis e filtro de ação), levada ao arquiteto humano, não novo reforço de instrução.
+- `DescricaoVazia` usa lista fixa de marcadores ("sem descrição", "nenhuma", "nenhum", "n/a", "-", "não"); duplicada nos dois Flows (Preparar e Criar) para a gravação seguir a mesma regra do resumo.
 
-- FALHA 1 (crítica, "criado" sem a ação): instrução RESULTADO proíbe dizer que tarefa ou rascunho foi criado antes do retorno `Sucesso`, e manda chamar a ação ou pedir o dado quando o usuário só diz "sim". CONFIRMAÇÃO trata "sim" a uma pergunta de dado como resposta a essa pergunta, não como confirmação. RASCUNHO: sem texto, redige um padrão curto; sem data, segue a regra DATA e pergunta (AC-5), não grava nem afirma criação.
-- FALHA 2 ("sem descrição" gravado): CONFIRMAÇÃO diz que a expressão é só do resumo e que o parâmetro `Descricao` fica vazio; o schema de `Descricao` da ação ganhou a mesma orientação. A marca "Origem: assistente de IA" continua vindo do Flow.
-- FALHA 3 (resumo só depois do "sim"): CONFIRMAÇÃO agora manda escrever o resumo completo (assunto, registro e tipo, responsável, descrição, prazo) no texto, antes de chamar a ação. Limite: o cartão da ação mostra só os parâmetros do Flow, e o texto antes do cartão só se confere pela tela; fica para a homologação.
-- AC-4 (sem prova, usuário não administrador): não corrigível pelo build; não há usuário comum na QA e a regra 6 proíbe alterar perfil. Fica para a homologação, com usuário comum com e sem `PS_Comercial_AssistenteAcoes`.
-- Instrução não prova comportamento do modelo: a v17 só foi deployed, não exercitada. Reteste na QA (FALHA 1 a 3) depende de o release levar a v17 e de a esteira ativá-la; a v16 ativa na QA tem de ser substituída pela v17 (rollback: reativar v16).
-
-### Versões e ativação (rodada 1)
-Nada ativado por este build. Ordem: Flow v2/v4 como já está, depois ativar `SFAgent2` v17 (dev na verificação; QA após `05-deploy-qa.md`).
-
-## Correções da rodada 2 (QA reprovou; `05-testes-rodada-2.md`)
-Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Nada tocado em QA, produção ou Marketing Cloud. Nenhum componente novo ou alterado nesta rodada: o que a rodada 2 pede já está construído.
-
-Estado conferido na dev por query: `SFAgent2` v13 Active; v14 a v17 Inactive (v16 e v17 são desta demanda). `force-app` traz `bots/SFAgent2/v17.botVersion-meta.xml` e `genAiPlannerBundles/SFAgent2_v17`, sem alteração pendente na árvore.
-
-- FALHA 4 (crítica, v17 ausente na QA): **não corrigível no build.** O pacote está completo na branch (BotVersion `v17` e planner `SFAgent2_v17`, descritos em "Correções da rodada 1"). Quem leva o build à QA é o passo fixo da esteira (`05-deploy-qa.md`); o builder não toca a QA. O deploy da rodada 2 listou só configuração, Flow e PS e pulou o agente por já haver versão ativa (v16). Ação para a esteira: incluir `BotVersion SFAgent2.v17` e `GenAiPlannerBundle SFAgent2_v17` como versão inativa; a ativação na QA continua sendo do QA, depois do deploy. Reconstruir ou renomear a v17 não adianta e quebraria a rastreabilidade.
-- FALHAS 1 a 3 (reteste na QA): dependem só da v17 estar na QA. Conteúdo da correção inalterado, descrito na rodada 1. Não editei a v17 sem evidência de falha dela, porque ela nunca foi exercitada na QA.
-- AC-4 (sem usuário não administrador): não corrigível pelo build (regra 6 da conta proíbe alterar perfil do usuário de teste). Segue para a homologação.
-
-### Versões e ativação (rodada 2)
-Nada ativado por este build. Pendente, nesta ordem: esteira implanta v17 inativa na QA; QA ativa a v17 (rollback: reativar a v16).
-
-## Correções da rodada 3 (QA reprovou; `05-testes-rodada-3.md`)
-Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Nada tocado em QA, produção ou Marketing Cloud. Nenhum componente novo ou alterado nesta rodada.
-
-Estado conferido na dev por query: `SFAgent2` v13 Active; v14 a v17 Inactive (v16 e v17 são desta demanda; nenhuma outra demanda criou versão acima da v17, então a base segue válida). Flow `Task_Agente_CriarTarefa` na dev: v1 Active, v2 Obsolete (a v2 foi substituída depois do deploy da rodada 1; a numeração da QA, v1 a v5, difere e é esperada). `force-app` traz `bots/SFAgent2/v17.botVersion-meta.xml` e `genAiPlannerBundles/SFAgent2_v17`, sem alteração pendente na árvore.
-
-- FALHA 5 (crítica, v17 ausente na QA, repetição da FALHA 4): **não corrigível no build.** O pacote está completo na branch e na dev. O passo fixo de deploy da esteira (`05-deploy-qa.md`) continua pulando `BotVersion` e `GenAiPlannerBundle` quando já há versão ativa (v16 na QA). Criar v18 ou renomear a v17 cairia no mesmo pulo e quebraria a rastreabilidade; por isso não criei versão nova. Ação para a esteira (fora do builder): implantar `BotVersion SFAgent2.v17` e `GenAiPlannerBundle SFAgent2_v17` na QA como inativa; o QA ativa a v17 depois (rollback: reativar a v16).
-- FALHAS 1 a 3 (reteste na QA): dependem só de a v17 estar na QA. Conteúdo da correção inalterado (ver "Correções da rodada 1"). Não editei a v17 sem evidência de falha dela, porque ela nunca foi exercitada na QA.
-- AC-4 (sem usuário não administrador na QA): não corrigível pelo build (regra 6 da conta proíbe alterar perfil do usuário de teste). Segue para a homologação, com usuário comum com e sem `PS_Comercial_AssistenteAcoes`.
-
-### Versões e ativação (rodada 3)
-Nada ativado por este build. Pendente, nesta ordem: esteira implanta v17 inativa na QA; QA ativa a v17.
-
-### Para a verificação na dev
-Ativar o Flow e o agente v17 na dev e exercitar FALHAS 1 a 3, R3 (busca com `objectApiName = Lead`) e Q-13, como listado em "O que o build não provou".
-
-## Conciliação de versões (sessão de build, 2026-11-17)
-Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Nada tocado em QA, produção ou Marketing Cloud. Nenhum componente novo ou alterado nesta sessão; nenhuma versão criada nem ativada.
-
-Divergência entre preflight e design, conferida por query na dev:
-- `SFAgent2`: v1 a v17 existem; **ativa só a v13**; v14 a v17 Inactive. O preflight está certo. O design cita base v15 e nova v16 porque foi escrito antes: a v16 (desta demanda) e a v17 (correção das falhas 1 a 3 da QA) já foram criadas nas rodadas anteriores. A base correta para qualquer ajuste novo é a v17; nenhuma outra demanda criou versão acima dela, então não há versão a inventar.
-- Flow `Task_Agente_CriarTarefa` na dev: v1 Active, v2 Obsolete (a v2 foi substituída depois do deploy da rodada 1). A numeração da QA (v1 a v5, v4 Active) difere e é esperada.
-- EPLAST-27, 34 e 46 (mesmo agente): nada delas foi editado. Esta demanda muda só o tópico `acoes_comerciais_EPLAST29_v17` e a ação `CriarTarefa`; os demais tópicos e as 6 ações de `insights_comerciais` seguem como na v15.
-
-Pendência fora do builder: a FALHA 5 da QA (v17 ausente na QA) é do passo de deploy da esteira (`scripts/implantar-build-qa.sh`, com alteração já staged na árvore, não minha e não incluída neste commit). Pacote da v17 está completo na branch. Ativação segue separada: dev na verificação, QA depois do deploy.
+## Premissas assumidas
+Nenhuma nova neste build; vale o que o design registra (seção 9).

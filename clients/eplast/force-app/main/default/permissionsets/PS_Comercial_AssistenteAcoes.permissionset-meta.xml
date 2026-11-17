@@ -4,7 +4,7 @@
         <agentName>SFAgent2</agentName>
         <enabled>true</enabled>
     </agentAccesses>
-    <description>EPLAST-29. Da acesso ao agente SFAgent2, ao Flow Task_Agente_CriarTarefa e leitura do custom metadata AssistenteTarefaSetting__mdt. Sem objeto nem campo. Atribuir por usuario; licenca de Agentforce a parte.</description>
+    <description>EPLAST-29. Da acesso ao agente SFAgent2, aos Flows Task_Agente_CriarTarefa e Task_Agente_PrepararTarefa e leitura do custom metadata AssistenteTarefaSetting__mdt. Sem objeto nem campo. Atribuir por usuario; licenca de Agentforce a parte.</description>
     <customMetadataTypeAccesses>
         <enabled>true</enabled>
         <name>AssistenteTarefaSetting__mdt</name>
@@ -12,6 +12,10 @@
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Task_Agente_CriarTarefa</flow>
+    </flowAccesses>
+    <flowAccesses>
+        <enabled>true</enabled>
+        <flow>Task_Agente_PrepararTarefa</flow>
     </flowAccesses>
     <hasActivationRequired>false</hasActivationRequired>
     <label>PS Comercial Assistente Acoes</label>

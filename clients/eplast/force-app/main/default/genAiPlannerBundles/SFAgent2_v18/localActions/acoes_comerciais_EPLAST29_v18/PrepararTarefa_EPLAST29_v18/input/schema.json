@@ -1,0 +1,41 @@
+{
+  "unevaluatedProperties": false,
+  "properties": {
+    "Assunto": {
+      "title": "Assunto",
+      "description": "Assunto da tarefa. Pode vir vazio: a ação diz o que falta.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "DataVencimento": {
+      "title": "Data de vencimento",
+      "description": "Data de vencimento absoluta (AAAA-MM-DD). Pode vir vazia: a ação diz o que falta.",
+      "lightning:type": "lightning__dateType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "RegistroRelacionadoId": {
+      "title": "Id do registro relacionado",
+      "description": "Id de lead (00Q), conta (001) ou oportunidade (006) devolvido por IdentificarRegistro. Nunca o nome.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "Descricao": {
+      "title": "Descrição",
+      "description": "Texto opcional da tarefa. Deixe vazio quando o usuário não informar texto; nunca passe \"sem descrição\".",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    },
+    "Prioridade": {
+      "title": "Prioridade",
+      "description": "Normal ou High.",
+      "lightning:type": "lightning__textType",
+      "lightning:isPII": false,
+      "copilotAction:isUserInput": false
+    }
+  },
+  "lightning:type": "lightning__objectType"
+}
