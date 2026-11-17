@@ -67,3 +67,18 @@ Estado conferido na dev por query: `SFAgent2` v13 Active; v14 a v17 Inactive (v1
 
 ### Versões e ativação (rodada 2)
 Nada ativado por este build. Pendente, nesta ordem: esteira implanta v17 inativa na QA; QA ativa a v17 (rollback: reativar a v16).
+
+## Correções da rodada 3 (QA reprovou; `05-testes-rodada-3.md`)
+Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Nada tocado em QA, produção ou Marketing Cloud. Nenhum componente novo ou alterado nesta rodada.
+
+Estado conferido na dev por query: `SFAgent2` v13 Active; v14 a v17 Inactive (v16 e v17 são desta demanda; nenhuma outra demanda criou versão acima da v17, então a base segue válida). Flow `Task_Agente_CriarTarefa` na dev: v1 Active, v2 Obsolete (a v2 foi substituída depois do deploy da rodada 1; a numeração da QA, v1 a v5, difere e é esperada). `force-app` traz `bots/SFAgent2/v17.botVersion-meta.xml` e `genAiPlannerBundles/SFAgent2_v17`, sem alteração pendente na árvore.
+
+- FALHA 5 (crítica, v17 ausente na QA, repetição da FALHA 4): **não corrigível no build.** O pacote está completo na branch e na dev. O passo fixo de deploy da esteira (`05-deploy-qa.md`) continua pulando `BotVersion` e `GenAiPlannerBundle` quando já há versão ativa (v16 na QA). Criar v18 ou renomear a v17 cairia no mesmo pulo e quebraria a rastreabilidade; por isso não criei versão nova. Ação para a esteira (fora do builder): implantar `BotVersion SFAgent2.v17` e `GenAiPlannerBundle SFAgent2_v17` na QA como inativa; o QA ativa a v17 depois (rollback: reativar a v16).
+- FALHAS 1 a 3 (reteste na QA): dependem só de a v17 estar na QA. Conteúdo da correção inalterado (ver "Correções da rodada 1"). Não editei a v17 sem evidência de falha dela, porque ela nunca foi exercitada na QA.
+- AC-4 (sem usuário não administrador na QA): não corrigível pelo build (regra 6 da conta proíbe alterar perfil do usuário de teste). Segue para a homologação, com usuário comum com e sem `PS_Comercial_AssistenteAcoes`.
+
+### Versões e ativação (rodada 3)
+Nada ativado por este build. Pendente, nesta ordem: esteira implanta v17 inativa na QA; QA ativa a v17.
+
+### Para a verificação na dev
+Ativar o Flow e o agente v17 na dev e exercitar FALHAS 1 a 3, R3 (busca com `objectApiName = Lead`) e Q-13, como listado em "O que o build não provou".
