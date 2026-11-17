@@ -38,11 +38,38 @@ set -e
 # já está na QA como foi implantada (ativa não aceita edição): reimplanta o
 # resto do pacote sem os arquivos do agente.
 AGENTE_JA_ATIVO=""
+AGENTE_FORA=""
 ATIVO='agente est[aá] ativo|vers[aã]o do bot ativa|agent is active|active bot version'
 if [ "$RC" -ne 0 ] && jq -e --arg re "$ATIVO" '
       [(.result.details.componentFailures // []) | if type=="array" then .[] else . end]
       | length > 0 and all(.[]; (.problem // "") | test($re; "i"))' /tmp/deploy-qa.json >/dev/null 2>&1; then
   AGENTE_JA_ATIVO=$(jq -r '[(.result.details.componentFailures // []) | if type=="array" then .[] else . end | "\(.componentType) \(.fullName)"] | unique | join(", ")' /tmp/deploy-qa.json)
+  # Primeiro tira só as versões que a plataforma recusou e mantém o resto do
+  # agente (achado EPLAST-29, 2026-11-17: a v16 ativa derrubou o deploy, o
+  # pacote foi sem agente nenhum e a v17, que corrigia as falhas do QA, nunca
+  # chegou à sandbox). Se o novo deploy cair por outro motivo, essa é a falha
+  # de verdade e é ela que aparece. Só volta a tirar o agente inteiro se a
+  # plataforma continuar recusando por versão ativa.
+  SO_A_ATIVA=""
+  if python3 ../../scripts/pacote_sem_versao_ativa.py /tmp/deploy-qa.json /tmp/pacote-args.txt > /tmp/pacote-args-novo.txt; then
+    echo "Versão do agente já ativa na QA ($AGENTE_JA_ATIVO): reimplantando sem ela, com as versões novas da demanda."
+    mapfile -t ARGS_NOVO < /tmp/pacote-args-novo.txt
+    set +e
+    sf project deploy start "${ARGS_NOVO[@]}" --target-org "$TARGET_ORG" --wait 30 --json > /tmp/deploy-qa.json
+    RC=$?
+    set -e
+    if [ "$RC" -eq 0 ]; then
+      SO_A_ATIVA=1
+      ARGS=("${ARGS_NOVO[@]}")
+      cp /tmp/pacote-args-novo.txt /tmp/pacote-args.txt
+    elif ! jq -e --arg re "$ATIVO" '
+          [(.result.details.componentFailures // []) | if type=="array" then .[] else . end]
+          | length > 0 and all(.[]; (.problem // "") | test($re; "i"))' /tmp/deploy-qa.json >/dev/null 2>&1; then
+      SO_A_ATIVA=1
+    fi
+  fi
+  if [ -z "$SO_A_ATIVA" ]; then
+  AGENTE_FORA=1
   echo "Versão do agente já ativa na QA ($AGENTE_JA_ATIVO): reimplantando o pacote sem os arquivos do agente."
   SEM_AGENTE=()
   i=0
@@ -69,6 +96,7 @@ if [ "$RC" -ne 0 ] && jq -e --arg re "$ATIVO" '
     echo "O pacote só tinha a versão do agente, que já está ativa na QA: nada a reimplantar."
     echo '{"result":{"id":"sem deploy","status":"versão do agente já ativa"}}' > /tmp/deploy-qa.json
     RC=0
+  fi
   fi
 fi
 # Rodada nova de demanda com classe agendável ou batch (achado EPLAST-33,
@@ -130,6 +158,9 @@ fi
   echo "- **Commit:** \`$(git rev-parse --short HEAD)\`"
   if [ -n "$AGENTE_JA_ATIVO" ]; then
     echo "- **Agente:** já ativo na QA desde a rodada anterior, não reimplantado ($AGENTE_JA_ATIVO)"
+  fi
+  if [ -n "$AGENTE_FORA" ]; then
+    echo "- **Atenção:** nenhum arquivo de agente foi implantado nesta rodada. Se a demanda criou versão nova do agente, ela **não está na QA**."
   fi
   if [ -n "$JOBS_CANCELADOS" ]; then
     echo
