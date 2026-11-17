@@ -680,7 +680,7 @@
         <queriedFields>Id</queriedFields>
     </recordLookups>
     <recordLookups>
-        <description>EPLAST-35. Membros diretos da fila que sao usuarios (Id 005), em ordem fixa.</description>
+        <description>EPLAST-35. Membros diretos da fila, em ordem fixa. Sem filtro de texto no UserOrGroupId (a plataforma recusa operador de texto em campo Id); Id de grupo e descartado no Get_Elegiveis, cujo In so casa com Id de usuario.</description>
         <name>Get_Membros</name>
         <label>Get_Membros</label>
         <locationX>0</locationX>
@@ -698,13 +698,6 @@
             <operator>EqualTo</operator>
             <value>
                 <elementReference>var_Fila.Id</elementReference>
-            </value>
-        </filters>
-        <filters>
-            <field>UserOrGroupId</field>
-            <operator>StartsWith</operator>
-            <value>
-                <stringValue>005</stringValue>
             </value>
         </filters>
         <getFirstRecordOnly>false</getFirstRecordOnly>
@@ -795,7 +788,7 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <triggerOrder>500</triggerOrder>
     <variables>
         <description>EPLAST-35. Variavel de trabalho do Flow.</description>

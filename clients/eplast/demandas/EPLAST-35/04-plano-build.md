@@ -63,3 +63,21 @@ Só a execução prova; nada abaixo foi exercitado nesta sessão (não houve tes
 5. **Flows de pacote em Lead** não foram inspecionados (R10 do design).
 6. **Rebase sobre a `main`**: pendente (seção 3).
 7. O Id do usuário de teste não foi resolvido nesta sessão (não foi preciso para o build).
+
+## Correções da verificação 1
+
+**Org:** `sbx-eplast-dev` (única conectada em `sf org list`). Nada tocado em QA, QAS, produção ou Marketing Cloud.
+
+| Falha | Correção | Estado |
+|---|---|---|
+| FALHA 1: `Get_Membros` cai no caminho de falha, Lead fica na fila | Removido o filtro `UserOrGroupId StartsWith '005'` do `Get_Membros` (a plataforma recusa operador de texto em campo Id). O Get agora filtra só por `GroupId`. Id de grupo na coleção é descartado em `Get_Elegiveis`, cujo `Id In` só casa com usuário (ativo e Standard). Ordem, `k`, `MOD` e o restante do Flow não mudaram. | Corrigido no XML; deploy real com sucesso (Deploy ID `0AfHa00000EJJXhKAP`, antes `--dry-run` aprovado) |
+
+### Versões e ativação (desta correção)
+- A correção entrou como **versão nova** do Flow `Lead_AfterSave_DistribuiDonoRodizio`: **v2 em Draft**. A v1 (com defeito) continua Active e não foi editada (conferido por Tooling: v1 Active, v2 Draft).
+- **Passo de ativação, separado e não feito:** ativar a v2 na DEV antes de repetir T1 a T18 (a ativação da v2 desativa a v1). Estado do interruptor `DistribuicaoAtiva__c` e da regra v2: como o verificador os deixou (regra v2 ativa e interruptor false, segundo a verificação 1). Desfazer: reativar a v1.
+- Coexistência com EPLAST-38: nenhum componente dela foi tocado nesta correção.
+
+### Pontos a observar no reteste (não provados por este build)
+- A fixa `Get_Membros` ordena por `UserOrGroupId` (campo Id); o erro da verificação foi no filtro, não na ordenação, mas só a execução confirma. Se falhar, ordenar só em `Get_Elegiveis` (já ordena por `Id`) basta, pois a posição usa essa lista.
+- Medição de CPU do lote de 200 pelo caminho completo (limite 70% = 7.000 ms) segue pendente; a da verificação 1 não vale (só caminho de falha).
+- T3b, T7, T8, T9, T11, T14, T15, T18 e `RodizioAtivo=false` seguem sem prova até o reteste.
