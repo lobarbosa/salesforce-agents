@@ -295,3 +295,86 @@ Regra 4 da conta. Nenhuma se enquadra no caso 3.
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável (2026-11-17): classificar pela oportunidade salva, sem fluxo agendado
+
+Decidido por Leonardo Barbosa em 17/11, depois de reavaliar o desenho da rodada 2 e a
+solução de outubro (fluxo agendado em Conta, que não resolve o limite de 50 jobs em fila).
+**Vale acima de tudo o que este arquivo diz acima sobre onde e quando a classificação é
+gravada.** O objeto `AccountRanking__c` e as decisões D1, D2 e D3 da seção 0 **não serão
+construídos**. Redesenhe a partir daqui.
+
+### Diretriz
+
+Trocar o fluxo agendado, que varre todas as contas no dia configurado, por um **Flow
+disparado por registro em `Opportunity`** que recalcula e grava a classificação **só da conta
+daquela oportunidade**.
+
+- **Flow novo e separado.** Não criar versão nova do `OpportunityFlow` (CPQ, mais de 2.000
+  linhas). O Flow novo é próprio desta demanda.
+- **Uma conta por execução.** Cada oportunidade salva grava no máximo uma conta. É isso que
+  mantém a transação abaixo do limite de 50 jobs em fila da `AccountTrigger`.
+- **Grava em `Account`**, como antes: `Ranking__c` e `LastMonthPurchaseValue__c` continuam
+  sendo os campos vigentes. Nada fica congelado; página, relatórios, permission set
+  `Protheus` e histórico de campo seguem como estão.
+- **Só grava se mudou.** Se a classificação e o valor calculados forem iguais aos da conta,
+  o Flow não atualiza: cada gravação em conta gera um envio ao Protheus.
+- **Restrições de 16/11 continuam valendo:** só declarativo, sem Apex novo, sem alterar
+  `AccountTrigger`, `AccountTriggerHelper` nem `TriggerUtility__mdt`, sem gravação em massa
+  em `Account`.
+
+### O que se mantém da rodada 1
+
+`RankingRange__mdt` com as 7 faixas e a regra de comparação; os 7 valores do picklist
+`Account.Ranking__c` e o histórico de campo; o relatório de mudanças de classificação; o
+caminho de falha (`IntegrationLog__c` e e-mail ao destinatário configurado); as respostas de
+14/11 (data da compra pela criação, classificação pela média, soma gravada no campo de
+valor; média vazia mantém a classificação; média zero cai em MP).
+
+### O que o arquiteto precisa decidir e justificar
+
+1. **Condição de entrada do Flow novo.** O menor conjunto de eventos que muda a
+   classificação (por exemplo: oportunidade passa a ganha, deixa de ser ganha, muda de valor
+   ou de conta estando ganha). Não disparar em todo save de oportunidade.
+2. **Ordem em relação ao `OpportunityFlow`.** A classificação lê
+   `Account.AveragePurchasesThisYear__c`, que o `OpportunityFlow` grava no mesmo save. O Flow
+   novo tem de ler a média já atualizada: ordem de disparo depois dele, ou caminho
+   assíncrono do Flow disparado por registro (roda em transação própria, depois do commit).
+   Escolha um, diga por quê e confirme na org que funciona.
+3. **Quantas gravações em conta e quantos envios ao Protheus por oportunidade salva.** Conte
+   pela metadata: o `OpportunityFlow` já grava a conta; o Flow novo acrescenta no máximo uma
+   gravação. Declare o número antes e depois e confirme que fica muito abaixo de 50.
+4. **Carga em massa de oportunidades** (200 de contas diferentes numa transação). O
+   `OpportunityFlow` já grava as contas nesse caso, então o limite de 50 já existe hoje, sem
+   esta demanda. Diga se o Flow novo piora, mantém ou não muda esse comportamento. Não é
+   para corrigir aqui.
+5. **O que fazer com o `ScheduledFlowOpportunity`.** Ele deixa de classificar. Proposta:
+   desativar (passo separado, depois da verificação) e não apagar. Diga o que acontece com
+   `ScheduledFlowOpportunitySetting__mdt` (o dia de execução perde uso; o destinatário de
+   falha continua).
+6. **Estimativa refeita**, contando o que da rodada 1 se reaproveita.
+
+### Consequências aceitas pelo responsável
+
+- **Cadência.** A classificação muda quando uma oportunidade da conta é salva, não mais uma
+  vez por mês. Isso responde a pergunta P9 da análise.
+- **Conta sem oportunidade nova mantém a classificação que tem.** Vale para a entrada das 7
+  faixas novas e para a virada do ano (a base é anual). O recálculo de todas as contas não
+  é feito pela esteira: fica para o card EPLAST-48, executado por uma pessoa em lotes
+  pequenos, ciente de que cada conta gravada gera um envio ao Protheus.
+- **Critérios de aceite da análise que mudam** (a análise foi aprovada no gate; a mudança é
+  decisão do responsável e fica registrada aqui):
+  - Critério 4 passa a ser: dado uma oportunidade salva que atende à condição de entrada,
+    a conta dela é gravada no máximo uma vez pelo Flow novo, e nenhuma outra conta é gravada.
+  - Critério 6 passa a ser: dado oportunidades de N contas salvas em transações separadas,
+    nenhuma execução falha com `UNABLE_TO_LOCK_ROW` nem com "Too many queueable jobs".
+  - Critério 18 (volume da execução mensal) deixa de se aplicar. No lugar: o item 4 acima,
+    declarado no desenho.
+  - Critério 9 (conta sem oportunidade ganha no período) só é exercitável a partir de um
+    evento de oportunidade da conta; diga como testar.
+
+### Para o QA desta rodada
+
+Na sandbox de QA ficou o teste armado da rodada 3 (`ScheduledFlowOpportunitySetting.Default`
+com dia 15 e início do Flow às 17:10). O plano de teste deve prever devolver essa
+configuração ao estado original.

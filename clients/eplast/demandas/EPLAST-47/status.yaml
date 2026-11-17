@@ -3,7 +3,7 @@ client: eplast
 titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
   de contas)
 tipo: sustentacao
-status: aguardando_gate_design
+status: design
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
 - de: null
@@ -126,3 +126,9 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-16T08:54:29.988878+00:00'
+- de: aguardando_gate_design
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T00:55:35.200840+00:00'
+  motivo: 'redesenhar: Flow disparado pela oportunidade salva, uma conta por execução,
+    sem fluxo agendado e sem objeto novo. Ver decisão de 2026-11-17 em 03-design.md.'
