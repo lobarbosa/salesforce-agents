@@ -282,3 +282,39 @@ Regra 4 da conta. **Nenhuma se enquadra no caso 3: não há pergunta bloqueante.
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável (2026-11-17, depois da rodada 4 de QA): desativar o agendado agora; critério 16 fica para a homologação
+
+Registrada por autorização de Leonardo Barbosa para conduzir a demanda (17/11). Fica dentro
+da diretriz de 17/11 e da seção 7 deste desenho; não muda regra de negócio.
+
+**O que a rodada 4 de QA mostrou.** Classificação, soma, histórico, relatório e ausência de
+erro de limite passaram na sandbox de QA (casos Q1 a Q6, 12 bordas). Reprovou por um motivo:
+o `ScheduledFlowOpportunity` continua **ativo e agendado** na QA (v7 Active, `CronTrigger` em
+espera), porque o build deixou a desativação como "passo separado, pendente" à espera do
+caso V6.
+
+**Decisão 1 — desativar o `ScheduledFlowOpportunity` neste build.** A condição "depois de o
+verificador provar V1 a V6" (seção 7) passa a ser "depois de V1 a V5", que já passaram na dev
+e na QA. O builder inclui a desativação **no pacote** (FlowDefinition com versão ativa 0, ou
+o equivalente que ele confirmar por dry-run), implanta na dev, confere que o Flow ficou sem
+versão ativa e sem agendamento pendente, e registra em "Versões e ativação" do plano de
+build. Não apagar o Flow nem as versões. Nada mais muda no pacote: o Flow novo, as faixas, o
+relatório e o metadado ficam como estão (não reconstruir o que passou).
+
+**Decisão 2 — critério 16 (falha forçada, V6/Q7) fica para a homologação, não bloqueia.**
+Não é exercitável pela esteira: na dev as validation rules não deixam criar conta inválida,
+e na QA a regra `CheckAccountOwnerHasProtheusSellerId` barra a própria oportunidade antes do
+Flow novo; provocar a falha exigiria alterar usuário de terceiros ou dado real, o que a
+esteira não faz. O caminho de falha fica provado por leitura do Flow (fault de
+`UpdateAccount` → `LogFault` → e-mail só com destinatário). O QA marca o caso como "não
+exercitável, validar na homologação", **sem reprovar por ele**, e o repete no roteiro do
+cliente em "O que assumimos e você precisa confirmar".
+
+**Decisão 3 — "média vazia mantém a classificação" (C11b).** Provado na QA pelo caso Q4
+(ganha que passa a perdida deixa a média vazia e a classificação se mantém). Fechado.
+
+**Para o QA da próxima rodada.** Reteste só o que mudou e o estado: Q8 (agendado sem versão
+ativa e sem `CronTrigger` em espera na QA depois do deploy) e uma amostra de regressão da
+classificação (3 bordas bastam). Os demais casos da rodada 4 valem como evidência; cite-os.
+Se o deploy da esteira não desativar o agendado na QA, isso é defeito do pacote (reprova).
