@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MKT_Nutricao_ProntoAbordagem__c</fullName>
+    <description>EPLAST-45. Lead elegivel para nutricao com faixa de prioridade AA ou A (PriorityBand__c, EPLAST-26). Calculado na leitura. Lido pelo vendedor (list view Leads prontos para abordagem) e pelo Marketing Cloud para tirar o lead da jornada de nutricao.</description>
+    <formula>AND(MKT_Nutricao_Elegivel__c, OR(PriorityBand__c = &quot;AA&quot;, PriorityBand__c = &quot;A&quot;))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Lead em nutricao com prioridade AA ou A: pronto para abordagem comercial.</inlineHelpText>
+    <label>Pronto para abordagem</label>
+    <trackHistory>false</trackHistory>
+    <type>Checkbox</type>
+</CustomField>

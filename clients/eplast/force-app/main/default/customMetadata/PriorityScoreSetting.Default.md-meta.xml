@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Default</label>
+    <protected>false</protected>
+    <values>
+        <field>LeadEngagementHighPoints__c</field>
+        <value xsi:type="xsd:double">15.0</value>
+    </values>
+    <values>
+        <field>LeadEngagementMediumPoints__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>LeadEngagementLowPoints__c</field>
+        <value xsi:type="xsd:double">5.0</value>
+    </values>
+    <values>
+        <field>OppDiscoveryPoints__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>OppBudgetPoints__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>OppAdvancedStagePoints__c</field>
+        <value xsi:type="xsd:double">5.0</value>
+    </values>
+    <values>
+        <field>OppRecentActivityPoints__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>OppRecentActivityDays__c</field>
+        <value xsi:type="xsd:double">30.0</value>
+    </values>
+    <values>
+        <field>OppNextStepPoints__c</field>
+        <value xsi:type="xsd:double">10.0</value>
+    </values>
+    <values>
+        <field>BandAAMin__c</field>
+        <value xsi:type="xsd:double">90.0</value>
+    </values>
+    <values>
+        <field>BandAMin__c</field>
+        <value xsi:type="xsd:double">75.0</value>
+    </values>
+    <values>
+        <field>BandBMin__c</field>
+        <value xsi:type="xsd:double">60.0</value>
+    </values>
+    <values>
+        <field>BandCMin__c</field>
+        <value xsi:type="xsd:double">40.0</value>
+    </values>
+</CustomMetadata>

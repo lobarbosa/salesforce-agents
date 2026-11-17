@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Parâmetros do score de prioridade de Lead e Opportunity (EPLAST-26): pesos dos critérios, dias de interação recente e cortes das faixas AA, A, B, C. Registro único Default, editável em Setup sem deploy. Não guarda dado de cliente.</description>
+    <label>Score de prioridade - parâmetros</label>
+    <pluralLabel>Score de prioridade - parâmetros</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

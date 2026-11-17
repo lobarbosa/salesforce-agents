@@ -7,6 +7,8 @@
     <columns>OPPORTUNITY.PROBABILITY</columns>
     <columns>OPPORTUNITY.AMOUNT</columns>
     <columns>OPPORTUNITY.CLOSE_DATE</columns>
+    <columns>OPPORTUNITY.NEXT_STEP</columns>
+    <columns>OPPORTUNITY.LAST_ACTIVITY</columns>
     <columns>PriorityScore__c</columns>
     <columns>PriorityBand__c</columns>
     <columns>CORE.USERS.FULL_NAME</columns>

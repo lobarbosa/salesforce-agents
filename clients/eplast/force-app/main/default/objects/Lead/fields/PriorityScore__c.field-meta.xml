@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>PriorityScore__c</fullName>
-    <description>Score de prioridade do lead, de 0 a 100, calculado na leitura por fórmula a partir de Setor (30), Origem do lead (30) e Status Contatado ou lead convertido (40). Somente leitura. EPLAST-26.</description>
+    <description>Prioridade comercial do lead, de 0 a 100 (não é probabilidade de fechamento). Fórmula de leitura que soma pontos de critérios; hoje só o engajamento (MKT_MC_Engajamento__c) tem campo. Pesos lidos de PriorityScoreSetting__mdt.Default. Somente leitura. EPLAST-26.</description>
     <externalId>false</externalId>
-    <formula>IF(
-  AND(ISBLANK(TEXT(Sector__c)), ISBLANK(TEXT(LeadSource))),
-  0,
-  IF(ISBLANK(TEXT(Sector__c)), 0, 30)
-  + IF(ISBLANK(TEXT(LeadSource)), 0, 30)
-  + IF(OR(ISPICKVAL(Status, "Contatado"), IsConverted), 40, 0)
+    <formula>MIN(100,
+  CASE(TEXT(MKT_MC_Engajamento__c),
+    &quot;Alto&quot;, $CustomMetadata.PriorityScoreSetting__mdt.Default.LeadEngagementHighPoints__c,
+    &quot;Médio&quot;, $CustomMetadata.PriorityScoreSetting__mdt.Default.LeadEngagementMediumPoints__c,
+    &quot;Baixo&quot;, $CustomMetadata.PriorityScoreSetting__mdt.Default.LeadEngagementLowPoints__c,
+    0)
 )</formula>
     <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-    <inlineHelpText>Soma de pontos: Setor preenchido 30, Origem do lead preenchida 30, Status Contatado (ou lead convertido) 40. Sem setor e sem origem, o score é 0.</inlineHelpText>
+    <inlineHelpText>Prioridade comercial de 0 a 100, não é probabilidade de fechamento. Soma: potencial de compra mensal (até 30), aderência ao portfólio (25), prazo da primeira compra (20), engajamento (15), cadastro qualificado e decisor (10). Hoje só o engajamento devolvido pelo Marketing Cloud tem campo no CRM. Os demais valem 0 até existir o campo. Pesos configurados pelo administrador.</inlineHelpText>
     <label>Score de prioridade</label>
     <precision>3</precision>
+    <required>false</required>
     <scale>0</scale>
-    <trackHistory>false</trackHistory>
-    <trackTrending>false</trackTrending>
     <type>Number</type>
+    <unique>false</unique>
 </CustomField>

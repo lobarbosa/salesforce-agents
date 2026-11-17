@@ -19,7 +19,7 @@
     <filters>
         <field>PriorityBand__c</field>
         <operation>equals</operation>
-        <value>Alta</value>
+        <value>AA,A</value>
     </filters>
-    <label>Oportunidades de prioridade alta</label>
+    <label>Oportunidades de prioridade AA e A</label>
 </ListView>
