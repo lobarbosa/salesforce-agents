@@ -436,3 +436,17 @@ Resposta deste design ao item 6: seção 1.4 (compila na org), seção 4 (ordem,
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Decisão do responsável (2026-11-17) depois da rodada 1 de QA — homologar junto com a EPLAST-38
+
+A rodada 1 de QA foi reprovada sem defeito de código: a sandbox de QA recebeu o Flow em rascunho, a regra `Distribuicao_Regional_Leads_v2` inativa, o interruptor `DistribuicaoAtiva__c` desligado e a fila `Leads_RJ_ES` sem membros, e o QA não tinha autorização para mudar isso. A verificação na dev ficou inconclusiva pelo mesmo motivo (a versão corrigida do Flow ficou em rascunho). O rodízio ainda não rodou em nenhuma org.
+
+Decisão de Leonardo Barbosa, responsável pela conta. Vale acima da PA-30 e de qualquer trecho deste desenho que condicione a ativação ao fim da homologação da EPLAST-38:
+
+1. **A EPLAST-35 é homologada junto com a EPLAST-38.** Está aceito que a regra nova substitua a da 38 na sandbox de QA agora, e que quem estiver homologando a 38 passe a ver a distribuição desta demanda.
+2. **O pacote que vai para a QA entrega a solução ligada:** o Flow `Lead_AfterSave_DistribuiDonoRodizio` na versão corrigida e **ativa**, a regra `Distribuicao_Regional_Leads_v2` **ativa** e o registro `DistribuicaoLeadSetting.Padrao` com `DistribuicaoAtiva__c = true`. O builder ajusta a metadata para isso e registra no plano o que entra e o que sai (regra v1 da 38 deixa de ser a ativa) e como desfazer.
+3. **Na dev, a ativação para verificar está autorizada**, inclusive a da versão nova do Flow: o verificador ativa, exercita os casos da seção 12 (em especial a correção da leitura dos membros da fila, o lote de 200 e o caso T7) e registra o estado de antes e de depois.
+4. **Membros de teste na fila `Leads_RJ_ES`:** o verificador (na dev) e o QA (na QA) podem incluir na fila, pelo tempo do teste, usuários que já existem e estão ativos, começando pelo próprio usuário de execução, e removem ao final, registrando antes e depois. **Não criar usuário, não alterar perfil nem permissão de ninguém.** Se a org tiver só um usuário ativo elegível, a alternância entre dois vendedores fica sem prova nessa org: declarar isso em `05-testes.md` e no roteiro do cliente, e provar ali o que um membro só permite (dono da conta por CNPJ, região, fila sem rodízio, caminho de falha).
+5. Continua valendo: nenhuma classe Apex; dado só sintético (`TESTE EPLAST-35`); nada de registro existente da QA lido ou alterado.

@@ -2,7 +2,7 @@ id: EPLAST-35
 client: eplast
 titulo: Fluxos de aprovação, distribuição de leads e encaminhamento
 tipo: projeto
-status: aguardando_gate_build
+status: build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -86,3 +86,10 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-17T16:13:32.383719+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T17:46:57.030719+00:00'
+  motivo: 'refazer o build com a decisão do responsável de 2026-11-17 (homologar junto
+    com a EPLAST-38: Flow e regra v2 ativos e interruptor ligado no pacote), registrada
+    no 03-design.md.'
