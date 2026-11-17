@@ -1,0 +1,92 @@
+# Gates
+
+Log de aprovações humanas desta demanda. Escrito por `sfagents`, não à mão:
+cada bloco registra quem aprovou, quando, e o hash de cada artefato que estava
+na mesa naquele momento.
+
+Se um hash aqui não bate mais com o arquivo em disco, o artefato mudou **depois**
+da aprovação — o que não é necessariamente errado, mas significa que o que está
+no repositório hoje não é o que aquela pessoa aprovou.
+
+## aguardando_gate_analise
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-10T18:24:28.520253+00:00
+- **Commit:** `243f194c`
+- **Artefatos revisados:**
+  - `01-analise.md` — sha256 `287a4cc6b530b760` (15233 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-11T21:58:43.658342+00:00
+- **Commit:** `2626ed35`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c1540125cdc4cf4e` (14776 bytes)
+  - `03-design.md` — sha256 `e3b513ebf54b79da` (24324 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-12T13:43:45.269925+00:00
+- **Commit:** `3f5779cb`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `30f07348a90c5c4b` (4391 bytes)
+
+## aguardando_gate_analise
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-15T03:41:47.624748+00:00
+- **Commit:** `0530d70f`
+- **Artefatos revisados:**
+  - `01-analise.md` — sha256 `39a9d1cc96e9f0e9` (23024 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-15T09:12:17.136365+00:00
+- **Commit:** `4d09ea13`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `8f22d20f257e4178` (16302 bytes)
+  - `03-design.md` — sha256 `f1e2ec40198a2280` (29594 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-15T12:00:09.722047+00:00
+- **Commit:** `c42418b2`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `a5f216f3c2ec3d37` (7487 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-15T20:32:37.032926+00:00
+- **Commit:** `15dc3a9c`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `1b72472c63451a25` (9595 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-17T13:48:43.679190+00:00
+- **Commit:** `efc938bc`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `0bc1205eb3bdb16b` (20817 bytes)
+  - `03-design.md` — sha256 `4bc5029c1e605206` (36840 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-17T14:14:26.959264+00:00
+- **Commit:** `0ea434ee`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `51229306e0cddf6d` (5048 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-17T15:47:16.157020+00:00
+- **Commit:** `b2695652`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `a3b88ad8f1c9a0a6` (6597 bytes)

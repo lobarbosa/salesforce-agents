@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PriorityScore__c</fullName>
+    <description>Prioridade comercial da oportunidade, de 0 a 100 (não é probabilidade de fechamento). Fórmula de leitura: descoberta, orçamento, estágio avançado, interação recente e próximo passo; zero se encerrada. Pesos lidos de PriorityScoreSetting__mdt.Default. Somente leitura. EPLAST-26.</description>
+    <externalId>false</externalId>
+    <formula>IF(IsClosed, 0,
+  MIN(100,
+      IF(Discovery_Completed__c, $CustomMetadata.PriorityScoreSetting__mdt.Default.OppDiscoveryPoints__c, 0)
+    + IF(Budget_Confirmed__c,    $CustomMetadata.PriorityScoreSetting__mdt.Default.OppBudgetPoints__c, 0)
+    + IF(CASE(StageName,
+        &quot;Cotação&quot;, 1, &quot;Execução técnica do projeto&quot;, 1, &quot;Envio Cotação&quot;, 1,
+        &quot;Amostra&quot;, 1, &quot;Análise Fiscal&quot;, 1, &quot;Análise Financeira&quot;, 1,
+        &quot;Negociação Comercial&quot;, 1, 0) = 1, $CustomMetadata.PriorityScoreSetting__mdt.Default.OppAdvancedStagePoints__c, 0)
+    + IF(AND(NOT(ISBLANK(LastActivityDate)),
+             LastActivityDate &gt;= TODAY() - $CustomMetadata.PriorityScoreSetting__mdt.Default.OppRecentActivityDays__c),
+         $CustomMetadata.PriorityScoreSetting__mdt.Default.OppRecentActivityPoints__c, 0)
+    + IF(ISBLANK(NextStep), 0, $CustomMetadata.PriorityScoreSetting__mdt.Default.OppNextStepPoints__c)
+  )
+)</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <inlineHelpText>Prioridade comercial de 0 a 100, não é probabilidade de fechamento. Soma: estágio com evidências de avanço (até 25: descoberta, orçamento, estágio a partir de Cotação), interação recente e próximo passo (20), prazo confirmado pelo cliente (20), margem (20), viabilidade de atendimento (15). Prazo, margem e viabilidade valem 0 até existir campo no CRM. Pesos configurados pelo administrador.</inlineHelpText>
+    <label>Score de prioridade</label>
+    <precision>3</precision>
+    <required>false</required>
+    <scale>0</scale>
+    <type>Number</type>
+    <unique>false</unique>
+</CustomField>
