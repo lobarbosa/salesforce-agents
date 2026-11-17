@@ -39,6 +39,8 @@ set -e
 # resto do pacote sem os arquivos do agente.
 AGENTE_JA_ATIVO=""
 AGENTE_FORA=""
+AGENTE_DESATIVADO=""
+ARGS_NOVO=()
 ATIVO='agente est[aá] ativo|vers[aã]o do bot ativa|agent is active|active bot version'
 if [ "$RC" -ne 0 ] && jq -e --arg re "$ATIVO" '
       [(.result.details.componentFailures // []) | if type=="array" then .[] else . end]
@@ -59,6 +61,9 @@ if [ "$RC" -ne 0 ] && jq -e --arg re "$ATIVO" '
   FALHAS_JQ='[(.result.details.componentFailures // []) | if type=="array" then .[] else . end | "\(.componentType) \(.fullName): \(.problem)"] | unique | .[]'
   echo "Recusa do primeiro deploy, por componente:"
   jq -r "$FALHAS_JQ" /tmp/deploy-qa.json | head -20 || true
+  BOTS=$(jq -r '[(.result.details.componentFailures // []) | if type=="array" then .[] else . end
+                 | select(.componentType=="BotVersion" or .componentType=="Bot") | .fullName | split(".")[0]] | unique | .[]' /tmp/deploy-qa.json 2>/dev/null || true)
+  AGENTE_DESATIVADO=""
   if python3 ../../scripts/pacote_sem_versao_ativa.py /tmp/deploy-qa.json /tmp/pacote-args.txt > /tmp/pacote-args-novo.txt; then
     echo "Versão do agente já ativa na QA ($AGENTE_JA_ATIVO): reimplantando sem ela, com as versões novas da demanda."
     mapfile -t ARGS_NOVO < /tmp/pacote-args-novo.txt
@@ -86,6 +91,54 @@ if [ "$RC" -ne 0 ] && jq -e --arg re "$ATIVO" '
   else
     SEGUNDA_RECUSA="não foi possível separar a versão ativa das demais no pacote (nenhuma tentativa só sem ela foi feita)"
     echo "::warning::$SEGUNDA_RECUSA"
+  fi
+  # A plataforma recusou até o pacote sem a versão ativa: com o agente ativo,
+  # nenhuma versão nova entra (achado EPLAST-29, rodada 3 de QA, 2026-11-17).
+  # Decisão do responsável no mesmo dia: a esteira desativa o agente na sandbox
+  # de QA, implanta a versão nova inativa e deixa a ativação com o QA, que já
+  # ativa a versão da demanda antes de testar. Se o deploy cair mesmo assim, o
+  # agente é reativado e o passo segue como antes.
+  if [ -z "$SO_A_ATIVA" ] && [ "${#ARGS_NOVO[@]}" -gt 0 ] && [ -n "$BOTS" ]; then
+    for B in $BOTS; do
+      if sf agent deactivate --api-name "$B" --target-org "$TARGET_ORG" --json > /tmp/desativar.json 2>&1; then
+        AGENTE_DESATIVADO="$AGENTE_DESATIVADO $B"
+        echo "Agente $B desativado na QA para o deploy da versão nova."
+      else
+        echo "::warning::Não consegui desativar o agente $B na QA:"
+        jq -r '.message // empty' /tmp/desativar.json 2>/dev/null | head -5 || head -5 /tmp/desativar.json || true
+      fi
+    done
+    if [ -n "$AGENTE_DESATIVADO" ]; then
+      set +e
+      sf project deploy start "${ARGS_NOVO[@]}" --target-org "$TARGET_ORG" --wait 30 --json > /tmp/deploy-qa.json
+      RC=$?
+      set -e
+      if [ "$RC" -eq 0 ]; then
+        SO_A_ATIVA=1
+        SEGUNDA_RECUSA=""
+        ARGS=("${ARGS_NOVO[@]}")
+        cp /tmp/pacote-args-novo.txt /tmp/pacote-args.txt
+      else
+        SEGUNDA_RECUSA=$(jq -r "$FALHAS_JQ" /tmp/deploy-qa.json 2>/dev/null | head -20 || true)
+        echo "::warning::Com o agente desativado o deploy também caiu. Por componente:"
+        printf '%s\n' "$SEGUNDA_RECUSA"
+        for B in $AGENTE_DESATIVADO; do
+          if sf agent activate --api-name "$B" --target-org "$TARGET_ORG" --json > /tmp/reativar.json 2>&1; then
+            echo "Agente $B reativado na QA."
+          else
+            echo "::error::O agente $B ficou DESATIVADO na sandbox de QA e não consegui reativar. Reative em Setup > Agentes."
+            SEGUNDA_RECUSA=$(printf '%s\nATENÇÃO: o agente %s ficou desativado na sandbox de QA; a reativação falhou' "$SEGUNDA_RECUSA" "$B")
+          fi
+        done
+        AGENTE_DESATIVADO=""
+        # Falha que não é "agente ativo" é a falha de verdade: aparece como tal.
+        if ! jq -e --arg re "$ATIVO" '
+              [(.result.details.componentFailures // []) | if type=="array" then .[] else . end]
+              | length > 0 and all(.[]; (.problem // "") | test($re; "i"))' /tmp/deploy-qa.json >/dev/null 2>&1; then
+          SO_A_ATIVA=1
+        fi
+      fi
+    fi
   fi
   if [ -z "$SO_A_ATIVA" ]; then
   AGENTE_FORA=1
@@ -177,6 +230,9 @@ fi
   echo "- **Commit:** \`$(git rev-parse --short HEAD)\`"
   if [ -n "$AGENTE_JA_ATIVO" ]; then
     echo "- **Agente:** já ativo na QA desde a rodada anterior, não reimplantado ($AGENTE_JA_ATIVO)"
+  fi
+  if [ -n "$AGENTE_DESATIVADO" ]; then
+    echo "- **Agente desativado na QA para este deploy:**$AGENTE_DESATIVADO. Com o agente ativo a plataforma não aceitou a versão nova. A versão nova foi implantada **inativa** e o agente **não responde na QA** até o QA ativá-la, antes de testar."
   fi
   if [ -n "$AGENTE_FORA" ]; then
     echo "- **Atenção:** nenhum arquivo de agente foi implantado nesta rodada. Se a demanda criou versão nova do agente, ela **não está na QA**."

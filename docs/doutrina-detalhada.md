@@ -235,6 +235,18 @@ motivo, é essa a falha que aparece. Só se a plataforma continuar recusando por
 passo volta a tirar o agente inteiro, e aí o `05-deploy-qa.md` avisa que nenhuma versão nova
 chegou à QA.
 
+Agente ativo não aceita versão nova na QA (2026-11-17, achado EPLAST-29, rodada 3 de QA): o
+deploy sem a versão ativa também foi recusado, a v17 continuou fora da sandbox e a demanda
+voltou ao gate de design por limite de rodadas, sem defeito no build. Decisão do responsável
+no mesmo dia: quando a recusa por agente ativo persiste, o `implantar-build-qa.sh` desativa
+o agente na sandbox de QA (`sf agent deactivate`), implanta a versão nova inativa e registra
+em `05-deploy-qa.md` que o agente ficou desativado. Quem ativa é o `qa`, que já ativa a
+versão da demanda antes de testar. Até lá o assistente não responde na QA, e isso afeta quem
+estiver homologando outra demanda do mesmo agente. Se o deploy cair mesmo com o agente
+desativado, o passo reativa o agente e segue como antes; se a reativação falhar, o job
+acusa em erro. As respostas da plataforma em cada tentativa vão para o log e, quando o
+agente fica fora do pacote, para o `05-deploy-qa.md`. Só vale para `sbx-<cliente>-qa`.
+
 Roteiro do cliente (2026-11-14): o `05-testes.md` é evidência para quem aprova gate, e era
 ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava também
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
