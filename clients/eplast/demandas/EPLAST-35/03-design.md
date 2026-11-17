@@ -450,3 +450,19 @@ Decisão de Leonardo Barbosa, responsável pela conta. Vale acima da PA-30 e de 
 3. **Na dev, a ativação para verificar está autorizada**, inclusive a da versão nova do Flow: o verificador ativa, exercita os casos da seção 12 (em especial a correção da leitura dos membros da fila, o lote de 200 e o caso T7) e registra o estado de antes e de depois.
 4. **Membros de teste na fila `Leads_RJ_ES`:** o verificador (na dev) e o QA (na QA) podem incluir na fila, pelo tempo do teste, usuários que já existem e estão ativos, começando pelo próprio usuário de execução, e removem ao final, registrando antes e depois. **Não criar usuário, não alterar perfil nem permissão de ninguém.** Se a org tiver só um usuário ativo elegível, a alternância entre dois vendedores fica sem prova nessa org: declarar isso em `05-testes.md` e no roteiro do cliente, e provar ali o que um membro só permite (dono da conta por CNPJ, região, fila sem rodízio, caminho de falha).
 5. Continua valendo: nenhuma classe Apex; dado só sintético (`TESTE EPLAST-35`); nada de registro existente da QA lido ou alterado.
+
+---
+
+## Decisão do responsável (2026-11-17) — ajustar o teste `LeadAssignmentServiceTest` (da EPLAST-38)
+
+O deploy desta demanda na sandbox de QA falhou (`0AfHa00000EJYvaKAH`). O pacote leva a classe `LeadAssignmentService` e o teste dela, que vieram da EPLAST-38. Com a regra `Distribuicao_Regional_Leads_v2` ativa e o Flow do rodízio ligado, dois métodos do teste passaram a falhar porque afirmam o comportamento anterior:
+
+- `caminhoFelizDistribuiPorRegiao`: "UF RJ deve cair em Leads_RJ". Agora RJ e ES caem em `Leads_RJ_ES`, como a Eplast pediu.
+- `loteDe200DistribuiTodos`: "Uma única SOQL para o lote inteiro: Expected 1, Actual 5". As consultas a mais são do Flow do rodízio, que roda na mesma transação.
+
+Decisão de Leonardo Barbosa, responsável pela conta. É a única exceção à diretriz "sem Apex" desta demanda:
+
+1. **Ajustar só a classe de teste `LeadAssignmentServiceTest`**, e só no que for preciso para ela afirmar o comportamento que a Eplast pediu: RJ e ES esperam `Leads_RJ_ES`; a afirmação de consultas do lote passa a medir só o que a própria `LeadAssignmentService` faz, ou vira um teto com folga declarada (com a justificativa no comentário do teste), em vez de "exatamente 1". Conferir os demais métodos do teste contra a regra v2 e ajustar o que afirmar a régua antiga.
+2. **A classe de produção `LeadAssignmentService` não muda.** Nenhuma classe nova. Nada de lógica nova em Apex.
+3. O teste tem de passar na dev com a regra v2 ativa, o Flow ativo e o interruptor ligado, que é o estado que vai para a QA. O builder roda o teste na dev e registra o resultado no plano; cobertura da classe continua em 85% ou mais.
+4. Registrar no plano de build que esta mudança altera um artefato da EPLAST-38, para quem homologa as duas juntas.
