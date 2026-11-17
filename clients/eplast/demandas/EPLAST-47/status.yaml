@@ -3,7 +3,7 @@ client: eplast
 titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
   de contas)
 tipo: sustentacao
-status: design
+status: aguardando_gate_design
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
 - de: null
@@ -152,3 +152,7 @@ historico:
   em: '2026-11-17T01:32:18.031468+00:00'
   motivo: crédito da API recarregado; rodar o desenho sobre a decisão de 2026-11-17
     (as sessões anteriores não reescreveram o 03-design.md).
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T01:43:30.595485+00:00'

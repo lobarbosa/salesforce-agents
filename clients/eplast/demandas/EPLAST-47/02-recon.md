@@ -2,15 +2,15 @@
 
 **Coleta:** 2026-11-17. **Org:** `sbx-eplast-dev` (sandbox, Org ID `00DHa000006vfMLMAY`), única conectada em `sf org list` (Status Connected). Só leitura: metadata, contagens agregadas e retrieve para pasta temporária descartada (`/tmp/recon47`). Nenhum deploy, DML ou toque no Marketing Cloud.
 **Contexto lido:** `01-analise.md`, `comentarios-do-card.md` (decisão de 17/11: Flow novo disparado ao salvar a oportunidade, classifica só a conta dela, sem Apex, sem `AccountRanking__c`, `Ranking__c` segue vigente; fluxo agendado sai), regras 1 a 6 da conta, `assessment.md` (só os achados 1, 2, 3, 4, 6, 9, 10).
-**Atenção:** a dev já tem o build das rodadas anteriores (Flow `ScheduledFlowOpportunity` v2 Active, dois Custom Metadata Types, relatório provisório, histórico em `Ranking__c`). O redesenho parte disso. Este recon refaz o de 16/11 e muda duas linhas (relatórios de marketing e filtro do relatório de mudanças), marcadas abaixo.
+**Atenção:** a dev já tem o build das rodadas anteriores (Flow `ScheduledFlowOpportunity` v2 Active, dois Custom Metadata Types, relatório provisório, histórico em `Ranking__c`). O redesenho parte disso. Este recon refaz o de 16/11. **Reconferido em 17/11 (nova sessão, `sf data query`):** versões e status dos 4 Flows (ScheduledFlowOpportunity v1 Obsolete e v2 Active; OpportunityFlow v1 Obsolete e v2 Active; AccountTriggered v1 Obsolete e v2 Active; UpdateParentAccountUsedLimit v1 Active), os 7 registros de `RankingRange__mdt`, o `Default` de `ScheduledFlowOpportunitySetting__mdt` (dia 14), contagens de Account, Opportunity e `IntegrationLog__c`, os 68 relatórios da pasta MARKETING CLOUD e o usuário de teste. O restante vem da leitura de metadata da sessão anterior de 17/11.
 
 ## 1. O que já cobre o pedido
 
 | Item | Estado confirmado | Cobre? | Comando |
 |---|---|---|---|
 | Flow `ScheduledFlowOpportunity` | Versões: v1 Obsolete, v2 Active. v2: agendado (`triggerType` Scheduled), objeto `Opportunity`, soma `Fechado/Ganho` do ano em `LastMonthPurchaseValue__c`, classifica `Ranking__c` pela média `AveragePurchasesThisYear__c` percorrendo `RankingRange__mdt`, falha vira `IntegrationLog__c` | Parcial. É o desenho que a decisão de 17/11 tira; grava em Account em lote | `sf data query -t` em `Flow` (Definition.DeveloperName); `sf project retrieve start -r /tmp/recon47/out -m Flow:...` |
-| `RankingRange__mdt` | 7 registros: MP 10.000, PP 35.000, P 80.000, M 160.000, G 500.000, GG 1.000.000 e 3G sem teto (`UpperLimit__c` nulo). Campos `Ranking__c`, `SortOrder__c`, `UpperLimit__c` | Sim, faixas já configuráveis; reaproveitável pelo Flow novo | recon de 16/11 (`SELECT ... FROM RankingRange__mdt`); não repeti hoje |
-| `ScheduledFlowOpportunitySetting__mdt` | Registro `Default`, `RunDayOfMonth__c` 14 e `FaultRecipient__c` (recon de 16/11). Com a saída do agendado, o dia deixa de ter uso; o destinatário da falha continua | Parcial | idem; o Flow v2 referencia o objeto (retrieve de hoje) |
+| `RankingRange__mdt` | 7 registros: MP 10.000, PP 35.000, P 80.000, M 160.000, G 500.000, GG 1.000.000 e 3G sem teto (`UpperLimit__c` nulo). Campos `Ranking__c`, `SortOrder__c`, `UpperLimit__c` | Sim, faixas já configuráveis; reaproveitável pelo Flow novo | `sf data query -q "SELECT Ranking__c, SortOrder__c, UpperLimit__c FROM RankingRange__mdt ORDER BY SortOrder__c"` (reconfirmado 17/11) |
+| `ScheduledFlowOpportunitySetting__mdt` | Registro `Default`, `RunDayOfMonth__c` 14 (reconfirmado 17/11) e `FaultRecipient__c`, **vazio na dev** (`COUNT() ... WHERE FaultRecipient__c != null` = 0). Com a saída do agendado, o dia deixa de ter uso; o destinatário da falha continua | Parcial | idem; o Flow v2 referencia o objeto (retrieve de hoje) |
 | `Account.Ranking__c` | Picklist, 7 valores ativos (MP, PP, P, M, G, GG, 3G), histórico ligado | Sim | recon de 16/11 (retrieve do campo) |
 | Relatório `AccountRankingChanges` (id `00OHa000002z8ifMAA`) | Tipo `AccountAuditHistory`, colunas `ACCOUNT.NAME`, `CREATED_DATE`, `field_key`, `OLDVAL`, `NEWVAL`. **`reportFilters` vazio**: lista toda mudança de campo rastreado em Account, não só `Ranking__c`. Pasta provisória "EPLAST-47 Relatorios (provisorio, P12)" | Parcial: falta filtrar por `Ranking__c` | `sf api request rest /services/data/v62.0/analytics/reports/00OHa000002z8ifMAA/describe` |
 | Relatório `CLASSIFICAÇÃO - CONTAS POR CLASSE` (id `00OHa000002zGY9MAM`) | Tipo `AccountList`, lê `Account.Ranking__c` como coluna, agrupa por `RelationshipClass__c` e `TYPE` | Não é o pedido, mas é consumidor confirmado de `Ranking__c` | idem, `describe` |
@@ -106,10 +106,25 @@ Cadeia por classificação de uma conta (confirmada na leitura): 1 update de Acc
 3. **O que `CheckRecord` (`AccountTriggered`) e `AccountHasParent` (`UpdateParentAccountUsedLimit`) fazem** quando só `Ranking__c` muda; sei que entram em toda atualização.
 4. **Fórmula completa de cada Flow no caminho de "oportunidade ganha"** de `OpportunityFlow`: não mapeei em que condições grava Total e média (só os 3 `recordUpdates`).
 5. **Se o Protheus aceita MP e 3G** (P8) e se `ProtheusAPI.sendClientToProtheus` serializa `Ranking__c`. Não li `ProtheusAPI`.
-6. **Se `FaultRecipient__c` está preenchido** (P11 sem endereço) e se o `RankingRange__mdt` e o `Default` continuam como em 16/11 (não reconsultei hoje).
+6. **Valor de `FaultRecipient__c` em QA e QAS** (vazio na dev; P11 sem endereço).
 7. **Quais dos 68 relatórios de "MARKETING CLOUD" leem `Ranking__c`**, e quais campos e objetos do `et4ae5` ligam a Account (regra 2).
 8. **OWD de Account e Opportunity, perfis com acesso aos campos, o que os `PS_Comercial_*` concedem.**
 9. **Layouts, páginas Lightning e classes Apex fora das lidas** que usem os campos de compra.
 10. **Estado da QA e da QAS** (Flow v4, dia 15, 1.217 contas): vem do card, não de consulta minha.
 11. **Se `SFAgent2` referencia `Ranking__c` ou os campos de compra.**
 12. **Limite de 51 enqueues em lote de oportunidades**: não medi se há carga ou integração que salve muitas oportunidades numa transação.
+
+## Complemento do arquiteto (2026-11-17, etapa de design)
+
+Pontos que mudavam a decisão, conferidos na `sbx-eplast-dev` só por metadata (retrieve em pasta temporária descartada).
+
+| Ponto | Confirmado | Comando |
+|---|---|---|
+| Flows ativos disparados por registro em Opportunity | Quatro, todos sem `TriggerOrder`: `OpportunityFlow`, `Opportunity_AfterSave_CriaCasoPosVendas` (cria `Case`, filtro em `StageName`), `Oportunidade_Industria` (cria `Task`) e o before save `Opportunity_BeforeSave_QualificaOportunidade` (grava só o próprio registro). `Opportunity_Scheduled_AlertaParada` está **Active** (o recon de 16/11 dizia Draft) e cria `IntegrationLog__c`. Nenhum deles, fora o `OpportunityFlow`, grava em Account nem cita os campos da demanda | `SELECT ApiName, TriggerType, RecordTriggerType, TriggerOrder FROM FlowDefinitionView WHERE IsActive = true AND TriggerObjectOrEvent.QualifiedApiName IN ('Opportunity','Account')`; retrieve dos 4 Flows |
+| Flows ativos em Account | `AccountTriggered`, `UpdateParentAccountUsedLimit` (after save, sem `TriggerOrder`) e o agendado `AccountUpdateEconomicGroup` | idem |
+| Quando `OpportunityFlow` grava a média | Caminho `StageClosedWon` (`StageName` = Fechado/Ganho, sem checar mudança): só chega a `UpdateAccount` (média e total) se houver cotação aprovada (`QuoteFound`), depois de criar Pedido e itens. Caminho `StageClosedLost` (anterior Fechado/Ganho, atual Fechado/Perdido): `UpdateTotalAmountAccount` e `UpdateAccountAverage`, duas gravações; a média nova usa `{!$Record.Account.TotalPurchasesThisYear__c}/{!Count}`. Filtro do ano: `CurrentYear__c`, mesma fórmula de `ThisYear__c` | retrieve e leitura dos elementos do Flow |
+| Fase ganha | Única fase ativa com `IsWon` = true: `Fechado/Ganho` | `SELECT ApiName, IsWon, IsActive FROM OpportunityStage` |
+| `UpdateAccountWithProtheusInfo` | 37 linhas, `update this.acc` incondicional (dados de limite), sem `Ranking__c` nem campos de compra. `ProtheusAPI` e `AccountAdapter` também sem `Ranking__c` | retrieve das 3 classes; grep |
+| Relatórios da pasta MARKETING CLOUD (`MARKETINGCLOUD`) | 68 retrievados; 1 cita `Ranking__c` (`CLASSIFICACAO_CONTAS_POR_CLASSE`, só como coluna); 0 citam os campos de compra | `sf org list metadata -m Report --folder MARKETINGCLOUD`; retrieve; grep |
+| Campos `et4ae5__` em Account | 0 | `FieldDefinition` (Tooling) com `QualifiedApiName LIKE 'et4ae5__%'` |
+| API da org | 68.0 | `sf org display` |
