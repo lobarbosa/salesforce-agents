@@ -58,6 +58,7 @@ class _ClienteDublado:
     roteiro: list = []
     pedidos: list[str] = []
     turnos: int = 0
+    custo: float = 0.01
 
     def __init__(self, options=None) -> None:
         self.options = options
@@ -77,7 +78,7 @@ class _ClienteDublado:
         acao = type(self).roteiro[min(turno, len(type(self).roteiro) - 1)]
         texto = acao(turno)
         yield _AssistantMessage([_TextBlock(texto)])
-        yield _ResultMessage()
+        yield _ResultMessage(type(self).custo)
 
 
 @pytest.fixture
@@ -93,6 +94,7 @@ def sdk_dublado(monkeypatch):
     _ClienteDublado.roteiro = []
     _ClienteDublado.pedidos = []
     _ClienteDublado.turnos = 0
+    _ClienteDublado.custo = 0.01
     return _ClienteDublado
 
 
@@ -286,6 +288,26 @@ def test_texto_parecido_com_erro_nao_derruba_quem_entregou(sdk_dublado, tmp_path
     sdk_dublado.roteiro = [entrega]
     _rodar(alvo)
     assert sdk_dublado.turnos == 1
+
+
+def test_recusa_da_api_falha_mesmo_com_artefato_antigo_em_disco(sdk_dublado, tmp_path):
+    """Turno de custo zero com recusa da API: o artefato em disco não é desta rodada.
+
+    Achado real (EPLAST-47, 2026-11-17): redesenho pedido com o crédito
+    esgotado. O `03-design.md` da rodada anterior estava em disco, a sessão
+    "passou" em 3 segundos e o desenho antigo voltou ao gate como se fosse novo.
+    """
+    alvo = tmp_path / "03-design.md"
+    alvo.write_text("desenho da rodada anterior")
+    sdk_dublado.roteiro = [lambda _t: "Credit balance is too low"]
+    sdk_dublado.custo = 0.0
+
+    with pytest.raises(sessao.ApiIndisponivelError) as exc:
+        _rodar(alvo)
+
+    assert sdk_dublado.turnos == 1
+    assert "rodada anterior" in str(exc.value)
+    assert alvo.read_text() == "desenho da rodada anterior"
 
 
 def test_erro_de_api_reconhece_so_recusas_conhecidas():
