@@ -219,3 +219,37 @@ Redeploy dos XML da rodada 1 a partir do git (relatórios e painel), remover FLS
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Respostas do cliente (2026-11-17) — valem acima das premissas assumidas deste desenho
+
+A Eplast respondeu por escrito ("Respostas Konecta/Eplast", recebido em 17/11) aos pontos que
+este desenho tinha resolvido como premissa assumida. Registrado por Leonardo Barbosa, que
+mandou redesenhar com as respostas. **Onde a resposta abaixo diverge de uma premissa deste
+arquivo, vale a resposta.** O que o cliente marcou como "a validar" continua premissa, a
+repetir no roteiro em "O que assumimos e você precisa confirmar". Os parâmetros ficam
+configuráveis (pedido do cliente), sem deploy para ajustar. Reaproveite o que já foi
+construído e passou no QA; mude só o que a resposta pede. Os artefatos de build e QA da
+rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
+
+**Resposta do cliente (EPLAST-39 — origem dos leads e campanhas):**
+- Sem origem: mostrar "Sem origem" em vez de "-".
+- Origens fora da lista: manter a visibilidade, mas **padronizar os valores e consolidar
+  sinônimos**, preservando o dado original para rastreabilidade.
+- Lista inicial: prospecção ativa/SDR, indicação, site/formulário, busca orgânica, Google
+  Ads, Meta Ads, redes sociais orgânicas, eventos/feiras, parceiros e outros. WhatsApp,
+  telefone e e-mail são canais de contato, registrados quando a origem real for conhecida.
+- Período padrão dos relatórios: **mês atual**, com filtros mensal, trimestral e anual.
+- Retorno de campanha: cálculo nativo, condicionado à validação de custos, vínculos com
+  oportunidades e regra de atribuição. Exibir investimento, leads, leads convertidos,
+  oportunidades ganhas e receita atribuída, distinguindo receita de oportunidades ganhas de
+  faturamento efetivo. Sem custo ou com investimento zero: ROI **não calculável**.
+
+**O que muda neste desenho:**
+1. `MKT_Origem_Agrupada__c` passa a consolidar na lista de 10 origens acima (de-para dos
+   valores existentes e dos soltos), com "Sem origem" para vazio. `LeadSource` original não
+   é alterado. O de-para proposto vai no roteiro para o Marketing aprovar.
+2. Oportunidades por origem: mesmo agrupamento, com "Sem origem" (revê a PA-04).
+3. Período padrão: mês atual.
+4. Retorno: colunas pedidas; campanha sem custo mostra "não calculável" (revê a PA-03; se
+   exigir campo fórmula em Campaign, é configuração e está autorizado).
+5. Não corrigir nem regravar dado de lead existente.
