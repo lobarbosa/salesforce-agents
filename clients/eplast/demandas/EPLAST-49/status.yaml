@@ -1,0 +1,11 @@
+id: EPLAST-49
+client: eplast
+titulo: Criar atalho para o painel no LWC Central_Comercial
+tipo: sustentacao
+status: backlog
+criado_em: '2026-11-17T23:22:19.052Z'
+historico:
+  - de: null
+    em: '2026-11-17T23:22:19.049Z'
+    para: backlog
+    autor: Carlos Sordi
