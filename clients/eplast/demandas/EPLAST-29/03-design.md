@@ -265,3 +265,22 @@ Teste sem tela: `sf agent preview start` / `send` / `end`. O roteiro do cliente 
 - [ ] **Arquiteto humano aprova** o design (pendente). Pontos para conferir: item C (custom metadata, seção 9), PA-4 (responsável sempre quem pede) e PA-5 (atribuição individual do PS aos quatro públicos).
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Decisão do responsável (2026-11-17) depois da rodada 4 de QA — diretriz para a versão 18 do assistente
+
+A rodada 4 de QA foi a primeira a exercitar a SFAgent2 v17 de verdade (as rodadas 2 e 3 reprovaram porque a v17 não chegava à sandbox de QA; isso foi corrigido na esteira). O QA reprovou por comportamento do assistente (`05-testes-rodada-4.md`):
+
+- **FALHA 6 (crítica, intermitente, 1 de 2):** afirma "criado" sem chamar a ação, quando o pedido vem sem data nem texto e o usuário responde só "sim, confirmo".
+- **FALHA 7 (média, 4 de 4 numa redação):** monta o cartão de confirmação com o nome do registro no lugar do Id, sem chamar `IdentificarRegistro`, e a criação falha.
+- **FALHA 8 (branda):** o resumo antes da confirmação não traz o registro relacionado nem o responsável.
+
+Decisão de Leonardo Barbosa, responsável pela conta. Refazer o desenho para a **versão 18** com estas diretrizes:
+
+1. **Identificar o registro sempre, antes de montar a confirmação.** `IdentificarRegistro` é chamada em todo pedido de criação, mesmo quando o usuário já deu o nome completo. O cartão de confirmação só é montado com o Id do registro identificado.
+2. **"Criada" só com o retorno de sucesso da ação, e a trava não pode depender só do texto da instrução.** A FALHA 6 é intermitente: reforçar a redação do tópico não basta como única defesa. O arquiteto desenha uma trava determinística na própria ação ou no Flow `Task_Agente_CriarTarefa` (por exemplo: a ação recusa gravar sem Id de registro e sem os campos obrigatórios e devolve uma mensagem pronta para o assistente repetir; a frase de sucesso que o assistente usa vem do retorno da ação, com um identificador da tarefa criada, e não é redigida por ele). Se a plataforma não permitir uma trava assim, dizer isso com a evidência e propor a melhor alternativa declarativa, em vez de só reescrever a instrução.
+3. **Resumo completo antes da confirmação:** registro relacionado e tipo, responsável, descrição (ou "sem descrição") e prazo aparecem antes de o usuário confirmar. Se o cartão nativo não mostrar esses itens, o assistente escreve o resumo na mensagem anterior ao cartão.
+4. **Critério de aceite por repetição.** Os casos críticos do roteiro (pedido sem data nem texto seguido de "sim"; pedido com nome completo do registro em pelo menos três redações diferentes, incluindo "revisar contrato"; recusa do resumo) passam em **5 de 5 execuções** no QA, em sessões novas. Qualquer execução que afirme criação sem tarefa gravada reprova. O verificador aplica o mesmo critério na dev no que conseguir exercitar.
+5. **Sem Apex**, como nas rodadas anteriores. A v18 parte da v17 e é cumulativa (mantém os tópicos das EPLAST-27, 34 e 46). A FALHA 2 (texto "sem descrição" gravado) está corrigida na v17 e não pode voltar.
+6. **O que não muda:** tarefa vinculada a Lead por `WhoId`, `AssistenteTarefaSetting__mdt`, rascunho de e-mail como tarefa sem envio pelo CRM, permission set `PS_Comercial_AssistenteAcoes`. O teste com usuário sem permissão (AC-4) continua para a homologação com usuário comum, porque a sandbox de QA só tem administradores.
