@@ -9,4 +9,5 @@ Etapa que vai rodar: `build` · org: `sbx-eplast-dev`. Gerado pela esteira antes
 - nenhuma
 
 ## Estado na org
+- Flow `Opportunity_AfterSave_ClassificaConta`: tem versão ativa nesta org — mudança entra como versão nova.
 - Flow `ScheduledFlowOpportunity`: tem versão ativa nesta org — mudança entra como versão nova.

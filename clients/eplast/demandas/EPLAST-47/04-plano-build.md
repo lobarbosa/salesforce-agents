@@ -52,3 +52,14 @@ PA1 a PA14 do `03-design.md` valem sem alteração. Nenhuma é caso 3, nenhuma p
 ## Validação feita no build
 
 - `sf project deploy start --dry-run` do Flow: Succeeded (depois de corrigir o `queriedFields`). Deploy real dos 3 componentes: Succeeded (Deploy ID `0AfHa00000EJ3OjKAL`). Nenhum teste Apex rodou (não há Apex novo).
+
+## Correções da verificação 1
+
+Fonte: `04-verificacao-rodada-1.md` (reprovada, 2 falhas). Deploy na `sbx-eplast-dev` (Deploy ID `0AfHa00000EJ3RxKAL`, Succeeded). Sem Apex novo, sem teste Apex.
+
+- **FALHA 1 (faixas fora de `SortOrder__c`): corrigida no Flow, sem depender do sort do Get.** `LoopRanges` agora percorre todas as faixas e `RangeMatches` aceita a faixa só se a média couber nela (ou ela não tiver teto) **e** o `SortOrder__c` dela for menor que o da melhor já achada. Variável nova `BestSort` (Number, começa em 999) no lugar de `RangeFound`; `AssignRanking` grava `NewRanking` e `BestSort`. Resultado independe da ordem em que `RankingRange__mdt` é devolvido: vence a faixa de menor `SortOrder__c` que contém a média (MP para 3.000, 5.000, 3.333,33). O `sortField` do Get ficou (inofensivo). Média vazia mantém o ranking e média 0 cai em MP (SortOrder 1), sem mudança. **Não exercitado no build:** reexecutar V1, C10 (12 bordas) e C11 fica para o verificador.
+- **FALHA 2 (filtro do relatório): corrigida.** `AccountRankingChanges`: valor do filtro `field_key` trocado de `Ranking__c` para o rótulo `Ranking`, como provado pela verificação (contagem 1 com o rótulo). Reexecutar C14.
+- **V6 (falha forçada):** sem prova na dev, como a verificação registrou. Não é corrigível aqui; fica para a QA (conta com dado legado) ou outro meio de forçar a falha.
+
+### Versões e ativação (correção)
+`Opportunity_AfterSave_ClassificaConta`: criada **versão 2** pelo deploy (v1 ficou Obsoleta, conferido em `Flow` por Tooling API). Foi deployada com status Active por ser Flow desta própria demanda, ainda sem uso na QA nem em produção, e o verificador precisa dela ativa na dev. Como desfazer: reativar a v1 ou desativar o Flow. `ScheduledFlowOpportunity` segue **ativo e intocado** (desativação continua passo separado, depois de V1 a V6 provados).

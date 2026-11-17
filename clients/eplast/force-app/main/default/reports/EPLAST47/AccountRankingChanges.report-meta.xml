@@ -22,7 +22,7 @@
             <columnToColumn>false</columnToColumn>
             <isUnlocked>true</isUnlocked>
             <operator>equals</operator>
-            <value>Ranking__c</value>
+            <value>Ranking</value>
         </criteriaItems>
     </filter>
     <format>Tabular</format>

@@ -67,7 +67,7 @@
         </connector>
     </assignments>
     <assignments>
-        <description>EPLAST-47: primeira faixa que contem a media grava o Ranking da faixa e marca como encontrada. As faixas seguintes nao sobrescrevem.</description>
+        <description>EPLAST-47: faixa que contem a media e tem SortOrder__c menor que a melhor ate aqui grava o Ranking da faixa e o seu SortOrder__c em BestSort.</description>
         <name>AssignRanking</name>
         <label>Atribuir Ranking da Faixa</label>
         <locationX>842</locationX>
@@ -80,10 +80,10 @@
             </value>
         </assignmentItems>
         <assignmentItems>
-            <assignToReference>RangeFound</assignToReference>
+            <assignToReference>BestSort</assignToReference>
             <operator>Assign</operator>
             <value>
-                <booleanValue>true</booleanValue>
+                <elementReference>LoopRanges.SortOrder__c</elementReference>
             </value>
         </assignmentItems>
         <connector>
@@ -117,7 +117,7 @@
         </rules>
     </decisions>
     <decisions>
-        <description>EPLAST-47: faixa vale se ainda nao houve faixa e a media e menor ou igual ao limite da faixa (inclusive), ou a faixa nao tem limite (3G, sem teto). Acima do limite anterior e garantido pela ordem de SortOrder__c (P7).</description>
+        <description>EPLAST-47: faixa vale se o SortOrder__c dela e menor que o da melhor faixa ja achada (a ordem de leitura do Get nao e confiavel em metadado customizado) e a media e menor ou igual ao limite da faixa (inclusive), ou a faixa nao tem limite (3G, sem teto). Vence a faixa de menor SortOrder__c que contem a media (P7).</description>
         <name>RangeMatches</name>
         <label>Faixa contém a média</label>
         <locationX>842</locationX>
@@ -130,10 +130,10 @@
             <name>InRange</name>
             <conditionLogic>1 AND (2 OR 3)</conditionLogic>
             <conditions>
-                <leftValueReference>RangeFound</leftValueReference>
-                <operator>EqualTo</operator>
+                <leftValueReference>LoopRanges.SortOrder__c</leftValueReference>
+                <operator>LessThan</operator>
                 <rightValue>
-                    <booleanValue>false</booleanValue>
+                    <elementReference>BestSort</elementReference>
                 </rightValue>
             </conditions>
             <conditions>
@@ -235,7 +235,7 @@
         </noMoreValuesConnector>
     </loops>
     <loops>
-        <description>EPLAST-47: percorre as faixas de RankingRange__mdt em ordem de SortOrder__c ate achar a que contem a media.</description>
+        <description>EPLAST-47: percorre todas as faixas de RankingRange__mdt; a escolha da faixa e por menor SortOrder__c entre as que contem a media, nao pela ordem do Get.</description>
         <name>LoopRanges</name>
         <label>Loop Faixas</label>
         <locationX>842</locationX>
@@ -384,7 +384,7 @@
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordLookups>
     <recordLookups>
-        <description>EPLAST-47: le as faixas de RankingRange__mdt ordenadas por SortOrder__c (nao por UpperLimit__c, para a faixa sem teto ficar por ultimo).</description>
+        <description>EPLAST-47: le as faixas de RankingRange__mdt. A ordem devolvida nao e usada: LoopRanges/RangeMatches escolhem a faixa de menor SortOrder__c que contem a media.</description>
         <name>GetRanges</name>
         <label>Obter Faixas</label>
         <locationX>842</locationX>
@@ -464,14 +464,15 @@
         <isOutput>false</isOutput>
     </variables>
     <variables>
-        <description>EPLAST-47: indica que uma faixa ja foi encontrada nesta execucao.</description>
-        <name>RangeFound</name>
-        <dataType>Boolean</dataType>
+        <description>EPLAST-47: menor SortOrder__c entre as faixas que contem a media nesta execucao. Comeca em 999 (nenhuma achada). Evita depender da ordem em que o Get devolve RankingRange__mdt.</description>
+        <name>BestSort</name>
+        <dataType>Number</dataType>
         <isCollection>false</isCollection>
         <isInput>false</isInput>
         <isOutput>false</isOutput>
+        <scale>0</scale>
         <value>
-            <booleanValue>false</booleanValue>
+            <numberValue>999.0</numberValue>
         </value>
     </variables>
     <variables>
