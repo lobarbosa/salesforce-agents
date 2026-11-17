@@ -2,7 +2,7 @@ id: EPLAST-35
 client: eplast
 titulo: Fluxos de aprovação, distribuição de leads e encaminhamento
 tipo: projeto
-status: design
+status: aguardando_gate_design
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -62,3 +62,7 @@ historico:
   motivo: 'gate de design não aprovado: redesenhar sem Apex (rodízio por Flow com
     numeração automática no Lead), conforme "Decisão do responsável no gate (2026-11-17)"
     no 03-design.md.'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T14:23:40.940745+00:00'

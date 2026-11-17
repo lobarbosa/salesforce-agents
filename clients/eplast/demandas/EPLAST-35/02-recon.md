@@ -95,3 +95,78 @@ A DEV tem dado para testar a casagem lead x conta só se o build criar fixtures 
 5. **Quem são os elegíveis por região**: nenhuma fila tem membro, e a Eplast ainda vai informar os nomes.
 6. **Descrição dos campos custom de Lead** (assessment cita 68% sem descrição em Account, Order e Opportunity; Lead não foi medido).
 7. **Trigger `AccountBefore` do SBQQ** em Account: vem do recon anterior, não reconfirmado hoje.
+
+---
+
+# Adendo (2026-11-17, após a decisão do gate: sem Apex, rodízio por Flow com Auto Number)
+
+Só leitura, `sbx-eplast-dev` (única org do `sf org list`, Sandbox, Connected, a `eplast--qa` da Eplast = DEV da esteira, regra 5). Retrieve em diretório temporário fora do repositório, já apagado. Complementa as seções acima; onde divergir, vale este adendo.
+
+## A. O que a decisão do gate precisa e a org mostra
+
+| Item | Fato confirmado | Comando |
+|---|---|---|
+| Campo Auto Number em Lead | **Não existe.** Nenhum campo Auto Number em Lead (nem reaproveitável). Campos custom de Lead hoje: `CNAE__c`, `CompanyDocument__c`, `CompanyName__c`, `Facebook__c`, `Instagram__c`, `LinkedIn__c`, `Subsector__c`, `WhatsApp__c`, `Sector__c`, `PriorityScore__c` (fórmula), `PriorityBand__c` (fórmula), `MKT_MC_EngajamentoData__c`, `MKT_MC_Engajamento__c`, `MKT_Nutricao_Elegivel__c` (fórmula), `MKT_Nutricao_ProntoAbordagem__c` (fórmula), mais `et4ae5__*` (2) e `maps__AssignmentRule__c` | `sf sobject describe -s Lead` filtrando custom/autoNumber/calculated; `FieldDefinition DataType LIKE 'Auto%'` (0) |
+| Convenção de nome de campo em Lead | Sem prefixo único: campos antigos sem prefixo (`CompanyDocument__c`), os de marketing com `MKT_`. Não há regra de prefixo no CLAUDE.md do cliente (campo vazio). O arquiteto escolhe o nome | describe; CLAUDE.md do cliente |
+| Fórmula que normaliza CNPJ (só dígitos) em Lead ou Account | **Não existe.** Nenhum campo de fórmula de CNPJ nos dois objetos | describe de Lead e Account (`calculated`, nome com CNPJ/CompanyDocument) |
+| `Lead.CompanyDocument__c` | string 18, não único, não externalId, sem máscara de entrada (`inputMask` ausente no metadata) | retrieve `CustomField:Lead.CompanyDocument__c` |
+| `Account.CompanyDocument__c` | string 18, externalId = true, unique = false, sem `inputMask` | retrieve `CustomField:Account.CompanyDocument__c` |
+| Validation rule que force formato de CNPJ | **Nenhuma.** Account tem 6 VRs ativas (`Celular`, `Contato_Fiscal`, `Telefone`, `WhatsApp`, `CheckUserCanSetLimitDueDate`, `CheckUserCanSetRisk`); nenhuma cita CNPJ no nome. Lead tem `Celular` e `Telefone`. **Não li as fórmulas das VRs de Account** | Tooling `ValidationRule` (nome); busca de `CompanyDocument__c` em VRs no retrieve falhou (VR por objeto não recuperável com esse seletor) |
+| Formato real do CNPJ | **Não confirmável na DEV:** 0 Leads e 0 Accounts com CNPJ preenchido (e 0 hoje em `Account` com qualquer valor relevante: Account = 2). Length 18 admite a máscara, sem nada que a imponha; os dois formatos podem coexistir. Verificação na QAS (Partial Copy) exigiria agregado por padrão de formato, e esta etapa só tocou a DEV | `SELECT COUNT()` (Lead 4, Account 2, ambos 0 com CNPJ) |
+| `DistribuicaoLeadSetting__mdt` | **Não existe** na DEV (nenhum `CustomObject` com Distribuicao/Rodizio). Pode nascer no build | `sf org list metadata -m CustomObject` + filtro |
+| Classe de rodízio | **Não existe** (só `LeadAssignmentService` e `LeadAssignmentServiceTest`, Active, API 68). Sem classe nova, nenhum `LeadRodizioService` a considerar | Tooling `ApexClass LIKE 'LeadAssignment%'` |
+
+## B. Flows de Lead e ordem de execução (revalidado)
+
+| Item | Fato | Comando |
+|---|---|---|
+| Flows com Lead como objeto de gatilho | Dos 35 Flows custom recuperados (de 52 com versão ativa; o restante é de pacote gerenciado), só `Lead_AfterInsert_AplicaRegraAtribuicao` é gatilho em Lead: `RecordAfterSave`, `Create`, API 68.0, **Active**, chama a ação `LeadAssignmentService`. `Task_Agente_CriarTarefa` cita Lead só como leitura e está **Obsolete** (gatilho em Task). Flow de pacote em Lead não foi inspecionado | retrieve `Flow` + grep em `<object>Lead</object>`; `SELECT ... FROM Flow WHERE Status='Active' AND MasterLabel LIKE '%Lead%'` (1) |
+| Trigger Apex em Lead | Nenhum | Tooling `ApexTrigger` (recon acima) |
+| Efeito em cadeia a observar (fato, não solução) | O Flow ativo chama `LeadAssignmentService`, que grava o Lead (`Database.update` com a regra padrão). Essa gravação muda `OwnerId` dentro da transação de criação; um Flow novo em "criação e atualização" com `ISCHANGED(OwnerId)` entraria de novo nessa mesma transação. Ordem entre dois Flows after-save do mesmo objeto não é garantida pela plataforma (ordem configurável só para Flows `before-save`/`after-save` com a opção "Trigger Order" da API recente, **não conferi se está disponível/usada nesta org**) | leitura do Flow e do `.cls` |
+| Limites em lote de 200 | Não testável com 0 membros de fila e sem Auto Number. Cada Lead recebe um número diferente, então não há estado a ler por interview; porém a contagem de membros e a escolha do N-ésimo membro num Flow em lote dependem de loop/coleção. Não medi consultas ou DML por transação | sem comando (exige build) |
+| Leitura de membros de fila por Flow | **Não confirmado** que `GroupMember` fica disponível em "Get Records" na org nem que o Flow consegue ordenar e indexar o N-ésimo membro. Nenhum Flow atual da org lê `GroupMember` (grep por `<object>GroupMember</object>` nos 35 Flows: 0) — sem precedente local | grep nos Flows recuperados |
+
+## C. Dados e usuário de teste (revalidado)
+
+| Item | Fato | Comando |
+|---|---|---|
+| Lead / Account / membros de fila | 4 / 2 / 0 | `SELECT COUNT()` |
+| OWD Lead | `ReadEditTransfer` | `SELECT DefaultLeadAccess FROM Organization` |
+| Usuário de teste da Konecta | Ativo: `005bJ00000piKAaQAM` (Administrador do sistema); o outro, `005bJ00000hBJmYQAW`, está inativo. Não alterei perfil, permissão nem papel | `SELECT Id, IsActive, Profile.Name FROM User WHERE Username LIKE <filtro da regra 6 do CLAUDE.md do cliente>` (seção 4 acima) |
+| Fixtures | `fixtures/` do cliente não existe no repositório (seção 4 acima); a EPLAST-38 cria `lead_roteamento_regional.apex` no branch dela (informação do design) | não reconfirmado hoje |
+
+## D. Sobreposição com outras demandas (do preflight, sem mudança)
+
+| Demanda | Componentes comuns | Consequência para esta rodada |
+|---|---|---|
+| EPLAST-38 (aguardando_homologacao) | `assignmentRules/Lead`, `LeadAssignmentService`, `LeadAssignmentServiceTest`, `Lead_DistribuicaoAutomaticaViaApi`, `Lead_AfterInsert_AplicaRegraAtribuicao`, layout `Lead-Lead Layout`, `PS_Integracao_DistribuicaoLead`, filas `Leads_*` | Nenhum desses pode ser alterado no lugar. A regra v2 é versão nova (inativa), a fila `Leads_RJ_ES` é nova, o Flow de rodízio é novo e não substitui o ativo. Membros em `Leads_*` e o `Lead-Lead Layout` seguem de outra demanda |
+| EPLAST-26 (aguardando_gate_build) | `layouts/Lead-Lead Layout` | O campo Auto Number novo não precisa ir ao layout (campo técnico); se o arquiteto o puser no layout, colide com 26 e 38 |
+
+## E. Itens do assessment que tocam esta rodada
+
+- Automação concorrente: só em Account/Opportunity/Order; esta rodada não grava nelas. Em Lead há um Flow (acima).
+- Cobertura Apex 10%: motivo da decisão de não criar Apex; nada novo a testar em classe.
+- 153 campos custom sem descrição: o campo Auto Number novo e os do CMDT saem com `Description`.
+- Integração Protheus (`AccountTrigger`): ler Account não dispara; o Flow só pode **ler** Account (Get Records), nunca gravar. Defeito de `UpdateAccountCompanyInfo` não é desta demanda e não é tocado.
+- Marketing Cloud Connect (`et4ae5`): em Lead só `et4ae5__HasOptedOutOfMobile__c` e `et4ae5__Mobile_Country_Code__c`; esta rodada não toca marketing e não usa nenhum campo `et4ae5`. Campos `MKT_*` de Lead existem (nutrição/engajamento) e não são lidos nem alterados aqui.
+
+## Não consegui confirmar (adendo)
+
+1. **Formato real do CNPJ** em Lead e Account: 0 preenchidos na DEV; QAS não consultada. Nada na org impõe máscara, então os dois formatos podem divergir.
+2. **Fórmulas das 6 VRs de Account** (se alguma altera o CNPJ): só li os nomes.
+3. **Se `GroupMember` é consultável em Get Records de Flow** e se o Flow consegue contar membros e escolher o N-ésimo em ordem fixa: sem precedente na org; exige protótipo no build.
+4. **Limites do Flow em lote de 200 Leads** (SOQL/DML) com a leitura de fila, a busca de conta por CNPJ e a gravação do dono: não medi.
+5. **Ordem entre Flows after-save de Lead** e re-disparo por `OwnerId` gravado pela regra/`LeadAssignmentService`: não testei; "Trigger Order" não conferido.
+6. **Flows de pacote gerenciado em Lead**: não inspecionados.
+7. **Se Auto Number permite numeração com início/formato que sirva ao resto da divisão** (campo Auto Number é texto no Salesforce; a conversão para número no Flow não foi testada).
+8. Itens 1, 2, 4, 6 e 7 da lista anterior seguem em aberto (dono dos componentes entre 35 e 38, Omni-Channel e Maps, quem são os elegíveis, descrição dos campos de Lead, `AccountBefore`).
+
+## Confirmações do arquiteto (2026-11-17, etapa de design)
+
+Só os pontos que mudavam a decisão. `sbx-eplast-dev`, nada implantado (validação `--dry-run`, `checkOnly = true`), diretório temporário fora do repositório já apagado.
+
+| Item | Fato | Comando |
+|---|---|---|
+| Flow `Lead_AfterInsert_AplicaRegraAtribuicao` (v1, Active, API 68) | `RecordAfterSave`, `Create`, sem `triggerOrder`; entrada `AND($Permission.Lead_DistribuicaoAutomaticaViaApi, LEFT($Record.OwnerId,3)="005")`; parte síncrona vazia, ação `LeadAssignmentService` só no caminho `AsyncAfterCommit` | Tooling `SELECT ... Metadata FROM Flow WHERE Definition.DeveloperName=... AND Status='Active'` |
+| Workflow Rules em Lead | **0.** As 17 Workflow Rules da org são de objetos `et4ae5__*` | Tooling `SELECT TableEnumOrId, COUNT(Id) FROM WorkflowRule GROUP BY TableEnumOrId` |
+| Viabilidade declarativa (itens 3 e 7 do adendo) | A validação aceitou um campo Auto Number em Lead (`displayFormat {0}`) e um Flow record-triggered `RecordAfterSave` `CreateAndUpdate` com `triggerOrder` (nível do Flow), entrada `OR(ISNEW(), ISCHANGED(OwnerId))`, Get Records em `GroupMember` (filtro `GroupId`, `UserOrGroupId` começa com `005`, ordenado), Get Records em `User` com `Id In` coleção, Get Records em `Account` com `CompanyDocument__c = a OR = b`, fórmula `MOD(VALUE(<auto number>), n)` e Update de `$Record.OwnerId`. Compila; comportamento em execução (lote de 200, dono gravado pela regra) **não** foi exercitado | `sf project deploy start --dry-run` |
