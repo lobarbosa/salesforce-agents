@@ -3,7 +3,8 @@
     <label>Default</label>
     <protected>false</protected>
     <values><field>Ativo__c</field><value xsi:type="xsd:boolean">true</value></values>
-    <values><field>DiasSemAcompanhamento__c</field><value xsi:type="xsd:double">14.0</value></values>
+    <values><field>DiasSemAcompanhamento__c</field><value xsi:type="xsd:double">7.0</value></values>
+    <values><field>DiasEscalarGestor__c</field><value xsi:type="xsd:double">14.0</value></values>
     <values><field>NotificarGestor__c</field><value xsi:type="xsd:boolean">false</value></values>
-    <values><field>RegraParada__c</field><value xsi:type="xsd:string">AtividadeEEstagio</value></values>
+    <values><field>RegraParada__c</field><value xsi:type="xsd:string">SoAtividade</value></values>
 </CustomMetadata>

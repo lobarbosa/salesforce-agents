@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>NotificarGestor__c</fullName>
     <label>Notificar Gestor</label>
-    <description>Inclui o gestor direto (User.ManagerId) na notificacao. EPLAST-28</description>
+    <description>Liga o aviso proprio ao gestor direto do dono (User.ManagerId) em DiasEscalarGestor__c dias. Desligado por padrao ate cadastrar a hierarquia. EPLAST-28</description>
     <fieldManageability>DeveloperControlled</fieldManageability>
     <externalId>false</externalId>
     <defaultValue>false</defaultValue>

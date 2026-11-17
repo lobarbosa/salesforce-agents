@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>DiasSemAcompanhamento__c</fullName>
     <label>Dias Sem Acompanhamento</label>
-    <description>Prazo N em dias sem atividade nem mudanca de estagio. EPLAST-28</description>
+    <description>Prazo em dias corridos sem atividade para avisar o dono (padrao 7). EPLAST-28</description>
     <fieldManageability>DeveloperControlled</fieldManageability>
     <externalId>false</externalId>
     <precision>3</precision>

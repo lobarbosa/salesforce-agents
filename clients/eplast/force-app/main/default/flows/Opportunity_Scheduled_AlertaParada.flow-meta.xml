@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Flow xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>68.0</apiVersion>
-    <description>Alerta diario ao dono quando uma oportunidade aberta completa N dias sem atividade nem mudanca de estagio. Nao grava em objetos de negocio; so registra em IntegrationLog__c dono inativo, falha de envio e, como rastro de execucao, cada alerta enviado (ALERTA_ENVIADO). Parametros em AlertaOportunidadeParadaSetting__mdt. EPLAST-28</description>
+    <description>Alerta diario de oportunidade aberta sem atividade (LastActivityDate; sem atividade conta da criacao). Avisa o dono ao completar DiasSemAcompanhamento__c dias (padrao 7) e, se NotificarGestor__c ligado, o gestor direto (ManagerId) ao completar DiasEscalarGestor__c dias (padrao 14). Texto: nome da oportunidade e dias; sem repeticao diaria. Nao grava em objetos de negocio; so cria IntegrationLog__c (ALERTA_ENVIADO, ALERTA_GESTOR_ENVIADO, DONO_INATIVO, SEM_GESTOR, FALHA_NOTIFICACAO). Parametros em AlertaOportunidadeParadaSetting__mdt. EPLAST-28</description>
     <environments>Default</environments>
     <interviewLabel>Opportunity_Scheduled_AlertaParada {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Opportunity_Scheduled_AlertaParada</label>
@@ -36,26 +36,32 @@
         <expression>TODAY() - {!Referencia}</expression>
     </formulas>
     <formulas>
-        <description>Verdadeiro no dia em que DiasParado iguala o prazo, ou na carga inicial</description>
-        <name>Alertar</name>
+        <description>Verdadeiro no dia em que DiasParado iguala o prazo do dono, ou na carga inicial</description>
+        <name>AlertarDono</name>
         <dataType>Boolean</dataType>
         <expression>OR({!DiasParado} = {!Get_Cfg.DiasSemAcompanhamento__c}, AND(NOT(ISBLANK({!Get_Cfg.DataCargaInicial__c})), TODAY() = {!Get_Cfg.DataCargaInicial__c}, {!DiasParado} &gt;= {!Get_Cfg.DiasSemAcompanhamento__c}))</expression>
     </formulas>
     <formulas>
+        <description>Verdadeiro no dia em que DiasParado iguala o prazo do gestor (maior que o do dono), ou na carga inicial; exige NotificarGestor__c ligado</description>
+        <name>AlertarGestor</name>
+        <dataType>Boolean</dataType>
+        <expression>AND({!Get_Cfg.NotificarGestor__c}, NOT(ISBLANK({!Get_Cfg.DiasEscalarGestor__c})), {!Get_Cfg.DiasEscalarGestor__c} &gt; {!Get_Cfg.DiasSemAcompanhamento__c}, OR({!DiasParado} = {!Get_Cfg.DiasEscalarGestor__c}, AND(NOT(ISBLANK({!Get_Cfg.DataCargaInicial__c})), TODAY() = {!Get_Cfg.DataCargaInicial__c}, {!DiasParado} &gt;= {!Get_Cfg.DiasEscalarGestor__c})))</expression>
+    </formulas>
+    <formulas>
         <name>TituloAviso</name>
         <dataType>String</dataType>
-        <expression>"Oportunidade parada ha " &amp; TEXT({!DiasParado}) &amp; " dias"</expression>
+        <expression>"Oportunidade sem atividade ha " &amp; TEXT({!DiasParado}) &amp; " dias"</expression>
     </formulas>
     <formulas>
         <name>CorpoAviso</name>
         <dataType>String</dataType>
-        <expression>{!$Record.Name} &amp; " · " &amp; IF(ISBLANK({!$Record.Account.Name}), "sem conta", {!$Record.Account.Name}) &amp; " · Estagio: " &amp; TEXT({!$Record.StageName}) &amp; " · sem atividade nem mudanca de estagio desde " &amp; TEXT({!Referencia})</expression>
+        <expression>{!$Record.Name}</expression>
     </formulas>
     <formulas>
-        <description>Gestor elegivel: ligado, preenchido, ativo e diferente do dono</description>
+        <description>Gestor elegivel: preenchido, ativo e diferente do dono (a chave NotificarGestor__c esta em AlertarGestor)</description>
         <name>GestorElegivel</name>
         <dataType>Boolean</dataType>
-        <expression>AND({!Get_Cfg.NotificarGestor__c}, NOT(ISBLANK({!$Record.Owner.ManagerId})), {!$Record.Owner.Manager.IsActive}, {!$Record.Owner.ManagerId} &lt;&gt; {!$Record.OwnerId})</expression>
+        <expression>AND(NOT(ISBLANK({!$Record.Owner.ManagerId})), {!$Record.Owner.Manager.IsActive}, {!$Record.Owner.ManagerId} &lt;&gt; {!$Record.OwnerId})</expression>
     </formulas>
     <formulas>
         <name>MensagemFalha</name>
@@ -87,15 +93,16 @@
     </decisions>
     <decisions>
         <name>Deve_Alertar</name>
-        <label>Alertar hoje?</label>
+        <label>Alertar dono hoje?</label>
         <locationX>176</locationX>
         <locationY>400</locationY>
+        <defaultConnector><targetReference>Deve_Alertar_Gestor</targetReference></defaultConnector>
         <defaultConnectorLabel>Nao</defaultConnectorLabel>
         <rules>
             <name>Sim</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>Alertar</leftValueReference>
+                <leftValueReference>AlertarDono</leftValueReference>
                 <operator>EqualTo</operator>
                 <rightValue><booleanValue>true</booleanValue></rightValue>
             </conditions>
@@ -123,14 +130,32 @@
         </rules>
     </decisions>
     <decisions>
-        <name>Inclui_Gestor</name>
-        <label>Incluir gestor?</label>
-        <locationX>176</locationX>
-        <locationY>700</locationY>
-        <defaultConnector><targetReference>Envia_Notificacao</targetReference></defaultConnector>
+        <name>Deve_Alertar_Gestor</name>
+        <label>Alertar gestor hoje?</label>
+        <locationX>704</locationX>
+        <locationY>400</locationY>
         <defaultConnectorLabel>Nao</defaultConnectorLabel>
         <rules>
-            <name>Sim_Gestor</name>
+            <name>Sim_Gestor_Hoje</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>AlertarGestor</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>Gestor_Elegivel</targetReference></connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Gestor_Elegivel</name>
+        <label>Gestor elegivel?</label>
+        <locationX>704</locationX>
+        <locationY>500</locationY>
+        <defaultConnector><targetReference>Log_Sem_Gestor</targetReference></defaultConnector>
+        <defaultConnectorLabel>Sem gestor</defaultConnectorLabel>
+        <rules>
+            <name>Gestor_Ok</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>GestorElegivel</leftValueReference>
@@ -151,19 +176,19 @@
             <operator>Add</operator>
             <value><elementReference>$Record.OwnerId</elementReference></value>
         </assignmentItems>
-        <connector><targetReference>Inclui_Gestor</targetReference></connector>
+        <connector><targetReference>Envia_Notificacao</targetReference></connector>
     </assignments>
     <assignments>
         <name>Adiciona_Gestor</name>
         <label>Adiciona gestor</label>
-        <locationX>176</locationX>
-        <locationY>800</locationY>
+        <locationX>704</locationX>
+        <locationY>600</locationY>
         <assignmentItems>
-            <assignToReference>Destinatarios</assignToReference>
+            <assignToReference>DestinatariosGestor</assignToReference>
             <operator>Add</operator>
             <value><elementReference>$Record.Owner.ManagerId</elementReference></value>
         </assignmentItems>
-        <connector><targetReference>Envia_Notificacao</targetReference></connector>
+        <connector><targetReference>Envia_Notificacao_Gestor</targetReference></connector>
     </assignments>
     <actionCalls>
         <name>Envia_Notificacao</name>
@@ -196,12 +221,44 @@
             <value><elementReference>$Record.Id</elementReference></value>
         </inputParameters>
     </actionCalls>
+    <actionCalls>
+        <name>Envia_Notificacao_Gestor</name>
+        <label>Envia notificacao ao gestor</label>
+        <locationX>704</locationX>
+        <locationY>700</locationY>
+        <actionName>customNotificationAction</actionName>
+        <actionType>customNotificationAction</actionType>
+        <connector><targetReference>Log_Alerta_Gestor_Enviado</targetReference></connector>
+        <faultConnector><targetReference>Log_Falha_Notificacao_Gestor</targetReference></faultConnector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>customNotifTypeId</name>
+            <value><elementReference>Get_Tipo_Notificacao.Id</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>recipientIds</name>
+            <value><elementReference>DestinatariosGestor</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>title</name>
+            <value><elementReference>TituloAviso</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>body</name>
+            <value><elementReference>CorpoAviso</elementReference></value>
+        </inputParameters>
+        <inputParameters>
+            <name>targetId</name>
+            <value><elementReference>$Record.Id</elementReference></value>
+        </inputParameters>
+    </actionCalls>
     <recordCreates>
         <description>Rastro de execucao: um registro por alerta enviado, so com o Id da oportunidade e os dias parada (EPLAST-28, correcao da rodada 2)</description>
         <name>Log_Alerta_Enviado</name>
         <label>Log alerta enviado</label>
         <locationX>176</locationX>
         <locationY>1000</locationY>
+        <connector><targetReference>Deve_Alertar_Gestor</targetReference></connector>
         <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
         <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
         <inputAssignments><field>RequestBody__c</field><value><elementReference>MensagemRastro</elementReference></value></inputAssignments>
@@ -213,6 +270,7 @@
         <label>Log dono inativo</label>
         <locationX>440</locationX>
         <locationY>600</locationY>
+        <connector><targetReference>Deve_Alertar_Gestor</targetReference></connector>
         <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
         <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
         <inputAssignments><field>RequestBody__c</field><value><elementReference>$Record.Id</elementReference></value></inputAssignments>
@@ -224,6 +282,43 @@
         <label>Log falha notificacao</label>
         <locationX>440</locationX>
         <locationY>1000</locationY>
+        <connector><targetReference>Deve_Alertar_Gestor</targetReference></connector>
+        <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
+        <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
+        <inputAssignments><field>RequestBody__c</field><value><elementReference>MensagemFalha</elementReference></value></inputAssignments>
+        <inputAssignments><field>ResponseStatus__c</field><value><stringValue>FALHA_NOTIFICACAO</stringValue></value></inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
+    <recordCreates>
+        <description>Rastro EPLAST-28: ramo do gestor; so Id da oportunidade e dias, nunca nome, e-mail ou valor</description>
+        <name>Log_Alerta_Gestor_Enviado</name>
+        <label>Log alerta gestor enviado</label>
+        <locationX>704</locationX>
+        <locationY>800</locationY>
+        <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
+        <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
+        <inputAssignments><field>RequestBody__c</field><value><elementReference>MensagemRastro</elementReference></value></inputAssignments>
+        <inputAssignments><field>ResponseStatus__c</field><value><stringValue>ALERTA_GESTOR_ENVIADO</stringValue></value></inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
+    <recordCreates>
+        <description>Rastro EPLAST-28: ramo do gestor; so Id da oportunidade e dias, nunca nome, e-mail ou valor</description>
+        <name>Log_Sem_Gestor</name>
+        <label>Log sem gestor</label>
+        <locationX>968</locationX>
+        <locationY>600</locationY>
+        <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
+        <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
+        <inputAssignments><field>RequestBody__c</field><value><elementReference>MensagemRastro</elementReference></value></inputAssignments>
+        <inputAssignments><field>ResponseStatus__c</field><value><stringValue>SEM_GESTOR</stringValue></value></inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
+    <recordCreates>
+        <description>Rastro EPLAST-28: ramo do gestor; so Id da oportunidade e dias, nunca nome, e-mail ou valor</description>
+        <name>Log_Falha_Notificacao_Gestor</name>
+        <label>Log falha notificacao gestor</label>
+        <locationX>968</locationX>
+        <locationY>800</locationY>
         <inputAssignments><field>ExecutionDate__c</field><value><elementReference>$Flow.CurrentDateTime</elementReference></value></inputAssignments>
         <inputAssignments><field>IntegrationAction__c</field><value><stringValue>Opportunity_Scheduled_AlertaParada</stringValue></value></inputAssignments>
         <inputAssignments><field>RequestBody__c</field><value><elementReference>MensagemFalha</elementReference></value></inputAssignments>
@@ -283,6 +378,13 @@
         <triggerType>Scheduled</triggerType>
     </start>
     <status>Draft</status>
+    <variables>
+        <name>DestinatariosGestor</name>
+        <dataType>String</dataType>
+        <isCollection>true</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
     <variables>
         <name>Destinatarios</name>
         <dataType>String</dataType>
