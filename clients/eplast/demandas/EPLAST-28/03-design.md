@@ -1,256 +1,235 @@
-# EPLAST-28 — Design: alertas de oportunidade parada ou sem acompanhamento
+# EPLAST-28 — Design: alertas de oportunidade parada (redesenho com as respostas do cliente de 2026-11-17)
 
-**Cliente:** Eplast · **Etapa:** 3 (desenho, arquiteto) · **Rodada:** refeita em 2026-11-15 pela regra 4 da conta
-**Org confirmada (`sf org list`):** `sbx-eplast-dev` (Sandbox, Connected). Só leitura de metadata e contagens agregadas; nenhum deploy, DML ou anonymous Apex.
-**Entradas:** `01-analise.md` (aprovada em 2026-11-15), `02-recon.md` (com complemento do arquiteto ao fim), `comentarios-do-card.md`, `assessment.md` (achados 1, 2, 4, 6, 9, 10), `rodada-anterior/03-design.md` (referência, não decisão), RAG (EPLAST-31, EPLAST-47).
+**Cliente:** Eplast · **Etapa:** 3 (desenho, arquiteto) · **Rodada:** redesenho de 2026-11-17, sobre o que já foi construído e passou no QA
+**Org confirmada (`sf org list`):** `sbx-eplast-dev` (Sandbox, Connected, Org Id `00DHa000006vfMLMAY`; sandbox "QA" da Eplast, `eplast--qa`, dev da esteira pela regra 5). Só leitura de metadata e contagens; nenhum deploy, DML ou anonymous Apex nesta etapa.
+**Entradas:** `02-recon.md` (2026-11-17), `01-analise.md` (aprovada em 2026-11-15), `comentarios-do-card.md`, respostas do cliente de 17/11 (fim do desenho anterior, reproduzidas na seção 0), `rodada-anterior/03-design.md` e `rodada-anterior/premissas-assumidas/` (build e QA anteriores), `assessment.md` (achado 1, por trecho).
 
-**Bloqueio por pergunta de negócio (regra 4c):** nenhum. Todas as decisões sem resposta do cliente estão na seção 8 como premissas assumidas.
-**Ponto para o arquiteto humano decidir no gate (não é bloqueio):** a solução cria um **Custom Metadata Type novo** (seção 4.1). É configuração, não objeto de negócio, e segue o precedente da EPLAST-47 (`ScheduledFlowOpportunitySetting__mdt`), mas é tipo novo na org e, pela regra do squad, mudança de modelo de dados é aceite humano. Nenhum campo é criado em Opportunity, Account, Order ou Task.
+**Bloqueio por pergunta de negócio (regra 4, caso 3):** nenhum.
+**Ponto para o arquiteto humano decidir no gate (não é bloqueio):** acrescentar **um campo** (`DiasEscalarGestor__c`) ao Custom Metadata Type `AlertaOportunidadeParadaSetting__mdt`, que esta demanda criou e o gate de 2026-11-15 aceitou. É configuração, não objeto de negócio; nenhum campo é criado em Opportunity, Account, Order ou Task. Pela regra do squad, mudança de modelo de dados é aceite humano.
 
-**Estimativa de esforço:** 16–24 h
-O que mudou em relação à análise (14–22 h): sobe 2 h no piso e no teto porque (1) o design acrescenta a carga inicial configurável (P16) e o log de dono inativo em objeto existente (P15), e (2) o teste em QA exige dados sintéticos com datas no passado (campos de auditoria, seção 10), mais duas sessões de QA por ser automação agendada. Não há Apex: o teto não sobe pela descida de nível que a análise previa.
+**Estimativa de esforço:** 8–12 h
+O que mudou em relação à análise (14–22 h) e ao design anterior (16–24 h): o alerta já existe, foi implantado e aprovado no QA (rodada 3, `rodada-anterior/premissas-assumidas/05-testes.md`). O redesenho é ajuste: 1 campo novo no CMDT, valores do registro `Default`, uma versão nova do Flow com o ramo do gestor e o texto reduzido, e reteste em duas sessões de QA (automação agendada) com carga sintética que inclui Tasks abertas e concluídas. Não há Apex.
 
 ---
 
+## 0. Respostas do cliente (2026-11-17) e o que cada uma muda
+
+A Eplast respondeu por escrito em 17/11 (registrado pelo responsável pela conta). Onde a resposta diverge de premissa anterior, vale a resposta.
+
+| Resposta do cliente | Antes (premissa) | Agora |
+|---|---|---|
+| Parada = aberta sem atividade comercial relevante; alteração administrativa e notificação automática não reiniciam; sem atividade, conta da criação | P2: atividade **e** mudança de estágio | Só atividade (`LastActivityDate`), sem atividade conta de `CreatedDate`. Mudança de estágio deixa de reiniciar. Tratamento da "atividade automática" na seção 3 |
+| Prazo: 7 dias corridos, único, configurável | P4: 14 dias | `DiasSemAcompanhamento__c` = 7 |
+| Dono aos 7 dias; gestor a partir de 14; hierarquia não cadastrada, cadastrar ou definir alternativa antes de ativar o gestor | P6: gestor junto com o dono, mesmo prazo, desligado | Limiar próprio do gestor (`DiasEscalarGestor__c` = 14), desligado (`NotificarGestor__c` = false). Nenhum encaminhamento alternativo inventado |
+| Só notificar, sem tarefa; sem repetição diária | P5, P7, P10 | Mantido |
+| Texto: nome da oportunidade, dias sem atividade e link; sem valor | P9: nome, conta, estágio, dias, link | Sai conta e estágio |
+| Canal: sino e app; sem e-mail | P5 | Mantido |
+| Volume em produção: a validar fora da esteira | P13 | Mantido como premissa |
+
 ## 1. Decisão
 
-**Flow agendado (Schedule-Triggered Flow) diário sobre Opportunity aberta, que envia Custom Notification ao dono (e ao gestor, se ligado), com parâmetros em Custom Metadata e log em `IntegrationLog__c`.** Não grava em Opportunity, Account, Order, OrderItem, Task ou Event.
+**Manter a solução declarativa já construída (Flow agendado diário `Opportunity_Scheduled_AlertaParada` + Custom Notification `Oportunidade_Parada` + parâmetros em `AlertaOportunidadeParadaSetting__mdt` + rastro em `IntegrationLog__c`) e ajustá-la às respostas: prazo 7 por configuração, regra de parada só por atividade por configuração, ramo próprio do gestor aos 14 dias (desligado) e texto reduzido, numa versão nova do Flow.** Nenhum Apex.
 
-Nível: **declarativo (2)**.
+Nível: **declarativo (2)**, com parte das mudanças em **configuração (1)** (valores do CMDT).
 
-### 1.1 Por que não configuração pura (nível 1)
-- **Relatório + assinatura de relatório** (ex.: partir de `Neglected Open Opportunities`, que existe na dev; filtros não lidos). A assinatura repete o envio a cada execução enquanto a oportunidade estiver parada (contraria CA-05), cada vendedor teria de assinar o próprio relatório, o filtro relativo não lê o prazo configurável (P4) e não há escalonamento ao gestor (CA-08) nem log de dono inativo (CA-09). Não atende.
-- **Tópico do `SFAgent2`** ("Insights Comerciais e Acompanhamento", que "identifica oportunidades paradas"). É sob demanda: só responde quando o vendedor pergunta. O pedido é proativo. Não há configuração do agente que dispare aviso sozinho.
-- **Flows `agentic_feed`** citados na rodada anterior: 0 na dev (recon). Não se reaproveita o que não foi confirmado.
+### 1.1 Por que não só configuração
+Duas das cinco mudanças são configuração pura e não tocam o Flow:
+- Prazo 14 → 7: valor de `DiasSemAcompanhamento__c` no registro `Default`.
+- Estágio deixa de reiniciar: valor de `RegraParada__c` = `SoAtividade` no registro `Default`. A fórmula `Referencia` da versão atual já trata esse valor (`CASE(... "SoAtividade", RefAtividade ...)`, conferido no XML do repositório) e `RefAtividade` já cai para `CreatedDate` quando não há atividade.
 
-### 1.2 Por que Flow e não Apex
-A regra é um filtro (aberta), uma conta de datas, uma comparação com o parâmetro e uma notificação. O Flow agendado processa em lotes e agrupa ações e Get Records por lote. Nenhum critério da skill `salesforce-doutrina` para descer a Apex se aplica: sem rollback complexo, sem callout, sem recursão, sem leitura das Tasks filhas (P3 decidiu usar `LastActivityDate`), e o volume de produção não foi informado (P13). Apex só traria custo numa org com cobertura de 10% (achado 2). Por isso CA-12 **não se aplica** nesta demanda.
+As outras três exigem lógica no Flow: o gestor com limiar próprio (hoje o gestor entra no mesmo aviso do dono, no mesmo dia), o texto sem conta e estágio (fórmula `CorpoAviso`) e o registro de "sem gestor" quando o ramo do gestor estiver ligado. Por isso há versão nova do Flow.
 
-### 1.3 Quando desce para Apex (fica registrado, não é o caminho)
-Desce para `Schedulable` + `Batchable` (cada classe com `<Classe>Test` e 85%) se: (a) o cliente pedir para ignorar Tasks automáticas (filtrar Tasks por origem, P3), (b) pedir resumo único por dono em vez de um aviso por oportunidade, ou (c) o volume de oportunidades abertas em produção passar de 150.000 (cerca de 60% do limite diário de interviews de Flow agendado, que é o maior entre 250.000 e 200 por licença; valor da documentação oficial, conferir no build). Qualquer um deles volta ao gate de design.
+### 1.2 Por que não Apex
+Continua valendo a justificativa do design anterior (filtro, conta de datas, comparação e notificação; sem callout, rollback complexo ou recursão; org com cobertura de 10%, achado 2 do assessment). A única coisa que poderia empurrar para código é distinguir tarefa automática de tarefa do vendedor (seção 3). O cliente mandou: se só código resolve, **não construir código** e declarar como limitação. Seção 3 mostra que a solução declarativa cobre o caso que importa e declara o que sobra.
 
-## 2. Como funciona
+## 2. Como funciona (versão nova do Flow)
 
 ```
-[Agendamento diário 07:00, horário da org]   (livre: 02:00, 06:00, 15:47 e 17:36 já ocupados — recon, complemento)
- Flow Opportunity_Scheduled_AlertaParada
-  start: Opportunity, IsClosed = false
-  Get Records: AlertaOportunidadeParadaSetting__mdt, DeveloperName = 'Default'
-  Decisão Ativo__c = false        -> fim (chave geral)
-  fórmulas:
-    RefAtividade = BLANKVALUE(LastActivityDate, DATEVALUE(CreatedDate))
-    RefEstagio   = DATEVALUE(BLANKVALUE(LastStageChangeDate, CreatedDate))
-    Referencia   = conforme RegraParada__c:
-                     AtividadeEEstagio -> a mais recente das duas (padrão)
-                     SoAtividade       -> RefAtividade
-                     SoEstagio         -> RefEstagio
-    DiasParado   = TODAY() - Referencia
-    Alertar      = DiasParado = DiasSemAcompanhamento__c
-                   OU (TODAY() = DataCargaInicial__c E DiasParado >= DiasSemAcompanhamento__c)
-  Decisão Alertar = false         -> fim
-  Decisão $Record.Owner.IsActive = false
-        -> Create IntegrationLog__c (ResponseStatus__c = 'DONO_INATIVO', RequestBody__c = Id da oportunidade) -> fim
-  monta destinatários: OwnerId
-        + Owner.ManagerId, se NotificarGestor__c = true, ManagerId preenchido, gestor ativo e diferente do dono
-  Send Custom Notification (tipo Oportunidade_Parada, alvo = Id da oportunidade)
-        fault -> Create IntegrationLog__c (ResponseStatus__c = 'FALHA_NOTIFICACAO', mensagem do fault)
-  nenhum Update / Delete; nenhum Create fora de IntegrationLog__c
+[Agendamento diário 07:00, horário da org — mantido; job atual Opportunity_Scheduled_AlertaParada-1]
+ start: Opportunity, IsClosed = false
+ Get_Cfg (AlertaOportunidadeParadaSetting__mdt, 'Default'); Get_Tipo_Notificacao ('Oportunidade_Parada')
+ Ativo__c = false -> fim
+ fórmulas (inalteradas): RefAtividade = LastActivityDate, ou DATEVALUE(CreatedDate) se vazio
+                         Referencia   = conforme RegraParada__c (Default passa a SoAtividade)
+                         DiasParado   = TODAY() - Referencia
+ fórmula AlertarDono   = DiasParado = DiasSemAcompanhamento__c
+                         OU (TODAY() = DataCargaInicial__c E DiasParado >= DiasSemAcompanhamento__c)
+ fórmula AlertarGestor = NotificarGestor__c
+                         E DiasEscalarGestor__c preenchido E DiasEscalarGestor__c > DiasSemAcompanhamento__c
+                         E ( DiasParado = DiasEscalarGestor__c
+                             OU (TODAY() = DataCargaInicial__c E DiasParado >= DiasEscalarGestor__c) )
+
+ Ramo DONO (se AlertarDono):
+   dono inativo -> IntegrationLog__c DONO_INATIVO (como hoje)
+   dono ativo   -> Send Custom Notification ao OwnerId -> IntegrationLog__c ALERTA_ENVIADO
+                   fault -> IntegrationLog__c FALHA_NOTIFICACAO
+ Ramo GESTOR (se AlertarGestor; independente do ramo DONO):
+   Owner.ManagerId vazio, gestor inativo ou gestor = dono -> IntegrationLog__c SEM_GESTOR
+   senão -> Send Custom Notification ao Owner.ManagerId -> IntegrationLog__c ALERTA_GESTOR_ENVIADO
+            fault -> IntegrationLog__c FALHA_NOTIFICACAO
+ nenhum Update / Delete; nenhum Create fora de IntegrationLog__c
 ```
 
-Texto da notificação (P9): título "Oportunidade parada há {DiasParado} dias"; corpo "{Nome da oportunidade} · {Nome da conta} · Estágio: {StageName} · sem atividade nem mudança de estágio desde {Referencia}". Sem valor, e-mail, telefone ou dado de contato.
+Texto do aviso (dono e gestor, resposta do cliente): título **"Oportunidade sem atividade há {DiasParado} dias"**; corpo **"{Nome da oportunidade}"**; alvo = Id da oportunidade (o toque no aviso abre o registro, é o "link"). Sem conta, estágio, valor, e-mail ou contato.
 
-### 2.1 Deduplicação sem estado (CA-05, P10)
-O alerta sai **no dia em que `DiasParado` é igual ao prazo**, não "maior ou igual". No dia seguinte a condição já é falsa, sem gravar marcador na oportunidade. Nova atividade ou mudança de estágio move a `Referencia`, e o ciclo recomeça sozinho. Custo: um dia sem execução do job perde os alertas daquele dia (risco R4); a mitigação operacional é a `DataCargaInicial__c` (P16).
+`IntegrationLog__c` (mesmos campos de hoje): `IntegrationAction__c` = `Opportunity_Scheduled_AlertaParada`; `ResponseStatus__c` ∈ {`ALERTA_ENVIADO`, `ALERTA_GESTOR_ENVIADO`, `DONO_INATIVO`, `SEM_GESTOR`, `FALHA_NOTIFICACAO`}; `RequestBody__c` = `<Id da oportunidade> | DiasParado=<n>`; na falha, Id e mensagem do fault. Nunca nome, e-mail ou valor.
 
-### 2.2 Carga inicial (P16)
-Sem ela, oportunidades que já estão paradas além do prazo no dia do go-live nunca alertariam (só alertam ao cruzar exatamente N). `DataCargaInicial__c` faz uma varredura única: no dia configurado, alerta todas com `DiasParado >= N`. Vazia, não faz nada.
+### 2.1 Sem repetição (resposta do cliente: "sem repetição diária")
+Mantida a deduplicação sem estado do design anterior: o dono recebe no dia em que `DiasParado` é **igual** a 7; o gestor, no dia em que é **igual** a 14. São dois avisos por episódio no máximo (um a cada pessoa), nunca diário. Atividade nova move a `Referencia` e o ciclo recomeça. Custo conhecido: um dia sem execução do job perde os avisos daquele dia (R4).
 
-## 3. Item a item: o que reaproveita e o que cria (regra 3)
+### 2.2 Dono e gestor no mesmo dia
+`AlertarGestor` exige `DiasEscalarGestor__c > DiasSemAcompanhamento__c`; se alguém configurar o gestor com prazo menor ou igual ao do dono, o ramo do gestor não roda (evita aviso duplicado sem sentido). No dia da carga inicial, uma oportunidade com 20 dias gera os dois avisos, uma vez cada.
 
-| Item da análise | Reaproveita | Cria | Por que o existente não atende |
-|---|---|---|---|
-| Detectar oportunidade parada (CA-01 a CA-04) | Campos padrão `LastActivityDate`, `LastStageChangeDate`, `CreatedDate`, `IsClosed`, `OwnerId` (confirmados por `FieldDefinition`) | Flow `Opportunity_Scheduled_AlertaParada` | Nenhuma automação existente avalia parada; `ScheduledFlowOpportunity` calcula ranking de conta (descrição do Flow, EPLAST-47). Relatório `Neglected Open Opportunities` não notifica (1.1). |
-| Notificar o dono (CA-02, CA-07) | Mecanismo padrão de Custom Notification | `CustomNotificationType` `Oportunidade_Parada` | O único tipo existente é `Novo_Pedido`, de outro propósito; reaproveitá-lo misturaria avisos e preferências de notificação do usuário. |
-| Prazo, regra, gestor e chave geral configuráveis (P2, P4, P6) | Padrão de CMDT de parâmetros por Flow com registro `Default`, já usado na EPLAST-47 (`ScheduledFlowOpportunitySetting__mdt`) | CMDT `AlertaOportunidadeParadaSetting__mdt` + registro `Default` | `ScheduledFlowOpportunitySetting__mdt` é do Flow de ranking; acoplar os dois faria um deploy de um mudar o outro. |
-| Log de dono inativo (CA-09) e falha de envio | `IntegrationLog__c` e o padrão da EPLAST-47 (`ScheduledFlowOpportunity` grava falhas nele, com `IntegrationAction__c` = nome do Flow) | Nada | Atende como está. 0 triggers e 0 Flows de gravação nele (complemento do recon). |
-| Escalonar ao gestor (CA-08) | `User.ManagerId` (hierarquia padrão) | Nada além do parâmetro `NotificarGestor__c` | — |
-| Assistente / linguagem natural (CA-10) | `SFAgent2`, tópico "Insights Comerciais e Acompanhamento" | **Nada** | Não se cria agente, tópico nem ação. O alerta complementa o tópico (P11). |
-| Score (EPLAST-26) | — | Nada | Fora do escopo (P12). |
+### 2.3 Gestor desligado e sem hierarquia
+Recon de hoje: 0 usuários ativos com `ManagerId`; 2 papéis, nenhum com `ParentRoleId`. O ramo do gestor nasce **desligado** (`NotificarGestor__c = false`). Ligar é passo de quem administra a org, **depois** de cadastrar o campo "Gestor" (`ManagerId`) dos vendedores, conforme o cliente pediu. Se for ligado sem hierarquia, nada é enviado a ninguém no lugar do gestor: grava `SEM_GESTOR` por oportunidade, para dar visibilidade. O design **não** cria encaminhamento alternativo (fila, grupo, papel), por instrução do cliente.
 
-## 4. Componentes
+## 3. "Notificações automáticas não reiniciam": o que dá para fazer sem código
 
-### 4.1 Criar
-Nomes pela skill `padrao-entrega` (o `CLAUDE.md` da Eplast não define convenção nem prefixo de campo). Todo componente sai com `Description` citando EPLAST-28 (achado 4). API 68.0 (versão da org, recon), não a v59 dos Flows antigos (achado 9).
+Achados (recon de 2026-11-17): Task não tem `Type` nem campo custom de origem (só 3 do pacote `maps__`); os Flows `Oportunidade_Industria` (5 Tasks, assuntos fixos `Amostra`, `Cotação/Negociação`, `Execução técnica do projeto`, `Precificação`) e `OpportunityFlow` (1 Task, assunto por variável, não extraído) criam Tasks **sem informar `Status`** (nasce no padrão `Open`) e sem `ActivityDate` na lista de campos gravados. O alerta em si é Custom Notification e não cria Task nem Event.
 
-| Tipo | API name | Descrição / conteúdo |
+| Alternativa | Como | Cobre | Custo / fragilidade | Decisão |
+|---|---|---|---|---|
+| **A. `LastActivityDate` (atual)** | Campo padrão agregado. Pela documentação do Salesforce, considera **tarefa concluída** e evento passado; tarefa aberta não conta | Tarefa automática **aberta** não reinicia. Notificação (sino, e-mail alert) não é atividade, não reinicia. Alteração administrativa no registro (dono, valor, estágio) não reinicia: `LastModifiedDate` e `LastStageChangeDate` não entram na conta | Tarefa automática só reinicia quando alguém a conclui. Comportamento "aberta não conta" **não provado nesta org** (0 Tasks na dev); medir em QA | **Escolhida** |
+| B. Get Records em Task/Event por oportunidade, excluindo os assuntos dos Flows conhecidos | Flow declarativo, ordenado pela data, 1 registro | Exclui tarefas com assunto igual aos 4 conhecidos | Assunto é texto livre (vendedor pode usar o mesmo); assunto do `OpportunityFlow` não conhecido; quebra quando alguém muda o Flow de origem; uma consulta a mais por oportunidade em toda execução diária, com agrupamento por lote não provado para consulta ordenada com limite; `CreatedById` **não** distingue, porque Flow disparado por gravação roda como o usuário que gravou (o vendedor) | Descartada |
+| C. Marcar a origem na Task (campo novo, ou `Status`/`TaskSubtype` gravado pelos Flows) e filtrar | Alterar `Oportunidade_Industria` e `OpportunityFlow` e ler Tasks | Distingue de forma confiável | Campo novo em Task é modelo de dados; altera dois Flows de outra frente (cadeia de Opportunity/Account, achado 1); leitura de filhos por oportunidade (CPU com muitas Tasks, SOMOSAGILITY-10) e, em volume, Apex | Fora desta demanda; evolução se o cliente pedir |
+
+**Por que A atende o pedido:** a tarefa automática é um lembrete criado para o vendedor ("Amostra", "Precificação"...). Enquanto está aberta, ninguém fez nada, e ela não reinicia o prazo. Quando o vendedor a conclui, ele registrou que fez a atividade, o que é atividade comercial. Isso cobre "notificações automáticas não reiniciam" sem código e sem ler Tasks.
+
+**Limitação declarada (validar na homologação):** (1) tarefa automática concluída sem que a atividade tenha acontecido (por exemplo, conclusão em massa por um administrador) reinicia o prazo; (2) qualquer outra automação que crie tarefa **já concluída** ou evento reiniciaria o prazo; não conheço nenhuma na org (recon leu 3 Flows; não verifiquei se o Marketing Cloud Connect registra atividade como Task); (3) qual data o Salesforce põe em `LastActivityDate` quando a tarefa concluída não tem data de vencimento não foi provado nesta org. Os três pontos são medidos em QA (seção 9). Se o cliente quiser distinguir a origem da tarefa de forma confiável, é a alternativa C, em demanda própria.
+
+## 4. Item a item: o que reaproveita e o que cria (regra 3)
+
+| Item | Estado na dev (recon / conferido hoje) | Nesta demanda |
 |---|---|---|
-| Flow (Schedule-Triggered, diário 07:00) | `Opportunity_Scheduled_AlertaParada` | Alerta diário ao dono quando uma oportunidade aberta completa N dias sem atividade nem mudança de estágio. Não grava em objetos de negócio; só registra em IntegrationLog__c dono inativo e falha de envio. Parâmetros em AlertaOportunidadeParadaSetting__mdt. EPLAST-28 |
-| CustomNotificationType | `Oportunidade_Parada` | Aviso interno (desktop e mobile) de oportunidade aberta parada além do prazo. EPLAST-28 |
-| Custom Metadata Type | `AlertaOportunidadeParadaSetting__mdt` | Parâmetros do Flow Opportunity_Scheduled_AlertaParada. Registro Default. EPLAST-28 |
-| Campo CMDT | `Ativo__c` (Checkbox, padrão true) | Chave geral: desligado, o Flow não avalia nada |
-| Campo CMDT | `DiasSemAcompanhamento__c` (Number 3,0; valor 14) | Prazo N em dias (P4) |
-| Campo CMDT | `RegraParada__c` (Picklist restrita: `AtividadeEEstagio`, `SoAtividade`, `SoEstagio`; valor `AtividadeEEstagio`) | Qual data define a parada (P2) |
-| Campo CMDT | `NotificarGestor__c` (Checkbox, false) | Inclui o gestor direto (P6) |
-| Campo CMDT | `DataCargaInicial__c` (Date, vazio) | Dia da varredura única de oportunidades já paradas (P16) |
-| Registro CMDT | `AlertaOportunidadeParadaSetting.Default` | Valores acima |
+| Flow `Opportunity_Scheduled_AlertaParada` | v1 **Active**, v2 **Draft** (rastro `ALERTA_ENVIADO`, conferido hoje por Tooling) | **Reaproveita.** Versão nova a partir do XML do repositório (que é a v2), com as mudanças da seção 5. Não se edita a v1 ativa |
+| Job agendado `Opportunity_Scheduled_AlertaParada-1` (07:00, WAITING) | Existe | Reaproveita; horário mantido (P14) |
+| CMDT `AlertaOportunidadeParadaSetting__mdt` | Existe; registro `Default` lido hoje na org: `Ativo__c` true, `DiasSemAcompanhamento__c` 14, `RegraParada__c` `AtividadeEEstagio`, `NotificarGestor__c` false, `DataCargaInicial__c` vazio | **Reaproveita** + **cria 1 campo** `DiasEscalarGestor__c`; altera valores do `Default` |
+| `CustomNotificationType` `Oportunidade_Parada` | Existe | Reaproveita sem mudança |
+| `IntegrationLog__c` | Existe; sem trigger nem Flow de gravação (recon anterior) | Reaproveita; dois status novos (`ALERTA_GESTOR_ENVIADO`, `SEM_GESTOR`) como texto, sem mudar o objeto |
+| Campos padrão `Opportunity.LastActivityDate`, `CreatedDate`, `IsClosed`, `OwnerId`, `Name`; `User.ManagerId`, `IsActive` | Existem | Reaproveita. `LastStageChangeDate` deixa de pesar (por configuração) |
+| Agente `SFAgent2`, tópico "Insights Comerciais e Acompanhamento" | Existe (recon anterior, não relido hoje) | Nada. Não se cria agente, tópico nem ação (CA-10) |
+| Relatório `Neglected Open Opportunities` | Existe (recon anterior) | Nada (não notifica, não lê prazo configurável; design anterior 1.1) |
+| Flows `agentic_feed` | 0 na dev | Nada |
 
-`IntegrationLog__c` gravado pelo Flow: `IntegrationAction__c` = `Opportunity_Scheduled_AlertaParada`; `ResponseStatus__c` = `DONO_INATIVO` ou `FALHA_NOTIFICACAO`; `ExecutionDate__c` = agora; `RequestBody__c` = Id da oportunidade (e, na falha, a mensagem do fault). Nunca nome, e-mail ou valor.
+## 5. Componentes
 
-### 4.2 Alterar / depreciar
-**Nenhum.** Não se altera `OpportunityTrigger`, `OpportunityTriggerHandler`, `OpportunityTriggerHelper`, `OpportunityFlow`, `Oportunidade_Industria`, `ScheduledFlowOpportunity`, `TaskCreatedOrUpdated`, `IntegrationLog__c`, o relatório `Neglected Open Opportunities` nem o `SFAgent2`. Não se liga `TriggerUtility__mdt` (bypass global).
+### 5.1 Criar
+| Tipo | API name | Conteúdo |
+|---|---|---|
+| Campo de CMDT | `AlertaOportunidadeParadaSetting__mdt.DiasEscalarGestor__c` | Number(3,0). Descrição: "Dias sem atividade para avisar o gestor direto do dono (ManagerId). Só vale com NotificarGestor__c ligado e se maior que DiasSemAcompanhamento__c. EPLAST-28" |
 
-### 4.3 Layouts
-Nenhum. Notificação aparece no sino e no app móvel.
+### 5.2 Alterar
+| Tipo | API name | Mudança |
+|---|---|---|
+| Registro de CMDT | `AlertaOportunidadeParadaSetting.Default` | `DiasSemAcompanhamento__c` 14 → **7**; `RegraParada__c` `AtividadeEEstagio` → **`SoAtividade`**; `DiasEscalarGestor__c` = **14**; `NotificarGestor__c` **false** (mantido); `Ativo__c` true e `DataCargaInicial__c` vazio (mantidos) |
+| Flow | `Opportunity_Scheduled_AlertaParada` | **Versão nova** (na dev, a próxima depois da v2 Draft; o número exato é o que a plataforma atribuir, e o build registra), implantada com `<status>Draft</status>`. Mudanças sobre o XML atual: (a) `Alertar` vira `AlertarDono`; (b) nova fórmula `AlertarGestor` (seção 2); (c) `GestorElegivel` deixa de depender só de `NotificarGestor__c` e o gestor sai da coleção de destinatários do dono, passando a ter ramo e envio próprios; (d) `TituloAviso` = "Oportunidade sem atividade há N dias"; `CorpoAviso` = nome da oportunidade; (e) novos registros `Log_Alerta_Gestor_Enviado` e `Log_Sem_Gestor` em `IntegrationLog__c`; (f) descrição do Flow atualizada citando EPLAST-28 e a regra nova. API 68.0. Sem `recordUpdates`/`recordDeletes` |
+| Descrição dos campos de CMDT `DiasSemAcompanhamento__c`, `NotificarGestor__c`, `RegraParada__c` | idem | Ajustar texto de ajuda ao novo uso (gestor com prazo próprio; padrão SoAtividade). Sem mudar tipo nem valores da picklist |
 
-## 5. Ordem de execução, governador e escala
+**Ativação (passo separado, skill `salesforce-doutrina`):** depois da verificação na dev, ativar a versão nova e deixar a v1 inativa; a v2 Draft fica obsoleta (nunca ativada). Para desfazer: reativar a versão anterior e restaurar os valores do `Default` (14 / `AtividadeEEstagio`). Na QA (QAS), quem implanta é a esteira (`05-deploy-qa.md`); lá a versão ativa da rodada anterior era a 7, e a nova entra como versão seguinte. O CMDT é implantado junto; valores do `Default` e Flow têm de subir no mesmo deploy, porque a versão nova com `RegraParada__c` antigo voltaria a contar estágio.
 
-### 5.1 Conflito de automação (achado 1)
-**Opportunity tem hoje `OpportunityTrigger` (custom, Active, IsValid=false), `OpportunityBefore` e `OpportunityAfter` (SBQQ, este IsValid=false) e os Flows after-save `OpportunityFlow` e `Oportunidade_Industria` no mesmo evento, além do agendado `ScheduledFlowOpportunity`. A ordem entre eles não está mapeada (recon).**
+### 5.3 Depreciar
+Nenhum. O valor de picklist `AtividadeEEstagio` e a fórmula `RefEstagio` continuam no Flow (deixam a regra antiga recuperável sem deploy).
 
-Como a solução lida: **não entra nessa ordem**. Não é disparada por gravação de Opportunity e não grava em Opportunity, Account, Order ou Task; portanto não aciona trigger, Flow record-triggered nem validation rule desses objetos. O mapa completo da ordem de execução de Opportunity não é pré-requisito desta demanda e continua pendente para quem gravar nela. O único DML é em `IntegrationLog__c`, que não tem trigger nem Flow de gravação (confirmado). O que quebraria essa garantia, e por isso está fora: criar Task, gravar marcador na oportunidade ou trocar o agendamento por gatilho de gravação.
+### 5.4 Não alterados
+`OpportunityTrigger`, `OpportunityBefore`, `OpportunityAfter`, `OpportunityFlow`, `Oportunidade_Industria`, `ScheduledFlowOpportunity`, `TaskCreatedOrUpdated`, `AccountTrigger`, `IntegrationLog__c` (estrutura), `Oportunidade_Parada`, relatórios, `SFAgent2`, `TriggerUtility__mdt`.
 
-**Onde a cadeia aparece: na carga de teste.** Criar Opportunity e Task sintéticas em QA passa por toda a cadeia (16 validation rules, triggers, `OpportunityFlow` que grava em Order/Quote/Account/Task, `TaskCreatedOrUpdated` que atualiza Account). Mesmo tratamento da EPLAST-31 (RAG, `demandas/EPLAST-31/03-design.md`): mínimo de registros, sem bypass global, e o QA confirma para onde aponta a integração Protheus antes de criar Order indireta. `IsValid=false` em `OpportunityTrigger`/`OpportunityAfter` pode fazer a criação falhar com erro de compilação; se falhar, é achado de ambiente para o humano, não defeito do alerta.
+## 6. Ordem de execução, governador e escala
 
-Convivência com outros agendados: 07:00 não coincide com nenhum dos 4 Flows agendados (recon, complemento). Transações separadas; o alerta não disputa lock porque não grava nos mesmos registros.
+### 6.1 Conflito de automação (achado 1 do assessment, saúde vermelha)
+**Opportunity tem `OpportunityTrigger` (custom), `OpportunityBefore` e `OpportunityAfter` (SBQQ), todos Active e, hoje, `IsValid=true` (recon), e os Flows de gravação `OpportunityFlow` e `Oportunidade_Industria`. A ordem relativa entre eles não está mapeada.**
 
-### 5.2 Governador
-- **Muitos registros:** uma interview por oportunidade aberta por dia. Get Records do CMDT é agrupado por lote e consulta de CMDT não consome o limite de SOQL. Envio de notificação e Create do log são agrupados por lote de interviews. Teto: limite diário de interviews de Flow agendado (1.3).
-- **Um pai com muitos filhos (SOMOSAGILITY-10):** não se aplica como cascata. O Flow não grava em pai nem em filho; o custo por oportunidade é constante, não importa quantas Tasks ela tenha (lê o campo agregado `LastActivityDate`, não as Tasks). Um dono com muitas oportunidades recebe muitos avisos, mas cada um é ação de lote, não transação extra.
-- **Notificações:** a plataforma limita notificações personalizadas por hora na org. O valor não foi conferido nesta sessão (não respondo de memória); o build confere na documentação oficial e registra no `04-plano-build.md`. O ponto crítico é o dia da carga inicial (P16).
-- Critério de volta ao design: medição em QA acima de 70% de qualquer limite no volume de teste (skill `salesforce-doutrina`).
+Como a solução lida: **não entra nessa ordem**, como no design anterior. O Flow é agendado (não disparado por gravação) e o único DML é `Create` em `IntegrationLog__c`, que não tem trigger nem Flow de gravação. Não grava em Opportunity, Account, Order, OrderItem, Task ou Event, então não aciona trigger, CPQ, validation rule, `TaskCreatedOrUpdated` nem a cadeia `AccountTrigger` → Protheus (nenhuma gravação em Account, em massa ou não). O mapa da ordem de execução não é pré-requisito; passa a ser se alguém propuser gravar marcador na oportunidade ou criar Task (fora, seção 11).
 
-### 5.3 Contexto de execução
-Flow agendado roda em contexto de sistema. Lê `$Record.Owner.IsActive`, `$Record.Owner.ManagerId` e `$Record.Owner.Manager.IsActive` (Opportunity.OwnerId é só User). `TODAY()` segue o fuso da org.
+**Onde a cadeia aparece: na carga de teste.** Criar Opportunity e Task sintéticas passa pelos triggers, 16 validation rules, `OpportunityFlow`/`Oportunidade_Industria` (que criam Tasks) e `TaskCreatedOrUpdated` (que grava Account e, pela `AccountTrigger`, enfileira o envio ao Protheus). Mesmo tratamento da rodada anterior, que já funcionou na QA: scripts de `fixtures/`, Conta com `TriggerUtility.bypassTrigger` e CNPJ fictício, poucos registros, apagados ao fim.
 
-## 6. Permissões
-- **Nenhum permission set ou perfil novo ou alterado.** O destinatário não precisa de permissão para receber Custom Notification enviada por Flow; o build confirma isso em dev e, se a plataforma exigir, volta ao gate com um `PS_Comercial_AlertaParada` (não criado de antemão).
-- Ao abrir a notificação, vale o compartilhamento: o dono enxerga a própria oportunidade. O gestor só abre se o compartilhamento lhe der acesso (hierarquia de papéis não é a mesma coisa que `ManagerId`); ver R5.
-- Manutenção do CMDT: só administrador (Customize Application). Achados 7 e 8 (perfis) não são tocados.
+Convivência com outros agendados: 07:00 não coincide com 02:00, 06:00, 15:47 e 17:36 (recon). `ScheduledFlowOpportunity` foi alterado hoje por outro motivo (recon, não investigado); não é tocado nem lido por este Flow.
 
-## 7. Preparação do Sales Cloud para o Marketing Cloud
-**Não se aplica.** O alerta é aviso interno a usuário do Salesforce sobre a carteira dele; não é comunicação com cliente, lead, campanha, público ou nutrição. Não se lê nem se grava nada do `et4ae5`, não há envio de e-mail, SMS ou mensagem (CA-07), e nada é feito no Marketing Cloud. Se o cliente pedir aviso por e-mail, a análise de canal volta ao design e segue a regra 2 da conta.
+### 6.2 Governador
+- **Muitos registros:** uma interview por oportunidade aberta por dia, como hoje. O ramo do gestor não acrescenta consulta (lê `$Record.Owner.ManagerId` e `$Record.Owner.Manager.IsActive`, já usados na versão atual). Envio e `Create` são agrupados por lote. Dois avisos possíveis por oportunidade, só nos dias 7 e 14 (ou na carga inicial).
+- **Um pai com muitos filhos (SOMOSAGILITY-10):** não se aplica. A solução lê o campo agregado `LastActivityDate`, não as Tasks; custo constante por oportunidade, sem cascata. É um motivo a mais para descartar a alternativa B/C da seção 3.
+- **Limites de notificação personalizada por hora e de interviews diárias de Flow agendado:** **não conferidos** (o build anterior também não conferiu, por falta de acesso à documentação). Não cito de memória. Ponto crítico é o dia da carga inicial. Fica para o build/QA conferir na documentação oficial; limiar de volta ao design: medição acima de 70% de qualquer limite (skill `salesforce-doutrina`).
 
-## 8. Premissas assumidas (validar na homologação)
+### 6.3 Contexto de execução
+Flow agendado; a versão atual funcionou na QA com notificação ao dono (rodada 3). Não confirmei por consulta o contexto de execução nem se o destinatário precisa de acesso ao tipo de notificação; a QA anterior entregou ao dono sem permission set novo.
 
-Herdadas da análise (P1 a P13), conferidas neste design (a aprovação da análise foi em lote, comentário de 2026-11-15):
+## 7. Permissões
+- Nenhum perfil ou permission set novo ou alterado.
+- Ao abrir o aviso, vale o compartilhamento: OWD interno de Opportunity é `Read` (recon), então dono e gestor, com perfil que lê Opportunity, abrem o registro.
+- Manutenção do CMDT (prazo, gestor, carga inicial): administrador (Customize Application).
+- Usuário de teste da regra 6: na dev há dois usuários que casam com o filtro; o ativo é `005bJ00000piKAaQAM` (perfil Administrador do sistema), o outro (`005bJ00000hBJmYQAW`) está inativo. O ativo foi o dono das oportunidades de teste na QA anterior. Não se altera perfil, permissão, papel nem `ManagerId` dele. Para exercitar o ramo do gestor ligado (CA-08), precisa de um par dono/gestor de teste com `ManagerId`; não há na org e o design não cria nem altera usuário: fica como caso não exercitado, declarado no roteiro (ver CA-08).
 
-- [x] **P1 — Escopo da Onda 3.** Mantida (regra 1 da conta).
-- [x] **P2 — Definição de parada.** Mantida: sem atividade (`LastActivityDate`) E sem mudança de estágio (`LastStageChangeDate`) há N dias; usa a mais recente das duas. Como mudar: `RegraParada__c` no CMDT, sem deploy.
-- [x] **P3 — Tasks automáticas contam.** Mantida. Evidência: `LastActivityDate` não distingue origem. Efeito medido em QA (seção 10). Como mudar: descida para Apex (1.3a), volta ao design.
-- [x] **P4 — Prazo único de 14 dias.** Mantida, em `DiasSemAcompanhamento__c`. Por estágio fica para evolução (exigiria registros por estágio no CMDT).
-- [x] **P5 — Canal e frequência.** Mantida: Custom Notification, avaliação diária, um aviso por episódio.
-- [x] **P6 — Gestor desligado por padrão.** Mantida, em `NotificarGestor__c`. Evidência nova: 0 usuários ativos com `ManagerId` na dev; ligar só faz efeito depois de preencher o gestor.
-- [x] **P7 — Só avisa, não cria Task.** Mantida (evita `TaskCreatedOrUpdated` e a cadeia de Account).
-- [x] **P8 — Elegíveis: todas as abertas.** Mantida (`IsClosed = false`, todos os record types).
-- [x] **P9 — Conteúdo do aviso.** Mantida: nome da oportunidade, nome da conta, estágio, dias, link.
-- [x] **P10 — Sem campo de controle em Opportunity.** Mantida (dedup pela igualdade, 2.1).
-- [x] **P11 — Complementa o SFAgent2.** Mantida e reforçada: o tópico "Insights Comerciais e Acompanhamento" identifica oportunidades paradas sob demanda, mas a instrução lida não define prazo nem critério (complemento do recon). Decisão: a definição deste alerta (P2/P4) passa a ser a referência; alinhar o tópico a ela é ajuste de instrução do `SFAgent2` em demanda própria, se o cliente quiser. Como mudar: o cliente informa a regra do agente e o CMDT é ajustado.
+## 8. Preparação do Sales Cloud para o Marketing Cloud
+**Não se aplica.** O alerta é aviso interno a usuário do Salesforce sobre a própria carteira, sem cliente, lead, campanha, público ou nutrição. O cliente confirmou canal sino/app e sem e-mail nesta etapa. Não se lê nem se grava nada do `et4ae5`, e nada é feito no Marketing Cloud. Se o cliente pedir aviso por e-mail no futuro, volta ao design pela regra 2 da conta.
+
+## 9. Critérios de aceite que build, verificação e QA vão testar
+
+Dados: dev e QA com carga sintética pelos `fixtures/` (dev tem 0 Opportunity, 0 Task, 0 Event). Datas no passado por "Definir campos de auditoria na criação" (como na QA anterior) ou, se indisponível, prazos reduzidos no CMDT só na sessão de teste e restaurados ao fim (ex.: dono 3, gestor 5). Automação agendada: duas sessões de QA (arma e confere).
+
+| # | Critério | Como provar |
+|---|---|---|
+| CA-01 | Fechada (ganha e perdida) não alerta; aberta é avaliada | Sem `IntegrationLog__c` para as fechadas |
+| CA-02 | Aberta sem atividade, criada há exatamente N (7) dias, alerta o dono uma vez | 1 `ALERTA_ENVIADO` com o Id; aviso no sino do dono |
+| CA-03 | Texto: título "Oportunidade sem atividade há N dias", corpo só com o nome da oportunidade; toque abre o registro; sem conta, estágio, valor | Captura do sino de registro de teste; XML da fórmula |
+| CA-04 | Mudança de estágio **não** reinicia: oportunidade com estágio alterado recentemente e sem atividade há N dias alerta | `ALERTA_ENVIADO` para ela |
+| CA-05 | Sem repetição: na execução seguinte não há novo aviso ao dono; tarefa concluída nova reinicia a contagem | Nenhum log novo no 2º disparo |
+| CA-06 | Tarefa automática **aberta** não reinicia (oportunidade com Task aberta de assunto `Amostra` e sem tarefa concluída alerta no dia N); tarefa concluída reinicia. Registrar também o valor de `LastActivityDate` quando a Task concluída não tem data de vencimento | `LastActivityDate` antes/depois; log do alerta |
+| CA-07 | Alteração administrativa (trocar dono ou valor) não reinicia | `ALERTA_ENVIADO` mesmo após a alteração |
+| CA-08 | Gestor: com `NotificarGestor__c` false, nenhum aviso ao gestor nem `SEM_GESTOR` no dia 14; com true e dono sem `ManagerId`, `SEM_GESTOR` uma vez no dia 14 e ninguém mais recebe. Com gestor cadastrado: `ALERTA_GESTOR_ENVIADO` ao gestor no dia 14, não ao dono | Os dois primeiros casos em QA (só CMDT, restaurado ao fim). O terceiro só se houver par dono/gestor de teste; senão, não exercitado e declarado |
+| CA-09 | Dono inativo não recebe; `DONO_INATIVO` no dia N; dono não muda | Log; como na rodada anterior |
+| CA-10 | Nenhum agente, tópico ou ação novo; nenhum e-mail enviado; nada no Marketing Cloud | `GenAiPluginDefinition`/`GenAiFunctionDefinition` antes e depois; log de e-mail |
+| CA-11 | Não grava em objetos de negócio: contagens e `LastModifiedDate` de Opportunity, Account, Order, OrderItem, Task e Event iguais antes e depois do disparo; só `IntegrationLog__c` cresce | Contagens agregadas; revisão estática do XML (sem `recordUpdates`/`recordDeletes`, `recordCreates` só em `IntegrationLog__c`) |
+| CA-12 | Configurável sem deploy: mudar `DiasSemAcompanhamento__c` e `DiasEscalarGestor__c` no Setup muda o dia do aviso; `Ativo__c` false não alerta nada; `DataCargaInicial__c` = hoje alerta uma vez as já paradas (dono ≥ 7; gestor ≥ 14, se ligado) | Logs por cenário |
+| — | Versão: a nova versão do Flow sobe como Draft na dev; ativação registrada no plano com a versão que entra e a que sai | `SELECT VersionNumber, Status FROM Flow` (Tooling) |
+| — | Volume (CA-11 da análise): várias oportunidades e donos, sem erro de limite; medir percentual dos limites | Debug/log da execução |
+| — | Apex: não se aplica | — |
+
+## 10. Premissas assumidas (validar na homologação)
+
+Resolvidas pelo cliente em 17/11 e **retiradas** de premissa: P2 (parada), P4 (prazo), P5 (canal e frequência), P6 (gestor, agora com limiar e cadastro), P7 (sem tarefa), P9 (texto), P10 (sem repetição). Continuam ou são novas:
+
+- [x] **P1 — Escopo.** Mantida (regra 1 da conta).
+- [x] **P3' — Tarefa automática.** Pergunta: como ignorar "notificações automáticas"? Decisão: `LastActivityDate`; tarefa aberta não reinicia, tarefa concluída reinicia, venha de onde vier. Evidência: (a) org: Task sem campo de origem, Flows criam Tasks abertas (recon); (b) padrão: definição do campo na plataforma. Como mudar: alternativa C da seção 3, em demanda própria (exige campo em Task e mudança nos Flows de origem).
+- [x] **P8 — Elegíveis: todas as abertas**, todos os tipos de registro. Mantida. Como mudar: filtro de entrada do Flow.
+- [x] **P11 — Complementa o `SFAgent2`.** Mantida: o alerta não cria agente; alinhar a instrução do tópico ao critério de 7 dias é ajuste de demanda própria.
 - [x] **P12 — Score fora.** Mantida.
-- [x] **P13 — Volume não consultado em produção.** Mantida; limiar de descida a Apex em 1.3c.
+- [x] **P13 — Volume de produção não consultado.** O cliente vai levantar fora da esteira. Se passar de algumas dezenas de milhares de oportunidades abertas, conferir o limite diário de interviews antes de ativar em produção.
+- [x] **P14 — Horário 07:00, diário.** Mantida. Como mudar: reagendar no Setup.
+- [x] **P15 — Log em `IntegrationLog__c`.** Mantida. Não confirmei se `Logs_Delete_Records` apaga esse objeto (se apagar, o log dura 30 dias).
+- [x] **P16 — Carga inicial configurável.** Mantida, agora com os dois limiares.
+- [x] **P17 — Dono inativo não redireciona** ao dono; o ramo do gestor (se ligado) segue independente, porque é a escalada que o cliente pediu, não encaminhamento alternativo. Como mudar: condicionar o ramo do gestor a dono ativo.
+- [x] **P18 — Gestor recebe só se ativo e diferente do dono.** Mantida.
+- [x] **P19 — Rastro de aviso enviado em `IntegrationLog__c`.** Mantida da rodada anterior (aprovada no QA) e estendida ao gestor.
+- [x] **P20 (nova) — No dia 14 o aviso vai só ao gestor, não repete ao dono.** Pergunta: "gestor a partir de 14 dias" inclui novo aviso ao dono? Decisão: não, porque o cliente pediu sem repetição. Evidência: (b) resposta do cliente e opção mais simples. Como mudar: acrescentar o dono aos destinatários do ramo do gestor.
+- [x] **P21 (nova) — Gestor ligado sem hierarquia grava `SEM_GESTOR` e não avisa ninguém.** Evidência: (a) 0 usuários com `ManagerId`, 0 papéis com pai (recon); cliente proibiu alternativa. Como mudar: cadastrar o gestor dos vendedores, ou demanda nova para fila ou papel.
+- [x] **P22 (nova) — Mesmo texto para dono e gestor.** Evidência: resposta do cliente (nome, dias, link). Como mudar: fórmula do título no ramo do gestor.
 
-Novas, do design:
+Nenhum item `- [ ]`: não há caso 3 da regra 4.
 
-- [x] **P14 — Horário do job: 07:00 (horário da org), diário.** Pergunta: quando o aviso deve chegar? Decisão: antes do expediente, fora dos horários já ocupados. Evidência: (a) `CronTrigger` mostra 02:00, 06:00, 15:47 e 17:36 ocupados. Como mudar: reagendar o Flow (Setup), sem deploy de lógica.
-- [x] **P15 — "Log da execução" (CA-09) = registro em `IntegrationLog__c`.** Pergunta: onde fica o registro de dono inativo? Decisão: um `IntegrationLog__c` por oportunidade, com `ResponseStatus__c = DONO_INATIVO` e o Id. Evidência: (a) a org já usa esse objeto como log de automação agendada (`ScheduledFlowOpportunity`, EPLAST-47). `Logs_Delete_Records` apaga registros com mais de 30 dias; **não confirmei que o objeto dele é `IntegrationLog__c`** — se for, o log dura 30 dias. Como mudar: trocar o status ou o destino no Flow.
-- [x] **P16 — Carga inicial configurável.** Pergunta: oportunidades já paradas no go-live alertam? Decisão: sim, uma vez, no dia de `DataCargaInicial__c`; começa vazia e quem libera o go-live preenche. Evidência: (b) padrão mais simples sem gravar estado. Como mudar: deixar vazia (sem varredura).
-- [x] **P17 — Dono inativo não redireciona.** Pergunta: avisar outra pessoa? Decisão: não; só registra (CA-09). Evidência: (b) análise e padrão. Como mudar: ligar `NotificarGestor__c` não muda isso; redirecionar seria evolução.
-- [x] **P18 — Gestor recebe só se ativo e diferente do dono.** Evidência: (b) evita aviso duplicado e envio a usuário inativo. Como mudar: no Flow.
+## 11. O que NÃO será feito nesta demanda
+- Apex, campo novo em Task, alteração de `Oportunidade_Industria` ou `OpportunityFlow` para marcar origem (alternativa C).
+- Cadastrar `ManagerId` ou papéis, criar fila, grupo ou outro encaminhamento ao gestor.
+- E-mail, SMS, WhatsApp, Chatter ou qualquer coisa no Marketing Cloud.
+- Criar Task, reatribuir dono ou gravar em Opportunity, Account, Order, OrderItem, Task ou Event.
+- Agente, tópico ou ação novos; ajuste do `SFAgent2`.
+- Prazo por estágio; resumo diário por dono; mapeamento da ordem de execução de Opportunity.
+- Corrigir o defeito conhecido de `UpdateAccountCompanyInfo` (Protheus).
 
-Nenhum item `- [ ]`: não há caso 4(c).
-
-## 9. Riscos
+## 12. Riscos
 
 | # | Risco | Severidade | Tratamento |
 |---|---|---|---|
-| R1 | **Ordem de execução de Opportunity não mapeada e triggers com IsValid=false (achado 1).** | Alta para a org, baixa para esta solução | A solução não grava nesses objetos (5.1). Afeta só a carga de teste; erro de compilação ali é achado de ambiente. |
-| R2 | **Dev e QA podem ser a mesma sandbox (achado 6):** instância do alias de dev se chama `eplast--qa`. | Média | Antes da sessão de QA, comparar Org Id das duas (`sf org display`). Se forem a mesma, o humano decide antes do deploy de QA; o Flow agendado ativo em dev já estaria rodando "em QA". |
-| R3 | Tasks automáticas (`Oportunidade_Industria`, `OpportunityFlow`) mascaram parada (P3). | Média | Medido em QA: oportunidade criada por esses Flows recebe Task e pode não alertar. Resultado vai ao cliente na homologação. |
-| R4 | Dia sem execução perde alertas (dedup sem estado). | Média | Log de falha em `IntegrationLog__c`; reexecução manual via `DataCargaInicial__c` (realerta todas as paradas, aceito). |
-| R5 | Gestor sem acesso ao registro ao abrir o aviso. | Baixa | Desligado por padrão; testar com `NotificarGestor__c` ligado em QA. |
-| R6 | Volume de avisos no dia da carga inicial (limite horário de notificações). | Média | Build confere o limite oficial; QA mede com carga sintética. |
-| R7 | Teste exige datas no passado (`CreatedDate`, `LastStageChangeDate`). | Média | Seção 10. |
-| R8 | Cobertura Apex de 10% (achado 2). | Não se aplica | Sem Apex nesta demanda; não piora nem melhora. |
-| R9 | Campos sem descrição (achado 4), API antiga (achado 9), `OrderTrigger` duplicado (achado 10). | Não se aplica | Todo componente novo sai com descrição e API 68.0; Order não é tocado. |
+| R1 | **Ordem de execução de Opportunity não mapeada (achado 1)** | Alta para a org, baixa para a solução | Não grava nesses objetos (6.1); aparece só na carga de teste |
+| R2 | `LastActivityDate` pode não se comportar como a documentação nesta org (tarefa aberta, tarefa sem vencimento) | Média | CA-06 mede em QA; se divergir, volta ao gate de design antes da homologação |
+| R3 | Tarefa automática concluída sem a atividade ter acontecido reinicia o prazo (limitação declarada, seção 3) | Média | Roteiro do cliente; alternativa C como evolução |
+| R4 | Dia sem execução perde os avisos (dedup sem estado) | Média | `FALHA_NOTIFICACAO` no log; reexecução por `DataCargaInicial__c` |
+| R5 | Ramo do gestor não exercitado com gestor real (0 `ManagerId`) | Média | Desligado por padrão; CA-08 prova desligado e `SEM_GESTOR`; o aviso real ao gestor fica declarado como não provado até haver hierarquia ou par de teste |
+| R6 | Limites de notificação e de interviews não conferidos | Média | Build/QA conferem na documentação oficial; crítico no dia da carga inicial |
+| R7 | Deploy do Flow sem o `Default` atualizado volta a contar estágio e 14 dias | Média | Mesmo pacote; CA-04 e CA-02 provam |
+| R8 | Cobertura Apex 10% (achado 2), API antiga (achado 9), `OrderTrigger` (achado 10) | Não se aplica | Sem Apex; API 68.0; Order não tocado |
 
-## 10. Plano de build (alto nível) e critérios que o QA exercita
-
-**Build (`builder-declarativo`, branch `feature/EPLAST-28`, só `sbx-eplast-dev`):**
-1. CMDT `AlertaOportunidadeParadaSetting__mdt` com 5 campos e registro `Default`.
-2. `CustomNotificationType` `Oportunidade_Parada` (desktop e mobile).
-3. Flow `Opportunity_Scheduled_AlertaParada` conforme seção 2, com fault path, ativo, diário 07:00.
-4. Revisão estática no PR: o XML do Flow não tem `recordUpdates` nem `recordDeletes`, e `recordCreates` só em `IntegrationLog__c`.
-5. Conferir na documentação oficial o limite horário de notificações e o limite diário de interviews; registrar no plano.
-6. `04-verificacao.md`: debug do Flow em dev com registro sintético (se a dev aceitar a criação), ou declarar inconclusivo o que não conseguiu exercitar.
-
-**Dados de teste (nota para build e QA):** a dev tem 0 Opportunity e 0 Task. A carga sintética precisa passar nas 16 validation rules de Opportunity (conta com endereço, CNAE, razão social, e-mail, telefone, loja, vendedor Protheus no dono; filial, forma e condição de pagamento; catálogo de preço), todos valores fictícios. Para datas no passado: `CreatedDate` exige "Definir campos de auditoria na criação do registro" habilitado em QA; `LastActivityDate` vem de Task concluída com data passada. O QA confirma se `LastStageChangeDate` nasce vazio na criação; se nascer preenchido, usa `RegraParada__c = SoAtividade` e `N` ajustado para exercitar cada ramo. Os registros sintéticos são apagados pelo QA ao fim.
-
-**Automação agendada:** duas sessões de QA (arma e confere depois das 07:00), conforme fluxo canônico.
-
-**Casos que o QA deve exercitar:**
-- CA-01: fechada (ganha e perdida) não alerta; aberta é avaliada.
-- CA-02: parada exatamente em N alerta o dono, com o texto da seção 2.
-- CA-03: atividade recente e estágio antigo não alerta (regra `AtividadeEEstagio`).
-- CA-04: sem atividade, criada há N dias, alerta.
-- CA-05: segunda execução não repete; nova Task reinicia a contagem.
-- CA-06 (**fragilidade do achado 1**): contagens e `LastModifiedDate` de Opportunity, Account, Order, OrderItem, Task e Event iguais antes e depois da execução; só `IntegrationLog__c` cresce.
-- CA-07: nenhum e-mail enviado (log de e-mail da org) nem chamada ao Marketing Cloud.
-- CA-08: com `NotificarGestor__c` ligado e `ManagerId` preenchido num usuário de teste, gestor recebe; desligado, não.
-- CA-09: dono inativo não recebe; `IntegrationLog__c` com `DONO_INATIVO`; dono não muda.
-- CA-10: nenhum agente, tópico ou ação novo (comparar `GenAiPluginDefinition` e `GenAiFunctionDefinition` antes e depois).
-- CA-11: carga com várias oportunidades e donos diferentes; sem erro de limite, um aviso por elegível; medir percentual dos limites.
-- Extra: `DataCargaInicial__c` = hoje alerta as paradas além de N uma vez; `Ativo__c = false` não alerta nada; efeito das Tasks automáticas (R3) registrado.
-- CA-12: não se aplica (sem Apex).
-
-## 11. O que NÃO será feito nesta demanda
-- E-mail, SMS, WhatsApp, Chatter ou qualquer coisa no Marketing Cloud.
-- Criar Task, reatribuir dono ou gravar em Opportunity, Account, Order, OrderItem, Task ou Event.
-- Agente, tópico ou ação novos; ajuste de instrução do `SFAgent2` (P11).
-- Prazo por estágio ou record type; filtro de Tasks por origem; resumo diário por dono.
-- Mapeamento da ordem de execução de Opportunity e correção de `OpportunityTrigger`/`OpportunityAfter` com IsValid=false.
-- Alterar o relatório `Neglected Open Opportunities` ou criar relatório/painel novo.
-- Score de oportunidade (EPLAST-26).
-
-## 12. Para o arquiteto humano conferir no gate
-1. Aceitar o CMDT novo `AlertaOportunidadeParadaSetting__mdt` (mudança de modelo de dados de configuração, precedente EPLAST-47).
-2. Aceitar o uso de `IntegrationLog__c` como log desta automação (P15).
-3. Conferir as premissas P2, P3 e P16, as que mais mudam o que o vendedor recebe.
-4. R2 (dev e QA possivelmente a mesma sandbox) resolvido antes da sessão de QA.
+## 13. Para o arquiteto humano conferir no gate
+1. Aceitar o campo novo `DiasEscalarGestor__c` no CMDT (mudança de modelo de dados de configuração).
+2. Aceitar a alternativa A da seção 3 e a limitação declarada sobre tarefa automática concluída.
+3. Conferir P17, P20 e P21 (comportamento do ramo do gestor).
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
-
-## Respostas do cliente (2026-11-17) — valem acima das premissas assumidas deste desenho
-
-A Eplast respondeu por escrito ("Respostas Konecta/Eplast", recebido em 17/11) aos pontos que
-este desenho tinha resolvido como premissa assumida. Registrado por Leonardo Barbosa, que
-mandou redesenhar com as respostas. **Onde a resposta abaixo diverge de uma premissa deste
-arquivo, vale a resposta.** O que o cliente marcou como "a validar" continua premissa, a
-repetir no roteiro em "O que assumimos e você precisa confirmar". Os parâmetros ficam
-configuráveis (pedido do cliente), sem deploy para ajustar. Reaproveite o que já foi
-construído e passou no QA; mude só o que a resposta pede. Os artefatos de build e QA da
-rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
-
-**Resposta do cliente (EPLAST-28 — alertas de oportunidade parada):**
-- Definição: oportunidade aberta sem atividade comercial relevante registrada. Alterações
-  administrativas e notificações automáticas **não reiniciam** o prazo. Sem atividade
-  anterior, contar a partir da criação.
-- Prazo: 7 dias corridos, único para todos os estágios, configurável.
-- Destinatários: proprietário aos 7 dias; gestor a partir de 14 dias. A hierarquia ainda
-  não está cadastrada: é preciso cadastrá-la ou definir alternativa de encaminhamento antes
-  de ativar o alerta ao gestor.
-- Ação: só notificar, sem criar tarefa. Sem repetição diária para a mesma ocorrência.
-- Texto: apenas nome da oportunidade, dias sem atividade e link. Sem valor.
-- Canal: notificação no Salesforce (sino e aplicativo). Sem e-mail nesta etapa.
-- Quantidade de oportunidades abertas: a validar por levantamento em produção (fora da esteira).
-
-**O que muda neste desenho:**
-1. Prazo padrão de 14 para **7** dias (`DiasSemAcompanhamento__c`).
-2. Regra de "parada": a mudança de estágio (`LastStageChangeDate`) **deixa de reiniciar** a
-   contagem; vale a última atividade e, sem atividade, a data de criação.
-3. Gestor: limiar próprio de **14 dias**, configurável, **desligado** até a hierarquia
-   existir (hoje 0 usuários com gestor). Não inventar encaminhamento alternativo.
-4. Texto do aviso: tirar nome da conta e estágio; ficam nome da oportunidade, dias e link.
-5. "Notificações automáticas não reiniciam": a premissa P3 dizia que `LastActivityDate` não
-   distingue tarefa automática. Diga o que é possível declarativamente (por exemplo, a data
-   da última tarefa ou compromisso que não seja das automações conhecidas da org) e o que
-   exigiria código. Se só código resolver, **não construa código**: deixe como limitação
-   declarada, a validar na homologação.

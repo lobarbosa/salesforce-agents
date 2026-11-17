@@ -1,106 +1,108 @@
-# EPLAST-28 — Recon da org (alertas de oportunidade parada)
+# EPLAST-28 — Recon da org (redesenho com as respostas do cliente de 2026-11-17)
 
-**Data:** 2026-11-15
-**Org conectada (`sf org list`):** `sbx-eplast-dev`, Sandbox, Connected, Org Id `00DHa000006vfMLMAY`
-**Instância (`sf org display --json`):** `https://eplast--qa.sandbox.my.salesforce.com`, API 68.0
-**Atenção:** o alias de dev aponta para uma instância cujo nome é `eplast--qa`. A análise já registrava isso (achado 6 do assessment). Não consegui provar que dev e QA são sandboxes distintas (ver lacunas).
-**Escopo da leitura:** só metadata e contagens (`COUNT()`). Nenhuma escrita. Nenhum registro lido.
+**Data:** 2026-11-17
+**Org (`sf org list`):** alias `sbx-eplast-dev`, Sandbox, Connected, Org Id `00DHa000006vfMLMAY`. É a sandbox "QA" da Eplast (`eplast--qa`), dev da esteira (regra 5 da conta; não é risco).
+**Escopo:** só metadata e contagens. Nenhuma escrita na org. Retrieve de 5 Flows para pasta temporária, descartada. Marketing Cloud não consultado nem tocado.
+**Substitui** o recon de 2026-11-15 (preservado em `rodada-anterior/02-recon.md`). Só reconfirmei o que o redesenho precisa; o resto vale como estava.
 
-## 1. O que já cobre o pedido
+## 1. O que já cobre o pedido (reaproveitar)
 
-| Item | Tipo | Evidência | O que faz hoje |
-|---|---|---|---|
-| `Neglected Open Opportunities` | Relatório | `sf data query -q "SELECT Name FROM Report WHERE Name LIKE '%Opp%' OR ... LIMIT 10"` (retornou 10, no teto do LIMIT) | Pelo nome, lista oportunidades abertas negligenciadas. **Filtros e colunas não lidos**. Provável relatório padrão da Salesforce. É relatório, não alerta: não notifica ninguém. |
-| `Activities Logged on Opportunities` | Relatório | mesma consulta | Pelo nome, atividades registradas em oportunidades. Filtros não lidos. |
-| `ES: Open Opportunities`, `ES: FYTD Open Opportunities by Acct` | Relatórios | mesma consulta | Oportunidades abertas. Filtros não lidos. |
-| Painéis com "Opp" ou "Oportunidade" no título | Dashboard | `SELECT COUNT() FROM Dashboard WHERE Title LIKE '%Opp%' OR Title LIKE '%Oportunidade%'` = 1 | Existe 1 painel. Título e conteúdo não lidos. |
-| Flows `agentic_feed` (`Custom_Stale_Opp`, `Custom_Stale_Opp_Action`, `Custom_Rcmd_Cleanup`) | Flow | `SELECT COUNT() FROM FlowDefinition WHERE NamespacePrefix='agentic_feed'` (Tooling) = 0 | **Não existem na dev.** A rodada anterior os registrou; não consegui reconfirmar. Não os trate como existentes. Falta checar a QA. |
-| `SFAgent2` | `GenAiPlannerDefinition` | `SELECT DeveloperName, MasterLabel FROM GenAiPlannerDefinition` (Tooling) | Existe como `SFAgent2_v1` a `SFAgent2_v4`. |
-| Tópicos de agente | `GenAiPluginDefinition` | `SELECT DeveloperName, MasterLabel FROM GenAiPluginDefinition LIMIT 20` (Tooling) | Há rótulos `Insights Comerciais e Acompanhamento` (2 registros) e `Insights Comerciais sobre Pedidos` (2), além de Agent Router, Ambiguous Question, Off Topic e General FAQ. **Não consegui ligar cada tópico à versão do SFAgent2**, nem ler instruções ou ações. O rótulo "Acompanhamento" sugere sobreposição conceitual com o pedido. |
-| Ações de agente | `GenAiFunctionDefinition` | `SELECT DeveloperName, MasterLabel FROM GenAiFunctionDefinition LIMIT 20` (Tooling) | Há `ConsultarPedidos`, `AgregacaoPedidos` e `IdentificarConta` em várias versões, e `QueryRecords`. Nenhuma ação nomeada para oportunidade. |
-| Notificação interna | `CustomNotificationType` | `SELECT DeveloperName, CustomNotifTypeName FROM CustomNotificationType` (Tooling) | Existe 1 tipo: `Novo_Pedido`. Nenhum tipo de alerta de oportunidade. |
-| Tipo de notificação para oportunidade parada | n/a | mesma consulta | Não existe. Seria componente novo. |
+A rodada anterior já construiu o alerta, e ele está na dev. O redesenho é ajuste, não criação.
 
-## 2. O que será tocado (leitura)
-
-| Objeto.campo | Evidência | Observação |
+| Componente | Estado na dev | Comando que provou |
 |---|---|---|
-| `Opportunity.LastActivityDate` | `sf sobject describe -s Opportunity` | Campo padrão, existe. |
-| `Opportunity.LastStageChangeDate` | idem | Campo padrão, existe. |
-| `Opportunity.IsClosed`, `StageName`, `OwnerId`, `CreatedDate`, `AccountId` | idem | Campos padrão, existem. |
-| `Opportunity.CampaignId`, `LeadSource` | idem | Existem. Não são usados pelo alerta. |
-| `Task` | contagem | Alimenta `LastActivityDate`. |
+| Flow `Opportunity_Scheduled_AlertaParada` | v1 **Active**, v2 **Draft** (AutoLaunched, agendado). Job `Opportunity_Scheduled_AlertaParada-1`, cron `0 0 7 ? * * *`, WAITING. | `SELECT Definition.DeveloperName, VersionNumber, Status FROM Flow WHERE Definition.DeveloperName LIKE '%AlertaParada%'` (Tooling); `SELECT CronJobDetail.Name, CronExpression, State FROM CronTrigger WHERE CronJobDetail.Name LIKE '%AlertaParada%'` |
+| CMDT `AlertaOportunidadeParadaSetting__mdt` | Existe no repositório (campos `Ativo__c`, `DiasSemAcompanhamento__c`, `RegraParada__c`, `NotificarGestor__c`, `DataCargaInicial__c`). Registro `Default` no repositório. **Não reconferi os valores na org.** | `git ls-files` (repositório); lista de campos não lida na org |
+| Notificação `Oportunidade_Parada` | Existe. Descrição "Aviso interno (desktop e mobile) ... EPLAST-28". `Novo_Pedido` é de outro propósito. | `SELECT DeveloperName, Description FROM CustomNotificationType` (Tooling) |
+| Lógica de parada na v1 (repositório e org) | Usa `LastActivityDate` (nulo cai para `CreatedDate`) **e** `LastStageChangeDate` (nulo cai para `CreatedDate`). É a parte que o cliente mandou mudar (estágio não reinicia). | Retrieve do Flow (expressões nas linhas 216 e 228 do XML) |
+| `IntegrationLog__c` | Existe (recon anterior). Sem trigger nem Flow disparado por gravação. Não reconferido hoje. | Recon de 2026-11-15 |
+| Agente `SFAgent2` e tópico "Insights Comerciais e Acompanhamento" | Existem (recon anterior). A descrição do tópico fala em identificar oportunidades paradas sob demanda, sem prazo nem critério. Não reconferido hoje. A solução não cria agente (regra 3 e CA-10). | Complemento do arquiteto de 2026-11-15 |
+| Flows `agentic_feed` (`Custom_Stale_Opp` etc.) | **Não existem na dev**: 0 em `FlowDefinition` com namespace `agentic_feed` e 0 com nome `%Stale%` ou `%Rcmd%`. Pode haver só na QAS; não conectada aqui. | `SELECT COUNT() FROM FlowDefinition WHERE NamespacePrefix='agentic_feed'` (Tooling); `... WHERE DeveloperName LIKE '%Stale%' OR DeveloperName LIKE '%Rcmd%'` |
 
-Não foi criado nem proposto nenhum campo custom. O tipo, a descrição e a obrigatoriedade dos campos acima não foram lidos, porque são padrão.
+## 2. O que será tocado
+
+| Item | Achado | Comando |
+|---|---|---|
+| `Opportunity.LastActivityDate` (Data), `CreatedDate` (Data/Hora), `IsClosed`, `OwnerId` | Existem, padrão | Recon anterior (`FieldDefinition`) |
+| `Opportunity.LastStageChangeDate` | Existe. **Sai do critério** pela resposta do cliente. | idem |
+| `Task.Status` | Existe. Valor padrão do picklist: `Open`. | `sf sobject describe -s Task` |
+| `Task.TaskSubtype`, `Task.IsClosed`, `Task.CreatedById`, `Task.Subject` | Existem | idem |
+| `Task.Type` | **Não existe** na org | idem (campo ausente) |
+| Campos custom em Task | Só 3 do pacote `maps__` (`maps__BaseObjectId__c`, `maps__LayerId__c`, `maps__WA_AdvRouteWaypoint__c`). **Nenhum marca origem automática.** | `sf sobject describe -s Task` (filtro `custom`) |
+
+### Tarefas automáticas: o que distingue uma tarefa do Flow de uma do vendedor
+
+Retrieve de `Oportunidade_Industria`, `OpportunityFlow`, `TaskCreatedOrUpdated`, lidos por script (campos gravados e `Subject`):
+
+| Flow | Cria Task? | Campos gravados | Subject |
+|---|---|---|---|
+| `Oportunidade_Industria` | 5 Tasks | `Description`, `IsReminderSet`, `OwnerId`, `Priority`, `ReminderDateTime`, `Subject`, `WhatId` | `Amostra`; `Cotação/Negociação` (2x); `Execução técnica do projeto`; `Precificação` |
+| `OpportunityFlow` | 1 Task | `Description`, `Subject`, `WhatId` | Não extraído (valor vem de variável) |
+| `TaskCreatedOrUpdated` | Não cria; atualiza `Account.AccountHasCheckInTask__c` quando a Task é criada ou atualizada | n/a | Condição de entrada inclui o texto `Check In @` |
+
+Conclusões para o design, sem decidir:
+- Nenhum Flow grava `Type`, `TaskSubtype` nem `Status`. Não há marca de origem. O que existe é o `Subject` (lista fixa de 4 valores em `Oportunidade_Industria`) e o `CreatedById` (usuário de execução do Flow; não confirmei qual usuário aparece como criador). Filtrar por `Subject` ou por `CreatedById` é possível por Flow declarativo (Get Records em Task) mas é frágil: o vendedor pode usar o mesmo assunto, e o Flow pode mudar.
+- Essas Tasks nascem sem `Status` informado, logo com o padrão `Open`. Pela documentação padrão do Salesforce, `LastActivityDate` considera tarefa **fechada** e evento passado; isso **não foi provado nesta org** (0 Tasks na dev). Se for verdade, tarefa automática aberta não reinicia o prazo até ser concluída. Medir em QA.
+- Cada Task criada dispara `TaskCreatedOrUpdated` e grava em Account (cadeia do `AccountTrigger`/Protheus). Reforça que o alerta não cria Task.
+- "Notificações automáticas não reiniciam": a notificação do alerta (`CustomNotification`) não cria Task nem Event, então não toca `LastActivityDate`. Não li outros fluxos de notificação.
 
 ## 3. Automação concorrente
 
-| Componente | Objeto | Estado confirmado | Evidência | O que faz hoje |
-|---|---|---|---|---|
-| `OpportunityTrigger` (custom) | Opportunity | `Status=Active`, **`IsValid=false`** | `SELECT Name, TableEnumOrId, IsValid, Status, NamespacePrefix FROM ApexTrigger WHERE TableEnumOrId IN ('Opportunity','Task')` (Tooling) | Chama `OpportunityTriggerHandler` e `OpportunityTriggerHelper` (classes existem, ver abaixo). Com `IsValid=false` pode não estar compilando. Não li o código. |
-| `OpportunityBefore` (SBQQ) | Opportunity | Active, IsValid=true | mesma consulta | Trigger do pacote CPQ. |
-| `OpportunityAfter` (SBQQ) | Opportunity | Active, **IsValid=false** | mesma consulta | Trigger do pacote CPQ. Inválido também. |
-| Triggers em Task | Task | Nenhum retornou | mesma consulta | Sem trigger Apex em Task, só Flow. |
-| `OpportunityFlow` | Opportunity | Ativo, v2, AutoLaunched | `SELECT Definition.DeveloperName, ProcessType, VersionNumber FROM Flow WHERE Status='Active' AND Definition.DeveloperName IN (...)` (Tooling) | Cria Task (segundo a rodada anterior; não reli o corpo). |
-| `Oportunidade_Industria` | Opportunity | Ativo, v1, AutoLaunched | idem | Cria Tasks automáticas (segundo a rodada anterior; não reli o corpo). |
-| `ScheduledFlowOpportunity` | Opportunity | Ativo, v2, AutoLaunched | idem | Agendado, lê Opportunity e grava em Account (segundo a rodada anterior; não reli o corpo). |
-| `TaskCreatedOrUpdated` | Task | Ativo, v1, AutoLaunched | idem | Atualiza Account a cada Task (segundo a rodada anterior; não reli o corpo). |
-| `PaymentTermsOpportunity` | Opportunity | Ativo, v1, tipo `Flow` (tela) | idem | Fluxo de tela. |
-| `Opportunity_PromptFlow_DadosOportunidade`, `Opportunity_PromptFlow_CotacaoPrimaria` | Opportunity | Têm versão ativa | `SELECT DeveloperName, ActiveVersionId FROM FlowDefinition WHERE DeveloperName LIKE '%Opp%' ...` (Tooling) | Pelo nome, prompt flows (IA). Finalidade não lida. |
-| `FlowOpportunityController` e `FlowOpportunityControllerTest` | ApexClass | Existem | `SELECT Name FROM ApexClass WHERE NamespacePrefix=null AND (Name LIKE '%Opportunity%' ...)` (Tooling) | Finalidade não lida. |
-| `OpportunityTriggerHandler`, `OpportunityTriggerHelper` | ApexClass | Existem | idem | Lógica do trigger custom. Não lida. |
+Mudança em relação a 2026-11-15: os três triggers de Opportunity agora aparecem **válidos**.
 
-**Ordem de execução:** o alerta proposto não grava em Opportunity, Account, Order nem Task. Por isso a ordem de execução entre trigger custom, SBQQ e Flows não é exercitada pelo alerta. **Não mapeei a ordem relativa entre eles**: não li o corpo dos Flows nem das classes. Se o design gravar em qualquer um desses objetos, esse mapa precisa ser feito antes.
-
-Validation rules de Opportunity (16, todas ativas): `SELECT ValidationName, Active FROM ValidationRule WHERE EntityDefinition.QualifiedApiName='Opportunity' LIMIT 40` (Tooling). Nomes: `CheckAccountHasBillingAddress`, `CheckAccountHasCNAE`, `CheckAccountHasCompanyName`, `CheckAccountHasEmail`, `CheckAccountHasPhone`, `CheckAccountHasStore`, `CheckAccountOwnerHasProtheusSellerId`, `CheckHasAccount`, `CheckOppHasBranch`, `CheckOppHasPaymentMethods`, `CheckOppHasPaymentTermId`, `FinancialAnalysis`, `LossReason`, `PriceBook`, `TaxAnalysis`, `Industria_Fase_Cotacao_Sem_Catalogo`. Elas barram a criação de Opportunity de teste, não o alerta.
-
-## 4. Marketing Cloud Connect (`et4ae5`)
-
-| Item | Evidência | Achado |
+| Componente | Estado | Comando |
 |---|---|---|
-| Pacote instalado | `SELECT SubscriberPackage.NamespacePrefix, SubscriberPackage.Name FROM InstalledSubscriberPackage` (Tooling) | `et4ae5` ("Marketing Cloud") e `MCCA5PROD` ("MarketingCloudConnectedApp") instalados. |
-| Classes | `SELECT COUNT() FROM ApexClass WHERE NamespacePrefix='et4ae5'` | 523. |
-| Objetos | `SELECT COUNT() FROM CustomObject WHERE NamespacePrefix='et4ae5'` | 28. |
-| Objetos vistos | `SELECT QualifiedApiName FROM EntityDefinition WHERE QualifiedApiName LIKE 'et4ae5%' LIMIT 20` | `AggregateLink__c`, `Automated_Send__c`, `Business_Unit__c`, `Campaign_Member_Configuration__c`, `Configuration__c`. A consulta parou no LIMIT 20, então a lista é parcial. |
+| `OpportunityTrigger`, `OpportunityBefore`, `OpportunityAfter` | Todos `Active` e `IsValid=true` (antes, dois apareciam `IsValid=false`) | `SELECT Name, IsValid, Status FROM ApexTrigger WHERE TableEnumOrId='Opportunity'` (Tooling) |
+| Flows `OpportunityFlow`, `Oportunidade_Industria`, `ScheduledFlowOpportunity`, `TaskCreatedOrUpdated` | Existem e foram retornados no retrieve. `ScheduledFlowOpportunity` alterado em 2026-11-17 pelo usuário da esteira (não investiguei o motivo). | `sf project retrieve start -m Flow:<nome>` |
+| Jobs agendados (Flow) | `Logs_Delete_Records` 02:00, `OrderScheduledFlow` 06:00, alerta 07:00, `ScheduledFlowOpportunity` 15:47, `CreationPriceBook` 17:36 | Recon anterior, e `CronTrigger` hoje para o alerta |
 
-O alerta de EPLAST-28 é interno e fica fora de marketing, então a demanda não usa nenhum objeto do `et4ae5`. Não li uso de campos do conector em Opportunity. Não toquei nada no Marketing Cloud.
+**Ordem de execução:** o alerta (inclusive ajustado) lê Opportunity e grava só `IntegrationLog__c` e notificação. Não grava em Opportunity, Account, Order nem Task, então não entra na cadeia `OpportunityTrigger`/SBQQ/Flows. Não mapeei a ordem relativa entre essas automações: nenhuma delas é exercitada pelo alerta. Se o design passar a gravar em Opportunity, o mapa é pré-requisito.
+Validation rules de Opportunity (16 ativas) continuam as do recon anterior; só afetam a criação de dado de teste.
 
-## 5. Volume e dados de teste
+## 4. Hierarquia e gestor (limiar de 14 dias)
+
+| Item | Achado | Comando |
+|---|---|---|
+| Usuários ativos com `ManagerId` | **0** | `SELECT COUNT() FROM User WHERE IsActive=true AND ManagerId != null` |
+| `UserRole` | 2 papéis, **0 com `ParentRoleId`** (sem hierarquia de papéis) | `SELECT COUNT() FROM UserRole`; `... WHERE ParentRoleId != null` |
+| Usuários ativos com papel | 2 | `SELECT COUNT() FROM User WHERE IsActive=true AND UserRoleId != null` |
+
+Confirma o dito pelo cliente: não há gestor cadastrado. Gestor fica desligado até alguém cadastrar `ManagerId` (ou papéis). A dev não prova o comportamento com gestor real; o teste de gestor precisa de usuário de teste com `ManagerId` ou ficar como limitação.
+
+## 5. Marketing Cloud Connect (`et4ae5`)
+
+Pacote `et4ae5` e `MCCA5PROD` instalados (recon anterior, não repetido). O alerta é notificação interna e não lê nem grava nenhum objeto do conector. Cliente confirmou: sem e-mail nesta etapa. Nada a preparar no Marketing Cloud.
+
+## 6. Volume e dados de teste
 
 | Objeto | Contagem na dev | Comando |
 |---|---|---|
 | Opportunity | 0 | `SELECT COUNT() FROM Opportunity` |
-| Opportunity abertas | 0 | `... WHERE IsClosed = false` |
 | Task | 0 | `SELECT COUNT() FROM Task` |
-| Campaign / CampaignMember / Lead | 0 / 0 / 0 | `SELECT COUNT() FROM <objeto>` |
-| User ativos | 22 | `SELECT COUNT() FROM User WHERE IsActive=true` |
+| Event | 0 | `SELECT COUNT() FROM Event` |
 
-A dev não tem dado para testar o alerta. O teste precisa de carga sintética, respeitando as 16 validation rules de Opportunity. Existem 7 jobs agendados em estado WAITING/EXECUTING (`SELECT COUNT() FROM CronTrigger WHERE State IN ('WAITING','EXECUTING')`); não identifiquei quais.
+Sem dado para testar na dev; teste exige carga sintética pelos scripts de `fixtures/` (regra 6), respeitando as 16 validation rules. Volume em produção: cliente disse que valida por levantamento fora da esteira; não consultei.
 
-## 6. Permissões
+## 7. Permissões
 
-Não consultei perfis, permission sets nem OWD. Para a notificação interna, o destinatário precisa ter acesso ao tipo de notificação (permission set ou perfil) e acesso de leitura ao registro; isso fica para o design.
+| Item | Achado | Comando |
+|---|---|---|
+| OWD Opportunity | Interno `Read`, externo `Private` | `SELECT QualifiedApiName, ExternalSharingModel, InternalSharingModel FROM EntityDefinition WHERE QualifiedApiName IN ('Opportunity','Task','User')` |
+| OWD Task | `Private` (interno e externo) | idem |
+| OWD User | Interno `Read` | idem |
+| Acesso de leitura a Opportunity | 44 permission sets (não de perfil) e 21 perfis | `SELECT COUNT() FROM PermissionSet WHERE Id IN (SELECT ParentId FROM ObjectPermissions WHERE SobjectType='Opportunity' AND PermissionsRead=true) AND IsOwnedByProfile=<false|true>` |
+
+OWD de Opportunity é `Read` interno, então o link do aviso abre para qualquer usuário interno com perfil que lê Opportunity. Task `Private` importa se o design for ler Task no Flow: o Flow agendado roda no contexto do sistema na maioria dos casos, mas **não confirmei o contexto de execução do Flow agendado nem o acesso a Task**. Não consultei quem tem acesso ao tipo de notificação `Oportunidade_Parada`.
 
 ## O que não consegui confirmar
 
-- **Flows `agentic_feed`**: 0 na dev. Não sei se existem só na QA ou se foram removidos. Não consultei a QA, porque ela não está conectada nesta sessão.
-- **Dev e QA distintas**: a instância do alias de dev se chama `eplast--qa`. Org Id da dev conhecido; o da QA só vem do histórico (EPLAST-31) e não foi reconferido.
-- **Corpo dos Flows e das classes de Opportunity/Task**: não li. Descrições da coluna "o que faz" que citam a rodada anterior não foram reconfirmadas.
-- **Ordem de execução** entre `OpportunityTrigger`, triggers SBQQ e Flows: não mapeada. `OpportunityTrigger` e `OpportunityAfter` estão `IsValid=false`; não sei se isso significa inativo na prática ou erro de compilação.
-- **Tópicos e ações do SFAgent2**: os rótulos existem, mas não os vinculei à versão do agente nem li as instruções. Não confirmei se algum tópico já faz alerta ou resumo de oportunidade parada; também não encontrei `eplast-ent-09` na org.
-- **Relatório `Neglected Open Opportunities`**: filtros e colunas não lidos. A consulta de relatórios parou no LIMIT 10, então podem existir outros.
-- **Painel** que casou com "Opp/Oportunidade": título e componentes não lidos.
-- **Permissões e OWD**: não consultados.
-- **Jobs agendados** (7): não identificados.
-
-## Complemento do arquiteto (2026-11-15, `sbx-eplast-dev`, só metadata e contagens)
-
-| Ponto | Evidência | Achado |
-|---|---|---|
-| Tópico "Insights Comerciais e Acompanhamento" | `SELECT DeveloperName, Description FROM GenAiPluginDefinition WHERE MasterLabel LIKE '%Acompanhamento%'` (Tooling) | 2 registros. A descrição diz que o tópico "identifica oportunidades paradas" sob demanda. A instrução lida (`GenAiPluginInstructionDef`, 1 registro) só injeta contexto de página; não define prazo nem critério de "parada". |
-| Parâmetros por CMDT (precedente) | `SELECT DeveloperName, Description FROM CustomObject WHERE NamespacePrefix = null ...` (Tooling) | Existe `ScheduledFlowOpportunitySetting` (EPLAST-47, registro Default) e `TriggerUtility`. Nenhum CMDT de alerta de oportunidade. |
-| Log de automação (precedente) | idem; `FieldDefinition` de `IntegrationLog__c` | `IntegrationLog__c` ("Log de Integração") existe, com `IntegrationAction__c`, `ResponseStatus__c`, `ExecutionDate__c`, `RequestBody__c` (texto). `ScheduledFlowOpportunity` v2 grava nele as falhas (descrição do Flow). 0 registros na dev. |
-| Automação em `IntegrationLog__c` | `ApexTrigger WHERE TableEnumOrId='IntegrationLog__c'`; `FlowDefinitionView WHERE IsActive = true AND TriggerObjectOrEventId = 'IntegrationLog__c'` | 0 triggers e 0 Flows disparados por gravação. |
-| Jobs agendados (Flow) | `SELECT CronJobDetail.Name, CronExpression FROM CronTrigger WHERE CronJobDetail.JobType='6'` | `Logs_Delete_Records` 02:00, `OrderScheduledFlow` 06:00, `ScheduledFlowOpportunity` 15:47, `CreationPriceBook` 17:36 (horário da org). |
-| Tipos de data em Opportunity | `FieldDefinition` | `LastActivityDate` Data; `LastStageChangeDate` e `CreatedDate` Data/Hora. |
-| Usuários | `COUNT()` em User | 0 ativos com `ManagerId`; 25 inativos. |
+- **Valores do registro `Default` do CMDT na org** (14 dias etc.): não li na org, só o repositório. O build do redesenho altera para 7.
+- **Qual usuário aparece como `CreatedById` das Tasks dos Flows** e o `Subject` da Task de `OpportunityFlow`: não extraí. Sem Tasks na dev para observar.
+- **Se `LastActivityDate` ignora tarefa aberta nesta org**: vale a documentação padrão; 0 Tasks na dev. Medir em QA com carga sintética.
+- **Se existe campo ou marca de "atividade comercial relevante"**: não existe campo de origem em Task (confirmado); a definição de "relevante" precisa de critério declarado pelo design (por exemplo `Subject` ou `CreatedById`) ou fica como limitação.
+- **Flows `agentic_feed`**: 0 na dev; a QAS não foi consultada (não conectada).
+- **Corpo de `OpportunityTrigger`/Handler/Helper e ordem entre trigger, SBQQ e Flows**: não lido nem mapeado; não é exercitado pelo alerta. Os triggers estão `IsValid=true` hoje, diferente do recon anterior; não sei o que mudou.
+- **Por que `ScheduledFlowOpportunity` foi modificado em 2026-11-17**: não investiguei.
+- **Contexto de execução do Flow agendado e acesso ao tipo de notificação**: não consultei.
+- **Tópicos e ações do SFAgent2**: não relidos hoje; vale o recon de 2026-11-15.
+- **Relatório `Neglected Open Opportunities`, painel e `eplast-ent-09`**: não relidos; vale o recon anterior (filtros nunca lidos).
