@@ -2,7 +2,7 @@
 
 # EPLAST-33 — Plano de build (rodada 17/11, `dev-apex`)
 
-**Org de build:** `sbx-eplast-dev` (`projetos@konectabr.com.eplast2.qa`, sandbox `eplast--qa` da Eplast, dev da esteira pela regra 5 da conta). QA não foi tocada.
+**Org de build:** `sbx-eplast-dev` (conta de serviço da Konecta, sandbox `eplast--qa` da Eplast, dev da esteira pela regra 5 da conta). QA não foi tocada.
 **Branch:** `feature/EPLAST-33` · **Commit do código:** `2ad8bb0e` (o commit deste plano vem logo depois).
 **Escopo:** o do gate de 2026-11-17 ("aprovado sem a consulta pelo assistente"). Nada de `CommercialSignalAgentAction`, ação do agente, versão do `SFAgent2` nem `classAccess`.
 
@@ -78,7 +78,7 @@ Cobertura geral da org (48%) não é desta demanda.
 
 1. Ler `CommercialSignalSetting.Default` na dev e conferir os valores acima.
 2. Montar dados **só por fixtures** (`CommercialSignalTestFactory`; a dev está sem pedidos) ou por script em `fixtures/`, e rodar `CommercialSignalGroupStatsBatch` (que encadeia o `CommercialSignalBatch`) com a data fixada: conta com último pedido faturado há 91 e 90 dias; família com queda de 20,0% e 19,99% no último mês fechado; conta com 1 e com 2 meses da base; família com `UN` e `KG`; segmento de 10 contas com 4 compradores da família.
-3. Abrir o relatório `Sinais Comerciais por Conta`: aparecem `Sector__c`, `BillingState`, `ProductFamily__c`, quantidades e unidade; filtrar por segmento e UF; abrir com o permission set `PS_Comercial_SinaisComerciais` (usuário de teste `projetos@konectabr.com…`) e conferir que um usuário sem o PS não vê o objeto.
+3. Abrir o relatório `Sinais Comerciais por Conta`: aparecem `Sector__c`, `BillingState`, `ProductFamily__c`, quantidades e unidade; filtrar por segmento e UF; abrir com o permission set `PS_Comercial_SinaisComerciais` (usuário de teste: conta de serviço da Konecta, Id na org) e conferir que um usuário sem o PS não vê o objeto.
 4. Trocar `PurchaseDateField__c` no `Default` por `IssuanceDate__c` e conferir que o resultado muda sem deploy (e voltar para `EffectiveDate`).
 5. Volume/CPU (design, seção 3): 1 conta com ~5 mil itens; acima de 70% de qualquer limite, voltar ao gate. **Não medido neste build** (dev vazia; os testes rodam com poucos registros).
 6. Não deixar job agendado na dev (nenhum foi criado).
