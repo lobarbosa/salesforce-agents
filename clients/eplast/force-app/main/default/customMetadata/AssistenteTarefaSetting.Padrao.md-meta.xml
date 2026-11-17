@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>Padrao</label>
+    <protected>false</protected>
+    <values>
+        <field>Ativo__c</field>
+        <value xsi:type="xsd:boolean">true</value>
+    </values>
+    <values>
+        <field>DescricaoObrigatoria__c</field>
+        <value xsi:type="xsd:boolean">false</value>
+    </values>
+    <values>
+        <field>MarcaOrigem__c</field>
+        <value xsi:type="xsd:string">Origem: assistente de IA</value>
+    </values>
+    <values>
+        <field>PrefixosPermitidos__c</field>
+        <value xsi:type="xsd:string">001;006;00Q</value>
+    </values>
+    <values>
+        <field>PrioridadePadrao__c</field>
+        <value xsi:type="xsd:string">Normal</value>
+    </values>
+</CustomMetadata>

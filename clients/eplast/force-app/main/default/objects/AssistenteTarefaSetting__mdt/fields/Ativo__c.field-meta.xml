@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Ativo__c</fullName>
+    <description>Desliga a criacao de tarefas pelo assistente sem desativar o agente. Desmarcado, o Flow recusa com mensagem.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Desliga a criacao de tarefas pelo assistente sem desativar o agente. Desmarcado, o Flow recusa com mensagem.</inlineHelpText>
+    <label>Ativo</label>
+    <defaultValue>true</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

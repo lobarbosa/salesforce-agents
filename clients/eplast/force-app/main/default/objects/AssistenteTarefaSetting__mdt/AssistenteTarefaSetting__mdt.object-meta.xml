@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>EPLAST-29. Parametros do assistente de IA para criar tarefa (Flow Task_Agente_CriarTarefa). Registro Padrao, editavel em Setup sem deploy. Nao guarda dado de cliente.</description>
+    <label>Assistente Tarefa Setting</label>
+    <pluralLabel>Assistente Tarefa Settings</pluralLabel>
+    <visibility>Public</visibility>
+</CustomObject>

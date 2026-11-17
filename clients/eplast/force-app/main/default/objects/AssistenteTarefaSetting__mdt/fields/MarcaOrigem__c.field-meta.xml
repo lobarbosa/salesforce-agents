@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>MarcaOrigem__c</fullName>
+    <description>Linha final gravada na descricao da tarefa para rastrear a origem. Inicial: Origem: assistente de IA.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Linha final gravada na descricao da tarefa para rastrear a origem. Inicial: Origem: assistente de IA.</inlineHelpText>
+    <label>Marca de origem</label>
+    <length>80</length>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

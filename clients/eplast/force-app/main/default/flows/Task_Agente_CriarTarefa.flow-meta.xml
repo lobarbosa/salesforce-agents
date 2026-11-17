@@ -3,6 +3,54 @@
     <apiVersion>67.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
+        <name>FalhaDesligado</name>
+        <label>Falha assistente desligado</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>A criacao de tarefas pelo assistente esta desligada.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>FalhaDescricao</name>
+        <label>Falha descricao obrigatoria</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Informe a descricao da tarefa antes de criar.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>FalhaLeadConvertido</name>
+        <label>Falha lead convertido</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <assignmentItems>
+            <assignToReference>Sucesso</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>false</booleanValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>Mensagem</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Este lead ja foi convertido. Peca a tarefa na conta ou na oportunidade dele.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
         <name>FalhaAssunto</name>
         <label>Falha assunto vazio</label>
         <locationX>0</locationX>
@@ -47,7 +95,7 @@
         <assignmentItems>
             <assignToReference>Mensagem</assignToReference>
             <operator>Assign</operator>
-            <value><stringValue>Nao consegui identificar o registro. A tarefa so pode ser ligada a uma conta ou a uma oportunidade.</stringValue></value>
+            <value><stringValue>So e possivel criar tarefa ligada a lead, cliente (conta) ou oportunidade. Nao consegui identificar o registro.</stringValue></value>
         </assignmentItems>
     </assignments>
     <assignments>
@@ -114,7 +162,78 @@
             <value><stringValue>Tarefa criada com sucesso.</stringValue></value>
         </assignmentItems>
     </assignments>
-    <description>EPLAST-29. Autolaunched chamado pelo agente SFAgent2 (topico acoes_comerciais). Cria UMA Task para o usuario que pediu, ligada a Account ou Opportunity, depois de confirmacao no chat. Nao grava em nenhum outro objeto, nao envia e-mail. Recusa assunto vazio, assunto Check In @, registro que nao seja Account/Opportunity e data vazia.</description>
+    <description>EPLAST-29 (v2). Autolaunched chamado pelo agente SFAgent2 (topico acoes_comerciais). Cria UMA Task para o usuario que pediu, ligada a lead (WhoId), conta ou oportunidade (WhatId), depois de confirmacao no chat. Parametros lidos de AssistenteTarefaSetting__mdt (registro Padrao). Recusa assunto vazio, assunto Check In @, registro fora dos prefixos permitidos, lead convertido, data vazia e descricao vazia quando obrigatoria. Nao grava em nenhum outro objeto, nao envia e-mail.</description>
+    <decisions>
+        <name>DecParametros</name>
+        <label>Assistente ativo?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 0: recusa se nao ha registro Padrao de parametros ou se Ativo__c esta desmarcado.</description>
+        <defaultConnector><targetReference>DecAssuntoVazio</targetReference></defaultConnector>
+        <defaultConnectorLabel>Ativo</defaultConnectorLabel>
+        <rules>
+            <name>DecParametros_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>DesligadoOuSemParametro</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaDesligado</targetReference></connector>
+            <label>Desligado</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecDescricao</name>
+        <label>Descricao obrigatoria e vazia?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 4b: se DescricaoObrigatoria__c esta marcado e a descricao veio vazia, recusa.</description>
+        <defaultConnector><targetReference>DecObjeto</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao</defaultConnectorLabel>
+        <rules>
+            <name>DecDescricao_R</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>DescricaoExigidaVazia</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaDescricao</targetReference></connector>
+            <label>Sim</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>DecLeadAchado</name>
+        <label>Lead encontrado e nao convertido?</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Guarda 5 (Lead): inexistente ou invisivel recusa com mensagem generica; convertido recusa com orientacao (PA-2).</description>
+        <defaultConnector><targetReference>CriarTarefaLead</targetReference></defaultConnector>
+        <defaultConnectorLabel>Ok</defaultConnectorLabel>
+        <rules>
+            <name>DecLeadAchado_NaoAchado</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>LeadNaoAchado</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaNaoEncontrado</targetReference></connector>
+            <label>Nao encontrado</label>
+        </rules>
+        <rules>
+            <name>DecLeadAchado_Convertido</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>RegistroLead.IsConverted</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>FalhaLeadConvertido</targetReference></connector>
+            <label>Convertido</label>
+        </rules>
+    </decisions>
     <decisions>
         <name>DecAssuntoVazio</name>
         <label>Assunto vazio?</label>
@@ -157,10 +276,10 @@
     </decisions>
     <decisions>
         <name>DecRegistroValido</name>
-        <label>Registro e Account ou Opportunity?</label>
+        <label>Registro permitido?</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <description>Guarda 3: so prefixo 001 (Account) ou 006 (Opportunity), 15 ou 18 caracteres.</description>
+        <description>Guarda 3: prefixo tem de estar em PrefixosPermitidos__c e ser 001, 006 ou 00Q (15 ou 18 caracteres).</description>
         <defaultConnector><targetReference>DecData</targetReference></defaultConnector>
         <defaultConnectorLabel>Nao</defaultConnectorLabel>
         <rules>
@@ -181,7 +300,7 @@
         <locationX>0</locationX>
         <locationY>0</locationY>
         <description>Guarda 4: recusa data de vencimento vazia.</description>
-        <defaultConnector><targetReference>DecObjeto</targetReference></defaultConnector>
+        <defaultConnector><targetReference>DecDescricao</targetReference></defaultConnector>
         <defaultConnectorLabel>Nao</defaultConnectorLabel>
         <rules>
             <name>DecData_R</name>
@@ -200,9 +319,20 @@
         <label>Qual objeto?</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <description>Direciona o Get Records para Account (001) ou Opportunity (006).</description>
+        <description>Direciona o Get Records para Lead (00Q), Account (001) ou Opportunity (006).</description>
         <defaultConnector><targetReference>GetOportunidade</targetReference></defaultConnector>
         <defaultConnectorLabel>Opportunity</defaultConnectorLabel>
+        <rules>
+            <name>DecObjeto_Lead</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>EhLead</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>GetLead</targetReference></connector>
+            <label>Lead</label>
+        </rules>
         <rules>
             <name>DecObjeto_Conta</name>
             <conditionLogic>and</conditionLogic>
@@ -268,6 +398,30 @@
         <expression>BEGINS(LOWER(TRIM({!Assunto})), "check in @")</expression>
     </formulas>
     <formulas>
+        <name>DesligadoOuSemParametro</name>
+        <description>Verdadeiro se nao ha registro Padrao de parametros ou se Ativo__c esta desmarcado.</description>
+        <dataType>Boolean</dataType>
+        <expression>OR(ISBLANK({!ParametrosTarefa.Id}), NOT({!ParametrosTarefa.Ativo__c}))</expression>
+    </formulas>
+    <formulas>
+        <name>DescricaoExigidaVazia</name>
+        <description>Verdadeiro se DescricaoObrigatoria__c esta marcado e a descricao veio vazia ou so com espacos.</description>
+        <dataType>Boolean</dataType>
+        <expression>AND({!ParametrosTarefa.DescricaoObrigatoria__c}, ISBLANK(TRIM({!Descricao})))</expression>
+    </formulas>
+    <formulas>
+        <name>EhLead</name>
+        <description>Verdadeiro se o Id comeca com 00Q (Lead).</description>
+        <dataType>Boolean</dataType>
+        <expression>LEFT({!RegistroRelacionadoId}, 3) = "00Q"</expression>
+    </formulas>
+    <formulas>
+        <name>LeadNaoAchado</name>
+        <description>Verdadeiro se o Get do Lead nao devolveu registro.</description>
+        <dataType>Boolean</dataType>
+        <expression>ISBLANK({!RegistroLead.Id})</expression>
+    </formulas>
+    <formulas>
         <name>EhConta</name>
         <description>Verdadeiro se o Id comeca com 001 (Account).</description>
         <dataType>Boolean</dataType>
@@ -275,9 +429,9 @@
     </formulas>
     <formulas>
         <name>RegistroInvalido</name>
-        <description>Verdadeiro se o Id nao for de Account (001) nem de Opportunity (006), ou nao tiver 15/18 caracteres.</description>
+        <description>Verdadeiro se o Id nao tiver 15/18 caracteres, nao for de Account (001), Opportunity (006) ou Lead (00Q), ou o prefixo nao estiver em PrefixosPermitidos__c.</description>
         <dataType>Boolean</dataType>
-        <expression>OR(ISBLANK({!RegistroRelacionadoId}), AND(LEN({!RegistroRelacionadoId}) &lt;&gt; 15, LEN({!RegistroRelacionadoId}) &lt;&gt; 18), AND(LEFT({!RegistroRelacionadoId}, 3) &lt;&gt; "001", LEFT({!RegistroRelacionadoId}, 3) &lt;&gt; "006"))</expression>
+        <expression>OR(ISBLANK({!RegistroRelacionadoId}), AND(LEN({!RegistroRelacionadoId}) &lt;&gt; 15, LEN({!RegistroRelacionadoId}) &lt;&gt; 18), AND(LEFT({!RegistroRelacionadoId}, 3) &lt;&gt; "001", LEFT({!RegistroRelacionadoId}, 3) &lt;&gt; "006", LEFT({!RegistroRelacionadoId}, 3) &lt;&gt; "00Q"), NOT(CONTAINS(";" &amp; {!ParametrosTarefa.PrefixosPermitidos__c} &amp; ";", ";" &amp; LEFT({!RegistroRelacionadoId}, 3) &amp; ";")))</expression>
     </formulas>
     <formulas>
         <name>DataVazia</name>
@@ -299,15 +453,15 @@
     </formulas>
     <formulas>
         <name>PrioridadeFinal</name>
-        <description>High somente se o agente enviou High; qualquer outro valor vira Normal.</description>
+        <description>High ou Normal se o agente enviou; qualquer outro valor ou vazio vira PrioridadePadrao__c.</description>
         <dataType>String</dataType>
-        <expression>IF(LOWER(TRIM({!Prioridade})) = "high", "High", "Normal")</expression>
+        <expression>IF(LOWER(TRIM({!Prioridade})) = "high", "High", IF(LOWER(TRIM({!Prioridade})) = "normal", "Normal", {!ParametrosTarefa.PrioridadePadrao__c}))</expression>
     </formulas>
     <formulas>
         <name>DescricaoFinal</name>
-        <description>Descricao recebida + linha final de origem (rastreabilidade, P8).</description>
+        <description>Descricao recebida + linha final de origem vinda de MarcaOrigem__c (rastreabilidade, AC-8).</description>
         <dataType>String</dataType>
-        <expression>IF(ISBLANK({!Descricao}), "", {!Descricao} &amp; BR() &amp; BR()) &amp; "Origem: assistente de IA"</expression>
+        <expression>IF(ISBLANK({!Descricao}), "", {!Descricao} &amp; BR() &amp; BR()) &amp; {!ParametrosTarefa.MarcaOrigem__c}</expression>
     </formulas>
     <interviewLabel>Task_Agente_CriarTarefa {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Task - Agente - Criar Tarefa</label>
@@ -317,6 +471,52 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <runInMode>DefaultMode</runInMode>
+    <recordLookups>
+        <name>GetParametros</name>
+        <label>Ler parametros</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Le o registro Padrao de AssistenteTarefaSetting__mdt (custom metadata, nao conta no limite de SOQL).</description>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector><targetReference>DecParametros</targetReference></connector>
+        <faultConnector><targetReference>FalhaDesligado</targetReference></faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value><stringValue>Padrao</stringValue></value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>AssistenteTarefaSetting__mdt</object>
+        <outputReference>ParametrosTarefa</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Ativo__c</queriedFields>
+        <queriedFields>PrefixosPermitidos__c</queriedFields>
+        <queriedFields>PrioridadePadrao__c</queriedFields>
+        <queriedFields>DescricaoObrigatoria__c</queriedFields>
+        <queriedFields>MarcaOrigem__c</queriedFields>
+    </recordLookups>
+    <recordLookups>
+        <name>GetLead</name>
+        <label>Buscar lead</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Confirma que o lead existe e esta visivel ao usuario e se ja foi convertido. Le so Id e IsConverted.</description>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector><targetReference>DecLeadAchado</targetReference></connector>
+        <faultConnector><targetReference>FalhaNaoEncontrado</targetReference></faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value><elementReference>RegistroRelacionadoId</elementReference></value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Lead</object>
+        <outputReference>RegistroLead</outputReference>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>IsConverted</queriedFields>
+    </recordLookups>
     <recordLookups>
         <name>GetConta</name>
         <label>Buscar conta</label>
@@ -362,7 +562,7 @@
         <label>Criar tarefa</label>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <description>Unico DML do Flow: cria 1 Task. Responsavel = usuario que pediu; status Open; subtype Task.</description>
+        <description>Ramo de conta e oportunidade (unico DML do ramo): cria 1 Task ligada por WhatId. Responsavel = usuario que pediu; status Open; subtype Task.</description>
         <assignRecordIdToReference>TarefaId</assignRecordIdToReference>
         <connector><targetReference>SetSucesso</targetReference></connector>
         <faultConnector><targetReference>FalhaGravacao</targetReference></faultConnector>
@@ -376,12 +576,31 @@
         <inputAssignments><field>WhatId</field><value><elementReference>RegistroRelacionadoId</elementReference></value></inputAssignments>
         <object>Task</object>
     </recordCreates>
+    <recordCreates>
+        <name>CriarTarefaLead</name>
+        <label>Criar tarefa do lead</label>
+        <locationX>0</locationX>
+        <locationY>0</locationY>
+        <description>Ramo do lead (unico DML do ramo): cria 1 Task ligada por WhoId, WhatId vazio. Responsavel = usuario que pediu; status Open; subtype Task.</description>
+        <assignRecordIdToReference>TarefaId</assignRecordIdToReference>
+        <connector><targetReference>SetSucesso</targetReference></connector>
+        <faultConnector><targetReference>FalhaGravacao</targetReference></faultConnector>
+        <inputAssignments><field>ActivityDate</field><value><elementReference>DataVencimento</elementReference></value></inputAssignments>
+        <inputAssignments><field>Description</field><value><elementReference>DescricaoFinal</elementReference></value></inputAssignments>
+        <inputAssignments><field>OwnerId</field><value><elementReference>$User.Id</elementReference></value></inputAssignments>
+        <inputAssignments><field>Priority</field><value><elementReference>PrioridadeFinal</elementReference></value></inputAssignments>
+        <inputAssignments><field>Status</field><value><stringValue>Open</stringValue></value></inputAssignments>
+        <inputAssignments><field>Subject</field><value><elementReference>Assunto</elementReference></value></inputAssignments>
+        <inputAssignments><field>TaskSubtype</field><value><stringValue>Task</stringValue></value></inputAssignments>
+        <inputAssignments><field>WhoId</field><value><elementReference>RegistroRelacionadoId</elementReference></value></inputAssignments>
+        <object>Task</object>
+    </recordCreates>
     <start>
         <locationX>0</locationX>
         <locationY>0</locationY>
-        <connector><targetReference>DecAssuntoVazio</targetReference></connector>
+        <connector><targetReference>GetParametros</targetReference></connector>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>Assunto</name>
         <description>Assunto da tarefa, em portugues, como o usuario pediu. Obrigatorio. Nao pode comecar com Check In @.</description>
@@ -400,7 +619,7 @@
     </variables>
     <variables>
         <name>RegistroRelacionadoId</name>
-        <description>Id (15 ou 18 caracteres) da conta (comeca com 001) ou da oportunidade (comeca com 006) a que a tarefa se liga. Obrigatorio. Nunca informe o nome.</description>
+        <description>Id (15 ou 18 caracteres) do lead (comeca com 00Q), da conta (001) ou da oportunidade (006) a que a tarefa se liga. Obrigatorio. Nunca informe o nome.</description>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
@@ -416,7 +635,7 @@
     </variables>
     <variables>
         <name>Prioridade</name>
-        <description>Prioridade opcional: Normal ou High. Qualquer outro valor vira Normal.</description>
+        <description>Prioridade opcional: Normal ou High. Qualquer outro valor ou vazio vira a prioridade padrao dos parametros.</description>
         <dataType>String</dataType>
         <isCollection>false</isCollection>
         <isInput>true</isInput>
@@ -463,5 +682,23 @@
         <isInput>false</isInput>
         <isOutput>false</isOutput>
         <objectType>Opportunity</objectType>
+    </variables>
+    <variables>
+        <name>ParametrosTarefa</name>
+        <description>Resultado interno do Get do registro Padrao de AssistenteTarefaSetting__mdt.</description>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>AssistenteTarefaSetting__mdt</objectType>
+    </variables>
+    <variables>
+        <name>RegistroLead</name>
+        <description>Resultado interno do Get do Lead (Id e IsConverted).</description>
+        <dataType>SObject</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <objectType>Lead</objectType>
     </variables>
 </Flow>

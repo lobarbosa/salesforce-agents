@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PrefixosPermitidos__c</fullName>
+    <description>Prefixos de Id aceitos como registro relacionado, separados por ponto e virgula. Inicial: 001;006;00Q (conta, oportunidade, lead). Tirar um prefixo bloqueia o objeto; acrescentar objeto novo exige nova versao do Flow e do agente.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Prefixos de Id aceitos como registro relacionado, separados por ponto e virgula. Inicial: 001;006;00Q (conta, oportunidade, lead). Tirar um prefixo bloqueia o objeto; acrescentar objeto novo exige nova versao do Flow e do agente.</inlineHelpText>
+    <label>Prefixos permitidos</label>
+    <length>50</length>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Text</type>
+</CustomField>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>DescricaoObrigatoria__c</fullName>
+    <description>Se marcado, o Flow recusa a tarefa sem descricao. Inicial: desmarcado.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <inlineHelpText>Se marcado, o Flow recusa a tarefa sem descricao. Inicial: desmarcado.</inlineHelpText>
+    <label>Descricao obrigatoria</label>
+    <defaultValue>false</defaultValue>
+    <type>Checkbox</type>
+</CustomField>

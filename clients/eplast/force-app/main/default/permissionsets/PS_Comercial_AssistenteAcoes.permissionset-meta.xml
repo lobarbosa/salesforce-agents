@@ -4,7 +4,11 @@
         <agentName>SFAgent2</agentName>
         <enabled>true</enabled>
     </agentAccesses>
-    <description>EPLAST-29. Da acesso ao agente SFAgent2 e ao Flow Task_Agente_CriarTarefa (criar tarefa por linguagem natural, com confirmacao). Sem objeto nem campo. Atribuir por usuario; licenca de Agentforce a parte.</description>
+    <description>EPLAST-29. Da acesso ao agente SFAgent2, ao Flow Task_Agente_CriarTarefa e leitura do custom metadata AssistenteTarefaSetting__mdt. Sem objeto nem campo. Atribuir por usuario; licenca de Agentforce a parte.</description>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>AssistenteTarefaSetting__mdt</name>
+    </customMetadataTypeAccesses>
     <flowAccesses>
         <enabled>true</enabled>
         <flow>Task_Agente_CriarTarefa</flow>
