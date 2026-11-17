@@ -1,115 +1,109 @@
-# EPLAST-33 — Recon da org
+# EPLAST-33 — Recon da org (rodada de 17/11, após as respostas do cliente)
 
-**Org consultada:** `sbx-eplast-dev` (Org ID 00DHa000006vfMLMAY, sandbox, API 68.0, instância `eplast--qa.sandbox.my.salesforce.com`). Confirmada por `sf org list` (única org conectada) e `sf org display`. **Data da coleta:** 2026-11-15. Só metadata e contagens agregadas; nenhum registro lido. Flows retirados com retrieve para `/tmp/reconproj/recon` (fora do repositório).
+Substitui o recon de 15/11 (guardado no histórico do git). Foco: o que as respostas do cliente de 17/11 mudam (compra faturada, 90 dias, volume por família com mês fechado e 20%, cruzada por segmento, assistente) contra o que a rodada anterior já construiu na dev. Só metadata e contagens agregadas; nenhum registro lido. Data da coleta: 2026-11-17.
 
-**Alerta de ambiente:** o alias de dev aponta para uma instância cujo host e username se identificam como `qa`. `sf org list` mostra só este alias; a sandbox `sbx-eplast-qa` não está conectada nesta sessão, então não foi possível comparar as duas. Dev e QA podem ser a mesma org (não confirmado).
+## Org conectada
 
-## 1. O que já cobre o pedido
-
-| Item | O que existe (confirmado) | Cobre | Comando |
+| Alias | Tipo | Status | Comando |
 |---|---|---|---|
-| Agente `SFAgent2` | `GenAiPlannerDefinition` `SFAgent2_v1` a `v4`. Ações (`GenAiFunctionDefinition`): `ConsultarPedidos`, `AgregacaoPedidos`, `IdentificarConta` e também `QueryRecords`. Tópicos (`GenAiPluginDefinition`): `agent_router`, `ambiguous_question`, `insights_comerciais`, `off_topic`, e `GeneralFAQ` em versões antigas. Há várias versões de cada. Régua de 60 dias e de 30% **não relida** (só vem da recon anterior) | Parcial, por conversa, conta a conta. Não lista carteira | Tooling `GenAiPlannerDefinition`, `GenAiFunctionDefinition`, `GenAiPluginDefinition` |
-| Flow `ScheduledFlowOpportunity` | Agendado diário (início 2024-01-23). Filtra `Opportunity.IsWon = true`, lê `GetOpportunities`, `RankingRange__mdt` (7 registros) e `ScheduledFlowOpportunitySetting__mdt`. **Escreve em `Account`: `LastMonthPurchaseValue__c` e `Ranking__c`**; lê `Opportunity.ThisYear__c`. Também referencia `IntegrationLog__c` | Parcial: ranking e valor do último mês por conta, **a partir de Opportunity, não de Order** | retrieve do Flow e leitura do XML |
-| Flow `OrderScheduledFlow` | Agendado diário, 06:00Z, em `Order` com `Status = 'Liberação Financeira'` (com acento). Faz lookup em `OrderHistory` e atualiza `Order` (`Status`, `ReasonCancellation__c`). Não calcula compra | Não cobre. Escreve em Order | retrieve do Flow |
-| Relatórios de pedido por conta | 18 relatórios com nome ligado a pedido/cliente, entre eles `PEDIDOS POR CLIENTE`, `CONTAS COM PEDIDOS - EM CRIAÇÃO`, `ARI F (OPORTUDNIDADES COM PEDIDOS)`, `Clientes Recorrentes`, `Pedidos Concluídos HOJE`, `PEDIDOS FATURADOS - GARRAFA`. Total na org: 380 relatórios e 20 painéis. **Filtros e colunas não lidos** | Desconhecido se algum entrega a lista de recuperação | `SELECT Name, FolderName FROM Report WHERE ...` |
-| Permission sets de negócio | `PS_Comercial_ResumoClienteAgente`, `PS_Marketing_AnaliseCampanhas` existem. Conteúdo não lido | Podem ser a base de acesso (ver seção 5) | `SELECT Name FROM PermissionSet` |
-| Apex de cruzada, recuperação ou sugestão | Nenhuma classe própria com nome `Cross`, `Recup`, `Sugest`, `Oportun`. Classes próprias de Order/Account são de integração Protheus e de trigger (`OrderAdapter`, `OrderUtility`, `OrderTriggerHandler`, `OrderTriggerHelper`, `AccountTriggerHandler`, `AccountTriggerHelper`, `SendOrderToProtheus` e afins) | Nada reaproveitável | Tooling `ApexClass` (56 classes sem namespace; 523 do pacote `et4ae5`) |
+| `sbx-eplast-dev` | Sandbox | Connected (única org listada) | `sf org list` |
 
-## 2. O que será tocado (leitura)
+Todas as consultas abaixo usaram `--target-org sbx-eplast-dev`. A regra 5 da conta resolve o "qa" no username do alias (dev da esteira = `eplast--qa` da Eplast).
 
-| Objeto.campo | Tipo | Confirmado | Observação |
+## O que já existe
+
+### Construído na rodada anterior (está na dev e no repositório em `force-app/`)
+
+| Item | Confirmação | Cobre | Falta |
 |---|---|---|---|
-| `Order.Status` | picklist | sim | Valores: `Revisao de Pedido`, `Liberacao Financeiro`, `Liberacao Estoque`, `Faturamento`, `Cancelado`, `Concluido`. Sem acento. O `OrderScheduledFlow` filtra por `'Liberação Financeira'` (com acento): grafia diferente da picklist, a investigar |
-| `Order.EffectiveDate` | date | sim | padrão |
-| `Order.TotalAmount` | currency | sim | padrão |
-| `Order.AccountId` | reference | sim | padrão |
-| `Order.ProtheusId__c` | string | sim | vínculo com o ERP |
-| `OrderItem.Product2Id`, `OrderId`, `Quantity`, `TotalPrice` | | sim | |
-| `Account.Industry` | picklist | sim | 0 contas, preenchimento não verificável |
-| `Account.TotalPurchasesThisYear__c`, `AveragePurchasesThisYear__c`, `LastMonthPurchaseValue__c` (currency), `LastPurchase__c` (date) | custom | sim | Sem texto de ajuda (`inlineHelpText` vazio); `Description` não verificada. `LastMonthPurchaseValue__c` é escrito pelo `ScheduledFlowOpportunity` com base em Opportunity. Quem escreve os outros três não foi investigado |
-| `Account.Ranking__c` | custom | sim (via Flow) | Não descrito com `sf sobject describe` |
-| `Product2` | padrão | sim | 1.042 registros |
+| `CommercialSignal__c` (campos: `Account__c`, `Product__c`, `Type__c`, `Reason__c`, `SignalKey__c`, `CalculationDate__c`, `LastPurchaseDate__c`, `DaysWithoutPurchase__c`, `CurrentPeriodAmount__c`, `BasePeriodAmount__c`, `VariationPercent__c`) | `sf sobject describe`; `SELECT COUNT()` = 0 linhas | Saída por conta, tipo, motivo, métrica e datas | Nenhum campo para família de produto, quantidade, histórico insuficiente. Nenhum campo tem descrição. OWD `ControlledByParent` (`EntityDefinition`) |
+| `CommercialSignalSetting__mdt` (registro `Default`: `RecoveryDays__c`=60, `VolumeWindowMonths__c`=3, `VolumeThresholdPercent__c`=30) | describe e `SELECT ... FROM CommercialSignalSetting__mdt`; 1 registro | Parâmetros sem deploy de código. Também tem `PurchaseStatuses__c`, `VolumeDirections__c`, `CrossSellGroupField__c`, `CrossSellMinGroupSize__c`, `CrossSellMinSharePercent__c`, `CrossSellLookbackMonths__c`, `CrossSellRecentDays__c`, `CrossSellMaxPerAccount__c`, `IncludeNeverPurchased__c`, `BatchSize__c` | Faltam parâmetros de: campo de data de compra, mês fechado, quantidade de meses da média, limiar mínimo de histórico, campo de família, campo de região |
+| Apex: `CommercialSignalBatch`, `CommercialSignalGroupStatsBatch`, `CommercialSignalScheduler`, `CommercialSignalService` e `<Classe>Test` de cada uma, mais `CommercialSignalTestFactory` | `SELECT Name, Status FROM ApexClass` (tooling): 9 classes Active | Batch agendado. Lê `Order.Status IN :statuses`, `MAX(EffectiveDate)`, `SUM(TotalAmount)` e janela móvel (`currentFrom`/`baseFrom`) | Código lido por Grep em `force-app/.../classes`. Janela atual é "3 meses até hoje", não mês fechado. Soma por conta, não por família. `crossSellGroupField` cai para `Industry` se o campo configurado não existir em `Account` (`resolveGroupField`): `Sector__c` existe, então vale por configuração. Batches são `without sharing` (comentário no código); o serviço de leitura é `with sharing` |
+| Relatório `CommercialSignals_ByAccount` (pasta "EPLAST33 Sinais Comerciais") | `SELECT ... FROM Report` | Relatório para gestão sobre `CommercialSignal__c` | Colunas e filtros não lidos hoje |
+| Acesso a `CommercialSignal__c` | `SELECT ... FROM ObjectPermissions` | Permission sets `PS_Comercial_SinaisComerciais` (R) e `PS_Marketing_SugestaoCampanha` (R) leem o objeto; só 1 perfil tem Create | Quem enxerga é decidido pelo pai (`Account`) |
+| Job agendado da dev | `CronTrigger` não é consultável nesta org | Não confirmado | Ver lacunas. A nota do card de 15/11 diz "não deixe job agendado na dev" |
 
-Faltaria criar (sem decidir): armazenamento de parâmetros (janelas, limiares, status). Já existem `RankingRange__mdt` e `ScheduledFlowOpportunitySetting__mdt` como padrão de custom metadata na org, e o conteúdo delas não foi lido. Nada na org representa "tipo de oportunidade" por conta.
+### Assistente e relatórios de "sem compra" (regra 3 da conta)
 
-## 3. Automação concorrente
-
-| Objeto | Item | Tipo | Evento | Fonte |
-|---|---|---|---|---|
-| Order | `OrderTrigger` (SBQQ) | trigger CPQ | ativo | Tooling `ApexTrigger` |
-| Order | `OrderTrigger` (próprio, sem namespace) | trigger custom | ativo. Mesmo nome do CPQ, namespaces diferentes | idem |
-| OrderItem | `OrderProductTrigger` (SBQQ) | trigger CPQ | ativo. Sem trigger próprio em OrderItem | idem |
-| Account | `AccountBefore` (SBQQ) e `AccountTrigger` (próprio) | triggers | ativos | idem |
-| Opportunity | `OpportunityBefore`, `OpportunityAfter` (SBQQ) e `OpportunityTrigger` (próprio) | triggers | ativos | idem |
-| Order | Flow `Order` ("Pedido") | record-triggered after save, create e update, atualiza Opportunity | ativo | retrieve |
-| Order | Flow `Acionado_por_registro_Antes_de_atualizar_Pedido_Atribui_Id_externo_para_update_p` | pelo nome, before update em Order | ativo; **XML não lido** | lista de Flows ativos |
-| Order | `OrderScheduledFlow` | agendado, atualiza Order | ativo | retrieve |
-| Account | `AccountTriggered` | record-triggered after save, create e update | ativo | retrieve |
-| Account | `AccountUpdateEconomicGroup` | agendado, uma vez (2024-07-26), atualiza Account | ativo | retrieve |
-| Account | `ScheduledFlowOpportunity` | agendado diário, atualiza Account | ativo | retrieve |
-| Opportunity | `OpportunityFlow` | record-triggered after save, atualiza Order, Account e Quote | ativo | retrieve |
-| Account (MC) | Flows `MCC_*` (14 Flows `AutoLaunched`, conector) | ativos. Objeto de disparo não lido | lista de Flows ativos |
-
-| Validation rules | Total | Ativas | Fonte |
+| Item | Confirmação | Cobre | Observação |
 |---|---|---|---|
-| Order | 23 | 17 ativas, 6 inativas | Tooling `ValidationRule` |
-| Account | 6 | 6 ativas | idem |
-| OrderItem | 4 | 4 ativas | idem |
+| `SFAgent2` | `GenAiPlannerDefinition`: `SFAgent2_v1` a `SFAgent2_v10` listados (query com LIMIT 10: pode haver mais) | Agente único, já estendido por outras demandas | A análise dizia "v1 a v4": está defasada. Versão ativa não confirmada |
+| Tópicos | `GenAiPluginDefinition`: `insights_comerciais_<id>` (versões até `_v13` listadas) e `acoes_comerciais_EPLAST29` (até `_v12`) | Tópico `insights_comerciais` é o ponto de extensão para consulta | Instruções do tópico não lidas hoje |
+| Ações | `GenAiFunctionDefinition`: `ConsultarPedidos`, `AgregacaoPedidos`, `IdentificarConta`, `QueryRecords`, `IdentificarRegistro_EPLAST29` (standard `queryRecords`/`queryRecordsWithAggregate`/`identifyRecordByName`); `ProximaAcaoCliente_EPLAST27` e `CriarTarefa_EPLAST29` (Flow); `ResumoReuniao_EPLAST34` (Apex) | `ConsultarPedidos` com `queryRecords` pode ler `CommercialSignal__c` se o objeto for incluído na ação | Nenhuma ação lê `CommercialSignal__c` hoje (não verificado no corpo das versões; só pelos nomes e tipos) |
+| Relatórios Marketing Cloud | `Report` na pasta "MARKETING CLOUD": `SEM COMPRA - 91 A 180 DIAS`, `SEM COMPRA - 181 A 365 DIAS`, `SEM COMPRA - MAIS DE 365 DIAS`, `POTENCIAIS - SEM COMPRA` | Já existem faixas de "sem compra" para o Marketing | Filtros e colunas não lidos. Sobreposição com o corte de 90 dias a decidir no design |
+| Flow `ScheduledFlowOpportunity` | `FlowDefinitionView`: `IsActive=false` | Estava citado como cálculo de ranking | **Inativo** hoje. Não concorre |
+| Flow `OrderScheduledFlow` | `FlowDefinitionView`: ativo, Scheduled, objeto Pedido | Função não lida | Não escreve em `CommercialSignal__c` pelo que o nome indica (não verificado) |
 
-Risco para o arquiteto: a v1 prevista é somente leitura, então não entra na cadeia de escrita de Order. O que escreve em Account hoje (`ScheduledFlowOpportunity` diário, `AccountTriggered`, `AccountUpdateEconomicGroup`) não foi mapeado por ordem de execução entre trigger próprio, trigger CPQ e Flow; só a lista foi levantada. A ordem relativa entre before-save Flow e trigger não foi testada.
+## O que será tocado (campos das respostas do cliente)
 
-## 4. Volume e dados de teste
-
-| Objeto | `COUNT()` na dev |
-|---|---|
-| Account | 0 |
-| Opportunity | 0 |
-| Order | 0 |
-| OrderItem | 0 |
-| Product2 | 1.042 |
-| Contact, Lead, Campaign, CampaignMember | 0, 0, 0, 0 |
-| Account com Industry preenchido | 0 |
-
-A sandbox não tem dado de negócio para testar. Todo teste precisa de fixture sintética, e criar `Order` esbarra em 17 validation rules ativas. A lista de campos que essas regras exigem não foi levantada.
-
-## 5. Permissões e compartilhamento
-
-| Objeto | OWD interno | OWD externo | Fonte |
-|---|---|---|---|
-| Account | ReadWrite | Private | Tooling `EntityDefinition` |
-| Order | ReadWrite | Private | idem |
-| OrderItem | ReadWrite | ReadWrite | idem |
-| Opportunity | Read | Private | idem |
-| Product2 | ReadWrite | ReadWrite | idem |
-
-- 33 perfis na org (`COUNT()` em `Profile`).
-- Permission sets próprios com leitura de `Order`: `Protheus`, `Modify_All`, `Analista_Permissao`. Perfis e demais permission sets não foram enumerados.
-- Existem `PS_Comercial_ResumoClienteAgente`, `PS_Marketing_AnaliseCampanhas`, `Sales_User`, `Marketing_Cloud_Connected_App`, `SteelBrickCPQStandardObjectsAccess` (nomes confirmados; permissões não lidas).
-- Para o critério de acesso por compartilhamento (CA-13): o OWD é Account e Order privados para externos e leitura e escrita para internos, então o efeito do `WITH USER_MODE` para usuário interno é ampliado. Papéis e regras de compartilhamento não foram levantados.
-
-## 6. Marketing Cloud Connect (`et4ae5`)
-
-| Item | Achado | Fonte |
+| Pedido do cliente | O que a org tem (confirmado) | Veredito |
 |---|---|---|
-| Objetos | Pacote instalado, com objetos como `et4ae5__AggregateLink__c`, `et4ae5__Automated_Send__c`, `et4ae5__Business_Unit__c`, `et4ae5__Campaign_Member_Configuration__c`, `et4ae5__Configuration__c`, `et4ae5__ET4AEConfig__c`, `et4ae5__ET4AE_Config__c`, `et4ae5__Email_Linkage__c` (lista cortada pelo filtro, não exaustiva) | `sf sobject list --sobject custom` com filtro |
-| Campos do pacote em `Account` | Nenhum retornado | Tooling `CustomField`, `NamespacePrefix = 'et4ae5'` |
-| Campos do pacote em `Contact` e `Lead` | `HasOptedOutOfMobile` e `Mobile_Country_Code` retornados com esse filtro de namespace | idem |
-| Flows | 14 Flows `MCC_*` ativos (backup, envio agendado, tracking) | lista de Flows ativos |
-| `Campaign` e `CampaignMember` | existem e estão vazios | `COUNT()` |
+| Data de faturamento | `Order` não tem campo de data de faturamento nem de nota fiscal. Datas existentes: `EffectiveDate` (label "Data de emissão", padrão), `IssuanceDate__c` (custom, date, "Data emissão"), `ExpectedSaleDate__c`, `DeliveryDate__c`, `ActivatedDate` (padrão). Texto `MessageNote__c` ("Mensagem para Nota"). Nenhum com descrição | Não há campo que se declare "faturamento". Usar o que existe e declarar premissa (ordem do design). Não inferir pelo nome |
+| Status "faturado" | `Order.Status`: `Revisao de Pedido`, `Liberacao Financeiro`, `Liberacao Estoque`, `Faturamento`, `Cancelado`, `Concluido`. `StatusCode`: Draft, Activated, Canceled, Expired, Superseded | O valor `Faturamento` existe. Se "Concluido" é posterior a faturado não está na org |
+| Devoluções | Objeto custom `SalesReturn__c` (campos: `AccountId__c`, `OrderId__c`, `DtEmissao__c`, `Invoice__c`, `VlTotal__c`, `Quant1UM__c`, `Quant2UM__c`, `Item__c`, `Lucro__c` e outros), 0 linhas | Existe, mas o cliente pediu que fique fora e que a integração seja corrigida à parte |
+| Segmento | `Account.Sector__c` (picklist, label "Setor", 9 valores). `Account.Industry` (padrão, label "Setor", 32 valores). `Account.Subsector__c` (multipicklist, 18 valores). Sem descrição em nenhum | `Sector__c` é o candidato que o design indicou, mas o rótulo é igual ao de `Industry`. Que ele é "segmento da Eplast" **não está confirmado na org** |
+| Região | Campo custom de região em `Account`: nenhum encontrado (busca por nome/label). Padrão: `BillingState`, `ShippingState` (strings). `Territory2`: não suportado nesta org | Só estado de cobrança/entrega. "Região" como agrupamento não existe |
+| Família de produto | `Product2.Family` é picklist com um único valor (`None`). `Product2.Group__c` (string, "Grupo") tem códigos: `PREF` 680, `TAMP` 202, `RESI` 16, `ALCA` 7, `GPET` 5, nulo 132 (`GROUP BY`, total de produtos 1042). Sem descrição | `Family` não serve. `Group__c` é o único agrupador de produto visível, mas o significado dos códigos (pré-forma, tampa, resina, ...) é inferência por nome, **não confirmada** |
+| Quantidade sem somar unidades diferentes | `OrderItem.Quantity`, `OrderItem.TotalPrice`, `OrderItem.UnitPrice`. `Product2.QuantityConverter__c` (Conversor), `Product2.SecondUnitOfMeasure__c` (picklist), `Product2.SecondUnitBalance__c` | Existem campos de segunda unidade e conversor; a unidade principal por produto e a regra de conversão não foram confirmadas |
+| Compatibilidade técnica (pré-forma, tampa, garrafa) | Busca em campos custom de `Product2` por compat, gargalo, rosca, diâmetro, tampa, pré-forma, tipo: **nenhum campo** | Não há campo que represente compatibilidade. Depende de tabela da Eplast (conforme o próprio texto do cliente) |
+| Histórico insuficiente | Sem campo para isso em `CommercialSignal__c` | Criar (ou marcar no `Reason__c`) |
 
-Não foi lido o que o conector grava ou lê. Nada foi feito no Marketing Cloud. A demanda toca marketing só pela exportação da lista (ID e tipo da conta, PA-10), e a seção "Preparação do Sales Cloud para o Marketing Cloud" é do desenho.
+## Ordem de execução e concorrência
 
-## 7. O que não consegui confirmar
+Comandos: `SELECT ... FROM ApexTrigger` (tooling), `FlowDefinitionView` (ativos, 142 no total), `ValidationRule` (tooling).
 
-1. Se dev e QA são a mesma org: só uma org conectada, com instância e username `qa`.
-2. A lógica de 60 dias e de 30% do `SFAgent2`: não li o metadata das instruções do planner/tópicos, só a existência.
-3. Status ativo ou inativo de cada versão do `SFAgent2`: `BotDefinition` não é consultável aqui.
-4. Filtros e colunas dos 18 relatórios candidatos; se algum entrega recuperação.
-5. Conteúdo de `RankingRange__mdt` (7 registros) e de `ScheduledFlowOpportunitySetting__mdt`.
-6. Quem escreve `TotalPurchasesThisYear__c`, `AveragePurchasesThisYear__c` e `LastPurchase__c`, e se `Description` desses campos está vazia. Só confirmei ausência de texto de ajuda.
-7. O que faz o Flow `Acionado_por_registro_Antes_de_atualizar_Pedido...` (XML não lido) e o objeto de disparo dos `MCC_*`.
-8. Ordem de execução efetiva em Order e Account entre trigger próprio, trigger CPQ e Flows (só inventário).
-9. Campos exigidos pelas 17 validation rules ativas de Order.
-10. Grafia do status: picklist `Liberacao Financeiro` (sem acento) contra o filtro `Liberação Financeira` do `OrderScheduledFlow`.
-11. Papéis, regras de compartilhamento, perfis e conteúdo dos permission sets de negócio.
-12. Qualquer dado real: Account, Order, OrderItem e Opportunity estão vazios; distribuição de `Industry` e volume de produção não foram medidos.
+| Objeto | Automação ativa | Evento |
+|---|---|---|
+| `Order` | Trigger `OrderTrigger` do CPQ (namespace `SBQQ`): BU, AU | Atualização |
+| `Order` | Trigger `OrderTrigger` custom (sem namespace): BI, AI, BU, AU, AD. Classes de apoio: `OrderTriggerHandler`, `OrderTriggerHelper`, `OrderUtility`, `OrderAdapter`, `OrderInfo` | Todos |
+| `Order` | Flow before-save "Atribui Id externo para update..." (nome truncado na org); Flow after-save `Order`; Flow agendado `OrderScheduledFlow`; 17 validation rules ativas | Antes e depois de salvar |
+| `OrderItem` | Trigger `OrderProductTrigger` do CPQ (`SBQQ`): BI, AI, BU, AU, AD. Nenhum Flow ativo de OrderItem; 4 validation rules ativas | Todos |
+| `Account` | `AccountBefore` (`SBQQ`: BI, BU); `AccountTrigger` custom (BI, AI, BU, AU) que enfileira `UpdateAccountCompanyInfo`/`SendAccountToProtheus` (briefing da conta); Flows after-save `AccountTriggered`, `UpdateParentAccountUsedLimit`; agendado `AccountUpdateEconomicGroup` | Todos |
+| `Product2` | Triggers `ProductBefore`, `ProductAfter`; Flow after-save `ProductFlowNewOrUpdated`; 6 validation rules | Todos |
+| `CommercialSignal__c` | Nenhuma trigger, Flow ou validation rule (consulta por objeto: trigger não listada, regras = 0) | — |
+
+Leitura do risco:
+- A solução da rodada anterior **só lê** Order, OrderItem, Account e Product2 e escreve só em `CommercialSignal__c`. Nenhum dos itens acima dispara por esse DML.
+- Qualquer proposta que **grave** em `Account` aciona `AccountTrigger` (job por conta, limite de 50 enfileiráveis, e envio ao Protheus). Isto está no briefing da conta e foi reconfirmado pela existência da trigger.
+- Marketing Cloud Connect (`et4ae5`): 26 objetos custom do pacote na org (`et4ae5__Automated_Send__c`, `et4ae5__SendDefinition__c`, `et4ae5__IndividualEmailResult__c` e outros). Nenhum campo `et4ae5` em `Account`, `Order`, `OrderItem` ou `Product2` apareceu na amostra de 30 campos consultada (a consulta tinha LIMIT 30, então a ausência **não está provada** para todos os campos). Nenhum trigger do pacote apareceu nas listas de Account/Order/OrderItem/Product2.
+
+## Volume, dados de teste e permissões
+
+| Item | Resultado | Comando |
+|---|---|---|
+| Account | 0 | `SELECT COUNT() FROM Account` |
+| Order, OrderItem, Opportunity | 0, 0, 0 | `SELECT COUNT()` |
+| Product2 | 1042 | `SELECT COUNT()` e `GROUP BY Group__c` |
+| `CommercialSignal__c` | 0 | `SELECT COUNT()` |
+| `SalesReturn__c` | 0 | `SELECT COUNT()` |
+| Usuário de teste da conta (regra 6) | Dois com o username pedido: `005bJ00000piKAaQAM` (ativo, Administrador do sistema) e `005bJ00000hBJmYQAW` (inativo, Administrador do sistema) | `SELECT Id, IsActive, Profile.Name FROM User WHERE Username LIKE ...` |
+| OWD | `Account` Private externo, ReadWrite interno; `Order` idem; `OrderItem` e `Product2` ReadWrite/ReadWrite; `CommercialSignal__c` ControlledByParent | `EntityDefinition` |
+| Permission sets sobre `CommercialSignal__c` | `PS_Comercial_SinaisComerciais`, `PS_Marketing_SugestaoCampanha`, `sfdc_a360_sfcrm_data_extract` (leitura) | `ObjectPermissions` |
+
+Dev está sem dado comercial: todo teste precisa de fixture (`fixtures/` do cliente). Criar `Order` na fixture esbarra nas 17 regras ativas do objeto.
+
+## Lacunas e incertezas
+
+1. **Data de faturamento:** nenhum campo de `Order` se identifica como tal. Qual entre `EffectiveDate`, `IssuanceDate__c` e `ActivatedDate` representa o faturamento não é confirmável pela org.
+2. **Status faturado:** se `Faturamento` sozinho ou `Faturamento` + `Concluido` equivalem a "faturado" não está confirmado. Nenhum valor de status tem descrição.
+3. **Segmento:** `Sector__c` é citado pelo design como segmento, mas o único sinal na org é o nome do campo e o rótulo "Setor" (igual ao de `Industry`). Preenchimento e distribuição não verificados (0 contas).
+4. **Família de produto:** `Group__c` existe e tem códigos; o significado deles (e se separa pré-forma, tampa e garrafa) é inferência por nome. `GPET`, `ALCA` e `RESI` não foram interpretados.
+5. **Unidades de medida:** unidade principal por produto e uso de `QuantityConverter__c` não verificados.
+6. **Região:** não existe campo próprio. Se a Eplast usa estado, filial (`Product2.Branch__c` existe, mas é do produto), ou outra coisa, não é verificável.
+7. **Compatibilidade técnica:** inexistente na org, conforme busca por nome. Não verifiquei outros objetos (`SBQQ__` ou tabelas do Protheus) por esse conceito.
+8. **Job agendado:** `CronTrigger` não é suportado nesta org; não confirmei se `CommercialSignalScheduler` está agendado na dev. Também não li o conteúdo de `OrderScheduledFlow`, do relatório `CommercialSignals_ByAccount` e dos relatórios "SEM COMPRA".
+9. **SFAgent2:** a versão ativa e o texto das instruções do tópico não foram lidos. `BotDefinition` não é consultável nesta org (informação da análise), então a ativação não pôde ser conferida.
+10. **Validation rules de Order:** 17 ativas hoje. A análise citava 23; não verifiquei a diferença (pode ser total, com inativas).
+11. **Marketing Cloud Connect:** consulta de campos limitada a 30; ausência de campos `et4ae5` nos objetos tocados não provada.
+12. **Volume real e dados do Protheus:** dev vazia; a QAS não foi consultada nesta sessão (só a dev está conectada).
+
+## Pontos para o arquiteto
+
+- Reaproveitar `CommercialSignal__c`, `CommercialSignalSetting__mdt`, as 4 classes + testes, o relatório e os permission sets; o delta é de janela (mês fechado + média de 3), limiar (20%), dias (90), agrupamento por família (`Group__c` ou outro) e campo de grupo (`Sector__c` já suportado por configuração).
+- A "data de faturamento" não existe: o design precisa nomear o campo escolhido e registrar como premissa a validar (regra 4).
+- Compatibilidade técnica não tem fonte na org: limitar a complementar por família e declarar dependência de tabela da Eplast. Não criar regra.
+- `Product2.Family` está vazia (valor `None`): família depende de `Group__c`, cujos códigos não foram confirmados.
+- Assistente: `ConsultarPedidos` (`queryRecords`) é a via mais curta para ler `CommercialSignal__c` no `SFAgent2` (nova versão, não edição da ativa). O Agentforce lê com o usuário da conversa, então o acesso passa pelo OWD `ControlledByParent` e pelos permission sets listados.
+- Os batches da rodada anterior são `without sharing`; avaliar se isso continua aceitável diante de "relatório respeita o compartilhamento do usuário" (a leitura do relatório é pelo pai, `Account`).
+- Os relatórios "SEM COMPRA - ..." do Marketing Cloud usam faixas de 91 a 180/181 a 365 dias: o corte de 90 dias da nova régua deve ser conciliado, sem criar uma segunda lista divergente.
+- Sem escrita em `Account`/`Order`/`OrderItem` (trigger `AccountTrigger` e CPQ no mesmo evento); dev vazia exige fixture e as regras de validação de Order.
