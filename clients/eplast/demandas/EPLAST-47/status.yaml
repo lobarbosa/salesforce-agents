@@ -1,11 +1,206 @@
 id: EPLAST-47
 client: eplast
-titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação de contas)
+titulo: Corrigir o Fluxo Agendado – Oportunidade (valor de compras e classificação
+  de contas)
 tipo: sustentacao
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-11-14T18:20:45.448Z'
 historico:
-  - de: null
-    em: '2026-11-14T18:20:45Z'
-    para: backlog
-    autor: Leonardo Barbosa
+- de: null
+  em: '2026-11-14T18:20:45Z'
+  para: backlog
+  autor: Leonardo Barbosa
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-14T18:25:25.467883+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-14T18:28:28.213311+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-14T18:52:17.655360+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-14T19:06:27.516714+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-14T19:13:28.735076+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-14T19:16:59.800118+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-14T19:25:21.705295+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-14T19:31:14.619019+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-11-15T00:21:41.647571+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-15T00:22:56.657776+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T00:25:14.722918+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-15T00:48:17.776253+00:00'
+  motivo: refazer o build com a verificação do agente na dev antes do gate humano
+    (decisão de 2026-11-15); remove a cópia duplicada do roteiro reprovado
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-15T00:51:10.767765+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T00:52:47.835981+00:00'
+- de: aguardando_gate_build
+  para: aguardando_gate_design
+  autor: Leonardo Barbosa
+  em: '2026-11-15T00:59:12.956472+00:00'
+  motivo: verificação inconclusiva; refazer o build para o agente criar dados de teste
+    e executar, com autorização do responsável registrada no card
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-15T01:01:59.337779+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T01:08:21.537112+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-11-15T01:15:54.378988+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-15T01:17:57.169018+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-15T01:21:33.240646+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-11-15T01:31:18.442081+00:00'
+- de: qa
+  para: standby
+  autor: Leonardo Barbosa
+  em: '2026-11-15T20:19:40.552376+00:00'
+  motivo: 'pausada para liberar a sandbox de QA para o projeto (sustentação não é
+    prioridade, decisão de 15/11 20h). O teste armado fica como está: o job rodou
+    às 20:10Z com a v4; para retomar, voltar a qa e rodar a fase 2, que confere o
+    resultado e devolve a configuração (dia 14, horário 15:47).'
+- de: standby
+  para: qa
+  autor: Leonardo Barbosa
+  em: '2026-11-16T08:16:53.591738+00:00'
+  motivo: 'retomada pelo responsável (16/11): rodar a fase 2 do QA (conferir o resultado
+    do arme de 15/11 e devolver a configuração original).'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T08:27:05.694926+00:00'
+- de: aguardando_gate_design
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-11-16T08:38:46.602477+00:00'
+  motivo: 'redesenhar: só declarativo e sem gravar em massa na conta (AccountTrigger
+    enfileira envio ao Protheus por conta). Ver decisão em 03-design.md.'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-16T08:54:29.988878+00:00'
+- de: aguardando_gate_design
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T00:55:35.200840+00:00'
+  motivo: 'redesenhar: Flow disparado pela oportunidade salva, uma conta por execução,
+    sem fluxo agendado e sem objeto novo. Ver decisão de 2026-11-17 em 03-design.md.'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T01:00:39.337987+00:00'
+- de: aguardando_gate_design
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T01:02:59.164229+00:00'
+  motivo: a sessão de 17/11 refez só o recon e encerrou sem o arquiteto reescrever
+    o 03-design.md; rodar o desenho de novo sobre a decisão de 2026-11-17.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T01:04:57.867538+00:00'
+- de: aguardando_gate_design
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T01:32:18.031468+00:00'
+  motivo: crédito da API recarregado; rodar o desenho sobre a decisão de 2026-11-17
+    (as sessões anteriores não reescreveram o 03-design.md).
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T01:43:30.595485+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T07:11:53.030179+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-17T07:34:36.039876+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T07:49:19.141988+00:00'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T07:54:57.130493+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T08:11:31.664018+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-17T08:17:46.746640+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T08:41:05.066090+00:00'
+- de: qa
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-17T08:42:37.578005+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T08:50:23.872222+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-17T08:58:55.612875+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T09:05:24.988214+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-17T09:10:50.663189+00:00'

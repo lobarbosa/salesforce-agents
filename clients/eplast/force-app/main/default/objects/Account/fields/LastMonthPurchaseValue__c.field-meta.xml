@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>LastMonthPurchaseValue__c</fullName>
+    <description>Soma das oportunidades Fechado/Ganho do ano corrente (Opportunity.ThisYear__c), gravada pelo Flow ScheduledFlowOpportunity. Apesar do rotulo, nao e so do ultimo mes (EPLAST-47).</description>
     <label>Valor de Compras Último Mês</label>
     <precision>18</precision>
     <required>false</required>

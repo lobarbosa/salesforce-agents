@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>FaultRecipient__c</fullName>
+    <description>E-mail operacional que recebe aviso de falha do Flow. Vazio = so registra IntegrationLog__c, sem enviar e-mail.</description>
+    <fieldManageability>DeveloperControlled</fieldManageability>
+    <label>Fault Recipient</label>
+    <required>false</required>
+    <unique>false</unique>
+    <type>Email</type>
+</CustomField>

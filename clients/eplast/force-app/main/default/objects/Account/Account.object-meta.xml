@@ -261,7 +261,7 @@
     <compactLayoutAssignment>Account_Compact_Layout</compactLayoutAssignment>
     <enableEnhancedLookup>true</enableEnhancedLookup>
     <enableFeeds>true</enableFeeds>
-    <enableHistory>false</enableHistory>
+    <enableHistory>true</enableHistory>
     <externalSharingModel>Private</externalSharingModel>
     <searchLayouts>
         <customTabListAdditionalFields>ACCOUNT.NAME</customTabListAdditionalFields>
