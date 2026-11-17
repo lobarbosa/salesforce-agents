@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EJ3yDKAT` (Succeeded)
-- **Quando:** 2026-11-17T08:40Z
-- **Commit:** `9ae3a173`
+- **Deploy:** `0AfHa00000EJ46HKAT` (Succeeded)
+- **Quando:** 2026-11-17T09:05Z
+- **Commit:** `4d7281e8`
 
 ## Componentes
 - `force-app/main/default/customMetadata/RankingRange.G.md-meta.xml`
@@ -16,7 +16,6 @@
 - `force-app/main/default/customMetadata/ScheduledFlowOpportunitySetting.Default.md-meta.xml`
 - `force-app/main/default/flowDefinitions/ScheduledFlowOpportunity.flowDefinition-meta.xml`
 - `force-app/main/default/flows/Opportunity_AfterSave_ClassificaConta.flow-meta.xml`
-- `force-app/main/default/flows/ScheduledFlowOpportunity.flow-meta.xml`
 - `force-app/main/default/objects/Account/Account.object-meta.xml`
 - `force-app/main/default/objects/Account/fields/LastMonthPurchaseValue__c.field-meta.xml`
 - `force-app/main/default/objects/Account/fields/Ranking__c.field-meta.xml`

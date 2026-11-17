@@ -1,99 +1,83 @@
 # EPLAST-47 — Roteiro de teste: classificação da conta ao salvar a oportunidade
 
-Ao salvar uma oportunidade como **Fechado/Ganho**, o sistema soma as compras ganhas do ano da conta e atualiza sozinho dois campos da conta: **Valor de compras do último mês** e **Classificação**. Vale a nova tabela de faixas, com sete classificações (MP, PP, P, M, G, GG, 3G). A rotina antiga que rodava todo dia 14 deixa de ser usada.
+Agora a classificação da conta (MP, PP, P, M, G, GG, 3G) é atualizada no momento em que uma oportunidade ganha é salva, em vez de uma rotina mensal em lote. A conta recebe as novas faixas de valor, o campo "Valor da última compra" mostra a soma das compras ganhas do ano, e o histórico da classificação fica registrado. A rotina mensal antiga foi desativada.
 
-**Situação do teste automático:** na sandbox de QA, a rodada anterior comprovou as faixas (12 valores de borda), a soma, o histórico, o relatório e a ausência de erro de limite. Nesta rodada o time **não** conseguiu comprovar que a rotina antiga do dia 14 foi desligada (ela seguia ativa) e por isso a entrega voltou para correção. O teste 6 (falha forçada) não é exercitável pelo time e fica para quem segue este roteiro. Os demais testes abaixo ficam para a conferência manual.
+**Situação do teste automático:** o time já comprovou, na sandbox de homologação, as faixas (incluindo as bordas 10.000, 35.000,01 e 1.000.000,01), a soma, o histórico, a ausência de erros de limite e a desativação da rotina antiga. Ficou para quem segue este roteiro o teste 5 (comportamento em caso de falha), que não dá para provocar no ambiente do time.
 
 ## Antes de começar
-- Ambiente: sandbox de QA da Eplast (a "QAS").
-- Perfil: usuário comercial que consegue criar conta e oportunidade.
-- Dado de teste: crie uma conta chamada **TESTE EPLAST-47 A** (preencha o que a tela exigir) e uma oportunidade nela. Use só dados de teste, nunca uma conta real. Se precisar de outra conta, crie **TESTE EPLAST-47 B**.
-- Para cada teste, abra a conta e olhe os campos **Classificação** e **Valor de compras do último mês**.
+- Ambiente: sandbox de homologação (QAS da Eplast). Perfil: o de vendas que salva oportunidades.
+- Use só contas de teste. Crie uma conta com o nome "TESTE EPLAST-47 Conta 1" e uma oportunidade de indústria vinculada a ela, com valor 3.000, em fase anterior à ganha, com forma de pagamento "À vista".
+- O proprietário da conta precisa ter o campo "ID Usuário Protheus" preenchido.
+- Para a classificação ser calculada, a oportunidade precisa de uma cotação aprovada ligada a ela (é assim que a média do ano é calculada hoje).
 
-## Teste 1 — Faixas de classificação (valores de borda)
-1. Na conta TESTE EPLAST-47 A, crie uma oportunidade com valor 10.000 e fase **Fechado/Ganho**. Salve.
-2. Abra a conta e anote a **Classificação**.
-3. Repita com outra conta de teste (uma conta por valor) para: 10.000,01; 35.000; 35.000,01; 80.000; 80.000,01; 160.000; 160.000,01; 500.000; 500.000,01; 1.000.000; 1.000.000,01.
+## Teste 1 — Classificação ao ganhar a oportunidade
+1. Abra a oportunidade de teste de 3.000.
+2. Mude a fase para "Fechado/Ganho" e salve.
+3. Abra a conta de teste.
 
-**Resultado esperado:** MP, PP, PP, P, P, M, M, G, G, GG, GG, 3G, nessa ordem (valor 10.000 = MP; 10.000,01 = PP; 1.000.000,01 = 3G).
+**Resultado esperado:** campo "Classificação" = MP e "Valor da última compra" = 3.000.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 2 — Valor pequeno
-1. Crie uma conta de teste e uma oportunidade ganha de 3.000. Salve.
+## Teste 2 — Limites das faixas
+1. Crie contas de teste, cada uma com uma única oportunidade ganha com os valores abaixo.
+2. Confira a "Classificação" de cada conta.
 
-**Resultado esperado:** Classificação **MP** e Valor de compras do último mês **3.000**.
+**Resultado esperado:** 10.000 = MP; 10.000,01 = PP; 35.000 = PP; 35.000,01 = P; 80.000 = P; 80.000,01 = M; 160.000 = M; 160.000,01 = G; 500.000 = G; 500.000,01 = GG; 1.000.000 = GG; 1.000.000,01 = 3G.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 3 — Soma só das ganhas
-1. Na mesma conta, oportunidade ganha de 3.000. Salve.
-2. Crie outra ganha de 2.000. Salve.
-3. Crie uma oportunidade **Fechado/Perdido** de 9.000. Salve.
+## Teste 3 — Soma das compras do ano
+1. Na conta de teste, tenha uma ganha de 3.000.
+2. Crie outra oportunidade para a mesma conta com 2.000 e marque como ganha.
+3. Crie uma terceira de 9.000 e marque como perdida.
 
-**Resultado esperado:** Valor de compras do último mês **5.000** (a perdida não entra).
+**Resultado esperado:** "Valor da última compra" = 5.000; a perdida não entra.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## Teste 4 — Ganha que vira perdida
-1. Conta com uma única ganha de 10.000. Altere essa oportunidade para **Fechado/Perdido**. Salve.
+1. Numa conta de teste com uma única ganha de 10.000, mude essa oportunidade para "Fechado/Perdido".
 
-**Resultado esperado:** Valor de compras do último mês **0**; a Classificação **não** muda para GG, continua a que estava (MP).
+**Resultado esperado:** "Valor da última compra" = 0, e a classificação não vira GG (continua a anterior).
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 5 — Uma atualização por salvamento e histórico
-1. Salve uma oportunidade ganha em conta de teste.
-2. Na conta, abra o histórico do campo Classificação.
+## Teste 5 — Histórico, relatório e lista de classificações
+1. Na conta de teste, abra o histórico do campo "Classificação".
+2. Abra o relatório "AccountRankingChanges" (pasta EPLAST47) e localize a conta de teste.
+3. Abra o campo "Classificação" e veja as opções.
 
-**Resultado esperado:** uma linha de histórico por mudança, sem mensagem de erro de limite ao salvar.
+**Resultado esperado:** o histórico mostra o valor anterior e o novo; o relatório mostra a mudança da conta de teste; as opções são MP, PP, P, M, G, GG e 3G.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 6 — Falha na classificação não impede a venda (precisa da homologação)
-O time não conseguiu provocar esta falha sem mexer em usuário real. Se for possível provocar na sua sandbox (por exemplo, conta cujo proprietário gera erro na gravação), siga:
-1. Salve uma oportunidade ganha nessa condição.
+## Teste 6 — Falha na classificação não barra a venda
+Este teste só é possível com apoio do time técnico, porque exige provocar uma falha na gravação da conta.
+1. Com o time, provoque uma falha na gravação da conta ao salvar uma oportunidade ganha de teste.
 
-**Resultado esperado:** a oportunidade é salva. A falha fica registrada no log de integração (ação da classificação). E-mail só sai se houver destinatário de falha configurado; sem destinatário, não sai e-mail.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-- [ ] Não foi possível provocar a falha
-
-## Teste 7 — Lista de classificações
-1. Na conta, abra a lista do campo **Classificação**.
-
-**Resultado esperado:** exatamente MP, PP, P, M, G, GG e 3G.
+**Resultado esperado:** a oportunidade é salva normalmente; a falha fica registrada no log de integração; e-mail só se houver destinatário configurado (hoje vazio, então sem e-mail).
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
-## Teste 8 — Relatório de mudanças de classificação
-1. Abra o relatório **Mudanças de classificação da conta** (pasta EPLAST47).
-2. Procure as contas de teste usadas acima.
+## Teste 7 — Rotina mensal antiga desligada
+1. Peça ao time para confirmar em Configuração > Fluxos que "ScheduledFlowOpportunity" não tem versão ativa.
 
-**Resultado esperado:** cada conta de teste aparece com a classificação anterior e a nova.
-- [ ] Conforme
-- [ ] Não conforme — o que apareceu:
-
-## Teste 9 — Rotina do dia 14 desligada
-1. Em Configuração, abra **Fluxos** e procure **Fluxo Agendado - Oportunidade**.
-2. Veja se há versão ativa.
-
-**Resultado esperado:** nenhuma versão ativa, e nenhuma execução agendada. (O time encontrou esta rotina ainda ativa na QA e a entrega voltou para correção.)
+**Resultado esperado:** nenhuma versão ativa e nenhuma execução agendada.
 - [ ] Conforme
 - [ ] Não conforme — o que apareceu:
 
 ## O que assumimos e você precisa confirmar
-- Só conta como compra a oportunidade **Fechado/Ganho** criada **neste ano** (a regra atual não mudou).
-- Conta sem nenhuma ganha fica com valor **0**. Se a média de compras estiver vazia, a classificação **se mantém** (nunca vira GG). Média 0 vira MP.
-- O faixa termina "até" o limite: 10.000 é MP; 10.000,01 é PP.
-- O aviso de falha é operacional (e-mail simples interno, sem dado de cliente), só para o destinatário configurado. **Sem destinatário informado, só fica o registro.** Qual endereço usar?
-- Se a oportunidade muda de conta, só a conta nova é reclassificada. Excluir ou restaurar oportunidade não recalcula.
-- Oportunidade de ano anterior não dispara a classificação.
-- A classificação usa o campo de média de compras como já gravado hoje.
-- Falha na classificação não impede salvar a oportunidade.
-- A rotina do dia 14 fica desligada (não apagada), podendo ser religada.
-- O relatório fica na pasta provisória atual; o Protheus não recebe mudança nesta entrega e a classificação (inclusive MP e 3G) não foi enviada a ele.
-- Não há teste de volume nesta entrega.
+- A base é a soma das oportunidades "Fechado/Ganho" do ano (data de criação da oportunidade), como hoje.
+- A classificação usa a média do ano já calculada pelo sistema; sem média calculada, a classificação não muda (nunca vira GG). Média 0 vira MP.
+- Conta sem compra: "Valor da última compra" = 0.
+- Aviso de falha: só registro no log; e-mail somente se a Eplast informar um destinatário (hoje vazio).
+- Troca de conta numa oportunidade ganha: só a conta nova é recalculada. Exclusão ou restauração de oportunidade não recalcula.
+- Oportunidades de anos anteriores não disparam o cálculo.
+- A rotina mensal antiga foi desativada (não apagada) e pode ser reativada.
+- O relatório fica provisoriamente na pasta EPLAST47.
+- O envio ao ERP (Protheus) não muda e não usa a classificação.
 
 ## O que não dá para conferir pela tela
-- Ausência de erro de limite de filas em muitas contas e o estado do agendamento no sistema: evidência em `05-testes.md` desta demanda (consultas na sandbox) e na rodada anterior.
+- Ausência de erros de limite de fila e de bloqueio de registro ao salvar várias oportunidades, e o estado do agendamento: evidência em `05-testes.md` (consultas na sandbox de homologação).
+- Carga em volume: não aplicável nesta demanda (decisão registrada no desenho).
