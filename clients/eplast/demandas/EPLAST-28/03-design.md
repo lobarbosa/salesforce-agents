@@ -217,3 +217,40 @@ Nenhum item `- [ ]`: não há caso 4(c).
 4. R2 (dev e QA possivelmente a mesma sandbox) resolvido antes da sessão de QA.
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Respostas do cliente (2026-11-17) — valem acima das premissas assumidas deste desenho
+
+A Eplast respondeu por escrito ("Respostas Konecta/Eplast", recebido em 17/11) aos pontos que
+este desenho tinha resolvido como premissa assumida. Registrado por Leonardo Barbosa, que
+mandou redesenhar com as respostas. **Onde a resposta abaixo diverge de uma premissa deste
+arquivo, vale a resposta.** O que o cliente marcou como "a validar" continua premissa, a
+repetir no roteiro em "O que assumimos e você precisa confirmar". Os parâmetros ficam
+configuráveis (pedido do cliente), sem deploy para ajustar. Reaproveite o que já foi
+construído e passou no QA; mude só o que a resposta pede. Os artefatos de build e QA da
+rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
+
+**Resposta do cliente (EPLAST-28 — alertas de oportunidade parada):**
+- Definição: oportunidade aberta sem atividade comercial relevante registrada. Alterações
+  administrativas e notificações automáticas **não reiniciam** o prazo. Sem atividade
+  anterior, contar a partir da criação.
+- Prazo: 7 dias corridos, único para todos os estágios, configurável.
+- Destinatários: proprietário aos 7 dias; gestor a partir de 14 dias. A hierarquia ainda
+  não está cadastrada: é preciso cadastrá-la ou definir alternativa de encaminhamento antes
+  de ativar o alerta ao gestor.
+- Ação: só notificar, sem criar tarefa. Sem repetição diária para a mesma ocorrência.
+- Texto: apenas nome da oportunidade, dias sem atividade e link. Sem valor.
+- Canal: notificação no Salesforce (sino e aplicativo). Sem e-mail nesta etapa.
+- Quantidade de oportunidades abertas: a validar por levantamento em produção (fora da esteira).
+
+**O que muda neste desenho:**
+1. Prazo padrão de 14 para **7** dias (`DiasSemAcompanhamento__c`).
+2. Regra de "parada": a mudança de estágio (`LastStageChangeDate`) **deixa de reiniciar** a
+   contagem; vale a última atividade e, sem atividade, a data de criação.
+3. Gestor: limiar próprio de **14 dias**, configurável, **desligado** até a hierarquia
+   existir (hoje 0 usuários com gestor). Não inventar encaminhamento alternativo.
+4. Texto do aviso: tirar nome da conta e estágio; ficam nome da oportunidade, dias e link.
+5. "Notificações automáticas não reiniciam": a premissa P3 dizia que `LastActivityDate` não
+   distingue tarefa automática. Diga o que é possível declarativamente (por exemplo, a data
+   da última tarefa ou compromisso que não seja das automações conhecidas da org) e o que
+   exigiria código. Se só código resolver, **não construa código**: deixe como limitação
+   declarada, a validar na homologação.
