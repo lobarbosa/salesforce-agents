@@ -55,3 +55,15 @@ Org de build: `sbx-eplast-dev` (única em `sf org list`). Na QA a v16 ficou Acti
 
 ### Versões e ativação (rodada 1)
 Nada ativado por este build. Ordem: Flow v2/v4 como já está, depois ativar `SFAgent2` v17 (dev na verificação; QA após `05-deploy-qa.md`).
+
+## Correções da rodada 2 (QA reprovou; `05-testes-rodada-2.md`)
+Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Nada tocado em QA, produção ou Marketing Cloud. Nenhum componente novo ou alterado nesta rodada: o que a rodada 2 pede já está construído.
+
+Estado conferido na dev por query: `SFAgent2` v13 Active; v14 a v17 Inactive (v16 e v17 são desta demanda). `force-app` traz `bots/SFAgent2/v17.botVersion-meta.xml` e `genAiPlannerBundles/SFAgent2_v17`, sem alteração pendente na árvore.
+
+- FALHA 4 (crítica, v17 ausente na QA): **não corrigível no build.** O pacote está completo na branch (BotVersion `v17` e planner `SFAgent2_v17`, descritos em "Correções da rodada 1"). Quem leva o build à QA é o passo fixo da esteira (`05-deploy-qa.md`); o builder não toca a QA. O deploy da rodada 2 listou só configuração, Flow e PS e pulou o agente por já haver versão ativa (v16). Ação para a esteira: incluir `BotVersion SFAgent2.v17` e `GenAiPlannerBundle SFAgent2_v17` como versão inativa; a ativação na QA continua sendo do QA, depois do deploy. Reconstruir ou renomear a v17 não adianta e quebraria a rastreabilidade.
+- FALHAS 1 a 3 (reteste na QA): dependem só da v17 estar na QA. Conteúdo da correção inalterado, descrito na rodada 1. Não editei a v17 sem evidência de falha dela, porque ela nunca foi exercitada na QA.
+- AC-4 (sem usuário não administrador): não corrigível pelo build (regra 6 da conta proíbe alterar perfil do usuário de teste). Segue para a homologação.
+
+### Versões e ativação (rodada 2)
+Nada ativado por este build. Pendente, nesta ordem: esteira implanta v17 inativa na QA; QA ativa a v17 (rollback: reativar a v16).
