@@ -233,3 +233,31 @@ O que mudou em relação à análise (60–110 h) e ao design anterior (56–96 
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Decisão do responsável no gate (2026-11-17): aprovado sem a consulta pelo assistente
+
+Decidido por Leonardo Barbosa em 17/11. O desenho desta rodada está aprovado **com um
+corte de escopo**. Vale acima do que as seções anteriores dizem sobre o `SFAgent2`.
+
+**Fica fora desta rodada (não construir):**
+- a classe `CommercialSignalAgentAction` e o teste `CommercialSignalAgentActionTest`;
+- a ação `ConsultarSinaisComerciais_EPLAST33` e qualquer versão nova do `SFAgent2`
+  (o agente não é tocado; a pendência R-4 da versão base deixa de existir);
+- o `classAccess` dessa classe nos permission sets e os casos de teste da consulta pelo
+  assistente.
+
+A consulta pelo assistente volta a ser fase seguinte, como na rodada anterior (PA-1). O
+roteiro do cliente diz isso em "O que assumimos e você precisa confirmar": o canal desta
+entrega é o relatório; o assistente fica para uma próxima etapa.
+
+**Aprovado como desenhado:**
+- os 4 campos novos e o valor `HistoricoInsuficiente` em `CommercialSignal__c`, e os 6
+  campos novos em `CommercialSignalSetting__mdt` (seção 2.3);
+- o ajuste das classes de cálculo e dos testes: 90 dias, último mês fechado contra a média
+  dos três anteriores, queda de 20%, por família, histórico insuficiente, venda cruzada por
+  segmento (`Sector__c`) com região como filtro;
+- tipo de relatório, relatório e permission sets com as colunas novas;
+- as premissas da seção 5 e o que a seção 8 deixa de fora (compatibilidade técnica item a
+  item, devoluções, data de faturamento pela data do pedido até o QA medir `IssuanceDate__c`).
+
+Estimativa com o corte: a faixa de 40–68 h cai pela parte da ação do agente (8–14 h).
