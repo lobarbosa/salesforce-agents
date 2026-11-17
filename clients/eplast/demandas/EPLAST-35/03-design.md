@@ -337,3 +337,16 @@ O que mudou em relação à análise (120–260 h) e à rodada 1 (40–70 h):
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Decisão do responsável no gate (2026-11-17) — sem Apex: rodízio por Flow com numeração automática
+
+O gate de design da rodada 2 **não foi aprovado**. A decisão do responsável (Leonardo Barbosa) vale acima das seções 1.2, 2.2, 2.3, 3 (itens 14 e 15), 10 e 13 deste desenho. Refazer o desenho com as diretrizes abaixo.
+
+1. **Nenhuma classe Apex nova.** `LeadRodizioService` e `LeadRodizioServiceTest` não serão construídas. Motivo: a org tem cobertura de testes Apex em torno de 10% (assessment, achado 2), o que prende qualquer Apex na ida à produção, e o responsável não quer mais uma classe para manter.
+2. **Rodízio por Flow, com um campo de numeração automática no Lead.** Diretriz: um campo técnico Auto Number em Lead (nome pela convenção da conta, com descrição preenchida) dá a cada Lead um número sequencial. O Flow record-triggered lê os membros da fila da região e escolhe o vendedor pelo resto da divisão do número pela quantidade de membros elegíveis, em ordem fixa. Como cada Lead tem um número diferente, o rodízio funciona também em carga em lote, que era o motivo do Apex. O campo novo em Lead está **aprovado** pelo responsável: é técnico e não guarda dado de negócio.
+3. **Rodízio aproximado está aceito.** A sequência é global, não por região: em volume a distribuição fica equilibrada, mas dois Leads seguidos da mesma região podem cair no mesmo vendedor. Registrar como premissa a validar na homologação, em linguagem de usuário, no roteiro do cliente.
+4. **Dono da conta com precedência, pelo Flow.** O Flow busca a conta pelo CNPJ do Lead e, se achar exatamente uma, usa o dono dela; com zero ou mais de uma, segue para o rodízio. O arquiteto confere na org o formato real do CNPJ em Lead e em Account (só metadata e contagens agregadas, sem ler registro). Se os formatos puderem divergir, propor a normalização declarativa (por exemplo, campo de fórmula) e dizer o custo; se nem isso resolver, declarar a limitação em vez de voltar ao Apex.
+5. **Continuam como estavam:** região pela regra de atribuição nativa (`Distribuicao_Regional_Leads_v2`), fila nova `Leads_RJ_ES`, parâmetros em `DistribuicaoLeadSetting__mdt` (aprovado), e aprovação e encaminhamento a áreas internas fora desta rodada (dependem da matriz de alçadas da Eplast).
+6. **O que o arquiteto precisa confirmar e declarar:** que o desenho declarativo é viável na org (leitura dos membros da fila no Flow, limites em lote de 200 Leads, ordem de execução com `Lead_AfterInsert_AplicaRegraAtribuicao` e com a EPLAST-38) e a estimativa nova. Se algum ponto não for viável sem código, **não desenhar Apex**: parar no gate dizendo exatamente o que não fecha.
