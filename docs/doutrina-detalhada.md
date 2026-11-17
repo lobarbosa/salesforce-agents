@@ -214,6 +214,17 @@ antes de o gate de build ser aprovado. Arquivo removido na demanda não é apaga
 No mesmo achado: o agente de QA gravou uma cópia do roteiro como `05-testes-rodada-1.md`;
 a esteira passou a apagar qualquer arquivo de rodada criado pela sessão.
 
+Trabalho pendente trava o deploy em QA (2026-11-17, achado EPLAST-33): a demanda tem classe
+agendável e batch, o QA em duas fases deixou o trabalho armado na sandbox de QA e, no
+redesenho, o deploy do mesmo pacote caiu inteiro ("essa classe programável tem trabalhos
+pendentes ou em andamento"), com o gate de build já aprovado e sem defeito no build. Quando
+TODAS as falhas do deploy são essa (`scripts/jobs_pendentes.py`), o `implantar-build-qa.sh`
+cancela só os trabalhos que a plataforma citou, que são os das classes do pacote, e
+reimplanta. O que foi cancelado fica em `05-deploy-qa.md`; a esteira não rearma, porque quem
+arma é o QA no teste ou a ativação. Havendo outra falha junto, nada é cancelado. A opção da
+org de permitir deploy com trabalho pendente não foi usada: é configuração da sandbox do
+cliente e não chega à produção.
+
 Roteiro do cliente (2026-11-14): o `05-testes.md` é evidência para quem aprova gate, e era
 ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava também
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
