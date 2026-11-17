@@ -3,7 +3,8 @@
 # EPLAST-26 — Plano de build (rodada 3: critérios e faixas AA/A/B/C/D da Eplast)
 
 - **Branch:** `feature/EPLAST-26`
-- **Org de build:** `sbx-eplast-dev` (projetos@konectabr.com.eplast2.qa, Sandbox, Connected, conferido com `sf org list`)
+- **Commit:** `92d22928` (pushed). PR: `gh` sem GH_TOKEN nesta sessão, não aberto por mim.
+- **Org de build:** `sbx-eplast-dev` (Sandbox, Connected, conferido com `sf org list`; usuário de conexão omitido)
 - **Deploy:** `0AfHa00000EJIM9KAP`, Succeeded, 74/74 componentes, `NoTestRun` (sem Apex). Antes: dry-run que falhou por rótulo de campo acima de 40 caracteres e por coluna de list view; corrigido e repetido.
 - **Base:** XML das fórmulas partiu do retrieve da org (não do repositório), conforme B2. Só metadata declarativa: nenhum Apex, Flow, e-mail, callout ou Named Credential.
 - **Plano B (I-1):** não foi necessário. A plataforma aceitou `$CustomMetadata.PriorityScoreSetting__mdt.Default.*` nas quatro fórmulas, inclusive no tamanho compilado.
