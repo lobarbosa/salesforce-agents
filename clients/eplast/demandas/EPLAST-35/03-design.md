@@ -247,3 +247,42 @@ O que mudou em relação à análise (120–260 h) e por quê:
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Respostas do cliente (2026-11-17) — valem acima das premissas assumidas deste desenho
+
+A Eplast respondeu por escrito ("Respostas Konecta/Eplast", recebido em 17/11) aos pontos que
+este desenho tinha resolvido como premissa assumida. Registrado por Leonardo Barbosa, que
+mandou redesenhar com as respostas. **Onde a resposta abaixo diverge de uma premissa deste
+arquivo, vale a resposta.** O que o cliente marcou como "a validar" continua premissa, a
+repetir no roteiro em "O que assumimos e você precisa confirmar". Os parâmetros ficam
+configuráveis (pedido do cliente), sem deploy para ajustar. Reaproveite o que já foi
+construído e passou no QA; mude só o que a resposta pede. Os artefatos de build e QA da
+rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
+
+**Resposta do cliente (EPLAST-35 — aprovação, distribuição de leads e encaminhamento):**
+- Aprovação: mapear os três processos existentes e complementá-los, sem duplicar. Gatilhos
+  (desconto acima da alçada, margem abaixo do mínimo, prazo fora da política, exceção de
+  frete ou pedido mínimo, limite de crédito) **dependem de matriz de valores e alçadas que a
+  Eplast ainda vai aprovar**.
+- Distribuição dos leads: **região/território** como regra principal, **respeitando contas
+  com proprietário já definido**. Dentro da mesma região, **rodízio** entre responsáveis
+  elegíveis. Demandas técnicas ou projetos especiais podem ter encaminhamento específico.
+- Regionais: SP (SP); RJ/ES (RJ, ES); MG (MG); SUL (PR, SC, RS); CO (DF, GO, MT, MS, TO);
+  NO/NE (AC, AP, AM, PA, RO, RR, AL, BA, CE, MA, PB, PE, PI, RN, SE).
+- Encaminhamento de demandas: transferência comercial e encaminhamento a áreas internas, com
+  fluxos distintos; demanda interna com registro rastreável (responsável, prazo, status).
+- Aprovadores: filas por área e alçadas definidas; matriz de Comercial, Financeiro, PCP,
+  Logística e Qualidade a validar pela Eplast.
+
+**O que muda neste desenho (só a distribuição de leads; o resto espera a Eplast):**
+1. Regiões conforme a tabela acima (6 regionais, **RJ e ES juntas**), mantendo a Triagem
+   para UF fora do padrão.
+2. **Rodízio** dentro da região entre os membros elegíveis, no lugar de "fica na fila e o
+   vendedor assume" (revê a PA-04). Avalie a forma declarativa de rodízio; os elegíveis por
+   região são configuração que o administrador mantém (a Eplast ainda vai informar os nomes).
+3. **Respeitar proprietário já definido:** lead cuja empresa já corresponde a uma conta com
+   proprietário vai para esse proprietário, se houver forma confiável de casar lead e conta
+   (por exemplo CNPJ); se não houver, declarar a limitação.
+4. **Não construir** gatilhos de aprovação, alçadas nem o encaminhamento a áreas internas:
+   dependem da matriz da Eplast e são escopo a combinar. Manter os três processos como
+   estão e registrar o mapeamento deles para a conversa com o cliente.
