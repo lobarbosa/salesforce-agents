@@ -326,3 +326,32 @@ sobre versões.
 - Ordem na QA: EPLAST-46 (v9), EPLAST-27 (v10), esta (v12). O QA ativa a versão que chega, e
   a v12 fica ativa ao final.
 - Teste sem tela: `sf agent preview start` / `send` / `end`, sem o modo interativo.
+
+## Respostas do cliente (2026-11-17) — valem acima das premissas assumidas deste desenho
+
+A Eplast respondeu por escrito ("Respostas Konecta/Eplast", recebido em 17/11) aos pontos que
+este desenho tinha resolvido como premissa assumida. Registrado por Leonardo Barbosa, que
+mandou redesenhar com as respostas. **Onde a resposta abaixo diverge de uma premissa deste
+arquivo, vale a resposta.** O que o cliente marcou como "a validar" continua premissa, a
+repetir no roteiro em "O que assumimos e você precisa confirmar". Os parâmetros ficam
+configuráveis (pedido do cliente), sem deploy para ajustar. Reaproveite o que já foi
+construído e passou no QA; mude só o que a resposta pede. Os artefatos de build e QA da
+rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
+
+**Resposta do cliente (EPLAST-29 — ações por linguagem natural):**
+- Registros permitidos: só **tarefas**, vinculadas ao **lead**, cliente ou oportunidade.
+  Compromissos, contas, oportunidades e pedidos ficam fora desta etapa.
+- E-mail e mensagens: somente rascunhos, revisados pelo usuário antes do envio.
+- Confirmação obrigatória antes de qualquer gravação, exibindo registro relacionado,
+  responsável, descrição e prazo.
+- Acesso: SDR, vendedores/executivos comerciais, pós-vendas e gestão comercial, respeitando
+  as permissões de cada usuário.
+
+**O que muda neste desenho:**
+1. Aceitar **Lead** como registro relacionado da tarefa (hoje só Account e Opportunity,
+   PD-1). Em Task, lead vai em `WhoId`; conferir a guarda do Flow, a busca do registro e a
+   instrução do tópico.
+2. Conferir que o resumo de confirmação mostra os quatro itens pedidos (registro
+   relacionado, responsável, descrição e prazo).
+3. O permission set continua atribuído pelo administrador; o roteiro lista os quatro
+   públicos. Nada mais muda.
