@@ -32,7 +32,7 @@ Ajustes de construção em relação ao design (sem mudar a lógica):
 | `Opportunity_AfterSave_ClassificaConta` | Flow novo, nasce Active na dev (não substitui nada) | Feito | Desativar o Flow |
 | `AccountRankingChanges` | Filtro novo | Feito | Tirar o filtro |
 | `RunDayOfMonth__c` | Descrição | Feito | Voltar a descrição anterior |
-| `ScheduledFlowOpportunity` | **Desativar (passo separado, NÃO feito neste build)**. v2 segue Active na dev (`FlowDefinitionView`, hoje). Deve ser desativado depois de o verificador provar V1 a V6; na QA, pelo pacote da esteira (`FlowDefinition` com versão ativa 0 ou equivalente) | Pendente | Reativar a versão anterior |
+| `ScheduledFlowOpportunity` | **Desativado na rodada 5 (ver "Correções da rodada 4")**. Texto original: desativar em passo separado, NÃO feito no build 3. v2 segue Active na dev (`FlowDefinitionView`, hoje). Deve ser desativado depois de o verificador provar V1 a V6; na QA, pelo pacote da esteira (`FlowDefinition` com versão ativa 0 ou equivalente) | Feito (dev) | Reativar a versão anterior |
 
 Enquanto o agendado segue ativo, os dois coexistem na dev. Risco R7 do design: o agendado só age no dia 14 (próximo, 14/12).
 
@@ -63,3 +63,18 @@ Fonte: `04-verificacao-rodada-1.md` (reprovada, 2 falhas). Deploy na `sbx-eplast
 
 ### Versões e ativação (correção)
 `Opportunity_AfterSave_ClassificaConta`: criada **versão 2** pelo deploy (v1 ficou Obsoleta, conferido em `Flow` por Tooling API). Foi deployada com status Active por ser Flow desta própria demanda, ainda sem uso na QA nem em produção, e o verificador precisa dela ativa na dev. Como desfazer: reativar a v1 ou desativar o Flow. `ScheduledFlowOpportunity` segue **ativo e intocado** (desativação continua passo separado, depois de V1 a V6 provados).
+
+## Correções da rodada 4
+
+Fonte: `05-testes-rodada-4.md` (reprovado) e a seção "Decisão do responsável (2026-11-17)" do `03-design.md`. Org: `sbx-eplast-dev` (única do `sf org list`). Nada mais do pacote mudou (Flow novo, faixas, relatório e metadado ficam como estão).
+
+- **FALHA 1 (agendado ativo): corrigida.** `flowDefinitions/ScheduledFlowOpportunity.flowDefinition-meta.xml` com `activeVersionNumber` 0 (o arquivo dizia 1, mas a dev estava na v2 ativa). Dry-run ok; deploy real Succeeded (ID `0AfHa00000EJ3oXKAT`). Conferido na dev: `Flow` por Tooling API v1 e v2 **Obsolete**, nenhuma Active; `CronTrigger` `ScheduledFlowOpportunity-%` com 0 linhas (o agendamento sumiu). Flow e versões não foram apagados.
+- **Critério 16 (V6/Q7): não corrigível aqui, por decisão do design (2026-11-17).** Fica para a homologação; o caminho de falha está provado por leitura do Flow.
+- **Q5 média 0, V3:** sem mudança, já registrados pelo QA como não exercitados/inconclusivos; não reprovam.
+
+### Versões e ativação (rodada 4)
+| Componente | Ação | Estado | Como desfazer |
+|---|---|---|---|
+| `ScheduledFlowOpportunity` | Desativado (versão ativa 0), sem apagar | Feito na dev; na QA, pelo deploy da esteira | Ativar a v2 (`activeVersionNumber` 2) e reagendar |
+
+Sem prova nesta sessão: efeito na QA (o QA confere Q8 depois do deploy da esteira).
