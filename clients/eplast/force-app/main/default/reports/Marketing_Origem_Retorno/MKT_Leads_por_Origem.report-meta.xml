@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Report xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>EPLAST-39. Leads criados no periodo, agrupados por origem agrupada (Lead.MKT_Origem_Agrupada__c: Sem origem, 13 valores, Fora da lista) x mes de criacao. Sem linhas de detalhe, sem coluna pessoal (03-design.md R1).</description>
+    <description>EPLAST-39. Leads por origem padronizada (Lead.MKT_Origem_Agrupada__c: 10 origens, Sem origem, Outros) x mes de criacao. Periodo padrao: mes atual; troque o intervalo para trimestre ou ano. Sem detalhe nem dado pessoal.</description>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Month</dateGranularity>
@@ -20,8 +20,6 @@
     <showSubTotals>true</showSubTotals>
     <timeFrameFilter>
         <dateColumn>CREATED_DATE</dateColumn>
-        <endDate>2099-12-31</endDate>
-        <interval>INTERVAL_CUSTOM</interval>
-        <startDate>2000-01-01</startDate>
+        <interval>INTERVAL_THISMONTH</interval>
     </timeFrameFilter>
 </Report>

@@ -4,7 +4,7 @@
         <aggregateTypes>Sum</aggregateTypes>
         <field>HAS_RESPONDED</field>
     </columns>
-    <description>EPLAST-39. Membros de campanha e respondentes (CampaignMember.HasResponded, somado) por campanha e por status de membro (CampaignMember.Status). Sem linhas de detalhe e sem coluna de nome, e-mail ou telefone de lead/contato (03-design.md R6).</description>
+    <description>EPLAST-39. Membros e respondentes por campanha e status de membro, para campanhas com inicio no mes atual (troque o intervalo para trimestre ou ano). Sem detalhe nem dado pessoal.</description>
     <format>Summary</format>
     <groupingsDown>
         <dateGranularity>Day</dateGranularity>
@@ -16,6 +16,15 @@
         <field>MEMBER_STATUS</field>
         <sortOrder>Asc</sortOrder>
     </groupingsDown>
+    <filter>
+        <criteriaItems>
+            <column>START_DATE</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>THIS_MONTH</value>
+        </criteriaItems>
+    </filter>
     <name>MKT Resposta de Membros de Campanha</name>
     <reportType>CampaignLead</reportType>
     <scope>org</scope>

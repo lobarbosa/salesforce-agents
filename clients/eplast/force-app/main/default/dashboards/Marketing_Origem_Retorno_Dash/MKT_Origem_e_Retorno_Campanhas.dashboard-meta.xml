@@ -85,7 +85,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>true</expandOthers>
-                <groupingColumn>LEAD_SOURCE</groupingColumn>
+                <groupingColumn>Opportunity.MKT_Origem_Agrupada__c</groupingColumn>
                 <groupingColumn>WON</groupingColumn>
                 <header>Oportunidades e Valor por Origem</header>
                 <legendPosition>Right</legendPosition>
@@ -117,6 +117,7 @@
                 <drillToDetailEnabled>false</drillToDetailEnabled>
                 <enableHover>false</enableHover>
                 <expandOthers>true</expandOthers>
+                <footer>Receita atribuída = valor das oportunidades ganhas vinculadas à campanha. Não é faturamento.</footer>
                 <groupingColumn>CAMPAIGN_NAME</groupingColumn>
                 <header>Desempenho de Campanhas (Valor Ganho)</header>
                 <legendPosition>Right</legendPosition>
