@@ -2,7 +2,7 @@
 
 # EPLAST-29 · Plano de build (rodada 5: SFAgent2 v18, Flow PrepararTarefa e CriarTarefa v3)
 
-Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, username `projetos@konectabr.com.eplast2.qa`, Org ID 00DHa000006vfMLMAY). Branch `feature/EPLAST-29`. Nada tocado em produção, QA ou Marketing Cloud. Sem Apex (decisão do design, seção 2). Deploy só na dev, `--test-level NoTestRun`. Nenhum dado lido ou gravado; só deploy de metadata e consultas de status.
+Org de build: `sbx-eplast-dev` (única em `sf org list`, sandbox, Org ID 00DHa000006vfMLMAY). Branch `feature/EPLAST-29`. Nada tocado em produção, QA ou Marketing Cloud. Sem Apex (decisão do design, seção 2). Deploy só na dev, `--test-level NoTestRun`. Nenhum dado lido ou gravado; só deploy de metadata e consultas de status.
 
 Escopo: diretrizes 1 a 4 do responsável (design, seção 13), alternativa C (seção 2). A gravação da Task não mudou de comportamento; mudam a validação (movida para um Flow sem DML), o texto de resumo e de sucesso (vêm do Flow) e a sequência do tópico.
 

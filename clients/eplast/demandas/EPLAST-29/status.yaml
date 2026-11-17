@@ -2,7 +2,7 @@ id: EPLAST-29
 client: eplast
 titulo: Ações por linguagem natural no assistente de IA
 tipo: projeto
-status: aguardando_gate_design
+status: build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -192,3 +192,7 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-17T18:15:11.376439+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-17T18:44:08.006324+00:00'
