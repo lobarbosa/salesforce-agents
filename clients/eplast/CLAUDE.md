@@ -29,6 +29,22 @@ existir, não desenhe solução assumindo o que a org tem — confirme via `sf` 
 ## Integrações existentes
 (sistemas conectados ao Salesforce que uma automação pode impactar sem querer)
 
+- **Protheus (ERP), pela `AccountTrigger`** (lido no código da linha de base, 2026-11-16).
+  Toda conta inserida ou atualizada passa pela trigger: se o CNPJ (`CompanyDocument__c`)
+  mudou, enfileira `UpdateAccountCompanyInfo` (consulta a BrasilAPI e grava a conta); se
+  não mudou, enfileira `SendAccountToProtheus` (envia a conta ao ERP). **Um job por conta**:
+  atualizar mais de 50 contas numa transação falha com "Too many queueable jobs added to the
+  queue: 51" (achado EPLAST-47), e qualquer atualização em massa de `Account` mandaria as
+  contas ao ERP. Solução nova não grava em massa em `Account`.
+- **Defeito existente, não é de nenhuma demanda:** `UpdateAccountCompanyInfo.execute` grava a
+  conta (linha 31) e chama `SendAccountToProtheus.execute` na mesma transação (linha 34). A
+  plataforma recusa a chamada externa depois da gravação ("You have uncommitted work
+  pending"), e o envio ao Protheus falha sempre que a conta tem os campos que ele exige. Dá
+  e-mail de exceção ao responsável da org. Correção sugerida à Eplast: voltar a enfileirar o
+  envio (`System.enqueueJob`) em vez de chamá-lo direto. Não corrija sem demanda.
+- Dado de teste com conta: use o desvio `TriggerUtility.bypassTrigger` das fixtures. Conta
+  criada pela tela ou por conversão de lead passa pela trigger.
+
 ## Regras específicas desta conta
 
 Decisões do responsável pela conta (Leonardo Barbosa, 2026-11-13). Valem para toda demanda
