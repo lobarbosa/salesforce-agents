@@ -1,88 +1,54 @@
 **Resultado do build:** concluído
 
-# EPLAST-47 — Plano de build
+# EPLAST-47 — Plano de build (rodada 3: classificar a conta ao salvar a oportunidade)
 
-**Branch:** `feature/EPLAST-47` · **Sandbox:** `sbx-eplast-dev` (Org ID `00DHa000006vfMLMAY`, `sf org list` mostrou só ela, conectada). Nada foi feito em QA nem em produção.
-**Base:** `03-design.md` aprovado em `gates.md` (Leonardo Barbosa, 2026-11-14, commit `b0318c43`). D1, D2 e D3 aceitas no card (19:11). Sem Apex, sem mudança de perfil ou permission set.
-**Sobre a tentativa anterior:** o plano antigo (build não executado, escritor concorrente) foi substituído. Nesta sessão não havia outro processo `sf` ou deploy em andamento. As edições que ela deixou foram commitadas em `b0318c43`; conferi que não há `<description>` nem `<trackHistory>` duplicados nos dois campos de Account.
+**Org de teste:** `sbx-eplast-dev` (sandbox, Org ID `00DHa000006vfMLMAY`, a "QA" da Eplast, `eplast--qa`, regra 5 da conta). `sf org list` mostrou só ela, conectada. Nada foi feito na QA nem em produção, e nada no Marketing Cloud.
+**Branch:** `feature/EPLAST-47`. **Commit:** ver o último commit da branch (`EPLAST-47: construir Flow de classificacao por oportunidade`).
+**Base:** `03-design.md` (rodada 3), aceite em `gates.md` (Leonardo Barbosa, 2026-11-17, commit `7bc549de`). Substitui o plano da rodada 2 (objeto `AccountRanking__c`, não construído). Sem Apex, sem campo, objeto ou permission set novo.
 
-## O que foi construído (todos com descrição preenchida)
+## O que foi criado ou alterado (todos com descrição)
 
-| Componente | API name | Estado na dev |
-|---|---|---|
-| Custom metadata type (D1) | `RankingRange__mdt` (`Ranking__c`, `UpperLimit__c`, `SortOrder__c`) | Existe. 7 registros conferidos por query: MP 10.000, PP 35.000, P 80.000, M 160.000, G 500.000, GG 1.000.000, X3G (valor `3G`, sem teto), `SortOrder__c` 1 a 7 |
-| Custom metadata type (D1) | `ScheduledFlowOpportunitySetting__mdt` (`RunDayOfMonth__c`, `FaultRecipient__c`) | Existe. Registro `Default` com dia 14 e destinatário vazio |
-| Campo | `Account.Ranking__c` | Picklist restrita ativa = MP, PP, P, M, G, GG, 3G (describe). Histórico de campo ativo (`IsFieldHistoryTracked = true`; é o único campo de Account com histórico) e `enableHistory` do objeto ligado (D2) |
-| Campo | `Account.LastMonthPurchaseValue__c` | Só descrição (soma das ganhas do ano; rótulo mantido, P4) |
-| Flow (v2, ativa) | `ScheduledFlowOpportunity` | Versão 1 Obsolete, versão 2 Active (query de Flow). Mesmo API name, mesmo agendamento (Daily 15:47 UTC), mesma população (`IsWon = true`) |
-| Relatório (D2) | `EPLAST47/AccountRankingChanges` ("Mudancas de Classificacao de Contas") sobre o tipo `AccountAuditHistory` | Criado na pasta provisória `EPLAST47` (acesso Hidden). Colunas: conta, data, campo, valor anterior, valor novo |
+| Componente | API name | Ação | Estado na dev |
+|---|---|---|---|
+| Flow disparado por registro | `Opportunity_AfterSave_ClassificaConta` | **Criado** | Active, API 68.0, `RecordAfterSave`, `CreateAndUpdate`, `triggerOrder` 1500 (conferido em `FlowDefinitionView`). Arquivo `force-app/main/default/flows/Opportunity_AfterSave_ClassificaConta.flow-meta.xml` |
+| Campo de metadado | `ScheduledFlowOpportunitySetting__mdt.RunDayOfMonth__c` | **Só a descrição** ("Sem uso desde a EPLAST-47...") | Deploy ok |
+| Relatório | `EPLAST47/AccountRankingChanges` | **Filtro novo**: `field_key` igual a `Ranking__c` | Deploy ok. Ver "Ficou para a verificação" |
 
-Commits desta etapa: `b0318c43` (modelo de dados, anterior) e o commit desta sessão (Flow v2, relatório e este plano; hash no `git log` da branch).
+Lógica do Flow como no design 1.2: `GetAccount` (consulta explícita, lê a média já gravada pelo `OpportunityFlow`), `GetSetting`, `GetOpportunities` (ganhas, `ThisYear__c`), laço de soma, `ClassifyRanking` (média vazia mantém), `GetRanges`/`LoopRanges`/`RangeMatches` (faixa de `RankingRange__mdt` por `SortOrder__c`), `HasChanges` (só grava se mudou), `UpdateAccount` (só `Ranking__c` e `LastMonthPurchaseValue__c`) e fault para `LogFault` (`IntegrationLog__c`, ação `Opportunity_AfterSave_ClassificaConta`), `HasRecipient`, `SendFaultEmail`. A condição de entrada é a fórmula da seção 1.3, sem alteração; o deploy aceitou `ISNEW()` e `PRIORVALUE`, então o plano B do design não foi usado.
 
-### Flow v2: o que mudou em relação à v1
-- Novos: `GetSetting` (mdt), `CheckAccount`, `GetRepresentativeOpportunity` (primeiro Id ganho da conta) + `IsRepresentative`, `ClassifyRanking`, `GetRanges` (ordem `SortOrder__c`) + `LoopRanges` + `RangeMatches` (condição `1 AND (2 OR 3)`: sem faixa ainda e (limite vazio ou média ≤ limite)), `HasChanges`, `UpdateAccount` (1 update), `LogFault` (`IntegrationLog__c`, `IntegrationAction__c = ScheduledFlowOpportunity`, `ResponseStatus__c = Erro`), `HasRecipient`, `SendFaultEmail`.
-- Alterado: `CheckDayMonth` compara com `GetSetting.RunDayOfMonth__c` (era 14 fixo; descrição corrigida, dizia "dia 1º").
-- Mantidos sem mudar filtro: `GetOpportunities` (AccountId, `Fechado/Ganho`, `ThisYear__c`), `LoopOpportunities`, `AssignSumValue`, `SumAmount`.
-- Removidos: `GetOpportunities2` (lia todas as oportunidades `LastMonth__c` da org), `QuantityOpportunities`, variável `Count`, `LastMonthPurchaseValue`, `ValuePurchasesLastMonth` e os 5 updates `UpdateAccountPP/P/UpdatAccountM/UpdateAccountG/UpdateAccountGG`.
-- Média vazia: `KeepCurrentRanking` (não altera `Ranking__c`). Média 0 cai em MP. Sem limite fixo no XML (70.000 e 150.000 saíram).
-- Validação: `deploy --dry-run` do Flow passou, depois deploy real. Ordenação por `Id` no Get Records foi aceita (R7 não se materializou).
+Ajustes de construção em relação ao design (sem mudar a lógica):
+- `GetAccount` e `GetOpportunities` usam `storeOutputAutomatically` (o deploy recusa referenciar campo de lookup com `queriedFields`). Na prática o Get lê todos os campos, mas só os 3 de Account e `Amount` são usados.
+- `SumAmount` nasceu como variável interna com valor inicial 0 (na v2 era entrada/saída sem padrão), para a conta sem ganha gravar 0 (PA3).
+- `GetOpportunities` sem ordenação (a soma não depende dela).
 
-## Confirmado via `sf` nesta sessão
-`sf org list`; query dos 7 registros e do registro `Default`; versões do Flow (1 Obsolete, 2 Active); describe de `Account.Ranking__c`; `FieldDefinition` (histórico só em `Ranking__c`); describe de `IntegrationLog__c` (4 campos usados existem, nenhum obrigatório); lista de tipos de relatório (`AccountAuditHistory` existe, `AccountHistory` não).
+## Reaproveitado (sem tocar)
 
-**R8 conferido:** `Logs_Delete_Records` (ativo, Daily 02:00 UTC) apaga `IntegrationLog__c` com `CreatedDate` anterior a 30 dias (`$Flow.CurrentDate - 30`). O log de falha do `ScheduledFlowOpportunity` some em 30 dias. O mês tem execução uma vez só, então o log da falha do dia 14 vive até ~dia 14 do mês seguinte. Se a Eplast quiser reter mais, é decisão dela (não alterei esse fluxo).
+`RankingRange__mdt` (7 faixas), `ScheduledFlowOpportunitySetting__mdt.Default` (`FaultRecipient__c` vazio), `Account.Ranking__c`, `Account.LastMonthPurchaseValue__c`, `Account.AveragePurchasesThisYear__c` (só leitura), `Opportunity.ThisYear__c`, `IntegrationLog__c`, relatório `CLASSIFICAÇÃO - CONTAS POR CLASSE`, permission set `Protheus`. Campos conferidos por `describe` na dev hoje (Ranking picklist, 2 moedas, `ThisYear__c` boolean não editável, 4 campos de `IntegrationLog__c`). **Não tocados:** `OpportunityFlow`, `AccountTriggered`, `UpdateParentAccountUsedLimit`, `AccountTrigger`, `AccountTriggerHelper`, `TriggerUtility__mdt`, `OpportunityTrigger`, classes Protheus.
 
-## O que ficou de fora e por quê
-- **Não testei o comportamento do Flow na dev.** A dev tem 0 contas e 0 oportunidades; só validei que o metadata é aceito e que a versão 2 está ativa. Nenhuma faixa, update ou log foi exercitado. Cabe ao QA.
-- **Dado sintético, DML e Debug do Flow:** não criei dados (R5: dispara a cadeia Order/Quote/CPQ).
-- **Agendamento ativo do job (`CronTrigger`):** a consulta não é suportada nesta org via API; não confirmei se o job está agendado. Não medido.
-- **Comparação do Flow da QA com a v1 da dev** (incerteza do design): não feita. Build só toca a dev; retrieve na QA ficou para o QA/release.
-- Período configurável (D3), `OpportunityFlow`, `AccountTriggered`, `UpdateParentAccountUsedLimit`, triggers, Protheus (P8), Marketing Cloud: fora do escopo, intocados.
-- Não abri PR (não foi pedido). Não escrevi `gates.md` nem `status.yaml`. Há uma alteração staged em `src/salesforce_agents/orchestrator.py` que não é desta sessão; ficou fora do meu commit.
+## Versões e ativação
 
-## Pendências de negócio (não bloqueiam o build; vêm do design)
-- **P5** (alerta operacional x marketing): o `SendFaultEmail` está construído, mas **dormente** (destinatário vazio, só o log funciona). É aviso técnico de job a um operador, não campanha (regra 2 da conta). Se a Eplast classificar como marketing, remover `SendFaultEmail` e `HasRecipient`; o disparo vira passo de quem opera o Marketing Cloud lendo os `IntegrationLog__c`. Trava a promoção a QAS.
-- **P11:** endereço do destinatário em `FaultRecipient__c` (registro `Default`).
-- **P12:** pasta definitiva do relatório (hoje `EPLAST47`, provisória, Hidden) e se já existe relatório equivalente. Conteúdo dos 379 relatórios da org não foi lido.
-- **P6** (média vazia / conta sem compra) e a troca em massa GG para MP da seção 1.2 do design: avisar a Eplast antes da homologação.
-- P1, P8, P10: como no design.
+| Componente | Ação | Estado | Como desfazer |
+|---|---|---|---|
+| `Opportunity_AfterSave_ClassificaConta` | Flow novo, nasce Active na dev (não substitui nada) | Feito | Desativar o Flow |
+| `AccountRankingChanges` | Filtro novo | Feito | Tirar o filtro |
+| `RunDayOfMonth__c` | Descrição | Feito | Voltar a descrição anterior |
+| `ScheduledFlowOpportunity` | **Desativar (passo separado, NÃO feito neste build)**. v2 segue Active na dev (`FlowDefinitionView`, hoje). Deve ser desativado depois de o verificador provar V1 a V6; na QA, pelo pacote da esteira (`FlowDefinition` com versão ativa 0 ou equivalente) | Pendente | Reativar a versão anterior |
 
-## Para o QA (sbx-eplast-qa; pré-checar Org ID diferente de `00DHa000006vfMLMAY`)
-Roteiro do design, seção 8, com estes pontos específicos da implementação:
-1. **Nulos em `HasChanges`:** compara `SumAmount` e `NewRanking` com `NotEqualTo` contra os valores da conta. Verificar com `SumAmount` nulo (conta sem ganha do ano, mas com ganha em outro ano) e com `LastMonthPurchaseValue__c` vazio: se grava, não grava, ou grava vazio/zero (caso 5). Caso 24 (sem mudança, sem update) depende disso.
-2. **Fronteiras das faixas** (casos 6 a 17) e média 0 e vazia (caso 18). `RangeMatches` testa por `SortOrder__c`; 3G é só o registro sem `UpperLimit__c`.
-3. **`SendFaultEmail`:** o flow roda como Automated Process e não defini remetente (`senderType` padrão). Caso 23 pode falhar por remetente ou por "só e-mail do sistema" na sandbox. Se falhar, o log já foi criado antes do e-mail, mas a interview termina em erro.
-4. **`ResponseBody__c` do log** leva o Id da conta e `$Flow.FaultMessage` (fórmula `FaultBody`). Conferir que a mensagem não vaza dado de cliente (ex.: valor de campo na mensagem de validation rule).
-5. **Relatório:** o tipo é `AccountAuditHistory`; sem filtro por campo, porque o valor de filtro de `field_key` não pôde ser verificado (sem linhas de histórico na dev). Hoje só `Ranking__c` tem histórico em Account. Conferir no caso 21 que mostra anterior e novo.
-6. **Ordem de deploy (R3):** picklist e histórico, depois custom metadata e registros, depois Flow, depois relatório. Na QA, a pasta `EPLAST47` vem junto.
-7. **Riscos abertos:** R1 (ordem entre `AccountBefore` e `AccountTrigger`, 2 flows after-save sem critério de entrada), R2 (troca em massa na primeira execução), R5 (dado sintético dispara Order/Quote/CPQ/Protheus: conferir endpoint na QA antes), R9 (validation rules em contas legadas passam a gerar log).
-8. **Rollback:** reativar a v1 do `ScheduledFlowOpportunity`; não desativar o histórico de campo.
+Enquanto o agendado segue ativo, os dois coexistem na dev. Risco R7 do design: o agendado só age no dia 14 (próximo, 14/12).
 
-## Correções da rodada 1
-Fonte: `05-testes-rodada-1.md` (rótulo corrigido nesta sessão: esta seção respondia à rodada 1, mas estava nomeada rodada 2). Reconferido nesta sessão na `sbx-eplast-dev`: `ScheduledFlowOpportunity` v1 Obsolete, v2 Active. Nenhum metadata foi alterado; o build da dev continua como aprovado pela revisão.
+## Premissas assumidas usadas (design, seção 10)
 
-- **FALHA 1 (build ausente na QA):** não corrigível no build. Guardrail #1 restringe o build à `sbx-eplast-dev`; o deploy dev para QA é do `release` (ou de quem a esteira designar). Ordem a seguir, conforme R3 do design: picklist `Ranking__c` (7 valores) e histórico de campo, depois `RankingRange__mdt` e `ScheduledFlowOpportunitySetting__mdt` com registros (7 faixas e `Default`), depois Flow v2 Active, depois relatório `AccountRankingChanges`. Depois conferir os 7 valores, os 7 registros e a v2 Active e devolver ao QA.
-- **FALHA 2 (dado de teste e risco R5):** não corrigível no build, pois depende de decisão humana. Ficam pendentes: (a) como isolar o teste na QA, que tem dado real e onde o Flow v2 atualizaria `Ranking__c` em massa (R2); (b) conferir para onde aponta a integração Protheus na QA, só metadata; (c) número do teste de volume (P10). Quem responde: arquiteto/responsável pela conta e delivery.
+PA1 a PA14 do `03-design.md` valem sem alteração. Nenhuma é caso 3, nenhuma pergunta bloqueia. As que moldam o Flow: PA3 (soma 0; média vazia mantém; média 0 vira MP), PA6 (destinatário vazio = só log; evidência: `FaultRecipient__c` vazio na dev), PA8 (só a conta nova se a oportunidade troca de conta), PA9 (exclusão não recalcula), PA11 (ano anterior não dispara), PA12 (classifica pelo campo de média como gravado), PA13 (falha não barra a venda).
 
-## Refaz do build após volta ao gate de design (2026-11-15)
-O design não mudou (`03-design.md` inalterado, aceite em `gates.md`, commit `a44165a4`). Esta sessão reconferiu na `sbx-eplast-dev` (única org conectada) que o build da seção acima continua íntegro, sem alterar metadata:
-- `ScheduledFlowOpportunity`: v1 Obsolete, v2 Active.
-- `RankingRange__mdt`: 7 registros (MP 10.000, PP 35.000, P 80.000, M 160.000, G 500.000, GG 1.000.000, X3G com valor `3G` sem teto), `SortOrder__c` 1 a 7.
-- `ScheduledFlowOpportunitySetting__mdt` `Default`: dia 14, destinatário vazio.
-- `Account.Ranking__c`: picklist ativa MP, PP, P, M, G, GG, 3G.
+## Ficou para a verificação (nada disso foi exercitado no build, só deploy)
 
-Não exercitei o Flow (dev sem contas nem oportunidades; R5): a prova de comportamento fica com o `verificador` e o QA. O deploy na QA é da esteira (`05-deploy-qa.md`); o builder não toca a QA. Pendência de decisão humana antes do QA, vinda do card de 15/11: como testar na QA com 1.217 contas reais (R2) e para onde aponta a integração Protheus dela (R5). Demais pendências (P1, P5, P6, P8, P10, P11, P12) como na seção "Pendências de negócio".
+- V1 a V7 do design, na dev, com fixture de `fixtures/` (dado com "TESTE EPLAST-47", conta com `TriggerUtility.bypassTrigger`, oportunidade salva sem o desvio).
+- **V2 é a prova que decide o design (R1):** no debug log, `Opportunity_AfterSave_ClassificaConta` depois de `OpportunityFlow`, e `GetAccount` com a média já recalculada. Reprovação aqui devolve o design.
+- **Filtro do relatório `AccountRankingChanges`:** o valor `Ranking__c` foi aceito pelo deploy e o relatório roda (0 linhas), mas `AccountHistory` está vazio na dev, então não foi possível provar que o valor casa com as linhas de `Ranking__c`. Depois do primeiro registro de histórico (V1), rodar o relatório pela Analytics API (só contagem) e, se vier 0, trocar o valor pelo rótulo do campo exibido na coluna "Campo".
+- Contagem de jobs enfileirados, SOQL, DML e CPU do save (V2), reentrada (V4), 20 ganhas da mesma conta (V5, "Duplicate id in list" e CPU), falha forçada (V6), XML sem limites ou e-mail fixo (V7: o XML novo só lê `RankingRange__mdt` e `FaultRecipient__c`).
+- Desativação do `ScheduledFlowOpportunity` depois de V1 a V6.
+- Dev contém registros de CPQ, Pedido, Caso e Protheus na cadeia do save de ganha: listar o que a fixture criar (autorização de 15/11).
 
-## Reconferência após autorização de teste com dados sintéticos (2026-11-15)
-O design não mudou. Na `sbx-eplast-dev` (única org conectada), reconferido por query, sem alterar metadata: `ScheduledFlowOpportunity` v1 Obsolete e v2 Active; `RankingRange__mdt` com 7 registros (MP a X3G, `SortOrder__c` 1 a 7); `ScheduledFlowOpportunitySetting__mdt` `Default` com dia 14; relatório `AccountRankingChanges` presente. Nada novo a construir. A autorização do Leonardo (card, 15/11) vale para o `verificador` e o QA criarem dados sintéticos "TESTE EPLAST-47"; o builder não criou dado nem exercitou o Flow. Execução em massa sobre contas reais da QA segue pendente de decisão humana.
+## Validação feita no build
 
-## Correções da rodada 2
-Fonte: `05-testes-rodada-2.md` (reprovado, `sbx-eplast-qa`, Org ID `00DHa000006vZtmMAE`). Reconferido nesta sessão na `sbx-eplast-dev` (única org conectada): `ScheduledFlowOpportunity` v1 Obsolete e v2 Active; `Account` com 0 registros. Nenhum metadata foi alterado e nada foi criado: os 9 casos de configuração que o QA aprovou (1 a 9) ficam como estão.
-
-- **FALHA 1 (comportamento do Flow não exercitado):** não corrigível no build, e não é defeito do metadata. Há duas causas, ambas fora do que o builder pode fazer sem improvisar:
-  - **Timing do job agendado.** Flow agendado não dispara por API, e o job roda às 15:47Z. A sessão de QA de 01:16Z acabou antes da próxima execução. A autorização de 01:13 do card (QA muda o dia e deixa o job rodar sobre as contas existentes, conferindo só por contagens) exige que o QA volte depois do job, ou que a esteira ofereça uma sessão posterior. Isso é decisão de processo da esteira e do responsável, não do Flow. Nenhuma alteração no Flow ou no agendamento muda isso sem fugir do design aprovado (período e agendamento mantidos, P9).
-  - **Base sintética.** Oportunidade ganha exige satisfazer as validation rules de Opportunity (Filial com Código ERP, condição de pagamento, catálogo, fases financeira e fiscal, conta completa, proprietário com ID Usuário Protheus), já registradas na verificação da dev. Montar isso é criar cadeia CPQ/Protheus ou alterar usuário existente, e a autorização de 15/11 cobre só dado sintético mínimo "TESTE EPLAST-47", sem bypass de regra nem alteração de registro existente. Não criei nem contornei nada.
-  - **Decisão humana pendente (quem responde: Leonardo Barbosa, com delivery).** Escolher uma das saídas: (a) autorizar um bypass de validation rule só para teste na dev, ou a criação da base CPQ/Protheus sintética (Filial, condição de pagamento, catálogo, fases, proprietário com ID Protheus); ou (b) deixar o job rodar às 15:47Z na QA em dia coincidente (autorizado em 01:13) e agendar o QA para depois da execução, conferindo por contagens agregadas e `AccountHistory`. A opção (b) reclassifica em massa as 1.217 contas da QA (851 sem classificação, R2) e pode sincronizar com o Protheus.
-- **Nota sobre o item 18 (documentação, critérios 1 a 3):** não é do build; fica com a análise e o recon.
-- **Item 16 (volume, P10):** sem número do cliente; P10 segue aberta.
-- Não escrevi `04-verificacao.md` (é do `verificador`) nem `gates.md`/`status.yaml`. A remoção de `04-verificacao.md` aparece no working tree (feita fora desta sessão) e não foi tocada.
+- `sf project deploy start --dry-run` do Flow: Succeeded (depois de corrigir o `queriedFields`). Deploy real dos 3 componentes: Succeeded (Deploy ID `0AfHa00000EJ3OjKAL`). Nenhum teste Apex rodou (não há Apex novo).

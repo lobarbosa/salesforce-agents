@@ -1,0 +1,489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <description>EPLAST-47: aviso operacional de falha da classificacao, so para o destinatario configurado em ScheduledFlowOpportunitySetting__mdt (Default.FaultRecipient__c). Corpo so com Id da conta e mensagem de erro, sem dado de cliente. Nao e comunicacao de marketing (regra 2 da conta). Para so registrar o log, deixe o destinatario vazio (PA2/PA6).</description>
+        <name>SendFaultEmail</name>
+        <label>Enviar Aviso de Falha</label>
+        <locationX>578</locationX>
+        <locationY>1700</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>GetSetting.FaultRecipient__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <stringValue>Falha na classificacao da conta (Opportunity_AfterSave_ClassificaConta)</stringValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>FaultBody</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+        <versionSegment>1</versionSegment>
+    </actionCalls>
+    <apiVersion>68.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <assignments>
+        <description>EPLAST-47: soma Amount das oportunidades ganhas do ano da conta (regra atual, mantida: P2/PA1).</description>
+        <name>AssignSumValue</name>
+        <label>Atribuir Soma do Valor</label>
+        <locationX>666</locationX>
+        <locationY>684</locationY>
+        <assignmentItems>
+            <assignToReference>SumAmount</assignToReference>
+            <operator>Add</operator>
+            <value>
+                <elementReference>LoopOpportunities.Amount</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopOpportunities</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>EPLAST-47: media da conta vazia mantem o Ranking atual da conta (nunca grava GG por falta de dado; criterio 11, PA3).</description>
+        <name>KeepCurrentRanking</name>
+        <label>Manter Ranking Atual</label>
+        <locationX>50</locationX>
+        <locationY>1100</locationY>
+        <assignmentItems>
+            <assignToReference>NewRanking</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>GetAccount.Ranking__c</elementReference>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>HasChanges</targetReference>
+        </connector>
+    </assignments>
+    <assignments>
+        <description>EPLAST-47: primeira faixa que contem a media grava o Ranking da faixa e marca como encontrada. As faixas seguintes nao sobrescrevem.</description>
+        <name>AssignRanking</name>
+        <label>Atribuir Ranking da Faixa</label>
+        <locationX>842</locationX>
+        <locationY>1316</locationY>
+        <assignmentItems>
+            <assignToReference>NewRanking</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>LoopRanges.Ranking__c</elementReference>
+            </value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>RangeFound</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </assignmentItems>
+        <connector>
+            <targetReference>LoopRanges</targetReference>
+        </connector>
+    </assignments>
+    <decisions>
+        <description>EPLAST-47: classificacao pela media gravada em Account.AveragePurchasesThisYear__c (P3/PA12), lida por GetAccount depois do OpportunityFlow. Media vazia nao altera o Ranking; media preenchida (inclusive 0) percorre as faixas de RankingRange__mdt.</description>
+        <name>ClassifyRanking</name>
+        <label>Classificar Ranking</label>
+        <locationX>578</locationX>
+        <locationY>984</locationY>
+        <defaultConnector>
+            <targetReference>GetRanges</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Média preenchida</defaultConnectorLabel>
+        <rules>
+            <name>AverageEmpty</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetAccount.AveragePurchasesThisYear__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>KeepCurrentRanking</targetReference>
+            </connector>
+            <label>Média vazia</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>EPLAST-47: faixa vale se ainda nao houve faixa e a media e menor ou igual ao limite da faixa (inclusive), ou a faixa nao tem limite (3G, sem teto). Acima do limite anterior e garantido pela ordem de SortOrder__c (P7).</description>
+        <name>RangeMatches</name>
+        <label>Faixa contém a média</label>
+        <locationX>842</locationX>
+        <locationY>1208</locationY>
+        <defaultConnector>
+            <targetReference>LoopRanges</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>Não contém</defaultConnectorLabel>
+        <rules>
+            <name>InRange</name>
+            <conditionLogic>1 AND (2 OR 3)</conditionLogic>
+            <conditions>
+                <leftValueReference>RangeFound</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>LoopRanges.UpperLimit__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>GetAccount.AveragePurchasesThisYear__c</leftValueReference>
+                <operator>LessThanOrEqualTo</operator>
+                <rightValue>
+                    <elementReference>LoopRanges.UpperLimit__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>AssignRanking</targetReference>
+            </connector>
+            <label>Contém</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>EPLAST-47: so grava se a soma ou o Ranking mudaram. Sem mudanca nao ha update, evitando rodar a cadeia de automacao de Account (AccountTrigger, 2 flows after save sem criterio de entrada) a toa. Tambem torna sem efeito uma segunda execucao na mesma transacao (reentrada do OpportunityFlow).</description>
+        <name>HasChanges</name>
+        <label>Houve mudança</label>
+        <locationX>578</locationX>
+        <locationY>1500</locationY>
+        <defaultConnectorLabel>Sem mudança</defaultConnectorLabel>
+        <rules>
+            <name>Changed</name>
+            <conditionLogic>or</conditionLogic>
+            <conditions>
+                <leftValueReference>SumAmount</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>GetAccount.LastMonthPurchaseValue__c</elementReference>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>NewRanking</leftValueReference>
+                <operator>NotEqualTo</operator>
+                <rightValue>
+                    <elementReference>GetAccount.Ranking__c</elementReference>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>UpdateAccount</targetReference>
+            </connector>
+            <label>Mudou</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <description>EPLAST-47: envia e-mail so se houver destinatario configurado. Destinatario vazio (PA6): so o log em IntegrationLog__c.</description>
+        <name>HasRecipient</name>
+        <label>Tem destinatário</label>
+        <locationX>578</locationX>
+        <locationY>1592</locationY>
+        <defaultConnectorLabel>Sem destinatário</defaultConnectorLabel>
+        <rules>
+            <name>RecipientFilled</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetSetting.FaultRecipient__c</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SendFaultEmail</targetReference>
+            </connector>
+            <label>Destinatário preenchido</label>
+        </rules>
+    </decisions>
+    <description>EPLAST-47: classifica a conta quando a oportunidade e salva, no lugar do fluxo agendado. Disparado por registro (after save, Opportunity, ordem 1500, depois do OpportunityFlow). Entra so quando a oportunidade nasce ganha, passa a ganha, deixa de ser ganha, ou muda de valor ou de conta estando ganha, e e do ano corrente (ThisYear__c). Recalcula so a conta da oportunidade: soma das ganhas do ano em Account.LastMonthPurchaseValue__c e Account.Ranking__c pela media AveragePurchasesThisYear__c, com as faixas de RankingRange__mdt. No maximo 1 update de Account, e so se algo mudou. Falha no update gera IntegrationLog__c (IntegrationAction__c = Opportunity_AfterSave_ClassificaConta) e nao desfaz o save da oportunidade. ATENCAO: depende de o OpportunityFlow continuar sem TriggerOrder (ou com ordem menor que 1500); se ele receber ordem acima de 1500 este Flow passa a ler a media anterior.</description>
+    <environments>Default</environments>
+    <formulas>
+        <description>EPLAST-47: corpo do log e do aviso de falha com Id da conta e mensagem de erro. Sem dado de cliente.</description>
+        <name>FaultBody</name>
+        <dataType>String</dataType>
+        <expression>&quot;Conta &quot; &amp; {!$Record.AccountId} &amp; &quot;: &quot; &amp; {!$Flow.FaultMessage}</expression>
+    </formulas>
+    <interviewLabel>Opportunity_AfterSave_ClassificaConta {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Opportunity_AfterSave_ClassificaConta</label>
+    <loops>
+        <description>EPLAST-47: percorre as oportunidades ganhas do ano da conta para somar o Amount.</description>
+        <name>LoopOpportunities</name>
+        <label>Loop Oportunidades</label>
+        <locationX>578</locationX>
+        <locationY>576</locationY>
+        <collectionReference>GetOpportunities</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>AssignSumValue</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>ClassifyRanking</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <loops>
+        <description>EPLAST-47: percorre as faixas de RankingRange__mdt em ordem de SortOrder__c ate achar a que contem a media.</description>
+        <name>LoopRanges</name>
+        <label>Loop Faixas</label>
+        <locationX>842</locationX>
+        <locationY>1100</locationY>
+        <collectionReference>GetRanges</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>RangeMatches</targetReference>
+        </nextValueConnector>
+        <noMoreValuesConnector>
+            <targetReference>HasChanges</targetReference>
+        </noMoreValuesConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <description>EPLAST-47: registra a falha do update da conta em IntegrationLog__c, identificada por IntegrationAction__c = Opportunity_AfterSave_ClassificaConta. Reaproveita o objeto de log existente.</description>
+        <name>LogFault</name>
+        <label>Registrar Falha</label>
+        <locationX>578</locationX>
+        <locationY>1400</locationY>
+        <connector>
+            <targetReference>HasRecipient</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>ExecutionDate__c</field>
+            <value>
+                <elementReference>$Flow.CurrentDateTime</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>IntegrationAction__c</field>
+            <value>
+                <stringValue>Opportunity_AfterSave_ClassificaConta</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ResponseBody__c</field>
+            <value>
+                <elementReference>FaultBody</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ResponseStatus__c</field>
+            <value>
+                <stringValue>Erro</stringValue>
+            </value>
+        </inputAssignments>
+        <object>IntegrationLog__c</object>
+    </recordCreates>
+    <recordLookups>
+        <description>EPLAST-47: le a conta da oportunidade em consulta explicita (e nao por $Record.Account) para pegar a media ja gravada pelo OpportunityFlow na mesma transacao. Campos: Ranking__c, LastMonthPurchaseValue__c, AveragePurchasesThisYear__c.</description>
+        <name>GetAccount</name>
+        <label>Obter Conta</label>
+        <locationX>578</locationX>
+        <locationY>252</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetSetting</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Account</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>EPLAST-47: le o registro Default de ScheduledFlowOpportunitySetting__mdt (destinatario da falha, FaultRecipient__c).</description>
+        <name>GetSetting</name>
+        <label>Obter Parâmetros</label>
+        <locationX>578</locationX>
+        <locationY>360</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>GetOpportunities</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>DeveloperName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Default</stringValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>ScheduledFlowOpportunitySetting__mdt</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>EPLAST-47: oportunidades da conta com status ganho e o campo Este ano (ThisYear__c) verdadeiro, ou seja, fechadas este ano (regra atual, mantida: P2/PA1). So o campo Amount.</description>
+        <name>GetOpportunities</name>
+        <label>Obter Oportunidades</label>
+        <locationX>578</locationX>
+        <locationY>468</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>LoopOpportunities</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>AccountId</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Fechado/Ganho</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>ThisYear__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Opportunity</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <description>EPLAST-47: le as faixas de RankingRange__mdt ordenadas por SortOrder__c (nao por UpperLimit__c, para a faixa sem teto ficar por ultimo).</description>
+        <name>GetRanges</name>
+        <label>Obter Faixas</label>
+        <locationX>842</locationX>
+        <locationY>1000</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>LoopRanges</targetReference>
+        </connector>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>RankingRange__mdt</object>
+        <sortField>SortOrder__c</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <description>EPLAST-47: um unico update da conta da oportunidade, so com a soma e o Ranking. Falha vai para LogFault e nao desfaz o save da oportunidade (PA13).</description>
+        <name>UpdateAccount</name>
+        <label>Atualizar Conta</label>
+        <locationX>578</locationX>
+        <locationY>1308</locationY>
+        <faultConnector>
+            <targetReference>LogFault</targetReference>
+        </faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Id</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.AccountId</elementReference>
+            </value>
+        </filters>
+        <inputAssignments>
+            <field>LastMonthPurchaseValue__c</field>
+            <value>
+                <elementReference>SumAmount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Ranking__c</field>
+            <value>
+                <elementReference>NewRanking</elementReference>
+            </value>
+        </inputAssignments>
+        <object>Account</object>
+    </recordUpdates>
+    <start>
+        <locationX>452</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>GetAccount</targetReference>
+        </connector>
+        <doesRequireRecordChangedToMeetCriteria>false</doesRequireRecordChangedToMeetCriteria>
+        <filterFormula>AND(
+  NOT(ISBLANK({!$Record.AccountId})),
+  {!$Record.ThisYear__c},
+  OR(
+    AND(ISNEW(), ISPICKVAL({!$Record.StageName}, &quot;Fechado/Ganho&quot;)),
+    AND(NOT(ISNEW()), ISCHANGED({!$Record.StageName}),
+        OR(ISPICKVAL({!$Record.StageName}, &quot;Fechado/Ganho&quot;),
+           ISPICKVAL(PRIORVALUE({!$Record.StageName}), &quot;Fechado/Ganho&quot;))),
+    AND(NOT(ISNEW()), ISPICKVAL({!$Record.StageName}, &quot;Fechado/Ganho&quot;),
+        OR(ISCHANGED({!$Record.Amount}), ISCHANGED({!$Record.AccountId})))
+  )
+)</filterFormula>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <triggerOrder>1500</triggerOrder>
+    <variables>
+        <description>EPLAST-47: Ranking calculado para a conta nesta execucao.</description>
+        <name>NewRanking</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <description>EPLAST-47: indica que uma faixa ja foi encontrada nesta execucao.</description>
+        <name>RangeFound</name>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <booleanValue>false</booleanValue>
+        </value>
+    </variables>
+    <variables>
+        <description>EPLAST-47: soma do Amount das oportunidades ganhas do ano da conta. Comeca em 0, entao conta sem ganha grava 0 (PA3).</description>
+        <name>SumAmount</name>
+        <dataType>Currency</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <scale>2</scale>
+        <value>
+            <numberValue>0.0</numberValue>
+        </value>
+    </variables>
+</Flow>

@@ -16,6 +16,15 @@
         <field>NEWVAL</field>
     </columns>
     <description>EPLAST-47: mudancas de Account.Ranking__c (valor anterior e novo) pelo historico de campo, com data. Historico so existe desde a ativacao. Pasta provisoria ate a Eplast responder P12.</description>
+    <filter>
+        <criteriaItems>
+            <column>field_key</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Ranking__c</value>
+        </criteriaItems>
+    </filter>
     <format>Tabular</format>
     <name>Mudancas de Classificacao de Contas</name>
     <params>
