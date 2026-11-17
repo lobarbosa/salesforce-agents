@@ -81,3 +81,22 @@ Só a execução prova; nada abaixo foi exercitado nesta sessão (não houve tes
 - A fixa `Get_Membros` ordena por `UserOrGroupId` (campo Id); o erro da verificação foi no filtro, não na ordenação, mas só a execução confirma. Se falhar, ordenar só em `Get_Elegiveis` (já ordena por `Id`) basta, pois a posição usa essa lista.
 - Medição de CPU do lote de 200 pelo caminho completo (limite 70% = 7.000 ms) segue pendente; a da verificação 1 não vale (só caminho de falha).
 - T3b, T7, T8, T9, T11, T14, T15, T18 e `RodizioAtivo=false` seguem sem prova até o reteste.
+
+## Correções da rodada 1
+
+**Org:** `sbx-eplast-dev` (única conectada em `sf org list`). Nada tocado em QA, QAS, produção ou Marketing Cloud. Nenhum metadata alterado nesta sessão: não há falha de construção a corrigir.
+
+| Falha | Correção | Estado |
+|---|---|---|
+| FALHA 1 (crítica): cadeia inalcançável na QAS (Flow em Draft, regra v2 inativa, interruptor `false`, `Leads_RJ_ES` sem membros) | **Não corrigível no build.** O QA confirmou que o pacote chegou como o design manda (C0, C4, C5 aprovados). O que falta é estado de Setup, não metadata: ativar o Flow, ativar a regra v2, ligar `DistribuicaoAtiva__c` e pôr membros em `Leads_RJ_ES`. Ligar v2 e interruptor na QAS depende da condição PA-30 do design (seção 11): homologação da EPLAST-38 fechada, ou aceite do responsável para homologar as duas juntas. Esse aceite não existe nos artefatos, e o builder não decide nem ativa. | Devolvido ao gate com a decisão abaixo |
+
+### Correção de uma afirmação deste plano
+A seção 2 diz que o Flow "nasce ativo". O XML do pacote tem `<status>Draft</status>` (linha 791), por doutrina (versão nova nunca nasce ativa; ativação é passo separado), e foi assim que chegou à QAS (v1 Draft, confirmado pelo QA). O design (seção 5, PA-30) previa "Flow ativo e inerte"; isso exige uma ativação em Setup, não vem do deploy. Não mudei o status no XML: um deploy com `Active` na DEV desativaria a v1 e ativaria o Flow sem passo separado, contra a regra desta etapa.
+
+### Decisão que o responsável precisa tomar (PA-30)
+- Opção (a): aceitar a ativação conjunta com a EPLAST-38. Depois do aceite, quem opera a QAS executa, nesta ordem: ativar o Flow `Lead_AfterSave_DistribuiDonoRodizio`; ativar `Distribuicao_Regional_Leads_v2`; marcar `DistribuicaoAtiva__c` no CMDT `Padrao`; pôr pelo menos 2 membros de teste em `Leads_RJ_ES` (usuários ativos e do tipo Standard). Desfazer: desmarcar o interruptor e reativar a v1 da regra.
+- Opção (b): fechar antes a homologação da 38 e reenviar a 35.
+- Sem uma das duas, o QA seguirá sem poder exercitar T1 a T18.
+
+### Ainda sem prova em runtime
+O rodízio nunca rodou com sucesso em nenhuma org (verificação 1 reprovou; o reteste na DEV ficou inconclusivo por Flow em Draft). A correção do `Get_Membros` (seção "Correções da verificação 1") segue sem confirmação. T17 (3 processos de aprovação sem mudança) ficou inconclusivo no QA porque `ProcessDefinition` não é consultável por `sf data query`; o verificador pode conferir por Tooling ou retrieve de `approvalProcesses`.
