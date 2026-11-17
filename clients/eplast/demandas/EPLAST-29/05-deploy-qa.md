@@ -1,0 +1,56 @@
+# Deploy na sandbox de QA
+
+- **Org:** `sbx-eplast-qa`
+- **Deploy:** `0AfHa00000EJAAAKA5` (Succeeded)
+- **Quando:** 2026-11-17T13:14Z
+- **Commit:** `68036059`
+
+## Componentes
+- `force-app/main/default/bots/SFAgent2/SFAgent2.bot-meta.xml`
+- `force-app/main/default/bots/SFAgent2/v13.botVersion-meta.xml`
+- `force-app/main/default/bots/SFAgent2/v16.botVersion-meta.xml`
+- `force-app/main/default/customMetadata/AssistenteTarefaSetting.Padrao.md-meta.xml`
+- `force-app/main/default/flows/Task_Agente_CriarTarefa.flow-meta.xml`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/SFAgent2_v13.genAiPlannerBundle`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/agentScript/SFAgent2_v13_definition.agent`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/acoes_comerciais_EPLAST29_v13/CriarTarefa_EPLAST29_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/acoes_comerciais_EPLAST29_v13/CriarTarefa_EPLAST29_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/acoes_comerciais_EPLAST29_v13/IdentificarRegistro_EPLAST29_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/acoes_comerciais_EPLAST29_v13/IdentificarRegistro_EPLAST29_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/AgregacaoPedidos_1725cd7ae380d76_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/AgregacaoPedidos_1725cd7ae380d76_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/ConsultarPedidos_172f39c00708abb_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/ConsultarPedidos_172f39c00708abb_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/IdentificarConta_172f7b0892c38ff_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/IdentificarConta_172f7b0892c38ff_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/ProximaAcaoCliente_EPLAST27_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/ProximaAcaoCliente_EPLAST27_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/ResumoReuniao_EPLAST34_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/ResumoReuniao_EPLAST34_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/SugestaoCampanha_EPLAST46_v13/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v13/localActions/insights_comerciais_1790e90ae9fbdc8_v13/SugestaoCampanha_EPLAST46_v13/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/SFAgent2_v16.genAiPlannerBundle`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/agentScript/SFAgent2_v16_definition.agent`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/acoes_comerciais_EPLAST29_v16/CriarTarefa_EPLAST29_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/acoes_comerciais_EPLAST29_v16/CriarTarefa_EPLAST29_v16/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/acoes_comerciais_EPLAST29_v16/IdentificarRegistro_EPLAST29_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/acoes_comerciais_EPLAST29_v16/IdentificarRegistro_EPLAST29_v16/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/AgregacaoPedidos_1725cd7ae380d76_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/AgregacaoPedidos_1725cd7ae380d76_v16/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/ConsultarPedidos_172f39c00708abb_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/ConsultarPedidos_172f39c00708abb_v16/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/IdentificarConta_172f7b0892c38ff_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/IdentificarConta_172f7b0892c38ff_v16/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/ProximaAcaoCliente_EPLAST27_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/ProximaAcaoCliente_EPLAST27_v16/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/ResumoReuniao_EPLAST34_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/ResumoReuniao_EPLAST34_v16/output/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/SugestaoCampanha_EPLAST46_v16/input/schema.json`
+- `force-app/main/default/genAiPlannerBundles/SFAgent2_v16/localActions/insights_comerciais_1790e90ae9fbdc8_v16/SugestaoCampanha_EPLAST46_v16/output/schema.json`
+- `force-app/main/default/objects/AssistenteTarefaSetting__mdt/AssistenteTarefaSetting__mdt.object-meta.xml`
+- `force-app/main/default/objects/AssistenteTarefaSetting__mdt/fields/Ativo__c.field-meta.xml`
+- `force-app/main/default/objects/AssistenteTarefaSetting__mdt/fields/DescricaoObrigatoria__c.field-meta.xml`
+- `force-app/main/default/objects/AssistenteTarefaSetting__mdt/fields/MarcaOrigem__c.field-meta.xml`
+- `force-app/main/default/objects/AssistenteTarefaSetting__mdt/fields/PrefixosPermitidos__c.field-meta.xml`
+- `force-app/main/default/objects/AssistenteTarefaSetting__mdt/fields/PrioridadePadrao__c.field-meta.xml`
+- `force-app/main/default/permissionsets/PS_Comercial_AssistenteAcoes.permissionset-meta.xml`
