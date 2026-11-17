@@ -225,6 +225,16 @@ arma é o QA no teste ou a ativação. Havendo outra falha junto, nada é cancel
 org de permitir deploy com trabalho pendente não foi usada: é configuração da sandbox do
 cliente e não chega à produção.
 
+Versão nova do agente ficava fora da QA (2026-11-17, achado EPLAST-29): quando a versão ativa
+do agente derrubava o deploy, o passo reimplantava sem nenhum arquivo de agente. A demanda
+tinha criado a v17 para corrigir as falhas que o QA achou na v16; a v16 ativa derrubou o
+deploy, a v17 saiu junto, e a rodada seguinte de QA reprovou porque a correção não estava na
+sandbox. Agora sai do pacote só a versão que a plataforma recusou
+(`scripts/pacote_sem_versao_ativa.py`) e o resto do agente vai. Se esse deploy cair por outro
+motivo, é essa a falha que aparece. Só se a plataforma continuar recusando por versão ativa o
+passo volta a tirar o agente inteiro, e aí o `05-deploy-qa.md` avisa que nenhuma versão nova
+chegou à QA.
+
 Roteiro do cliente (2026-11-14): o `05-testes.md` é evidência para quem aprova gate, e era
 ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava também
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
