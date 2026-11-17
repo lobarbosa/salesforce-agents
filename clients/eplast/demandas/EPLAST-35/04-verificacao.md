@@ -1,66 +1,69 @@
 **Verificação:** aprovada
-**Org de teste:** `sbx-eplast-dev` (sandbox `eplast--qa` da Eplast, Org Id 00DHa000006vfMLMAY; única org em `sf org list`, Connected)
+**Org de teste:** `sbx-eplast-dev` (alias; Sandbox, Org Id 00DHa000006vfMLMAY, Connected; única org em `sf org list`)
 
-# EPLAST-35: Verificação do build (rodada 3, distribuição de Leads sem Apex; reteste após correção do `Get_Membros`)
+# EPLAST-35: Verificação do build (rodada 3, reteste depois da rodada 1)
 
-Nada tocado em QA, QAS, produção ou Marketing Cloud. Dados de teste: só sintéticos (`TESTE EPLAST-35`), pelo script `fixtures/lead_rodizio_dono_conta.apex` (ações `preparar`, `filas`, `leads`) e por Apex anônimo próprio para os demais casos. Usuário de teste da Konecta: `005bJ00000piKAaQAM` (ativo, Administrador do sistema), só como membro de fila e dono de conta de teste; perfil, permissão e papel intocados. Segundo elegível: `005bJ000004gGVxQAM`. Terceiro (só no T3): `005Ha00000B3tknIAB`. Inativo: `005bJ00000hBJmYQAW`. Nenhum dado real lido; consultas só de Lead/Account de teste, metadata e contagens.
+Nada tocado em QA, QAS, produção ou Marketing Cloud. Dado de teste só sintético (`TESTE EPLAST-35`). Usuário de teste: `005bJ00000piKAaQAM` (ativo, Administrador do sistema; o outro `Projetos@konectabr…` `005bJ00000hBJmYQAW` está inativo). Segundo e terceiro elegíveis: `005bJ000004gGVxQAM` (Comercial - Analista) e `005bJ00000F1pMVQAZ`. Nenhuma alteração de perfil, papel ou permission set de usuário. Nenhum permission set atribuído, nenhum "Marketing User" ligado.
 
 ## Resumo
-- A FALHA 1 da rodada 1 (`Get_Membros` caindo no caminho de falha) **foi corrigida**: com a v2 do Flow ativa, o Lead sem conta em fila regional recebe dono entre os membros elegíveis (T1, T2, T3, T7), o caminho do dono da conta funciona (T5, T6, T8, T10), e o interruptor e o `RodizioAtivo__c` desligam o comportamento (T13).
-- Lote de 200: 6 SOQL, 2 DML, CPU 1.429 a 1.710 ms (limite 10.000), sem erro de limite. Bem abaixo de 70%.
-- Não exercitados (motivo na tabela): T3b, T9, T14, T15, parte do T17 e a troca de dono do T18. Nenhum falhou.
-- Observação ao cliente (R5/PA-24, não é falha): com `MOD`, chegada periódica concentra Leads num vendedor (T7 e uma região do T3).
+O rodízio, que nunca tinha rodado com sucesso, agora roda: o `Get_Membros` corrigido funciona (Flow v3 Active). Dono da conta (CNPJ com e sem máscara, duplicado, UF vazia), rodízio, região RJ/ES, fila sem elegível, caixa desmarcada, transferência manual, interruptor e lote de 200 passaram. **Ressalva importante (R5, T3 e T7):** com `MOD`, quando os Leads de uma mesma região chegam em passo regular, um só vendedor recebe todos. É o comportamento previsto pelo design (T7 é "evidência, não reprovação"); a troca para a fórmula de Weyl em `fxIdx` resolve. Casos T3b, T9, T14, T15 e T18 não puderam ser exercitados (motivos na tabela).
 
-## Estado antes, durante e depois (reversão)
-| Item | Antes (como encontrei) | Durante | Agora |
-|---|---|---|---|
-| Flow `Lead_AfterSave_DistribuiDonoRodizio` | v1 Active, v2 Draft (`300Ha00000P1HA9IAN`) | v2 ativada por Tooling API (ativação é o passo separado que o plano deixou para a verificação; a ativação desativa a v1) | **v2 Active** (deixei assim; para voltar, ativar a v1) |
-| Regra `Distribuicao_Regional_Leads` (v1) | inativa (deixada assim pela verificação 1) | sem mudança | inativa |
-| Regra `Distribuicao_Regional_Leads_v2` | ativa | sem mudança | ativa |
-| `DistribuicaoLeadSetting.Padrao` | `DistribuicaoAtiva__c=false`, `RodizioAtivo__c=true`, `RespeitarDonoConta__c=true` | alterado por deploy de CMDT (`true/true`; `true/false` em T13a; `false/true` em T13b) | **`false`, `true`, `true`** (original) |
-| Membros diretos de `Leads_*` | 0 | 8 criados (MG, SP, RJ_ES, Sul) | **0** |
-| Leads, Contas `TESTE EPLAST-35` | 0 | criados | **0** (conferido por COUNT) |
-| Perfil, papel, permission set dos usuários | n/a | não tocados | não tocados |
+## Estado conferido na DEV (efeito sobre a EPLAST-38)
+| Item | Estado conferido |
+|---|---|
+| Flow `Lead_AfterSave_DistribuiDonoRodizio` | v1 Obsolete, v2 Obsolete, **v3 Active** (Tooling) |
+| Regra de Lead (retrieve) | `Distribuicao_Regional_Leads` (v1 da EPLAST-38) `active=false`; `Distribuicao_Regional_Leads_v2` `active=true` |
+| `DistribuicaoLeadSetting.Padrao` | `DistribuicaoAtiva__c = true`, `RodizioAtivo__c = true`, `RespeitarDonoConta__c = true` |
+| Efeito sobre a EPLAST-38 | A v1 deixou de ser a regra ativa; todo Lead novo na DEV passa pela v2 (RJ e ES juntos em `Leads_RJ_ES`) e pelo Flow. Não alterei a v1 nem a regra. Quem homologa a 38 verá essa distribuição (decisão do responsável, 17/11). |
+| Flow antigo `Lead_AfterInsert_AplicaRegraAtribuicao` | Ativo, sem mudança. `LeadAssignmentService` última modificação 2026-11-15, sem mudança |
 
-`Account` voltou a 2 registros (2 antes), `Opportunity` 0, `Order` 0.
+O Flow antigo e a regra v2 coexistiram sem erro em todos os casos. O campo `DIST_SequenciaRodizio__c` não é legível pelo meu usuário (sem permissão de campo, como construído), então não li a sequência.
 
-## Resultados por teste
+## Casos
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| T1 | Lead de tela, caixa marcada, SP, fila com 2 elegíveis | Apex anônimo, 1 Lead `State=SP`, `useDefaultRule=true`; membros diretos em `Leads_SP` | Dono = membro, não a fila; histórico fila → vendedor | Dono = `005bJ000004gGVxQAM` (User). `LeadHistory`: criação, `Owner` para fila `Leads SP`, `Owner` fila → usuário | passou |
-| T2 | Rodízio alterna | 4 Leads MG, um por execução, 2 elegíveis | A, B, A, B | `…piKAaQAM`, `…4gGVxQAM`, `…piKAaQAM`, `…4gGVxQAM` | passou |
-| T3 | Lote de 200, 3 regiões, 3 elegíveis, limites | 200 Leads em 1 insert com cabeçalho (SP, MG, CO alternando), 3 membros em `Leads_SP`, 2 em `Leads_MG`, 0 em `Leads_CO` | Todos os de fila com membro recebem dono; sem erro de limite; registrar SOQL/DML/CPU | 200 de 200 gravados, 0 `FLOW_ELEMENT_FAULT`. CO (sem membro) 66 ficaram na fila, MG 67 com dono (33/34), SP 67 com dono. Limites: **SOQL 6/100, DML 2/150, linhas DML 334/10.000, CPU 1.429/10.000 ms**. Segundo lote de 200 com ordem de região não periódica: SOQL 6, DML 2, CPU 1.710 ms; SP repartiu 34/33/33 entre os 3 elegíveis; MG 67 num só vendedor (R5) | passou (limites); ver observação R5 |
-| T3b | Mesmo lote por usuário com `PS_Integracao_DistribuicaoLead`, sem cabeçalho | Não executado: exigiria atribuir esse permission set ao usuário de teste, o que a regra do verificador não autoriza (só o permission set criado pela demanda) | Todos com dono via caminho assíncrono | sem evidência | não executado |
-| T4 | RJ e ES | 1 Lead RJ e 1 ES, com cabeçalho | Os dois em `Leads_RJ_ES` (com membro: dono membro); nenhum em `Leads_RJ`/`Leads_ES` | Os dois com dono usuário (membros de `Leads_RJ_ES`): ES = `…4gGVxQAM`, RJ = `…piKAaQAM`. Regra v2 só tem a entrada `RJ,ES` para `Leads_RJ_ES` (retrieve da org) | passou |
-| T5 | CNPJ de conta de teste, UF de outra região | Lead UF RS com `CompanyDocument__c` com máscara; conta A só dígitos, dono `…piKAaQAM` | Dono = dono da conta | Dono = `…piKAaQAM` (User), embora UF RS (Sul só tem membro inativo) | passou |
-| T6 | Máscara e dígitos nos dois sentidos | Lead máscara x conta A dígitos (T5); Lead máscara x conta B máscara; Lead dígitos x conta B máscara | Dono = X nos dois | Os 3 com dono `…piKAaQAM` | passou |
-| T6b | Contagens de CNPJ na QAS | Só QAS | n/a | n/a | não executado (fora da dev) |
-| T7 | Lote 40 alternando SP, MG | 40 Leads, 2 elegíveis em cada | Registrar distribuição | SP: 20 para `…piKAaQAM`, 0 para o outro. MG: 20 para `…4gGVxQAM`, 0 para o outro. Concentração total, como a seção 1.5 e a R5 do design preveem; é evidência para o cliente, não falha | passou (evidência R5) |
-| T8 | CNPJ em 2 contas com donos diferentes | Lead MG com CNPJ das contas C (dono `…piKAaQAM`) e D (dono `…4gGVxQAM`) | Vai para o rodízio | Lead com dono `…4gGVxQAM`, usuário membro de `Leads_MG`. Limitação: o resultado coincide com um dos donos das contas, então a evidência de que passou pelo rodízio, e não pela conta, é indireta (a regra "exatamente 1 conta" está no XML) | passou (evidência indireta) |
-| T9 | Conta casada com dono inativo | Tentei criar conta com dono `005bJ00000hBJmYQAW` | Vai para o rodízio | A plataforma recusa criar conta com dono inativo (`INACTIVE_OWNER_OR_USER`); não há como montar o cenário sem inativar um dono existente, o que seria alterar usuário. O Lead sem conta foi para o rodízio (não prova o caso) | não executado |
-| T10 | UF vazia | 1 Lead sem UF com CNPJ da conta A; 1 sem UF e sem CNPJ | Com conta: dono X; sem: `Leads_Triagem` | Com conta: dono `…piKAaQAM`. Sem conta: fila `Leads Triagem` (`00GHa000006b8pgMAA`) | passou |
-| T11 | Fila regional sem elegível | 1 Lead RS sem CNPJ, `Leads_Sul` só com o membro inativo | Fica na fila | Dono = fila `Leads Sul (PR, SC, RS)` | passou |
-| T12 | Caixa desmarcada | 1 Lead SP sem cabeçalho de regra | Dono = criador | Dono = `…piKAaQAM` (o usuário de execução) | passou |
-| T13 | Interruptor e `RodizioAtivo__c` | (a) `RodizioAtivo=false`, `DistribuicaoAtiva=true`: transferir Lead para `Leads_MG`. (b) `DistribuicaoAtiva=false`: criar Lead com CNPJ da conta A e transferir para `Leads_MG` | (a) fica na fila; (b) nada acontece, nem dono da conta | (a) Lead na fila (Owner.Type = Queue). (b) Lead na fila, sem dono da conta | passou |
-| T14 | Falha na gravação por elegível sem leitura | Não há perfil assim identificado na dev; não criei | Lead fica na fila e é salvo | n/a | não executado (declarado como o design prevê) |
-| T15 | `Comercial - Analista` cria o Lead pela tela | O job só executa como o usuário de teste (Administrador); não há como personificar o analista sem mexer em usuário | Distribui sem erro de acesso | sem evidência | não executado (precisa de sessão desse perfil: QA ou o cliente) |
-| T16 | Isolamento | `COUNT()` antes/depois e `AsyncApexJob` agregado | Account, Opportunity, Order iguais; nenhum job novo de `SendAccountToProtheus`/`UpdateAccountCompanyInfo` | Account 2 → 2, Opportunity 0 → 0, Order 0 → 0. `AsyncApexJob`: `UpdateAccountCompanyInfo` 11 → 11, `SendAccountToProtheus` 279 → 279. Contas de teste criadas com `TriggerUtility.bypassTrigger` e apagadas | passou |
-| T17 | Versões | Deploy report `0AfHa00000EJO09KAH`; query de `ApexClass` e `Flow` | 3 `ApprovalProcess`, `LeadAssignmentService`, Flow antigo sem mudança; nenhuma classe nova | O deploy tem 13 componentes e nenhum é `ApprovalProcess` nem `ApexClass`. `LeadAssignmentService` e `Lead_AfterInsert_AplicaRegraAtribuicao` v1 (Active) com última modificação em 2026-11-15, anteriores ao build. As 13 classes criadas nos últimos 3 dias são de 15/11 (MeetingSummary, LeadAssignment, CommercialSignal), de outras demandas. v2 do Flow ativa e v1 do Flow antigo intacta; regra v1 inativa e v2 ativa. A leitura direta dos 3 processos de aprovação (retrieve) estourou o tempo na sessão e `ProcessDefinition` não é consultável | passou (parcial: processos de aprovação só pelo deploy report) |
-| T18 | Lead convertido | Lead MG criado e convertido em conta de teste (sem Oportunidade, com bypass da `AccountTrigger`); depois tentei trocar o dono | Flow entra e sai sem erro | Conversão com sucesso, Flow ativo sem erro. A troca de dono do Lead convertido é recusada pela plataforma (`CANNOT_UPDATE_CONVERTED_LEAD`), então a entrada do Flow por troca de dono não ocorre nem é possível exercitar | passou (parcial) |
+| T1 | Lead sem conta em fila regional com elegíveis recebe dono | Apex anônimo, 1 Lead `State=SP`, cabeçalho de regra padrão; `Leads_SP` com 2 membros diretos | Dono = membro, não a fila | Dono `005bJ00000piKAaQAM` (User). `LeadHistory`: criado, atribuído à fila `Leads SP`, depois Owner fila → usuário. A regra não reaplicou depois do Update do Flow (PA-29 confirmada) | passou |
+| T2 | Alternância entre elegíveis | 4 execuções, 1 Lead MG cada, `Leads_MG` com 2 membros, sem Lead no meio | A, B, A, B | `…gGVx`, `…KAaQ`, `…gGVx`, `…KAaQ` | passou |
+| T3 | Lote de 200, 3 regiões (RS, SP, RJ), 3 elegíveis em `Leads_Sul`; medição | `Database.insert` de 200 com cabeçalho, regiões em ciclo i%3; limites lidos com `Limits` na mesma transação | Todos com dono; sem erro de limite; cada elegível recebe | 200/200 salvos, todos com dono (usuário). **SOQL 6/100, DML 2/150 (400 linhas de 10.000), CPU 2.151/10.000 ms (21,5%), heap 37.951 bytes**. Mas: os 67 Leads RS foram todos para um só elegível (`…gGVx`) porque o passo do auto number (3) coincide com `k=3`. Variante T3v com regiões em ordem irregular (período 7): 200/200 com dono, RS 30/27/29 entre os 3 elegíveis, CPU 1.901 ms, SOQL 6 | passou (limites e dono) com ressalva de concentração (R5, ver T7) |
+| T3b | Lote por usuário com `PS_Integracao_DistribuicaoLead`, sem cabeçalho | Não executado: o PS é da EPLAST-38, não da demanda, e já tem 1 atribuição; não posso atribuí-lo ao meu usuário | Todos com dono | Sem evidência | não executado |
+| T4 | RJ e ES vão para `Leads_RJ_ES` | 1 Lead RJ e 1 Lead ES, `Leads_RJ_ES` com 2 membros | Em `Leads_RJ_ES` ou com um membro dela; nenhum em `Leads_RJ`/`Leads_ES` | RJ dono `…gGVx`, ES dono `…KAaQ` (ambos membros de `Leads_RJ_ES`); histórico passou por `Leads_RJ_ES` | passou |
+| T5 | Dono da conta pelo CNPJ, UF de outra região | Contas de teste F (CNPJ só dígitos) e G (com máscara), dono `…gGVx`; 2 Leads RS com máscara, CNPJ de F, em execuções separadas | Dono = dono da conta, não rodízio | Os dois com dono `…gGVx` (o rodízio em RS com 3 membros trocaria de dono) | passou |
+| T6 | Máscara no Lead e só dígitos na conta, e o inverso | Lead com máscara × conta F (dígitos); Lead com dígitos × conta G (máscara); 2 de cada, intercalados | Dono = dono da conta nos dois | Os 4 Leads com dono `…gGVx` | passou |
+| T6b | Só QAS | Não se aplica na DEV | n/a | n/a | não executado (só QAS) |
+| T7 | Lote SP, MG alternados (40), 2 elegíveis em cada | `Database.insert` de 40 com cabeçalho | Registrar distribuição (evidência R5) | SP: 20 Leads para `…gGVx`, 0 para o outro. MG: 20 para `…KAaQ`, 0 para o outro. Concentração total com `MOD` e passo regular | passou (como evidência; recomenda-se avaliar Weyl) |
+| T8 | CNPJ em 2 contas com donos diferentes vai para o rodízio | Contas C e D (mesmo CNPJ, donos `…KAaQ` e `…gGVx`); 3 Leads RS seguidos, CNPJ duplicado | Rodízio | Donos `…gGVx`, `…F1pMV`, `…KAaQ`: rotação entre os 3 membros de `Leads_Sul`, inclusive `…F1pMV`, que não é dono de nenhuma conta | passou |
+| T9 | Conta casada cujo dono é inativo | Conta com dono inativo não pode ser criada (`INACTIVE_OWNER_OR_USER`) e não alterei usuário | Rodízio | Sem evidência | não executado |
+| T10 | UF vazia: com conta e sem conta | Lead sem `State` com CNPJ de F; Lead sem `State` e sem CNPJ | Com conta: dono da conta. Sem: `Leads_Triagem` | Com conta: dono `…gGVx`. Sem conta: fila `00GHa000006b8pgMAA` (Leads_Triagem) | passou |
+| T11 | Fila regional sem elegível (só inativo) | Lead `State=GO`; `Leads_CO` só com o membro inativo `…hBJmY` | Fica na fila | Dono `00GHa000006b8pZMAQ` (Leads_CO) | passou |
+| T12 | Tela, caixa desmarcada | 2 Leads MG sem cabeçalho de regra | Dono = criador | Ambos `…KAaQ` (criador); sem alternância | passou |
+| T13 | Transferência manual redistribui; interruptores | Update do dono de Lead para `Leads_MG`: (a) com tudo ligado; (b) `RodizioAtivo__c=false`; (c) `DistribuicaoAtiva__c=false` (deploy temporário só do registro do CMDT, a partir de cópia em /tmp; valores originais restaurados e conferidos: true/true) | (a) redistribui; (b) fica na fila; (c) nada acontece | (a) `LeadHistory`: Owner → `Leads MG` → usuário. (b) Owner = fila `Leads_MG`. (c) Owner = fila `Leads_MG` e Lead novo com CNPJ de conta (que iria ao dono da conta) ficou em fila: Flow inerte | passou |
+| T14 | Falha de gravação: elegível sem leitura de Lead | `COUNT` de `ObjectPermissions` de perfil com Lead sem leitura na DEV = 0 | Se não houver perfil assim, declarar | Sem perfil assim; caminho de falha só visto na verificação 1 (Get_Membros caía em `Fim_Falha` e o Lead ficou na fila sem erro) | não executado |
+| T15 | `Comercial - Analista` cria o Lead pela tela | Não executável: o job roda como o usuário de teste e não posso me passar por outro usuário nem alterar o dele | Distribui sem erro | Sem evidência. Os Leads distribuídos para `…gGVx` foram atribuídos pelo Flow sem erro de acesso, mas isso não substitui o caso | não executado |
+| T16 | Isolamento | `COUNT()` antes e depois (dados de teste apagados); `AsyncApexJob` de `SendAccountToProtheus`/`UpdateAccountCompanyInfo` | Iguais | Account 2 → 2, Opportunity 0 → 0, Order 0 → 0; jobs 290 → 290. Contas de teste criadas com `TriggerUtility.bypassTrigger` | passou |
+| T17 | Versões | `sf org list metadata -m ApprovalProcess`; Tooling `ApexClass`; Flow antigo; Apex criado hoje | 3 processos e `LeadAssignmentService` sem mudança; v2 ativa e v1 inativa; sem classe nova | 3 processos: `Opportunity.FinancialAnalysis` (mod. 2024-09-04), `Order.LiberationFinancial` (2025-01-29), `Quote.AssignPricing` (2026-08-31), todos anteriores a esta demanda. `LeadAssignmentService` 2026-11-15. Flow antigo Active. Regra v2 ativa e v1 inativa. `ApexClass` criada hoje = 0 | passou |
+| T18 | Lead convertido com troca de dono | Lead convertido (`Database.convertLead` com desvio do trigger de Account) e depois Update de `OwnerId` | Flow entra e sai sem erro | A conversão passou sem erro com o Flow ativo. A troca de dono é recusada pela plataforma (`CANNOT_UPDATE_CONVERTED_LEAD`) antes do Flow: o cenário não existe na plataforma | não executado (cenário impossível; conversão sem erro) |
 
-### FALHA 1 da rodada 1 (`Get_Membros`): corrigida
-Reteste T1: o Lead SP saiu da fila e recebeu dono. Em T3, 0 `FLOW_ELEMENT_FAULT` em 400 Leads. A ordenação por `UserOrGroupId` no `Get_Membros` funciona.
+## Reteste da rodada 1
+A falha da verificação 1 (`Get_Membros` caindo no caminho de falha): **corrigida**. T1, T2, T3 e T7 mostram o rodízio atribuindo dono. A falha da QAS (cadeia inalcançável) é estado de Setup, tratado pelo build (Flow ativo, v2 ativa, interruptor ligado) e confirmado acima.
 
-## O que ficou sem prova e quem prova
-- **T3b e T15:** precisam de sessão de usuário com `PS_Integracao_DistribuicaoLead` e de um `Comercial - Analista`, o que a verificação não pode atribuir. Provar na QA (roteiro) ou com o cliente.
-- **T9:** a plataforma não aceita o cenário em registro novo; só ocorre se um dono de conta for inativado depois. O XML do Flow filtra o dono por `IsActive` e `UserType`.
-- **T14:** sem perfil sem leitura de Lead identificado na dev.
-- **T6b:** só na QAS.
-- **Campo `DIST_SequenciaRodizio__c`:** sem permissão de campo para o usuário de execução (por desenho), então não consegui ler o número sequencial; a prova da alternância é pelo dono.
+## Pontos para o gate
+1. **Concentração com `MOD` (R5):** T3 (ciclo regular) e T7 deram um só vendedor por região. Com ordem irregular, T3v distribuiu bem. Se o cliente espera alternância em lote regular, trocar `fxIdx` pela fórmula de Weyl (alternativa já prevista no design).
+2. **Sem prova:** T3b, T9, T14, T15, T18. Para provar: T3b com um usuário que já tem `PS_Integracao_DistribuicaoLead`; T15 por alguém com perfil `Comercial - Analista` criando um Lead pela tela; T9 precisa de conta cujo dono ficou inativo depois (só pelo cliente); T14 só se existir perfil sem leitura de Lead.
+3. Tempo de CPU do lote de 200: 21,5% do limite (abaixo de 70%); SOQL 6; DML 2.
+
+## Fixture
+`clients/eplast/fixtures/lead_rodizio_dono_conta.apex` ajustado e provado: ações `preparar`, `filas` (membros em `Leads_MG`/`SP`/`RJ_ES`, `Leads_Sul` com 3, `Leads_CO` só inativo), `limparfilas` e `limpar`. DML de conta e de membro de fila vão em execuções separadas (MIXED_DML); conta com dono inativo não é criável. Contas F e G (dono segundo usuário) e os Leads dos casos foram criados por scripts avulsos em /tmp e não entraram no arquivo; a ação `leads` do fixture não foi usada.
 
 ## O que pode ter saído da org
-Nada. Os Leads de teste não chamam sistema externo; as contas de teste foram criadas com `TriggerUtility.bypassTrigger = true` (sem Protheus nem BrasilAPI); a conversão do T18 usou o mesmo bypass. `AsyncApexJob` de `SendAccountToProtheus` e `UpdateAccountCompanyInfo` sem aumento (11 e 279, antes e depois). Nenhum e-mail, nada no Marketing Cloud.
+Nada saiu. Contas de teste usaram `TriggerUtility.bypassTrigger` (sem Protheus nem BrasilAPI); `AsyncApexJob` de Protheus/BrasilAPI sem variação (290 antes e depois). O Flow não envia e-mail. Nada no Marketing Cloud.
 
-## Observação para a homologação (premissa PA-24, R5)
-Com a fórmula `MOD`, chegada periódica concentra: no T7 (SP, MG, SP, MG com 2 elegíveis) cada região foi inteira para um único vendedor; no T3, MG idem. Em sequência de um só tipo de região o rodízio alterna (T2). A troca para a sequência de Weyl é a mudança de uma fórmula (`fxIdx`), seção 1.5 do design.
+## Estado final e limpeza
+| Item | Antes | Depois |
+|---|---|---|
+| Leads `TESTE EPLAST-35` (cerca de 490) | 0 | **0** |
+| Contas e contatos de teste (incluindo a conta da conversão do T18) | 0 | **0** |
+| Membros diretos das filas `Leads_*` | 0 | **0** |
+| `DistribuicaoLeadSetting.Padrao` | true/true/true | true/true/true (restaurado depois dos deploys temporários de T13) |
+| Regra v2 ativa, v1 inativa; Flow v3 Active | idem | idem (não alterado por mim) |
+| Permission set / Marketing User / campos do usuário de teste | n/a | nenhum alterado |
