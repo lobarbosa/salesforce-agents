@@ -2,7 +2,7 @@
 
 # EPLAST-39 — Plano de build (rodada 3: origem dos leads e retorno das campanhas)
 
-**Org de build:** `sbx-eplast-dev` (usuário `projetos@konectabr.com.eplast2.qa`, Sandbox, Connected; é a "QA" da Eplast, regra 5 da conta). Nada na QA nem em produção. Nada no Marketing Cloud.
+**Org de build:** `sbx-eplast-dev` (Sandbox, Connected; é a "QA" da Eplast, regra 5 da conta). Nada na QA nem em produção. Nada no Marketing Cloud.
 **Branch:** `feature/EPLAST-39`. **Desenho:** `03-design.md` (nível 1, configuração nativa). Sem Flow, Apex, trigger, e-mail ou DML em registro de negócio.
 **Linha de base (passo 0):** 419 relatórios e 21 painéis na org, igual ao recon.
 
