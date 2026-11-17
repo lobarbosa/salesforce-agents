@@ -221,3 +221,48 @@ O que mudou em relação à análise (60–110 h) e por quê: o recon mostrou qu
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+## Respostas do cliente (2026-11-17) — valem acima das premissas assumidas deste desenho
+
+A Eplast respondeu por escrito ("Respostas Konecta/Eplast", recebido em 17/11) aos pontos que
+este desenho tinha resolvido como premissa assumida. Registrado por Leonardo Barbosa, que
+mandou redesenhar com as respostas. **Onde a resposta abaixo diverge de uma premissa deste
+arquivo, vale a resposta.** O que o cliente marcou como "a validar" continua premissa, a
+repetir no roteiro em "O que assumimos e você precisa confirmar". Os parâmetros ficam
+configuráveis (pedido do cliente), sem deploy para ajustar. Reaproveite o que já foi
+construído e passou no QA; mude só o que a resposta pede. Os artefatos de build e QA da
+rodada anterior estão em `rodada-anterior/premissas-assumidas/` para consulta.
+
+**Resposta do cliente (EPLAST-33 — cross-sell, volume e recuperação):**
+- Escopo: extensão do entregável "clientes há mais tempo sem comprar", com queda de volume
+  e venda cruzada.
+- Canal: relatório para gestão e priorização da carteira, com consulta e recomendação no
+  assistente usando os mesmos critérios.
+- Compra: pedido efetivamente **faturado**, pela **data de faturamento**, excluindo
+  cancelamentos; devoluções conforme a fonte oficial (a integração de devoluções precisa de
+  correção, fora desta demanda). Oportunidade ganha sem faturamento não conta.
+- Inatividade: **90 dias** sem compra, configurável. Quem nunca comprou aparece separado.
+- Volume: faturamento líquido e quantidade **por família de produto**, sem somar unidades de
+  produtos diferentes. **Último mês completo contra a média dos três meses completos
+  anteriores**, alerta com queda **igual ou superior a 20%**. Sinalizar histórico
+  insuficiente.
+- Venda cruzada: **segmento** como referência principal e região como filtro complementar.
+  Avaliar pré-formas, tampas e garrafas com compatibilidade técnica; priorizar itens
+  complementares aos já comprados; não sugerir combinações incompatíveis.
+
+**O que muda neste desenho:**
+1. `RecoveryDays__c` de 60 para **90**.
+2. Volume: janela de mês fechado (último mês completo × média dos 3 anteriores), limiar
+   **20%**, só **queda** como alerta, por família de produto; marcar "histórico insuficiente".
+3. Compra: confirmar na org qual campo de `Order` é a data de faturamento e qual status
+   significa faturado; se não houver campo de data de faturamento, usar o que existe e
+   declarar como premissa a validar.
+4. Venda cruzada: agrupar por **segmento** (`Sector__c`, o campo de segmento da Eplast) no
+   lugar de `Industry`; região como filtro. Compatibilidade técnica: só se a org tiver campo
+   que a represente; se não, declarar que a regra depende de tabela da Eplast e limitar a
+   itens complementares por família. Não inventar regra de compatibilidade.
+5. Assistente: a consulta pelo `SFAgent2` com os mesmos critérios entra nesta rodada se
+   couber como leitura dos sinais já calculados; se exigir mais que isso, declarar como
+   fase seguinte.
+6. Devoluções: fora. Registrar no roteiro que o faturamento líquido não as trata até a
+   integração ser corrigida.
