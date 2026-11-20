@@ -81,3 +81,18 @@ Org de build confirmada com `sf org list`: `sbx-somos-agility-dev` (única conec
 | Componente | Dev | QA | Estado |
 |---|---|---|---|
 | Flow `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada` | v3 Draft (v2 Active em uso) | v3 Draft, sem versão ativa | Ativação na QA pendente de autorização |
+
+## Correções da rodada 2 (QA reprovou: 05-testes-rodada-2.md)
+
+Org de build confirmada com `sf org list`: `sbx-somos-agility-dev` (única conectada). QA e produção não foram tocadas. Nenhum componente foi alterado nesta rodada.
+
+- **FALHA 1 (crítica), 9 de 16 layouts sem os campos novos na QA:** não é defeito do build; o pacote do repositório está completo. Conferido nesta sessão: os 16 arquivos de layout da branch têm os 3 campos `PFP_N_Texto__c` (3 ocorrências em cada) e os 16 diferem da `main` (192 linhas adicionadas, 12 por layout). O `05-deploy-qa.md` (deploy `0AfHa00000EM4CzKAL`) lista só 7 layouts: faltam PSL "Criação da Proposta", "Especificação Técnica", "Layout da Proposta de Solução Mestre", "Layout da Proposta de Solução", "Margens e Condições Especiais", "Z_Ações de Pré fechamento" e FVP "Solicitação de Preços", "Validar Cotação", "Validação Fiscal". A montagem do pacote de QA é passo fixo da esteira e o builder não toca a QA, então a correção é da esteira: incluir esses 9 arquivos no próximo deploy em QA (ou fazer o deploy de todos os 16 layouts, sem diff contra baseline anterior).
+  - **Decisão pendente, de humano/esteira:** reexecutar o deploy em QA com os 16 layouts e o QA repetir C12 (tela e retrieve dos 16).
+- **Observação, fórmula `FVP.PFP1UNCPath__c` = `'a'` na QA:** fora desta entrega (campo antigo, não alterado pela demanda). Na dev a fórmula é `PropostaSolucao__r.PFP_1__c`. Cabe ao time conferir se é rascunho de sandbox; C9 só é comprovável na QA depois de alinhada. Não corrigi: seria alterar campo antigo, vetado pelo design (seção 9).
+- **Observação, FLS 459 na QA contra 573 na dev:** diferença de perfis existentes por org, sem defeito comprovado.
+- **Não reescrito:** C1 a C4, C7, C8, C10 e C11 foram aprovados pelo QA.
+
+### Versões e ativação (atualização)
+| Componente | Dev | QA | Estado |
+|---|---|---|---|
+| Flow `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada` | v3 Draft (v2 Active em uso) | v3 Active (ativada pelo QA, autorizada em `03-design.md`) | Sem mudança nesta rodada |
