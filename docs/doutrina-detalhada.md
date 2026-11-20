@@ -258,6 +258,17 @@ descartava sem aviso: 9 dos 16 layouts da demanda, todos com acento no nome, nã
 QA, e o QA reprovou. Os `git diff --name-only` da esteira e do CI passaram a usar
 `-c core.quotepath=false`, e o script desfaz a citação se ela vier mesmo assim.
 
+Perfil e permission set inteiros derrubavam o deploy em QA (2026-11-20, achado
+SOMOSAGILITY-26): o pacote levava o arquivo inteiro, e o permission set `DiretorComercial`
+citava um app que só existe na dev. O builder, devolvido para corrigir, enxugou os 66 perfis
+e os 2 permission sets na própria branch, o que passa na QA mas apagaria o resto do conteúdo
+desses arquivos no merge para a `main`. Agora o `implantar-build-qa.sh` reduz, só na cópia de
+trabalho do job e só para o deploy, cada perfil e permission set ao que a demanda acrescentou
+em relação à base (`scripts/permissoes_so_o_diff.py`), mantendo os campos que o deploy exige,
+e devolve os arquivos ao conteúdo commitado ao sair. O builder faz edição aditiva e não
+enxuga arquivo-fonte (`.claude/agents/builder-declarativo.md`). Arquivo novo na demanda vai
+inteiro.
+
 Roteiro do cliente (2026-11-14): o `05-testes.md` é evidência para quem aprova gate, e era
 ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava também
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
