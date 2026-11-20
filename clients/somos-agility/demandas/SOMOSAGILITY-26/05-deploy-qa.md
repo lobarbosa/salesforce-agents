@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-somos-agility-qa`
-- **Deploy:** `0AfHa00000EM3vFKAT` (Succeeded)
-- **Quando:** 2026-11-20T22:39Z
-- **Commit:** `dcf3e040`
+- **Deploy:** `0AfHa00000EM4CzKAL` (Succeeded)
+- **Quando:** 2026-11-20T23:10Z
+- **Commit:** `6b798860`
 
 ## Componentes
 - `force-app/main/default/flows/Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada.flow-meta.xml`
