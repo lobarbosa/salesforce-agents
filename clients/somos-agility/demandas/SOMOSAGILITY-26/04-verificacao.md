@@ -1,47 +1,43 @@
 **Verificação:** aprovada
-**Org de teste:** `sbx-somos-agility-dev`
+**Org de teste:** sbx-somos-agility-dev
 
-# SOMOSAGILITY-26 — Verificação do build (reverificação após o enxugamento de perfis e permission sets)
+# SOMOSAGILITY-26 — Verificação do build (dev)
 
-Org confirmada com `sf org list`: `sbx-somos-agility-dev` (Sandbox, Connected, pelo alias). QA e produção não foram tocadas. Nada foi implantado, nenhum arquivo do build foi alterado e nenhum dado foi criado nesta sessão (os 3 objetos seguem com 0 registros).
+Org confirmada com `sf org list`: `sbx-somos-agility-dev` (Sandbox, Connected). Usuário de execução: perfil Administrador do sistema. Todos os comandos com `--target-org sbx-somos-agility-dev`. QA e produção não tocadas. Nada foi implantado.
 
-Escopo desta rodada: o último commit (1f363461) só mudou perfis e permission sets (68 arquivos, só `fieldPermissions` dos 9 campos). Por isso esta sessão reconferiu metadata e FLS na dev. O comportamento (casos C5 a C12 abaixo) **não foi reexecutado**: o resultado vem da verificação anterior desta mesma demanda (versão em git, commit 1f363461 e anteriores), feita com massa sintética e já apagada. O commit novo não toca campo, layout nem Flow.
+Estado da dev no início: 0 registros em BluePrint__c, Propostas_de_Solucao__c e FluxoVendaProdutos__c. Nenhum dado real lido; só metadata, contagens e registros `TESTE SOMOSAGILITY-26`.
 
-Nota sobre os critérios: o `01-analise.md` descreve o problema original (Gherkin com `<N>` pendentes). O design aceito no gate (G1-b, G3 = 32.768) redefiniu a solução para 9 campos novos. Os casos derivam dos critérios (tamanho alvo, recusa de N+1, dado antigo íntegro, automações sem erro, FLS mantida) aplicados a esses campos.
+Nota de escopo: o critério original do `01-analise.md` fala em "Cenário SF" e cinco campos; o design/build trocou isso por 9 campos novos `PFP_{1,2,3}_Texto__c` em 3 objetos. Os casos abaixo derivam dos critérios de aceite (tamanho alvo, recusa de N+1, dados íntegros, automações e VRs, permissões mantidas) aplicados ao que o design entregou.
 
-## Tabela de casos
+## Falhas da rodada de QA anterior (05-testes-rodada-1.md)
+- FALHA 1 (cópia BluePrint para PSL não executada porque o Flow estava Draft sem versão ativa na QA): não é defeito de build. Na dev o Flow v3 está **Active** e foi exercitado (V1 a V3 abaixo). A ativação na QA continua dependendo de decisão humana/esteira.
+- C2 (contagem de FLS): obtida na dev com lista explícita em `Field`: 573 linhas, igual ao esperado.
+- C12 (layouts pela tela): na dev, conferido por retrieve da metadata (V6); a conferência visual fica no roteiro do cliente.
+
+## Casos
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| C1 | Campos existem com tamanho alvo | `FieldDefinition` (BluePrint__c, Propostas_de_Solucao__c, FluxoVendaProdutos__c, `PFP_%_Texto__c`) e Tooling `CustomField.Description` | 9 campos LongTextArea 32768 com descrição | 9 registros, todos "Área de texto longo(32768)", Length 32768, descrição preenchida nos 9 | passou (esta sessão) |
-| C2 | FLS mantida depois do enxugamento | `SELECT COUNT() FROM FieldPermissions WHERE Field IN (9 campos)` | 573 linhas | 573 linhas (441 com edição; leitura sem edição no FVP, coerente com o plano). Amostra PSL.PFP_1_Texto: 2 permission sets (DiretorComercial, Acesso_completo_Esteira...) e perfis com Read e Edit | passou (esta sessão) |
-| C3 | Disco bate com a org (FLS) | Contagem de `<fieldPermissions>` nos 68 arquivos (66 perfis + 2 PS) | 573 | 573 em 66 perfis + 2 PS | passou (esta sessão) |
-| C4 | Flow: versão nova existe, anterior não editada | Tooling `Flow` por `Definition.DeveloperName` | v1 e v2 preservadas, v3 com a mudança | v1 Obsolete, v2 Obsolete, v3 Active (Id 301Ha000016vCwQIAU), descrição da versão preenchida. Ver divergência abaixo | passou, com divergência declarada |
-| C5 | Baseline com v2 ativa | Verificação anterior: PSL inserida com v2 ativa | Copia só os campos antigos | `PFP_N__c` preenchidos, `PFP_N_Texto__c` nulos | passou (verificação anterior, não reexecutado) |
-| C6 | Texto > 255 copiado BluePrint para PSL | Verificação anterior: v3 ativada, PSL atualizada, BluePrint com 618 caracteres | PSL recebe 618 | 618 caracteres na PSL | passou (verificação anterior, não reexecutado) |
-| C7 | Dado antigo continua copiado | Verificação anterior | `PFP_N__c` recebe o UNC antigo | Copiado | passou (verificação anterior, não reexecutado) |
-| C8 | Não sobrescreve valor antigo digitado | Verificação anterior: PSL nova com `PFP_1__c='MANUAL'` | Permanece `MANUAL` | Permaneceu | passou (verificação anterior, não reexecutado) |
-| C9 | Aceita o tamanho alvo | Verificação anterior: FVP com 32.768 caracteres | Salva e lê 32768 | 32768 | passou (verificação anterior, não reexecutado) |
-| C10 | Recusa N+1 | Verificação anterior: 32.769 caracteres | `STRING_TOO_LONG` | `STRING_TOO_LONG` | passou (verificação anterior, não reexecutado) |
-| C11 | Fórmulas do FVP seguem funcionando | Verificação anterior | Valor antigo continua visível | OK | passou (verificação anterior, não reexecutado) |
-| C12 | VRs e automações sem erro | Verificação anterior: DML em Opportunity, BluePrint, PSL, FVP | Sem exceção | Sem exceção | passou (verificação anterior, não reexecutado) |
-| C13 | Dados existentes íntegros | Contagem dos 3 objetos na dev | Valor antigo igual depois | 0 registros nos 3 objetos, sem dado para comparar | não executado |
+| V1 | Campos existem com tamanho alvo | `FieldDefinition` (Tooling) dos 3 objetos, `QualifiedApiName LIKE 'PFP_%_Texto__c'` | 9 LongTextArea 32768 | 9 linhas, todas "Área de texto longo(32768)" (BluePrint, PSL, FVP, 3 cada) | passou |
+| V2 | Versão do Flow | `SELECT VersionNumber, Status FROM Flow` (Tooling) pelo DeveloperName `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada` | v3 existe | v1 Obsolete, v2 Obsolete, **v3 Active**. O plano do builder dizia v2 Active / v3 Draft; a v3 foi ativada depois (passo autorizado no gate). A v2 não foi editada. | passou |
+| V3 | Permissões de campo mantidas/espelhadas (FLS) | `COUNT(Id)` em `FieldPermissions` com `Field IN (9 campos)`, e agrupado por campo | 573 linhas | 573. Por campo: BluePrint 58 cada; PSL 67 cada; FVP 66 cada (58x3 + 67x3 + 66x3 = 573). Confere depois do enxugamento dos 68 arquivos. | passou |
+| V4 | Tamanho alvo e recusa de N+1 (BluePrint) | Apex anônimo: gravar `PFP_2_Texto__c` com 32.768 caracteres e ler; depois 32.769 | Grava 32768; N+1 recusado, nada gravado | `RES ok 32768`; N+1: `STRING_TOO_LONG ... (max length=32768): [PFP_2_Texto__c]`; depois da recusa o valor continua com 32768 | passou |
+| V5 | Flow copia texto longo BluePrint para PSL (G1-b) | Massa em uma execução (Conta, Contato, Oportunidade, BluePrint com `PFP_1/2/3_Texto__c` de 603/303/53 caracteres e `PFP_N_UNC_Path__c` preenchidos). PSL criada em **outra** execução. Leitura em terceira execução | Campos novos da PSL com o texto completo (inclusive acima de 255); `PFP_N__c` recebe o UNC antigo | Textos novos 603/303/53 (completo, idêntico em tamanho); `PFP_2__c` = `\\srv\a2` (UNC antigo copiado) | passou |
+| V5b | Valor antigo já digitado não é sobrescrito; campo novo vazio é recopiado | Em PSL existente: `PFP_1_Texto__c`=null e `PFP_1__c`='MANUAL-TESTE', update; leitura | Texto novo recopiado (603); `PFP_1__c` continua 'MANUAL-TESTE'; `PFP_2__c` intacto | `t1=603 p1=MANUAL-TESTE p2=\\srv\a2` | passou |
+| V6 | Campos nos layouts (16 layouts, 48 itens) | `sf project retrieve` dos layouts dos 3 objetos para diretório temporário, contagem de `PFP_N_Texto__c` por arquivo | 16 layouts, 48 itens | 16 arquivos, todos com os campos, soma 48 | passou |
+| V7 | Aceita tamanho e editável no FVP; fórmulas do FVP seguem mostrando o antigo | FVP de teste ligado à PSL de teste com `PFP_1_Texto__c` de 401 caracteres; leitura de `PFP1UNCPath__c` | Grava 401; fórmula mostra UNC antigo | `RES fvp 401 formula=\\srv\a1` | passou |
+| V8 | VRs e automações sem erro ao salvar | Criação de Oportunidade, BluePrint, PSL e FVP de teste com campos novos preenchidos, e updates, passando pelas VRs e automações da dev (Flow v3 ativo) | Sem exceção | Todas as operações concluíram sem erro depois de satisfazer as regras de obrigatoriedade da massa (telefone do Contato, filtro de lookup do Autor, Orçamentista na Oportunidade) | passou |
+| V9 | Dados existentes íntegros / limpeza | Contagens antes: 0 nos três objetos. Depois da limpeza: 0 | Nada ficou | BluePrint, PSL, FVP: 0; Account/Opportunity/Contact `TESTE SOMOSAGILITY-26%`: 0 | passou |
 
-## Divergências entre disco e org
-1. O Flow no repositório está com `<status>Draft</status>` (v3). Na dev a v3 está **Active** (a verificação anterior ativou, autorizado no plano) e a v2 está Obsolete. Para a dev voltar ao estado de antes, reative a v2. Na QA a esteira leva a v3 em Draft.
-2. Os 68 arquivos de perfil e permission set no repositório são parciais (só os 9 campos), conforme declarado no plano. Não servem de backup do perfil.
-
-## Observações para o revisor (não são falha)
-- A descrição dos campos de BluePrint e PSL cita "Flow ... (v2)", mas a versão nova é a v3. Detalhe de texto.
-- No Layout de BluePrint o antigo `PFP_1_UNC_Path__c` é Required e o novo entrou como Edit (desvio declarado no plano).
-- Limitação herdada do Flow (declarada no plano): PSL com texto novo preenchido e antigo vazio não recebe a cópia do antigo.
+## Dados de teste
+Criados e apagados (todos `TESTE SOMOSAGILITY-26`): 1 Conta, 1 Contato, 1 Oportunidade, 1 BluePrint, 1 PSL, 1 FVP (duas rodadas de massa; a segunda só com Conta/Contato/Oportunidade/BluePrint). Telefone do contato sintético `(00) 00000-0000`. Nada ficou na dev. Nenhuma alteração no usuário de execução (sem mudança de campo, permission set ou Marketing User).
 
 ## O que pode ter saído da org
-Nada criado nesta sessão. Na verificação anterior não foi identificada chamada externa. Os registros de teste foram apagados e não restou massa na dev.
+Nada identificado. O Flow só faz `recordUpdate` na PSL (sem callout, sem e-mail, sem integração); nenhum log de integração ou pedido foi criado pela cadeia nos registros de teste.
 
-## Sem prova
-- C13: sem registro anterior na dev; a integridade de dado existente só se prova na QA e na homologação.
-- Os comportamentos C5 a C12 não foram reexecutados nesta sessão (ver escopo acima).
-- Deploy contra a QA (o check-only do erro `standard__AdvancedTherapyManagement`) fica para a esteira e o CI do PR. O plano registra 0 ocorrências de `applicationVisibilities` no pacote.
-- FLS efetiva para usuário não-admin (só foram conferidas as linhas de `FieldPermissions`).
-- Premissas P1-P5 e G5 (relatórios, Conga/SDocs, SnapERP) seguem para a homologação.
+## O que ficou sem prova
+- Ativação do Flow v3 na QA e comportamento na QA (322 BluePrints, 1.475 PSLs reais lá): depende de autorização humana; não é escopo da dev.
+- Paridade do deploy de perfis/PS contra a QA (check-only na QA): fica para a esteira/CI.
+- Exibição dos campos nos layouts pela tela (conferido pela metadata, não por navegador).
+- Premissas P1-P5 e G5 (relatórios, Conga/SDocs, SnapERP): seguem para homologação.
+- Limitação herdada, declarada pelo builder e não exercitada: PSL com campo novo preenchido e antigo vazio não recebe a cópia do antigo.
