@@ -1,10 +1,10 @@
 [
   {
-    "arquivo": "01-c12-pagina-da-psl-de-teste-registro-test.jpg",
-    "legenda": "C12: página da PSL de teste (registro TESTE SOMOSAGILITY-26) com os campos PFP 1/2/3 novos"
+    "arquivo": "01-c12-psl-de-teste-na-qa-campos-pfp-1-2-3-.jpg",
+    "legenda": "C12: PSL de teste na QA, campos PFP 1/2/3 novos nos layouts"
   },
   {
-    "arquivo": "02-c12-psl-de-teste-na-qa-detalhes-mostram-.jpg",
-    "legenda": "C12: PSL de teste na QA. Detalhes mostram PFP 1/2/3 (UNC Path) antigos e nenhum campo novo PFP 1/2/3 (texto longo)"
+    "arquivo": "02-c12-psl-de-teste-na-qa-aba-detalhes-com-.jpg",
+    "legenda": "C12: PSL de teste na QA, aba Detalhes com PFP 1/2/3 novos"
   }
 ]

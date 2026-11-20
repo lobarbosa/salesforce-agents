@@ -29,6 +29,7 @@ Apex sem classe de teste dedicada.
 
 from __future__ import annotations
 
+import codecs
 import re
 import sys
 from pathlib import Path
@@ -40,11 +41,26 @@ class ApexSemTeste(Exception):
     pass
 
 
+def _sem_aspas(linha: str) -> str:
+    """Desfaz a citação que o git aplica a caminho com acento.
+
+    Sem `core.quotepath=false`, o git escreve `Solicitação.xml` como
+    `"Solicita\\303\\247\\303\\243o.xml"`, com aspas e octais. A linha não começava
+    com `clients/` e o arquivo sumia do pacote sem aviso (achado SOMOSAGILITY-26,
+    2026-11-20: 9 dos 16 layouts, todos com acento no nome, ficaram fora da QA).
+    """
+    linha = linha.strip()
+    if len(linha) >= 2 and linha[0] == linha[-1] == '"':
+        bruto = codecs.escape_decode(linha[1:-1].encode("ascii", "backslashreplace"))[0]
+        return bruto.decode("utf-8")
+    return linha
+
+
 def alterados_do_cliente(caminhos: list[str], cliente: str) -> list[str]:
     """Os caminhos do force-app deste cliente, relativos à pasta dele."""
     prefixo = f"clients/{cliente}/"
     return sorted(
-        {c[len(prefixo):] for c in (l.strip() for l in caminhos) if c.startswith(f"{prefixo}force-app/")}
+        {c[len(prefixo):] for c in (_sem_aspas(l) for l in caminhos) if c.startswith(f"{prefixo}force-app/")}
     )
 
 
