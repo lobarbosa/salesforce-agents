@@ -158,3 +158,19 @@ Escopo: os 4 campos do Cenário 1. Composição:
 ---
 
 Design pronto. **Gate bloqueante**: preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Especificação do gate (Carlos Sordi, 17/11) — vale acima das seções 1, 4 e 5 deste desenho
+
+Este desenho é de 10/11. Em 17/11, no card, Carlos Sordi especificou o que deve ser construído, e aprovou o gate de design em 19/11 com base nisso. O texto dele, transcrito:
+
+> Criar os seguintes campos como Área de texto (longo) nos objetos: `BluePrint__c`, `Propostas_de_Solucao__c`, `FluxoVendaProdutos__c`. Criar com os nomes: PFP 1, PFP 2, PFP 3. Ajustar o fluxo `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada` com os novos campos, lógica não muda.
+
+Equivale à alternativa P-c da seção 4 (campos novos Long Text Area, sem converter os existentes). Refazer o desenho com ela:
+
+1. **Campos novos, não conversão.** Os campos existentes (`PFP_1__c`, `PFP_1_UNC_Path__c`, as fórmulas D1 e D3) ficam como estão; nenhuma fórmula quebra.
+2. **Confirmar na org e dizer claramente** em quais dos três objetos os campos fazem sentido, com API name pela convenção da conta, e o que eles substituem para o usuário (layouts). Se a especificação for ambígua (três campos em cada um dos três objetos, ou outra combinação), escolher a leitura mais literal, registrá-la como premissa a validar na homologação e não bloquear.
+3. **Flow:** versão nova de `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada`, apontando para os campos novos, com a mesma lógica; a versão ativa não é editada no lugar.
+4. **Fora desta demanda:** a conversão de tipo dos 4 campos da seção 1 e a demanda própria de modelo de dados da seção 4, salvo se a especificação acima depender delas.
+5. Sem Apex. Horas aprovadas pelo cliente: 3 h. Se a estimativa nova passar disso, dizer quanto e por quê.
