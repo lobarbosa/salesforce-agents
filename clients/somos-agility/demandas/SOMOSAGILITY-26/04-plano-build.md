@@ -2,7 +2,7 @@
 
 # SOMOSAGILITY-26 — Plano de build (builder-declarativo)
 
-**Org de build:** `sbx-somos-agility-dev` (sandbox, confirmada com `sf org list`; username `konectabr@somosagility.com.br.sbxdev`). QA e produção não foram tocadas.
+**Org de build:** `sbx-somos-agility-dev` (sandbox, confirmada com `sf org list`, pelo alias). QA e produção não foram tocadas.
 **Branch:** `feature/SOMOSAGILITY-26`. **Design:** `03-design.md` com aceite do gate (G1-b, G2, G3 32.768, G4, G5). Sem Apex.
 
 ## O que foi construído
