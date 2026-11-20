@@ -91,6 +91,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>PFP_1_Texto__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Prazo_de_Contrato_do_Cen_rio_1__c</field>
             </layoutItems>
         </layoutColumns>
@@ -126,6 +130,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>PFP_2_Texto__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Prazo_de_Contrato_do_Cen_rio_2__c</field>
             </layoutItems>
         </layoutColumns>
@@ -158,6 +166,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>PFP_3__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PFP_3_Texto__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

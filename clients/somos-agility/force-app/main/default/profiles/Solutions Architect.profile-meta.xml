@@ -2,6 +2,51 @@
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
     <custom>true</custom>
     <description>jn130918 a pedido do CT, na sprint 3 do AW, estamos mantendo a criação da PFV na CVS para o SA, mas estamos designando na PFV da PSL apenas que o GC dono da opt  tenha acesso a criação.</description>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BluePrint__c.PFP_1_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BluePrint__c.PFP_2_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>BluePrint__c.PFP_3_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FluxoVendaProdutos__c.PFP_1_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FluxoVendaProdutos__c.PFP_2_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FluxoVendaProdutos__c.PFP_3_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propostas_de_Solucao__c.PFP_1_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propostas_de_Solucao__c.PFP_2_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propostas_de_Solucao__c.PFP_3_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <userLicense>Salesforce</userLicense>
     <userPermissions>
         <enabled>true</enabled>

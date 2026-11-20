@@ -56,6 +56,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>PFP_1_Texto__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Prazo_do_Contrato_Renovado__c</field>
             </layoutItems>
         </layoutColumns>
@@ -91,6 +95,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>PFP_2_Texto__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Prazo_do_Contrato_Renovado_2__c</field>
             </layoutItems>
         </layoutColumns>
@@ -123,6 +131,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>PFP_3__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PFP_3_Texto__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
