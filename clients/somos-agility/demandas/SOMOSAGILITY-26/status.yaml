@@ -2,7 +2,7 @@ id: SOMOSAGILITY-26
 client: somos-agility
 titulo: Campos de preenchimento Cenário SF
 tipo: sustentacao
-status: aguardando_gate_build
+status: build
 criado_em: '2026-11-04T20:16:11.384Z'
 historico:
 - de: null
@@ -51,3 +51,9 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-20T22:09:15.489287+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-20T22:24:41.668878+00:00'
+  motivo: 'deploy em QA falhou: permission set DiretorComercial com app que só existe
+    na dev; enxugar permission sets e perfis ao que a demanda precisa (03-design.md).'

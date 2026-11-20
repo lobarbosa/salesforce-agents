@@ -166,3 +166,15 @@ Leonardo Barbosa decidiu em 20/11 executar esta demanda mesmo acima das 3 h apro
 - **G4 — os campos antigos ficam no layout** até uma decisão de migração.
 - **G5 — fica como premissa a validar na homologação** (relatórios, Conga/SDocs, SnapERP que leiam os antigos). Com G1-b os antigos continuam alimentados, então o risco cai.
 - Ativação da v2 do Flow na dev para a verificação: autorizada, como passo registrado no plano.
+
+---
+
+## Correção depois do deploy em QA (2026-11-20)
+
+O deploy na sandbox de QA falhou (`0AfHa00000EM3aHKAT`) com um único erro: `PermissionSet DiretorComercial: In field: application - no CustomApplication named standard__AdvancedTherapyManagement found`. O arquivo do permission set foi trazido inteiro da dev e carrega visibilidade de um app que existe na dev e não na QA.
+
+Instrução ao builder (sem mudar o desenho):
+
+1. Nos permission sets (`DiretorComercial`, `Acesso_completo_Esteira_de_vendas_e_renovacoes`) e nos perfis do pacote, manter **só o que esta demanda precisa**: as `fieldPermissions` dos 9 campos novos `PFP_N_Texto__c` (e o que já estava no arquivo na `main`, se ele existia lá). Tirar `applicationVisibilities`, `tabSettings`, `objectPermissions`, `userPermissions` e afins que vieram junto do retrieve e não são desta demanda.
+2. Fazer uma validação check-only do pacote contra a sandbox de QA (alias `sbx-somos-agility-qa`) antes de concluir, e registrar o resultado no `04-plano-build.md`. Se não houver acesso de validação à QA, registrar isso.
+3. Não reabrir a verificação de comportamento: a funcionalidade passou na dev. Basta o verificador confirmar que os 9 campos continuam com a permissão espelhada depois do enxugamento.
