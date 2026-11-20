@@ -160,7 +160,11 @@ Autorização para toda a esteira (2026-11-15, decisão do responsável): pedir 
 a card deixou seis de nove verificações da Eplast inconclusivas (26, 28, 29, 30, 36, 39) sem
 defeito nenhum, só por falta do comentário. Desde então criar dados de teste, deixar a
 automação da solução rodar (inclusive agendada, em duas fases) e ativar na QA a versão nova
-de um agente para testar valem para toda demanda de todo cliente, sem comentário no card. O
+de um agente para testar valem para toda demanda de todo cliente, sem comentário no card.
+Em 2026-11-20 (achado SOMOSAGILITY-26) o responsável estendeu explicitamente a Flow e a
+modelo de prompt, também quando a QA não tem versão ativa anterior: o QA da Somos Agility
+leu o aviso do preflight ("versão ativa não é alterada no lugar") como proibição de ativar e
+reprovou sem exercitar o centro da demanda. O aviso passou a dizer que fala do conteúdo. O
 que continua: só sintético, `TESTE <DEMAND-ID>` no nome, o mínimo que prova o critério,
 nunca tocar em registro que o agente não criou, e a seção "O que pode ter saído da org". O
 `CLAUDE.md` do cliente ou um comentário no card podem proibir, e aí vale a proibição. Para
