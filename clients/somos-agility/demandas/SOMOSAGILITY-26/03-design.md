@@ -153,3 +153,16 @@ Espelhar, campo a campo, a FLS do campo antigo correspondente (2.8): mesmos perf
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Aceite do gate de design (2026-11-20) — por Leonardo Barbosa (via Claude)
+
+Leonardo Barbosa decidiu em 20/11 executar esta demanda mesmo acima das 3 h aprovadas pelo cliente. Aceite das perguntas da seção 10:
+
+- **G1 — opção (b).** A v2 do Flow copia para os campos novos **e continua copiando** BluePrint → `PSL.PFP_N__c` como hoje, preservando as fórmulas do FVP. Motivo: nenhuma tela que o usuário usa hoje perde informação, e é a recomendação do arquiteto. Com isso a ativação da v2 na QA deixa de estar bloqueada. Custo +0,5 h (estimativa 5,5–7,5 h).
+- **G2 — confirmado.** 9 campos novos `LongTextArea`, API `PFP_N_Texto__c`, rótulos "PFP 1/2/3", nos 3 objetos (leitura literal da especificação de 17/11).
+- **G3 — 32.768** (padrão; P4).
+- **G4 — os campos antigos ficam no layout** até uma decisão de migração.
+- **G5 — fica como premissa a validar na homologação** (relatórios, Conga/SDocs, SnapERP que leiam os antigos). Com G1-b os antigos continuam alimentados, então o risco cai.
+- Ativação da v2 do Flow na dev para a verificação: autorizada, como passo registrado no plano.
