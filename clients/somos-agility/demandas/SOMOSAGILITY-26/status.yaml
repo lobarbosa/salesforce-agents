@@ -2,10 +2,94 @@ id: SOMOSAGILITY-26
 client: somos-agility
 titulo: Campos de preenchimento Cenário SF
 tipo: sustentacao
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-11-04T20:16:11.384Z'
 historico:
-  - de: null
-    em: '2026-11-04T20:16:11.373Z'
-    para: backlog
-    autor: Geovana Nogueira
+- de: null
+  em: '2026-11-04T20:16:11.373Z'
+  para: backlog
+  autor: Geovana Nogueira
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-10T21:34:36.705763+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T21:36:28.161486+00:00'
+- de: aguardando_gate_analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-10T21:36:37.609034+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Carlos Sordi
+  em: '2026-11-10T23:23:58.782510+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-10T23:38:49.379334+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-10T23:39:21.930607+00:00'
+- de: aguardando_gate_design
+  para: design
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-20T19:46:50.566084+00:00'
+  motivo: refazer o desenho com a especificação de Carlos Sordi (card, 17/11), registrada
+    no 03-design.md; o desenho de 10/11 construiria outra coisa.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-20T19:58:09.975877+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-20T21:58:08.635255+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-20T22:09:15.489287+00:00'
+- de: aguardando_gate_build
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-20T22:24:41.668878+00:00'
+  motivo: 'deploy em QA falhou: permission set DiretorComercial com app que só existe
+    na dev; enxugar permission sets e perfis ao que a demanda precisa (03-design.md).'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-20T22:32:08.164931+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-20T22:39:17.195256+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-20T22:43:55.131709+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-20T22:50:31.537911+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-20T23:10:09.011778+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-20T23:15:15.371459+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-20T23:19:10.811385+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-20T23:36:26.741156+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-20T23:41:42.710511+00:00'

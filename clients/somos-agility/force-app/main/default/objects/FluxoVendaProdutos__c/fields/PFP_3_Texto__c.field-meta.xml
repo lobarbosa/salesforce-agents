@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>PFP_3_Texto__c</fullName>
+    <description>Caminho/link da PFP 3 sem limite de 255 caracteres. Preenchimento manual neste objeto (nenhuma automacao alimenta). SOMOSAGILITY-26.</description>
+    <inlineHelpText>Informe o caminho/link da PFP 3 (texto longo). Nao confundir com o campo antigo PFP 3 (UNC Path), de ate 255 caracteres.</inlineHelpText>
+    <label>PFP 3</label>
+    <length>32768</length>
+    <required>false</required>
+    <trackFeedHistory>false</trackFeedHistory>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>LongTextArea</type>
+    <visibleLines>3</visibleLines>
+</CustomField>

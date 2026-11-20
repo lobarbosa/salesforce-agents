@@ -15,7 +15,7 @@
             <name>PFP_1_UNC_Path_Vazio</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.PFP_1__c</leftValueReference>
+                <leftValueReference>$Record.PFP_1_Texto__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -40,7 +40,7 @@
             <name>PFP_2_UNC_Path_Vazio</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.PFP_2__c</leftValueReference>
+                <leftValueReference>$Record.PFP_2_Texto__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -65,7 +65,7 @@
             <name>PFP_2_UNC_Path_Vazio_2</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.PFP_2__c</leftValueReference>
+                <leftValueReference>$Record.PFP_2_Texto__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -87,7 +87,7 @@
             <name>PFP_3_UNC_Path_Vazio</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.PFP_3__c</leftValueReference>
+                <leftValueReference>$Record.PFP_3_Texto__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -109,7 +109,7 @@
             <name>PFP_3_UNC_Path_Vazio_2</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.PFP_3__c</leftValueReference>
+                <leftValueReference>$Record.PFP_3_Texto__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -131,7 +131,7 @@
             <name>PFP_3_UNC_Path_Vazio_3</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.PFP_3__c</leftValueReference>
+                <leftValueReference>$Record.PFP_3_Texto__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -153,7 +153,7 @@
             <name>PFP_3_UNC_Path_Vazio_4</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
-                <leftValueReference>$Record.PFP_3__c</leftValueReference>
+                <leftValueReference>$Record.PFP_3_Texto__c</leftValueReference>
                 <operator>IsNull</operator>
                 <rightValue>
                     <booleanValue>true</booleanValue>
@@ -165,21 +165,22 @@
             <label>PFP 3 (UNC Path) Vazio - 4</label>
         </rules>
     </decisions>
+    <description>v2 SOMOSAGILITY-26: campos PFP N Long Text Area. Copia PFP_N_Texto__c do BluePrint para a PSL e continua copiando PFP_N_UNC_Path__c para PFP_N__c (G1-b), sem sobrescrever valor ja preenchido no campo antigo.</description>
     <environments>Default</environments>
     <formulas>
-        <name>PFP_1_UNC_Path</name>
+        <name>PFP_1_Antigo_Preservado</name>
         <dataType>String</dataType>
-        <expression>{!$Record.Oportunidade__r.BluePrint__r.PFP_1_UNC_Path__c}</expression>
+        <expression>IF(ISBLANK({!$Record.PFP_1__c}), {!$Record.Oportunidade__r.BluePrint__r.PFP_1_UNC_Path__c}, {!$Record.PFP_1__c})</expression>
     </formulas>
     <formulas>
-        <name>PFP_2_UNC_Path</name>
+        <name>PFP_2_Antigo_Preservado</name>
         <dataType>String</dataType>
-        <expression>{!$Record.Oportunidade__r.BluePrint__r.PFP_2_UNC_Path__c}</expression>
+        <expression>IF(ISBLANK({!$Record.PFP_2__c}), {!$Record.Oportunidade__r.BluePrint__r.PFP_2_UNC_Path__c}, {!$Record.PFP_2__c})</expression>
     </formulas>
     <formulas>
-        <name>PFP_3_UNC_Path</name>
+        <name>PFP_3_Antigo_Preservado</name>
         <dataType>String</dataType>
-        <expression>{!$Record.Oportunidade__r.BluePrint__r.PFP_3_UNC_Path__c}</expression>
+        <expression>IF(ISBLANK({!$Record.PFP_3__c}), {!$Record.Oportunidade__r.BluePrint__r.PFP_3_UNC_Path__c}, {!$Record.PFP_3__c})</expression>
     </formulas>
     <interviewLabel>Atualiza os Campos PFP X (UNC Path) se PSL Criada ou Atualizada {!$Flow.CurrentDateTime}</interviewLabel>
     <label>Atualiza os Campos PFP X (UNC Path) se PSL Criada ou Atualizada</label>
@@ -211,9 +212,15 @@
             <targetReference>Verifica_se_PFP_2_UNC_Path_Vazio</targetReference>
         </connector>
         <inputAssignments>
+            <field>PFP_1_Texto__c</field>
+            <value>
+                <elementReference>$Record.Oportunidade__r.BluePrint__r.PFP_1_Texto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PFP_1__c</field>
             <value>
-                <elementReference>PFP_1_UNC_Path</elementReference>
+                <elementReference>PFP_1_Antigo_Preservado</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -227,9 +234,15 @@
             <targetReference>Verifica_se_PFP_3_UNC_Path_Vazio</targetReference>
         </connector>
         <inputAssignments>
+            <field>PFP_2_Texto__c</field>
+            <value>
+                <elementReference>$Record.Oportunidade__r.BluePrint__r.PFP_2_Texto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PFP_2__c</field>
             <value>
-                <elementReference>PFP_2_UNC_Path</elementReference>
+                <elementReference>PFP_2_Antigo_Preservado</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -243,9 +256,15 @@
             <targetReference>Verifica_se_PFP_3_UNC_Path_Vazio_3</targetReference>
         </connector>
         <inputAssignments>
+            <field>PFP_2_Texto__c</field>
+            <value>
+                <elementReference>$Record.Oportunidade__r.BluePrint__r.PFP_2_Texto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PFP_2__c</field>
             <value>
-                <elementReference>PFP_2_UNC_Path</elementReference>
+                <elementReference>PFP_2_Antigo_Preservado</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -256,9 +275,15 @@
         <locationX>50</locationX>
         <locationY>863</locationY>
         <inputAssignments>
+            <field>PFP_3_Texto__c</field>
+            <value>
+                <elementReference>$Record.Oportunidade__r.BluePrint__r.PFP_3_Texto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PFP_3__c</field>
             <value>
-                <elementReference>PFP_3_UNC_Path</elementReference>
+                <elementReference>PFP_3_Antigo_Preservado</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -269,9 +294,15 @@
         <locationX>490</locationX>
         <locationY>755</locationY>
         <inputAssignments>
+            <field>PFP_3_Texto__c</field>
+            <value>
+                <elementReference>$Record.Oportunidade__r.BluePrint__r.PFP_3_Texto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PFP_3__c</field>
             <value>
-                <elementReference>PFP_3_UNC_Path</elementReference>
+                <elementReference>PFP_3_Antigo_Preservado</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -282,9 +313,15 @@
         <locationX>930</locationX>
         <locationY>755</locationY>
         <inputAssignments>
+            <field>PFP_3_Texto__c</field>
+            <value>
+                <elementReference>$Record.Oportunidade__r.BluePrint__r.PFP_3_Texto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PFP_3__c</field>
             <value>
-                <elementReference>PFP_3_UNC_Path</elementReference>
+                <elementReference>PFP_3_Antigo_Preservado</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -295,9 +332,15 @@
         <locationX>1370</locationX>
         <locationY>647</locationY>
         <inputAssignments>
+            <field>PFP_3_Texto__c</field>
+            <value>
+                <elementReference>$Record.Oportunidade__r.BluePrint__r.PFP_3_Texto__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>PFP_3__c</field>
             <value>
-                <elementReference>PFP_3_UNC_Path</elementReference>
+                <elementReference>PFP_3_Antigo_Preservado</elementReference>
             </value>
         </inputAssignments>
         <inputReference>$Record</inputReference>
@@ -320,5 +363,5 @@
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>
