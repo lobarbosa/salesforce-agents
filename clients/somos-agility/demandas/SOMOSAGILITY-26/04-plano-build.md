@@ -54,3 +54,15 @@ Ativar v3 só depois dos passos 1-4 abaixo. Desfazer: reativar a v2. Na QA a est
 - Paridade com QA não comparada (R6): `deploy validate` contra QA fica para o CI do PR.
 - Descrição de campo sem acento de propósito (evitar problema de encoding).
 - Premissas P1-P5 e G5 (relatórios, Conga/SDocs, SnapERP) seguem para a homologação.
+
+## Correção depois do deploy em QA (enxugar permission sets e perfis)
+
+Motivo: deploy em QA `0AfHa00000EM3aHKAT` falhou só em `PermissionSet DiretorComercial: no CustomApplication named standard__AdvancedTherapyManagement found`. O arquivo da `main` já trazia esse app (o diff contra a `main` era só aditivo); ele entrava no pacote junto com a permissão dos campos.
+
+- **O que mudou:** os 68 arquivos (66 perfis em `force-app/main/default/profiles/` + `permissionsets/DiretorComercial` e `permissionsets/Acesso_completo_Esteira_de_vendas_e_renovacoes`) passaram a conter **somente** as `fieldPermissions` dos 9 campos `PFP_{1,2,3}_Texto__c`. Saíram `applicationVisibilities`, `tabSettings`, `objectPermissions`, `userPermissions`, `classAccesses`, etc.
+- **Permission sets:** mantidos `description`, `label` (e `license` no DiretorComercial), exigidos pelo deploy (a primeira tentativa falhou com "Required field is missing: label"). O resto fica como está na org.
+- **Conferência:** 573 `fieldPermissions` em 68 arquivos (igual ao build anterior), 0 `<field>` que não seja dos 9 campos novos. Perfis sem permissão dos campos antigos continuam fora do pacote.
+- **Validação na dev:** `sf project deploy start --dry-run` (check-only) de 66 perfis + 2 permission sets, via manifest: **Succeeded** (`Dry-run complete`), sem erro de componente.
+- **Validação contra a QA: não feita.** Esta sessão só tem a sandbox de dev conectada e a regra do build é não tocar a QA. O check-only contra `sbx-somos-agility-qa` fica para o passo da esteira / CI do PR. O erro conhecido (app inexistente na QA) deixou de existir no pacote (0 ocorrências de `applicationVisibilities`).
+- **Efeito no repositório:** esses 68 arquivos agora são parciais (não espelham o perfil/PS inteiro da org). Servem para deploy aditivo da permissão; não usar como backup do perfil. Não houve mudança em campos, layouts nem Flow, nem reabertura da verificação de comportamento.
+- **Para o verificador:** confirmar que os 9 campos seguem com a permissão espelhada (573 linhas em `FieldPermissions` na dev) depois do enxugamento.
