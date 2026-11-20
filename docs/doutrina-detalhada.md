@@ -251,6 +251,13 @@ desativado, o passo reativa o agente e segue como antes; se a reativação falha
 acusa em erro. As respostas da plataforma em cada tentativa vão para o log e, quando o
 agente fica fora do pacote, para o `05-deploy-qa.md`. Só vale para `sbx-<cliente>-qa`.
 
+Arquivo com acento ficava fora do pacote de QA (2026-11-20, achado SOMOSAGILITY-26): o git
+cita caminho com acento (`"...Solicita\303\247\303\243o..."`) quando `core.quotepath` está
+ligado, que é o padrão. A linha não começava com `clients/`, e o `pacote_da_demanda.py` a
+descartava sem aviso: 9 dos 16 layouts da demanda, todos com acento no nome, não chegaram à
+QA, e o QA reprovou. Os `git diff --name-only` da esteira e do CI passaram a usar
+`-c core.quotepath=false`, e o script desfaz a citação se ela vier mesmo assim.
+
 Roteiro do cliente (2026-11-14): o `05-testes.md` é evidência para quem aprova gate, e era
 ele que aparecia para o cliente na homologação. Quando aprova, o `qa` grava também
 `05-roteiro-cliente.md`, o passo a passo em linguagem de usuário. A sessão não encerra sem
