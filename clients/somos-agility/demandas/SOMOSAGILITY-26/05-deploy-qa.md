@@ -1,0 +1,79 @@
+# Deploy na sandbox de QA
+
+- **Org:** `sbx-somos-agility-qa`
+- **Deploy:** `0AfHa00000EM3vFKAT` (Succeeded)
+- **Quando:** 2026-11-20T22:39Z
+- **Commit:** `dcf3e040`
+
+## Componentes
+- `force-app/main/default/flows/Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada.flow-meta.xml`
+- `force-app/main/default/layouts/BluePrint__c-Layout de BluePrint.layout-meta.xml`
+- `force-app/main/default/layouts/FluxoVendaProdutos__c-Layout de Fluxo de Venda de Produto.layout-meta.xml`
+- `force-app/main/default/layouts/FluxoVendaProdutos__c-Produtos na PFP.layout-meta.xml`
+- `force-app/main/default/layouts/Propostas_de_Solucao__c-PFP Base.layout-meta.xml`
+- `force-app/main/default/layouts/Propostas_de_Solucao__c-Proposta Enviada ao Cliente.layout-meta.xml`
+- `force-app/main/default/layouts/Propostas_de_Solucao__c-Proposta Finalizada.layout-meta.xml`
+- `force-app/main/default/layouts/Propostas_de_Solucao__c-Retorno do Cliente.layout-meta.xml`
+- `force-app/main/default/objects/BluePrint__c/fields/PFP_1_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/BluePrint__c/fields/PFP_2_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/BluePrint__c/fields/PFP_3_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/FluxoVendaProdutos__c/fields/PFP_1_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/FluxoVendaProdutos__c/fields/PFP_2_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/FluxoVendaProdutos__c/fields/PFP_3_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/Propostas_de_Solucao__c/fields/PFP_1_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/Propostas_de_Solucao__c/fields/PFP_2_Texto__c.field-meta.xml`
+- `force-app/main/default/objects/Propostas_de_Solucao__c/fields/PFP_3_Texto__c.field-meta.xml`
+- `force-app/main/default/permissionsets/Acesso_completo_Esteira_de_vendas_e_renovacoes.permissionset-meta.xml`
+- `force-app/main/default/permissionsets/DiretorComercial.permissionset-meta.xml`
+- `force-app/main/default/profiles/Admin.profile-meta.xml`
+- `force-app/main/default/profiles/Analytics Cloud Integration User.profile-meta.xml`
+- `force-app/main/default/profiles/Analytics Cloud Security User.profile-meta.xml`
+- `force-app/main/default/profiles/Anypoint Integration.profile-meta.xml`
+- `force-app/main/default/profiles/Compras Financeiro.profile-meta.xml`
+- `force-app/main/default/profiles/ContractManager.profile-meta.xml`
+- `force-app/main/default/profiles/Contratos Agility.profile-meta.xml`
+- `force-app/main/default/profiles/Customer Community Plus User.profile-meta.xml`
+- `force-app/main/default/profiles/Customer Success Squad.profile-meta.xml`
+- `force-app/main/default/profiles/Diretor  DT.profile-meta.xml`
+- `force-app/main/default/profiles/Diretor Comercial.profile-meta.xml`
+- `force-app/main/default/profiles/Diretor Financeiro.profile-meta.xml`
+- `force-app/main/default/profiles/Diretor de Marketing.profile-meta.xml`
+- `force-app/main/default/profiles/Diretor de Projetos.profile-meta.xml`
+- `force-app/main/default/profiles/Financeiro Agility.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente Comercial SP.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente Comercial Sul.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de Contas - AI.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de Contas.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de Projetos.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de RH.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de Suporte DC.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de Suporte EA.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de Suporte SEG.profile-meta.xml`
+- `force-app/main/default/profiles/Gerente de contas - Marcia.profile-meta.xml`
+- `force-app/main/default/profiles/Identity User.profile-meta.xml`
+- `force-app/main/default/profiles/Marketing Community.profile-meta.xml`
+- `force-app/main/default/profiles/Marketing.profile-meta.xml`
+- `force-app/main/default/profiles/MarketingProfile.profile-meta.xml`
+- `force-app/main/default/profiles/Minimum Access - API Only Integrations.profile-meta.xml`
+- `force-app/main/default/profiles/Minimum Access - Salesforce.profile-meta.xml`
+- `force-app/main/default/profiles/PMO.profile-meta.xml`
+- `force-app/main/default/profiles/PO DT.profile-meta.xml`
+- `force-app/main/default/profiles/PO EA.profile-meta.xml`
+- `force-app/main/default/profiles/PO SEG.profile-meta.xml`
+- `force-app/main/default/profiles/Partner Community User.profile-meta.xml`
+- `force-app/main/default/profiles/Partner.profile-meta.xml`
+- `force-app/main/default/profiles/Perfil do Parceiro.profile-meta.xml`
+- `force-app/main/default/profiles/Premium Plus.profile-meta.xml`
+- `force-app/main/default/profiles/Professional Services.profile-meta.xml`
+- `force-app/main/default/profiles/RH.profile-meta.xml`
+- `force-app/main/default/profiles/Sales Insights Integration User.profile-meta.xml`
+- `force-app/main/default/profiles/Sales Operations ADM.profile-meta.xml`
+- `force-app/main/default/profiles/Sales Operations.profile-meta.xml`
+- `force-app/main/default/profiles/Salesforce API Only System Integrations.profile-meta.xml`
+- `force-app/main/default/profiles/Service Delivery.profile-meta.xml`
+- `force-app/main/default/profiles/Service Manager.profile-meta.xml`
+- `force-app/main/default/profiles/SolutionManager.profile-meta.xml`
+- `force-app/main/default/profiles/Solutions Architect.profile-meta.xml`
+- `force-app/main/default/profiles/StandardAul.profile-meta.xml`
+- `force-app/main/default/profiles/System Engineer.profile-meta.xml`
+- `force-app/main/default/profiles/adminPMO.profile-meta.xml`
