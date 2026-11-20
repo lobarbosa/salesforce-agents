@@ -15,7 +15,7 @@ if [ -z "$BASE" ]; then
   BASE=$(git merge-base origin/main HEAD)
 fi
 set +e
-git diff --name-only "$BASE" HEAD -- "clients/$CLIENT/force-app" \
+git -c core.quotepath=false diff --name-only "$BASE" HEAD -- "clients/$CLIENT/force-app" \
   | python3 scripts/pacote_da_demanda.py "$CLIENT" > /tmp/pacote-args.txt
 RC=$?
 set -e

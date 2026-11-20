@@ -30,7 +30,7 @@ jobs:
       - name: Listar .md alterados em clients/
         id: arquivos
         run: |
-          ARQUIVOS=$(git diff --name-only --diff-filter=ACMR \
+          ARQUIVOS=$(git -c core.quotepath=false diff --name-only --diff-filter=ACMR \
             "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" \
             -- 'clients/**/*.md')
           echo "lista<<EOF" >> "$GITHUB_OUTPUT"

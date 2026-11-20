@@ -65,7 +65,7 @@ jobs:
           fi
           echo "base=$BASE_SHA" >> "$GITHUB_OUTPUT"
           echo "head=$HEAD_SHA" >> "$GITHUB_OUTPUT"
-          CLIENTS=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- 'clients/*/force-app/**' \
+          CLIENTS=$(git -c core.quotepath=false diff --name-only "$BASE_SHA" "$HEAD_SHA" -- 'clients/*/force-app/**' \
             | sed -E 's#^clients/([^/]+)/force-app/.*#\1#' | sort -u | jq -R -s -c 'split("\n")[:-1]')
           echo "clientes com force-app alterado: $CLIENTS"
           echo "clients=$CLIENTS" >> "$GITHUB_OUTPUT"
@@ -120,7 +120,7 @@ jobs:
           # tocar em qualquer arquivo do mesmo force-app (achado real, ACXYA-1,
           # 2026-09-07: 4 erros legados — Case Layout, 2 QuickAction, EnvironmentHub
           # — bloqueavam um PR que só criava campo/VR/Flow novos, sem tocar neles).
-          CHANGED=$(git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- "clients/${{ matrix.client }}/force-app/**" \
+          CHANGED=$(git -c core.quotepath=false diff --name-only "$BASE_SHA" "$HEAD_SHA" -- "clients/${{ matrix.client }}/force-app/**" \
             | sed -E "s#^clients/${{ matrix.client }}/##")
           if [ -z "$CHANGED" ]; then
             echo "Nenhum arquivo de force-app deste cliente mudou entre $BASE_SHA e $HEAD_SHA — nada a validar."

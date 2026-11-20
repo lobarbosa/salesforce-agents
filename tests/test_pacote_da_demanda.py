@@ -69,3 +69,17 @@ def test_arquivo_removido_fica_de_fora_e_e_avisado(tmp_path):
 
 def test_demanda_sem_metadata_nao_gera_pacote(tmp_path):
     assert pacote.argumentos([], tmp_path) == ([], [])
+
+
+def test_caminho_com_acento_citado_pelo_git_entra_no_pacote():
+    citado = '"clients/somos-agility/force-app/main/default/layouts/FluxoVendaProdutos__c-Solicita\\303\\247\\303\\243o de Pre\\303\\247os.layout-meta.xml"'
+    simples = "clients/somos-agility/force-app/main/default/layouts/BluePrint__c-Layout de BluePrint.layout-meta.xml"
+    assert pacote.alterados_do_cliente([citado, simples], "somos-agility") == [
+        f"{BASE}/layouts/BluePrint__c-Layout de BluePrint.layout-meta.xml",
+        f"{BASE}/layouts/FluxoVendaProdutos__c-Solicitação de Preços.layout-meta.xml",
+    ]
+
+
+def test_caminho_com_acento_sem_citacao_continua_igual():
+    caminho = f"clients/eplast/{BASE}/layouts/Account-Especificação.layout-meta.xml"
+    assert pacote.alterados_do_cliente([caminho], "eplast") == [f"{BASE}/layouts/Account-Especificação.layout-meta.xml"]
