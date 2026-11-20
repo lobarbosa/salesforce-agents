@@ -1,7 +1,7 @@
 ---
 name: doc
 description: Produz a documentação técnica e de entrega da demanda. Use ao final do ciclo.
-tools: Read, Write, Grep, Glob, mcp__rag__rag_consultar
+tools: Read, Write, Grep, Glob, mcp__rag__rag_consultar, Bash
 model: haiku
 ---
 

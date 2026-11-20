@@ -33,7 +33,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from . import ambientes, demands, gates
+from . import ambientes, bloqueio, demands, evidencias, gates, roteiro, veredito, verificacao
 
 # Etapas de execução que acionam uma sessão de agente. As `aguardando_*` são
 # gates humanos puros — não rodam nada, esperam gente. `entregue` é terminal.
@@ -43,6 +43,56 @@ DISPARA_SESSAO = frozenset({"analise", "design", "build", "qa", "release"})
 # por botão, varredura ou disparo duplicado na fila. Sem isto, standby caía
 # na regra de triagem abaixo e a análise começava (achado de 2026-10-21).
 PARADOS = frozenset({"standby", "cancelada"})
+
+# Onde o build bloqueado volta: o gate em que alguém decide o design e responde
+# as pendências. Aprovar de novo ali refaz o build.
+GATE_DE_RETORNO_DO_BUILD = "aguardando_gate_design"
+PLANO_DE_BUILD = "04-plano-build.md"
+
+
+def _plano_de_build(d: demands.Demand):
+    return d.path / PLANO_DE_BUILD
+
+
+def _plano_bloqueado(d: demands.Demand) -> bool:
+    plano = _plano_de_build(d)
+    return plano.exists() and bloqueio.build_bloqueado(plano.read_text(encoding="utf-8"))
+
+
+# QA que não aprova devolve a demanda para a construção (decisão de
+# 2026-11-14, ver veredito.py). O build refeito passa de novo pelo gate de PR
+# antes de voltar ao QA, então cada volta tem um humano no meio. O teto existe
+# para a conta: depois de MAX_VOLTAS_DO_QA reprovações seguidas, quem decide o
+# que fazer é o arquiteto, no gate de design.
+ROTEIRO_DE_TESTE = "05-testes.md"
+MAX_VOLTAS_DO_QA = 2
+
+# Verificação do build (ver verificacao.py): reprovada refaz a construção, sem
+# humano no meio, porque nada foi entregue a ninguém ainda. O teto existe pela
+# conta e para o builder não ficar rodando em círculo; depois dele decide o
+# arquiteto, no gate de design.
+MAX_VOLTAS_DA_VERIFICACAO = 2
+GATE_QUANDO_O_QA_NAO_FECHA = "aguardando_gate_design"
+
+
+def _rodadas_reprovadas(d: demands.Demand) -> int:
+    return len(list(d.path.glob("05-testes-rodada-*.md")))
+
+
+def _aguardando_execucao(d: demands.Demand) -> bool:
+    """A demanda está na conferência do QA em duas fases (roteiro armado em disco)."""
+    arquivo = d.path / ROTEIRO_DE_TESTE
+    if not arquivo.exists():
+        return False
+    return veredito.ler(arquivo.read_text(encoding="utf-8"), ambientes.org_alias(d.client, "qa")).pendente
+
+
+def _arquivar_roteiro_reprovado(d: demands.Demand) -> None:
+    """Guarda o roteiro reprovado para o builder ler as falhas e tira o
+    `05-testes.md` do caminho: o próximo QA tem de escrever um novo."""
+    destino = d.path / f"05-testes-rodada-{_rodadas_reprovadas(d) + 1}.md"
+    (d.path / ROTEIRO_DE_TESTE).rename(destino)
+
 
 # Autor registrado no histórico quando quem avança é o próprio pipeline. Fica
 # distinguível de uma transição humana ao ler `status.yaml` depois.
@@ -81,7 +131,7 @@ class Parada:
     YAML em silêncio, então eles têm teste.
     """
 
-    motivo: str  # gate | fim
+    motivo: str  # gate | fim | refazer | aguardar
     etapa: str
     ambiente: str
     etapas_rodadas: tuple[str, ...] = ()
@@ -127,12 +177,39 @@ def aprovar_gate(client: str, demand_id: str, autor: str) -> demands.Demand:
     return demands.transition(client, demand_id, prox, autor)
 
 
+# Reverificação (decisão de 2026-11-15): com a autorização de dados de teste
+# valendo para toda a esteira, as verificações que saíram inconclusivas por
+# falta dela precisam rodar de novo. Refazer o build inteiro custaria um
+# construtor e mexeria numa entrega que ninguém reprovou; aqui roda só o
+# `verificador`, sobre o que já está construído na dev.
+ETAPA_SO_VERIFICACAO = "verificacao"
+
+
+def reverificar(client: str, demand_id: str, autor: str) -> demands.Demand:
+    """Tira a demanda do gate de build para refazer só a verificação.
+
+    Só vale para build concluído parado no gate: sem plano, ou com o build
+    bloqueado, não há construção para verificar. Voltar o status é permitido
+    (guardrail #5); o histórico registra quem pediu.
+    """
+    d = demands.Demand.load(client, demand_id)
+    if d.status != "aguardando_gate_build":
+        raise FluxoError(
+            f"{client}/{demand_id} está em '{d.status}': só se reverifica um build parado "
+            f"no gate de build."
+        )
+    if not _plano_de_build(d).exists() or _plano_bloqueado(d):
+        raise FluxoError(f"{client}/{demand_id}: não há build concluído para verificar.")
+    return demands.transition(client, demand_id, "build", autor)
+
+
 def rodar(
     client: str,
     demand_id: str,
     *,
     executor=None,
     max_etapas: int = 12,
+    so_verificar: bool = False,
 ) -> Parada:
     """Roda etapas de agente em sequência até precisar parar.
 
@@ -195,8 +272,88 @@ def rodar(
                 f"sem gate — o laço precisa devolver o controle ali."
             )
 
-        executor(client, demand_id, d.status)
-        rodadas.append(d.status)
+        # Plano de uma rodada anterior que só registrou o bloqueio sai antes de
+        # o build rodar de novo: com o arquivo em disco, uma sessão que não
+        # reescreve nada passaria como "produziu o artefato" (achado
+        # SOMOSAGILITY-22: QA refeito em 4 min sem tocar no roteiro antigo).
+        if d.status == "build" and _plano_bloqueado(d):
+            _plano_de_build(d).unlink()
+
+        # A verificação é da construção que vai rodar agora: a da anterior sai,
+        # ou um build refeito chegaria ao gate com a evidência do antigo.
+        if d.status == "build":
+            verificacao.descartar(d.path)
+
+        # O roteiro do cliente é reescrito a cada rodada de QA: o da anterior
+        # descreve um build que mudou, e com ele em disco a sessão passaria
+        # sem escrever outro.
+        if d.status == "qa":
+            roteiro.descartar(d.path)
+            # As capturas de tela são da rodada (evidencias.py). Na conferência
+            # do QA em duas fases ficam: são a evidência do que foi armado.
+            if not _aguardando_execucao(d):
+                evidencias.descartar(d.path)
+
+        rodadas_antes = set(d.path.glob("0[45]-*-rodada-*.md"))
+        # Na reverificação, a primeira sessão é só do verificador; se ele
+        # reprovar, o build de verdade roda em outro job, como sempre.
+        etapa_da_sessao = ETAPA_SO_VERIFICACAO if (so_verificar and d.status == "build") else d.status
+        so_verificar = False
+        executor(client, demand_id, etapa_da_sessao)
+        rodadas.append(etapa_da_sessao)
+
+        # Quem arquiva roteiro reprovado é a esteira, logo abaixo. Achado real
+        # (EPLAST-47, 2026-11-15): o agente de QA gravou por conta própria uma
+        # cópia como `05-testes-rodada-1.md`; a esteira arquivou o original
+        # como rodada 2 e a demanda passou a contar duas reprovações onde
+        # houve uma, gastando o teto de voltas.
+        for intruso in set(d.path.glob("0[45]-*-rodada-*.md")) - rodadas_antes:
+            intruso.unlink()
+
+        # Build que declarou bloqueio não construiu nada: volta ao gate de
+        # design em vez de seguir para o gate de build, onde seria aprovado
+        # como se houvesse PR para revisar (ver bloqueio.py).
+        if d.status == "build" and _plano_bloqueado(d):
+            demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
+            continue
+
+        # O humano só é chamado ao gate de build depois de o agente ter
+        # testado e evidenciado (decisão de 2026-11-15, ver verificacao.py).
+        # Reprovada refaz a construção em outro job, que o Squad OS dispara;
+        # inconclusiva segue para o gate, porque refazer não resolve.
+        # Sem plano não há o que verificar: a transição abaixo recusa e o job
+        # falha vermelho, como sempre.
+        if d.status == "build" and _plano_de_build(d).exists():
+            v = verificacao.da_pasta(d.path, ambientes.org_alias(client, "dev"))
+            if v.estado == "reprovada":
+                voltas = verificacao.rodadas_reprovadas(d.path)
+                verificacao.arquivar_reprovada(d.path)
+                if voltas >= MAX_VOLTAS_DA_VERIFICACAO:
+                    demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
+                    return Parada("gate", GATE_DE_RETORNO_DO_BUILD, ambiente_do_job, tuple(rodadas))
+                return Parada("refazer", "build", ambiente_do_job, tuple(rodadas))
+
+        # QA só entrega ao cliente o que provou. Sem aprovação com evidência,
+        # a demanda volta para a construção — em outro job, porque o build
+        # roda na sandbox de dev e este autenticou na de QA.
+        if d.status == "qa" and (d.path / ROTEIRO_DE_TESTE).exists():
+            v = veredito.ler(
+                (d.path / ROTEIRO_DE_TESTE).read_text(encoding="utf-8"),
+                ambientes.org_alias(client, "qa"),
+            )
+            # Teste armado, esperando a automação agendada rodar: nem cliente
+            # nem builder. A demanda fica em `qa`; outra sessão, depois do
+            # horário, confere e dá o veredito (ver veredito.Veredito.pendente).
+            if v.pendente:
+                return Parada("aguardar", "qa", ambiente_do_job, tuple(rodadas))
+            if not v.aprovado:
+                voltas = _rodadas_reprovadas(d)
+                _arquivar_roteiro_reprovado(d)
+                if voltas >= MAX_VOLTAS_DO_QA:
+                    demands.transition(client, demand_id, GATE_QUANDO_O_QA_NAO_FECHA, AUTOR_PIPELINE)
+                    return Parada("gate", GATE_QUANDO_O_QA_NAO_FECHA, ambiente_do_job, tuple(rodadas))
+                demands.transition(client, demand_id, "build", AUTOR_PIPELINE)
+                return Parada("refazer", "build", ambiente_do_job, tuple(rodadas))
 
         prox = proxima_etapa(d.status)
         if prox is None:

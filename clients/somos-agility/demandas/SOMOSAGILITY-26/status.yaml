@@ -2,7 +2,7 @@ id: SOMOSAGILITY-26
 client: somos-agility
 titulo: Campos de preenchimento Cenário SF
 tipo: sustentacao
-status: design
+status: aguardando_gate_design
 criado_em: '2026-11-04T20:16:11.384Z'
 historico:
 - de: null
@@ -39,3 +39,7 @@ historico:
   em: '2026-11-20T19:46:50.566084+00:00'
   motivo: refazer o desenho com a especificação de Carlos Sordi (card, 17/11), registrada
     no 03-design.md; o desenho de 10/11 construiria outra coisa.
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-20T19:58:09.975877+00:00'
