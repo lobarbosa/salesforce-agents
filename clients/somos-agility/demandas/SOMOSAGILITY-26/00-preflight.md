@@ -9,4 +9,4 @@ Etapa que vai rodar: `build` · org: `sbx-somos-agility-dev`. Gerado pela esteir
 - nenhuma
 
 ## Estado na org
-- nada a conferir: a demanda ainda não tem componentes no repositório
+- Flow `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada`: tem versão ativa nesta org — mudança entra como versão nova.
