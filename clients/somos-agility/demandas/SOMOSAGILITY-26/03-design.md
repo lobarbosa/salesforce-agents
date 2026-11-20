@@ -178,3 +178,15 @@ Instrução ao builder (sem mudar o desenho):
 1. Nos permission sets (`DiretorComercial`, `Acesso_completo_Esteira_de_vendas_e_renovacoes`) e nos perfis do pacote, manter **só o que esta demanda precisa**: as `fieldPermissions` dos 9 campos novos `PFP_N_Texto__c` (e o que já estava no arquivo na `main`, se ele existia lá). Tirar `applicationVisibilities`, `tabSettings`, `objectPermissions`, `userPermissions` e afins que vieram junto do retrieve e não são desta demanda.
 2. Fazer uma validação check-only do pacote contra a sandbox de QA (alias `sbx-somos-agility-qa`) antes de concluir, e registrar o resultado no `04-plano-build.md`. Se não houver acesso de validação à QA, registrar isso.
 3. Não reabrir a verificação de comportamento: a funcionalidade passou na dev. Basta o verificador confirmar que os 9 campos continuam com a permissão espelhada depois do enxugamento.
+
+---
+
+## Decisão do responsável (2026-11-20) depois da rodada 1 de QA — ativar o Flow na QA
+
+A rodada 1 de QA reprovou sem defeito de build: o Flow `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada` chegou à sandbox de QA como v3 em rascunho, sem nenhuma versão ativa, e o QA não ativou.
+
+Decisão de Leonardo Barbosa: ativar e desativar versões na sandbox de QA para testar está autorizado para os agentes da esteira em **qualquer cliente**, como já valia na Eplast. Nesta demanda:
+
+1. O QA **ativa a v3** do Flow em `sbx-somos-agility-qa` antes de testar, registra em `05-testes.md` a versão de antes (nenhuma ativa) e a de depois, e a deixa ativa ao final, para a homologação.
+2. Reexecutar C7 a C9 (cópia do texto longo para os campos novos, cópia do antigo e preservação do valor digitado, fórmulas do FVP) só com registros sintéticos `TESTE SOMOSAGILITY-26`. Não salvar nem alterar registro existente da QA.
+3. C2: contar `FieldPermissions` com lista explícita dos 9 campos em `Field` (a consulta com `LIKE` foi recusada).
