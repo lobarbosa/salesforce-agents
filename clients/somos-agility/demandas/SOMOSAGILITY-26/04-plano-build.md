@@ -66,3 +66,18 @@ Motivo: deploy em QA `0AfHa00000EM3aHKAT` falhou só em `PermissionSet DiretorCo
 - **Validação contra a QA: não feita.** Esta sessão só tem a sandbox de dev conectada e a regra do build é não tocar a QA. O check-only contra `sbx-somos-agility-qa` fica para o passo da esteira / CI do PR. O erro conhecido (app inexistente na QA) deixou de existir no pacote (0 ocorrências de `applicationVisibilities`).
 - **Efeito no repositório:** esses 68 arquivos agora são parciais (não espelham o perfil/PS inteiro da org). Servem para deploy aditivo da permissão; não usar como backup do perfil. Não houve mudança em campos, layouts nem Flow, nem reabertura da verificação de comportamento.
 - **Para o verificador:** confirmar que os 9 campos seguem com a permissão espelhada (573 linhas em `FieldPermissions` na dev) depois do enxugamento.
+
+## Correções da rodada 1 (QA reprovou: 05-testes-rodada-1.md)
+
+Org de build confirmada com `sf org list`: `sbx-somos-agility-dev` (única conectada). QA e produção não foram tocadas. Nenhum componente foi alterado nesta rodada.
+
+- **FALHA 1 (crítica), cópia BluePrint para PSL não exercitada na QA:** não corrigível no build. O QA registrou que não é defeito de construção: na QA o Flow chegou como v3 Draft e não há versão ativa, então nada rodou. O design (3.3) e a regra de versões fazem da ativação um passo separado, e o builder não toca a QA. O artefato do build (Flow v3 Draft, estrutura e critério de entrada inalterados) segue igual ao que passou na verificação em dev (cópia de 618 caracteres para os campos novos, antigos preservados, G1-b).
+  - **Decisão pendente, de humano/esteira:** autorizar a ativação da v3 na QA e reexecutar C7 a C9. Atenção do QA: a QA tem registros reais (322 BluePrints, 1.475 PSLs); ativar vale para qualquer PSL salva lá. Desfazer: reativar a versão anterior; na QA não há versão ativa anterior, então desfazer significa desativar a v3.
+- **C2 (contagem de FLS na QA não obtida):** erro da consulta do QA (`LIKE` em campo de Id), não do build. Usar lista explícita em `Field`. Esperado: 573 linhas, igual à dev.
+- **C12 (layouts pela tela):** fica no roteiro do cliente; não é corrigível aqui.
+- **Não reescrito:** C1, C3 a C6, C10 e C11 foram aprovados pelo QA.
+
+### Versões e ativação (atualização)
+| Componente | Dev | QA | Estado |
+|---|---|---|---|
+| Flow `Atualiza_os_Campos_PFP_X_UNC_Path_se_PSL_Criada_ou_Atualizada` | v3 Draft (v2 Active em uso) | v3 Draft, sem versão ativa | Ativação na QA pendente de autorização |
