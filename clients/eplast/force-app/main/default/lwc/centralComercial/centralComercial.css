@@ -1,0 +1,249 @@
+:host {
+  display: block;
+  color: #1e2740;
+}
+.shell {
+  background: #f3f5fa;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+}
+.hero {
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 1rem;
+  color: #fff;
+  background: #282659;
+  border-radius: 0.625rem;
+}
+.hero h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0.125rem 0 0.25rem;
+}
+.eyebrow {
+  color: #dddaf8;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.eyebrow.dark {
+  color: #5e54b1;
+}
+.analyses {
+  margin-bottom: 1.25rem;
+}
+.analysis-heading {
+  margin-bottom: 0.65rem;
+}
+.analysis-heading h2 {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.analysis-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  gap: 0.75rem;
+}
+.analysis-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 1.1rem;
+  border: 1px solid #d5d3e9;
+  border-radius: 0.625rem;
+  background: #fff;
+  color: #1e2740;
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+.analysis-card:hover {
+  border-color: #5e54b1;
+  background: #f8f7ff;
+}
+.analysis-card:focus-visible {
+  outline: 3px solid #5e54b1;
+  outline-offset: 2px;
+}
+.analysis-card:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+.analysis-content {
+  display: grid;
+  gap: 0.35rem;
+}
+.analysis-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.analysis-description {
+  color: #4f5974;
+  font-size: 0.8rem;
+}
+.analysis-action {
+  margin-top: 0.2rem;
+  color: #463b96;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.filters,
+.panel {
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid #dde2ee;
+  border-radius: 0.625rem;
+}
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 0.75rem;
+  align-items: end;
+  margin-bottom: 1rem;
+}
+.filter-note {
+  grid-column: 1 / -1;
+  color: #4f5974;
+  font-size: 0.78rem;
+}
+.workspace {
+  display: grid;
+  grid-template-columns: minmax(22rem, 1fr) minmax(30rem, 1.45fr);
+  gap: 1rem;
+  align-items: start;
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.section-heading h2,
+.selection-empty h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+h3 {
+  font-weight: 700;
+}
+.muted {
+  color: #4f5974;
+  font-size: 0.78rem;
+}
+.list-note {
+  margin-bottom: 0.75rem;
+}
+.priority-explanation {
+  margin: 0.75rem 0;
+  padding: 0.65rem 0.75rem;
+  border-left: 3px solid #5e54b1;
+  border-radius: 0.25rem;
+  background: #f6f4ff;
+  color: #33316c;
+  font-size: 0.78rem;
+}
+.column-help {
+  margin-left: 0.25rem;
+  vertical-align: middle;
+}
+.segment-action {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+.segment-hint {
+  margin: 0.35rem 0 0.75rem;
+}
+.related-filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  align-items: end;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.table-wrap {
+  overflow-x: auto;
+}
+.table-wrap table {
+  min-width: 30rem;
+}
+.table-wrap th,
+.table-wrap td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.text-link {
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: #33316c;
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.text-link:focus-visible {
+  outline: 2px solid #5e54b1;
+  outline-offset: 2px;
+}
+.selected-row {
+  background: #f0edff;
+}
+.empty,
+.selection-empty {
+  padding: 1rem;
+  background: #f3f5fa;
+  color: #4f5974;
+  border-radius: 0.375rem;
+}
+.selection-empty {
+  padding: 2rem 1.5rem;
+}
+.selection-empty p {
+  margin-top: 0.6rem;
+}
+.notice {
+  margin-bottom: 0.75rem;
+  padding: 0.65rem;
+  background: #fff7df;
+  color: #634600;
+  border-radius: 0.375rem;
+}
+.error {
+  color: #9e201f;
+  padding: 0.65rem;
+}
+.loading-box {
+  position: relative;
+  min-height: 6rem;
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+@media (max-width: 72rem) {
+  .workspace {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+@media (max-width: 34rem) {
+  .shell {
+    padding: 0.65rem;
+  }
+  .filters,
+  .related-filters {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .section-heading,
+  .pagination {
+    flex-wrap: wrap;
+  }
+}
