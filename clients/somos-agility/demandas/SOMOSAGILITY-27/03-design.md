@@ -164,3 +164,13 @@ A rodada 1 de QA reprovou só porque o usuário de execução já tem as três p
 5. **Ao final, mesmo depois de erro:** tirar a atribuição do permission set, apagar relatório, pasta e dados de teste, e **desativar** o usuário (Salesforce não apaga usuário). Registrar em `05-testes.md` o Id do usuário, o perfil e a licença usados, e o estado final (inativo, 0 atribuições).
 
 Nenhum outro usuário, perfil ou permission set é alterado. A5 continua fora do escopo (pergunta 1 da análise). A6 continua com a colaboradora na homologação.
+
+---
+
+## Decisão do responsável (2026-11-21, Leonardo Barbosa): homologação com A1/A2 pelo roteiro do cliente
+
+A rodada 2 de QA (`05-testes-rodada-2.md`) não pôde criar o usuário sintético: a licença `Salesforce` da QA está em 30 de 30, e as livres não permitem relatórios. O build não tem defeito conhecido; T1 a T5 (permission set existe, só as três permissões, sem ampliação, sem atribuição, perfil intacto) passaram nas duas rodadas.
+
+**Exceção à regra "só QA aprovado chega ao cliente", decidida pelo responsável:** a demanda vai à homologação com A1 (salvar) e A2 (exportar) **sem prova do QA**, testados pelo cliente com o `05-roteiro-cliente.md`, com usuário de teste que o cliente indicar (ou a colaboradora), na sandbox de QA.
+
+Consequência que continua valendo: `entregue` exige `05-testes.md` aprovado na QA. Depois da homologação, uma rodada de QA precisa registrar a evidência de A1/A2 (com o usuário indicado pelo cliente ou uma licença liberada) antes da entrega. A5 segue fora do escopo.
