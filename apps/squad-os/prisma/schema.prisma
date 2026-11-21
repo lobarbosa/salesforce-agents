@@ -854,6 +854,10 @@ model RelatorioEnviado {
   enviadoEm     DateTime @default(now()) @map("enviado_em")
   enviadoPor    String   @map("enviado_por")
   destinatarios Int      @default(0)
+  // O PDF que foi enviado (2026-11-21), no bucket privado `financeiro`, para o
+  // relatório ficar publicado na página do cliente igual ao que ele recebeu.
+  // Vazio nos envios anteriores: o primeiro download gera e guarda.
+  arquivo       String   @default("")
 
   @@unique([clientId, mes])
   @@map("relatorios_enviados")

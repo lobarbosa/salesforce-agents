@@ -7,6 +7,7 @@ import type { Contrato, Entregavel, TipoContrato } from "@/lib/generated/prisma/
 import type { DemandaDoProgresso, MesDeHoras, LinhaSla } from "@/lib/contrato";
 import { asSla, legendaDoProgresso, progressoDoProjeto } from "@/lib/contrato";
 import { HorasChart } from "@/components/HorasChart";
+import { RelatoriosMensais } from "@/components/RelatoriosMensais";
 
 type ContratoCompleto = Contrato & { entregaveis: Entregavel[] };
 
@@ -502,6 +503,8 @@ export function ContratoTab({
           </section>
         </>
       )}
+
+      <RelatoriosMensais clientId={clientId} />
     </div>
   );
 }

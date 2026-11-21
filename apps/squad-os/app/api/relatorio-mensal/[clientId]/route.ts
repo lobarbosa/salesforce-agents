@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { chaveDia, ehChaveMes } from "@/lib/horas";
 import { montarRelatorioDoCliente } from "@/lib/relatorio-mensal-data";
 import { emailConfigurado, enviarEmail } from "@/lib/email";
+import { guardarRelatorio } from "@/lib/relatorio-publicado";
 
 // Fechamento mensal (2026-11-03): o admin/financeiro revisa e envia ao
 // cliente o relatório do mês que fechou, em /financeiro/horas.
@@ -79,5 +80,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
     create: { clientId, mes, enviadoPor, destinatarios: enviados },
     update: { enviadoPor, destinatarios: enviados, enviadoEm: new Date() },
   });
+  // Publica na página do cliente o mesmo PDF que foi no e-mail.
+  await guardarRelatorio(clientId, mes, r.pdf);
   return NextResponse.json({ ok: true, enviados, de: r.para.length });
 }
