@@ -1,4 +1,6 @@
-**Resultado do build:** concluído
+**Resultado do build:** bloqueado
+
+> Atualizado na correção da verificação 2 (2026-11-21). O metadata da v18 abaixo continua na branch e na dev, inalterado. O bloqueio é do design: a sequência do tópico (4.3, item 1d) não funciona na plataforma e todas as saídas pedem decisão do arquiteto humano. Ver "Correções da verificação 2" no fim.
 
 # EPLAST-29 · Plano de build (rodada 5: SFAgent2 v18, Flow PrepararTarefa e CriarTarefa v3)
 
@@ -55,3 +57,28 @@ Ativar os Flows antes da v18 é seguro: a v17 chama `CriarTarefa` com o mesmo co
 
 ## Premissas assumidas
 Nenhuma nova neste build; vale o que o design registra (seção 9).
+
+## Correções da verificação 2
+Fonte: `04-verificacao-rodada-2.md` (reprovada; v18 ativada só na dev para a verificação e revertida). Nenhum componente foi alterado nesta sessão: as duas falhas dependem de decisão do design.
+
+| Falha | Situação | Por quê |
+|---|---|---|
+| FALHA 1 (resumo não aparece antes do cartão, 0 de 5; em 2 de 5 o `Resumo` aparece depois do aceite, junto de "Tarefa criada") | **Não corrigível no build; bloqueia** | Causa provada no trace: `CriarTarefa` tem `isConfirmationRequired = true`, e a plataforma descarta o texto do modelo e gera a legenda do cartão com prompt próprio. O passo 1d do design ("repetir o `Resumo` e, na mesma resposta, chamar `CriarTarefa`") não é executável. Reescrever a instrução não resolve (diretriz 2 do responsável, design 2.1-A) |
+| FALHA 2 (Q-1: após "sim", cartão com data de hoje inventada em 3 de 5; nenhuma Task gravada) | **Não alterada; depende da mesma decisão** | Sem dano (0 Task, nenhum "criada" falso). A causa provável é o agente oferecer "hoje" no 1º turno. Corrigir exigiria texto de instrução ou exigir data explícita no Flow, o que a verificação deixa para o arquiteto; vai junto com a nova sequência |
+
+### O que falta e quem responde
+Pergunta de design, para o arquiteto humano / responsável da conta (Leonardo Barbosa). Não é pergunta de negócio ao cliente e não se resolve pela org nem pelo padrão (regra 4, caso 3: o aceite de 17/11 diz que, se o 5 de 5 falhar, a alternativa D vai ao responsável, "não reforçar texto"):
+
+1. Como o usuário passa a ver o resumo completo (registro e tipo, responsável, descrição, prazo) antes de confirmar? Opções levantadas pela verificação e pelo design:
+   - **(a)** Campo de resumo como entrada de `CriarTarefa` (ou usar os campos que o cartão já mostra), para o texto aparecer dentro do cartão nativo. Muda o contrato da ação, que o design 4.2 manteve igual. Não testado se o cartão mostra o campo de forma legível.
+   - **(b)** Tirar `isConfirmationRequired` de `CriarTarefa`: o assistente exibe o `Resumo` e espera a resposta. A confirmação deixa de ser o cartão nativo, contra a decisão de design e o aceite.
+   - **(c)** Alternativa D do design (variável do agente e filtro de disponibilidade da ação), formato de metadata ainda não confirmado na org.
+2. Q-1: "sim" a uma pergunta sobre data conta como aceitar "hoje"? Se não, o Flow deve exigir a data explícita, ou o tópico deve proibir oferecer "hoje"?
+
+Quando houver resposta, o build corrige sobre a v18 (versão nova, v19, se a v18 já tiver sido ativada em outra org) sem tocar nas versões ativas.
+
+### Estado da dev (conferido por query em 2026-11-21)
+`SFAgent2`: v13 Active (conforme o design), v14 a v18 Inactive. `Task_Agente_CriarTarefa`: v1 Active, v2 e v3 Obsolete. `Task_Agente_PrepararTarefa` v1 Obsolete. Ou seja, a verificação reverteu a ativação; para nova verificação é preciso reativar, e as versões Obsolete exigirão nova versão de Flow (Obsolete não volta a Draft).
+
+### Sem prova
+Q-8, Q-11, Q-13 e AC-4 seguem sem execução (verificação 2, "Sem prova"); a regressão de EPLAST-27, 34 e 46 só foi conferida por comparação do bundle.

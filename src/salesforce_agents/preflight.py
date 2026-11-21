@@ -235,5 +235,7 @@ def nota_para_o_prompt(client: str, demand_id: str) -> str:
     return (
         f"\n\nA esteira conferiu a org e as outras demandas antes desta sessão: leia "
         f"`demandas/{demand_id}/{NOME}` e repasse ao subagente. Componente que outra demanda também "
-        "altera parte do que ela deixou; versão ativa de agente ou Flow não é alterada no lugar.\n"
+        "altera parte do que ela deixou; versão ativa de agente ou Flow não é alterada no lugar "
+        "(o conteúdo). Isso não proíbe ativar: na sandbox de QA, o `qa` ativa a versão da "
+        "demanda antes de testar, como manda a regra dele, em qualquer cliente.\n"
     )
