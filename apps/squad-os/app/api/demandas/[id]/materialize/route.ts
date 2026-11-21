@@ -5,6 +5,7 @@ import { enfileirar, processarFila } from "@/lib/fila-esteira";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { canManageClientData } from "@/lib/auth";
 import { recusaSeEncerrado } from "@/lib/encerramento-server";
+import { propostaPendente } from "@/lib/assessment-propostas";
 
 // Materializa a demanda em clients/<slug>/demandas/<code>/ neste repo e
 // dispara run-demand.yml. Chamado a partir do card (ver componentes/DemandModal)
@@ -31,6 +32,11 @@ export async function POST(
 
   if (demanda.materializadoEm) {
     return NextResponse.json({ error: "esta demanda já foi materializada" }, { status: 409 });
+  }
+  // Melhoria do assessment proposta ao cliente: só vai para a esteira depois
+  // que ele aprovar (/api/demandas/[id]/proposta).
+  if (propostaPendente(demanda)) {
+    return NextResponse.json({ error: "esta melhoria ainda espera a aprovação do cliente" }, { status: 409 });
   }
 
   // Reivindica antes de escrever no git: dois cliques (ou duas abas)

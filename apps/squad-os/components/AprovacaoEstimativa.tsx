@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
 import { aguardaAprovacaoEstimativa, estimativaAprovada } from "@/lib/demandas";
+import { propostaPendente } from "@/lib/assessment-propostas";
+import { DecisaoProposta } from "@/components/PropostaMelhoria";
 
 // Aprovação da estimativa de horas pelo cliente (2026-10-21). O número
 // aprovado é o que debita do contrato quando a demanda entra em build, e sem
@@ -139,8 +141,32 @@ export function DecisaoEstimativa({ demanda, podeDecidir }: { demanda: DemandaCo
 export function AprovacoesTab({ demandas, onAbrir }: { demandas: DemandaCompleta[]; onAbrir?: (id: string) => void }) {
   const pendentes = demandas.filter(aguardaAprovacaoEstimativa);
   const aprovadas = demandas.filter((d) => estimativaAprovada(d) && !d.estimativaDebitadaEm);
+  const propostas = demandas.filter((d) => d.status === "backlog" && propostaPendente(d));
   return (
     <div className="aprovacoes">
+      {propostas.length > 0 && (
+        <>
+          <h3 className="aprovacoes-sub">Melhorias propostas pela equipe</h3>
+          <ul className="aprovacoes-lista">
+            {propostas.map((d) => (
+              <li key={d.id} className="aprovacoes-item">
+                <div className="aprovacoes-titulo">
+                  <span className="mono">{d.code}</span>
+                  {onAbrir ? (
+                    <button type="button" className="link-btn" onClick={() => onAbrir(d.id)}>
+                      {d.titulo}
+                    </button>
+                  ) : (
+                    <span>{d.titulo}</span>
+                  )}
+                </div>
+                <DecisaoProposta demanda={d} podeDecidir />
+              </li>
+            ))}
+          </ul>
+          <h3 className="aprovacoes-sub">Estimativas de horas</h3>
+        </>
+      )}
       <p className="aprovacoes-intro">
         Cada demanda tem uma estimativa de horas feita depois da análise. Aprove para a construção começar — as horas
         aprovadas são debitadas do contrato quando ela começa. Se não concordar, segure a demanda e diga por quê.

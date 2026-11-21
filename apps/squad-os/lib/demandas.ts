@@ -2,6 +2,8 @@
 // Server e Client Components. Espelha STAGES_TRIAGEM/STAGES_EXECUCAO de
 // src/salesforce_agents/demands.py.
 
+import { propostaPendente } from "@/lib/assessment-propostas";
+
 export const TRIAGE = ["backlog", "planejada", "recorrente", "standby"] as const;
 export const TRIAGE_LABEL: Record<string, string> = {
   backlog: "Backlog",
@@ -328,12 +330,13 @@ export function podeCancelar(status: string): boolean {
 
 /** Por que soltar o card nesta fase não faz nada — ou null se faz. */
 export function motivoSemDrop(
-  d: { status: string; materializadoEm: Date | string | null },
+  d: { status: string; materializadoEm: Date | string | null; propostaClienteEm?: Date | string | null; propostaDecisao?: string | null },
   faseDestino: string
 ): string | null {
   if (faseDestino === "analise") {
     if (d.status !== "backlog") return "só demanda no backlog vai para a esteira";
     if (d.materializadoEm) return "esta demanda já foi enviada para a esteira";
+    if (propostaPendente(d)) return "esta melhoria ainda espera a aprovação do cliente";
     return null;
   }
   if (faseDestino === "entregue") {
@@ -446,6 +449,9 @@ interface DemandaParaQuemAge extends ComContrato {
   estimativaConsultorHoras: number | null;
   estimativaAprovadaHoras: number | null;
   disparos?: { tipo: string; gate: string; disparadoEm: Date | string | null; concluidoEm: Date | string | null; nota?: string }[];
+  // Melhoria do assessment proposta ao cliente (lib/assessment-propostas.ts).
+  propostaClienteEm?: Date | string | null;
+  propostaDecisao?: string | null;
 }
 
 const OQUE_DO_GATE: Record<string, string> = {
@@ -474,6 +480,7 @@ export function acoesPendentes(d: DemandaParaQuemAge): AcaoPendente[] {
     });
   }
   if (aguardaAprovacaoEstimativa(d)) acoes.push({ quem: "cliente", oque: "aprovar horas" });
+  if (d.status === "backlog" && propostaPendente(d)) acoes.push({ quem: "cliente", oque: "aprovar proposta" });
   return acoes;
 }
 
@@ -491,6 +498,7 @@ export const QUEM_AGE_LABEL: Record<QuemAge, string> = {
 export function estadoDoClienteDemanda(d: DemandaParaQuemAge): EstadoCliente {
   const porStatus = estadoDoCliente(d.status);
   if (porStatus === "andamento" && aguardaAprovacaoEstimativa(d)) return "voce";
+  if (d.status === "backlog" && propostaPendente(d)) return "voce";
   return porStatus;
 }
 
@@ -499,6 +507,7 @@ export function situacaoParaCliente(d: DemandaParaQuemAge): string {
   const acoes = acoesPendentes(d);
   if (d.status === GATE_DO_CLIENTE) return "Sua vez: conferir a entrega e homologar";
   if (acoes.some((a) => a.quem === "cliente" && a.oque === "aprovar horas")) return "Sua vez: aprovar a estimativa de horas";
+  if (acoes.some((a) => a.quem === "cliente" && a.oque === "aprovar proposta")) return "Sua vez: aprovar a melhoria proposta pela equipe";
   if (d.status === "release") return "Liberando a entrega";
   if (acoes.some((a) => a.quem === "agente")) return "Equipe trabalhando agora";
   if (acoes.some((a) => a.quem === "fila")) return "Na fila para começar";

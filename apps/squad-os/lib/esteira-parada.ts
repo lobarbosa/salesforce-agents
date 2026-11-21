@@ -21,6 +21,8 @@ export interface DemandaParaParada {
   artefatoConteudo: string;
   disparos: { tipo: string; gate: string; disparadoEm: Date | null; concluidoEm: Date | null }[];
   client: { nome: string; contrato?: { tipo: string } | null };
+  propostaClienteEm?: Date | null;
+  propostaDecisao?: string;
 }
 
 export interface Parada {

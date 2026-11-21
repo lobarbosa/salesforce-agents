@@ -370,6 +370,22 @@ Vale para o assessment e para as 7 etapas de demanda.
    de confirmação na tela; o copiloto explicitamente recusa qualquer uma das três pelo chat,
    pra qualquer papel.
 
+   Melhorias do assessment propostas ao cliente (2026-11-21, decisão do responsável): o
+   time pede ao copiloto, na página do cliente, o que do assessment ainda não virou
+   demanda (`listar_melhorias_do_assessment`) e, depois de confirmar a lista exata na
+   conversa, ele abre as demandas (`propor_melhorias_ao_cliente`, até 10 por vez e 20 por
+   hora por cliente, só admin/consultor, mesmo recorte do RAG). Elas nascem em `backlog`
+   pela mesma `criarDemanda()`, marcadas com a recomendação de origem
+   (`origemAssessmentId`, id estável derivado de área + título em
+   `lib/assessment-propostas.ts`, para a mesma melhoria não virar dois cards) e com
+   `propostaClienteEm`. Enquanto o cliente não decide, a demanda não vai para a esteira
+   (materialize e o arrastar recusam). **Só o papel cliente decide**, no card ou na aba
+   Aprovações (`/api/demandas/[id]/proposta`, dois passos): aprovada, continua no backlog e
+   o time decide quando manda para a esteira, porque a fila é uma por cliente e as horas
+   do AMS só correm depois da análise e da estimativa; recusada, vai para `cancelada` com o
+   motivo, e a recomendação não é oferecida de novo. O copiloto do cliente mostra e explica
+   as propostas, mas não aprova nem recusa pelo chat.
+
    RAG interno por cliente (`src/salesforce_agents/rag.py`, `apps/squad-os/lib/rag.ts`,
    `/api/sync/rag*`) — decisão de 2026-09-29, revista em 2026-11-01: o pipeline de agentes
    Python consulta (`rag_consultar`, liberada nos subagentes de análise, design, build e

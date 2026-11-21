@@ -8,6 +8,7 @@ import { criarFerramentasCliente } from "@/lib/copilot/ferramentas";
 import { criarFerramentasFinanceiro } from "@/lib/copilot/ferramentas-financeiro";
 import { criarFerramentasEsteira } from "@/lib/copilot/ferramentas-esteira";
 import { criarFerramentasConhecimento } from "@/lib/copilot/ferramentas-conhecimento";
+import { criarFerramentasAssessment } from "@/lib/copilot/ferramentas-assessment";
 import { papelVeConhecimento } from "@/lib/copilot/papeis";
 import { dentroDoLimiteDeRequisicoes, MAX_REQUISICOES_POR_DIA, validarMensagens } from "@/lib/copilot/limites";
 import { consumirLimite } from "@/lib/limite-uso";
@@ -40,6 +41,7 @@ O que você pode fazer:
 - Responder perguntas sobre o avanço das demandas e atividades do cliente (ferramenta consultar_demandas) e sobre o contrato — horas consumidas ou progresso do projeto (ferramenta consultar_contrato).
 - Explicar o diagnóstico da org feito no início do contrato — saúde, riscos e recomendações (ferramenta consultar_saude_da_org), em linguagem de negócio.
 - Ajudar a esclarecer e registrar um pedido novo, pequeno, como demanda no backlog (ferramenta criar_demanda) — só depois de entender o suficiente pra escrever um título e descrição claros. Se faltar contexto, pergunte antes de criar.
+- Mostrar as melhorias que a equipe propôs a partir do diagnóstico da org (consultar_demandas, campo melhoriaPropostaParaVoceAprovar) e explicar cada uma. A decisão é sempre no card da demanda, com os botões Aprovar ou Recusar: você não aprova nem recusa pela conversa.
 
 Nunca fala sobre outro cliente — você só enxerga os dados deste cliente, e nem faria sentido responder sobre outro.
 
@@ -64,7 +66,7 @@ function promptInterno({
 
   if (clientNome) {
     partes.push(
-      `A conversa está acontecendo na página do cliente "${clientNome}": use consultar_demandas e consultar_contrato pra responder sobre o andamento e o contrato dele, consultar_saude_da_org para os riscos e recomendações do diagnóstico da org (assessment), consultar_base_conhecimento para o histórico interno do cliente (demandas anteriores, decisões de design, aprovações, briefing e o assessment completo — cite o arquivo de origem), e criar_demanda pra registrar um pedido novo no backlog dele (pergunte antes de criar se faltar contexto). Não fale sobre outro cliente — se quiserem saber de outro, diga pra abrir a página dele.`
+      `A conversa está acontecendo na página do cliente "${clientNome}": use consultar_demandas e consultar_contrato pra responder sobre o andamento e o contrato dele, consultar_saude_da_org para os riscos e recomendações do diagnóstico da org (assessment), consultar_base_conhecimento para o histórico interno do cliente (demandas anteriores, decisões de design, aprovações, briefing e o assessment completo — cite o arquivo de origem), e criar_demanda pra registrar um pedido novo no backlog dele (pergunte antes de criar se faltar contexto). Para transformar o assessment em demandas que o cliente aprova: use listar_melhorias_do_assessment, detalhe com consultar_base_conhecimento quando precisar, monte a lista de cards (título e texto em linguagem de cliente, sem dado pessoal) e mostre à pessoa; só chame propor_melhorias_ao_cliente depois que ela confirmar essa lista exata. As propostas entram no backlog esperando o cliente aprovar no card; aprovadas, continuam no backlog para o time mandar para a esteira. Não fale sobre outro cliente — se quiserem saber de outro, diga pra abrir a página dele.`
     );
   } else {
     partes.push(
@@ -172,6 +174,11 @@ export async function POST(request: NextRequest) {
     // cliente — o corpus é material interno de delivery.
     ...(papelVeConhecimento(usuario.role) && clienteEmEscopo
       ? criarFerramentasConhecimento({ clientId: clienteEmEscopo.id })
+      : {}),
+    // Melhorias do assessment propostas ao cliente: mesmo recorte do RAG (só o
+    // time, só o cliente da página aberta). O cliente decide no card.
+    ...(papelVeConhecimento(usuario.role) && clienteEmEscopo
+      ? criarFerramentasAssessment({ usuario, clientId: clienteEmEscopo.id })
       : {}),
   };
 

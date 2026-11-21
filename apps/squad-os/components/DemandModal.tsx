@@ -5,6 +5,8 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import type { DemandaCompleta } from "@/lib/data";
 import { DecisaoEstimativa } from "@/components/AprovacaoEstimativa";
+import { DecisaoProposta } from "@/components/PropostaMelhoria";
+import { propostaPendente } from "@/lib/assessment-propostas";
 import { QuemAgeChips } from "@/components/DemandCard";
 import { Modal } from "@/components/Modal";
 import { Artefato } from "@/components/Artefato";
@@ -210,7 +212,8 @@ export function DemandModal({
         </div>
       )}
 
-      {canManage && demanda.status === "backlog" && (
+      <DecisaoProposta demanda={demanda} podeDecidir={visaoCliente} />
+      {canManage && demanda.status === "backlog" && !propostaPendente(demanda) && (
         <div className="approval-banner pendente">
           {materializeErro && <div role="alert" style={{ marginBottom: "0.4rem" }}>{materializeErro}</div>}
           {demanda.materializadoEm
