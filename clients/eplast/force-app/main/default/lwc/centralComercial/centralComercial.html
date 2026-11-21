@@ -1,0 +1,503 @@
+<template>
+  <main class="shell">
+    <header class="hero">
+      <p class="eyebrow">Carteira comercial</p>
+      <h1>Central Comercial</h1>
+      <p>
+        Escolha clientes ou leads, segmente a lista e explore os relacionados.
+      </p>
+    </header>
+    <section class="analyses" aria-label="Análises comerciais">
+      <div class="analysis-heading">
+        <h2>Análises</h2>
+        <p class="muted">
+          Cada análise usa seus próprios filtros.
+        </p>
+      </div>
+      <div class="analysis-cards">
+        <button
+          type="button"
+          class="analysis-card"
+          onclick={openTicketMedio}
+          disabled={analysisOpening}
+        >
+          <lightning-icon
+            icon-name="utility:chart"
+            size="small"
+            alternative-text=""
+          ></lightning-icon>
+          <span class="analysis-content">
+            <span class="analysis-title">Ticket Médio</span>
+            <span class="analysis-description"
+              >Oportunidades ganhas por data de fechamento. Escolha o período na
+              análise.</span
+            >
+            <span class="analysis-action">Abrir análise</span>
+          </span>
+        </button>
+        <a
+          class="analysis-card"
+          href={dashboardUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <lightning-icon
+            icon-name="standard:dashboard"
+            size="small"
+            alternative-text=""
+          ></lightning-icon>
+          <span class="analysis-content">
+            <span class="analysis-title">Leads &amp; Oportunidades</span>
+            <span class="analysis-description"
+              >Painel original do Salesforce, com seus próprios filtros. Abre em
+              uma nova aba.</span
+            >
+            <span class="analysis-action">Abrir painel ↗</span>
+          </span>
+        </a>
+      </div>
+    </section>
+    <section class="filters" aria-label="Segmentação da carteira">
+      <lightning-radio-group
+        name="entityType"
+        label="Consultar"
+        type="button"
+        options={entityOptions}
+        value={entityType}
+        onchange={handleEntityType}
+      ></lightning-radio-group>
+      <lightning-combobox
+        label="Escopo"
+        options={scopeOptions}
+        value={scopeValue}
+        onchange={handleScope}
+      ></lightning-combobox>
+      <lightning-input
+        type="search"
+        label="Nome contém"
+        value={nameSearch}
+        max-length="120"
+        onchange={handleName}
+      ></lightning-input>
+      <lightning-record-picker
+        label={ownerLabel}
+        object-api-name="User"
+        value={ownerId}
+        filter={activeUserFilter}
+        onchange={handleOwner}
+      ></lightning-record-picker>
+      <template lwc:if={isAccount}>
+        <div>
+          <lightning-combobox
+            label="Setor da conta"
+            options={sectorOptions}
+            value={accountSector}
+            disabled={sectorDisabled}
+            onchange={handleSector}
+          ></lightning-combobox>
+          <template lwc:if={sectorNote}
+            ><p class="muted" role="status">{sectorNote}</p></template
+          >
+        </div>
+        <lightning-input
+          type="text"
+          label="UF de cobrança"
+          value={billingState}
+          max-length="80"
+          onchange={handleState}
+        ></lightning-input>
+      </template>
+      <template lwc:else>
+        <lightning-combobox
+          label="Status do lead"
+          options={leadStatusOptions}
+          value={leadStatus}
+          onchange={handleLeadStatus}
+        ></lightning-combobox>
+      </template>
+      <lightning-button
+        variant="brand"
+        label="Buscar dados"
+        icon-name="utility:search"
+        disabled={searchDisabled}
+        onclick={searchDirectory}
+      ></lightning-button>
+      <p class="filter-note">
+        A consulta começa em Buscar dados. As datas refinam os relacionados
+        depois da seleção de uma conta ou lead.
+      </p>
+      <template lwc:if={metadataError}>
+        <p class="error" role="alert">{metadataError}</p>
+        <lightning-button
+          label="Recarregar filtros"
+          onclick={loadMetadata}
+        ></lightning-button>
+      </template>
+    </section>
+    <section class="workspace" aria-label="Carteira e relacionados">
+      <section class="panel directory" aria-label="Lista de clientes ou leads">
+        <div class="section-heading">
+          <h2>{directoryTitle}</h2>
+          <span class="muted">{directoryCoverage}</span>
+        </div>
+        <template lwc:if={directoryDirty}
+          ><p class="notice" role="status">
+            Filtros alterados. A lista mostra a última busca; clique em Buscar
+            dados para aplicar.
+          </p></template
+        >
+        <template lwc:if={directoryLoading}>
+          <div class="loading-box">
+            <lightning-spinner
+              alternative-text="Buscando clientes ou leads"
+              size="small"
+            ></lightning-spinner>
+          </div>
+        </template>
+        <template lwc:elseif={directoryError}
+          ><p class="error" role="alert">{directoryError}</p></template
+        >
+        <template lwc:elseif={directoryBlockError}
+          ><p class="error" role="status">{directoryBlockError}</p></template
+        >
+        <template lwc:elseif={hasDirectory}>
+          <p class="muted list-note">{directorySortNote}</p>
+          <template lwc:if={isLead}
+            ><p class="priority-explanation">{priorityExplanation}</p></template
+          >
+          <template lwc:if={hasDirectoryRows}>
+            <div class="segment-action">
+              <lightning-button
+                label="Ver relacionados do recorte"
+                disabled={segmentDisabled}
+                onclick={selectSegment}
+              ></lightning-button>
+              <lightning-helptext
+                content={segmentHelp}
+                alternative-text="O que significa Ver relacionados do recorte"
+              ></lightning-helptext>
+            </div>
+            <p class="muted segment-hint">{segmentHint}</p>
+            <div
+              class="table-wrap"
+              tabindex="0"
+              role="region"
+              aria-label="Resultados da segmentação"
+            >
+              <table
+                class="slds-table slds-table_cell-buffer slds-table_bordered"
+              >
+                <thead>
+                  <tr>
+                    <th scope="col">Nome</th>
+                    <template lwc:if={isAccount}
+                      ><th scope="col">Vendedor da conta</th>
+                      <th scope="col">Setor</th>
+                      <th scope="col">UF de cobrança</th></template
+                    >
+                    <template lwc:else
+                      ><th scope="col">Empresa</th>
+                      <th scope="col">Responsável</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">
+                        Score<lightning-helptext
+                          class="column-help"
+                          content={leadScoreHelp}
+                          alternative-text="Como é calculado o Score do Lead"
+                        ></lightning-helptext>
+                      </th>
+                      <th scope="col">
+                        Faixa oficial<lightning-helptext
+                          class="column-help"
+                          content={leadBandHelp}
+                          alternative-text="Como é definida a Faixa do Lead"
+                        ></lightning-helptext></th
+                    ></template>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template for:each={directoryRows} for:item="row">
+                    <tr key={row.id} class={row.className}>
+                      <th scope="row">
+                        <button
+                          type="button"
+                          class="text-link"
+                          data-id={row.id}
+                          title="Ver relacionados"
+                          onclick={selectEntity}
+                        >
+                          {row.label}
+                        </button>
+                      </th>
+                      <template lwc:if={isAccount}
+                        ><td>{row.ownerLabel}</td>
+                        <td>{row.sectorLabel}</td>
+                        <td>{row.stateLabel}</td></template
+                      >
+                      <template lwc:else
+                        ><td>{row.companyLabel}</td>
+                        <td>{row.ownerLabel}</td>
+                        <td>{row.statusLabel}</td>
+                        <td>{row.scoreLabel}</td>
+                        <td>{row.bandLabel}</td></template
+                      >
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <lightning-button
+                label="Anterior"
+                disabled={previousDirectoryDisabled}
+                onclick={previousDirectory}
+              ></lightning-button>
+              <span class="muted">{directoryCoverage}</span>
+              <lightning-button
+                label="Próxima"
+                disabled={nextDirectoryDisabled}
+                onclick={nextDirectory}
+              ></lightning-button>
+            </div>
+          </template>
+          <template lwc:else
+            ><p class="empty">
+              Nenhum registro encontrado para os filtros consultados.
+            </p></template
+          >
+        </template>
+        <template lwc:else
+          ><p class="empty initial-state">
+            A lista ainda não foi consultada. Ajuste os filtros e clique em
+            Buscar dados.
+          </p></template
+        >
+      </section>
+      <section
+        class="panel related"
+        aria-label="Relacionados do registro selecionado"
+      >
+        <template lwc:if={hasSelection}>
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow dark">Registro selecionado</p>
+              <h2>{selectedEntity.label}</h2>
+              <template lwc:if={isSegment}
+                ><p class="muted">
+                  Relacionados de todo o recorte consultado.
+                </p></template
+              >
+              <template lwc:else
+                ><a
+                  class="text-link"
+                  href={selectedUrl}
+                  data-id={selectedEntity.id}
+                  data-object={selectedEntity.object}
+                  onclick={openRecord}
+                  >Abrir registro no Salesforce</a
+                ></template
+              >
+            </div>
+            <lightning-button-icon
+              icon-name="utility:close"
+              alternative-text="Fechar relacionados"
+              onclick={clearSelection}
+            ></lightning-button-icon>
+          </div>
+          <div class="related-filters">
+            <lightning-combobox
+              label="Relacionados"
+              options={relatedOptions}
+              value={relatedType}
+              onchange={handleRelatedType}
+            ></lightning-combobox>
+            <template lwc:if={hasStatusFilter}
+              ><lightning-combobox
+                label="Situação"
+                options={relatedScopeOptions}
+                value={recordScope}
+                onchange={handleRecordScope}
+              ></lightning-combobox
+            ></template>
+            <template lwc:if={hasDateFilter}>
+              <div>
+                <lightning-combobox
+                  label="Período dos relacionados"
+                  options={dateOptions}
+                  value={datePreset}
+                  onchange={handleDatePreset}
+                ></lightning-combobox>
+                <p class="muted">{relatedConfig.dateLabel}</p>
+              </div>
+            </template>
+            <template lwc:if={showMonth}
+              ><lightning-combobox
+                label="Mês de referência"
+                options={monthOptions}
+                value={monthKey}
+                onchange={handleMonth}
+              ></lightning-combobox
+            ></template>
+            <lightning-button
+              variant="brand"
+              label="Buscar relacionados"
+              disabled={relatedLoading}
+              onclick={searchRelated}
+            ></lightning-button>
+          </div>
+          <template lwc:if={relatedDirty}
+            ><p class="notice" role="status">
+              Período ou situação alterados. Clique em Buscar relacionados para
+              aplicar.
+            </p></template
+          >
+          <template lwc:if={relatedLoading}
+            ><div class="loading-box">
+              <lightning-spinner
+                alternative-text="Buscando relacionados"
+                size="small"
+              ></lightning-spinner></div
+          ></template>
+          <template lwc:elseif={relatedError}
+            ><p class="error" role="alert">{relatedError}</p></template
+          >
+          <template lwc:elseif={relatedBlockError}
+            ><p class="error" role="status">{relatedBlockError}</p></template
+          >
+          <template lwc:elseif={hasRelated}>
+            <h3>{relatedConfig.title}</h3>
+            <p class="muted list-note">{relatedCriterion}</p>
+            <template lwc:if={relatedConfig.score}
+              ><p class="priority-explanation">
+                {priorityExplanation}
+              </p></template
+            >
+            <template lwc:if={hasRelatedRows}>
+              <div
+                class="table-wrap"
+                tabindex="0"
+                role="region"
+                aria-label="Lista de relacionados"
+              >
+                <table
+                  class="slds-table slds-table_cell-buffer slds-table_bordered"
+                >
+                  <thead>
+                    <tr>
+                      <th scope="col">Registro</th>
+                      <template lwc:if={isSegment}
+                        ><th scope="col">{parentColumnLabel}</th></template
+                      >
+                      <template lwc:if={relatedConfig.owner}
+                        ><th scope="col">Responsável</th></template
+                      >
+                      <template lwc:if={relatedConfig.status}
+                        ><th scope="col">Status / fase</th></template
+                      >
+                      <template lwc:if={hasDateFilter}
+                        ><th scope="col">
+                          {relatedConfig.dateLabel}
+                        </th></template
+                      >
+                      <template lwc:if={relatedConfig.amount}
+                        ><th scope="col">Valor</th></template
+                      >
+                      <template lwc:if={relatedConfig.score}
+                        ><th scope="col">
+                          Score<lightning-helptext
+                            class="column-help"
+                            content={opportunityScoreHelp}
+                            alternative-text="Como é calculado o Score da Oportunidade"
+                          ></lightning-helptext>
+                        </th>
+                        <th scope="col">
+                          Faixa oficial<lightning-helptext
+                            class="column-help"
+                            content={opportunityBandHelp}
+                            alternative-text="Como é definida a Faixa da Oportunidade"
+                          ></lightning-helptext></th
+                      ></template>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template for:each={relatedRows} for:item="row"
+                      ><tr key={row.id}>
+                        <th scope="row">
+                          <a
+                            class="text-link"
+                            href={row.recordUrl}
+                            data-id={row.id}
+                            data-object={row.object}
+                            onclick={openRecord}
+                            >{row.label}</a
+                          >
+                        </th>
+                        <template lwc:if={isSegment}
+                          ><td>
+                            <button
+                              type="button"
+                              class="text-link"
+                              data-id={row.parentId}
+                              onclick={selectRelatedParent}
+                            >
+                              {row.parentName}
+                            </button>
+                          </td></template
+                        >
+                        <template lwc:if={relatedConfig.owner}
+                          ><td>{row.ownerLabel}</td></template
+                        >
+                        <template lwc:if={relatedConfig.status}
+                          ><td>{row.statusLabel}</td></template
+                        >
+                        <template lwc:if={hasDateFilter}
+                          ><td>{row.dateLabel}</td></template
+                        >
+                        <template lwc:if={relatedConfig.amount}
+                          ><td>{row.amountLabel}</td></template
+                        >
+                        <template lwc:if={relatedConfig.score}
+                          ><td>{row.scoreLabel}</td>
+                          <td>{row.bandLabel}</td></template
+                        >
+                      </tr></template
+                    >
+                  </tbody>
+                </table>
+              </div>
+              <div class="pagination">
+                <lightning-button
+                  label="Anterior"
+                  disabled={previousRelatedDisabled}
+                  onclick={previousRelated}
+                ></lightning-button
+                ><span class="muted">{relatedCoverage}</span
+                ><lightning-button
+                  label="Próxima"
+                  disabled={nextRelatedDisabled}
+                  onclick={nextRelated}
+                ></lightning-button>
+              </div>
+            </template>
+            <template lwc:else
+              ><p class="empty">
+                Nenhum relacionado encontrado para este registro e para os
+                filtros consultados.
+              </p></template
+            >
+          </template>
+        </template>
+        <template lwc:else
+          ><div class="selection-empty">
+            <h2>Explore os relacionados</h2>
+            <p>
+              Depois da busca, selecione uma conta para ver oportunidades,
+              tarefas, pedidos e contatos. Selecione um lead para ver suas
+              tarefas.
+            </p>
+          </div></template
+        >
+      </section>
+    </section>
+  </main>
+</template>

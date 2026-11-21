@@ -1,0 +1,126 @@
+<template>
+  <lightning-modal-header label="Ticket Médio"></lightning-modal-header>
+  <lightning-modal-body>
+    <div class="analysis-body">
+      <p class="intro">
+        Oportunidades ganhas, filtradas pela data de fechamento. Esta análise
+        usa filtros próprios e considera os registros que você pode acessar.
+      </p>
+      <div class="filters">
+        <lightning-input
+          data-field="start"
+          type="date"
+          label="Fechamento a partir de"
+          value={startDate}
+          required
+          disabled={loading}
+          onchange={handleStart}
+        ></lightning-input>
+        <lightning-input
+          data-field="end"
+          type="date"
+          label="Fechamento até"
+          value={endDate}
+          required
+          disabled={loading}
+          onchange={handleEnd}
+        ></lightning-input>
+        <lightning-button
+          label="Consultar"
+          variant="brand"
+          icon-name="utility:search"
+          disabled={loading}
+          onclick={consult}
+        ></lightning-button>
+      </div>
+      <p class="hint">
+        Consulte até 24 meses por vez. Os filtros da carteira não são aplicados
+        a esta análise.
+      </p>
+      <template lwc:if={dirty}>
+        <p class="notice" role="status">
+          Período alterado. Clique em Consultar para atualizar o resultado
+          abaixo.
+        </p>
+      </template>
+      <template lwc:if={loading}>
+        <div class="loading-box">
+          <lightning-spinner
+            alternative-text="Consultando oportunidades ganhas"
+            size="small"
+          ></lightning-spinner>
+        </div>
+      </template>
+      <template lwc:elseif={error}>
+        <p class="error" role="alert">{error}</p>
+      </template>
+      <template lwc:elseif={hasResult}>
+        <p class="criterion">{criterion}</p>
+        <template lwc:if={hasIncluded}>
+          <div class="metrics" aria-label="Resultado do período">
+            <div class="metric primary">
+              <span>Ticket médio</span><strong>{averageLabel}</strong>
+            </div>
+            <div class="metric">
+              <span>Oportunidades consideradas</span
+              ><strong>{countLabel}</strong>
+            </div>
+            <div class="metric">
+              <span>Valor total das oportunidades</span
+              ><strong>{totalLabel}</strong>
+            </div>
+          </div>
+          <h2>Ticket médio por mês de fechamento</h2>
+          <p class="hint">
+            Cada barra mostra a média do mês. O ticket do período considera
+            todas as oportunidades com valor informado.
+          </p>
+          <ul class="chart" aria-label="Evolução mensal do Ticket Médio">
+            <template for:each={bars} for:item="month">
+              <li key={month.monthKey} class="chart-row">
+                <span class="month">{month.label}</span>
+                <div
+                  class="track"
+                  role="img"
+                  aria-label={month.description}
+                  title={month.description}
+                >
+                  <span class="origin" style={month.originStyle}></span>
+                  <template lwc:if={month.hasValue}
+                    ><span class={month.barClass} style={month.barStyle}></span
+                  ></template>
+                </div>
+                <span class="amount"
+                  >{month.amountLabel}<small
+                    >{month.countLabel} oportunidades</small
+                  ></span
+                >
+              </li>
+            </template>
+          </ul>
+        </template>
+        <template lwc:else
+          ><p class="empty" role="status">{emptyMessage}</p></template
+        >
+        <p class="hint missing">{missingNote}</p>
+      </template>
+      <template lwc:elseif={unqueried}>
+        <div class="empty">
+          <p>
+            Escolha o período de fechamento e clique em
+            <strong>Consultar</strong>.
+          </p>
+          <p>O gráfico será carregado após a consulta.</p>
+        </div>
+      </template>
+      <p class="definition">
+        <strong>Como é calculado:</strong> soma dos valores das oportunidades
+        ganhas com valor informado, dividida pela quantidade dessas
+        oportunidades. Os valores são apresentados na moeda corporativa.
+      </p>
+    </div>
+  </lightning-modal-body>
+  <lightning-modal-footer
+    ><lightning-button label="Fechar" onclick={closeAnalysis}></lightning-button
+  ></lightning-modal-footer>
+</template>
