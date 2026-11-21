@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { ehPrimeiroDiaUtil, entreguesNoMes, nomeDoMes, textoDoRelatorio } from "../lib/relatorio-mensal";
+import { ehPrimeiroDiaUtil, entreguesNoMes, mesesPublicaveis, nomeDoMes, textoDoRelatorio } from "../lib/relatorio-mensal";
 import { gerarPdfRelatorio } from "../lib/relatorio-pdf";
 
 let falhas = 0;
@@ -13,6 +13,12 @@ function caso(nome: string, fn: () => void) {
   }
 }
 
+caso("meses publicados: de outubro de 2026 até o mês anterior", () => {
+  assert.deepEqual(mesesPublicaveis("2026-09", "2026-11-21"), ["2026-10"]);
+  assert.deepEqual(mesesPublicaveis("2026-09", "2026-12-01"), ["2026-10", "2026-11"]);
+  assert.deepEqual(mesesPublicaveis("2026-11", "2026-11-30"), []);
+  assert.deepEqual(mesesPublicaveis("2026-11", "2027-02-02"), ["2026-11", "2026-12", "2027-01"]);
+});
 caso("entregue no mês pelo fuso de São Paulo, e só a última entrega conta", () => {
   const d = [
     { code: "A", status: "entregue", historico: [{ para: "entregue", em: "2026-10-31T23:30:00Z" }] }, // 20h30 de 31/10 em SP

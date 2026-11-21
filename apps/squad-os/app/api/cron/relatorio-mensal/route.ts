@@ -5,6 +5,7 @@ import { mesAnterior } from "@/lib/contrato";
 import { chaveDia } from "@/lib/horas";
 import { ehPrimeiroDiaUtil, nomeDoMes } from "@/lib/relatorio-mensal";
 import { APP_URL, emailConfigurado, enviarEmail, mascarar } from "@/lib/email";
+import { garantirPublicado } from "@/lib/relatorio-publicado";
 
 // Lembrete de fechamento (2026-11-03). Roda nos dias 1 a 3 (vercel.json) e
 // só age no primeiro dia útil do mês: avisa admin e financeiro que o
@@ -12,6 +13,10 @@ import { APP_URL, emailConfigurado, enviarEmail, mascarar } from "@/lib/email";
 // /financeiro/horas. Não envia nada ao cliente — até 2026-11-03 enviava
 // sozinho; agora quem fecha o mês confere as horas da equipe e envia.
 // `?forcar=1` ignora a checagem do dia útil; `?dry=1` só devolve a prévia.
+//
+// Antes do lembrete, publica o relatório do mês que fechou na página de cada
+// cliente ativo (2026-11-21, lib/relatorio-publicado.ts). Isso não depende do
+// envio por e-mail; o envio, quando acontece, regrava com o PDF enviado.
 
 export async function GET(request: NextRequest) {
   const negado = autorizarCron(request);
@@ -33,9 +38,19 @@ export async function GET(request: NextRequest) {
     }),
     prisma.relatorioEnviado.findMany({ where: { mes }, select: { clientId: true } }),
   ]);
+  const publicacao = { publicados: 0, falhas: [] as string[] };
+  // A publicação não depende de e-mail configurado: só o ?dry=1 a segura.
+  if (q.get("dry") !== "1") {
+    const ativos = await prisma.client.findMany({ where: { encerradoEm: null, criadoEm: { lt: new Date(`${hoje.slice(0, 7)}-01T03:00:00Z`) } }, select: { id: true, nome: true } });
+    for (const c of ativos) {
+      const r = await garantirPublicado(c.id, mes).catch(() => "falhou" as const);
+      if (r === "publicado") publicacao.publicados++;
+      if (r === "falhou") publicacao.falhas.push(c.nome);
+    }
+  }
   const jaEnviados = new Set(enviados.map((e) => e.clientId));
   const pendentes = clientes.filter((c) => !jaEnviados.has(c.id));
-  if (pendentes.length === 0) return NextResponse.json({ ok: true, mes, pendentes: 0 });
+  if (pendentes.length === 0) return NextResponse.json({ ok: true, mes, pendentes: 0, publicacao });
 
   const link = `${APP_URL}/financeiro/horas?mes=${mes}`;
   const assunto = `Fechamento de ${nomeDoMes(mes)}: ${pendentes.length} ${pendentes.length === 1 ? "relatório" : "relatórios"} para enviar`;
@@ -52,5 +67,5 @@ export async function GET(request: NextRequest) {
 
   let avisados = 0;
   if (!dry) for (const u of equipe) if (await enviarEmail({ para: u.email, assunto, texto })) avisados++;
-  return NextResponse.json({ ok: true, dry, mes, pendentes: pendentes.length, avisados, para: equipe.map((u) => mascarar(u.email)) });
+  return NextResponse.json({ ok: true, dry, mes, pendentes: pendentes.length, avisados, para: equipe.map((u) => mascarar(u.email)), publicacao });
 }

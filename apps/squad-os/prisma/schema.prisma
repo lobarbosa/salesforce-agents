@@ -854,11 +854,24 @@ model RelatorioEnviado {
   enviadoEm     DateTime @default(now()) @map("enviado_em")
   enviadoPor    String   @map("enviado_por")
   destinatarios Int      @default(0)
-  // O PDF que foi enviado (2026-11-21), no bucket privado `financeiro`, para o
-  // relatório ficar publicado na página do cliente igual ao que ele recebeu.
-  // Vazio nos envios anteriores: o primeiro download gera e guarda.
-  arquivo       String   @default("")
 
   @@unique([clientId, mes])
   @@map("relatorios_enviados")
+}
+
+// Relatório mensal publicado na página do cliente (2026-11-21, decisão do
+// responsável): todo mês fechado ganha o PDF de resumo (demandas, contrato e
+// horas) na aba Contrato, sem depender do envio por e-mail. O cron do
+// fechamento publica no primeiro dia útil; mês fechado sem publicação é
+// gerado no primeiro acesso; o envio por e-mail regrava com o PDF enviado.
+model RelatorioPublicado {
+  id          String   @id @default(cuid())
+  clientId    String   @map("client_id")
+  mes         String
+  // Caminho no bucket privado `financeiro`.
+  arquivo     String
+  publicadoEm DateTime @default(now()) @map("publicado_em")
+
+  @@unique([clientId, mes])
+  @@map("relatorios_publicados")
 }
