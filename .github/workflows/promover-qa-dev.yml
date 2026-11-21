@@ -13,7 +13,7 @@ name: Promover agente da QA para a DEV
 #               o que falta lá (campo, objeto, licença). Com `componentes`
 #               (2026-11-21, EPLAST-49), traz os componentes nomeados em vez de
 #               um agente (scripts/manifest_componentes.py).
-#   implantar → depois do PR APROVADO por alguém, faz o deploy de verdade na DEV.
+#   implantar → depois do PR APROVADO ou MERGEADO por alguém, faz o deploy de verdade na DEV.
 #               Recusa sem aprovação e recusa se a org não se declarar sandbox
 #               (guardrail #1). Produção não existe aqui.
 
@@ -225,11 +225,23 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          N=$(gh api "repos/${{ github.repository }}/pulls?head=${{ github.repository_owner }}:$BRANCH&state=open" --jq '.[0].number // empty')
-          [ -n "$N" ] || { echo "::error::Não há PR aberto da branch $BRANCH — rode primeiro com modo: trazer."; exit 1; }
-          APROVADO=$(gh api "repos/${{ github.repository }}/pulls/$N/reviews" --jq '[.[]|select(.state=="APPROVED")]|length')
-          [ "$APROVADO" -gt 0 ] || { echo "::error::O PR #$N ainda não foi aprovado — revise e aprove antes de implantar."; exit 1; }
-          echo "PR #$N aprovado."
+          # PR mergeado na main também vale (2026-11-21, EPLAST-49): o merge é
+          # feito por gente e é aprovação mais forte que o review. Só vale se a
+          # branch ainda estiver no commit que foi mergeado, para não implantar
+          # nada que entrou depois do merge.
+          PR=$(gh api "repos/${{ github.repository }}/pulls?head=${{ github.repository_owner }}:$BRANCH&state=all&sort=created&direction=desc" --jq '.[0] // empty')
+          [ -n "$PR" ] || { echo "::error::Não há PR da branch $BRANCH — rode primeiro com modo: trazer."; exit 1; }
+          N=$(jq -r '.number' <<<"$PR")
+          if [ "$(jq -r '.merged_at // empty' <<<"$PR")" != "" ]; then
+            PONTA=$(gh api "repos/${{ github.repository }}/git/ref/heads/$BRANCH" --jq '.object.sha')
+            [ "$PONTA" = "$(jq -r '.head.sha' <<<"$PR")" ] || { echo "::error::A branch $BRANCH andou depois do merge do PR #$N — rode modo: trazer de novo."; exit 1; }
+            echo "PR #$N mergeado na main."
+          else
+            [ "$(jq -r '.state' <<<"$PR")" = "open" ] || { echo "::error::O PR #$N foi fechado sem merge — rode modo: trazer de novo."; exit 1; }
+            APROVADO=$(gh api "repos/${{ github.repository }}/pulls/$N/reviews" --jq '[.[]|select(.state=="APPROVED")]|length')
+            [ "$APROVADO" -gt 0 ] || { echo "::error::O PR #$N ainda não foi aprovado — revise e aprove antes de implantar."; exit 1; }
+            echo "PR #$N aprovado."
+          fi
       - uses: actions/checkout@v4
         with:
           ref: promocao/${{ inputs.client }}-${{ inputs.agente }}
