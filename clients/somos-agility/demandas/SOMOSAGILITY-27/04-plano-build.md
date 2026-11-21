@@ -36,3 +36,12 @@ Fonte: `05-testes-rodada-1.md` (reprovado so por falta de evidencia de A1/A2; T1
 | FALHA 1 (critica) - A1 e A2 nao exercitados por falta de usuario de teste na QA sem as permissoes, e de pasta com acesso Editor | **Nao corrigivel no build.** O que falta nao e metadata: e usuario de teste com o perfil da colaboradora (dado, `PermissionSetAssignment` e criacao de usuario, passo humano, guardrail #2; builder nao toca a QA) e pasta de relatorio (pergunta 7 da analise, sem resposta). Nenhuma mudanca no permission set: nao ha defeito a corrigir e `CreateReportInLightning` so entra se A1 falhar de fato (R4). |
 
 Encaminhamento ao humano: indicar/criar na QA um usuario de teste com o perfil da colaboradora e responder as perguntas 3, 5 e 7 da analise, ou executar o `05-roteiro-cliente.md` a mao na homologacao. Metadata do build inalterado nesta rodada.
+
+## Correções da rodada 2
+Fonte: `05-testes-rodada-2.md` (reprovado; T1-T5 passaram, o permission set segue correto na QA).
+
+| Falha | Tratamento |
+|---|---|
+| FALHA 1 (critica) - sem licenca livre na QA para o usuario de teste sintetico; A1 e A2 sem execucao | **Nao corrigivel no build.** A licenca `Salesforce` esta em 30/30 na QA e as licencas com saldo nao suportam relatorios. Nao e defeito de metadata: o permission set (3 permissoes de sistema, sem licenca) ja foi validado nos casos T1-T5. Liberar licenca exige desativar um usuario, decisao humana que o design proibe o agente de tomar; builder tambem nao toca a QA. Nenhuma mudanca no metadata nesta rodada. |
+
+Encaminhamento ao humano (opcoes do QA): (a) liberar 1 licenca `Salesforce` na QA; (b) indicar usuario existente na QA sem as permissoes para servir de teste; (c) aceitar A1/A2 apenas pelo roteiro do cliente (`05-roteiro-cliente.md`) na homologacao.
