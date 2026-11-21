@@ -2,7 +2,7 @@ id: EPLAST-35
 client: eplast
 titulo: Fluxos de aprovação, distribuição de leads e encaminhamento
 tipo: projeto
-status: build
+status: aguardando_gate_build
 criado_em: '2026-11-10T00:22:17.398Z'
 historico:
 - de: null
@@ -104,3 +104,7 @@ historico:
   motivo: deploy em QA falhou em dois métodos de LeadAssignmentServiceTest (EPLAST-38)
     que afirmam a régua antiga; refazer o build com a decisão do responsável de ajustar
     só esse teste, registrada no 03-design.md.
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-21T00:38:14.506403+00:00'

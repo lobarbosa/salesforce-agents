@@ -15,7 +15,7 @@ if [ -z "$BASE" ]; then
   BASE=$(git merge-base origin/main HEAD)
 fi
 set +e
-git diff --name-only "$BASE" HEAD -- "clients/$CLIENT/force-app" \
+git -c core.quotepath=false diff --name-only "$BASE" HEAD -- "clients/$CLIENT/force-app" \
   | python3 scripts/pacote_da_demanda.py "$CLIENT" > /tmp/pacote-args.txt
 RC=$?
 set -e
@@ -24,6 +24,13 @@ if [ "$RC" -eq 3 ]; then
   exit 0
 fi
 [ "$RC" -eq 0 ] || exit "$RC"
+# Perfis e permission sets vão só com o que a demanda acrescentou em relação à
+# base (achado SOMOSAGILITY-26, 2026-11-20). Regrava na cópia de trabalho do
+# job e devolve ao conteúdo commitado ao sair, para nada enxugado entrar num
+# commit: os arquivos-fonte da branch continuam inteiros.
+RAIZ=$(pwd)
+trap 'git -C "$RAIZ" checkout HEAD -- "clients/$CLIENT/force-app/main/default/profiles" "clients/$CLIENT/force-app/main/default/permissionsets" 2>/dev/null || true' EXIT
+python3 scripts/permissoes_so_o_diff.py "$BASE" "$CLIENT" /tmp/pacote-args.txt
 mapfile -t ARGS < /tmp/pacote-args.txt
 echo "Implantando em $TARGET_ORG: ${ARGS[*]}"
 cd "clients/$CLIENT"
