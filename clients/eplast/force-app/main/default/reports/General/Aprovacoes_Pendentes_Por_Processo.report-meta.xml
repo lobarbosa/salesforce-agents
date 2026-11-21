@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Report xmlns="http://soap.sforce.com/2006/04/metadata">
+    <columns>
+        <field>ProcessInstance$TargetName</field>
+    </columns>
+    <columns>
+        <field>ProcessInstance$SubmittedBy</field>
+    </columns>
+    <columns>
+        <field>ProcessInstance$CreatedDate</field>
+    </columns>
+    <columns>
+        <field>ProcessInstance$CurrentNodeName</field>
+    </columns>
+    <columns>
+        <aggregateTypes>Sum</aggregateTypes>
+        <field>ProcessInstance$ElapsedTimeInDays</field>
+    </columns>
+    <currency>BRL</currency>
+    <description>EPLAST-35. Aprovacoes pendentes (Quote, Opportunity, Order) agrupadas por processo, com quem submeteu, data, etapa atual e dias decorridos. Acompanhamento sem prazo automatico (PA-07).</description>
+    <filter>
+        <criteriaItems>
+            <column>ProcessInstance$Status</column>
+            <columnToColumn>false</columnToColumn>
+            <isUnlocked>true</isUnlocked>
+            <operator>equals</operator>
+            <value>Pending</value>
+        </criteriaItems>
+        <language>pt_BR</language>
+    </filter>
+    <format>Summary</format>
+    <groupingsDown>
+        <dateGranularity>Day</dateGranularity>
+        <field>ProcessInstance$ProcessDefinition</field>
+        <sortOrder>Asc</sortOrder>
+    </groupingsDown>
+    <name>Aprovações Pendentes por Processo</name>
+    <params>
+        <name>co</name>
+        <value>1</value>
+    </params>
+    <reportType>Inst_ncias_do_processo_de_aprova_o__c</reportType>
+    <scope>organization</scope>
+    <showDetails>true</showDetails>
+    <showGrandTotal>true</showGrandTotal>
+    <showSubTotals>true</showSubTotals>
+</Report>

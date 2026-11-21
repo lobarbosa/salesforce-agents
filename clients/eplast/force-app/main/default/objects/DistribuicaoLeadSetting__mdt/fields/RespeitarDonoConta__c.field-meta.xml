@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>RespeitarDonoConta__c</fullName>
+    <description>EPLAST-35. Se houver exatamente uma conta com o mesmo CNPJ, o Lead vai para o dono dela.</description>
+    <fieldManageability>SubscriberControlled</fieldManageability>
+    <inlineHelpText>EPLAST-35. Se houver exatamente uma conta com o mesmo CNPJ, o Lead vai para o dono dela.</inlineHelpText>
+    <defaultValue>true</defaultValue>
+    <label>Respeitar dono da conta</label>
+    <type>Checkbox</type>
+</CustomField>
