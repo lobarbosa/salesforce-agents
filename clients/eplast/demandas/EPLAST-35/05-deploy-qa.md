@@ -1,9 +1,9 @@
 # Deploy na sandbox de QA
 
 - **Org:** `sbx-eplast-qa`
-- **Deploy:** `0AfHa00000EJCzxKAH` (Succeeded)
-- **Quando:** 2026-11-17T15:55Z
-- **Commit:** `6885509d`
+- **Deploy:** `0AfHa00000EM4o6KAD` (Succeeded)
+- **Quando:** 2026-11-21T00:46Z
+- **Commit:** `061718df`
 
 ## Componentes
 - `force-app/main/default/assignmentRules/Lead.assignmentRules-meta.xml`
