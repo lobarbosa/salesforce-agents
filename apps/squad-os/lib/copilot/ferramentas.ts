@@ -7,6 +7,7 @@ import { criarDemanda } from "@/lib/demandas-server";
 import type { CurrentUsuario } from "@/lib/current-user";
 import { prisma } from "@/lib/prisma";
 import { MAX_DEMANDAS_POR_HORA, MAX_DEMANDAS_POR_REQUISICAO } from "@/lib/copilot/limites";
+import { propostaPendente } from "@/lib/assessment-propostas";
 
 /**
  * Ferramentas do copiloto sobre um cliente — sempre fechadas sobre um
@@ -49,7 +50,7 @@ export function criarFerramentasCliente({
   return {
     consultar_demandas: tool({
       description:
-        "Lista as demandas do cliente autenticado, com o estado de cada uma na linguagem do cliente (recebida, em andamento, esperando você, entregue). Use para responder perguntas sobre avanço, status ou atividades em curso.",
+        "Lista as demandas do cliente autenticado, com o estado de cada uma na linguagem do cliente (recebida, em andamento, esperando você, entregue). As marcadas com melhoriaPropostaParaVoceAprovar são melhorias que a equipe propôs a partir do diagnóstico da org e esperam o cliente aprovar ou recusar no card. Use para responder perguntas sobre avanço, status, atividades em curso ou 'o que vocês me propuseram?'.",
       inputSchema: z.object({}),
       execute: async () => {
         const demandas = await getDemandasByClient(clientId);
@@ -61,6 +62,8 @@ export function criarFerramentasCliente({
             estado: ESTADO_CLIENTE_LABEL[estadoDoCliente(d.status)],
             fase: estadoDoCliente(d.status) === "andamento" ? progresso?.rotulo ?? null : null,
             criadaEm: timeAgo(d.criadoEm),
+            // Melhoria do assessment que a equipe propôs: o cliente aprova ou recusa no card.
+            ...(d.status === "backlog" && propostaPendente(d) ? { melhoriaPropostaParaVoceAprovar: true } : {}),
           };
         });
       },

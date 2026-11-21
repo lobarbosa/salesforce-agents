@@ -13,6 +13,7 @@ import type { DemandaDoProgresso } from "@/lib/contrato";
 import { DemandasTab } from "@/components/DemandasTab";
 import { AprovacoesTab } from "@/components/AprovacaoEstimativa";
 import { aguardaAprovacaoEstimativa } from "@/lib/demandas";
+import { propostaPendente } from "@/lib/assessment-propostas";
 import { EncerradoBadge, EncerramentoCliente } from "@/components/EncerramentoCliente";
 
 type Tab = "conhecimento" | "contrato" | "conexao" | "demandas" | "aprovacoes";
@@ -51,7 +52,9 @@ export function ClientDetail({
   // de escrita recusam o papel cliente (canManageClientData); aqui só não
   // mostramos controle que ele não pode usar.
   if (!podeGerenciarClientes) {
-    const aAprovar = demandas.filter(aguardaAprovacaoEstimativa).length;
+    const aAprovar = demandas.filter(
+      (d) => aguardaAprovacaoEstimativa(d) || (d.status === "backlog" && propostaPendente(d))
+    ).length;
     return (
       <>
         <div className="client-header">

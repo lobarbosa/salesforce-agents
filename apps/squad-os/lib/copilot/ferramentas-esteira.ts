@@ -32,6 +32,8 @@ export function criarFerramentasEsteira({ usuario }: { usuario: CurrentUsuario }
             estimativaAprovadaHoras: true,
             estimativaDebitadaEm: true,
             artefatoNome: true,
+            propostaClienteEm: true,
+            propostaDecisao: true,
             disparos: { select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true } },
             client: { select: { nome: true, encerradoEm: true, contrato: { select: { tipo: true } } } },
           },

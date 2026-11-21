@@ -3,6 +3,7 @@ import type { criarFerramentasCliente } from "@/lib/copilot/ferramentas";
 import type { criarFerramentasFinanceiro } from "@/lib/copilot/ferramentas-financeiro";
 import type { criarFerramentasEsteira } from "@/lib/copilot/ferramentas-esteira";
 import type { criarFerramentasConhecimento } from "@/lib/copilot/ferramentas-conhecimento";
+import type { criarFerramentasAssessment } from "@/lib/copilot/ferramentas-assessment";
 
 // Import só de tipo — nunca puxa os módulos de ferramentas (que falam com o
 // Postgres) pro bundle do client component. É o que dá tipagem de ponta a
@@ -18,7 +19,8 @@ import type { criarFerramentasConhecimento } from "@/lib/copilot/ferramentas-con
 type CopilotTools = ReturnType<typeof criarFerramentasCliente> &
   ReturnType<typeof criarFerramentasFinanceiro> &
   ReturnType<typeof criarFerramentasEsteira> &
-  ReturnType<typeof criarFerramentasConhecimento>;
+  ReturnType<typeof criarFerramentasConhecimento> &
+  ReturnType<typeof criarFerramentasAssessment>;
 /** Vai no fim de cada resposta: por que o modelo parou (ver route.ts). */
 export type CopilotMetadata = { finishReason?: string };
 export type CopilotUIMessage = UIMessage<CopilotMetadata, never, InferUITools<CopilotTools>>;

@@ -186,6 +186,22 @@ export function Copiloto({ papel, clientes }: { papel: Role; clientes: { id: str
                       );
                     }
                   }
+                  if (part.type === "tool-propor_melhorias_ao_cliente" && part.state === "output-available") {
+                    return (
+                      <div key={i}>
+                        {part.output.abertas.map((a) => (
+                          <p key={a.code} className="copiloto-acao">
+                            ✓ Proposta <span className="mono">{a.code}</span> aberta para o cliente aprovar: {a.titulo}
+                          </p>
+                        ))}
+                        {part.output.recusadas.map((r, j) => (
+                          <p key={`r${j}`} className="copiloto-acao erro">
+                            Não abri {r.recomendacaoId || "a leva"}: {r.motivo}
+                          </p>
+                        ))}
+                      </div>
+                    );
+                  }
                   if (
                     part.type === "tool-criar_demanda" &&
                     part.state === "output-available" &&
@@ -271,6 +287,8 @@ const ROTULO_FERRAMENTA: Record<string, string> = {
   consultar_base_conhecimento: "o histórico do cliente",
   consultar_parados: "o que está parado",
   criar_demanda: "o registro da demanda",
+  listar_melhorias_do_assessment: "as melhorias do assessment",
+  propor_melhorias_ao_cliente: "o registro das propostas",
   consultar_painel_financeiro: "o painel financeiro",
   consultar_contas_a_pagar: "as contas a pagar",
   consultar_divergencias: "as divergências",
