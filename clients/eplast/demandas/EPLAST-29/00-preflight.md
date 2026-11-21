@@ -11,5 +11,6 @@ Etapa que vai rodar: `build` · org: `sbx-eplast-dev`. Gerado pela esteira antes
 - EPLAST-46 (aguardando_homologacao) também mexe em: agente SFAgent2.
 
 ## Estado na org
-- Agente `SFAgent2`: versões v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17; ativa: v13. Versão ativa não aceita deploy: o build cria a seguinte, inativa (skill salesforce-doutrina).
+- Agente `SFAgent2`: versões v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v11, v12, v13, v14, v15, v16, v17, v18; ativa: v13. Versão ativa não aceita deploy: o build cria a seguinte, inativa (skill salesforce-doutrina).
 - Flow `Task_Agente_CriarTarefa`: tem versão ativa nesta org — mudança entra como versão nova.
+- Flow `Task_Agente_PrepararTarefa`: existe nesta org, sem versão ativa.
