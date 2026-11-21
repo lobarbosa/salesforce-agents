@@ -150,3 +150,17 @@ O que mudou em relação à análise (2–8 h) e por quê:
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Decisão do responsável (2026-11-21, Leonardo Barbosa): usuário de teste sintético na QA
+
+A rodada 1 de QA reprovou só porque o usuário de execução já tem as três permissões de relatório pelo perfil, e não há usuário de teste no `CLAUDE.md` do cliente. Para destravar sem depender da identificação da colaboradora, **fica autorizado ao `qa`, só na `sbx-somos-agility-qa` e só nesta demanda**:
+
+1. **Criar um usuário sintético** (por Apex anônimo na QA): nome `TESTE QA SOMOSAGILITY-27`, username e e-mail sintéticos não entregáveis (ex.: `teste.qa.somos27.<data>@teste.invalid`), sem papel, num perfil existente que **não** tenha `CreateCustomizeReports` nem `ExportReport` (confira por consulta em `PermissionSet` com `IsOwnedByProfile = true`; prefira um perfil padrão como `Standard User` ou `Standard Platform User`). Use a licença que estiver livre (consulte `UserLicense` por `TotalLicenses`/`UsedLicenses`); a licença precisa permitir relatórios. Senha definida por `System.setPassword`, sem e-mail de boas-vindas (`triggerUserEmail = false`). **Sem licença livre: não libere licença desativando ninguém**; registre e pare.
+2. **Antes:** provar que o usuário não salva nem exporta relatório. Preferência: login com esse usuário pelo navegador do QA (`test.salesforce.com`), tentativa de salvar e exportar, captura só da tela do relatório de teste. Se o login pelo navegador for barrado (verificação de identidade), use como evidência a permissão efetiva: `PermissionSet` com `PermissionsCreateCustomizeReports`/`PermissionsExportReport` = true unido a `PermissionSetAssignment` do usuário (perfil + permission sets) = 0.
+3. Atribuir `PS_Relatorios_ExtrairSalvar` a ele. Compartilhar com ele, como Editor, só uma pasta de relatório **criada pelo QA** para o teste, com um relatório sobre dados que o próprio QA criou (registros `TESTE SOMOSAGILITY-27`).
+4. **Depois:** repetir. Pelo navegador: salva o relatório na pasta e exporta, com contagem de linhas igual à da tela (A1, A2). Sem navegador: a mesma consulta de permissão efetiva = as duas permissões presentes, e as ações na tela ficam no roteiro do cliente (`05-roteiro-cliente.md`). Nesse caso, a evidência por permissão efetiva **vale como execução de A1/A2** para o veredito; registre a ressalva.
+5. **Ao final, mesmo depois de erro:** tirar a atribuição do permission set, apagar relatório, pasta e dados de teste, e **desativar** o usuário (Salesforce não apaga usuário). Registrar em `05-testes.md` o Id do usuário, o perfil e a licença usados, e o estado final (inativo, 0 atribuições).
+
+Nenhum outro usuário, perfil ou permission set é alterado. A5 continua fora do escopo (pergunta 1 da análise). A6 continua com a colaboradora na homologação.
