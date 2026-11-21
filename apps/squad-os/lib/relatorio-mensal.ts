@@ -129,3 +129,23 @@ export function ehPrimeiroDiaUtil(hoje: string): boolean {
   }
   return false;
 }
+
+/** Primeiro mês com relatório publicado na página do cliente (decisão de 2026-11-21). */
+export const PUBLICA_DESDE = "2026-10";
+
+/**
+ * Meses fechados que têm relatório na página do cliente: de outubro de 2026
+ * (ou do mês em que o cliente entrou, se depois) até o mês anterior a `hoje`.
+ * Puro (testado em scripts/testa-relatorio-mensal.ts).
+ */
+export function mesesPublicaveis(mesDeEntrada: string, hoje: string): string[] {
+  const atual = hoje.slice(0, 7);
+  const inicio = mesDeEntrada > PUBLICA_DESDE ? mesDeEntrada : PUBLICA_DESDE;
+  const meses: string[] = [];
+  for (let m = inicio; m < atual && meses.length < 120; ) {
+    meses.push(m);
+    const [a, mm] = m.split("-").map(Number);
+    m = mm === 12 ? `${a + 1}-01` : `${a}-${String(mm + 1).padStart(2, "0")}`;
+  }
+  return meses;
+}

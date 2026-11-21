@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 import { nomeDoMes } from "@/lib/relatorio-mensal";
 
-// Relatórios mensais publicados (2026-11-21): o mesmo PDF de resumo do mês
-// (demandas concluídas, contrato e horas) que foi enviado por e-mail ao
-// cliente. Aparece na aba Contrato, para o cliente e para o time.
+// Relatórios mensais publicados (2026-11-21): o PDF de resumo de cada mês
+// fechado (demandas concluídas, contrato e horas), na aba Contrato, para o
+// cliente e para o time. Ver lib/relatorio-publicado.ts.
 
 interface Envio {
   mes: string;
-  enviadoEm: string;
+  publicadoEm: string | null;
 }
 
 export function RelatoriosMensais({ clientId }: { clientId: string }) {
@@ -31,7 +31,7 @@ export function RelatoriosMensais({ clientId }: { clientId: string }) {
     <section className="painel-bloco">
       <div className="bloco-head">
         <h3>Relatórios mensais</h3>
-        <span className="save-note">o resumo de cada mês fechado, igual ao enviado por e-mail</span>
+        <span className="save-note">o resumo de cada mês fechado: demandas concluídas, contrato e horas</span>
       </div>
       {erro ? (
         <p className="auth-note error" role="alert">
@@ -40,7 +40,7 @@ export function RelatoriosMensais({ clientId }: { clientId: string }) {
       ) : envios === null ? (
         <p className="save-note">Carregando...</p>
       ) : envios.length === 0 ? (
-        <p className="save-note">Nenhum relatório enviado ainda. O primeiro chega no fechamento do mês.</p>
+        <p className="save-note">Nenhum mês fechado ainda. O primeiro relatório aparece no fechamento do mês.</p>
       ) : (
         <ul className="aprovacoes-lista">
           {envios.map((e) => (
@@ -48,9 +48,11 @@ export function RelatoriosMensais({ clientId }: { clientId: string }) {
               <a href={`/api/clients/${clientId}/relatorios/${e.mes}`} target="_blank" rel="noopener noreferrer">
                 {nomeDoMes(e.mes)}
               </a>{" "}
-              <span className="save-note">
-                enviado em {new Date(e.enviadoEm).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}
-              </span>
+              {e.publicadoEm && (
+                <span className="save-note">
+                  publicado em {new Date(e.publicadoEm).toLocaleDateString("pt-BR", { timeZone: "America/Sao_Paulo" })}
+                </span>
+              )}
             </li>
           ))}
         </ul>
