@@ -50,6 +50,13 @@ ative a versão da demanda), com `--target-org` explícito. Confira na org que f
 versão de antes e a que ficou. Ela fica ativa ao final. Não altere o conteúdo do Flow nem do
 modelo: só a ativação.
 
+Vale para **todo cliente** (decisão do responsável, 2026-11-20, achado SOMOSAGILITY-26), também
+quando a QA não tem nenhuma versão ativa daquele Flow antes do teste, e não depende de
+comentário no card. O aviso do preflight ("versão ativa não é alterada no lugar") fala do
+conteúdo, não proíbe a ativação. Ativar e desativar na sandbox de QA para testar é parte do
+teste; deixar de ativar e reprovar por "não exercitado" não é uma saída aceita. Só não ative
+se o `CLAUDE.md` do cliente ou um comentário no card proibir explicitamente.
+
 ## Método
 1. Derive os casos de teste **dos critérios de aceite de `01-analise.md`**, não do que foi
    construído. Testar o código contra ele mesmo não prova nada.
