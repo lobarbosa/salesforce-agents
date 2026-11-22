@@ -7,6 +7,8 @@
 
 ## Por que bloqueou
 
+Nova tentativa de build, depois de um segundo aceite do gate de design (2026-11-22 21:06). O card nao traz resposta nova: so "Encerrar Card" e as aprovacoes de gate. Aprovar o gate nao responde G1, G2 e G7.
+
 O `03-design.md` (seção 9) marca G1, G2 e G7 como bloqueantes do build e manda o builder sair com "bloqueado" enquanto não houver resposta. O `comentarios-do-card.md` só traz "Realizado o acesso para o perfil do usuário" (2026-11-11), a aprovação da estimativa de 2 h e a aprovação dos gates. Nenhuma das três perguntas foi respondida. Aprovar o gate de design não responde pergunta de negócio.
 
 Construir agora exigiria inventar o objeto e o nível de acesso do permission set, e a regra é não inventar.
