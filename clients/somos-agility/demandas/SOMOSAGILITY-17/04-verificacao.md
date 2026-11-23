@@ -1,44 +1,42 @@
 **Verificação:** inconclusiva
-
 **Org de teste:** `sbx-somos-agility-dev`
 
 # Verificação — SOMOSAGILITY-17
 
-Org confirmada com `sf org list`: só `sbx-somos-agility-dev` conectada (Sandbox, Connected). Nada foi feito na QA nem em produção. Nenhuma alteração em usuário, permission set ou dado. Nenhum registro de teste foi criado, então não há o que apagar. O retrieve foi feito em projeto temporário em `/tmp`, fora do repositório.
+Org confirmada com `sf org list`: só `sbx-somos-agility-dev` (Sandbox, Connected). Todos os comandos usaram `--target-org sbx-somos-agility-dev`. A QA não foi tocada.
 
-## Resumo
-A configuração do Approval Process está correta na dev e na ordem certa. O comportamento (sequência Gustavo, Wanderley, Walmor na prática) **não foi exercitado**. Por isso o veredito é inconclusiva.
+## Por que inconclusiva
+O critério principal (sequência Gustavo, Wanderley, Walmor para JOB criado pelo usuário Cyber) exige criar o registro como membro de "Grupo Cyber Salesforce" e aprovar como cada aprovador. O verificador não age em nome de outro usuário. Isso segue a decisão do responsável de 2026-11-23 (03-design.md, opção a): os casos T-sequência ficam para o cliente na homologação, com `05-roteiro-cliente.md`. Não é defeito da construção. A configuração foi provada por consulta e nenhum caso executado falhou.
 
-## Por que não deu para exercitar
-- O critério de entrada é `CreatedBy = Grupo Cyber Salesforce`. Só um registro criado por esse usuário entra no processo. O verificador não pode criar registros em nome dele: gravar `CreatedById` exigiria permissão "Set Audit Fields" ou mudar perfil/permissão do usuário de execução, e isso não está entre as exceções autorizadas.
-- Não é possível agir como Gustavo, Wanderley ou Walmor para aprovar etapa por etapa, nem como o usuário Cyber.
-- O objeto `JOB_de_Solicita_o_de_Investimento__c` tem 0 registros na dev (COUNT agregado). Não há massa existente, e não se usa dado real.
+## Evidência de configuração (retrieve da dev em projeto temporário, descartado)
+- `Aprova_o_JOB`: ativo, `processOrder` 1.
+- `JOB_Investimento_Cyber`: ativo, `processOrder` 2; entrada `CreatedBy equals Grupo Cyber Salesforce` AND `Status_da_Qualificaco__c notEqual Aprovado`; passos na ordem `Aprovacao_Gustavo`, `Aprovacao_Wanderley` (RejectRequest), `Aprovacao_Walmor` (RejectRequest); Gustavo sem rejectBehavior explícito (padrão do 1º passo, rejeição final); ações de submissão, aprovação final, rejeição e recall iguais às do geral.
+- `JOB_de_solicitacoes_de_investimento`: ativo, `processOrder` 3.
+- Ordem efetiva na dev (1, 2, 3) bate com o design. Os arquivos de `force-app` do Cyber e do geral são idênticos ao que a dev devolveu (`diff` sem diferença). Isso confirma a Correção 1 do plano: o XML está certo, a inversão na QA vem do deploy (R1) e pede passo manual na QA.
+- Aprovadores Gustavo, Wanderley e Walmor: um usuário cada no XML. O de Gustavo termina em `br1` (usuário ativo, ver achado 2 do plano).
 
-## Evidência de configuração (metadata lida da dev)
-Comando: `sf project retrieve start --target-org sbx-somos-agility-dev -m "ApprovalProcess:JOB_de_Solicita_o_de_Investimento__c.*"`, em projeto temporário, com leitura de campos específicos do XML.
+## Impacto de SOMOSAGILITY-22
+O preflight avisou que SOMOSAGILITY-22 também mexe em `approvalProcesses/JOB_de_Solicita_o_de_Investimento__c`. Na dev, o retrieve trouxe outros processos do objeto (`JOBSolicitacaoInvestimento*`, `JOB_de_solicitacoes_de_investimentos`), todos inativos. Os três processos desta demanda estão como o plano descreve, então a SOMOSAGILITY-22 não alterou o que foi testado. Conflito de merge no arquivo do processo geral continua possível; confira no PR.
+
+## Casos
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| C1 | Cenário 3 (outro criador não afetado): ordem | Leitura de `processOrder` de cada processo | `Aprova_o_JOB`=1, Cyber=2, geral=3 | `Aprova_o_JOB`=1, `JOB_Investimento_Cyber`=2, `JOB_de_solicitacoes_de_investimento`=3 | passou (configuração) |
-| C2 | Cenário 1: processo Cyber ativo e com entrada correta | Leitura de `active` e `entryCriteria` | ativo; `CreatedBy equals Grupo Cyber Salesforce` e `Status_da_Qualificaco__c notEqual Aprovado` | `active=true`; os dois critérios exatamente assim | passou (configuração) |
-| C3 | Cenário 1: sequência dos aprovadores | Leitura dos passos em ordem | Gustavo, Wanderley, Walmor | `Aprovacao_Gustavo`, `Aprovacao_Wanderley`, `Aprovacao_Walmor`, nessa ordem, um aprovador user cada. Wanderley e Walmor com `RejectRequest` | passou (configuração) |
-| C4 | Cenário 1: aprovação final só após Walmor | Leitura das ações finais | Ações de aprovação final depois do último passo | Ações `Aprova_o_de_JOB`, `Status_Qualificacao_Aprovacao`, `Status_Qualificacao_Rejeicao`, `Rejei_o_de_JOB`, `Status_Qualificacao` e `Status_Qualificacao_Recall` presentes no processo. Efeito real não executado | não executado |
-| C5 | Cenário 1: submissão pelo usuário Cyber, primeiro aprovador Gustavo | Submeter registro criado pelo usuário Cyber | Aprovador pendente = Gustavo | Não há como criar registro como usuário Cyber | não executado |
-| C6 | Cenário 2: aprovador fora de ordem | Wanderley ou Walmor agirem antes de Gustavo | Ação bloqueada ou não pendente para eles | Não há como agir como esses usuários. Pelo desenho de passos sequenciais, só o aprovador do passo atual recebe a tarefa, mas isso não foi testado | não executado |
-| C7 | Cenário 3: criador diferente segue o caminho vigente | Submeter registro de outro criador | Processo vigente inalterado | Não executado. Por metadata, `Aprova_o_JOB` (ordem 1) tem entrada por `CreatedBy = Fabio Soto` e o geral não foi alterado além de `processOrder` | não executado |
+| C1 | Config: processo Cyber existe, ativo, ordem 2, entrada e passos | Retrieve + leitura do XML na dev | Conforme design | Conforme (ver acima) | passou |
+| C2 | Config: geral só mudou ordem para 3 | Retrieve, diff contra o `force-app` | Ordem 3, ativo | Ordem 3, ativo, arquivo idêntico | passou |
+| C3 | Ordem efetiva 1, 2, 3 (Correção 1) | Retrieve na dev | 1, 2, 3 | 1, 2, 3 | passou |
+| C4 | Cenário 3: JOB de outro usuário não é afetado | Criei 1 JOB com meu usuário de execução (não Cyber) e submeti por Apex, na dev | Não entrar no processo Cyber | `NO_APPLICABLE_PROCESS`: não entrou no Cyber. Também não entrou no geral, porque meu usuário não está nas listas dele. Não prova que o fluxo vigente de outros criadores continua igual. | passou (parcial) |
+| C5 | Cenário 1: Cyber cria, Gustavo, Wanderley, Walmor, aprovado só após Walmor | Não executado: exige criar como Cyber e aprovar como cada pessoa | Sequência na ordem | n/a | não executado (exceção do responsável, homologação) |
+| C6 | Cenário 2: aprovador fora de ordem não age | Não executado: exige os usuários reais | Etapa não pendente para Wanderley e Walmor | n/a | não executado (idem) |
+| C7 | Rejeição em cada passo (R4) | Não executado | Rejeição final no passo 1 e RejectRequest nos passos 2 e 3 | n/a | não executado (idem) |
 
-## Pendência dos dois "Gustavo Fernandes Eduardo"
-Conferido só por contagem agregada: 2 usuários com esse nome (1 ativo, 1 inativo). O passo de aprovação usa o username que termina em `br1`. Consulta por contagem: 0 usuários ativos com o username sem o `1` e 1 usuário ativo com o username com `1`. Ou seja, o passo aponta para o usuário ativo. Isso não impede o teste. Na QA e em produção a ambiguidade de nome pode existir; o username precisa ser conferido ali antes do release (o plano já registra o ajuste).
+Observação: o campo `Name` do objeto é autonumeração; o registro de teste não pôde levar `TESTE` no nome.
 
-## Observações que não são falha
-- O processo geral `JOB_de_solicitacoes_de_investimento` mantém "Grupo Cyber Salesforce" na entrada do passo 1 (Diretor Pós-vendas). Com o novo processo ativo e na frente (ordem 2), Cyber com status diferente de Aprovado cai no novo processo. O geral fica como alternativa se o novo for desativado (R5 do design).
-- Outros processos inativos na dev (`JOBSolicitacaoInvestimento*`, `JOB_de_solicitacoes_de_investimentos`) mostram `processOrder` 1 ou 2, mas estão inativos e não competem na ordenação.
-- Risco R1 (ordem pode divergir após deploy conjunto) continua valendo para a QA: reler `processOrder` depois do deploy.
+## O que pode ter saído da org
+Nada. A submissão falhou sem processo aplicável, então não houve alerta nem atualização de campo.
 
-## O que ficou sem prova e o que uma pessoa precisa fazer
-Uma pessoa autenticada como o usuário "Grupo Cyber Salesforce" (ou com "Set Audit Fields" na dev, decisão do time) deve:
-1. Criar um registro de teste `TESTE SOMOSAGILITY-17` do objeto `JOB_de_Solicita_o_de_Investimento__c` e submetê-lo.
-2. Conferir que o primeiro aprovador pendente é Gustavo, e depois Wanderley e Walmor, e que o status só vira Aprovado após Walmor.
-3. Conferir que Wanderley e Walmor não têm tarefa pendente antes da vez deles.
-4. Submeter um registro criado por outro usuário (por exemplo, o de entrada do `Aprova_o_JOB`) e conferir que o caminho não mudou.
-5. Conferir `Status_da_Qualificaco__c` e `Status_Previs_o_de_Gastos__c` depois de cada aprovação (Flow before-save no mesmo objeto).
+## Limpeza
+O JOB de teste foi apagado (`sf data delete record`); `COUNT` do objeto na dev voltou a 0. Nenhuma alteração no usuário de execução, nenhum permission set atribuído, nenhum job agendado, nenhum arquivo do repositório alterado.
+
+## O que fica sem prova e como provar
+C5, C6 e C7: na QA, com os usuários reais (Cyber e os três aprovadores), seguir `05-roteiro-cliente.md`. Antes, reler `processOrder` na QA até dar 1, 2, 3 (Correção 1) e conferir o username do Gustavo (achado 2).
