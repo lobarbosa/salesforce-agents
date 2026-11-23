@@ -1,6 +1,6 @@
 **Resultado do build:** bloqueado
 
-**Motivo do bloqueio:** a verificação 1 reprovou por CPU (10521 ms contra 10000 ms) no caso de volume, e o design (seções 6 e 10) manda devolver ao gate de design nesse caso. Ver "Correções da verificação 1" no fim deste arquivo.
+**Motivo do bloqueio:** a verificação 1 reprovou por CPU (10521 ms contra 10000 ms) no caso de volume, e o design (seções 6 e 10) manda devolver ao gate de design nesse caso. Ver "Correções da verificação 1" no fim deste arquivo. Reconfirmado na sessão de 2026-11-23 (após novo aceite do gate de design): o `03-design.md` segue com o mesmo hash (`1d1437582827d178`) do aceite anterior, ou seja, não traz decisão nova sobre o CPU. Reaprovar o mesmo design não autoriza trocar o algoritmo (seções 6 e 10).
 
 # 04 — Plano de build: SOMOSAGILITY-30 — Total de despesas realizadas só na aprovação final da SR
 
@@ -57,3 +57,9 @@ Lida: `04-verificacao-rodada-1.md` (reprovada). Dos 12 testes Apex, V1 e N1, tud
   - Nada foi alterado no metadata nesta sessão: v11 do Flow e testes ajustados continuam como no build original. A v11 está ativa na dev por causa da verificação (v10 Obsolete); reativar a v10 só se a demanda for descartada.
   - **Pergunta que falta responder (arquiteto humano):** aceitar o limite documentado (a v11 não piora o caso do SOMOSAGILITY-10, e a medição foi única, com variação possível) ou aprovar uma mudança de algoritmo (agregação no Flow, somatório em Apex ou limite de Lançamentos por SR)? Se for mudança, o design precisa de revisão e novo aceite.
   - Dado útil para a decisão: a verificação não mediu a v10 com a mesma massa, então não há comparação direta. Medir antes de decidir exige reativar a v10 na dev, o que é passo de ativação, fora do build.
+
+## Reconfirmação após novo aceite do gate de design (2026-11-23)
+
+- O gate foi aprovado de novo (Carlos Sordi, commit `ea5516b5`), mas os artefatos revisados são idênticos aos do aceite anterior (`03-design.md` sha256 `1d1437582827d178`). O design não foi revisado: continua sem dizer se o estouro de CPU é aceito nem qual algoritmo usar.
+- Não li isso como aceite do risco nem como autorização de mudar o algoritmo; seria inventar a decisão. Nada foi alterado no metadata nesta sessão (v11 e testes como no build original, sem nova implantação).
+- **O que falta para destravar (quem responde: arquiteto humano):** registrar no `03-design.md` uma destas opções e aprovar de novo: (a) aceitar o limite documentado, com a v11 seguindo para a QA e o caso de volume medido de novo lá; (b) agregação no Flow; (c) somatório em Apex; (d) limite de Lançamentos por SR. Em (b) a (d), o design precisa descrever o novo componente.
