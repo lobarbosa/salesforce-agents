@@ -34,3 +34,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-23T13:41:41.074979+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T16:37:02.442379+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T16:37:46.987240+00:00'
