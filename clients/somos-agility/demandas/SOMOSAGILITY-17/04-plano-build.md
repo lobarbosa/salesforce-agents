@@ -38,3 +38,11 @@ Arquivos: `force-app/main/default/approvalProcesses/` (o do processo geral foi r
 - R4: regra de rejeição assumida, a confirmar na homologação.
 - R5: documentar na entrega que desativar o novo processo devolve o Cyber ao caminho antigo.
 - QA: conferir `Status_da_Qualificaco__c` e `Status_Previs_o_de_Gastos__c` após cada aprovação (Flow before-save no mesmo objeto); a dev tem 0 registros do objeto.
+
+## Correções da rodada 1
+
+- **FALHA 1 (processOrder invertido na QA): não corrigível pelo repositório; exige passo manual na QA.** Reconferi a dev (retrieve em projeto temporário): `Aprova_o_JOB`=1, `JOB_Investimento_Cyber`=2, `JOB_de_solicitacoes_de_investimento`=3, os dois últimos ativos. O `force-app` também traz 2 e 3. O XML está certo; a divergência é de como a Metadata API aplica `processOrder` em processo já ativo (R1, achado 1 acima). O builder não toca a QA nem muda a ordem do arquivo-fonte para contornar o deploy.
+  - **Ação necessária (esteira/release, fora do build):** na `sbx-somos-agility-qa`, ou redeployar os dois arquivos de approvalProcesses juntos e reler `processOrder`, ou reordenar em Setup › Approval Processes › Reorder (Cyber antes do geral). Reler `processOrder` na QA até dar 1, 2, 3 antes de retestar T1 e T6.
+  - **Release/produção:** mesmo passo manual, com conferência de `processOrder` depois do deploy.
+- Nenhuma outra falha na rodada. T7 a T11 seguem como exceção do responsável (03-design.md, decisão de 2026-11-23) para o cliente na homologação.
+- Pendência de usuário duplicado (Gustavo): conferir o username do aprovador do passo 1 na QA antes do release (achado 2 acima).
