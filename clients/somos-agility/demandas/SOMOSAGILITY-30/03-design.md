@@ -177,3 +177,5 @@ A verificação 1 (`04-verificacao-rodada-1.md`) mediu 10521 ms de CPU contra o 
 3. O builder não reabre a pergunta: com este registro, o build segue para a verificação e o gate de build.
 4. O verificador e o QA medem o caso de volume de novo (dev e QA) e **registram** o resultado, sem reprovar só por ele. Os demais critérios continuam valendo normalmente.
 5. O limite fica documentado no `06-entrega.md` e para o cliente: SR com muitos Lançamentos no mesmo projeto pode se aproximar do limite de processamento do Salesforce na aprovação final. Se acontecer em produção, a correção estrutural (opção b, c ou d) vira demanda nova.
+
+**Adendo (2026-11-23, Leonardo Barbosa): ativação da v11 na QA.** A primeira implantação na QA (deploy `0AfHa00000EN7yQKAT`) falhou porque a v11 foi como `Draft` e os testes rodaram contra a v10 ativa (`Expected: 0, Actual: 180.00` em `Pendente - Gestor`). A ativação de versão na sandbox de QA é autorizada para todos os clientes: o arquivo do Flow nesta branch passa a `Active`, para a QA receber a v11 já ativa. Na dev a v11 já estava ativa (verificação 1).
