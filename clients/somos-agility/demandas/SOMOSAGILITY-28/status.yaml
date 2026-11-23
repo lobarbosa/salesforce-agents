@@ -2,10 +2,51 @@ id: SOMOSAGILITY-28
 client: somos-agility
 titulo: Acessar o objeto solicitação de treinamento
 tipo: sustentacao
-status: backlog
+status: cancelada
 criado_em: '2026-11-11T15:40:05.756Z'
 historico:
   - de: null
     em: '2026-11-11T15:40:05.751Z'
     para: backlog
     autor: Fernando Paula
+  - de: backlog
+    para: analise
+    autor: pipeline
+    em: '2026-11-11T18:21:27.182512+00:00'
+  - de: analise
+    para: aguardando_gate_analise
+    autor: pipeline
+    em: '2026-11-11T18:23:37.460554+00:00'
+  - de: aguardando_gate_analise
+    para: aguardando_gate_analise
+    autor: pipeline
+    em: '2026-11-11T18:23:45.598003+00:00'
+  - de: aguardando_gate_analise
+    para: design
+    autor: Carlos Sordi
+    em: '2026-11-16T18:20:49.844452+00:00'
+  - de: design
+    para: aguardando_gate_design
+    autor: pipeline
+    em: '2026-11-16T18:30:26.820660+00:00'
+  - de: aguardando_gate_design
+    para: build
+    autor: Carlos Sordi
+    em: '2026-11-22T20:56:27.286525+00:00'
+  - de: build
+    para: aguardando_gate_design
+    autor: pipeline
+    em: '2026-11-22T20:57:08.433884+00:00'
+  - de: aguardando_gate_design
+    para: build
+    autor: Carlos Sordi
+    em: '2026-11-22T21:06:03.566668+00:00'
+  - de: build
+    para: aguardando_gate_design
+    autor: pipeline
+    em: '2026-11-22T21:06:38.237688+00:00'
+  - de: aguardando_gate_design
+    para: cancelada
+    autor: Carlos Sordi
+    em: '2026-11-23T13:32:07.765Z'
+    motivo: Card concluido
