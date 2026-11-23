@@ -1,4 +1,6 @@
-**Resultado do build:** concluído
+**Resultado do build:** bloqueado
+
+**Motivo do bloqueio:** a verificação 1 reprovou por CPU (10521 ms contra 10000 ms) no caso de volume, e o design (seções 6 e 10) manda devolver ao gate de design nesse caso. Ver "Correções da verificação 1" no fim deste arquivo.
 
 # 04 — Plano de build: SOMOSAGILITY-30 — Total de despesas realizadas só na aprovação final da SR
 
@@ -45,3 +47,13 @@ Massa sintética, como no SOMOSAGILITY-10; nenhum dado real.
 - A pendência de que o handler tenha passado a existir só agora no repositório foi tratada: a classe vem do retrieve da dev.
 - Ordem de deploy para a QA: Flow v11, ativação, depois classes de teste. Um deploy com RunLocalTests com a v10 ativa quebra (R1).
 - Pendências de negócio P5, P7, P8 e premissas de P1 a P4 seguem como no design (não bloqueiam o build). Backfill de projetos existentes não faz parte desta entrega (P8).
+
+## Correções da verificação 1
+
+Lida: `04-verificacao-rodada-1.md` (reprovada). Dos 12 testes Apex, V1 e N1, tudo passou com a v11 ativa na dev. Só a FALHA 1 reprovou, e ela não é corrigível neste build.
+
+- **FALHA 1 (CPU 10521/10000 ms, SR com 150 Lançamentos indo para `Aprovado`): não corrigida, devolvida ao gate de design.**
+  - Por que não corrijo aqui: o design (seção 6) diz que a v11 não piora o pior caso e também não o resolve, e que, se o caso de volume estourar, "o build volta ao gate de design". A seção 10 proíbe otimizar o algoritmo do Flow sem nova decisão do arquiteto humano. Qualquer correção (trocar o loop do Flow por agregação, mover o somatório para Apex, limitar Lançamentos por SR) é mudança de solução diferente da aprovada, e eu não improviso.
+  - Nada foi alterado no metadata nesta sessão: v11 do Flow e testes ajustados continuam como no build original. A v11 está ativa na dev por causa da verificação (v10 Obsolete); reativar a v10 só se a demanda for descartada.
+  - **Pergunta que falta responder (arquiteto humano):** aceitar o limite documentado (a v11 não piora o caso do SOMOSAGILITY-10, e a medição foi única, com variação possível) ou aprovar uma mudança de algoritmo (agregação no Flow, somatório em Apex ou limite de Lançamentos por SR)? Se for mudança, o design precisa de revisão e novo aceite.
+  - Dado útil para a decisão: a verificação não mediu a v10 com a mesma massa, então não há comparação direta. Medir antes de decidir exige reativar a v10 na dev, o que é passo de ativação, fora do build.
