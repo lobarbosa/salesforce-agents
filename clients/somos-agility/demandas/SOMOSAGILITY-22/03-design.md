@@ -185,3 +185,16 @@ A correção de dados existentes (G3), se feita pelo cliente, não está nesta c
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Decisão do responsável (2026-11-23, Leonardo Barbosa): envio para aprovação testado pelo cliente na homologação
+
+As rodadas 1 e 2 de QA reprovaram porque o envio de um Job para aprovação não pôde ser exercitado: os critérios de entrada dos processos ativos comparam o Criado por com pessoas e grupos específicos do cliente, e o agente não cria registro em nome de outro usuário nem se passa por ninguém, o que não muda.
+
+**Decisão: opção (a).** Para o QA desta demanda, na `sbx-somos-agility-qa`:
+
+1. Provar por consulta o que a demanda entregou: processos e ação de envio inicial (`Status_Qualificacao`) e de recall como versionados, relatório e painel presentes, e as contagens agregadas do relatório batendo com a janela.
+2. Os casos que dependem do envio real (C1 a C4: enviar, aprovar, rejeitar e reenviar, e o status de previsão de gastos) ficam **não executados por exceção do responsável**: não reprovam a rodada. O roteiro do cliente (`05-roteiro-cliente.md`) descreve esses testes, passo a passo, para o financeiro fazer na homologação com um usuário real que entre nos critérios.
+3. **Pedido de 30/10** (tornar "Classificação gerencial" e "Denominação" obrigatórias na aprovação): **fora desta demanda**, não construído; não é motivo de reprovação. Fica registrado no roteiro do cliente como pendência a tratar em demanda própria, se o cliente confirmar.
+4. Com o resto provado e nenhuma falha, o veredito é `aprovado`, registrando em `05-testes.md` a exceção e o que ficou para o cliente.
