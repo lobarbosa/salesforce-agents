@@ -6,7 +6,8 @@ Etapa que vai rodar: `build` · org: `sbx-somos-agility-dev`. Gerado pela esteir
 - nenhum
 
 ## Outras demandas mexendo nos mesmos componentes
-- nenhuma
+- SOMOSAGILITY-10 (aguardando_homologacao) também mexe em: classes/SolicitacaoReembolsoBOTest, classes/SolicitacaoReembolsoTriggerHandlerTest, flows/Atualiza_valor_total_de_despesas_realizadas_no_projeto.
 
 ## Estado na org
-- nada a conferir: a demanda ainda não tem componentes no repositório
+- Flow `Atualiza_valor_total_de_despesas_realizadas_no_projeto`: tem versão ativa nesta org — mudança entra como versão nova.
+- Classes da demanda sem job pendente nesta org (2 conferidas).

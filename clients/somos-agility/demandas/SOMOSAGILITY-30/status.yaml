@@ -3,7 +3,7 @@ client: somos-agility
 titulo: 'Revisar o critério do total de despesas realizadas: somar só na aprovação
   final da Solicitação de Reembolso'
 tipo: sustentacao
-status: build
+status: aguardando_gate_design
 criado_em: '2026-11-22T20:49:28.227Z'
 historico:
 - de: null
@@ -30,3 +30,7 @@ historico:
   para: build
   autor: Carlos Sordi
   em: '2026-11-23T13:31:21.902160+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T13:41:41.074979+00:00'
