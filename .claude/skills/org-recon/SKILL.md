@@ -36,6 +36,9 @@ mudar.
 | Há validation rule que vai conflitar? | retrieve `ValidationRule` do objeto |
 | Qual o volume de registros? | `SELECT COUNT()` — nunca traga os registros |
 | Quem enxerga isso? | perfis e permission sets do objeto |
+| Quantas automações rodam no objeto pai? | conte Flows record-triggered e triggers de cada objeto que a solução atualiza — cada um multiplica o CPU (ver `salesforce-doutrina`) |
+| Quantos filhos um pai chega a ter? | agregado: `SELECT Pai__c, COUNT(Id) n FROM Filho__c GROUP BY Pai__c ORDER BY COUNT(Id) DESC LIMIT 5` — só IDs e contagens, nunca campos do registro |
+| A sandbox de QA tem a mesma metadata? | quando a demanda depende de validation rule ou automação, compare o retrieve das duas orgs (`sbx-<cliente>-dev` e `-qa`) e registre a divergência |
 
 ## Proibido
 - Query que retorne dados pessoais ou de negócio do cliente (nomes, e-mails, valores, CPF).
