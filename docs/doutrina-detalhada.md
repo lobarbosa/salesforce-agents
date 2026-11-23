@@ -117,6 +117,16 @@ build rodar de novo. O portal recusa aprovar um gate de build com plano bloquead
 (`lib/build-bloqueado.ts`). Achado real: cinco demandas da Somos chegaram à homologação
 sem nada construído, com os gates de build aprovados sobre um aviso de bloqueio.
 
+**Reaprovar o design sem resposta não refaz o build** (2026-11-23): no bloqueio, a esteira
+guarda em `04-bloqueio-insumos.txt` uma impressão do que o construtor leu (`03-design.md` e
+os comentários de gente no card, sem as linhas automáticas "Aprovou o gate" e "Aprovou a
+estimativa"). Uma nova aprovação do gate de design com a mesma impressão é recusada
+(`fluxo.aprovar_gate`, `GateSemMudancaError`): o job termina verde, a demanda fica no gate e
+nada é registrado em `gates.md`. O card do gate de design mostra no topo o começo do plano
+bloqueado, com a pergunta (`revisao.artefato_em_revisao`). Achado real: SOMOSAGILITY-30 teve
+o gate de design aprovado sete vezes num dia sem a resposta, e cada aprovação rodou o
+construtor para ele bloquear igual.
+
 **QA é a porta para o cliente** (2026-11-14): depois da etapa `qa`, a demanda só chega à
 homologação com evidência de aprovação — `**Veredito:** aprovado` e `**Org de teste:**`
 igual à sandbox de QA do cliente (`veredito.py`). Reprovado, sem veredito ou org errada: o
