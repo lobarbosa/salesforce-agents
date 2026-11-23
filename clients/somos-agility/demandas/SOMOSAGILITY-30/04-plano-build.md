@@ -1,22 +1,12 @@
-**Resultado do build:** bloqueado
-
-**Motivo do bloqueio:** a verificação 1 (`04-verificacao-rodada-1.md`, reprovada) mediu CPU de 10521 ms contra o limite de 10000 ms no caso de volume (uma SR com 150 Lançamentos indo para `Aprovado`). O design (seção 6) manda devolver ao gate de design nesse caso, e a seção 10 proíbe trocar o algoritmo do Flow sem decisão do arquiteto humano. O gate foi aprovado de novo em 2026-11-23 22:15 (Carlos Sordi, commit `b7064d02`), mas o `03-design.md` segue com o mesmo sha256 (`1d1437582827d178`, 18652 bytes) de todos os aceites anteriores, e `comentarios-do-card.md` só registra os aceites. Não há decisão nova sobre o CPU. Reaprovar o mesmo design não é aceite do risco nem autorização para mudar o algoritmo; ler assim seria inventar a resposta.
-
-**Pergunta sem resposta (quem responde: arquiteto humano, Carlos Sordi):** aceitar o limite documentado (a v11 não piora o caso do SOMOSAGILITY-10; a medição foi única) ou aprovar mudança de algoritmo? Para destravar, registrar no `03-design.md` (seção 6 ou 10) uma das opções e aprovar:
-- (a) aceitar o limite, com a v11 seguindo para a QA e o caso de volume medido de novo lá;
-- (b) agregação no Flow;
-- (c) somatório em Apex;
-- (d) limite de Lançamentos por SR.
-
-Em (b) a (d) o design precisa descrever o novo componente. Editar o design é do arquiteto; o builder não altera `03-design.md`.
+**Resultado do build:** concluído
 
 # 04 — Plano de build: SOMOSAGILITY-30 — Total de despesas realizadas só na aprovação final da SR
 
 **Org de build:** `sbx-somos-agility-dev` (Sandbox, Connected, conferida com `sf org list` nesta sessão). QA e produção não tocadas.
-**Branch:** `feature/SOMOSAGILITY-30`. **Design:** `03-design.md`, seções 1, 3.1 e 3.2.
+**Branch:** `feature/SOMOSAGILITY-30`. **Design:** `03-design.md`, seções 1, 3.1 e 3.2, mais a decisão do responsável (2026-11-23, Leonardo Barbosa, opção (a)) no fim do arquivo.
 **Último commit de build com metadata:** `ac45a561` (`SOMOSAGILITY-30: criar v11 do Flow de total de despesas e ajustar testes`).
 
-## Componentes (construídos em sessões anteriores, sem alteração nesta)
+## Componentes
 
 | Componente | Tipo | Ação | Descrição / resultado |
 |---|---|---|---|
@@ -28,23 +18,18 @@ Nenhuma classe, trigger, campo, perfil ou permission set de produção foi alter
 
 ## Versões e ativação
 
-- v11 foi implantada como Draft; a verificação 1 a ativou na dev para exercitar (v10 ficou Obsolete). Estado atual da dev: v11 ativa (segundo a verificação 1; não conferi de novo nesta sessão).
+- v11 foi implantada como Draft. Conferido nesta sessão por consulta Tooling na dev: v11 **Active**, v10 Obsolete, v9 Obsolete (a verificação 1 ativou a v11 na dev para exercitar). O arquivo no repositório segue `Draft`, como a esteira leva à QA.
 - Pendente (passo separado): na QA, a v11 chega como Draft pela esteira; o `qa` ativa para testar e registra qual versão entrou e qual saiu. Entra v11, sai v10.
 - Desfazer: reativar a v10.
 - Ordem de deploy para a QA: Flow v11, ativação, depois as classes de teste (com a v10 ativa os testes ajustados falham, risco R1).
 
-## Como o verificador testa quando o design for liberado
-
-Com a v11 ativa na dev: rodar `SolicitacaoReembolsoBOTest` e `SolicitacaoReembolsoTriggerHandlerTest` com cobertura por classe (meta 85%), e repetir o caso de volume de 150 Lançamentos (script em `fixtures/lancamento-volume-setup.apex`), medindo CPU.
-
-## Nesta sessão
-
-Nada foi alterado no metadata, na org nem nos testes. Reconferi de novo em 2026-11-23 (aceite das 22:49, commit `2713a42d`): `03-design.md` segue com sha256 `1d1437582827d178` (18652 bytes), igual a todos os aceites, e o card só registra aprovações do gate, sem decisão sobre o CPU. Bloqueio mantido. Este plano foi restaurado do commit anterior (o arquivo estava apagado na árvore de trabalho). Resultado da verificação 1 fora o CPU: 12 de 12 testes Apex passaram, V1 passou, cobertura acima de 85% nas classes de produção tocadas.
-
 ## Correções da verificação 1
 
-- **FALHA 1 (CPU 10521/10000 ms): não corrigida, devolvida ao gate de design.** Qualquer correção (agregação no Flow, somatório em Apex, limite por SR) é solução diferente da aprovada. A pergunta e as opções estão no topo deste arquivo. A verificação não mediu a v10 com a mesma massa, então não há comparação direta; medir exige reativar a v10 na dev, o que é passo de ativação, fora do build.
+- **FALHA 1 (CPU 10521/10000 ms no caso de volume, 150 Lançamentos de uma SR para `Aprovado`): sem alteração de build, por decisão registrada.** O responsável decidiu pela opção (a) em `03-design.md` (seção "Decisão do responsável", 2026-11-23): aceitar o limite documentado, manter a v11 como construída e não trocar o algoritmo (sem agregação no Flow, sem Apex, sem limite de Lançamentos por SR). A v11 não piora o pior caso em relação à v10 e a medição foi única, 5% acima do limite. O verificador e o QA repetem a medição do caso de volume (dev e QA) e registram o resultado, sem reprovar só por ele. O limite entra no `06-entrega.md` e na comunicação ao cliente. Correção estrutural (opções b, c ou d), se necessária em produção, vira demanda nova.
+- Demais itens da verificação 1 passaram (12 de 12 testes Apex, V1, cobertura >= 85% nas classes de produção tocadas). Nada a corrigir.
 
-## Pendências de negócio
+## Pendências
 
-P5, P7 e P8 seguem como no design (não bloqueiam o build). Backfill fora desta entrega (P8).
+- Verificação na dev: repetir o caso de volume (script em `fixtures/lancamento-volume-setup.apex`) e registrar a CPU.
+- P5, P7 e P8 seguem como no design (não bloqueiam o build). Backfill fora desta entrega (P8).
+- CA-06 ficou sem prova adicional na verificação 1 (depende de P5).
