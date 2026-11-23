@@ -1,6 +1,6 @@
 **Resultado do build:** bloqueado
 
-**Motivo do bloqueio:** a verificação 1 reprovou por CPU (10521 ms contra 10000 ms) no caso de volume, e o design (seções 6 e 10) manda devolver ao gate de design nesse caso. Ver "Correções da verificação 1" no fim deste arquivo. Reconfirmado na sessão de 2026-11-23 (após novo aceite do gate de design): o `03-design.md` segue com o mesmo hash (`1d1437582827d178`) do aceite anterior, ou seja, não traz decisão nova sobre o CPU. Reaprovar o mesmo design não autoriza trocar o algoritmo (seções 6 e 10).
+**Motivo do bloqueio:** a verificação 1 reprovou por CPU (10521 ms contra 10000 ms) no caso de volume, e o design (seções 6 e 10) manda devolver ao gate de design nesse caso. Ver "Correções da verificação 1" no fim deste arquivo. Reconfirmado duas vezes em 2026-11-23, a última após o terceiro aceite do gate de design (20:08): o `03-design.md` segue com o mesmo hash (`1d1437582827d178`) do aceite anterior, ou seja, não traz decisão nova sobre o CPU. Reaprovar o mesmo design não autoriza trocar o algoritmo (seções 6 e 10).
 
 # 04 — Plano de build: SOMOSAGILITY-30 — Total de despesas realizadas só na aprovação final da SR
 
@@ -63,3 +63,5 @@ Lida: `04-verificacao-rodada-1.md` (reprovada). Dos 12 testes Apex, V1 e N1, tud
 - O gate foi aprovado de novo (Carlos Sordi, commit `ea5516b5`), mas os artefatos revisados são idênticos aos do aceite anterior (`03-design.md` sha256 `1d1437582827d178`). O design não foi revisado: continua sem dizer se o estouro de CPU é aceito nem qual algoritmo usar.
 - Não li isso como aceite do risco nem como autorização de mudar o algoritmo; seria inventar a decisão. Nada foi alterado no metadata nesta sessão (v11 e testes como no build original, sem nova implantação).
 - **O que falta para destravar (quem responde: arquiteto humano):** registrar no `03-design.md` uma destas opções e aprovar de novo: (a) aceitar o limite documentado, com a v11 seguindo para a QA e o caso de volume medido de novo lá; (b) agregação no Flow; (c) somatório em Apex; (d) limite de Lançamentos por SR. Em (b) a (d), o design precisa descrever o novo componente.
+
+**Reconfirmação (terceira sessão):** `03-design.md` continua com sha256 `1d1437582827d178` e `comentarios-do-card.md` só registra os aceites, sem resposta à pergunta acima. Quem responde: arquiteto humano (Carlos Sordi). Para destravar, basta ele registrar no design, seção 6 ou 10, qual das opções vale (aceitar o limite ou aprovar mudança de algoritmo). Nada foi alterado na org nem no metadata nesta sessão.
