@@ -163,3 +163,17 @@ Mudou em relação à análise (5–10 h):
 ---
 
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Decisão do responsável (2026-11-23, Leonardo Barbosa): limite de CPU no caso de volume — opção (a)
+
+A verificação 1 (`04-verificacao-rodada-1.md`) mediu 10521 ms de CPU contra o limite de 10000 ms no caso de volume da seção 6 (uma SR com 150 Lançamentos no mesmo projeto passando para `Aprovado`). O build voltou ao gate de design sete vezes com a mesma pergunta.
+
+**Decisão: opção (a), aceitar o limite documentado.** Substitui, só para este caso, a regra da seção 6 de voltar ao gate de design quando o caso de volume estourar:
+
+1. A v11 segue como construída, sem trocar o algoritmo do Flow (nada de agregação no Flow, Apex ou limite de Lançamentos por SR nesta demanda).
+2. Motivo: a v11 não piora o pior caso em relação à v10 (seção 6) e a medição foi única, 5% acima do limite.
+3. O builder não reabre a pergunta: com este registro, o build segue para a verificação e o gate de build.
+4. O verificador e o QA medem o caso de volume de novo (dev e QA) e **registram** o resultado, sem reprovar só por ele. Os demais critérios continuam valendo normalmente.
+5. O limite fica documentado no `06-entrega.md` e para o cliente: SR com muitos Lançamentos no mesmo projeto pode se aproximar do limite de processamento do Salesforce na aprovação final. Se acontecer em produção, a correção estrutural (opção b, c ou d) vira demanda nova.
