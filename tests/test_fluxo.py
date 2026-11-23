@@ -593,3 +593,78 @@ def test_reverificar_recusa_sem_build_concluido_no_gate(repo, status, plano):
         (_pasta(d) / "04-plano-build.md").write_text(plano, encoding="utf-8")
     with pytest.raises(fluxo.FluxoError):
         fluxo.reverificar("acme", d.id, "Fulano")
+
+
+# --- reaprovação do design depois de build bloqueado (SOMOSAGILITY-30) ----
+
+PLANO_BLOQUEADO = (
+    "**Resultado do build:** bloqueado\n\n**Pergunta sem resposta:** aceitar o limite de CPU?\n\n"
+    "# 04 — Plano de build\n\ndetalhes que não vão para o topo do card\n"
+)
+
+
+def _bloqueada(repo):
+    d = _demanda("build")
+    base = demands.CLIENTS_ROOT / "acme" / "demandas" / d.id
+    (base / "03-design.md").write_text("# Design\n\nseção 6: estourou, volta ao gate", encoding="utf-8")
+    (base / "comentarios-do-card.md").write_text(
+        "# Comentários do card\n\n## Equipe — 2026-11-23 10:29\n\nAprovou o gate \"aguardando_gate_design\". Entrou na fila da esteira.\n",
+        encoding="utf-8",
+    )
+    fluxo.rodar("acme", d.id, executor=_executor_de_build(PLANO_BLOQUEADO))
+    assert demands.Demand.load("acme", d.id).status == "aguardando_gate_design"
+    return d, base
+
+
+def test_reaprovar_sem_mudanca_e_recusado_e_nao_registra_gate(repo):
+    d, base = _bloqueada(repo)
+    gates_antes = (base / "gates.md").read_text(encoding="utf-8") if (base / "gates.md").exists() else ""
+    # Mais uma aprovação automática no card não conta como resposta.
+    with (base / "comentarios-do-card.md").open("a", encoding="utf-8") as fh:
+        fh.write("\n## Equipe — 2026-11-23 13:35\n\nAprovou o gate \"aguardando_gate_design\". Entrou na fila da esteira.\n")
+    with pytest.raises(fluxo.GateSemMudancaError):
+        fluxo.aprovar_gate("acme", d.id, "Carlos")
+    assert demands.Demand.load("acme", d.id).status == "aguardando_gate_design"
+    gates_depois = (base / "gates.md").read_text(encoding="utf-8") if (base / "gates.md").exists() else ""
+    assert gates_depois == gates_antes
+
+
+def test_reaprovar_depois_de_registrar_no_design_passa(repo):
+    d, base = _bloqueada(repo)
+    with (base / "03-design.md").open("a", encoding="utf-8") as fh:
+        fh.write("\n\n## Decisão: opção (a)\n")
+    assert fluxo.aprovar_gate("acme", d.id, "Leonardo").status == "build"
+
+
+def test_reaprovar_depois_de_resposta_no_card_passa(repo):
+    d, base = _bloqueada(repo)
+    with (base / "comentarios-do-card.md").open("a", encoding="utf-8") as fh:
+        fh.write("\n## Cliente — 2026-11-23 17:07\n\nTodos os perfis\n")
+    assert fluxo.aprovar_gate("acme", d.id, "Leonardo").status == "build"
+
+
+def test_bloqueio_antigo_sem_impressao_nao_trava(repo):
+    d, base = _bloqueada(repo)
+    (base / "04-bloqueio-insumos.txt").unlink()
+    assert fluxo.aprovar_gate("acme", d.id, "Leonardo").status == "build"
+
+
+def test_impressao_sai_quando_o_build_roda_de_novo(repo):
+    d, base = _bloqueada(repo)
+    with (base / "03-design.md").open("a", encoding="utf-8") as fh:
+        fh.write("\nresposta\n")
+    fluxo.aprovar_gate("acme", d.id, "Leonardo")
+    fluxo.rodar("acme", d.id, executor=_executor_de_build("**Resultado do build:** concluído\n\n- Flow X"))
+    assert not (base / "04-bloqueio-insumos.txt").exists()
+
+
+def test_card_do_design_mostra_o_bloqueio_no_topo(repo):
+    from salesforce_agents import revisao
+
+    d, _ = _bloqueada(repo)
+    art = revisao.artefato_em_revisao(demands.Demand.load("acme", d.id))
+    assert art["nome"] == "03-design.md"
+    assert art["conteudo"].startswith("## O build parou: falta uma decisão")
+    assert "aceitar o limite de CPU?" in art["conteudo"]
+    assert "detalhes que não vão para o topo" not in art["conteudo"]
+    assert "seção 6: estourou" in art["conteudo"]
