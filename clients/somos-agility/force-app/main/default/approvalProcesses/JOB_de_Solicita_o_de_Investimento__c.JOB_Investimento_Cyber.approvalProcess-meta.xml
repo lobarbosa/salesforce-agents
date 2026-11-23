@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>false</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Owner</field>
+        <field>Centro_de_Custo__c</field>
+        <field>Classificacao_Gerencial__c</field>
+        <field>Denomina_o_do_JOB__c</field>
+        <field>Observa_o__c</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>gustavo.eduardo@somosagility.com.br1</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Primeiro aprovador do JOB do Cyber.</description>
+        <label>Aprovação - Gustavo</label>
+        <name>Aprovacao_Gustavo</name>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>wanderley.gadioli@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Segundo aprovador do JOB do Cyber.</description>
+        <label>Aprovação - Wanderley</label>
+        <name>Aprovacao_Wanderley</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>walmor.costa@somosagility.com.br</name>
+                <type>user</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <description>Aprovação final do JOB do Cyber.</description>
+        <label>Aprovação - Walmor</label>
+        <name>Aprovacao_Walmor</name>
+        <rejectBehavior>
+            <type>RejectRequest</type>
+        </rejectBehavior>
+    </approvalStep>
+    <description>Aprovação do JOB de investimento criado pelo usuário Cyber: Gustavo, Wanderley e Walmor, nesta ordem. Avaliado antes do processo geral.</description>
+    <emailTemplate>Job_de_Investimentos/Solicita_o_de_JOB_de_Investimento</emailTemplate>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.CreatedBy</field>
+            <operation>equals</operation>
+            <value>Grupo Cyber Salesforce</value>
+        </criteriaItems>
+        <criteriaItems>
+            <field>JOB_de_Solicita_o_de_Investimento__c.Status_da_Qualificaco__c</field>
+            <operation>notEqual</operation>
+            <value>Aprovado</value>
+        </criteriaItems>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Aprova_o_de_JOB</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_Qualificacao_Aprovacao</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>false</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Rejei_o_de_JOB</name>
+            <type>Alert</type>
+        </action>
+        <action>
+            <name>Status_Qualificacao_Rejeicao</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <initialSubmissionActions>
+        <action>
+            <name>Status_Qualificacao</name>
+            <type>FieldUpdate</type>
+        </action>
+    </initialSubmissionActions>
+    <label>JOB de Investimento - Cyber</label>
+    <processOrder>2</processOrder>
+    <recallActions>
+        <action>
+            <name>Status_Qualificacao_Recall</name>
+            <type>FieldUpdate</type>
+        </action>
+    </recallActions>
+    <recordEditability>AdminOrCurrentApprover</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>
