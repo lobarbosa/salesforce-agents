@@ -39,7 +39,7 @@ Com a v11 ativa na dev: rodar `SolicitacaoReembolsoBOTest` e `SolicitacaoReembol
 
 ## Nesta sessão
 
-Nada foi alterado no metadata, na org nem nos testes. Só este plano foi regravado (o arquivo estava apagado na árvore de trabalho). Resultado da verificação 1 fora o CPU: 12 de 12 testes Apex passaram, V1 passou, cobertura acima de 85% nas classes de produção tocadas.
+Nada foi alterado no metadata, na org nem nos testes. Reconferi em 2026-11-23: `03-design.md` segue com sha256 `1d1437582827d178` (18652 bytes), igual a todos os aceites, e o card só registra aprovações do gate, sem decisão sobre o CPU. Bloqueio mantido. Este plano foi restaurado do commit anterior (o arquivo estava apagado na árvore de trabalho). Resultado da verificação 1 fora o CPU: 12 de 12 testes Apex passaram, V1 passou, cobertura acima de 85% nas classes de produção tocadas.
 
 ## Correções da verificação 1
 
