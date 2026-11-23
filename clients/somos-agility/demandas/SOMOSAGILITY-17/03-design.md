@@ -126,3 +126,15 @@ como cada um ou ter usuários de teste.
 
 ---
 Design pronto. **Gate bloqueante** — preciso do aceite do arquiteto humano para liberar o build.
+
+---
+
+## Decisão do responsável (2026-11-23, Leonardo Barbosa): sequência de aprovação testada pelo cliente na homologação
+
+A verificação deu inconclusiva porque o critério de entrada do processo novo é `CreatedBy = Grupo Cyber Salesforce` e a sequência real (Gustavo → Wanderley → Walmor) exige agir como essas pessoas. O agente não cria registro em nome de outro usuário nem aprova como outra pessoa, e isso não muda.
+
+**Decisão: opção (a).** Para o QA desta demanda, na `sbx-somos-agility-qa`:
+
+1. Provar a configuração por consulta: o processo `JOB_Investimento_Cyber` existe, está ativo, com `processOrder` 2, critério de entrada e os três passos na ordem e com o comportamento de rejeição do design; o processo geral `JOB_de_solicitacoes_de_investimento` só mudou para `processOrder` 3.
+2. Os casos que exigem o usuário do grupo Cyber ou os aprovadores (entrar no processo, aprovar e rejeitar em cada passo) ficam **não executados por exceção do responsável**: não reprovam a rodada. O roteiro do cliente (`05-roteiro-cliente.md`) descreve esses testes, passo a passo, para o cliente fazer na homologação com os usuários reais da sandbox de QA.
+3. Com a configuração provada e nenhuma falha, o veredito é `aprovado`, registrando em `05-testes.md` a exceção e o que ficou para o cliente.
