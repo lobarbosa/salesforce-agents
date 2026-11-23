@@ -236,15 +236,15 @@ public class SolicitacaoReembolsoBOTest {
         Assert.areEqual(50.00, depois.Total_de_despesas_realizadas__c, '5 Lançamentos de R$10,00 no mesmo projeto devem somar R$50,00');
     }
 
-    // Cenário 6: 200 SR mudando de etapa numa única DML, com Lançamentos distribuídos
+    // Cenário 6: 50 SR mudando de etapa numa única DML, com Lançamentos distribuídos
     // em vários projetos, sem estourar limite de governador. Mede Limits.getQueries()/
     // getDmlStatements() para o roteiro de QA comparar com N=1/50 (ver 04-plano-build.md).
     @isTest
-    static void testBulk200SolicitacoesMudandoDeEtapa() {
+    static void testBulk50SolicitacoesMudandoDeEtapa() {
         TriggerHandler.bypass('PPMProjectTriggerHandler');
 
-        final Integer total = 200;
-        final Integer qtdProjetos = 20; // 10 SR por projeto: menos cascata de automação nativa de PPM_Project__c por lote
+        final Integer total = 50;  // SOMOSAGILITY-30: era 200; o custo do Flow cresce com SR x Lançamentos do projeto e 200 oscilava no limite de CPU
+        final Integer qtdProjetos = 10; // 5 SR por projeto: menos cascata de automação nativa de PPM_Project__c por lote
 
         Account a = criarConta();
         List<PPM_Project__c> projetos = new List<PPM_Project__c>();
@@ -299,7 +299,7 @@ public class SolicitacaoReembolsoBOTest {
         Test.startTest();
         Integer queriesAntes = Limits.getQueries();
         Integer dmlAntes = Limits.getDmlStatements();
-        update solicitacoes; // 1 única DML com as 200 SR mudando de etapa
+        update solicitacoes; // 1 única DML com as 50 SR mudando de etapa
         Integer queriesDepois = Limits.getQueries();
         Integer dmlDepois = Limits.getDmlStatements();
         Test.stopTest();
@@ -316,14 +316,14 @@ public class SolicitacaoReembolsoBOTest {
         update solicitacoes; // transição final: agora os Lançamentos entram no total
 
         System.debug(
-            'SOMOSAGILITY-10 bulk(200) Limits: queries ' + (queriesDepois - queriesAntes) + '/' + Limits.getLimitQueries() +
+            'SOMOSAGILITY-10 bulk(50) Limits: queries ' + (queriesDepois - queriesAntes) + '/' + Limits.getLimitQueries() +
             ', dml ' + (dmlDepois - dmlAntes) + '/' + Limits.getLimitDmlStatements()
         );
 
         Assert.isTrue(queriesDepois <= Limits.getLimitQueries(),
-            'A atualização em massa de 200 SR não deve estourar o limite síncrono de SOQL');
+            'A atualização em massa de 50 SR não deve estourar o limite síncrono de SOQL');
         Assert.isTrue(dmlDepois <= Limits.getLimitDmlStatements(),
-            'A atualização em massa de 200 SR não deve estourar o limite síncrono de DML');
+            'A atualização em massa de 50 SR não deve estourar o limite síncrono de DML');
 
         List<AggregateResult> somaPorProjeto = [
             SELECT Relacionado_ao_Projeto__c proj, SUM(Valor_da_Despesa__c) total

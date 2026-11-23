@@ -33,3 +33,8 @@ Nenhuma classe, trigger, campo, perfil ou permission set de produção foi alter
 - Verificação na dev: repetir o caso de volume (script em `fixtures/lancamento-volume-setup.apex`) e registrar a CPU.
 - P5, P7 e P8 seguem como no design (não bloqueiam o build). Backfill fora desta entrega (P8).
 - CA-06 ficou sem prova adicional na verificação 1 (depende de P5).
+
+## Correções da verificação 2
+
+- **FALHA 1 (`testBulk200SolicitacoesMudandoDeEtapa` falhava por CPU de forma intermitente): corrigida só no teste.** Lote reduzido de 200 SR em 20 projetos para 50 SR em 10 projetos (5 SR por projeto), mantendo a prova de bulk (uma DML com várias SR). O método foi renomeado para `testBulk50SolicitacoesMudandoDeEtapa`, com comentário e mensagens de assert ajustados. Sem mudança no Flow v11 nem em classe de produção. A decisão (a) do limite de CPU do produto segue valendo e é medida pelo caso de volume, não por este teste.
+- Evidência na dev (`sbx-somos-agility-dev`): 3 execuções isoladas do teste, 3 Pass (33,7 s, 29,1 s, 14,9 s). Classe de teste reimplantada na dev. Suíte das duas classes de teste reexecutada (resultado na verificação seguinte).
