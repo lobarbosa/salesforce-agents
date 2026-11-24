@@ -386,3 +386,19 @@ Decidido por Leonardo Barbosa depois da rodada 5 de QA (v15). O build não muda.
 **Testes que a verificação e o QA acrescentam (dados sintéticos, contas `TESTE EPLAST-27`):** `recordId` com Id válido (regressão); com código que casa uma conta; com código que casa duas; com código inexistente; com texto qualquer que não é Id nem código; vazio com `accountName` (regressão do caminho por nome). Em todos, o Flow termina sem erro e com a mensagem certa.
 
 As decisões anteriores desta demanda (rodadas 4 e 5) continuam valendo.
+
+---
+
+## Decisão do responsável (2026-11-24, Leonardo Barbosa): corrigir a contagem do caminho por código (QA rodada 7 reprovou)
+
+**Achado do QA (`05-testes-rodada-6.md`, FALHA 1):** todo código que casa com uma ou mais contas devolve `AMBIGUOUS` com lista vazia. Causa lida no Flow: `HasCodeMatches` manda o resultado de `GetAccountsByCode` para o loop `LoopNames`, que percorre `GetAccountsByName` (vazio no caminho por código). Sem iteração, `matchCount` fica 0 e `AfterNames` cai em "Várias".
+
+**Correção, numa versão nova do Flow (a v7 está ativa na QA; não editar no lugar), sem mudar a assinatura da ação:**
+
+1. O caminho por código passa a percorrer `GetAccountsByCode`: loop próprio (ou uma coleção comum alimentada pelos dois caminhos) que conta as contas, guarda o Id da última e monta a lista com nome e loja (`Store__c`).
+2. Depois do loop, mesma decisão do caminho por nome: nenhuma → não encontrada; uma → segue com ela, **inclusive a regra de dono** (`NOT_OWNER` para conta de outro vendedor); várias → `AMBIGUOUS` com a lista preenchida.
+3. O campo do código está confirmado: `Account.ProtheusId__c`, igualdade (QA: 1209 de 1210 preenchidos com 6 dígitos).
+
+**Verificação na dev:** desta vez o caminho precisa ser exercitado antes do gate. O builder deixa a versão nova ativa na sandbox de dev (ativação como passo separado), e o verificador executa, com contas `TESTE EPLAST-27`, os casos: código de uma conta (ação da conta), código de duas contas (lista com as duas), código de conta de outro dono (`NOT_OWNER`), código inexistente, e Id válido (regressão).
+
+**QA:** repete os 6 casos da decisão de 23/11 mais o de conta de outro dono, e a conversa com o agente passando o código.
