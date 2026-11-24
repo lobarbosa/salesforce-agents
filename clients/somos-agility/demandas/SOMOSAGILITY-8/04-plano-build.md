@@ -66,7 +66,7 @@ Para testar os e-mails na dev, o verificador precisa ativar a v7_7 (e desativar 
 
 ## Riscos e pendências para verificação, QA e produção
 
-- **R3/R4: e-mail da lista Agility GOV.** No repositório está um endereço de teste reservado (`agility.gov.teste@example.invalid`), nunca o real, para nenhum e-mail sair para a lista de verdade. O endereço real é passo manual de produção, documentado em `06-entrega.md`. Substituir pela caixa de teste do squad se o QA precisar receber o e-mail.
+- **R3/R4: e-mail da lista Agility GOV.** No repositório está um endereço de teste reservado (domínio `.invalid`, sem caixa real), nunca o real, para nenhum e-mail sair para a lista de verdade. O endereço real é passo manual de produção, documentado em `06-entrega.md`. Substituir pela caixa de teste do squad se o QA precisar receber o e-mail.
 - **R9:** na dev e na QA, os usernames dos usuários têm sufixo de sandbox e e-mail `.invalid`. Conferir envio pelo log de e-mail, sem captura de registro real.
 - **Não exercitado no build:** mensagem do Flow na tela do Lightning (c), envio efetivo dos e-mails e o layout renderizado.
 - **Dado de teste:** o spike usou registro temporário revertido por rollback; a dev continua com 0 DEPVs.
