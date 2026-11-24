@@ -369,3 +369,20 @@ Decidido por Leonardo Barbosa depois da rodada 5 de QA (v15). O build não muda.
   e que a correção (instrução mais estrita) entra numa próxima rodada se a Eplast pedir.
 - O QA registra o caso em `05-testes.md` como "limitação conhecida (decisão de 16/11)", com
   o que o assistente respondeu, e mantém os demais casos como estão.
+
+---
+
+## Decisão do responsável (2026-11-23, Leonardo Barbosa): a ação aceita o código da conta no lugar do Id
+
+**Achado (sandbox, 17/11, 1 ocorrência):** o Flow `Account_Agente_ProximaAcao` recebeu em `recordId` o código da conta (`000682`) em vez de um Id do Salesforce. O `GetAccount` filtra `Id = recordId`, e um valor que não é Id faz a consulta falhar. É ajuste interno, a corrigir antes de subir.
+
+**Correção, numa versão nova do Flow (v4), sem editar a v3 no lugar e sem mudar a assinatura da ação do agente (mesmas entradas `recordId` e `accountName`, logo sem versão nova do SFAgent2 por causa disto):**
+
+1. Antes de `GetAccount`, o Flow decide se `recordId` tem forma de Id de Conta: 15 ou 18 caracteres e começa por `001`. Só nesse caso segue pelo caminho atual (`GetAccount` por Id).
+2. Se `recordId` veio preenchido e **não** tem forma de Id, o Flow o trata como **código da conta** e busca a Conta por esse código. Campo candidato: `Account.ProtheusId__c` ("ID da Conta no Protheus", Text, External Id, não único; existe no repositório). **O builder confirma na org de dev, por metadata e contagem agregada, que é esse o campo que guarda o código no formato de 6 dígitos; se não for, não inventa: registra `**Resultado do build:** bloqueado` com a pergunta.** A comparação é por igualdade.
+3. O resultado da busca por código reaproveita o tratamento que já existe para a busca por nome: nenhuma conta → mensagem de não encontrada; uma conta → segue com ela (inclusive a regra de dono, `RestrictToOwner__c`); várias (mesmo código em lojas diferentes) → devolve a lista para o agente pedir que a pessoa escolha, sem escolher sozinho.
+4. Nenhum caminho pode terminar em falha não tratada: toda consulta nova tem `faultConnector` para uma saída com mensagem.
+
+**Testes que a verificação e o QA acrescentam (dados sintéticos, contas `TESTE EPLAST-27`):** `recordId` com Id válido (regressão); com código que casa uma conta; com código que casa duas; com código inexistente; com texto qualquer que não é Id nem código; vazio com `accountName` (regressão do caminho por nome). Em todos, o Flow termina sem erro e com a mensagem certa.
+
+As decisões anteriores desta demanda (rodadas 4 e 5) continuam valendo.
