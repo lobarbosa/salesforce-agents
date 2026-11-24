@@ -21,9 +21,15 @@ on:
 permissions:
   contents: read
 
+# Push novo no mesmo PR cancela o CI do anterior: só o último importa.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
 
