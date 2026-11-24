@@ -1655,3 +1655,17 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
   summary { min-height: 32px; align-content: center; }
   main a:not([class]) { display: inline-block; padding-block: 0.3rem; }
 }
+
+/* --- Usabilidade, passada de desktop (2026-11-24) -------------------------- */
+/* Login e nova senha: o subtítulo subia por cima do título. */
+.auth-card .sub { margin-top: 0.15rem; }
+/* Gráficos alinhados à esquerda, junto com a legenda e a tabela abaixo; o
+   limite de altura da passada anterior centralizava o desenho e a legenda
+   ficava solta do outro lado. */
+.chart svg { max-height: none; max-width: 520px; }
+/* Conhecimento do cliente: todos os cartões com a mesma largura (um deles
+   ficava em meia coluna, sozinho, e o de saúde mais largo que os demais). */
+.brief-grid { max-width: none; }
+.brief-grid > * { grid-column: 1 / -1; }
+/* Título de seção colado na caixa de cima. */
+.painel-conciliacao { margin-top: 1.4rem; }

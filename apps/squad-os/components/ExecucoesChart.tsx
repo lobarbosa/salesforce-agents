@@ -33,7 +33,10 @@ export function ExecucoesChart({ dados }: { dados: DiaExecucoes[] }) {
   const alturaDe = (v: number) => (v / max) * plotH;
 
   // Rótulo de eixo x só em alguns pontos — um por dia em 14 dias vira ruído.
-  const mostrarRotulo = (i: number) => i === 0 || i === dados.length - 1 || i % 3 === 0;
+  // O último dia sempre aparece; o múltiplo de 3 vizinho dele sai, senão os dois
+  // rótulos se sobrepõem ("23/1124/11").
+  const ultimo = dados.length - 1;
+  const mostrarRotulo = (i: number) => i === ultimo || (i % 3 === 0 && ultimo - i >= 2);
 
   return (
     <figure className="chart">

@@ -66,8 +66,8 @@ export default async function SaudeFinanceiraPage() {
       <>
         {cabecalho}
         <div className="overview-empty">
-          O relatório de saúde financeira aparece aqui quando o banco dos agentes estiver ligado a este Squad OS e a
-          tabela <span className="mono">ops.relatorios_financeiros</span> existir.
+          Ainda não há relatório de saúde financeira. Ele aparece aqui depois que o agente financeiro gerar o
+          primeiro, com o banco dos agentes ligado a este Squad OS.
         </div>
       </>
     );

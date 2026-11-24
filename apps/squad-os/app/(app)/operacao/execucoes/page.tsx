@@ -70,7 +70,7 @@ export default async function ExecucoesPage({
         </Link>
         {RESULTADOS.map((r) => (
           <Link key={r} href={link({ resultado: r })} className={`tab-btn${resultadoFiltro === r ? " active" : ""}`} aria-current={resultadoFiltro === r ? "page" : undefined}>
-            {ROTULO_RESULTADO[r]}
+            {ROTULO_RESULTADO[r].charAt(0).toUpperCase() + ROTULO_RESULTADO[r].slice(1)}
           </Link>
         ))}
       </nav>
