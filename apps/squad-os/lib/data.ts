@@ -87,7 +87,13 @@ export function getDemandasByClient(clientId: string) {
 }
 
 export function getAllDemandas() {
-  return prisma.demanda.findMany({ orderBy: { criadoEm: "desc" } });
+  // Sem as colunas pesadas (artefato da etapa, roteiro do cliente, texto do
+  // pedido, histórico): a Visão Geral só lista, e elas somavam ~800 kB por
+  // carregamento sem ninguém ler.
+  return prisma.demanda.findMany({
+    orderBy: { criadoEm: "desc" },
+    omit: { artefatoConteudo: true, roteiroCliente: true, texto: true, historico: true },
+  });
 }
 
 // O tipo que o modal (e tudo que passa a demanda pra ele) espera — definido

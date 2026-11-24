@@ -9,17 +9,25 @@ on:
   pull_request:
     paths:
       - "apps/squad-os/**"
+      - "package-lock.json"
   push:
     branches: [main]
     paths:
       - "apps/squad-os/**"
+      - "package-lock.json"
 
 permissions:
   contents: read
 
+# Push novo no mesmo PR cancela o CI do anterior: só o último importa.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     defaults:
       run:
         working-directory: apps/squad-os

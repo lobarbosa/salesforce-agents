@@ -6,14 +6,12 @@ import type { Client } from "@/lib/generated/prisma/client";
 import type { DemandaCompleta } from "@/lib/data";
 import {
   FASES,
-  agenteRodando,
   estaEmGate,
   quemDestrava,
   acoesPendentes,
   estadoDoClienteDemanda,
   type QuemAge,
   motivoSemDrop,
-  gateLiberadoPor,
 } from "@/lib/demandas";
 import { Modal } from "@/components/Modal";
 import { useAutoRefresh } from "@/lib/auto-refresh";
@@ -54,7 +52,10 @@ export function DemandasTab({
   // aba aberta congela no estágio em que estava quando carregou, e quem está
   // esperando o gate aparecer fica dando F5 (ou, pior, conclui que travou).
   // Parado em gate não recarrega: ali não vem nada, quem tem que agir é gente.
-  useAutoRefresh(demandas.some((d) => agenteRodando(d.status) || gateLiberadoPor(d) !== null));
+  // Só com execução em voo ou na fila (acoesPendentes): etapa de agente parada
+  // sem disparo não muda sozinha, e recarregar o quadro inteiro a cada 8 s por
+  // causa dela gastava banco e função sem trazer nada.
+  useAutoRefresh(demandas.some((d) => acoesPendentes(d).some((a) => a.quem === "agente" || a.quem === "fila")));
 
   // Arrastar (2026-10-21) é atalho com confirmação, não um jeito de mover a
   // esteira: Backlog → Análise = enviar para a esteira; qualquer card parado

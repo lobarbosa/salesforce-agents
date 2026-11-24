@@ -29,9 +29,14 @@ on:
         default: dev
         options: [dev, qa]
 
+# Só lê o repositório; as credenciais vêm do Environment.
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     environment: ${{ inputs.client }}-${{ inputs.ambiente }}
     steps:
       - name: Marcar início (observabilidade)
