@@ -36,8 +36,22 @@ caso("depois do build já debitado: não pede aprovação de novo", () => {
 caso("entregue sem aprovação: não pede mais", () => {
   assert.ok(!quem({ status: "entregue" }).includes("cliente:aprovar horas"));
 });
-caso("etapa rodando: agente", () => {
-  assert.deepEqual(quem({ status: "build" }), ["agente:rodando"]);
+caso("etapa de agente sem a fila carregada: vale o status", () => {
+  assert.deepEqual(quem({ status: "build", disparos: undefined }), ["agente:rodando"]);
+});
+caso("etapa de agente com execução em voo: agente", () => {
+  const disparos = [{ tipo: "rodar", gate: "", disparadoEm: new Date(), concluidoEm: null }];
+  assert.deepEqual(quem({ status: "build", disparos }), ["agente:rodando"]);
+});
+caso("etapa de agente esperando a vez: na fila", () => {
+  const disparos = [{ tipo: "rodar", gate: "", disparadoEm: null, concluidoEm: null }];
+  assert.deepEqual(quem({ status: "build", estimativaAprovadaHoras: 10, disparos }), ["fila:na fila"]);
+});
+caso("etapa de agente sem execução nem fila: parada, vez do time", () => {
+  const disparos = [{ tipo: "rodar", gate: "", disparadoEm: new Date(), concluidoEm: new Date() }];
+  assert.deepEqual(quem({ status: "build", disparos: [] }), ["time:retomar etapa parada"]);
+  assert.deepEqual(quem({ status: "build", disparos }), ["time:retomar etapa parada"]);
+  assert.equal(situacaoParaCliente({ ...base, status: "build", estimativaAprovadaHoras: 10 }), "Em andamento com a equipe");
 });
 caso("aprovado e esperando a vez: na fila (sem pedir o gate de novo)", () => {
   const disparos = [{ tipo: "aprovar", gate: "aguardando_gate_design", disparadoEm: null, concluidoEm: null }];
