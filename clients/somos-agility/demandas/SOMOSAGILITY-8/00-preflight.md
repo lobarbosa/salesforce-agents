@@ -1,6 +1,6 @@
 # Pré-checagem — SOMOSAGILITY-8
 
-Etapa que vai rodar: `build` · org: `sbx-somos-agility-dev`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
+Etapa que vai rodar: `qa` · org: `sbx-somos-agility-qa`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
 
 ## Bloqueios
 - nenhum
@@ -9,4 +9,4 @@ Etapa que vai rodar: `build` · org: `sbx-somos-agility-dev`. Gerado pela esteir
 - nenhuma
 
 ## Estado na org
-- nada a conferir: a demanda ainda não tem componentes no repositório
+- Flow `DEPV_BeforeSave_ClassificacaoGerencialObrigatoria`: existe nesta org, sem versão ativa.
