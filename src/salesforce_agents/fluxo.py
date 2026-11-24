@@ -103,6 +103,10 @@ class FluxoError(Exception):
     pass
 
 
+class GateSemMudancaError(FluxoError):
+    """Reaprovação de um gate cujo build bloqueou, sem nada novo para o construtor ler."""
+
+
 def eh_gate(status: str) -> bool:
     return status.startswith("aguardando_")
 
@@ -167,6 +171,16 @@ def aprovar_gate(client: str, demand_id: str, autor: str) -> demands.Demand:
     prox = proxima_etapa(d.status)
     if prox is None:
         raise FluxoError(f"{client}/{demand_id}: '{d.status}' não tem etapa seguinte.")
+
+    # Build que voltou bloqueado: aprovar de novo sem mudar o design nem
+    # responder no card só roda o construtor para ele bloquear igual
+    # (achado SOMOSAGILITY-30, ver bloqueio.py).
+    if d.status == GATE_DE_RETORNO_DO_BUILD and _plano_bloqueado(d) and bloqueio.insumos_sem_mudanca(d.path):
+        raise GateSemMudancaError(
+            f"{client}/{demand_id}: o build voltou bloqueado com uma pergunta, e nem o design "
+            f"(03-design.md) nem os comentários do card mudaram desde então. Registre a resposta "
+            f"no design ou no card e aprove de novo."
+        )
 
     # Registra ANTES de transicionar: o bloco precisa dizer o que estava na mesa
     # no gate, e depois da transição o estágio já é outro. Fica aqui, e não no
@@ -278,6 +292,8 @@ def rodar(
         # SOMOSAGILITY-22: QA refeito em 4 min sem tocar no roteiro antigo).
         if d.status == "build" and _plano_bloqueado(d):
             _plano_de_build(d).unlink()
+        if d.status == "build":
+            (d.path / bloqueio.ARQUIVO_INSUMOS).unlink(missing_ok=True)
 
         # A verificação é da construção que vai rodar agora: a da anterior sai,
         # ou um build refeito chegaria ao gate com a evidência do antigo.
@@ -314,6 +330,7 @@ def rodar(
         # design em vez de seguir para o gate de build, onde seria aprovado
         # como se houvesse PR para revisar (ver bloqueio.py).
         if d.status == "build" and _plano_bloqueado(d):
+            bloqueio.registrar_insumos(d.path)
             demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
             continue
 

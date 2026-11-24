@@ -1,47 +1,25 @@
 **Resultado do build:** bloqueado
 
-# 04 — Plano de build: SOMOSAGILITY-15 — Layout de página inicial
+# 04 — Plano de build: SOMOSAGILITY-15
 
-**Org confirmada (`sf org list`):** `sbx-somos-agility-dev` (sandbox, conectada). Nada foi tocado nela.
-**Branch:** `feature/SOMOSAGILITY-15` (já existente). Nenhum metadata escrito, nenhum deploy, nenhum commit de componente.
+Org conferida: `sbx-somos-agility-dev` (única conectada em `sf org list`). Nenhuma branch nova, nenhum metadata escrito, nenhum deploy.
 
-## Condições do design (seção 0 do `03-design.md`) conferidas nesta sessão
+## O que já está resolvido
+- **P2 (escopo de perfis):** respondida pelo cliente em 2026-11-23 20:07: "Todos os perfis".
+- Estimativa de 2 h aprovada pelo cliente (2026-11-23 20:07), válida para o cenário de 3 itens.
 
-| # | Condição | Situação |
-|---|----------|----------|
-| 1 | P1: lista do que retirar, em texto no card (ou print liberado por delivery), cada item identificável na tabela de componentes do `02-recon.md` | **Não atendida.** O card (`comentarios-do-card.md`) não traz a lista. Comentário de 2026-11-12 da equipe a pediu de novo; a resposta do cliente de 2026-11-23 20:07 trata só do escopo de perfis. A lista continua só na imagem embutida do PDF. |
-| 2 | P2: escopo de perfis | **Atendida.** Cliente, 2026-11-23 20:07: "Todos os perfis". |
-| 3 | Matriz item × página (seção 4 do design) preenchida pelo arquiteto em adendo | **Não atendida.** A seção 4 segue com "*pendente P1*". O adendo existente no design (2026-10-27) só registra o bloqueio anterior. O aceite do gate de design de 2026-11-23 aprova o documento, mas não traz a matriz. |
+## O que falta (impede construir)
+**P1: lista do que sai da aba Início, em texto.** Não há resposta no card. A última mensagem da equipe (2026-11-23 23:59) propõe três itens lidos da imagem do PDF e pede confirmação. Não há comentário do cliente depois dela. O gate de design foi aprovado de novo em 2026-11-24 12:03, mas sem a lista confirmada. A seção 4 do `03-design.md` (matriz item × página) continua "pendente P1", sem adendo do arquiteto. A seção 0 do design condiciona o build à lista em texto, e eu não vou tratar a leitura visual do print como confirmação.
 
-## Por que não construo
+Itens hipotéticos, a confirmar (não construídos):
+1. Feed com "Classificar por"
+2. "Principais negócios - Oportunidades recentes"
+3. "Desempenho trimestral"
 
-O design diz que a remoção é por componente em cada FlexiPage Home que o contém, e que sem a matriz
-o build corre o risco R1 (alta): retirar o que o cliente não pediu ou deixar de retirar algo. A única
-pista sobre a lista é uma leitura visual de três trechos destacados no print (feed "Classificar por",
-"Principais negócios - Oportunidades recentes", "Desempenho trimestral"), já registrada no adendo do
-design como indício e não confirmação. Usá-la como critério seria inventar o escopo (guardrail #3), e
-o QA ficaria sem critério verificável. Também ficam abertas as interpretações A/B/C da seção 2: só o
-arquiteto, com a lista, diz se cai em A.
+## Perguntas e quem responde
+1. **Cliente (via card):** confirmar ou corrigir os três itens acima, em texto. Se a lista for maior, a estimativa de 2 h é revista.
+2. **Arquiteto humano:** preencher a matriz da seção 4 do design, com componente, Id das FlexiPages Home atribuídas e remoção ou filtro. Decidir a interpretação A/B/C da seção 2.
+3. **Arquiteto humano:** definir se `Equipe_vendas_SP` (`0M00z000000GoLuCAK`) e `P_gina_Inicial_Customizada` (`0M038000000GmdwCAC`) entram. Ambas estão marcadas "Recuperar antes" (R5) e não estão no baseline do repositório.
 
-## O que falta e quem responde
-
-1. **Lista do que sai da aba Início, em texto** (ou print sem dado pessoal liberado por delivery), com
-   cada item mapeável à tabela de componentes do `02-recon.md`. Responde: cliente, via consultor/delivery
-   no card.
-2. **Adendo do arquiteto ao `03-design.md`** com a matriz item × página (seção 4): componente, páginas
-   (Id), remoção ou filtro, confirmando a interpretação A. Escopo de perfis já é "todos"; portanto
-   remoção direta em cada página, sem `visibilityRule`. Responde: arquiteto humano.
-3. **Default de Home da org**, a confirmar no início do build (R4), e inclusão na matriz. Responde:
-   builder, assim que a matriz existir.
-
-## Pronto para executar quando a matriz chegar
-
-- Recuperar `Equipe_vendas_SP` e `P_gina_Inicial_Customizada` da org para `force-app` e commitar o
-  estado original separado da alteração (R5).
-- Remover o `componentInstance` de cada item em cada FlexiPage listada na matriz; não tocar em
-  `CustomApplication`, `Dashboard`, `Report`, perfis nem permission sets.
-- Deploy só em `sbx-somos-agility-dev`; registrar cada componente alterado neste arquivo.
-
-## Versões e ativação
-
-Nenhuma. Nada foi criado ou ativado.
+## Próximo passo quando desbloquear
+Criar `feature/SOMOSAGILITY-15` (a branch local já existe), recuperar as duas páginas fora do baseline e commitá-las separadas, aplicar a alteração em versão nova da FlexiPage conforme a matriz e implantar só em `sbx-somos-agility-dev`.

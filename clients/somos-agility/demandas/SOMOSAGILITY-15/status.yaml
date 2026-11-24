@@ -87,3 +87,11 @@ historico:
   para: aguardando_gate_design
   autor: pipeline
   em: '2026-11-23T22:22:59.780903+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-24T12:06:19.226915+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-24T12:06:54.194320+00:00'
