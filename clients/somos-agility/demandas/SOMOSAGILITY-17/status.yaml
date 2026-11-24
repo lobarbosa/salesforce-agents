@@ -2,10 +2,70 @@ id: SOMOSAGILITY-17
 client: somos-agility
 titulo: Ajuste no fluxo de aprovação do JOB de investimento - Usuario Cyber
 tipo: sustentacao
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-10-19T16:29:34.876Z'
 historico:
 - de: null
   em: '2026-10-19T16:29:34.875Z'
   para: backlog
   autor: Juliana Mendes
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-10-21T00:45:15.348537+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-10-21T00:47:31.587388+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Leonardo Barbosa
+  em: '2026-10-30T03:20:24.489342+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-30T03:30:17.739185+00:00'
+- de: aguardando_gate_design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-10-30T03:30:27.070894+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-23T22:24:43.927632+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-23T22:36:59.168230+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-23T23:46:30.232282+00:00'
+- de: qa
+  para: build
+  autor: pipeline
+  em: '2026-11-23T23:48:02.806188+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-23T23:52:46.736089+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-24T00:04:45.615774+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-24T00:06:36.734952+00:00'
+- de: aguardando_homologacao
+  para: aguardando_gate_build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-24T00:32:42.349930+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-24T00:47:26.546287+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-24T00:48:39.356142+00:00'
