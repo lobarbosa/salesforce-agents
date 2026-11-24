@@ -2,7 +2,7 @@ id: SOMOSAGILITY-17
 client: somos-agility
 titulo: Ajuste no fluxo de aprovação do JOB de investimento - Usuario Cyber
 tipo: sustentacao
-status: aguardando_gate_build
+status: aguardando_homologacao
 criado_em: '2026-10-19T16:29:34.876Z'
 historico:
 - de: null
@@ -49,3 +49,11 @@ historico:
   para: aguardando_gate_build
   autor: pipeline
   em: '2026-11-23T23:52:46.736089+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-24T00:04:45.615774+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-24T00:06:36.734952+00:00'
