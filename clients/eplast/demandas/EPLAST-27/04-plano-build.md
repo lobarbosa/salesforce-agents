@@ -44,3 +44,10 @@ O Flow v3 Draft precisa estar ativo na dev para testar pela conversa; sem ativar
 
 ## Não testado neste build
 Execução do Flow (sem ativação e sem massa com `ProtheusId__c`); só o deploy validado. Nenhum DML de dados foi feito.
+
+## Correções da verificação 2 (e da rodada de QA 7, mesma falha)
+Org: `sbx-eplast-dev` (única conectada). QA e produção não tocadas. Nada ativado.
+
+- **FALHA 1 (código da conta devolvia `AMBIGUOUS` com lista vazia): corrigida no Flow.** Causa confirmada no arquivo: `HasCodeMatches` entrava em `LoopNames`, que percorre só `GetAccountsByName` (vazio no caminho por código). Correção: laço próprio `LoopCodes` sobre `GetAccountsByCode`, com `CheckOverflowCode` (limite de 5), `CountMatchCode` (conta, guarda o Id da última conta e monta a lista) e a fórmula `NameItemCode` (nome e loja `Store__c`). `HasCodeMatches` agora aponta para `LoopCodes`. O fim dos dois laços volta à mesma decisão `AfterNames`: uma conta segue por `UseSingleMatch` e `GetAccount` (regra de dono e `NOT_OWNER` preservadas), várias dão `AMBIGUOUS` com nome e loja. Caminho por nome e por Id não mudou.
+- **Deploy** na `sbx-eplast-dev`: `0AfHa00000ENK4PKAX`, Succeeded. Flow na dev: v1 e v3 Obsoletas, v2 Ativa, **v4 Draft** (a correção, nova versão porque a v3 já fora ativada e obsoleta). A v2 ativa não foi tocada. Nenhum arquivo do agente alterado (assinatura da ação igual); nada de EPLAST-29, 34 e 46 foi tocado.
+- **Não executado por mim:** a dev tem a v4 só em Draft e sem massa com `ProtheusId__c`. Para a verificação: ativar a v4 na dev (passo da esteira) e repetir os casos de código (uma conta, duas contas com loja, outro dono, inexistente) com `fixtures/conta-codigo-protheus.apex`.

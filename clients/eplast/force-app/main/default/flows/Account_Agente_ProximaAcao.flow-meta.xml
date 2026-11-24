@@ -101,6 +101,28 @@
         <connector><targetReference>LoopNames</targetReference></connector>
     </assignments>
     <assignments>
+        <name>CountMatchCode</name>
+        <label>Contar e guardar conta do codigo</label>
+        <locationX>3746</locationX>
+        <locationY>600</locationY>
+        <assignmentItems>
+            <assignToReference>matchCount</assignToReference>
+            <operator>Add</operator>
+            <value><numberValue>1.0</numberValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>lastMatchId</assignToReference>
+            <operator>Assign</operator>
+            <value><elementReference>LoopCodes.Id</elementReference></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>nameList</assignToReference>
+            <operator>Add</operator>
+            <value><elementReference>NameItemCode</elementReference></value>
+        </assignmentItems>
+        <connector><targetReference>LoopCodes</targetReference></connector>
+    </assignments>
+    <assignments>
         <name>MarkOverflow</name>
         <label>Marcar mais de 5 contas</label>
         <locationX>2426</locationX>
@@ -278,7 +300,7 @@
                 <operator>IsNull</operator>
                 <rightValue><booleanValue>false</booleanValue></rightValue>
             </conditions>
-            <connector><targetReference>LoopNames</targetReference></connector>
+            <connector><targetReference>LoopCodes</targetReference></connector>
             <label>Achou</label>
         </rules>
     </decisions>
@@ -310,6 +332,25 @@
         <defaultConnectorLabel>Ainda cabe</defaultConnectorLabel>
         <rules>
             <name>Full</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>matchCount</leftValueReference>
+                <operator>GreaterThanOrEqualTo</operator>
+                <rightValue><numberValue>5.0</numberValue></rightValue>
+            </conditions>
+            <connector><targetReference>MarkOverflow</targetReference></connector>
+            <label>Cheio</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>CheckOverflowCode</name>
+        <label>Ja sao 5 contas guardadas (codigo)?</label>
+        <locationX>3746</locationX>
+        <locationY>492</locationY>
+        <defaultConnector><targetReference>CountMatchCode</targetReference></defaultConnector>
+        <defaultConnectorLabel>Ainda cabe</defaultConnectorLabel>
+        <rules>
+            <name>FullCode</name>
             <conditionLogic>and</conditionLogic>
             <conditions>
                 <leftValueReference>matchCount</leftValueReference>
@@ -462,6 +503,11 @@
         <expression>{!LoopNames.Name} &amp; IF(AND({!byCode}, NOT(ISBLANK({!LoopNames.Store__c}))), &quot; (loja &quot; &amp; {!LoopNames.Store__c} &amp; &quot;)&quot;, &quot;&quot;) &amp; &quot;; &quot;</expression>
     </formulas>
     <formulas>
+        <name>NameItemCode</name>
+        <dataType>String</dataType>
+        <expression>{!LoopCodes.Name} &amp; IF(NOT(ISBLANK({!LoopCodes.Store__c})), &quot; (loja &quot; &amp; {!LoopCodes.Store__c} &amp; &quot;)&quot;, &quot;&quot;) &amp; &quot;; &quot;</expression>
+    </formulas>
+    <formulas>
         <name>MessageAmbiguous</name>
         <dataType>String</dataType>
         <expression>IF({!byCode}, &quot;Encontrei mais de uma conta com esse código: &quot;, &quot;Encontrei mais de uma conta com esse nome: &quot;) &amp; {!nameList} &amp; IF({!matchCount} &gt; 5, &quot;e outras. &quot;, &quot;&quot;) &amp; &quot;Diga qual delas você quer.&quot;</expression>
@@ -491,6 +537,16 @@
         <collectionReference>GetAccountsByName</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector><targetReference>CheckOverflow</targetReference></nextValueConnector>
+        <noMoreValuesConnector><targetReference>AfterNames</targetReference></noMoreValuesConnector>
+    </loops>
+    <loops>
+        <name>LoopCodes</name>
+        <label>Percorrer contas do codigo</label>
+        <locationX>3746</locationX>
+        <locationY>384</locationY>
+        <collectionReference>GetAccountsByCode</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector><targetReference>CheckOverflowCode</targetReference></nextValueConnector>
         <noMoreValuesConnector><targetReference>AfterNames</targetReference></noMoreValuesConnector>
     </loops>
     <processMetadataValues>
