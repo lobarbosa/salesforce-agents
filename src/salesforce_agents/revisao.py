@@ -23,7 +23,7 @@ import hashlib
 import re
 from pathlib import Path
 
-from . import evidencias, roteiro, verificacao
+from . import bloqueio, evidencias, roteiro, verificacao
 from .demands import REQUIRED_ARTIFACTS, STAGES_EXECUCAO, Demand
 
 # Um artefato grande não pode virar uma linha gigante no Postgres nem uma
@@ -104,6 +104,21 @@ def artefato_em_revisao(demanda: Demand) -> dict | None:
         return None
 
     conteudo = caminho.read_text(encoding="utf-8")
+    # Build que voltou bloqueado ao gate de design: quem aprova vê primeiro o
+    # que o construtor disse que falta. Sem isto o card mostrava só o design e
+    # o gate era aprovado de novo sem a resposta (achado SOMOSAGILITY-30).
+    plano = demanda.path / verificacao.PLANO
+    if demanda.status == "aguardando_gate_design" and plano.exists():
+        texto_plano = plano.read_text(encoding="utf-8")
+        if bloqueio.build_bloqueado(texto_plano):
+            conteudo = (
+                "## O build parou: falta uma decisão\n\n"
+                "Aprovar de novo só refaz o build depois que a resposta estiver registrada no design "
+                "ou no card. Sem isso, a esteira recusa a aprovação.\n\n"
+                + bloqueio.resumo(texto_plano)
+                + "\n\n---\n\n"
+                + conteudo
+            )
     # No gate de build, quem revisa vê o plano e, logo abaixo, a evidência do
     # agente que testou a construção — é ela que diz se o build funciona.
     if nome == verificacao.PLANO:
