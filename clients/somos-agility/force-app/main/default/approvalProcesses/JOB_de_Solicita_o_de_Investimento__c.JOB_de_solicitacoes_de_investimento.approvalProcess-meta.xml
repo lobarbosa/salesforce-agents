@@ -279,7 +279,7 @@ Contempla: pós-vendas, sales operations, marketing, alianças, renovações, op
         </action>
     </initialSubmissionActions>
     <label>JOB de solicitações de investimentos</label>
-    <processOrder>2</processOrder>
+    <processOrder>3</processOrder>
     <recallActions>
         <action>
             <name>Status_Qualificacao_Recall</name>
