@@ -1,47 +1,37 @@
 **Verificação:** inconclusiva
 **Org de teste:** `sbx-somos-agility-dev`
 
-# SOMOSAGILITY-16 — Verificação do build
+# SOMOSAGILITY-16 — Verificação
 
-Org confirmada com `sf org list`: `sbx-somos-agility-dev` (Sandbox, Connected). Nenhum DML, Apex anônimo, deploy ou dado de teste foi criado. Não há nada a apagar nem a desfazer.
+Org confirmada com `sf org list`: `sbx-somos-agility-dev` (Sandbox, Connected). Só leitura de metadata e contagens agregadas. Nenhum DML, deploy ou Apex anônimo; nenhum dado de teste criado, então não há nada a apagar. Nenhum destinatário lido.
 
-## Por que inconclusiva
+## Conferência dos pontos do plano
 
-A construção não tem metadata. A mudança é a remoção de um destinatário na assinatura do relatório "Leads Semanais", feita por humano na UI em produção, fora da esteira (`04-plano-build.md`). O estado "depois" só existe em produção, e o guardrail #1 proíbe tocar nela. Não há como exercitar os critérios de aceite na dev. Isto não é defeito da construção.
+- Plano diz que a mudança é humana, em produção, e não há metadata a construir: **procede**. `04-plano-build.md` registra "Nenhum" componente, e a remoção do destinatário foi feita pela UI em produção, fora da esteira.
+- Plano diz que a FALHA 1 da rodada 1 (sem evidência antes/depois, critérios 1 a 4) não é corrigível nesta etapa: **procede**. O "antes" não foi guardado e o guardrail #1 impede a esteira de ler a assinatura de produção. Nada que o builder faça gera essa prova.
+- Plano diz que a assinatura de produção não existe na dev: **procede em parte**. O relatório existe na dev com o mesmo Id do critério (`00O4z0000057ssKEAQ`, nome "Leads Semanais", pasta "Leads"), mas não tem agendamento: 0 jobs de relatório agendado (`CronTrigger`, `JobType='A'`) com esse nome. A dev tem 16 jobs de relatório agendado no total, nenhum deste relatório.
 
-## O que foi conferido na dev (só contagens agregadas)
-
-| Consulta | Resultado |
-|---|---|
-| `SELECT COUNT(Id) FROM Report WHERE Id='00O4z0000057ssKEAQ'` | 1 |
-| `SELECT COUNT(Id) FROM CronTrigger WHERE CronJobDetail.JobType='8'` (jobs de relatório agendado) | 1 |
-
-Leitura: a dev tem um relatório com o mesmo Id e um job de relatório agendado. Isso não prova nada sobre a demanda, por dois motivos:
-- A dev é cópia de um momento anterior. Ela não reflete a alteração feita em produção.
-- Não confirmei que o job de relatório agendado pertence a este relatório. Também não li a lista de destinatários, porque ela traz identificação de pessoas (guardrail #2).
-
-Não alterei a assinatura na dev. Fazer isso testaria uma ação manual em outra org, não a mudança entregue.
-
-## Critérios de aceite (de `01-analise.md`)
+## Casos
 
 | Caso | Critério | O que foi feito | Esperado | Obtido | Status |
 |---|---|---|---|---|---|
-| 1 | Fabio Soto não consta mais nos destinatários | Nada exercitável na dev | Lista sem Fabio Soto | Estado de produção; sem acesso e sem evidência no card | não executado |
-| 2 | Demais destinatários iguais ao "antes", menos Fabio Soto | Nada exercitável | Antes menos 1 = depois | O "antes" não foi registrado no card. O card cita 3 destinatários restantes (1 papel/grupo e 2 usuários), mas é relato sem prova independente | não executado |
-| 3 | Relatório existe com o mesmo Id e agendamento ativo | Contagens acima, na dev | Relatório existe e continua agendado em produção | Só a dev foi conferida (1 relatório, 1 job agendado). Produção não foi conferida | não executado |
-| 4 | Mapeamento sem dado pessoal (quantidade e papel/perfil) | Inspeção de `04-plano-build.md` | Contagem total e papel/perfil | O "antes" não foi registrado. Só há a contagem do "depois" (3) | não executado |
-| 5 | Nenhuma escrita em produção pelo agente | Leitura do plano de build e de `sf org list` | Zero escrita em produção | Só a dev está conectada. O plano registra a ação como humana, no card. Sem log de sessões para conferir | passou (parcial: inspeção do plano e da org conectada) |
+| V1 | Pré-condição: relatório existe na dev | `SELECT COUNT(Id) FROM Report WHERE Id='00O4z0000057ssK' OR Name='Leads Semanais'` | 1 | 1 (Id `00O4z0000057ssKEAQ`, pasta Leads) | passou |
+| V2 | Pré-condição: agendamento existe na dev | `SELECT COUNT(Id) FROM CronTrigger WHERE CronJobDetail.JobType='A' AND CronJobDetail.Name LIKE '%Leads Semanais%'` | 1 ou mais | 0 | passou (como fato; impede V3 a V6) |
+| V3 | 1: destinatário removido deixa de receber | Não executado: sem assinatura na dev para consultar | Destinatário não consta | Sem dado | não executado |
+| V4 | 2: lista dos demais inalterada | Não executado: o "antes" nunca foi registrado | Contagem antes = depois menos 1 | Sem dado | não executado |
+| V5 | 3: relatório continua agendado e ativo | Não executado na dev: o agendamento de produção não existe aqui | Agendamento ativo | Na dev, 0 agendamentos | não executado |
+| V6 | 4: registro antes/depois no projeto | Conferido no plano de build | Contagem antes/depois e papel/perfil registrados | Só o "depois" (3 restantes) por relato no card; "antes" ausente | não executado |
+| V7 | 5: nenhuma escrita em produção pelo agente | Nenhum comando contra produção; só a dev, só leitura | Nenhuma escrita | Confirmado | passou |
 
-## O que ficou sem prova e o que uma pessoa precisa fazer
+## O que ficou sem prova
 
-1. Que Fabio Soto saiu da assinatura em produção. Quem executou deve registrar em `05-testes.md`, sem nomes, e-mails nem prints de dados:
-   - o Id do relatório conferido em produção;
-   - a contagem de destinatários antes e depois;
-   - o perfil ou papel dos destinatários restantes;
-   - a data e hora da remoção;
-   - a confirmação de que ele não consta mais.
-2. Que o "antes" menos um é igual ao "depois". Falta a lista do "antes", que o plano diz estar com a consultora.
-3. Que o relatório continua agendado para os demais. Alguém com acesso deve conferir em produção, ou confirmar a próxima execução semanal.
-4. Rollback: reinscrever Fabio Soto na mesma assinatura, dependendo de a lista do "antes" estar guardada.
+Critérios 1 a 4 (e a parte de agendamento ativo do critério 3). Motivo: a mudança ocorreu em produção, que a esteira não pode ler, e o estado "antes" não foi guardado. Criar um agendamento na dev para simular exigiria alterar um relatório que não criei, e o resultado não provaria o que foi feito em produção.
 
-Esta etapa não encontrou falha na construção. A prova depende de ação e evidência humanas em produção.
+Para provar, uma pessoa precisa:
+1. O executor registrar no card, sem nomes, e-mails ou prints de dados: data/hora, contagem de destinatários antes e depois, papel/perfil de cada restante, e confirmação de que o usuário removido não consta mais.
+2. A consultora informar se existe a contagem do "antes".
+3. O gate humano decidir entre aguardar essa evidência ou aceitar formalmente a declaração do executor, registrando os critérios 1 a 4 como "sem prova independente".
+
+## O que pode ter saído da org
+
+Nada. Nenhum registro foi criado e nenhuma automação foi disparada.
