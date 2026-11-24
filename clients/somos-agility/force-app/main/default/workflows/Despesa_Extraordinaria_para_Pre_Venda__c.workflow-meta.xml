@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>DEPV_Notificacao_1a_2a_Aprovacao</fullName>
+        <description>SOMOSAGILITY-8: aviso de 1ª e 2ª aprovação da DEPV para Wanderley e Agility GOV (endereço de teste na dev/qa; o real entra só na produção).</description>
+        <protected>false</protected>
+        <ccEmails>agility.gov.teste@example.invalid</ccEmails>
+        <recipients>
+            <recipient>wanderley.gadioli@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <senderAddress>sistemas@somosagility.com.br</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Despesa_Extraordinaria_de_Pre_Venda/DEPV_Notificacao_1a_2a_Aprovacao</template>
+    </alerts>
+    <alerts>
+        <fullName>DEPV_Notificacao_3a_Aprovacao</fullName>
+        <description>SOMOSAGILITY-8: aviso de entrada na 3ª etapa da DEPV para Operações, Kelly, Walmor, Wanderley e Agility GOV (endereço de teste na dev/qa).</description>
+        <protected>false</protected>
+        <ccEmails>agility.gov.teste@example.invalid</ccEmails>
+        <recipients>
+            <recipient>grupooperacoes@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>kelly.stefani@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>walmor.costa@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>wanderley.gadioli@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <senderAddress>sistemas@somosagility.com.br</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Despesa_Extraordinaria_de_Pre_Venda/DEPV_Notificacao_3a_Aprovacao</template>
+    </alerts>
+    <alerts>
+        <fullName>DEPV_Notificacao_Final_Aprovada</fullName>
+        <description>SOMOSAGILITY-8: aviso final de aprovação da DEPV (mesmos destinatários do alert antigo, template novo).</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <recipients>
+            <recipient>grupooperacoes@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>sales.operations@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>walmor.costa@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <senderAddress>sistemas@somosagility.com.br</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Despesa_Extraordinaria_de_Pre_Venda/DEPV_Notificacao_Final_Aprovada</template>
+    </alerts>
+</Workflow>

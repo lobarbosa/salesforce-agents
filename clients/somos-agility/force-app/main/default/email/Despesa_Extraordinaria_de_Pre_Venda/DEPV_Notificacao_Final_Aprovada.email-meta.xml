@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>SOMOSAGILITY-8: notificação final de aprovação da DEPV (versão nova; saudação com vírgula como no anexo).</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Agility_Networks</letterhead>
+    <name>DEPV Notificação Final Aprovada</name>
+    <style>freeForm</style>
+    <subject>Solicitação de Despesa Extraordinária de Venda Aprovada - {!Despesa_Extraordinaria_para_Pre_Venda__c.Name}</subject>
+    <textOnly>Olá, {!Despesa_Extraordinaria_para_Pre_Venda__c.CreatedBy},
+Sua solicitação de Despesa Extraordinária de Venda foi Aprovada!
+Comentários: {!ApprovalRequest.Comments}
+
+Para maiores informações acesse o link abaixo:
+{!Despesa_Extraordinaria_para_Pre_Venda__c.Link}
+
+Atenciosamente,
+Equipe Agility</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
