@@ -277,11 +277,7 @@ export function DemandModal({
       {emGate && (
         <div className="gate-box">
           <div className="gate-titulo">
-            {visaoCliente ? (
-              <span className={`badge ${demanda.status === "aguardando_homologacao" ? "gate sua-vez" : "stage"}`}>
-                {situacaoParaCliente(demanda) || ESTADO_CLIENTE_LABEL[estadoDoCliente(demanda.status)]}
-              </span>
-            ) : (
+            {visaoCliente ? null : (
               <>
                 <span className="badge gate">gate humano</span>
                 {STAGE_LABEL[demanda.status] ?? demanda.status}

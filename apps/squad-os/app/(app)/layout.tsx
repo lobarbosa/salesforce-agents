@@ -2,6 +2,8 @@ import { getClients, getClientById, getClientesEncerrados } from "@/lib/data";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { Sidebar } from "@/components/Sidebar";
 import { Copiloto } from "@/components/Copiloto";
+import { AbaVisivel } from "@/components/AbaVisivel";
+import { Suspense } from "react";
 import { marcaUrl, marcaDarkUrl } from "@/lib/marca";
 import { clienteDaSidebar } from "@/lib/visao-cliente";
 import { esteiraPorCliente } from "@/lib/esteira-sidebar";
@@ -69,6 +71,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       </main>
       {/* Uma conversa só, que atravessa a navegação; o contexto (cliente da
           página aberta) sai do caminho — ver Copiloto.tsx. */}
+      <Suspense fallback={null}>
+        <AbaVisivel />
+      </Suspense>
       <Copiloto papel={usuario.role} clientes={clients.map((c) => ({ id: c.id, nome: c.nome }))} />
     </div>
   );
