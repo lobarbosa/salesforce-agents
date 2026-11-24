@@ -93,6 +93,14 @@ export function getAllDemandas() {
   return prisma.demanda.findMany({
     orderBy: { criadoEm: "desc" },
     omit: { artefatoConteudo: true, roteiroCliente: true, texto: true, historico: true },
+    // O que "quem age agora" precisa (lib/demandas.ts acoesPendentes).
+    include: {
+      disparos: {
+        where: { concluidoEm: null },
+        select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true },
+      },
+      client: { select: { contrato: { select: { tipo: true } } } },
+    },
   });
 }
 

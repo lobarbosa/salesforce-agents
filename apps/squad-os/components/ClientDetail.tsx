@@ -44,7 +44,7 @@ export function ClientDetail({
   bloqueiosExclusao?: string[];
 }) {
   const podeGerenciarClientes = usuario.role !== "cliente";
-  const [tab, setTab] = useState<Tab>(initialTab ?? (openDemandId || !podeGerenciarClientes ? "demandas" : "conhecimento"));
+  const [tab, setTab] = useState<Tab>(initialTab ?? "demandas");
 
   // role=cliente vê tudo o que é do cliente dele, somente leitura: demandas,
   // contrato (quanto do balde de horas já foi, SLA, escopo entregue),
@@ -172,12 +172,14 @@ export function ClientDetail({
 
   return (
     <>
-      <div className="scope-note">
-        <strong>Escopo deste OS:</strong> aqui nasce a demanda e vive o briefing do cliente. A
-        execução (agentes, gates, deploy) roda no pipeline <code className="mono">sfagents</code>,
-        materializado a partir daqui — estágios de execução aparecem como leitura, não são
-        movidos por aqui.
-      </div>
+      {tab === "conhecimento" && (
+        <div className="scope-note">
+          <strong>Escopo deste OS:</strong> aqui nasce a demanda e vive o briefing do cliente. A
+          execução (agentes, gates, deploy) roda no pipeline <code className="mono">sfagents</code>,
+          materializado a partir daqui — estágios de execução aparecem como leitura, não são
+          movidos por aqui.
+        </div>
+      )}
 
       <div className="client-header">
         <h1>

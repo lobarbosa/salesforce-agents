@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { getClients, getAllDemandas } from "@/lib/data";
-import { perguntasPendentes, asAprovacao } from "@/lib/demandas";
+import { perguntasPendentes, asAprovacao, acoesPendentes } from "@/lib/demandas";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { inicioDo, podeVer } from "@/lib/permissoes";
 import { minutosDaSemana } from "@/lib/horas-data";
@@ -47,6 +47,16 @@ export default async function OverviewPage() {
       return perguntas.length > 0 && !aprov?.aprovado;
     })
     .sort((a, b) => b.criadoEm.getTime() - a.criadoEm.getTime());
+
+  // Gates e etapas paradas que esperam o time (2026-11-24): a Visão Geral
+  // dizia "nenhuma demanda esperando você" com análise, design e PR parados,
+  // porque só olhava perguntas em aberto. Mesma regra do quadro (quem age).
+  const idsComPergunta = new Set(pendentes.map((d) => d.id));
+  const doTime = demandas
+    .filter((d) => ativos.has(d.clientId) && !idsComPergunta.has(d.id))
+    .map((d) => ({ d, acao: acoesPendentes(d).find((a) => a.quem === "time") }))
+    .filter((x): x is { d: (typeof demandas)[number]; acao: NonNullable<typeof x.acao> } => !!x.acao)
+    .sort((a, b) => a.d.criadoEm.getTime() - b.d.criadoEm.getTime());
 
   // Pendência agora é por ambiente, não por cliente: a esteira só roda ponta
   // a ponta se dev e qa estiverem conectados. Ambiente ainda não cadastrado
@@ -114,7 +124,7 @@ export default async function OverviewPage() {
 
       <div className="overview-section">
         <h2>Demandas aguardando você</h2>
-        {pendentes.length === 0 ? (
+        {pendentes.length === 0 && doTime.length === 0 ? (
           <div className="overview-empty ok">Nenhuma demanda esperando você — tudo respondido e aprovado.</div>
         ) : (
           <div className="overview-list">
@@ -133,6 +143,15 @@ export default async function OverviewPage() {
                 </Link>
               );
             })}
+            {doTime.map(({ d, acao }) => (
+              <Link key={d.id} className="overview-row" href={`/clients/${d.clientId}?tab=demandas&demand=${d.id}`}>
+                <span className="oc-client">{clientNome(d.clientId)}</span>
+                <span className="oc-title">
+                  {d.code} · {d.titulo}
+                </span>
+                <span className="badge pendente">{acao.oque}</span>
+              </Link>
+            ))}
           </div>
         )}
       </div>
