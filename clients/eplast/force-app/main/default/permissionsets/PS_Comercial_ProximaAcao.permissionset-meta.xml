@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
-    <description>EPLAST-27. Proxima melhor acao no SFAgent2: leitura de Account/Opportunity, FLS de Risk__c e LastPurchase__c, execucao do Flow Account_Agente_ProximaAcao. Acesso ao agente e passo manual.</description>
+    <description>EPLAST-27. Proxima melhor acao no SFAgent2: leitura de Account/Opportunity, FLS de Risk__c, LastPurchase__c, ProtheusId__c e Store__c, execucao do Flow Account_Agente_ProximaAcao. Acesso ao agente e passo manual.</description>
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.Risk__c</field>
@@ -9,6 +9,16 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>Account.LastPurchase__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.ProtheusId__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Account.Store__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <flowAccesses>

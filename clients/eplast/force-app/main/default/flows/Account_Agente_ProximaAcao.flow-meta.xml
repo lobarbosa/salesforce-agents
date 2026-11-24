@@ -3,6 +3,34 @@
     <apiVersion>67.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <assignments>
+        <name>SetNotFoundCode</name>
+        <label>Resultado NOT_FOUND (codigo)</label>
+        <locationX>2954</locationX>
+        <locationY>600</locationY>
+        <assignmentItems>
+            <assignToReference>actionCode</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>NOT_FOUND</stringValue></value>
+        </assignmentItems>
+        <assignmentItems>
+            <assignToReference>message</assignToReference>
+            <operator>Assign</operator>
+            <value><stringValue>Não encontrei conta com esse código que você possa ver.</stringValue></value>
+        </assignmentItems>
+    </assignments>
+    <assignments>
+        <name>MarkByCode</name>
+        <label>Marcar busca por codigo</label>
+        <locationX>3218</locationX>
+        <locationY>276</locationY>
+        <assignmentItems>
+            <assignToReference>byCode</assignToReference>
+            <operator>Assign</operator>
+            <value><booleanValue>true</booleanValue></value>
+        </assignmentItems>
+        <connector><targetReference>GetAccountsByCode</targetReference></connector>
+    </assignments>
+    <assignments>
         <name>SetNotOwner</name>
         <label>Resultado NOT_OWNER</label>
         <locationX>50</locationX>
@@ -181,8 +209,8 @@
         <label>Id ou nome da conta?</label>
         <locationX>314</locationX>
         <locationY>276</locationY>
-        <defaultConnector><targetReference>GetAccount</targetReference></defaultConnector>
-        <defaultConnectorLabel>Pelo Id</defaultConnectorLabel>
+        <defaultConnector><targetReference>IsIdShape</targetReference></defaultConnector>
+        <defaultConnectorLabel>recordId preenchido</defaultConnectorLabel>
         <rules>
             <name>ByName</name>
             <conditionLogic>and</conditionLogic>
@@ -214,6 +242,44 @@
             </conditions>
             <connector><targetReference>SetNotFound</targetReference></connector>
             <label>Sem Id e sem nome</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>IsIdShape</name>
+        <label>recordId tem forma de Id de Conta?</label>
+        <locationX>3218</locationX>
+        <locationY>168</locationY>
+        <defaultConnector><targetReference>MarkByCode</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nao e Id (tratar como codigo)</defaultConnectorLabel>
+        <rules>
+            <name>IdShape</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>IsAccountIdShape</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue><booleanValue>true</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>GetAccount</targetReference></connector>
+            <label>Id de Conta</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>HasCodeMatches</name>
+        <label>Achou contas pelo codigo?</label>
+        <locationX>3482</locationX>
+        <locationY>384</locationY>
+        <defaultConnector><targetReference>SetNotFoundCode</targetReference></defaultConnector>
+        <defaultConnectorLabel>Nenhuma</defaultConnectorLabel>
+        <rules>
+            <name>CodeMatchesFound</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>GetAccountsByCode</leftValueReference>
+                <operator>IsNull</operator>
+                <rightValue><booleanValue>false</booleanValue></rightValue>
+            </conditions>
+            <connector><targetReference>LoopNames</targetReference></connector>
+            <label>Achou</label>
         </rules>
     </decisions>
     <decisions>
@@ -373,7 +439,7 @@
             <label>A3 cliente inativo</label>
         </rules>
     </decisions>
-    <description>Proxima melhor acao por cliente (EPLAST-27). Flow autolancado, sem gatilho e sem DML, chamado como acao do agente SFAgent2. Regra fixa: NODATA, A1 (risco), A2 (oportunidade parada), A3 (cliente inativo), NONE. Parametros em NextBestActionSetting__mdt. Versao 3: aceita tambem o nome da conta (accountName) alem do Id; uma conta segue, varias devolve a lista (max 5) pedindo qual, nenhuma devolve NOT_FOUND.</description>
+    <description>Proxima melhor acao por cliente (EPLAST-27). Flow autolancado, sem gatilho e sem DML, chamado como acao do agente SFAgent2. Regra fixa: NODATA, A1 (risco), A2 (oportunidade parada), A3 (cliente inativo), NONE. Parametros em NextBestActionSetting__mdt. Versao 3: aceita tambem o nome da conta (accountName) alem do Id; uma conta segue, varias devolve a lista (max 5) pedindo qual, nenhuma devolve NOT_FOUND. Versao 4: recordId que nao tem forma de Id de Conta (15 ou 18 caracteres iniciando em 001) e tratado como codigo da conta e buscado por igualdade em Account.ProtheusId__c; uma conta segue (com a regra de dono), varias devolve a lista com a loja pedindo qual, nenhuma devolve NOT_FOUND. Toda consulta nova tem faultConnector.</description>
     <environments>Default</environments>
     <formulas>
         <name>IsNotOwnerFormula</name>
@@ -386,14 +452,19 @@
         <expression>CONTAINS(&quot;;&quot; &amp; {!GetSetting.RiskValues__c} &amp; &quot;;&quot;, &quot;;&quot; &amp; TEXT({!GetAccount.Risk__c}) &amp; &quot;;&quot;)</expression>
     </formulas>
     <formulas>
+        <name>IsAccountIdShape</name>
+        <dataType>Boolean</dataType>
+        <expression>AND(OR(LEN({!recordId}) = 15, LEN({!recordId}) = 18), LEFT({!recordId}, 3) = &quot;001&quot;)</expression>
+    </formulas>
+    <formulas>
         <name>NameItem</name>
         <dataType>String</dataType>
-        <expression>{!LoopNames.Name} &amp; &quot;; &quot;</expression>
+        <expression>{!LoopNames.Name} &amp; IF(AND({!byCode}, NOT(ISBLANK({!LoopNames.Store__c}))), &quot; (loja &quot; &amp; {!LoopNames.Store__c} &amp; &quot;)&quot;, &quot;&quot;) &amp; &quot;; &quot;</expression>
     </formulas>
     <formulas>
         <name>MessageAmbiguous</name>
         <dataType>String</dataType>
-        <expression>&quot;Encontrei mais de uma conta com esse nome: &quot; &amp; {!nameList} &amp; IF({!matchCount} &gt; 5, &quot;e outras. &quot;, &quot;&quot;) &amp; &quot;Diga qual delas você quer.&quot;</expression>
+        <expression>IF({!byCode}, &quot;Encontrei mais de uma conta com esse código: &quot;, &quot;Encontrei mais de uma conta com esse nome: &quot;) &amp; {!nameList} &amp; IF({!matchCount} &gt; 5, &quot;e outras. &quot;, &quot;&quot;) &amp; &quot;Diga qual delas você quer.&quot;</expression>
     </formulas>
     <formulas>
         <name>StaleCutoff</name>
@@ -470,6 +541,30 @@
         <object>Account</object>
         <queriedFields>Id</queriedFields>
         <queriedFields>Name</queriedFields>
+        <queriedFields>Store__c</queriedFields>
+        <sortField>Name</sortField>
+        <sortOrder>Asc</sortOrder>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>GetAccountsByCode</name>
+        <label>Buscar contas pelo codigo</label>
+        <locationX>3482</locationX>
+        <locationY>276</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector><targetReference>HasCodeMatches</targetReference></connector>
+        <faultConnector><targetReference>SetNotFoundCode</targetReference></faultConnector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>ProtheusId__c</field>
+            <operator>EqualTo</operator>
+            <value><elementReference>recordId</elementReference></value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Account</object>
+        <queriedFields>Id</queriedFields>
+        <queriedFields>Name</queriedFields>
+        <queriedFields>Store__c</queriedFields>
         <sortField>Name</sortField>
         <sortOrder>Asc</sortOrder>
         <storeOutputAutomatically>true</storeOutputAutomatically>
@@ -593,6 +688,15 @@
         <isCollection>false</isCollection>
         <isInput>true</isInput>
         <isOutput>false</isOutput>
+    </variables>
+    <variables>
+        <name>byCode</name>
+        <description>Verdadeiro quando a conta foi buscada pelo codigo (recordId que nao e Id).</description>
+        <dataType>Boolean</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value><booleanValue>false</booleanValue></value>
     </variables>
     <variables>
         <name>matchCount</name>

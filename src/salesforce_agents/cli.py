@@ -323,7 +323,18 @@ def rodar(
         if aprovar_gate and reverificar:
             raise click.ClickException("--aprovar-gate e --reverificar não vão juntos.")
         if aprovar_gate:
-            d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
+            try:
+                d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
+            except fluxo.GateSemMudancaError as exc:
+                # Não é falha do job: a demanda fica no gate, como estava, e o
+                # card já mostra o que o build pediu (bloqueio.py).
+                click.echo(f"::warning::{exc}")
+                atual = demands.Demand.load(client, demand_id)
+                parada = fluxo.Parada("gate", atual.status, ambientes.ambiente_do_estagio(atual.status), ())
+                if github_output and os.environ.get("GITHUB_OUTPUT"):
+                    with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+                        fh.write(parada.as_github_output() + "\n")
+                return
             click.echo(f"{demand_id}: gate aprovado por {aprovar_gate} -> {d.status}")
         if reverificar:
             fluxo.reverificar(client, demand_id, reverificar)

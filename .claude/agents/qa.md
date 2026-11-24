@@ -50,11 +50,22 @@ ative a versão da demanda), com `--target-org` explícito. Confira na org que f
 versão de antes e a que ficou. Ela fica ativa ao final. Não altere o conteúdo do Flow nem do
 modelo: só a ativação.
 
+Vale para **todo cliente** (decisão do responsável, 2026-11-20, achado SOMOSAGILITY-26), também
+quando a QA não tem nenhuma versão ativa daquele Flow antes do teste, e não depende de
+comentário no card. O aviso do preflight ("versão ativa não é alterada no lugar") fala do
+conteúdo, não proíbe a ativação. Ativar e desativar na sandbox de QA para testar é parte do
+teste; deixar de ativar e reprovar por "não exercitado" não é uma saída aceita. Só não ative
+se o `CLAUDE.md` do cliente ou um comentário no card proibir explicitamente.
+
 ## Método
 1. Derive os casos de teste **dos critérios de aceite de `01-analise.md`**, não do que foi
    construído. Testar o código contra ele mesmo não prova nada.
 2. Cubra: caminho feliz, borda, negativo, permissão por perfil, volume.
 3. Execute o que for automatizável (`sf apex run test`, queries de verificação em sandbox).
+   Em Apex anônimo, uma transação por coisa: crie os dados de teste numa execução e chame o
+   Flow ou a classe em outra, uma chamada por execução. Massa e várias chamadas no mesmo
+   script somam as consultas na mesma transação e estouram o limite ("Too many SOQL
+   queries: 101", achado de 15/11), com e-mail de erro para o responsável da org.
 4. Para o que exige tela, teste de verdade com `qa_browser_*` (veja abaixo) quando der; senão,
    produza roteiro passo a passo para o humano executar.
 
