@@ -1,7 +1,22 @@
 **Veredito:** aprovado
 **Org de teste:** `sbx-somos-agility-qa`
 
-# 05 — Testes: SOMOSAGILITY-22 (QA, rodada 3)
+# 05 — Testes: SOMOSAGILITY-22 (QA, rodada 4)
+
+Org confirmada com `sf org list`: única conectada, `sbx-somos-agility-qa` (Sandbox, Connected). Deploy da esteira (`05-deploy-qa.md`): `0AfHa00000EN8BKKA1` (Succeeded, commit `b5ab97c4`). Não implantei nada. Mudança desta rodada: o processo de aprovação passou de ordem 2 para **3** (depois da SOMOSAGILITY-17). As demais conclusões da rodada 3 (abaixo, mantidas) valem, e a base do veredito é a mesma exceção do responsável de 2026-11-23.
+
+## Reteste desta rodada (executado agora)
+| Caso | Passos | Esperado | Obtido | Status |
+|---|---|---|---|---|
+| R4-1 | Retrieve da QA (ApprovalProcess e Workflow do Job) em pasta temporária (apagada) e `diff` com o repositório | Idênticos ao versionado | Processo e workflow idênticos (`IGUAL`) | passou |
+| R4-2 | Ler `active`, `processOrder`, passos | Ativo, ordem 3, 4 passos | `active=true`, `processOrder=3`, 4 `approvalStep` | passou |
+| R4-3 | Consulta `ProcessDefinition` do objeto | Processo da demanda Ativo | `JOB_de_solicitacoes_de_investimento` Active; também Ativos `Aprova_o_JOB` e `JOB_Investimento_Cyber`; 1 Inactive e 3 Obsolete | passou |
+| R4-4 | `COUNT` de Jobs `TESTE SOMOSAGILITY-22%` | 0 (sem criar dados) | 0 | passou |
+
+Sem prova: a ordem de avaliação entre processos na prática (qual processo pega um Job conforme os critérios de entrada) só se vê no envio real; vai ao financeiro. Atenção: há outros dois processos ativos no objeto; conferir na homologação que cada Job cai no processo esperado.
+
+---
+## Rodada 3 (mantida como histórico)
 
 Org confirmada com `sf org list`: única conectada, `sbx-somos-agility-qa` (Sandbox, Connected, orgId `00DHa000006WcTcMAK`). Todos os comandos com `--target-org` explícito. Deploy da esteira em `05-deploy-qa.md`: `0AfHa00000EN8pdKAD` (Succeeded, commit `eab52aca`). Não implantei nada.
 

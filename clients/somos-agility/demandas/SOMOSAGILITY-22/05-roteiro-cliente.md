@@ -2,7 +2,7 @@
 
 Foi corrigido o processo de aprovação do Job de Solicitação de Investimento: quando o Job é enviado para aprovação, o campo "Status da Qualificação" passa a ficar como "Pendente" (antes continuava "Não Enviado" até a decisão final). Com isso o relatório "JOBs de Investimento" e o painel financeiro passam a mostrar os Jobs em aprovação no grupo "Pendente". O relatório e o painel não tiveram o filtro nem o período alterados.
 
-**Situação do teste automático:** comprovado na sandbox de QA que o processo, as ações (Pendente no envio, Aprovado, Rejeitado e Recall), o relatório e o painel estão instalados como o previsto, e que a soma por status bate com o total da janela do relatório. NÃO foi executado o envio real de um Job, nem a abertura das telas de relatório e painel (a QA tem dados reais copiados e o time de testes não pode usá-los nem se passar por outra pessoa). Por decisão do responsável, os Testes 1 a 5 são feitos por vocês, do financeiro.
+**Situação do teste automático:** (rodada 4, após mudar a ordem do processo para 3) comprovado na sandbox de QA que o processo, as ações (Pendente no envio, Aprovado, Rejeitado e Recall), o relatório e o painel estão instalados como o previsto, e que a soma por status bate com o total da janela do relatório. NÃO foi executado o envio real de um Job, nem a abertura das telas de relatório e painel (a QA tem dados reais copiados e o time de testes não pode usá-los nem se passar por outra pessoa). Por decisão do responsável, os Testes 1 a 5 são feitos por vocês, do financeiro.
 
 ## Antes de começar
 - Ambiente: sandbox de QA (não é produção).
@@ -60,4 +60,4 @@ Foi corrigido o processo de aprovação do Job de Solicitação de Investimento:
 ## O que não dá para conferir pela tela
 - Que as ações do processo estão instaladas na QA como o previsto e a soma por status no período (265 Jobs na janela: Aprovado 242, Rejeitado 11, Não Enviado 11, Pendente 1): comprovado pelo time técnico, em `05-testes.md`.
 - Ficam fora desta entrega: o pedido de 30/10 (tornar "Classificação gerencial" e "Denominação" obrigatórias na aprovação), que pode virar demanda própria se o financeiro confirmar; a correção de Jobs que já estão em aprovação hoje (continuam como estão); e a janela de datas do relatório.
-- Atenção: os números de "Pendente" no painel e nos demais relatórios de Job sobem para os envios feitos daqui em diante. Há outra demanda (SOMOSAGILITY-17) alterando o mesmo processo de aprovação; confirme com o time a ordem de entrega.
+- Atenção: os números de "Pendente" no painel e nos demais relatórios de Job sobem para os envios feitos daqui em diante. Existem outros processos de aprovação ativos para o Job; no teste, confira que o Job de teste entra no processo "JOB de solicitações de investimentos" (a etapa de aprovação mostrada deve ser a dele).
