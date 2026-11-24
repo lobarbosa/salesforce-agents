@@ -461,6 +461,9 @@ const OQUE_DO_GATE: Record<string, string> = {
   aguardando_homologacao: "homologar",
 };
 
+/** O que o time faz numa etapa de agente que ficou sem execução. */
+export const ETAPA_PARADA = "retomar etapa parada";
+
 /** Quem precisa agir agora — pode ser mais de um (design: arquiteto E cliente nas horas). */
 export function acoesPendentes(d: DemandaParaQuemAge): AcaoPendente[] {
   if (d.status === "standby") return [{ quem: "congelada", oque: "congelada" }];
@@ -468,7 +471,15 @@ export function acoesPendentes(d: DemandaParaQuemAge): AcaoPendente[] {
 
   const aberto = (d.disparos ?? []).find((x) => !x.concluidoEm);
   if (aberto && aberto.disparadoEm) return [{ quem: "agente", oque: "rodando" }];
-  if (agenteRodando(d.status)) return [{ quem: "agente", oque: "rodando" }];
+  // Etapa de agente sem execução em voo nem na fila (2026-11-24): o card dizia
+  // "Agente rodando" só pelo status, e uma demanda parada em `build` há dias
+  // (esperando insumo do cliente) parecia andar sozinha. Com a fila carregada
+  // e vazia, a vez é do time: retomar a etapa. Sem a fila (consulta que não
+  // traz `disparos`), vale o status, como antes.
+  if (agenteRodando(d.status)) {
+    if (d.disparos && !aberto) return [{ quem: "time", oque: ETAPA_PARADA }];
+    if (!aberto) return [{ quem: "agente", oque: "rodando" }];
+  }
 
   const acoes: AcaoPendente[] = [];
   if (aberto) {
@@ -512,6 +523,7 @@ export function situacaoParaCliente(d: DemandaParaQuemAge): string {
   if (acoes.some((a) => a.quem === "agente")) return "Equipe trabalhando agora";
   if (acoes.some((a) => a.quem === "fila")) return "Na fila para começar";
   if (estaEmGate(d.status)) return "Em revisão pela equipe";
+  if (acoes.some((a) => a.oque === ETAPA_PARADA)) return "Em andamento com a equipe";
   if ((TRIAGE as readonly string[]).includes(d.status) && d.status !== "standby") return "Recebida, aguardando a equipe";
   return "";
 }
