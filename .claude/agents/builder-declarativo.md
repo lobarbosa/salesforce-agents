@@ -56,3 +56,8 @@ gate de PR antes de voltar ao QA.
 - Se durante o build você descobrir que o design não fecha, **pare e reporte** — não improvise
   uma solução diferente da aprovada.
 - Descrição preenchida em todo componente. Metadata sem descrição não passa no code review.
+- Perfil e permission set: **edição aditiva** sobre o arquivo que já está no repositório
+  (acrescente os blocos da demanda, como `fieldPermissions`), sem tirar nada que já estava
+  lá. Não enxugue o arquivo para o deploy da QA passar: a esteira leva à QA só o que a
+  demanda acrescentou (`scripts/permissoes_so_o_diff.py`). Enxugar o arquivo-fonte apaga o
+  resto do conteúdo dele quando a branch entra na `main` (achado SOMOSAGILITY-26).
