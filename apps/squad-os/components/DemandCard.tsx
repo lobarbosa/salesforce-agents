@@ -105,9 +105,15 @@ export function QuemAgeChips({ demanda }: { demanda: DemandaDeCard }) {
       {acoes.map((a) => (
         <span key={a.quem + a.oque} className={`quem-age quem-${a.quem}`}>
           <span className="quem-marca" aria-hidden="true" />
-          {a.quem === "time" || a.quem === "cliente"
-            ? `${QUEM_AGE_LABEL[a.quem]}: ${a.oque}`
-            : a.quem === "agente"
+          {a.quem === "time" || a.quem === "cliente" ? (
+            <>
+              {/* No quadro largo o prefixo fica só para leitor de tela: a forma
+                  e a cor do marcador já dizem de quem é, e a legenda está nos
+                  filtros acima (globals.css, .quem-prefixo). */}
+              <span className="quem-prefixo">{QUEM_AGE_LABEL[a.quem]}: </span>
+              {a.oque}
+            </>
+          ) : a.quem === "agente"
               ? "Agente rodando"
               : QUEM_AGE_LABEL[a.quem]}
         </span>

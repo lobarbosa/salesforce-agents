@@ -138,7 +138,7 @@ export function UsuariosAdmin({
                 type="text"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
-                placeholder="em branco = convite por e-mail"
+                placeholder="vazio = convite"
               />
               <button className="btn-ghost" type="button" onClick={() => setSenha(gerarSenha())}>
                 Gerar

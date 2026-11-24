@@ -1602,7 +1602,9 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 /* Faixa de abas que rola de lado: a borda direita esmaece para avisar que há
    mais abas. */
 @media (max-width: 760px) {
-  .tabs { scrollbar-width: none; -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); padding-right: 28px; }
+  .tabs { scrollbar-width: none; }
+  /* `tem-mais` é posto por AbaVisivel só enquanto há aba escondida à direita. */
+  .tabs.tem-mais { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); }
   .tabs::-webkit-scrollbar { display: none; }
   /* Alvos de toque: seletor de triagem do card e links soltos em texto. */
   .card select.move { min-height: 40px; font-size: 0.85rem; }
@@ -1629,4 +1631,27 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
   .tabela-cartoes .linha-vencida > td:first-child { box-shadow: none; }
   .tabela-cartoes tr.linha-vencida { box-shadow: inset 3px 0 0 var(--danger); }
   .link-linha { min-height: 32px; text-align: left; }
+}
+
+/* --- Usabilidade, terceira passada (2026-11-24) ---------------------------- */
+/* Quadro largo: sem o prefixo "Time:" / "Cliente:" a etiqueta cabe em uma ou
+   duas linhas na coluna de 148 px. O prefixo continua no DOM para leitor de
+   tela; no celular (coluna única) ele aparece. */
+@media (min-width: 761px) {
+  .board-fases .quem-prefixo {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+@media (max-width: 760px) {
+  .tabela-wrap:has(> .tabela-cartoes) { overflow-x: visible; }
+  .tabela-cartoes tfoot { display: block; }
+  .tabela-cartoes caption { display: block; text-align: left; }
+  .tabela-cartoes td:not([data-rotulo]) { text-align: left; }
+  .tabela-cartoes td[data-rotulo] > * { min-width: 0; text-align: right; overflow-wrap: anywhere; }
+}
+@media (max-width: 760px) {
+  /* Célula sem conteúdo não vira linha de cartão com rótulo solto. */
+  .tabela-cartoes td[data-rotulo]:empty { display: none; }
+  summary { min-height: 32px; align-content: center; }
+  main a:not([class]) { display: inline-block; padding-block: 0.3rem; }
 }
