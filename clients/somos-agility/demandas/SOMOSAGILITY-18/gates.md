@@ -32,3 +32,12 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Commit:** `fa1af9d2`
 - **Artefatos revisados:**
   - `04-plano-build.md` — sha256 `9cfecb4cc23f3102` (4258 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-24T22:34:08.367311+00:00
+- **Commit:** `d5e27be6`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `6c3f5a4fe11ee780` (11289 bytes)
+  - `03-design.md` — sha256 `b57182c004ef16ab` (11358 bytes)
