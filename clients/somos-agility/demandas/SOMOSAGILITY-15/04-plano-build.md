@@ -1,25 +1,21 @@
 **Resultado do build:** bloqueado
 
-# 04 — Plano de build: SOMOSAGILITY-15
+# 04 — Plano de build: SOMOSAGILITY-15 (Layout de página inicial)
 
-Org conferida: `sbx-somos-agility-dev` (única conectada em `sf org list`). Nenhuma branch nova, nenhum metadata escrito, nenhum deploy.
+**Org conferida:** `sbx-somos-agility-dev` (única conectada em `sf org list`). Nenhum metadata escrito, nenhum deploy, nenhuma branch nova (a `feature/SOMOSAGILITY-15` já existia). Nada construído.
 
-## O que já está resolvido
-- **P2 (escopo de perfis):** respondida pelo cliente em 2026-11-23 20:07: "Todos os perfis".
-- Estimativa de 2 h aprovada pelo cliente (2026-11-23 20:07), válida para o cenário de 3 itens.
+## O que mudou desde a última tentativa
 
-## O que falta (impede construir)
-**P1: lista do que sai da aba Início, em texto.** Não há resposta no card. A última mensagem da equipe (2026-11-23 23:59) propõe três itens lidos da imagem do PDF e pede confirmação. Não há comentário do cliente depois dela. O gate de design foi aprovado de novo em 2026-11-24 12:03, mas sem a lista confirmada. A seção 4 do `03-design.md` (matriz item × página) continua "pendente P1", sem adendo do arquiteto. A seção 0 do design condiciona o build à lista em texto, e eu não vou tratar a leitura visual do print como confirmação.
+- **P2 resolvida.** Comentário do cliente em 2026-11-23: "Todos os perfis". Vale a remoção da página, sem filtro de visibilidade.
+- **P1 continua sem resposta do cliente.** A equipe propôs em 2026-11-23 três itens lidos na imagem do PDF (feed com "Classificar por", "Principais negócios - Oportunidades recentes", "Desempenho trimestral") e pediu confirmação ou correção. Não há confirmação do cliente no card.
+- **Matriz item × página (seção 4 do design) continua vazia.** O `03-design.md` está inalterado (sha256 `9f19edc49eb6caa0`, o mesmo de antes) e não tem adendo do arquiteto preenchendo a matriz. A condição 3 da seção 0 do design não foi cumprida.
 
-Itens hipotéticos, a confirmar (não construídos):
-1. Feed com "Classificar por"
-2. "Principais negócios - Oportunidades recentes"
-3. "Desempenho trimestral"
+## Pergunta sem resposta que impede construir
 
-## Perguntas e quem responde
-1. **Cliente (via card):** confirmar ou corrigir os três itens acima, em texto. Se a lista for maior, a estimativa de 2 h é revista.
-2. **Arquiteto humano:** preencher a matriz da seção 4 do design, com componente, Id das FlexiPages Home atribuídas e remoção ou filtro. Decidir a interpretação A/B/C da seção 2.
-3. **Arquiteto humano:** definir se `Equipe_vendas_SP` (`0M00z000000GoLuCAK`) e `P_gina_Inicial_Customizada` (`0M038000000GmdwCAC`) entram. Ambas estão marcadas "Recuperar antes" (R5) e não estão no baseline do repositório.
+1. **Quem responde: cliente (confirma a lista) e arquiteto (matriz).** A lista dos itens a retirar da Home está confirmada em texto? Os três itens acima são exatamente os do pedido? O design exige que a lista chegue em texto no card e que cada item seja mapeado na matriz da seção 4 antes do build. Construir a partir de leitura de imagem por agente violaria o guardrail #3 e a regra do design de não improvisar.
+2. **Quem responde: arquiteto.** Confirmar a interpretação A (componentes da Home) para os três itens. "Principais negócios" e "Desempenho trimestral" são componentes padrão da Home, mas o design pede essa correspondência na matriz, com a página default da org (R4) e a remoção página por página.
+3. **Quem responde: equipe.** O comentário de 2026-11-24 22:09 diz "Realizado o ajuste nas paginas iniciais retirando o que esta no anexo. Card encerrado." Não sei onde o ajuste foi feito. Se foi feito em produção ou manualmente na dev, o repositório e a dev precisam refletir isso, e o build deixa de ser necessário. A esteira precisa decidir: fechar a demanda por correção manual, que exige `05-testes.md` aprovado e `06-entrega.md`, ou devolver ao design para completar a matriz.
 
-## Próximo passo quando desbloquear
-Criar `feature/SOMOSAGILITY-15` (a branch local já existe), recuperar as duas páginas fora do baseline e commitá-las separadas, aplicar a alteração em versão nova da FlexiPage conforme a matriz e implantar só em `sbx-somos-agility-dev`.
+## Próximo passo
+
+Devolver ao gate de design. Com a matriz preenchida (itens, páginas, default da org, e as duas páginas fora do baseline: `Equipe_vendas_SP` e `P_gina_Inicial_Customizada`), o build é de 2 h conforme estimativa aprovada. Se a lista passar de três itens, a estimativa é revista antes.
