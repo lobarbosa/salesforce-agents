@@ -23,6 +23,7 @@ import hashlib
 import re
 from pathlib import Path
 
+from . import bloqueio, evidencias, roteiro, verificacao
 from .demands import REQUIRED_ARTIFACTS, STAGES_EXECUCAO, Demand
 
 # Um artefato grande não pode virar uma linha gigante no Postgres nem uma
@@ -103,6 +104,25 @@ def artefato_em_revisao(demanda: Demand) -> dict | None:
         return None
 
     conteudo = caminho.read_text(encoding="utf-8")
+    # Build que voltou bloqueado ao gate de design: quem aprova vê primeiro o
+    # que o construtor disse que falta. Sem isto o card mostrava só o design e
+    # o gate era aprovado de novo sem a resposta (achado SOMOSAGILITY-30).
+    plano = demanda.path / verificacao.PLANO
+    if demanda.status == "aguardando_gate_design" and plano.exists():
+        texto_plano = plano.read_text(encoding="utf-8")
+        if bloqueio.build_bloqueado(texto_plano):
+            conteudo = (
+                "## O build parou: falta uma decisão\n\n"
+                "Aprovar de novo só refaz o build depois que a resposta estiver registrada no design "
+                "ou no card. Sem isso, a esteira recusa a aprovação.\n\n"
+                + bloqueio.resumo(texto_plano)
+                + "\n\n---\n\n"
+                + conteudo
+            )
+    # No gate de build, quem revisa vê o plano e, logo abaixo, a evidência do
+    # agente que testou a construção — é ela que diz se o build funciona.
+    if nome == verificacao.PLANO:
+        conteudo += verificacao.anexo_para_o_gate(demanda.path)
     truncado = len(conteudo) > LIMITE_CONTEUDO
     return {
         "nome": nome,
@@ -126,4 +146,17 @@ def payload_de_sync(demanda: Demand) -> dict:
     artefato = artefato_em_revisao(demanda)
     if artefato:
         dados["artefato"] = artefato
+    # Sempre presente, vazio quando não há: o espelho no Squad OS precisa
+    # apagar o roteiro de um QA que depois foi reprovado.
+    dados["roteiro_cliente"] = roteiro.conteudo(demanda.path)
+    # Evidências de teste (evidencias.py): o roteiro executado e as capturas de
+    # tela da rodada, que o Squad OS publica como anexo em PDF no card.
+    dados.update(evidencias.payload(demanda.path))
+    # QA armado esperando a automação agendada: quando conferir (veredito.py).
+    if demanda.status == "qa" and (demanda.path / "05-testes.md").exists():
+        from . import veredito
+
+        quando = veredito.conferir_depois_de((demanda.path / "05-testes.md").read_text(encoding="utf-8"))
+        if quando:
+            dados["conferir_depois_de"] = quando
     return dados

@@ -14,7 +14,7 @@ from pathlib import Path
 
 import click
 
-from . import ambientes, demands, fluxo
+from . import ambientes, demands, fluxo, sessao
 
 # Quais estágios disparam sessão de agente vive em fluxo.py, junto com a regra
 # de qual etapa vem depois de qual — eram dois lugares dizendo a mesma coisa.
@@ -299,11 +299,20 @@ def avancar(client: str, demand_id: str, novo_status: str, autor: str) -> None:
     "Squad OS manda quando alguém clica em aprovar no card.",
 )
 @click.option(
+    "--reverificar",
+    default=None,
+    metavar="AUTOR",
+    help="Tira do gate de build um build concluído e roda só o verificador de novo, "
+    "sem reconstruir.",
+)
+@click.option(
     "--github-output",
     is_flag=True,
     help="Escreve o motivo da parada em $GITHUB_OUTPUT (uso do run-demand.yml).",
 )
-def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: bool) -> None:
+def rodar(
+    client: str, demand_id: str, aprovar_gate: str | None, reverificar: str | None, github_output: bool
+) -> None:
     """Roda a demanda a partir do estágio atual até o próximo gate humano.
 
     É o comando que run-demand.yml chama. Diferente de `avancar`, não recebe
@@ -311,11 +320,36 @@ def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: 
     existe a possibilidade de alguém disparar a etapa errada por engano.
     """
     try:
+        if aprovar_gate and reverificar:
+            raise click.ClickException("--aprovar-gate e --reverificar não vão juntos.")
         if aprovar_gate:
-            d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
+            try:
+                d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
+            except fluxo.GateSemMudancaError as exc:
+                # Não é falha do job: a demanda fica no gate, como estava, e o
+                # card já mostra o que o build pediu (bloqueio.py).
+                click.echo(f"::warning::{exc}")
+                atual = demands.Demand.load(client, demand_id)
+                parada = fluxo.Parada("gate", atual.status, ambientes.ambiente_do_estagio(atual.status), ())
+                if github_output and os.environ.get("GITHUB_OUTPUT"):
+                    with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+                        fh.write(parada.as_github_output() + "\n")
+                return
             click.echo(f"{demand_id}: gate aprovado por {aprovar_gate} -> {d.status}")
-        parada = fluxo.rodar(client, demand_id)
+        if reverificar:
+            fluxo.reverificar(client, demand_id, reverificar)
+            click.echo(f"{demand_id}: reverificação pedida por {reverificar}")
+        parada = fluxo.rodar(client, demand_id, so_verificar=bool(reverificar))
     except (fluxo.FluxoError, demands.InvalidStatusError, demands.DemandNotFoundError) as exc:
+        raise click.ClickException(str(exc))
+    except sessao.ApiIndisponivelError as exc:
+        # Crédito/chave da API: não é falha da demanda. O motivo vai para o
+        # Squad OS (execução → aviso no topo do portal). Achado 2026-11-10: a
+        # esteira ficou 6 dias falhando por saldo sem ninguém ser avisado.
+        destino = os.environ.get("GITHUB_OUTPUT")
+        if github_output and destino:
+            with open(destino, "a", encoding="utf-8") as fh:
+                fh.write("motivo=api_indisponivel\n")
         raise click.ClickException(str(exc))
 
     if parada.etapas_rodadas:
@@ -331,6 +365,32 @@ def rodar(client: str, demand_id: str, aprovar_gate: str | None, github_output: 
             raise click.ClickException("--github-output pedido, mas $GITHUB_OUTPUT não existe.")
         with open(destino, "a", encoding="utf-8") as fh:
             fh.write(parada.as_github_output() + "\n")
+
+
+@demanda.command("preflight")
+@click.option("--client", required=True)
+@click.argument("demand_id")
+@click.option("--etapa", required=True, help="Etapa que vai rodar (a saída `etapa` do job decidir).")
+@click.option("--org", "org_alias", required=True, help="Alias da org que o job autenticou.")
+def preflight_cmd(client: str, demand_id: str, etapa: str, org_alias: str) -> None:
+    """Confere org e outras demandas antes da sessão e grava 00-preflight.md.
+
+    Sai com erro só quando há bloqueio (outra demanda do cliente em teste na
+    sandbox de QA); avisos ficam no arquivo para o agente.
+    """
+    from . import preflight
+
+    try:
+        res = preflight.gravar(client, demand_id, etapa, org_alias)
+    except demands.DemandNotFoundError as exc:
+        raise click.ClickException(str(exc))
+    for aviso in res.avisos:
+        click.echo(f"::warning::{aviso}")
+    for achado in res.org:
+        click.echo(f"{demand_id}: {achado}")
+    if res.bloqueios:
+        raise click.ClickException(" ".join(res.bloqueios))
+    click.echo(f"{demand_id}: pré-checagem sem bloqueio.")
 
 
 @demanda.command("comentarios-md")
