@@ -6,7 +6,7 @@ Etapa que vai rodar: `qa` · org: `sbx-somos-agility-qa`. Gerado pela esteira an
 - nenhum
 
 ## Outras demandas mexendo nos mesmos componentes
-- SOMOSAGILITY-22 (aguardando_gate_build) também mexe em: approvalProcesses/JOB_de_Solicita_o_de_Investimento__c.
+- SOMOSAGILITY-22 (aguardando_homologacao) também mexe em: approvalProcesses/JOB_de_Solicita_o_de_Investimento__c.
 
 ## Estado na org
 - nada a conferir: a demanda ainda não tem componentes no repositório

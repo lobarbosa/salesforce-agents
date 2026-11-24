@@ -2,7 +2,7 @@
 
 Foi entregue um processo de aprovação próprio para os JOBs de Investimento criados pelo usuário Cyber (Grupo Cyber Salesforce). Esses JOBs passam a ser aprovados nesta ordem: Gustavo, depois Wanderley, depois Walmor. JOBs criados por outras pessoas continuam no caminho de aprovação de hoje.
 
-**Situação do teste automático:** comprovado na sandbox de QA, por consulta à configuração, que o processo existe, está ativo, vem antes do processo geral, tem a entrada (criado pelo Cyber e ainda não aprovado) e os três aprovadores na ordem certa. Não foi executado o envio e a aprovação de verdade, porque exige os usuários reais (Cyber, Gustavo, Wanderley, Walmor e outro criador); isso fica para os testes abaixo.
+**Situação do teste automático:** reconferido em 24/11, depois da implantação da outra demanda no mesmo objeto: a ordem (Cyber antes do geral) segue correta. Comprovado na sandbox de QA, por consulta à configuração, que o processo existe, está ativo, vem antes do processo geral, tem a entrada (criado pelo Cyber e ainda não aprovado) e os três aprovadores na ordem certa. Não foi executado o envio e a aprovação de verdade, porque exige os usuários reais (Cyber, Gustavo, Wanderley, Walmor e outro criador); isso fica para os testes abaixo.
 
 ## Antes de começar
 - Ambiente: sandbox de QA (`sbx-somos-agility-qa`).

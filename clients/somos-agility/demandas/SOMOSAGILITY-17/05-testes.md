@@ -2,15 +2,15 @@
 
 **Org de teste:** `sbx-somos-agility-qa`
 
-# Testes — SOMOSAGILITY-17 (rodada 2)
+# Testes — SOMOSAGILITY-17 (rodada 3, reconferência da ordem após SOMOSAGILITY-22)
 
-Org confirmada com `sf org list`: só `sbx-somos-agility-qa` (Sandbox, Connected). Produção não foi tocada. Nenhum dado foi criado, alterado ou lido; só contagens agregadas e metadata. Retrieve feito em projeto temporário em `/tmp`, fora do repositório. Deploy de QA conferido em `05-deploy-qa.md` (`0AfHa00000EN61SKAT`, Succeeded): os dois approvalProcesses listados existem na org.
+Org confirmada com `sf org list`: só `sbx-somos-agility-qa` (Sandbox, Connected). Produção não foi tocada. Nenhum dado foi criado, alterado ou lido; só contagens agregadas e metadata. Retrieve feito em projeto temporário em `/tmp`, fora do repositório. Deploy de QA conferido em `05-deploy-qa.md` (`0AfHa00000EN9c1KAD`, Succeeded): os dois approvalProcesses listados existem na org.
 
 Conflito com SOMOSAGILITY-22 (mesmo objeto, approvalProcesses): o estado dos dois processos foi lido na org e está como o build desta demanda; o teste não foi afetado.
 
 ## Retestes da rodada 1
 
-- **FALHA 1 (processOrder invertido): corrigida.** Retrieve da QA agora: `Aprova_o_JOB`=1, `JOB_Investimento_Cyber`=2 (ativo), `JOB_de_solicitacoes_de_investimento`=3 (ativo). Os demais processos do objeto estão inativos.
+- **FALHA 1 (processOrder invertido): corrigida.** Retrieve da QA em 2026-11-24 (após a SOMOSAGILITY-22): `Aprova_o_JOB`=1, `JOB_Investimento_Cyber`=2 (ativo), `JOB_de_solicitacoes_de_investimento`=3 (ativo). Os demais processos do objeto estão inativos.
 - Pendência de usuário duplicado (Gustavo): verificada. Na QA há 2 usuários com o nome (1 ativo com username terminando em `br1`, 1 inativo). O XML do passo 1 aponta o `br1` (ativo). Em produção, confirmar com o consultor que o username ativo também termina em `br1`.
 
 ## Falhas
