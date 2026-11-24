@@ -53,3 +53,11 @@ historico:
     e a demanda chegou à homologação só com documentos. Volta ao gate de design até
     as respostas chegarem pelo card. 04-plano-build.md e 05-testes.md (registros do
     bloqueio) removidos para as etapas serem refeitas.'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa
+  em: '2026-11-24T01:23:34.760970+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-24T01:24:14.265809+00:00'
