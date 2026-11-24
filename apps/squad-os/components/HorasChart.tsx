@@ -55,8 +55,7 @@ export function HorasChart({ dados }: { dados: MesDeHoras[] }) {
         preserveAspectRatio="xMidYMid meet"
       >
         <title id={`${uid}-t`}>
-          Horas consumidas do ciclo, mês a mês, nos últimos {dados.length} meses, contra{" "}
-          {contratadas} horas contratadas por ciclo.
+          {`Horas consumidas do ciclo, mês a mês, nos últimos ${dados.length} meses, contra ${contratadas} horas contratadas por ciclo.`}
         </title>
 
         {/* Grade recessiva: só o zero e o limite. Mais linhas competiriam com as barras. */}
@@ -97,7 +96,7 @@ export function HorasChart({ dados }: { dados: MesDeHoras[] }) {
                   Número em toda barra vira ruído e deixa de ser lido. */}
               {(excedeu || ultimo) && h > 0 && (
                 <text x={x + barraW / 2} y={topoBarra - 5} textAnchor="middle" className="valor">
-                  {d.horasNoCiclo}h
+                  {String(d.horasNoCiclo).replace(".", ",")} h
                 </text>
               )}
               <text x={x + barraW / 2} y={alt - 10} textAnchor="middle" className="rot-x">

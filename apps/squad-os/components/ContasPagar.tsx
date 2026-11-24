@@ -86,7 +86,7 @@ export function ContasPagar({
     const aberta = c.status === "aguardando_aprovacao" || c.status === "aprovada";
     return (
       <tr key={c.id} className={aberta && p.vencida ? "linha-vencida" : undefined}>
-        <td className="data">
+        <td className="data" data-rotulo="Vencimento">
           {dataBr(c.vencimento)}
           {aberta && <span className={`prazo${p.urgente ? " urgente" : ""}`}>{p.texto}</span>}
         </td>
@@ -96,13 +96,13 @@ export function ContasPagar({
           </button>
           {c.descricao && <span className="sub">{c.descricao}</span>}
         </th>
-        <td>{c.categoria || <span className="sub">—</span>}</td>
-        <td>
+        <td data-rotulo="Categoria">{c.categoria || <span className="sub">—</span>}</td>
+        <td data-rotulo="Tipo">
           <TipoConta conta={c} />
         </td>
-        <td className="num">{formatarReais(c.valor)}</td>
-        <td>{c.temDocumento ? "anexado" : <span className="aviso-texto">sem documento</span>}</td>
-        <td>
+        <td className="num" data-rotulo="Valor">{formatarReais(c.valor)}</td>
+        <td data-rotulo="Documento">{c.temDocumento ? "anexado" : <span className="aviso-texto">sem documento</span>}</td>
+        <td data-rotulo="Situação">
           <span className={`badge-status st-${c.status}`}>{ROTULO_STATUS[c.status]}</span>
         </td>
       </tr>
@@ -111,7 +111,7 @@ export function ContasPagar({
 
   const tabela = (lista: ContaVista[], legenda: string) => (
     <div className="tabela-wrap">
-      <table className="tabela">
+      <table className="tabela tabela-cartoes">
         <caption className="sr-only">{legenda}</caption>
         <thead>
           <tr>

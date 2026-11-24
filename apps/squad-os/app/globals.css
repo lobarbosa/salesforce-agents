@@ -1592,3 +1592,80 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
 /* Nome do cliente na Visão Geral cortava com espaço sobrando. */
 .overview-row .oc-client { width: 13rem; }
 @media (max-width: 720px) { .overview-row .oc-client { width: auto; } }
+
+/* --- Revisão de usabilidade, segunda passada (2026-11-24) ------------------ */
+/* Quadro do time: 7 fases cabem em 1440 px com a barra lateral aberta; antes a
+   última coluna ficava cortada e pedia rolagem lateral. */
+.board.board-fases { grid-auto-columns: minmax(148px, 1fr); }
+/* Texto abaixo de 12 px. */
+.fase-parados, .painel-count { font-size: 0.75rem; }
+/* Faixa de abas que rola de lado: a borda direita esmaece para avisar que há
+   mais abas. */
+@media (max-width: 760px) {
+  .tabs { scrollbar-width: none; }
+  /* `tem-mais` é posto por AbaVisivel só enquanto há aba escondida à direita. */
+  .tabs.tem-mais { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 28px), transparent); }
+  .tabs::-webkit-scrollbar { display: none; }
+  /* Alvos de toque: seletor de triagem do card e links soltos em texto. */
+  .card select.move { min-height: 40px; font-size: 0.85rem; }
+  main p a, main li a { display: inline-block; padding-block: 0.3rem; }
+  /* Tabela de contas vira uma lista de cartões: valor, documento e situação
+     ficavam fora da tela, só com rolagem lateral. */
+  .tabela-cartoes thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .tabela-cartoes, .tabela-cartoes tbody, .tabela-cartoes tr, .tabela-cartoes th, .tabela-cartoes td { display: block; width: 100%; }
+  .tabela-cartoes tr { padding: 0.6rem 0.75rem; border-bottom: 1px solid var(--border); }
+  .tabela-cartoes tr:last-child { border-bottom: none; }
+  .tabela-cartoes tbody th, .tabela-cartoes td { border: none; padding: 0.15rem 0; text-align: left; }
+  .tabela-cartoes tbody th { font-size: 0.95rem; }
+  .tabela-cartoes td[data-rotulo] { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; }
+  .tabela-cartoes td[data-rotulo]::before { content: attr(data-rotulo); flex: none; font-size: 0.75rem; color: var(--text-muted); }
+  .tabela-cartoes td.num { font-weight: 600; }
+}
+/* Etiqueta "quem age" que quebra em duas linhas: cantos de cartão, não de
+   pílula (a pílula com três linhas virava um ovo). */
+.card .quem-age { border-radius: 8px; text-wrap: balance; }
+@media (max-width: 760px) {
+  .tabela-cartoes td[data-rotulo]::before { font-family: var(--sans); font-weight: 400; }
+  .tabela-cartoes td.data { flex-wrap: wrap; white-space: normal; }
+  .tabela-cartoes td.data .prazo { flex-basis: 100%; text-align: right; }
+  .tabela-cartoes .linha-vencida > td:first-child { box-shadow: none; }
+  .tabela-cartoes tr.linha-vencida { box-shadow: inset 3px 0 0 var(--danger); }
+  .link-linha { min-height: 32px; text-align: left; }
+}
+
+/* --- Usabilidade, terceira passada (2026-11-24) ---------------------------- */
+/* Quadro largo: sem o prefixo "Time:" / "Cliente:" a etiqueta cabe em uma ou
+   duas linhas na coluna de 148 px. O prefixo continua no DOM para leitor de
+   tela; no celular (coluna única) ele aparece. */
+@media (min-width: 761px) {
+  .board-fases .quem-prefixo {
+    position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+  }
+}
+@media (max-width: 760px) {
+  .tabela-wrap:has(> .tabela-cartoes) { overflow-x: visible; }
+  .tabela-cartoes tfoot { display: block; }
+  .tabela-cartoes caption { display: block; text-align: left; }
+  .tabela-cartoes td:not([data-rotulo]) { text-align: left; }
+  .tabela-cartoes td[data-rotulo] > * { min-width: 0; text-align: right; overflow-wrap: anywhere; }
+}
+@media (max-width: 760px) {
+  /* Célula sem conteúdo não vira linha de cartão com rótulo solto. */
+  .tabela-cartoes td[data-rotulo]:empty { display: none; }
+  summary { min-height: 32px; align-content: center; }
+  main a:not([class]) { display: inline-block; padding-block: 0.3rem; }
+}
+
+/* --- Usabilidade, passada de desktop (2026-11-24) -------------------------- */
+/* Login e nova senha: o subtítulo subia por cima do título. */
+.auth-card .sub { margin-top: 0.15rem; }
+/* Gráficos alinhados à esquerda, junto com a legenda e a tabela abaixo; o
+   limite de altura da passada anterior centralizava o desenho e a legenda
+   ficava solta do outro lado. */
+.chart svg { max-height: none; max-width: 520px; }
+/* Conhecimento do cliente: todos os cartões com a mesma largura (um deles
+   ficava em meia coluna, sozinho, e o de saúde mais largo que os demais). */
+.brief-grid { max-width: none; }
+.brief-grid > * { grid-column: 1 / -1; }
+/* Título de seção colado na caixa de cima. */
+.painel-conciliacao { margin-top: 1.4rem; }

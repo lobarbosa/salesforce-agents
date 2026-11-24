@@ -68,7 +68,7 @@ export function DecisaoEstimativa({ demanda, podeDecidir }: { demanda: DemandaCo
       <div className="aprovacao-estimativa aprovada" role="status">
         <strong>Estimativa aprovada: {h(horas)} h</strong>
         <span>
-          Por {demanda.estimativaAprovadaPor}. Essas horas são debitadas do contrato quando a construção começar.
+          {demanda.estimativaAprovadaPor ? `Por ${demanda.estimativaAprovadaPor}. ` : ""}Essas horas são debitadas do contrato quando a construção começar.
         </span>
       </div>
     );
@@ -77,7 +77,7 @@ export function DecisaoEstimativa({ demanda, podeDecidir }: { demanda: DemandaCo
   return (
     <div className={`aprovacao-estimativa ${segurada ? "segurada" : "pendente"}`}>
       <strong>
-        {segurada ? "Demanda segurada na estimativa" : "Estimativa esperando aprovação do cliente"}: {h(horas)} h
+        {segurada ? "Demanda segurada na estimativa" : podeDecidir ? "Estimativa esperando a sua aprovação" : "Estimativa esperando aprovação do cliente"}: {h(horas)} h
       </strong>
       <span>
         {segurada
