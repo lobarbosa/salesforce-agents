@@ -2,7 +2,7 @@ id: SOMOSAGILITY-16
 client: somos-agility
 titulo: Desabilitar relatório  - Leads Semanais
 tipo: sustentacao
-status: aguardando_gate_design
+status: aguardando_gate_build
 criado_em: '2026-10-19T16:23:15.761Z'
 historico:
 - de: null
@@ -57,3 +57,11 @@ historico:
     e a demanda chegou à homologação só com documentos. Volta ao gate de design até
     as respostas chegarem pelo card. 04-plano-build.md e 05-testes.md (registros do
     bloqueio) removidos para as etapas serem refeitas.'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-24T21:56:27.446129+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-24T21:57:53.567135+00:00'

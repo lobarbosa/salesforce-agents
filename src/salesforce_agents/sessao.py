@@ -210,6 +210,7 @@ async def rodar(
         for tentativa in range(1, tentativas + 1):
             await sdk.query(pedido)
             textos_do_turno: list[str] = []
+            custo_do_turno: float | None = None
             async for message in sdk.receive_response():
                 if isinstance(message, AssistantMessage):
                     erro_sdk = getattr(message, "error", None)
@@ -227,19 +228,34 @@ async def rodar(
                             except Exception as exc:  # observabilidade nunca derruba a sessão
                                 escrever(f"(esteira ao vivo: {exc})")
                 elif isinstance(message, ResultMessage):
+                    custo_do_turno = getattr(message, "total_cost_usd", None)
                     if ao_terminar is not None:
                         ao_terminar(message)
 
             pendencias = conferir()
             # Recusa da API com o artefato ainda faltando: cobrar de novo só
             # repetiria a mesma recusa. Falha na hora, dizendo o que é.
-            recusa = erro_de_api(textos_do_turno) if pendencias else None
+            #
+            # Vale também com o artefato em disco, quando o turno custou zero:
+            # nenhuma chamada ao modelo aconteceu, então o arquivo é o de uma
+            # rodada anterior, e deixar passar levaria ao gate um artefato que
+            # ninguém reescreveu (achado EPLAST-47, 2026-11-17: redesenho
+            # pedido, crédito esgotado, e o 03-design.md antigo voltou ao gate
+            # como se fosse o novo). Turno que custou e cita o erro no texto
+            # continua passando: o agente rodou e entregou.
+            sem_modelo = custo_do_turno == 0
+            recusa = erro_de_api(textos_do_turno) if (pendencias or sem_modelo) else None
             if recusa:
+                ficou = (
+                    f"Ficou faltando: {', '.join(pendencias)}."
+                    if pendencias
+                    else "Os artefatos em disco são de uma rodada anterior: nada foi reescrito."
+                )
                 raise ApiIndisponivelError(
                     f"a API do modelo recusou a sessão ({recusa!r}) — nenhum agente chegou "
                     f"a rodar, então não há o que cobrar dele. Resolva na conta da Anthropic "
                     f"(saldo de crédito ou ANTHROPIC_API_KEY do GitHub Environment) e "
-                    f"redispare. Ficou faltando: {', '.join(pendencias)}."
+                    f"redispare. {ficou}"
                 )
             if not pendencias:
                 return
