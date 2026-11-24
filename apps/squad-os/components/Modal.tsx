@@ -74,7 +74,12 @@ export function Modal({
         tabIndex={-1}
         ref={dialogRef}
       >
-        <h3 id={titleId}>{title}</h3>
+        <div className="modal-topo">
+          <h3 id={titleId}>{title}</h3>
+          <button type="button" className="modal-fechar" aria-label="Fechar" onClick={() => onCloseRef.current()}>
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
         {children}
       </div>
     </div>

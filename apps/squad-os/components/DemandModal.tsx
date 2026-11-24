@@ -356,8 +356,9 @@ export function DemandModal({
               )}
               {!demanda.materializadoEm && (
                 <p className="gate-texto">
-                  Materialize a demanda primeiro — sem isso ela não existe no repositório pra
-                  avançar.
+                  {canManage
+                    ? "Materialize a demanda primeiro — sem isso ela não existe no repositório pra avançar."
+                    : "A equipe ainda está preparando esta demanda; a aprovação libera em seguida."}
                 </p>
               )}
             </>
@@ -662,7 +663,9 @@ function EstimativaConsultor({ demanda }: { demanda: DemandaCompleta }) {
       </div>
       <p id={`estimativa-ajuda-${demanda.id}`} className="estimativa-nota">
         {atual != null
-          ? `Lançada por ${demanda.estimativaConsultorPor || "—"}${demanda.estimativaConsultorEm ? " " + timeAgo(demanda.estimativaConsultorEm) : ""}.`
+          ? demanda.estimativaConsultorPor
+            ? `Lançada por ${demanda.estimativaConsultorPor}${demanda.estimativaConsultorEm ? " " + timeAgo(demanda.estimativaConsultorEm) : ""}.`
+            : "Estimativa lançada."
           : demanda.sugestaoConsultorHoras != null
             ? `Pré-preenchida com a sugestão do agente (calibrada pelo timesheet). Ajuste se precisar.`
             : "O agente ainda não sugeriu — informe a sua estimativa."}
