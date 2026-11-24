@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workflow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <alerts>
+        <fullName>Aprova_o_de_JOB</fullName>
+        <ccEmails>GrupoFinanceiro@somosagility.com.br</ccEmails>
+        <description>Aprovação de JOB</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <recipients>
+            <recipient>grupooperacoes@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <senderAddress>sistemas@somosagility.com.br</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Job_de_Investimentos/Solicita_o_de_JOB_de_Investimento_Aprovada</template>
+    </alerts>
+    <alerts>
+        <fullName>Rejei_o_de_JOB</fullName>
+        <ccEmails>GrupoFinanceiro@somosagility.com.br</ccEmails>
+        <description>Rejeição de JOB</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <recipients>
+            <recipient>grupooperacoes@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <senderAddress>sistemas@somosagility.com.br</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Job_de_Investimentos/Solicita_o_de_JOB_de_Investimento_Recusada</template>
+    </alerts>
+    <alerts>
+        <fullName>Solicitaco_de_Mapeamento_Pendente</fullName>
+        <ccEmails>GrupoFinanceiro@somosagility.com.br</ccEmails>
+        <description>Solicitação de Mapeamento Pendente</description>
+        <protected>false</protected>
+        <recipients>
+            <type>owner</type>
+        </recipients>
+        <recipients>
+            <recipient>fabio.soto@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <recipients>
+            <recipient>grupooperacoes@somosagility.com.br</recipient>
+            <type>user</type>
+        </recipients>
+        <senderAddress>sistemas@somosagility.com.br</senderAddress>
+        <senderType>OrgWideEmailAddress</senderType>
+        <template>Job_de_Investimentos/Solicitacao_de_JOB_de_Investimento_Pendente</template>
+    </alerts>
+    <fieldUpdates>
+        <fullName>Status_Previs_o_de_Gastos_JOB</fullName>
+        <field>Status_Previs_o_de_Gastos__c</field>
+        <literalValue>Fechado</literalValue>
+        <name>Status Previsão de Gastos JOB</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Status_Qualificacao</fullName>
+        <field>Status_da_Qualificaco__c</field>
+        <literalValue>Pendente</literalValue>
+        <name>Status Qualificação</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Status_Qualificacao_Aprovacao</fullName>
+        <field>Status_da_Qualificaco__c</field>
+        <literalValue>Aprovado</literalValue>
+        <name>Status Qualificação Aprovação</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Status_Qualificacao_Recall</fullName>
+        <field>Status_da_Qualificaco__c</field>
+        <literalValue>Recall</literalValue>
+        <name>Status Qualificação Recall</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <fieldUpdates>
+        <fullName>Status_Qualificacao_Rejeicao</fullName>
+        <field>Status_da_Qualificaco__c</field>
+        <literalValue>Rejeitado</literalValue>
+        <name>Status Qualificação Rejeição</name>
+        <notifyAssignee>false</notifyAssignee>
+        <operation>Literal</operation>
+        <protected>false</protected>
+        <reevaluateOnChange>false</reevaluateOnChange>
+    </fieldUpdates>
+    <rules>
+        <fullName>Status Previsão de Gastos JOB</fullName>
+        <actions>
+            <name>Status_Previs_o_de_Gastos_JOB</name>
+            <type>FieldUpdate</type>
+        </actions>
+        <active>false</active>
+        <formula>(Valor_Total_de_Gastos_Realizados__c)&gt;= (Valor_Total_Pago_Reais__c)</formula>
+        <triggerType>onAllChanges</triggerType>
+    </rules>
+</Workflow>
