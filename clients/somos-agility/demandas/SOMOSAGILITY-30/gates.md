@@ -1,0 +1,97 @@
+# Gates
+
+Log de aprovações humanas desta demanda. Escrito por `sfagents`, não à mão:
+cada bloco registra quem aprovou, quando, e o hash de cada artefato que estava
+na mesa naquele momento.
+
+Se um hash aqui não bate mais com o arquivo em disco, o artefato mudou **depois**
+da aprovação — o que não é necessariamente errado, mas significa que o que está
+no repositório hoje não é o que aquela pessoa aprovou.
+
+## aguardando_gate_analise
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-22T20:58:37.102605+00:00
+- **Commit:** `0b9b8a7f`
+- **Artefatos revisados:**
+  - `01-analise.md` — sha256 `d66595b56be60a4a` (15484 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-23T13:31:21.898272+00:00
+- **Commit:** `6df9f448`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `1d1437582827d178` (18652 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-23T16:37:02.437969+00:00
+- **Commit:** `ea5516b5`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `1d1437582827d178` (18652 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-23T20:08:00.429119+00:00
+- **Commit:** `fb016aa0`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `1d1437582827d178` (18652 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-23T22:10:42.418194+00:00
+- **Commit:** `275ed614`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `1d1437582827d178` (18652 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-23T22:15:54.045291+00:00
+- **Commit:** `b7064d02`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `1d1437582827d178` (18652 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-23T22:38:34.051049+00:00
+- **Commit:** `ed76537c`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `1d1437582827d178` (18652 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-23T22:49:11.031735+00:00
+- **Commit:** `2713a42d`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `1d1437582827d178` (18652 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-23T22:57:34.105428+00:00
+- **Commit:** `88d82187`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `c3714a9b1a6bc66a` (9245 bytes)
+  - `03-design.md` — sha256 `7bcbe6df2490f5a7` (20040 bytes)
+
+## aguardando_gate_build
+
+- **Aprovado por:** Leonardo Barbosa (via Claude)
+- **Quando:** 2026-11-23T23:57:51.819009+00:00
+- **Commit:** `9d74b3b2`
+- **Artefatos revisados:**
+  - `04-plano-build.md` — sha256 `839e126854c8392b` (4765 bytes)

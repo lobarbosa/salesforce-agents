@@ -1,13 +1,100 @@
 id: SOMOSAGILITY-30
 client: somos-agility
-titulo: >-
-  Revisar o critério do total de despesas realizadas: somar só na aprovação
-  final da Solicitação de Reembolso
+titulo: 'Revisar o critério do total de despesas realizadas: somar só na aprovação
+  final da Solicitação de Reembolso'
 tipo: sustentacao
-status: backlog
+status: aguardando_homologacao
 criado_em: '2026-11-22T20:49:28.227Z'
 historico:
-  - de: null
-    em: '2026-11-22T20:49:28.227Z'
-    para: backlog
-    autor: Carlos Sordi
+- de: null
+  em: '2026-11-22T20:49:28.227Z'
+  para: backlog
+  autor: Carlos Sordi
+- de: backlog
+  para: analise
+  autor: pipeline
+  em: '2026-11-22T20:51:47.378727+00:00'
+- de: analise
+  para: aguardando_gate_analise
+  autor: pipeline
+  em: '2026-11-22T20:54:42.873567+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Carlos Sordi
+  em: '2026-11-22T20:58:37.105306+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-22T21:04:26.824261+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T13:31:21.902160+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T13:41:41.074979+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T16:37:02.442379+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T16:37:46.987240+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T20:08:00.434669+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T20:08:35.996101+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T22:10:42.423785+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T22:11:41.294099+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T22:15:54.050479+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T22:16:44.615319+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T22:38:34.056305+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T22:39:08.344216+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Carlos Sordi
+  em: '2026-11-23T22:49:11.039363+00:00'
+- de: build
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-23T22:49:43.043526+00:00'
+- de: aguardando_gate_design
+  para: build
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-23T22:57:34.118247+00:00'
+- de: build
+  para: aguardando_gate_build
+  autor: pipeline
+  em: '2026-11-23T23:16:24.321783+00:00'
+- de: aguardando_gate_build
+  para: qa
+  autor: Leonardo Barbosa (via Claude)
+  em: '2026-11-23T23:57:51.827375+00:00'
+- de: qa
+  para: aguardando_homologacao
+  autor: pipeline
+  em: '2026-11-24T00:02:21.199055+00:00'
