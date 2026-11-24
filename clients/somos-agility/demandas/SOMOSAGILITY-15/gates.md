@@ -58,3 +58,12 @@ no repositório hoje não é o que aquela pessoa aprovou.
 - **Artefatos revisados:**
   - `02-recon.md` — sha256 `538ce1591f81afba` (9605 bytes)
   - `03-design.md` — sha256 `9f19edc49eb6caa0` (14122 bytes)
+
+## aguardando_gate_design
+
+- **Aprovado por:** Carlos Sordi
+- **Quando:** 2026-11-24T22:10:38.454001+00:00
+- **Commit:** `ba46ecf7`
+- **Artefatos revisados:**
+  - `02-recon.md` — sha256 `538ce1591f81afba` (9605 bytes)
+  - `03-design.md` — sha256 `9f19edc49eb6caa0` (14122 bytes)
