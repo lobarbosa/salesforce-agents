@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>SOMOSAGILITY-8: notificação de entrada na 3ª etapa (Operações/Financeiro) da DEPV, com aviso para preencher a Classificação Gerencial.</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Agility_Networks</letterhead>
+    <name>DEPV Notificação 3ª Aprovação</name>
+    <style>freeForm</style>
+    <subject>Solicitação de Despesa Extraordinária de Venda Aprovada - {!Despesa_Extraordinaria_para_Pre_Venda__c.Name}</subject>
+    <textOnly>Prezados,
+Sua solicitação de Despesa Extraordinária de Venda foi Aprovada!
+
+ID da solicitação de Despesa Extraordinária de venda: {!Despesa_Extraordinaria_para_Pre_Venda__c.Name}
+Proprietário: {!Despesa_Extraordinaria_para_Pre_Venda__c.OwnerFullName}
+Oportunidade: {!Despesa_Extraordinaria_para_Pre_Venda__c.Oportunidade__c}
+Justificativa do Investimento: {!Despesa_Extraordinaria_para_Pre_Venda__c.Justificativa_do_Investimento__c}
+Recuperação do Investimento: {!Despesa_Extraordinaria_para_Pre_Venda__c.Recuperacao_do_Investimento__c}
+Valor Total Nominal Terceiros: {!Despesa_Extraordinaria_para_Pre_Venda__c.Valor_Total__c}
+Valor Total Nominal Agility: {!Despesa_Extraordinaria_para_Pre_Venda__c.Valor_Efetivo_Agility__c}
+Valor Total: {!Despesa_Extraordinaria_para_Pre_Venda__c.Valor_Total_Integral__c}
+Comentários: {!ApprovalRequest.Comments}
+
+**Atenção Grupo Operações**
+Seguir com as devidas tratativas operacionais.
+Não deixe de preencher o campo Classificação Gerencial.
+
+Para maiores informações acesse o link abaixo:
+{!Despesa_Extraordinaria_para_Pre_Venda__c.Link}
+
+Atenciosamente,
+Equipe Agility</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>

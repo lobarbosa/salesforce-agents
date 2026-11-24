@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>64.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <customErrors>
+        <name>Erro_Classificacao_Gerencial</name>
+        <label>Erro Classificação Gerencial</label>
+        <locationX>176</locationX>
+        <locationY>276</locationY>
+        <customErrorMessages>
+            <errorMessage>Preencha a Classificação Gerencial antes de aprovar.</errorMessage>
+            <fieldSelection>Classificacao_Gerencial__c</fieldSelection>
+            <isFieldError>true</isFieldError>
+        </customErrorMessages>
+    </customErrors>
+    <description>SOMOSAGILITY-8 (RN1): impede a aprovação da etapa financeira (Pendente - Operações) da DEPV sem Classificação Gerencial. Before-save, só em update; não faz DML nem SOQL. Rejeição e etapas 1 e 2 não são bloqueadas.</description>
+    <environments>Default</environments>
+    <interviewLabel>DEPV BeforeSave Classificação Gerencial obrigatória {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>DEPV BeforeSave Classificação Gerencial obrigatória</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <connector>
+            <targetReference>Erro_Classificacao_Gerencial</targetReference>
+        </connector>
+        <filterFormula>AND(   ISBLANK(TEXT({!$Record.Classificacao_Gerencial__c})),   TEXT({!$Record__Prior.Status_da_Qualificacao__c}) = &apos;Pendente - Operações&apos;,   TEXT({!$Record.Status_da_Qualificacao__c}) &lt;&gt; &apos;Rejeitado&apos;,   OR(     TEXT({!$Record.Status_da_Qualificacao__c}) = &apos;Aprovado&apos;,     AND(TEXT({!$Record.Status__c}) = &apos;Fechado&apos;, TEXT({!$Record__Prior.Status__c}) &lt;&gt; &apos;Fechado&apos;)   ) )</filterFormula>
+        <object>Despesa_Extraordinaria_para_Pre_Venda__c</object>
+        <recordTriggerType>Update</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Draft</status>
+</Flow>

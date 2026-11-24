@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EmailTemplate xmlns="http://soap.sforce.com/2006/04/metadata">
+    <available>true</available>
+    <description>SOMOSAGILITY-8: layout das notificações de 1ª e 2ª aprovação da DEPV (versão nova; o template antigo segue intacto).</description>
+    <encodingKey>ISO-8859-1</encodingKey>
+    <letterhead>Agility_Networks</letterhead>
+    <name>DEPV Notificação 1ª e 2ª Aprovação</name>
+    <style>freeForm</style>
+    <subject>Solicitação de Nova Despesa Extraordinária de Venda - {!Despesa_Extraordinaria_para_Pre_Venda__c.Name}</subject>
+    <textOnly>Prezado,
+Existe uma nova Solicitação de Despesa Extraordinária de Venda para sua Qualificação
+
+Abaixo seguem as informações:
+
+ID da solicitação de Despesa Extraordinária de venda: {!Despesa_Extraordinaria_para_Pre_Venda__c.Name}
+Proprietário: {!Despesa_Extraordinaria_para_Pre_Venda__c.OwnerFullName}
+Oportunidade: {!Despesa_Extraordinaria_para_Pre_Venda__c.Oportunidade__c}
+Justificativa do Investimento: {!Despesa_Extraordinaria_para_Pre_Venda__c.Justificativa_do_Investimento__c}
+Recuperação do Investimento: {!Despesa_Extraordinaria_para_Pre_Venda__c.Recuperacao_do_Investimento__c}
+Valor Total Nominal Terceiros: {!Despesa_Extraordinaria_para_Pre_Venda__c.Valor_Total__c}
+Valor Total Nominal Agility: {!Despesa_Extraordinaria_para_Pre_Venda__c.Valor_Efetivo_Agility__c}
+Valor Total: {!Despesa_Extraordinaria_para_Pre_Venda__c.Valor_Total_Integral__c}
+
+Para maiores informações acesse o link abaixo:
+{!Despesa_Extraordinaria_para_Pre_Venda__c.Link}
+
+Atenciosamente,
+Equipe Agility</textOnly>
+    <type>html</type>
+    <uiType>Aloha</uiType>
+</EmailTemplate>
