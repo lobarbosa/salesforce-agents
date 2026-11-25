@@ -5,6 +5,7 @@ quer travar é o nome escrito no prompt bater com um arquivo em `.claude/agents`
 """
 
 import re
+import os
 from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parents[1]
@@ -50,6 +51,7 @@ def test_orquestrador_aciona_um_subagente_por_vez_em_primeiro_plano():
     corpo_do_run = fonte.split("async def run(", 1)[1]
     assert "_desligar_background()" in corpo_do_run.split("ClaudeAgentOptions(", 1)[0]
     assert "{UM_SUBAGENTE_POR_VEZ}" in corpo_do_run
+
     assert "nunca em background" in fonte
 
 
@@ -64,3 +66,20 @@ def test_build_concluido_sem_verificacao_do_agente_nao_encerra_a_sessao():
     assert "_verificacao_faltando(etapa, pasta_da_demanda)" in fonte
     verificador = (AGENTES / "verificador.md").read_text(encoding="utf-8")
     assert "04-verificacao.md" in verificador and "**Verificação:**" in verificador
+
+
+def test_sessao_limita_a_saida_do_bash(monkeypatch):
+    # 2026-11-25: o corte da saída do `sf` só existia em wrappers que nenhum
+    # agente chamava. O teto agora é do Bash, que é por onde o `sf` roda.
+    from salesforce_agents import sessao
+
+    monkeypatch.delenv("BASH_MAX_OUTPUT_LENGTH", raising=False)
+    sessao.limitar_saida_do_bash()
+    assert os.environ["BASH_MAX_OUTPUT_LENGTH"] == "12000"
+    # valor definido no job tem prioridade, para medir outro teto sem mudar código
+    monkeypatch.setenv("BASH_MAX_OUTPUT_LENGTH", "20000")
+    sessao.limitar_saida_do_bash()
+    assert os.environ["BASH_MAX_OUTPUT_LENGTH"] == "20000"
+    for modulo in ("orchestrator.py", "assessment.py"):
+        fonte = (RAIZ / "src" / "salesforce_agents" / modulo).read_text(encoding="utf-8")
+        assert "sessao.limitar_saida_do_bash()" in fonte

@@ -378,8 +378,13 @@ anteriores. O que saiu, e a evidência:
   subagente as declarava em `tools:`, e em 66 execuções registradas no banco nenhuma foi
   chamada; os agentes usam o `sf` pelo Bash. Com elas saiu o corte de 12 mil caracteres da
   saída do `sf`, que só existia nesses wrappers e portanto nunca valeu. Se o tamanho da
-  saída do `sf` voltar a pesar no custo, o lugar de cortar é o Bash (hook), não uma
-  ferramenta paralela.
+  saída do `sf` voltar a pesar no custo, o lugar de cortar é o Bash, não uma ferramenta
+  paralela. Feito no mesmo dia: `sessao.limitar_saida_do_bash()` define
+  `BASH_MAX_OUTPUT_LENGTH=12000` para as sessões de demanda e de assessment (o padrão do
+  Claude Code é 30 mil). Vale para todo comando do Bash, não só `sf`. Não foi medido em
+  execução real: conferir o custo por etapa nas próximas rodadas, e se algum agente
+  passar a repetir comando por ter recebido a saída cortada, subir o teto pela variável
+  no job.
 - O comentário de `assessment.py` e de `run-assessment.yml` que dizia que o assessment era
   read-only "por construção" porque a lista de ferramentas não tinha `sf_deploy`: o agente
   tem Bash. A proteção mecânica real é o `guard-prod.sh` e o alias restrito às sandboxes;

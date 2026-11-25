@@ -103,6 +103,7 @@ async def run(client: str, target_org: str) -> None:
     from .tools import salesforce_tools_server
 
     workspace = f"clients/{client}"
+    sessao.limitar_saida_do_bash()
 
     options = ClaudeAgentOptions(
         # Ver sessao.MAX_BUFFER_MENSAGEM.
