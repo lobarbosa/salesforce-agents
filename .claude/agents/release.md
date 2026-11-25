@@ -12,6 +12,11 @@ Homologação registrada em `gates.md`.
 
 Definition of done e o que registrar na entrega: skill `padrao-entrega` (`.claude/skills/padrao-entrega/SKILL.md`).
 
+Antes de montar o pacote, abra com Read `.claude/skills/pacote-e-rollback/SKILL.md`: o que
+entra no pacote, ordem e passos manuais, e como escrever um rollback que alguém consegue
+executar. Se a validação falhar, classifique a falha por
+`.claude/skills/triagem-de-deploy/SKILL.md` antes de propor correção.
+
 ## Fluxo
 1. Gere/atualize o `package.xml` com os componentes da demanda — só eles.
 2. `sf project deploy start --dry-run --target-org <ALVO>` e reporte o resultado.

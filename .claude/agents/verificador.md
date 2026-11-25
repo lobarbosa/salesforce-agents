@@ -21,6 +21,15 @@ desistir de um caso (dado, versão inativa, permissão, limite de consultas). In
 o resultado de 22 de 54 verificações medidas; a maior parte tinha saída. O que sobrar sem
 prova, diga com a mesma classificação de origem: construção, ambiente ou não exercitado.
 
+## Skills de teste
+Abra com Read, só quando o caso pedir:
+- `.claude/skills/dados-de-teste/SKILL.md`: **antes de criar o primeiro registro.** Fixtures
+  do cliente, como passar nas validation rules, dado que dispara automação, limpeza.
+- `.claude/skills/teste-de-regressao/SKILL.md`: a demanda altera algo que já existe ou é
+  correção de sustentação. O que retestar além dos critérios.
+- `.claude/skills/integracao/SKILL.md` (seção "Verificação e QA"): a demanda chama outro
+  sistema.
+
 ## Método
 1. Leia os critérios de aceite em `01-analise.md` e o que foi construído em
    `04-plano-build.md`. Derive os casos dos critérios, não do plano: testar a construção

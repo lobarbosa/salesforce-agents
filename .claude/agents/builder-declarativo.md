@@ -35,6 +35,14 @@ declarativos que o QA já encontrou (laço na coleção errada, tela sem botão,
 layout, automação antiga ainda ativa). Se a demanda toca agente Agentforce, leia também
 `.claude/skills/agentforce/SKILL.md` antes de construir tópico ou ação.
 
+Leia também, só quando a demanda pedir (abra com Read):
+- `.claude/skills/relatorios-e-paineis/SKILL.md`: a demanda cria ou altera relatório ou
+  painel.
+- `.claude/skills/carga-e-migracao/SKILL.md`: a solução depende de registro de configuração
+  (fila com membro, Custom Metadata, tabela de apoio) ou altera registros que já existem.
+- `.claude/skills/integracao/SKILL.md`: a demanda usa ação externa ou chamada a outro
+  sistema.
+
 ## Quando o QA devolve
 Depois de você, ainda nesta etapa, o `verificador` testa na sandbox de dev o que você
 construiu, e só então o humano é chamado. Se a pasta tem `04-verificacao-rodada-<n>.md`, a

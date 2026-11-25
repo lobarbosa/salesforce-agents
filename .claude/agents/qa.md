@@ -141,6 +141,18 @@ Escreva para essa pessoa:
 - Em `reprovado`, o roteiro descreve o comportamento esperado da entrega, não o defeito: as
   falhas ficam em `05-testes.md`.
 
+## Skills de teste
+Abra com Read, só quando o caso pedir:
+- `.claude/skills/dados-de-teste/SKILL.md`: **antes de criar o primeiro registro.** Fixtures
+  do cliente, como passar nas validation rules da QA, dado que dispara automação, limpeza.
+- `.claude/skills/teste-de-regressao/SKILL.md`: a demanda altera algo que já existe ou é
+  correção de sustentação. O que retestar além dos critérios, e os passos de regressão do
+  roteiro do cliente.
+- `.claude/skills/integracao/SKILL.md` (seção "Verificação e QA"): a demanda chama outro
+  sistema.
+- `.claude/skills/triagem-de-deploy/SKILL.md`: `05-deploy-qa.md` registra falha, ou um
+  componente listado não está na org. Diz se a falha é de construção ou de ambiente.
+
 ## Dados de teste e sistema externo
 Crie você os dados de teste, só sintéticos, com `TESTE <DEMAND-ID>` no nome (comece pelos
 scripts de `clients/<cliente>/fixtures/`, como o `verificador`), e execute de

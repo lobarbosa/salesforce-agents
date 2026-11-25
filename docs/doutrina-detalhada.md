@@ -350,8 +350,27 @@ a mesma falha em rodadas seguidas). Daí cinco skills, uma por papel, cada uma c
 caminho no agente: `design-testavel` (arquiteto: plano de prova por critério e
 pré-requisitos de ambiente), `construir-flow` (builder declarativo), `construir-apex`
 (desenvolvedor), `agentforce` (os três, mais o QA) e `provar-criterio` (verificador e QA: o
-que tentar antes de "não executado", e a linha `**Origem:**` abaixo de cada falha). A esteira
-ainda trata toda reprovação do mesmo jeito; rotear pela origem é o passo seguinte.
+que tentar antes de "não executado", e a linha `**Origem:**` abaixo de cada falha). Desde o
+mesmo dia a esteira roteia a reprovação pela origem (ver "O QA reprovado vai para quem
+resolve").
+
+**Skills por papel, para projeto e sustentação** (2026-11-25): as cinco skills acima
+cobriam arquiteto, builders, verificador e QA; os agentes de análise, recon, release,
+documentação, planejamento, assessment e pipeline não tinham nenhuma, e nada tratava
+sustentação como diferente de projeto. Dezessete skills novas, cada uma citada com caminho
+no agente que a usa e lida só quando a demanda pede (economia de contexto):
+`criterio-testavel`, `triagem-sustentacao` e `estimar-esforco` (BA; a última também o
+arquiteto); `impacto-cruzado` (recon); `modelo-de-dados-e-acesso` (arquiteto); `integracao`
+(design, build e teste); `relatorios-e-paineis` e `carga-e-migracao` (builder declarativo);
+`construir-lwc` e `revisar-apex` (desenvolvedor); `dados-de-teste` e `teste-de-regressao`
+(verificador e QA); `pacote-e-rollback` (release); `documentar-entrega` (doc);
+`quebrar-entregavel` (planejador); `divida-tecnica` (assessment); `triagem-de-deploy`
+(devops, release e QA). Só três têm achado medido por trás: `criterio-testavel` (seis
+builds bloqueados por pergunta de negócio), `dados-de-teste` (falta de dado, a causa mais
+comum de caso não executado) e `impacto-cruzado` (diferença entre dev e QA, automação do
+objeto pai). As demais registram prática de plataforma e ainda não foram exercitadas por
+demanda real: quando uma delas contradisser o que a org mostrar, vale a org, e a skill é
+corrigida com o achado.
 
 **Contexto enxuto** (2026-11-14): o `CLAUDE.md` da raiz caiu de 30 KB para as regras; o
 prompt do orquestrador diz qual subagente roda a etapa e manda não reler artefatos; a

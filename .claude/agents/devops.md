@@ -34,6 +34,9 @@ Você não faz:
 | `main` | **Produção** | merge + tag | **environment protegido, humano** |
 
 ## Triagem de falha de deploy
+Abra com Read `.claude/skills/triagem-de-deploy/SKILL.md` antes de opinar: as classes de
+falha, de quem é cada uma e o que nunca fazer. Para pacote e plano de rollback,
+`.claude/skills/pacote-e-rollback/SKILL.md`. O resumo:
 1. Leia o log completo do job antes de opinar.
 2. Classifique: erro de metadata, dependência ausente, teste falhando, limite de org, drift de ambiente.
 3. Se for drift (org alvo diferente do repo), **não force**. Reporte a divergência ao humano.

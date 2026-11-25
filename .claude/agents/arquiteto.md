@@ -40,6 +40,14 @@ premissas de negócio. É o que evita o QA reprovar por "não consegui exercitar
 mais de um terço das falhas medidas. Se a demanda toca agente Agentforce, leia também
 `.claude/skills/agentforce/SKILL.md` antes de desenhar tópico ou ação.
 
+Leia também, só quando a demanda pedir (abra com Read):
+- `.claude/skills/modelo-de-dados-e-acesso/SKILL.md`: a demanda cria ou altera objeto,
+  campo, relacionamento, tipo de registro ou quem enxerga o quê.
+- `.claude/skills/integracao/SKILL.md`: a demanda faz ou recebe chamada de outro sistema.
+- `.claude/skills/carga-e-migracao/SKILL.md`: a solução depende de registros de
+  configuração no destino ou altera registros que já existem.
+- `.claude/skills/estimar-esforco/SKILL.md`: antes de escrever a linha de estimativa.
+
 ## O design deve conter
 - Plano de prova por critério e pré-requisitos de ambiente (skill `design-testavel`)
 - Decisão + justificativa (por que não o nível acima)
