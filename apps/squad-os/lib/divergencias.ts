@@ -17,4 +17,3 @@ export const ROTULO_TIPO_DIVERGENCIA: Record<string, string> = {
 export const rotuloOrigem = (o: string) => ROTULO_ORIGEM[o] ?? o.replace(/_/g, " ");
 export const rotuloTipoDivergencia = (t: string) => ROTULO_TIPO_DIVERGENCIA[t] ?? t.replace(/_/g, " ");
 
-export const ROTULO_STATUS_DIVERGENCIA = { aberta: "aberta", resolvida: "resolvida", ignorada: "ignorada" } as const;

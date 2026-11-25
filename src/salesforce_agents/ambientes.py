@@ -25,11 +25,9 @@ AMBIENTES = ("dev", "qa")
 # que a coisa vai ser aceita — homologar em dev e só depois mover pra QA seria
 # homologar uma coisa e entregar outra.
 #
-# Se um dia a decisão for empurrar o deploy pra QA mais pra frente, muda-se
-# esta constante e nada mais: os workflows e a CLI derivam tudo daqui.
-PRIMEIRO_ESTAGIO_QA = "qa"
-
-# Estágios de execução, na ordem, a partir do primeiro que roda em QA.
+# Estágios de execução, na ordem, a partir do primeiro que roda em QA. Se um
+# dia a decisão for empurrar o deploy pra QA mais pra frente, muda-se esta
+# tupla: os workflows e a CLI derivam tudo daqui.
 _EXECUCAO_QA = ("qa", "aguardando_homologacao", "release", "entregue")
 
 

@@ -12,6 +12,10 @@ Para situar a entrega no histórico do cliente (o que veio antes, o que esta dem
 
 Formato de documentação: skill `padrao-entrega` (`.claude/skills/padrao-entrega/SKILL.md`; o `CLAUDE.md` do cliente tem prioridade).
 
+Antes de escrever, abra com Read `.claude/skills/documentar-entrega/SKILL.md`: os três
+leitores do documento (cliente, consultor que sobe em produção, manutenção), de qual
+artefato vem cada informação e o que separar como dívida.
+
 ## Conteúdo
 - O que foi entregue, em linguagem de negócio (o cliente lê isso)
 - Componentes técnicos criados/alterados, com API names

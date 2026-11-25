@@ -42,6 +42,11 @@ quando uma delas não pôde ser medida:
 | Limites | Uso de data storage e file storage, uso de licenças | Storage acima de 75% |
 | Dívida técnica | Metadata referenciando componente inexistente, itens depreciados | Qualquer coisa que já falharia num deploy hoje |
 
+## Como julgar e recomendar
+Antes de redigir os achados, abra com Read `.claude/skills/divida-tecnica/SKILL.md`: a régua
+de severidade (pelo efeito, não pelo volume), o formato de cada achado e como escrever
+recomendação que cabe num card.
+
 ## Formato de `assessment.md`
 
 ```markdown

@@ -17,7 +17,7 @@ Percorra a lista. Só depois dela o caso é não executável.
 
 | O que impediu | O que fazer |
 |---|---|
-| Não há dado para o caso | Crie. Comece pelas fixtures de `clients/<cliente>/fixtures/`; se a validation rule recusar, leia a fórmula e preencha o que ela exige. Tentar a criação mínima e desistir não é teste. |
+| Não há dado para o caso | Crie (`.claude/skills/dados-de-teste/SKILL.md`). Comece pelas fixtures de `clients/<cliente>/fixtures/`; se a validation rule recusar, leia a fórmula e preencha o que ela exige. Tentar a criação mínima e desistir não é teste. |
 | A versão da demanda está inativa | Ative na sandbox do teste (Flow, agente, modelo de prompt), confira na org e registre a versão de antes e a de depois. É parte do teste, não precisa de autorização no card. |
 | O componente não está na org | Confira `05-deploy-qa.md`. Componente listado e ausente é falha crítica de deploy, não "não executado". |
 | A tela não abre ou a ferramenta de navegador recusa | Prove pela chamada direta (Flow, classe, consulta) e deixe a parte de tela no roteiro do cliente, dizendo o que ficou para ele. |

@@ -224,7 +224,7 @@ def conectar_preparar(client: str, ambiente: str, forcar: bool) -> None:
     click.echo(f"  1. Suba {cred.cert_path.name} na Connected App da sandbox {cred.alias}.")
     click.echo("     Permitted Users: Admin approved users are pre-authorized + Permission Set.")
     click.echo(f"  2. Crie/confirme o GitHub Environment '{cred.github_environment}'.")
-    click.echo(f"  3. Cadastre nele os 3 secrets (abrindo o arquivo, nunca colando em chat):")
+    click.echo("  3. Cadastre nele os 3 secrets (abrindo o arquivo, nunca colando em chat):")
     click.echo("     SF_CLIENT_ID    = Consumer Key da Connected App")
     click.echo("     SF_USERNAME     = usuário de integração da sandbox")
     click.echo(f"     SF_JWT_KEY      = conteúdo de {cred.key_path}")

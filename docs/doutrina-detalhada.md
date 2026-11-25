@@ -20,11 +20,11 @@ explícita. Não existe "vou seguindo e depois você revisa".
 | # | Etapa | Agente | Gate |
 |---|-------|--------|------|
 | 1 | Ler a demanda, refinar critérios de aceite | `ba-discovery` | Humano aprova o refinamento |
-| 2 | Recon da org (o que já existe) | `org-recon` (skill) | — |
+| 2 | Recon da org (o que já existe) | `recon` (skill `org-recon`) | — |
 | 3 | Desenho da solução (declarativo vs código) | `arquiteto` | **BLOQUEANTE** — arquiteto humano aprova |
-| 4 | Build em branch + sandbox | `builder-declarativo` / `dev-apex` | PR obrigatório |
-| 5 | Testes em sandbox | `qa` | Humano homologa |
-| 6 | Empacotamento e deploy sandbox/UAT | `release` | **Prod: proibido ao agente** |
+| 4 | Build em branch + sandbox de dev, e verificação | `builder-declarativo` / `dev-apex`, depois `verificador` | PR obrigatório |
+| 5 | Testes na sandbox de QA | `qa` | Cliente homologa |
+| 6 | Empacotamento e registro da entrega na sandbox de QA | `release` | **Prod: proibido ao agente** |
 | 7 | Documentação de entrega | `doc` | Spot check |
 
 Antes da etapa 1 de todo cliente novo vem o **assessment da org** (`org-assessment`,
@@ -350,13 +350,60 @@ a mesma falha em rodadas seguidas). Daí cinco skills, uma por papel, cada uma c
 caminho no agente: `design-testavel` (arquiteto: plano de prova por critério e
 pré-requisitos de ambiente), `construir-flow` (builder declarativo), `construir-apex`
 (desenvolvedor), `agentforce` (os três, mais o QA) e `provar-criterio` (verificador e QA: o
-que tentar antes de "não executado", e a linha `**Origem:**` abaixo de cada falha). A esteira
-ainda trata toda reprovação do mesmo jeito; rotear pela origem é o passo seguinte.
+que tentar antes de "não executado", e a linha `**Origem:**` abaixo de cada falha). Desde o
+mesmo dia a esteira roteia a reprovação pela origem (ver "O QA reprovado vai para quem
+resolve").
+
+**Skills por papel, para projeto e sustentação** (2026-11-25): as cinco skills acima
+cobriam arquiteto, builders, verificador e QA; os agentes de análise, recon, release,
+documentação, planejamento, assessment e pipeline não tinham nenhuma, e nada tratava
+sustentação como diferente de projeto. Dezessete skills novas, cada uma citada com caminho
+no agente que a usa e lida só quando a demanda pede (economia de contexto):
+`criterio-testavel`, `triagem-sustentacao` e `estimar-esforco` (BA; a última também o
+arquiteto); `impacto-cruzado` (recon); `modelo-de-dados-e-acesso` (arquiteto); `integracao`
+(design, build e teste); `relatorios-e-paineis` e `carga-e-migracao` (builder declarativo);
+`construir-lwc` e `revisar-apex` (desenvolvedor); `dados-de-teste` e `teste-de-regressao`
+(verificador e QA); `pacote-e-rollback` (release); `documentar-entrega` (doc);
+`quebrar-entregavel` (planejador); `divida-tecnica` (assessment); `triagem-de-deploy`
+(devops, release e QA). Só três têm achado medido por trás: `criterio-testavel` (seis
+builds bloqueados por pergunta de negócio), `dados-de-teste` (falta de dado, a causa mais
+comum de caso não executado) e `impacto-cruzado` (diferença entre dev e QA, automação do
+objeto pai). As demais registram prática de plataforma e ainda não foram exercitadas por
+demanda real: quando uma delas contradisser o que a org mostrar, vale a org, e a skill é
+corrigida com o achado.
+
+**Limpeza de 2026-11-25**: revisão do repositório atrás do que sobrou de arquiteturas
+anteriores. O que saiu, e a evidência:
+- Ferramentas `sf_deploy`, `sf_retrieve`, `sf_query` e `sf_org_list` (`tools.py`): nenhum
+  subagente as declarava em `tools:`, e em 66 execuções registradas no banco nenhuma foi
+  chamada; os agentes usam o `sf` pelo Bash. Com elas saiu o corte de 12 mil caracteres da
+  saída do `sf`, que só existia nesses wrappers e portanto nunca valeu. Se o tamanho da
+  saída do `sf` voltar a pesar no custo, o lugar de cortar é o Bash (hook), não uma
+  ferramenta paralela.
+- O comentário de `assessment.py` e de `run-assessment.yml` que dizia que o assessment era
+  read-only "por construção" porque a lista de ferramentas não tinha `sf_deploy`: o agente
+  tem Bash. A proteção mecânica real é o `guard-prod.sh` e o alias restrito às sandboxes;
+  o texto agora diz isso.
+- `spec_read` continua, e passou a constar em `tools:` de `ba-discovery` e `arquiteto`: a
+  nota de anexos mandava ler documento com ela, mas nenhum subagente podia chamá-la.
+- No portal: o script `migrate-from-artifact.ts` (migração única do Artifact antigo) e três
+  exportações sem uso.
+- Texto que descrevia arquitetura que não existe mais: os dois READMEs (Artifact como fonte
+  de verdade, ponte manual, "ainda sem deploy"), `conexoes-e-setup.md` (Squad OS como
+  artifact, branch `develop`), a tabela do fluxo desta doutrina, e o agente `devops`, cujo
+  modelo de branches (`develop`, `release/*`, INT, UAT, `main` = produção) contradizia o
+  guardrail de produção.
+O que foi olhado e ficou: a duplicação de regra entre Python e TypeScript (`veredito.py` e
+`qa-veredito.ts`, `bloqueio.py` e `build-bloqueado.ts`), que é o preço de ter dois
+runtimes e está marcada nos dois lados; os padrões "legados" de build bloqueado, que ainda
+leem planos antigos nas branches de demanda; e o leitor do CSV de custo antigo, que a skill
+`revisar-custos` usa.
 
 **Contexto enxuto** (2026-11-14): o `CLAUDE.md` da raiz caiu de 30 KB para as regras; o
-prompt do orquestrador diz qual subagente roda a etapa e manda não reler artefatos; a
-saída do `sf` nas ferramentas é cortada em 12 mil caracteres; os agentes consultam o
-assessment por trecho. Medir de novo o custo por etapa depois de duas semanas de uso.
+prompt do orquestrador diz qual subagente roda a etapa e manda não reler artefatos; os
+agentes consultam o assessment por trecho. (O corte de 12 mil caracteres na saída do `sf`
+nunca valeu na prática: estava nos wrappers `sf_*`, que nenhum agente chamava; os agentes
+usam o `sf` pelo Bash, sem corte. Ver "Limpeza de 2026-11-25".) Medir de novo o custo por etapa depois de duas semanas de uso.
 
 O fluxo falha alto em vez de contornar quando o agente não produz o artefato da etapa
 (`ArtifactAusenteError`) e quando a etapa cai em org diferente da que o job autenticou.

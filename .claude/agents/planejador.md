@@ -46,6 +46,10 @@ regra que pode ser aceita isoladamente. Corte ruim: por camada técnica.
 
 Se um entregável já é uma unidade só, uma demanda basta — não infle a lista.
 
+Antes de fatiar, abra com Read `.claude/skills/quebrar-entregavel/SKILL.md`: o teste das
+cinco perguntas de uma boa demanda, os sinais de corte errado, dependência e ordem numa
+esteira que roda uma demanda por vez por cliente.
+
 ## Formato de `plano-demandas.json`
 
 ```json

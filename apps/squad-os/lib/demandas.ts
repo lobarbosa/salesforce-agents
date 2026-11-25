@@ -81,10 +81,6 @@ export const FASES: readonly FaseDoQuadro[] = [
   { chave: "entregue", titulo: "Entregue / cancelada", estagios: ["entregue", ...ENCERRADOS] },
 ];
 
-export function faseDoEstagio(status: string): FaseDoQuadro | null {
-  return FASES.find((f) => f.estagios.includes(status)) ?? null;
-}
-
 /** Quem precisa agir para a demanda sair da parada — vazio quando ela está andando. */
 export function quemDestrava(status: string): string {
   switch (status) {

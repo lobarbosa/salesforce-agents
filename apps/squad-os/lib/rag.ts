@@ -10,12 +10,12 @@ import { prisma } from "@/lib/prisma";
 //
 // Embeddings via AI Gateway (mesma infra do copiloto, ver
 // app/api/copilot/chat/route.ts — sem provider novo, sem secret novo).
-// Dimensão 1536 é a do text-embedding-3-small da OpenAI; confirme o id do
+// Dimensão 1536 (fixa na coluna `vector(1536)` do schema) é a do
+// text-embedding-3-small da OpenAI; confirme o id do
 // modelo contra `curl https://ai-gateway.vercel.sh/v1/models` no primeiro
 // deploy — este sandbox não alcança o Gateway pra verificar ao vivo (mesma
 // ressalva já feita pro modelo de chat do copiloto).
 const MODELO_EMBEDDING = "openai/text-embedding-3-small";
-const DIMENSAO = 1536;
 
 const TAMANHO_CHUNK = 1200;
 const SOBREPOSICAO = 150;
@@ -106,7 +106,3 @@ export async function consultarRag(
   `;
 }
 
-// Dimensão exportada só pra quem quiser validar embeddings.length antes de
-// gravar — hoje ninguém chama isso fora deste módulo, mas é mais barato
-// exportar a constante do que redeclarar "1536" em outro arquivo depois.
-export const DIMENSAO_EMBEDDING = DIMENSAO;

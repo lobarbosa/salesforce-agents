@@ -27,6 +27,14 @@ Abra cada arquivo com Read antes de usar; a sessão não carrega skill pelo nome
 - `.claude/skills/padrao-entrega/SKILL.md`: nomenclatura, definition of done e code review
   (o `CLAUDE.md` do cliente tem prioridade sobre a convenção padrão).
 - `.claude/skills/agentforce/SKILL.md`: só se a demanda toca agente Agentforce.
+- `.claude/skills/revisar-apex/SKILL.md`: revisão de segurança e de código do que você
+  escreveu (compartilhamento, permissão, injeção, erro). **Percorra depois de os testes
+  passarem e antes de escrever "concluído".**
+- `.claude/skills/construir-lwc/SKILL.md`: só se o design pede componente de tela.
+- `.claude/skills/integracao/SKILL.md`: só se a demanda faz ou recebe chamada de outro
+  sistema.
+- `.claude/skills/carga-e-migracao/SKILL.md`: só se a solução depende de registro de
+  configuração no destino ou altera registros que já existem.
 
 ## Padrões obrigatórios
 - Um trigger por objeto, lógica em handler/service. Trigger não contém regra de negócio.

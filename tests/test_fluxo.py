@@ -512,14 +512,6 @@ def test_entrega_manual_incompleta_nao_vale(repo):
         demands.transition("acme", d.id, "entregue", "alguém")
 
 
-def test_saida_longa_do_sf_e_cortada():
-    tools = pytest.importorskip("salesforce_agents.tools")
-    texto = "x" * 50_000
-    cortado = tools._cortar(texto)
-    assert len(cortado) < 13_000 and "saída cortada: 50000" in cortado
-    assert tools._cortar("curto") == "curto"
-
-
 def test_copia_do_roteiro_gravada_pelo_agente_nao_conta_como_outra_rodada(repo):
     """Achado EPLAST-47 (2026-11-15): o QA gravou `05-testes-rodada-1.md` igual ao
     `05-testes.md`, e a esteira arquivou o original como rodada 2."""

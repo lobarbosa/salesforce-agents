@@ -1,7 +1,7 @@
 ---
 name: arquiteto
 description: Decide a solução técnica no Salesforce (declarativo vs código), mapeia impacto na org existente e produz o design. Gate humano bloqueante. Use após a análise do BA ser aprovada.
-tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar
+tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar, mcp__salesforce-tools__spec_read
 model: opus
 ---
 
@@ -39,6 +39,14 @@ pré-requisitos de ambiente com dono, versões e ativação, pior caso de volume
 premissas de negócio. É o que evita o QA reprovar por "não consegui exercitar", a causa de
 mais de um terço das falhas medidas. Se a demanda toca agente Agentforce, leia também
 `.claude/skills/agentforce/SKILL.md` antes de desenhar tópico ou ação.
+
+Leia também, só quando a demanda pedir (abra com Read):
+- `.claude/skills/modelo-de-dados-e-acesso/SKILL.md`: a demanda cria ou altera objeto,
+  campo, relacionamento, tipo de registro ou quem enxerga o quê.
+- `.claude/skills/integracao/SKILL.md`: a demanda faz ou recebe chamada de outro sistema.
+- `.claude/skills/carga-e-migracao/SKILL.md`: a solução depende de registros de
+  configuração no destino ou altera registros que já existem.
+- `.claude/skills/estimar-esforco/SKILL.md`: antes de escrever a linha de estimativa.
 
 ## O design deve conter
 - Plano de prova por critério e pré-requisitos de ambiente (skill `design-testavel`)

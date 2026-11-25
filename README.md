@@ -1,103 +1,83 @@
 # Salesforce Agents
 
-Squad de agentes que constrói soluções Salesforce a partir de **demandas** registradas
-por consultores — de forma declarativa (Flow, Validation Rules, Permission Sets) ou em
-código (Apex, Lightning Web Components) — com um espaço isolado por cliente e gates
-humanos bloqueantes em cada etapa.
+Squad de agentes que constrói soluções Salesforce a partir de **demandas** registradas por
+consultores no Squad OS, de forma declarativa (Flow, validation rule, permission set) ou em
+código (Apex, Lightning Web Component), com um espaço isolado por cliente e gates humanos
+bloqueantes em cada etapa. O agente nunca entrega sozinho e nunca toca produção.
 
-## Arquitetura
+As regras estão em `CLAUDE.md`. O porquê de cada uma e os achados que as motivaram estão em
+`docs/doutrina-detalhada.md`.
 
-Dois pedaços que se somam:
+## Como as peças se encaixam
 
-1. **Doutrina de delivery** (`CLAUDE.md` + `.claude/`) — subagentes especialistas,
-   skills e guardrails, no formato nativo do Claude Code: `ba-discovery`, `arquiteto`
-   (gate bloqueante), `builder-declarativo`, `dev-apex`, `qa`, `release` (nunca toca
-   produção) e `doc`. É a mesma doutrina que funcionaria com `claude` interativo dentro
-   de um repo de cliente — aqui ela é compartilhada por todos os clientes deste
-   monorepo e carregada automaticamente pelo Claude Agent SDK a partir do workspace do
-   cliente (`setting_sources=["project"]` resolve `CLAUDE.md`/`.claude/` subindo os
-   diretórios até a raiz do repo).
-2. **Orquestração programática** (`src/salesforce_agents/`) — dispara sessões do
-   Claude Agent SDK por demanda, e um modelo de dados de **demanda** que substitui o
-   Jira como fonte de "história": cada demanda é um registro em
-   `clients/<cliente>/demandas/<DEMAND-ID>/`, com estágio rastreado em `status.yaml`.
-
-Ferramentas custom (`src/salesforce_agents/tools.py`) dão aos agentes acesso a:
-- `spec_read` — extrai texto de anexos de uma demanda em `.md`, `.pdf` ou `.docx`.
-- `sf_deploy` / `sf_retrieve` / `sf_query` / `sf_org_list` — wrapper sobre a
-  Salesforce CLI (`sf`) para deploy, retrieve e SOQL no org do cliente.
-
-Cada cliente tem seu próprio projeto Salesforce DX isolado em
-`clients/<nome-do-cliente>/`, com seu próprio `CLAUDE.md` de briefing de conta ("Conhecimento
-do Cliente" — veja `clients/README.md` e o template em `clients/_template/CLAUDE.md`).
-
-**Squad OS** — onde a demanda nasce e o briefing de cada cliente é editado por quem não
-mexe em terminal. Cada card de demanda também é onde o consultor responde as perguntas em
-aberto que um agente levantou (ex.: prefixo de campo, tipo de dado, regra de validação) e
-aprova o gate — sem precisar de ninguém no meio. Uma aba "Conexão Salesforce" por cliente
-guarda os identificadores não-sensíveis da conexão (alias, login URL, username, Consumer
-Key) e um status de teste — **nunca** a chave privada nem qualquer secret real, que ficam
-só no GitHub Environment do cliente. Existem duas versões em paralelo neste momento:
-
-- **`apps/squad-os/`** — a versão em migração: Next.js + Postgres (Supabase) + auth real,
-  destinada a rodar num domínio nosso. Materializa demanda (`demanda.md` + `status.yaml`)
-  e dispara `run-demand.yml` automaticamente — a ponte deixa de ser manual. Ver
-  `apps/squad-os/README.md` para arquitetura e setup; ainda não tem deploy nem projeto
-  Supabase criado.
-- **[O Artifact publicado](https://claude.ai/code/artifact/d17fac68-5684-42da-9817-77757600e828)**
-  — a versão em uso hoje, ainda a fonte de verdade até o piloto do Next.js validar. Aqui a
-  ponte para este repositório é manual (leio a demanda, as respostas e os pedidos de teste
-  de conexão no OS e materializo/executo aqui).
-
-Ver `docs/conexoes-e-setup.md` para o runbook completo de conexões e credenciais.
-
-## Setup
-
-```bash
-pip install -e .
-npm install -g @salesforce/cli   # necessário para sf_deploy/sf_retrieve/sf_query
-export ANTHROPIC_API_KEY=...
+```
+Squad OS (apps/squad-os)  ──materializa e dispara──▶  GitHub Actions (.github/workflows)
+        ▲                                                      │
+        │                                                      ▼
+        └──────────── estado, artefatos, custo ◀──── esteira (src/salesforce_agents)
+                                                               │
+                                                               ▼
+                                              agentes e skills (.claude/) + sf CLI
+                                                               │
+                                                               ▼
+                                         sandboxes do cliente: sbx-<cliente>-dev e -qa
 ```
 
-## Uso
+| Peça | Onde | O que faz |
+|---|---|---|
+| **Squad OS** | `apps/squad-os/` | Portal (Next.js na Vercel, Postgres no Supabase). Demanda, briefing, gates, homologação, contrato, horas, financeiro. Materializa a demanda no repositório e dispara a esteira; recebe o estado de volta pelas rotas `/api/sync/*`. |
+| **Workflows** | `.github/workflows/` | `run-demand.yml` roda uma etapa por execução, no GitHub Environment do cliente e do ambiente (`<cliente>-dev` ou `<cliente>-qa`). Os demais: assessment, planejamento, teste de conexão, validação de PR, varredura de demandas paradas, promoção de QA para dev. |
+| **Esteira** | `src/salesforce_agents/` | CLI `sfagents`. Decide a etapa, abre a sessão do Claude Agent SDK, confere o artefato, lê o veredito e avança até o próximo gate (`fluxo.py`). Estado da demanda em disco (`demands.py`), ambiente por etapa (`ambientes.py`), guarda de produção (`guarda.py`). |
+| **Agentes e skills** | `.claude/agents/`, `.claude/skills/` | Um agente por papel (`ba-discovery`, `recon`, `arquiteto`, `builder-declarativo`, `dev-apex`, `verificador`, `qa`, `release`, `doc`, mais `org-assessment`, `planejador` e `devops`). As skills são arquivos que o agente abre com Read. |
+| **Scripts** | `scripts/` | Passos determinísticos dos workflows: pacote da demanda, deploy em QA, varredura de dado pessoal, comparação de orgs. |
+| **Clientes** | `clients/<cliente>/` | Projeto Salesforce DX do cliente, `CLAUDE.md` de briefing, `assessment.md`, fixtures de teste e `demandas/<DEMAND-ID>/` com os artefatos de cada demanda. |
 
-1. Crie o workspace do cliente (uma vez por cliente):
+Os agentes chamam o `sf` pelo Bash; o hook `.claude/hooks/guard-prod.sh` e a conferência de
+sandbox em `guarda.py` recusam qualquer org fora das duas sandboxes do cliente. As
+ferramentas próprias (`src/salesforce_agents/tools.py`) são só duas famílias: `spec_read`
+(anexo em PDF ou DOCX) e `qa_browser_*` (navegador para o teste de tela do QA).
 
-   ```bash
-   sf project generate --name clients/acme
-   cp clients/_template/CLAUDE.md clients/acme/CLAUDE.md   # preencha o briefing da conta
-   sf org login web --alias acme
-   ```
+## O fluxo de uma demanda
 
-2. Registre a demanda (o que viria de uma estória de Jira em outros contextos):
+Análise → gate → recon e design → **gate do arquiteto** → build e verificação na sandbox de
+dev → gate de PR → deploy e testes na sandbox de QA → homologação do cliente → release e
+documentação. Uma etapa por execução; a esteira para em cada gate e só segue quando uma
+pessoa aprova no card. A tabela completa, com agente, artefato e gate de cada etapa, está
+no `CLAUDE.md`.
 
-   ```bash
-   sfagents demanda nova --client acme --titulo "Qualificação de Leads" \
-     --texto examples/exemplo_demanda.md
-   # -> Demanda criada: ACME-1 (status: backlog)
-   ```
+Subir em produção é trabalho do consultor, fora da esteira (skill `subir-producao`).
 
-3. Acompanhe e avance pelos gates:
+## Rodar localmente
 
-   ```bash
-   sfagents demanda listar --client acme
-   sfagents demanda avancar --client acme ACME-1 analise   # aciona o BA
-   # ... aprovação humana ...
-   sfagents demanda avancar --client acme ACME-1 design    # aciona o arquiteto (gate bloqueante)
-   # ... aprovação humana ...
-   sfagents demanda avancar --client acme ACME-1 build     # aciona builder-declarativo / dev-apex
-   sfagents demanda avancar --client acme ACME-1 qa
-   sfagents demanda avancar --client acme ACME-1 release   # nunca em produção
-   ```
+```bash
+pip install -e . pytest
+PYTHONPATH=src python3 -m pytest          # testes da esteira
 
-O fluxo completo de estágios, guardrails e a estrutura de artefatos por demanda estão
-documentados no `CLAUDE.md` da raiz deste repositório.
+cd apps/squad-os
+npm install
+npm test && npx tsc --noEmit && npx eslint .   # testes do portal
+```
 
-## Status
+Para ver o portal com banco descartável e login simulado, use a skill `portal-local`.
 
-Projeto em estágio inicial. Próximos passos sugeridos:
-- Validar o fluxo ponta a ponta com um org scratch real, do intake até o deploy em sandbox.
-- Construir a camada visual de acompanhamento (board por cliente) sobre o mesmo modelo de
-  demanda — hoje é só CLI/arquivo, o board é um produto separado a decidir depois.
-- Adicionar um agente de QA/revisão que rode testes Apex e valide o deploy em modo
-  `--check-only` antes do deploy real.
+A esteira em si roda no GitHub Actions, disparada pelo Squad OS; não é para ser rodada da
+máquina de alguém contra a org de um cliente. A CLI existe para os workflows e para
+inspeção:
+
+```bash
+sfagents demanda listar --client <cliente>
+sfagents demanda status-json --client <cliente> <DEMAND-ID>
+sfagents demanda conferir-gates --client <cliente> <DEMAND-ID>
+```
+
+## Onde ler mais
+
+| Assunto | Documento |
+|---|---|
+| Regras da esteira | `CLAUDE.md` |
+| Motivo de cada regra, achados e funcionamento do Squad OS | `docs/doutrina-detalhada.md` |
+| Conexões, credenciais e ordem de montagem de um cliente | `docs/conexoes-e-setup.md`, `docs/credenciais.md` |
+| O que só uma pessoa pode configurar (Supabase, Vercel, GitHub) | `docs/ativacao.md` |
+| Portal: arquitetura, banco, deploy | `apps/squad-os/README.md` |
+| Workspace de cliente | `clients/README.md` |
+| Operar a esteira, conferir gate, homologar, subir em produção | skills em `.claude/skills/` |
