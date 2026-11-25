@@ -1,7 +1,7 @@
 ---
 name: arquiteto
 description: Decide a solução técnica no Salesforce (declarativo vs código), mapeia impacto na org existente e produz o design. Gate humano bloqueante. Use após a análise do BA ser aprovada.
-tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar
+tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar, mcp__salesforce-tools__spec_read
 model: opus
 ---
 

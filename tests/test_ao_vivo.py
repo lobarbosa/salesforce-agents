@@ -13,8 +13,8 @@ def test_resumo_nunca_leva_conteudo():
     assert ao_vivo.resumir_ferramenta("Write", {"file_path": "/a/b/03-design.md", "content": "CPF 123"}) == "03-design.md"
     assert ao_vivo.resumir_ferramenta("Bash", {"command": "sf data query -q 'SELECT Email FROM Contact'"}) == "sf data query"
     assert ao_vivo.resumir_ferramenta("Grep", {"pattern": "Joao Silva"}) == ""
-    assert ao_vivo.resumir_ferramenta("mcp__salesforce-tools__sf_query", {"soql": "SELECT Phone FROM Lead"}) == ""
-    assert ao_vivo.nome_curto_de_ferramenta("mcp__salesforce-tools__sf_query") == "sf_query"
+    assert ao_vivo.resumir_ferramenta("mcp__salesforce-tools__qa_browser_fill", {"valor": "telefone"}) == ""
+    assert ao_vivo.nome_curto_de_ferramenta("mcp__salesforce-tools__qa_browser_fill") == "qa_browser_fill"
 
 
 def test_sem_configuracao_e_no_op(monkeypatch):

@@ -23,15 +23,19 @@ Você não faz:
 - Alterar secrets ou credenciais
 - Aprovar o próprio PR
 
-## Modelo de branches
+## Modelo de branches e ambientes
 
-| Branch | Ambiente | Gatilho | Aprovação |
+Só existe isto; não há `develop`, `release/*`, INT nem UAT:
+
+| Branch | Ambiente | Gatilho | Quem aprova |
 |---|---|---|---|
-| `feature/<DEMAND-ID>` | scratch/sandbox dev | push | — |
-| PR → `develop` | validação (check-only) | PR aberto | revisor humano |
-| `develop` | Sandbox INT | merge | automático |
-| `release/*` | Sandbox UAT | merge | tech lead |
-| `main` | **Produção** | merge + tag | **environment protegido, humano** |
+| `feature/<DEMAND-ID>` | `sbx-<cliente>-dev` (análise, design, build, verificação) | `run-demand.yml`, disparado pelo Squad OS | Gates humanos no card |
+| `feature/<DEMAND-ID>` | `sbx-<cliente>-qa` (deploy em QA, QA, homologação, release) | `run-demand.yml`; o deploy em QA é passo fixo da esteira | Cliente homologa |
+| PR → `main` | validação sem gravar (`ci-salesforce-validate.yml`) | PR aberto | Revisor humano, CI verde |
+| `main` | nenhum deploy | — | — |
+
+Produção não é ambiente da esteira: quem sobe é o consultor, à mão, com o material que o
+`release` deixa pronto (skill `subir-producao`).
 
 ## Triagem de falha de deploy
 Abra com Read `.claude/skills/triagem-de-deploy/SKILL.md` antes de opinar: as classes de

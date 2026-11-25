@@ -1,21 +1,24 @@
 """Ferramentas custom (MCP in-process) usadas pelos agentes especialistas Salesforce.
 
-Três famílias de ferramentas:
+Duas famílias de ferramentas:
   - spec_read: leitura de anexos de uma demanda (md, pdf, docx) em texto plano. A
     própria demanda (demandas/<ID>/demanda.md) é lida com a ferramenta Read padrão;
     isso serve para documentos complementares referenciados na demanda.
-  - sf_*: wrapper fino sobre a Salesforce CLI (`sf`) para orgs autenticados por alias
-    (um alias por cliente, ver clients/<nome>/README.md).
   - qa_browser_*: navegador (Playwright) pra testar a UI Lightning de verdade, usado
     pelo agente `qa`. Só `qa_browser_open` decide pra onde o navegador vai, e só
-    depois de passar por `guarda.url_de_login` — as mesmas perguntas 1 e 2 de
-    `sf_deploy` (alias tem a forma da esteira? a org confirma ser sandbox?). As
+    depois de passar por `guarda.url_de_login` (alias tem a forma da esteira? a org
+    confirma ser sandbox?). As
     ferramentas seguintes (click/fill/screenshot/close) operam só dentro da sessão já
     aberta: nenhuma delas aceita URL. Isso importa porque `--allowed-origins` do
     Playwright MCP oficial é documentado como "não é um limite de segurança e não
     afeta redirect" — não dava pra confiar nisso sozinho pra manter o guardrail #1,
     por isso este pacote não usa o servidor externo e embrulha o Playwright do
-    mesmo jeito que embrulha o `sf`.
+    mesmo jeito.
+
+O `sf` não tem ferramenta própria: os agentes o chamam pelo Bash, onde o hook
+`guard-prod.sh` confere a org. Os wrappers `sf_deploy`, `sf_retrieve`, `sf_query` e
+`sf_org_list` saíram em 2026-11-25: nenhum subagente os declarava em `tools:` e, em
+66 execuções registradas, nenhum foi chamado.
 """
 
 from __future__ import annotations
@@ -29,7 +32,7 @@ from urllib.parse import quote
 from claude_agent_sdk import create_sdk_mcp_server, tool
 
 from . import evidencias
-from .guarda import CliAusenteError, recusa_de_alias, recusa_de_escrita, sf, url_de_login
+from .guarda import url_de_login
 
 
 def _text_result(text: str) -> dict:
@@ -65,107 +68,6 @@ async def spec_read(args: dict) -> dict:
         return _text_result(text)
 
     return _text_result(f"Formato não suportado: {suffix}")
-
-
-# Tudo o que uma ferramenta devolve é relido pelo modelo a cada turno até o fim
-# da sessão: 93% dos tokens da esteira são releitura (medido em 2026-11-14).
-# Uma saída de 200 KB de `sf` custa 200 KB vezes o número de turnos seguintes.
-# O corte guarda o começo e o fim e diz ao agente para refinar o comando.
-LIMITE_SAIDA_SF = 12_000
-
-
-def _cortar(texto: str, limite: int = LIMITE_SAIDA_SF) -> str:
-    if len(texto) <= limite:
-        return texto
-    cabeca, cauda = texto[: limite * 3 // 4], texto[-(limite // 4):]
-    return (
-        f"{cabeca}\n\n... [saída cortada: {len(texto)} caracteres no total, mostrando o começo e o fim. "
-        "Refine o comando — campos específicos na query, --metadata mais estreito, LIMIT — em vez de "
-        "pedir tudo de novo.] ...\n\n"
-        f"{cauda}"
-    )
-
-
-def _run_sf(args: list[str]) -> dict:
-    try:
-        proc = sf(args)
-    except CliAusenteError:
-        return _text_result(
-            "Salesforce CLI ('sf') não encontrada no PATH. Instale com "
-            "'npm install -g @salesforce/cli' e autentique o org do cliente."
-        )
-    output = _cortar(proc.stdout.strip() or proc.stderr.strip())
-    status = "OK" if proc.returncode == 0 else f"ERRO (exit {proc.returncode})"
-    return _text_result(f"[{status}] sf {' '.join(args)}\n\n{output}")
-
-
-@tool(
-    "sf_deploy",
-    "Faz deploy de metadata de um diretório do projeto (force-app) para o org do cliente via Salesforce CLI.",
-    {"source_dir": str, "target_org": str, "check_only": bool},
-)
-async def sf_deploy(args: dict) -> dict:
-    recusa = recusa_de_escrita(args.get("target_org", ""))
-    if recusa:
-        return _text_result(recusa)
-    cli_args = [
-        "project", "deploy", "start",
-        "--source-dir", args["source_dir"],
-        "--target-org", args["target_org"],
-        "--json",
-    ]
-    if args.get("check_only"):
-        cli_args.append("--dry-run")
-    return _run_sf(cli_args)
-
-
-@tool(
-    "sf_retrieve",
-    "Recupera metadata existente do org do cliente para o diretório local do projeto.",
-    {"metadata": str, "target_org": str, "output_dir": str},
-)
-async def sf_retrieve(args: dict) -> dict:
-    # Só a forma do alias: retrieve não escreve na org. Mas puxar metadata de
-    # produção pro workspace de um cliente é o caminho mais curto pra alguém
-    # fazer deploy disso de volta sem perceber de onde veio.
-    recusa = recusa_de_alias(args.get("target_org", ""))
-    if recusa:
-        return _text_result(recusa)
-    return _run_sf([
-        "project", "retrieve", "start",
-        "--metadata", args["metadata"],
-        "--target-org", args["target_org"],
-        "--output-dir", args["output_dir"],
-        "--json",
-    ])
-
-
-@tool(
-    "sf_query",
-    "Executa uma consulta SOQL no org do cliente (útil para checar dados/config existentes antes de implementar).",
-    {"soql": str, "target_org": str},
-)
-async def sf_query(args: dict) -> dict:
-    # SOQL contra produção é o cenário do guardrail #2: a org de produção é a
-    # que tem CPF, e-mail e telefone de verdade pra vazar pro contexto.
-    recusa = recusa_de_alias(args.get("target_org", ""))
-    if recusa:
-        return _text_result(recusa)
-    return _run_sf([
-        "data", "query",
-        "--query", args["soql"],
-        "--target-org", args["target_org"],
-        "--json",
-    ])
-
-
-@tool(
-    "sf_org_list",
-    "Lista os orgs Salesforce autenticados (aliases) disponíveis nesta máquina.",
-    {},
-)
-async def sf_org_list(_args: dict) -> dict:
-    return _run_sf(["org", "list", "--json"])
 
 
 # Sessões de navegador abertas por qa_browser_open, vivas pelo tempo do processo do
@@ -471,10 +373,6 @@ salesforce_tools_server = create_sdk_mcp_server(
     version="0.1.0",
     tools=[
         spec_read,
-        sf_deploy,
-        sf_retrieve,
-        sf_query,
-        sf_org_list,
         qa_browser_open,
         qa_browser_click,
         qa_browser_fill,

@@ -1,10 +1,11 @@
 # Squad OS
 
-Segunda geração do Squad OS — antes um [Artifact publicado](https://claude.ai/code/artifact/d17fac68-5684-42da-9817-77757600e828)
-(claude.ai, banco `db` próprio), agora um app Next.js real com Postgres e
-auth de verdade, pra ficar num domínio nosso em vez de depender do runtime de
-Artifacts. Mesma função: onde a demanda nasce, o briefing do cliente vive, e
-o consultor responde perguntas/aprova gates sem precisar de ninguém no meio.
+O portal da esteira: onde a demanda nasce, o briefing do cliente vive, o consultor responde
+perguntas e aprova gates, o cliente homologa, e o time acompanha contrato, horas e
+financeiro. App Next.js com Postgres e login de verdade, publicado na Vercel.
+
+A primeira versão foi um Artifact do claude.ai com banco próprio; ela não é mais usada nem
+é fonte de nada. Algumas decisões abaixo ainda se explicam pela comparação com ela.
 
 ## Arquitetura
 
@@ -40,15 +41,6 @@ Aqui, `Client.slug` é gerado do nome na criação e É o nome do diretório
 
 ### O que ainda não existe (de propósito, não é esquecimento)
 
-- **Sync de volta**: depois que uma demanda é materializada, os agentes
-  avançam `status.yaml` via git — o `status` desta demanda no Postgres fica
-  parado no que foi na hora da materialização. Igual ao Artifact antigo
-  ("estágios de execução aparecem como leitura, não são movidos por aqui"),
-  só que agora dá pra fechar o ciclo: um passo a mais em `run-demand.yml`
-  que faz `POST` do novo `status.yaml` pra uma rota de sync (autenticada por
-  token, não por sessão de usuário) é o próximo passo natural — não entrou
-  nesta primeira versão pra não misturar "trocar a plataforma" com "mudar o
-  modelo de sincronização" no mesmo lote de mudança.
 - **Reordenar subtarefa/checklist por arrastar**: a coluna `ordem` existe e a
   API respeita, mas a UI ainda só adiciona no fim. Reordenar é conveniência;
   o que faltava de verdade era ter a lista.
@@ -216,26 +208,11 @@ cabeçalho que a Vercel manda sozinha quando `CRON_SECRET` existe no projeto
 idempotente (unique `recorrencia_id + competencia` em `contas_pagar`) e também
 roda, com freio de 5 min, quando alguém abre as telas de contas e recorrentes.
 
-### Migrando os dados do Artifact antigo
-
-```bash
-DATABASE_URL=... npm run migrate:from-artifact -- <pasta-com-export>
-```
-
-Ver o cabeçalho de `scripts/migrate-from-artifact.ts` pra como gerar essa
-pasta (ação `read_db` do Artifact, com `out_dir`).
-
 ## Status
 
-Scaffold funcional — build e typecheck passam, fluxo de auth e as três abas
-(Conhecimento/Conexão/Demandas) estão implementados, materialização testável
-assim que houver `GITHUB_TOKEN`. Não testado ainda contra um Postgres real
-(nenhum projeto Supabase foi criado nesta sessão). Próximos passos:
+Em produção, com os clientes reais. O ciclo é fechado nos dois sentidos: o portal
+materializa a demanda e dispara `run-demand.yml`; os workflows devolvem estado, artefatos,
+custo e anexos pelas rotas `/api/sync/*` (autenticadas por `SQUAD_OS_SYNC_TOKEN`).
 
-- Criar o projeto Supabase de verdade e rodar `prisma migrate dev` contra ele.
-- Rodar `migrate:from-artifact` com um export real do Artifact antigo.
-- Deploy piloto na Vercel, com os 6 clientes reais.
-- Sync de volta (`status.yaml` → Postgres) via `run-demand.yml`, quando o
-  piloto mostrar que o `status` desatualizado no board incomoda na prática.
-- Decidir quando descontinuar o Artifact antigo (deixar em modo leitura com
-  um aviso apontando pro novo domínio por um tempo antes).
+Para ver as telas localmente, com banco descartável e login simulado: skill `portal-local`
+(`.claude/skills/portal-local/SKILL.md`).

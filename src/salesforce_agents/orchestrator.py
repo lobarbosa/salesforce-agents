@@ -22,10 +22,6 @@ from .tools import salesforce_tools_server
 ALLOWED_TOOLS = [
     "Read", "Write", "Edit", "Grep", "Glob", "Bash", "Task",
     "mcp__salesforce-tools__spec_read",
-    "mcp__salesforce-tools__sf_deploy",
-    "mcp__salesforce-tools__sf_retrieve",
-    "mcp__salesforce-tools__sf_query",
-    "mcp__salesforce-tools__sf_org_list",
     "mcp__salesforce-tools__qa_browser_open",
     "mcp__salesforce-tools__qa_browser_click",
     "mcp__salesforce-tools__qa_browser_fill",
