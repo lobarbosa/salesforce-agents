@@ -10,7 +10,10 @@ para a homologação com **evidência de aprovação** — `**Veredito:** aprova
 e `**Org de teste:**` apontando a sandbox de QA do cliente. Qualquer outra
 coisa (reprovado, sem veredito, org errada) volta para a construção.
 
-A leitura espelha `apps/squad-os/lib/qa-veredito.ts` — mude as duas juntas.
+A leitura do veredito, da org e dos títulos de falha espelha
+`apps/squad-os/lib/qa-veredito.ts` — mude as duas juntas. A origem de cada falha
+(`**Origem:**`) só é lida aqui: é a esteira que decide por ela para onde a
+demanda vai; o portal mostra o roteiro como veio.
 """
 
 from __future__ import annotations
@@ -28,6 +31,38 @@ _VEREDITO = re.compile(
 _ORG = re.compile(r"\*\*Org de teste:\*\*\s*`?([A-Za-z0-9_.\-]+)`?", re.I)
 _FALHA = re.compile(r"^#{2,4}\s*(FALHA\b[^\n]*)$", re.I | re.M)
 
+# Origem de cada falha (2026-11-25, skill `provar-criterio`): a linha
+# `**Origem:** construção | ambiente | não exercitado`, logo abaixo do título da
+# falha. Medição em 36 demandas: de 71 falhas, cerca de 41 não eram defeito de
+# construção, e a demanda voltava ao builder, que não tinha o que corrigir.
+# Falha sem a linha conta como `construção`: é o comportamento de antes, e erra
+# para o lado de refazer, nunca para o de parar à toa.
+_TITULO = re.compile(r"^#{1,6}\s", re.M)
+_ORIGEM = re.compile(r"\*\*Origem:\*\*\s*\**\s*`?(constru[çc][ãa]o|ambiente|n[ãa]o exercitado)", re.I)
+CONSTRUCAO = "construção"
+AMBIENTE = "ambiente"
+NAO_EXERCITADO = "não exercitado"
+
+
+def _origem_normalizada(texto: str) -> str:
+    t = texto.lower()
+    if t.startswith("ambiente"):
+        return AMBIENTE
+    if t.startswith("n"):
+        return NAO_EXERCITADO
+    return CONSTRUCAO
+
+
+def _origens(texto: str) -> tuple[str, ...]:
+    """A origem de cada falha, na ordem dos títulos. Sem a linha: construção."""
+    saida: list[str] = []
+    for m in _FALHA.finditer(texto):
+        proximo = _TITULO.search(texto, m.end())
+        trecho = texto[m.end() : proximo.start() if proximo else len(texto)]
+        achada = _ORIGEM.search(trecho)
+        saida.append(_origem_normalizada(achada.group(1)) if achada else CONSTRUCAO)
+    return tuple(saida)
+
 
 @dataclass(frozen=True)
 class Veredito:
@@ -39,17 +74,34 @@ class Veredito:
     # `aguardando execução`; não é aprovação nem reprovação, e a demanda
     # espera em `qa` até a sessão seguinte conferir e dar o veredito final.
     pendente: bool = False
+    # Uma origem por falha, na mesma ordem de `falhas` (ver `_origens`).
+    origens: tuple[str, ...] = ()
+
+    @property
+    def construcao_nao_resolve(self) -> bool:
+        """Reprovado, com falhas, e nenhuma delas é de construção.
+
+        Refazer o build não muda o resultado: falta algo no ambiente ou o
+        teste não conseguiu executar. Quem destrava é uma pessoa.
+        """
+        return (
+            not self.aprovado
+            and not self.pendente
+            and bool(self.origens)
+            and all(o != CONSTRUCAO for o in self.origens)
+        )
 
 
 def ler(texto: str, org_de_qa: str) -> Veredito:
     falhas = tuple(m.group(1).replace("**", "").strip() for m in _FALHA.finditer(texto))
+    origens = _origens(texto)
     explicito = _VEREDITO.search(texto)
     org = _ORG.search(texto)
 
     if not explicito:
         return Veredito(False, "o roteiro não declara `**Veredito:**` — sem veredito não há evidência de aprovação", falhas)
     if explicito.group(1).lower() == "reprovado":
-        return Veredito(False, "QA reprovou", falhas)
+        return Veredito(False, "QA reprovou", falhas, origens=origens)
     if explicito.group(1).lower().startswith("aguardando"):
         if not org or org.group(1).strip() != org_de_qa:
             return Veredito(False, f"teste armado fora de `{org_de_qa}`", falhas)

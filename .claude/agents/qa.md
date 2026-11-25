@@ -96,7 +96,10 @@ Cada falha num título próprio `### FALHA <n> (crítica|média|branda) — <res
 **O veredito decide para onde a demanda vai** (`fluxo.py`, 2026-11-14): só `aprovado`, com a
 org de teste sendo a sandbox de QA do cliente, leva a demanda ao cliente. `reprovado`, veredito
 ausente ou org errada devolvem a demanda para a construção, e o builder recebe este roteiro
-como `05-testes-rodada-<n>.md`. Por isso:
+como `05-testes-rodada-<n>.md`. A exceção (2026-11-25): roteiro reprovado em que **nenhuma**
+falha tem origem `construção` não vai ao builder; para no gate de build, com uma pessoa, que
+resolve o ambiente e manda testar de novo. A linha `**Origem:**` de cada falha é lida por
+máquina: escreva exatamente `construção`, `ambiente` ou `não exercitado`. Por isso:
 - `aprovado` exige **evidência por caso**: o comando ou a tela que provou, e o que foi obtido
   (contagem, mensagem, screenshot de registro de teste). Caso sem evidência é "não executado",
   e critério de aceite principal não executado é `reprovado`.

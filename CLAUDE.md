@@ -40,6 +40,10 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - `05-testes.md` abre com `**Veredito:** aprovado|reprovado` e `**Org de teste:**` com a
   sandbox de QA. Só aprovado, com evidência por caso, chega ao cliente; o resto volta para
   o build, e o roteiro reprovado fica como `05-testes-rodada-<n>.md`.
+- Cada `### FALHA` do roteiro traz `**Origem:** construção|ambiente|não exercitado` (skill
+  `provar-criterio`). Roteiro reprovado sem nenhuma falha de construção não volta ao build:
+  para no gate de build, com uma pessoa, que resolve o ambiente e reaprova para o QA rodar
+  de novo. Falha sem a linha conta como construção.
 - Automação agendada é testada em duas sessões de QA: a primeira arma e grava
   `**Veredito:** aguardando execução` (a demanda espera em `qa`); a segunda, depois do
   horário, confere e dá o veredito final.

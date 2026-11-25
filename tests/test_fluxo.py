@@ -378,6 +378,86 @@ def test_depois_do_teto_de_reprovacoes_quem_decide_e_o_arquiteto(repo):
     assert (_pasta(d) / f"05-testes-rodada-{fluxo.MAX_VOLTAS_DO_QA + 1}.md").exists()
 
 
+QA_SO_AMBIENTE = (
+    "**Veredito:** reprovado\n**Org de teste:** `sbx-acme-qa`\n\n"
+    "### FALHA 1 (crítica) — sem licença livre para o usuário de teste\n"
+    "**Origem:** ambiente\n\nFalta uma licença na sandbox de QA.\n\n"
+    "### FALHA 2 (média) — tela de aprovação não exercitada\n"
+    "**Origem:** não exercitado\n\nNão foi possível enviar para aprovação.\n"
+)
+QA_MISTO = QA_SO_AMBIENTE + "\n### FALHA 3 (crítica) — campo fora do layout\n**Origem:** construção\n"
+
+
+def test_qa_reprovado_so_por_ambiente_para_no_gate_de_build_sem_refazer(repo):
+    """2026-11-25: falha de ambiente não volta ao builder, que não tem o que corrigir."""
+    d = _demanda("qa")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(QA_SO_AMBIENTE))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_build"
+    assert parada.espera_humano
+    assert demands.Demand.load("acme", d.id).status == "aguardando_gate_build"
+    # o roteiro fica arquivado; o próximo QA escreve outro
+    assert (_pasta(d) / "05-testes-rodada-1.md").exists()
+    assert not (_pasta(d) / "05-testes.md").exists()
+
+
+def test_qa_reprovado_com_alguma_falha_de_construcao_volta_para_o_build(repo):
+    d = _demanda("qa")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(QA_MISTO))
+    assert parada.motivo == "refazer"
+    assert parada.etapa == "build"
+
+
+def test_rodada_perdida_por_ambiente_nao_conta_para_o_teto_de_voltas(repo):
+    """Duas rodadas de ambiente e uma de construção: ainda há volta para o builder."""
+    d = _demanda("qa")
+    for n in range(1, fluxo.MAX_VOLTAS_DO_QA + 1):
+        (_pasta(d) / f"05-testes-rodada-{n}.md").write_text(QA_SO_AMBIENTE, encoding="utf-8")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(QA_MISTO))
+    assert parada.motivo == "refazer"
+    assert parada.etapa == "build"
+
+
+def test_falha_sem_linha_de_origem_conta_como_construcao():
+    from salesforce_agents import veredito
+
+    sem_linha = "**Veredito:** reprovado\n**Org de teste:** `sbx-acme-qa`\n\n### FALHA 1 (crítica) — painel sem dado"
+    v = veredito.ler(sem_linha, "sbx-acme-qa")
+    assert v.origens == ("construção",)
+    assert not v.construcao_nao_resolve
+    so_ambiente = veredito.ler(QA_SO_AMBIENTE, "sbx-acme-qa")
+    assert so_ambiente.origens == ("ambiente", "não exercitado")
+    assert so_ambiente.construcao_nao_resolve
+    # reprovado sem nenhuma falha listada não é "só ambiente": volta ao build
+    assert not veredito.ler("**Veredito:** reprovado", "sbx-acme-qa").construcao_nao_resolve
+    # a origem de uma falha não vaza para a seguinte
+    misto = veredito.ler(QA_MISTO, "sbx-acme-qa")
+    assert misto.origens == ("ambiente", "não exercitado", "construção")
+
+
+def test_card_do_gate_de_build_mostra_o_que_o_qa_nao_conseguiu_provar(repo):
+    from salesforce_agents import revisao
+
+    d = _demanda("qa")
+    (_pasta(d) / "04-plano-build.md").write_text("**Resultado do build:** concluído\n\n# Plano", encoding="utf-8")
+    (_pasta(d) / "04-verificacao.md").write_text(VERIFICACAO_APROVADA, encoding="utf-8")
+    fluxo.rodar("acme", d.id, executor=_executor_de_qa(QA_SO_AMBIENTE))
+    artefato = revisao.artefato_em_revisao(demands.Demand.load("acme", d.id))
+    assert artefato["conteudo"].startswith("## O QA não conseguiu provar")
+    assert "sem licença livre" in artefato["conteudo"] and "origem: ambiente" in artefato["conteudo"]
+    assert "# Plano" in artefato["conteudo"]
+
+
+def test_card_do_gate_de_build_normal_nao_ganha_aviso(repo):
+    from salesforce_agents import revisao
+
+    d = _demanda("aguardando_gate_build")
+    (_pasta(d) / "04-plano-build.md").write_text("**Resultado do build:** concluído\n\n# Plano", encoding="utf-8")
+    (_pasta(d) / "05-testes-rodada-1.md").write_text(QA_MISTO, encoding="utf-8")
+    artefato = revisao.artefato_em_revisao(demands.Demand.load("acme", d.id))
+    assert not artefato["conteudo"].startswith("## O QA não conseguiu provar")
+
+
 def test_refazer_sai_no_github_output():
     saida = fluxo.Parada("refazer", "build", "qa", ("qa",)).as_github_output()
     assert "motivo=refazer" in saida and "espera_humano=false" in saida

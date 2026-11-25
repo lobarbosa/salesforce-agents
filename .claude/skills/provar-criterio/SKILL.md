@@ -53,15 +53,27 @@ Logo abaixo do título `### FALHA <n> (crítica|média|branda) — <resumo>`, um
   tentou, em que passo parou e o que destravaria.
 
 O título continua no formato que o Squad OS lê; a linha de origem vem abaixo e não muda
-isso. Quem lê o roteiro reprovado (o builder, o operador, o responsável) decide por ela
-para onde a demanda vai.
+isso.
+
+**A esteira lê essa linha e decide por ela para onde a demanda vai** (`fluxo.py`,
+2026-11-25):
+
+- Alguma falha de `construção` (ou sem a linha): a demanda volta para o build, como antes.
+- Só falhas de `ambiente` e `não exercitado`: a demanda **não** volta ao builder. Para no
+  gate de build, com uma pessoa, e o card abre com a lista do que falta. Ela resolve e
+  aprova; o QA roda de novo sem reconstruir. Essa rodada não conta para o teto de voltas.
+
+Por isso a origem tem de ser honesta nos dois sentidos. Marcar defeito de construção como
+`ambiente` para o card não voltar esconde o defeito de quem corrige; marcar falta de
+licença como `construção` gasta uma rodada de build que não muda nada. Na dúvida entre
+construção e ambiente, é `construção`.
 
 ## Nova rodada
 
 Se existe `05-testes-rodada-<n>.md` ou `04-verificacao-rodada-<n>.md`, comece retestando
 cada falha anterior e diga, uma a uma: corrigida, persiste ou mudou de causa. Falha que
-persiste pela segunda vez com origem `ambiente` ou `não exercitado` não é para mais uma
-rodada de build: diga no topo do roteiro que a demanda precisa de uma pessoa.
+persiste com origem `ambiente` ou `não exercitado` significa que a pessoa aprovou o gate
+sem resolver: mantenha a origem e diga exatamente o que continua faltando.
 
 ## O que não muda
 

@@ -60,8 +60,11 @@ Leia o `05-testes-rodada-<n>.md` mais recente na branch. Classifique:
 - **Defeito de construção com causa clara** (o QA aponta o componente): registre a correção
   no design, aprove o gate de design e acompanhe. Peça que a versão fique ativa na dev para
   o verificador exercitar o caso antes do gate.
-- **Pergunta de negócio ou limite de ambiente** (licença, dado, acesso): não reaprove.
-  Leve ao responsável com a pergunta escrita.
+- **Só ambiente ou não exercitado** (licença, fila, usuário, acesso): a esteira já parou a
+  demanda no gate de build, e o card abre com "O QA não conseguiu provar". Não reaprove
+  antes de o que falta estar resolvido: aprovar só repete a rodada. Leve ao responsável a
+  lista do que falta e quem providencia.
+- **Pergunta de negócio**: não reaprove. Leve ao responsável com a pergunta escrita.
 - **Reprovou de novo pela mesma causa**: pare e avise. Não entre em laço.
 
 ## Avisar o responsável

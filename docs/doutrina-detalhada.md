@@ -137,6 +137,20 @@ reprovações seguidas a demanda para no gate de design, para o arquiteto decidi
 real: dez demandas (Eplast e Somos) estavam em homologação com o QA reprovado, porque o
 fluxo só conferia se o `05-testes.md` existia.
 
+**O QA reprovado vai para quem resolve** (2026-11-25): cada `### FALHA` do roteiro traz
+`**Origem:** construção | ambiente | não exercitado` (skill `provar-criterio`), e
+`veredito.py` lê a linha. Se há alguma falha de construção (ou sem a linha, que conta como
+construção), nada muda: a demanda volta para `build`. Se **nenhuma** falha é de construção,
+refazer o build não muda o resultado, então a demanda para em `aguardando_gate_build`, com
+uma pessoa: o card abre com "O QA não conseguiu provar" e a lista do que falta
+(`revisao.py`); ela resolve o ambiente e aprova, e a aprovação leva ao deploy em QA e ao
+QA, sem passar pelo construtor. Essa rodada não conta para o teto de duas voltas, que mede
+tentativas de construção. O portal não lê a origem: só o motor decide por ela. Achado
+real: medição em 36 demandas, 71 falhas de QA, das quais cerca de 27 eram "não consegui
+executar" e 14 de ambiente; SOMOSAGILITY-22, SOMOSAGILITY-27 e EPLAST-40 voltaram ao
+builder e repetiram a mesma falha na rodada seguinte, gastando um build e uma verificação
+cada.
+
 Nova versão antes de implementar (2026-11-15): o deploy da EPLAST-27 na QA foi recusado
 porque alterava a versão ativa do agente `SFAgent2`, e a validação da EPLAST-33 foi recusada
 porque reimplantava classes Apex com job agendado. Decisão do responsável: Flow, agente e

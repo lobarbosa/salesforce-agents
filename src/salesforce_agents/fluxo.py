@@ -75,8 +75,28 @@ MAX_VOLTAS_DA_VERIFICACAO = 2
 GATE_QUANDO_O_QA_NAO_FECHA = "aguardando_gate_design"
 
 
+# QA reprovado sem nenhuma falha de construção (2026-11-25, veredito.py): falta
+# algo no ambiente ou o teste não conseguiu executar. Refazer o build não muda
+# nada, então a demanda não vai para o builder: para no gate de build, com uma
+# pessoa, que resolve o que falta e aprova para o QA rodar de novo, sem
+# reconstruir. Achado: três demandas repetiram a mesma falha de ambiente em
+# rodadas seguidas (SOMOSAGILITY-22, SOMOSAGILITY-27, EPLAST-40).
+GATE_QUANDO_O_QA_NAO_CONSEGUE_PROVAR = "aguardando_gate_build"
+
+
 def _rodadas_reprovadas(d: demands.Demand) -> int:
     return len(list(d.path.glob("05-testes-rodada-*.md")))
+
+
+def _rodadas_reprovadas_por_construcao(d: demands.Demand) -> int:
+    """Rodadas em que havia o que o builder corrigir. É o que conta para o teto
+    de voltas: rodada perdida por ambiente não é tentativa de construção."""
+    org = ambientes.org_alias(d.client, "qa")
+    return sum(
+        1
+        for arquivo in d.path.glob("05-testes-rodada-*.md")
+        if not veredito.ler(arquivo.read_text(encoding="utf-8"), org).construcao_nao_resolve
+    )
 
 
 def _aguardando_execucao(d: demands.Demand) -> bool:
@@ -364,8 +384,17 @@ def rodar(
             if v.pendente:
                 return Parada("aguardar", "qa", ambiente_do_job, tuple(rodadas))
             if not v.aprovado:
-                voltas = _rodadas_reprovadas(d)
+                voltas = _rodadas_reprovadas_por_construcao(d)
                 _arquivar_roteiro_reprovado(d)
+                # Nada para o builder corrigir: uma pessoa resolve o ambiente e
+                # reaprova o gate de build, que leva de volta ao QA.
+                if v.construcao_nao_resolve:
+                    demands.transition(
+                        client, demand_id, GATE_QUANDO_O_QA_NAO_CONSEGUE_PROVAR, AUTOR_PIPELINE
+                    )
+                    return Parada(
+                        "gate", GATE_QUANDO_O_QA_NAO_CONSEGUE_PROVAR, ambiente_do_job, tuple(rodadas)
+                    )
                 if voltas >= MAX_VOLTAS_DO_QA:
                     demands.transition(client, demand_id, GATE_QUANDO_O_QA_NAO_FECHA, AUTOR_PIPELINE)
                     return Parada("gate", GATE_QUANDO_O_QA_NAO_FECHA, ambiente_do_job, tuple(rodadas))
