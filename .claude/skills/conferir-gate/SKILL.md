@@ -55,6 +55,10 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 
 ## Gate de PR (`aguardando_gate_build`)
 
+- O card abre com "O QA não conseguiu provar: falta algo fora da construção"? Então a
+  demanda voltou do QA sem defeito de build: o que falta é ambiente (licença, fila, usuário,
+  acesso). Resolva cada item da lista **antes** de aprovar; a aprovação leva direto ao QA,
+  sem reconstruir, e aprovar sem resolver repete a mesma rodada.
 - A pasta tem `05-testes-rodada-<n>.md`? Então este PR é correção de um QA reprovado:
   confira no plano a seção "Correções da rodada <n>", falha por falha, antes de devolver
   ao QA.

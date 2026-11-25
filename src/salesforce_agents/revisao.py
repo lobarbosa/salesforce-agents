@@ -87,6 +87,38 @@ def pendencias(texto: str) -> list[dict]:
     return saida
 
 
+def _aviso_do_qa_sem_o_que_construir(demanda: Demand) -> str:
+    """No gate de build, o que o QA não conseguiu provar por ambiente.
+
+    A demanda volta do QA para este gate quando o roteiro reprovado não tem
+    nenhuma falha de construção (fluxo.py). Quem aprova precisa ver primeiro o
+    que falta: aprovar sem resolver só repete a rodada.
+    """
+    from . import ambientes, veredito
+
+    if demanda.status != "aguardando_gate_build" or (demanda.path / "05-testes.md").exists():
+        return ""
+    rodadas = sorted(
+        demanda.path.glob("05-testes-rodada-*.md"),
+        key=lambda a: int(a.stem.rsplit("-", 1)[1]) if a.stem.rsplit("-", 1)[1].isdigit() else 0,
+    )
+    if not rodadas:
+        return ""
+    ultima = rodadas[-1]
+    v = veredito.ler(ultima.read_text(encoding="utf-8"), ambientes.org_alias(demanda.client, "qa"))
+    if not v.construcao_nao_resolve:
+        return ""
+    linhas = "\n".join(f"- {falha} (origem: {origem})" for falha, origem in zip(v.falhas, v.origens))
+    return (
+        "## O QA não conseguiu provar: falta algo fora da construção\n\n"
+        "Nenhuma falha desta rodada é defeito do que foi construído, então a demanda não voltou "
+        "para o build. Resolva o que falta (licença, usuário, fila, acesso, dado) e aprove este "
+        "gate: o QA roda de novo, sem reconstruir. Aprovar sem resolver só repete a rodada.\n\n"
+        f"{linhas}\n\n"
+        f"O roteiro completo está em `{ultima.name}`.\n\n---\n\n"
+    )
+
+
 def artefato_em_revisao(demanda: Demand) -> dict | None:
     """Nome, conteúdo e pendências do artefato que este gate põe na mesa.
 
@@ -123,6 +155,7 @@ def artefato_em_revisao(demanda: Demand) -> dict | None:
     # agente que testou a construção — é ela que diz se o build funciona.
     if nome == verificacao.PLANO:
         conteudo += verificacao.anexo_para_o_gate(demanda.path)
+        conteudo = _aviso_do_qa_sem_o_que_construir(demanda) + conteudo
     truncado = len(conteudo) > LIMITE_CONTEUDO
     return {
         "nome": nome,
