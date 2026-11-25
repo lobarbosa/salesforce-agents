@@ -1,6 +1,6 @@
 ---
 name: revisar-custos
-description: Analisa logs/custos_agentes/ (um CSV por sessão, mais o legado logs/custos_agentes.csv) para decidir se a seleção de modelo por agente (haiku/sonnet/opus) ainda faz sentido, ou se algum agente está caro demais para o que faz ou errando por estar num modelo barato demais. Use depois que uma demanda completar (ou avançar bastante) o ciclo, e antes de propor qualquer mudança na tabela de modelos do CLAUDE.md.
+description: Analisa o custo dos agentes (banco do Squad OS por etapa, e os CSV por sessão nas branches de demanda por modelo) para decidir se a seleção de modelo por agente (haiku/sonnet/opus) ainda faz sentido, ou se algum agente está caro demais para o que faz ou errando por estar num modelo barato demais. Use depois que uma demanda completar (ou avançar bastante) o ciclo, e antes de propor qualquer mudança na tabela de modelos do CLAUDE.md.
 ---
 
 # Revisar custo e escolha de modelo por agente
@@ -11,14 +11,45 @@ ajustada "com a heurística sozinha". Esta skill é o processo pra virar isso em
 
 ## Onde está o dado
 
-`logs/custos_agentes/*.csv` — **um arquivo por sessão de agente**, versionado no git (até
-2026-10-02 era um único `logs/custos_agentes.csv` crescendo; mudou pra arquivo-por-sessão
-depois de um conflito de merge real entre duas demandas de clientes diferentes appendando no
-fim do mesmo arquivo — ver CLAUDE.md § Telemetria de custo). `logs/custos_agentes.csv`
-(singular, sem o diretório) pode continuar existindo como arquivo **legado**, com dado de
-antes da mudança — some para quem só lê os arquivos novos, por isso use sempre
-`salesforce_agents.costs.ler_todas_as_linhas()` (Python) em vez de abrir um arquivo só, ou,
-na mão, leia o legado **e** o diretório. Cada arquivo tem as colunas:
+Há duas fontes, e elas respondem perguntas diferentes.
+
+**1. Banco do Squad OS, para "quanto custou" por etapa e por demanda.** A tabela
+`eventos_esteira` tem `custo_usd` por execução (`run_id`), com `etapa`, `demanda_code` e
+`client_id`. É a fonte completa e atual; não traz modelo nem tokens.
+
+```sql
+select etapa, count(distinct run_id) execucoes,
+       round(sum(custo_usd)::numeric, 2) usd,
+       round((sum(custo_usd) / nullif(count(distinct run_id), 0))::numeric, 2) usd_por_execucao
+  from eventos_esteira
+ where em > now() - interval '30 days' and custo_usd is not null
+ group by 1 order by usd desc;
+```
+
+Referência de 2026-11-24: US$ 48 em 30 dias (build 46 execuções e US$ 28, QA 24 e US$ 10,
+design 5 e US$ 10). Build caro quase sempre é build repetido: olhe quantas rodadas a
+demanda teve antes de culpar o modelo.
+
+**2. CSV por sessão, para "qual modelo pesou".** `logs/custos_agentes/*.csv`, um arquivo por
+sessão de agente (`costs.py`). **Cada arquivo é commitado na branch da demanda**
+(`feature/<ID>`), não na `main`: até a demanda ser mesclada, a `main` não o vê. Em
+2026-11-24 a `main` tinha 7 arquivos, o mais novo de 17/10, enquanto uma única branch de
+demanda tinha 35. Analisar só a `main` dá um retrato de um mês atrás.
+
+Para juntar o que está nas branches, sem fazer checkout de cada uma:
+
+```bash
+git fetch -q origin 'refs/heads/feature/*:refs/remotes/origin/feature/*'
+for b in $(git for-each-ref --format='%(refname:short)' refs/remotes/origin/feature); do
+  git ls-tree -r --name-only "$b" logs/custos_agentes 2>/dev/null |
+    while read -r f; do git show "$b:$f" | tail -n +2; done
+done | sort -u > /tmp/custos.csv
+```
+
+O mesmo arquivo aparece em mais de uma branch (cada branch nasce da `main`); o `sort -u`
+tira a repetição. `logs/custos_agentes.csv` (singular) é o legado de antes de 2026-10-02.
+Para ler só o que está no checkout atual, `salesforce_agents.costs.ler_todas_as_linhas()`
+cobre o legado e o diretório. Cada arquivo tem as colunas:
 
 ```
 timestamp,client,demand_id,etapa,session_id,model,input_tokens,output_tokens,

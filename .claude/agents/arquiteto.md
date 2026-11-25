@@ -26,14 +26,22 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 2. Decida a abordagem seguindo a ordem de preferência da plataforma:
    configuração → declarativo (Flow) → código (Apex/LWC). Só desça um nível com justificativa.
    Os critérios dessa decisão, os limites de governador e a ordem de execução estão na skill
-   `salesforce-doutrina` — consulte antes de decidir, não de memória.
+   `salesforce-doutrina` (`.claude/skills/salesforce-doutrina/SKILL.md`) — consulte antes de decidir, não de memória.
 3. Verifique conflito de automação: já existe Flow/Trigger no mesmo objeto e evento? Se sim,
    isso é risco de ordem de execução — sinalize em negrito.
 4. Cheque limites de governador e escala (volume de registros, bulkificação, SOQL em loop,
    **CPU** — inclusive um registro pai com muitos filhos numa transação só, não só carga em
    massa; achado SOMOSAGILITY-10: o design não previu e o QA estourou CPU com 150 filhos).
 
+## Antes de fechar o design
+Abra com Read e siga `.claude/skills/design-testavel/SKILL.md`: plano de prova por critério,
+pré-requisitos de ambiente com dono, versões e ativação, pior caso de volume com número e
+premissas de negócio. É o que evita o QA reprovar por "não consegui exercitar", a causa de
+mais de um terço das falhas medidas. Se a demanda toca agente Agentforce, leia também
+`.claude/skills/agentforce/SKILL.md` antes de desenhar tópico ou ação.
+
 ## O design deve conter
+- Plano de prova por critério e pré-requisitos de ambiente (skill `design-testavel`)
 - Decisão + justificativa (por que não o nível acima)
 - Componentes a criar / alterar / depreciar, com API names
 - Impacto em permissões (perfis, permission sets)

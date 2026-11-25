@@ -90,6 +90,12 @@ Tudo o que entra na sessão é relido a cada turno; é o maior custo da esteira.
   inteiro na conversa.
 - Subagente devolve um resumo curto ao orquestrador, não o conteúdo do artefato.
 
+## Skills
+As skills citadas aqui e nos agentes são arquivos: `.claude/skills/<nome>/SKILL.md`. A
+sessão da esteira não tem ferramenta para carregá-las pelo nome. Quando um agente ou este
+arquivo mandar seguir uma skill, **abra o arquivo com Read** antes de agir; citar a skill
+sem ter lido não vale.
+
 ## Convenções
 - Flow, agente ou classe que já existe: **primeiro uma versão nova, depois a implementação**;
   nunca editar no lugar o que está ativo. Ativação é passo separado (skill

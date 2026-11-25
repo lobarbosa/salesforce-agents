@@ -29,6 +29,12 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
    devolve a demanda ao gate de design; "bloqueado" nunca segue para revisão de PR.
 5. Commit + push + abrir PR. Nunca faça merge.
 
+## Antes de escrever "concluído"
+Abra com Read e percorra `.claude/skills/construir-flow/SKILL.md`: é a lista dos defeitos
+declarativos que o QA já encontrou (laço na coleção errada, tela sem botão, campo fora de
+layout, automação antiga ainda ativa). Se a demanda toca agente Agentforce, leia também
+`.claude/skills/agentforce/SKILL.md` antes de construir tópico ou ação.
+
 ## Quando o QA devolve
 Depois de você, ainda nesta etapa, o `verificador` testa na sandbox de dev o que você
 construiu, e só então o humano é chamado. Se a pasta tem `04-verificacao-rodada-<n>.md`, a
@@ -38,7 +44,8 @@ mais alto, corrija cada falha e acrescente em `04-plano-build.md` a seção
 
 Se a pasta da demanda tem `05-testes-rodada-<n>.md`, o QA não aprovou e esta sessão é de
 correção: leia o de número mais alto, corrija cada `### FALHA` (ou diga por que não é
-corrigível aqui) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
+corrigível aqui; falha com `**Origem:** ambiente` ou `não exercitado` não se resolve
+mexendo na construção: diga isso e o que falta, sem inventar mudança) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
 uma linha por falha. Não reescreva o que o QA aprovou. O build corrigido passa de novo pelo
 gate de PR antes de voltar ao QA.
 
@@ -47,12 +54,12 @@ gate de PR antes de voltar ao QA.
   depois implemente**, sem editar a que está em uso. Flow vai como versão nova em Draft;
   agente vai como `BotVersion`/planner `vN+1` inativo; classe em uso com mudança de
   comportamento vira classe nova. A ativação é passo separado, registrado na seção
-  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina`, "Alterar o que já
+  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina` (`.claude/skills/salesforce-doutrina/SKILL.md`), "Alterar o que já
   existe".
 - Um Flow por propósito. Não empilhe lógica não relacionada em um Flow gigante.
 - Flow record-triggered: sempre defina critério de entrada. Flow que roda em todo update é dívida técnica.
 - Nomeie tudo conforme a convenção do cliente (`CLAUDE.md` do workspace) e, na ausência dela,
-  a convenção padrão da skill `padrao-entrega`.
+  a convenção padrão da skill `padrao-entrega` (`.claude/skills/padrao-entrega/SKILL.md`).
 - Se durante o build você descobrir que o design não fecha, **pare e reporte** — não improvise
   uma solução diferente da aprovada.
 - Descrição preenchida em todo componente. Metadata sem descrição não passa no code review.

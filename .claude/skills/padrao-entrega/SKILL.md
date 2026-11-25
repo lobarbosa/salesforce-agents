@@ -41,6 +41,8 @@ Escreva exatamente neste formato — o portal extrai daqui o que mostra no card:
 | `05-testes.md`, no topo | `**Veredito:** aprovado`, `**Veredito:** reprovado` ou, na primeira sessão de um teste de automação agendada, `**Veredito:** aguardando execução` com `**Conferir depois de:**` — só `aprovado` na sandbox de QA leva ao cliente; o resto volta para o build | qa |
 | `05-testes.md`, no topo | ``**Org de teste:** `sbx-<cliente>-qa` `` — a org em que rodou de verdade | qa |
 | `05-testes.md` | um título `### FALHA <n> (crítica\|média\|branda) — <resumo>` por falha | qa |
+| `05-testes.md`, abaixo de cada título de falha | `**Origem:** construção`, `ambiente` ou `não exercitado` — diz a quem cabe resolver; falha de ambiente não volta ao builder como defeito (skill `provar-criterio`) | qa |
+| `06-entrega-manual.md`, no topo | `**Entrega manual:** registrada`, `**Por:**`, `**Em:**` e `**Evidência:**` — vale no lugar de `05-testes.md` + `06-entrega.md` quando o consultor concluiu o trabalho fora da esteira | **só o Squad OS**, a partir do registro do consultor; agente nunca escreve este arquivo |
 
 Sem a linha, o card não mostra o dado — e não se inventa número para preencher.
 
