@@ -26,7 +26,7 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 2. Decida a abordagem seguindo a ordem de preferência da plataforma:
    configuração → declarativo (Flow) → código (Apex/LWC). Só desça um nível com justificativa.
    Os critérios dessa decisão, os limites de governador e a ordem de execução estão na skill
-   `salesforce-doutrina` — consulte antes de decidir, não de memória.
+   `salesforce-doutrina` (`.claude/skills/salesforce-doutrina/SKILL.md`) — consulte antes de decidir, não de memória.
 3. Verifique conflito de automação: já existe Flow/Trigger no mesmo objeto e evento? Se sim,
    isso é risco de ordem de execução — sinalize em negrito.
 4. Cheque limites de governador e escala (volume de registros, bulkificação, SOQL em loop,

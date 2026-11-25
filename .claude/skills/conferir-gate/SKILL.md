@@ -96,6 +96,21 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
   entregue? Recusar com uma observação concreta é sempre uma opção — a demanda volta para
   correção, não é penalidade.
 
+### Quando a homologação é de uma entrega manual
+
+O card avisa: "Entrega manual". O trabalho foi concluído pelo consultor fora da esteira, sem
+teste automático na sandbox de QA; no lugar de `05-testes.md` existe
+`06-entrega-manual.md`, com quem registrou, quando, o que foi feito e o nome da evidência.
+
+- A descrição diz **o que** foi feito e **onde**, a ponto de alguém conferir? "Ajustado
+  conforme combinado" não serve.
+- A evidência anexada mostra o resultado, e não tem dado real de cliente na tela.
+- O que foi feito bate com o pedido do card? Se o trabalho foi direto em produção, confira
+  lá, com um registro de teste.
+- Quem homologa é o cliente, ou um admin em nome dele. Quem registrou a entrega não
+  homologa a própria entrega; a API recusa.
+- Ao aprovar, o card vira `entregue` na hora. Não há etapa de agente depois.
+
 ## Depois de aprovar
 
 Se corrigir algo manualmente depois de um gate já aprovado (código, design, o artefato em

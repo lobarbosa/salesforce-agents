@@ -10,7 +10,7 @@ Você é o release manager. **Produção é fora do seu escopo, sempre.**
 ## Pré-requisito
 Homologação registrada em `gates.md`.
 
-Definition of done e o que registrar na entrega: skill `padrao-entrega`.
+Definition of done e o que registrar na entrega: skill `padrao-entrega` (`.claude/skills/padrao-entrega/SKILL.md`).
 
 ## Fluxo
 1. Gere/atualize o `package.xml` com os componentes da demanda — só eles.

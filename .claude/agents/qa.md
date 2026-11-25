@@ -70,29 +70,13 @@ se o `CLAUDE.md` do cliente ou um comentário no card proibir explicitamente.
    produza roteiro passo a passo para o humano executar.
 
 ## Testando a UI de verdade (`qa_browser_*`)
-Ferramentas pra clicar na Lightning de verdade em vez de só escrever roteiro pra alguém
-seguir depois:
-
-1. `qa_browser_open(target_org, path)` abre a sessão — recusa sozinho se `target_org` não
-   passar no guardrail de sandbox, então não precisa checar isso antes. Se a sandbox de QA
-   do cliente ainda não conecta (ou a ferramenta recusar por qualquer outro motivo), não
-   insista: caia pro roteiro escrito pra humano, como sempre foi feito. Isso não é reprovação
-   do teste, é o caminho normal enquanto a sandbox não existe.
-2. `qa_browser_click`/`qa_browser_fill` interagem com a página da sessão aberta — não aceitam
-   URL, só texto/rótulo visível na tela atual. Em opção de rádio e caixa de seleção, o clique
-   diz se a opção ficou marcada: se disser que não ficou, registre isso como limite da
-   ferramenta, não como defeito da tela.
-3. `qa_browser_screenshot(session_id, legenda)` guarda a captura em
-   `demandas/<DEMAND-ID>/evidencias/` e devolve o nome do arquivo: cite-o no caso
-   correspondente de `05-testes.md`. A `legenda` diz o que a tela prova ("CA-03: rascunho
-   gerado para a conta de teste"). O Squad OS junta `05-testes.md` e as capturas no anexo
-   **"Evidências de teste"** do card, em PDF, ao lado do roteiro do cliente: tire uma
-   captura por critério que se confere pela tela, sem repetir (no máximo 12 por rodada).
-   **Nunca screenshote um registro
-   real de cliente** (guardrail #2, LGPD) — só dados de teste que você mesmo criou para o
-   roteiro. Se a tela que precisa testar só existe com dado real, documente isso como "não
-   pôde ser testado via UI" em vez de abrir o registro.
-4. `qa_browser_close` sempre no fim, mesmo depois de um erro — não deixe sessão aberta.
+Quando um critério se confere pela tela, teste clicando na Lightning em vez de só escrever
+roteiro. **Antes de abrir o navegador, leia
+`.claude/skills/teste-em-sandbox/navegador.md`**: como abrir, clicar, guardar a captura
+como evidência e fechar a sessão. O que vale sempre: se a ferramenta recusar ou a sandbox
+não conectar, caia para o roteiro escrito, sem reprovar por isso; **nunca capture tela de
+registro real de cliente** (guardrail #2), só dado de teste que você criou; feche a sessão
+ao final, mesmo depois de erro.
 
 ## Reporte
 No topo de `05-testes.md`, duas linhas que o Squad OS lê e mostra no card:
@@ -178,51 +162,15 @@ permission set a você. Ação em massa sobre os registros existentes só a que 
 (por exemplo, o Flow agendado da demanda), nunca DML seu sobre eles.
 
 ## Automação que só roda por agendamento (QA em duas fases)
-Fluxo ou job agendado não dispara à mão, e a sua sessão acaba antes do horário dele. Não
-reprove por isso. Deixar a automação rodar na sandbox de QA está autorizado pela mesma regra,
-e o teste é feito em duas sessões:
-
-**Fase 1 — armar** (quando `05-testes.md` não existe ou não está aguardando execução):
-1. Registre o estado de antes, só por contagens agregadas (por exemplo, quantidade de
-   registros por valor do campo que a automação grava, e quantidade de linhas de histórico).
-2. Arme para **daqui a 5–10 minutos** (decisão de 2026-11-16; antes era até 1 hora):
-   enquanto você espera, nenhuma outra demanda do cliente entra na sandbox de QA, e a
-   EPLAST-33 segurou a QA por 50 minutos com um job que disparava em 20. Use o primeiro
-   horário que a plataforma aceita a partir de 5 minutos à frente. Não espere o horário de produção da automação. Conforme o que a solução oferece:
-   - **parâmetro de configuração da própria solução** (dia ou hora de execução num
-     registro de configuração): implante na sandbox de QA só esse registro alterado;
-   - **job Apex que a solução agenda** (`Schedulable`): agende-o na QA com um cron para
-     daqui a 5–10 minutos, por Apex anônimo com `--target-org` explícito;
-   - **Flow agendado** (horário de início no próprio Flow): implante na QA só esse Flow com
-     o horário de início trocado para daqui a 5–10 minutos, nada mais nele.
-
-   São as únicas implantações que você faz, sempre com `--target-org` explícito na sandbox de
-   QA. Não commite nenhuma delas: a esteira descarta e, ao fim da sessão de conferência,
-   reimplanta o build original. Calcule o horário no fuso da org, não no da sessão, e confira na org
-   (`CronTrigger.NextFireTime`) que a próxima execução ficou onde você quis.
-3. Calcule, com as mesmas contagens agregadas, o resultado esperado depois da execução.
-4. Grave `05-testes.md` abrindo com `**Veredito:** aguardando execução`, a linha
-   `**Org de teste:**` e `**Conferir depois de:** <data e hora em UTC>` (o disparo armado
-   mais 10 minutos, sem margem maior; job em lote que encadeia outro pode somar 5), e nele
-   o estado de
-   antes, o que foi alterado para armar, o esperado e como desfazer.
-
-**Fase 2 — conferir** (quando `05-testes.md` existe com `aguardando execução`):
-1. Se ainda não passou do horário de `Conferir depois de`, a esteira já reimplantou a
-   configuração original: arme de novo e mantenha `aguardando execução`.
-2. Se passou: a org ainda está como você armou (decisão de 2026-11-16, achado EPLAST-28:
-   reimplantar antes da sessão recriava o agendamento e apagava o `PreviousFireTime`).
-   Confira que a automação rodou (`CronTrigger.PreviousFireTime` e `TimesTriggered` do
-   arme, `AsyncApexJob`, log ou histórico), compare as contagens de depois com o esperado e
-   leia o histórico do campo. Não desfaça o arme: a esteira reimplanta o build original
-   logo depois da sua sessão.
-   Job Apex que você agendou na fase 1: aborte-o e, se o design pede agendamento na QA,
-   agende-o de novo no horário do design, dizendo isso no roteiro.
-3. Reescreva `05-testes.md` com o veredito final, `aprovado` ou `reprovado`, e a evidência
-   de antes e depois por caso. Automação que não rodou no horário é falha, não espera.
-
-Se o `CLAUDE.md` do cliente ou o card proibirem a execução, não arme: os casos ficam "não
-executado".
+Fluxo ou job agendado não dispara à mão, e a sua sessão acaba antes do horário dele. **Não
+reprove por isso.** O teste é feito em duas sessões: a primeira arma a execução para daqui
+a 5 a 10 minutos e grava `**Veredito:** aguardando execução` com `**Conferir depois de:**`;
+a segunda confere e dá o veredito final. **Se a demanda tem automação agendada, ou se
+`05-testes.md` já existe com `aguardando execução`, leia
+`.claude/skills/teste-em-sandbox/agendada.md` antes de qualquer outra coisa** e siga os
+passos de lá: o que registrar antes, as três formas de armar, o que nunca commitar e como
+conferir. Se o `CLAUDE.md` do cliente ou o card proibirem a execução, não arme: os casos
+ficam "não executado".
 
 ## Regras
 - Nunca rode query que retorne dado pessoal de cliente. Use contagem ou registros de teste.

@@ -47,12 +47,12 @@ gate de PR antes de voltar ao QA.
   depois implemente**, sem editar a que está em uso. Flow vai como versão nova em Draft;
   agente vai como `BotVersion`/planner `vN+1` inativo; classe em uso com mudança de
   comportamento vira classe nova. A ativação é passo separado, registrado na seção
-  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina`, "Alterar o que já
+  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina` (`.claude/skills/salesforce-doutrina/SKILL.md`), "Alterar o que já
   existe".
 - Um Flow por propósito. Não empilhe lógica não relacionada em um Flow gigante.
 - Flow record-triggered: sempre defina critério de entrada. Flow que roda em todo update é dívida técnica.
 - Nomeie tudo conforme a convenção do cliente (`CLAUDE.md` do workspace) e, na ausência dela,
-  a convenção padrão da skill `padrao-entrega`.
+  a convenção padrão da skill `padrao-entrega` (`.claude/skills/padrao-entrega/SKILL.md`).
 - Se durante o build você descobrir que o design não fecha, **pare e reporte** — não improvise
   uma solução diferente da aprovada.
 - Descrição preenchida em todo componente. Metadata sem descrição não passa no code review.

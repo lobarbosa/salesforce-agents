@@ -59,7 +59,7 @@ gate de PR antes de voltar ao QA.
   depois implemente**, sem editar a que está em uso. Flow vai como versão nova em Draft;
   agente vai como `BotVersion`/planner `vN+1` inativo; classe em uso com mudança de
   comportamento vira classe nova. A ativação é passo separado, registrado na seção
-  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina`, "Alterar o que já
+  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina` (`.claude/skills/salesforce-doutrina/SKILL.md`), "Alterar o que já
   existe".
 - Não refatore código fora do escopo da demanda. Se achar problema, registre em `06-entrega.md`
   como dívida identificada e siga.

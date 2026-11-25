@@ -38,6 +38,9 @@ mudar.
 | Quem enxerga isso? | perfis e permission sets do objeto |
 | Quantas automações rodam no objeto pai? | conte Flows record-triggered e triggers de cada objeto que a solução atualiza — cada um multiplica o CPU (ver `salesforce-doutrina`) |
 | Quantos filhos um pai chega a ter? | agregado: `SELECT Pai__c, COUNT(Id) n FROM Filho__c GROUP BY Pai__c ORDER BY COUNT(Id) DESC LIMIT 5` — só IDs e contagens, nunca campos do registro |
+| Qual versão está ativa? | Flow: `FlowDefinitionView` (`ActiveVersionId`, `LatestVersionId`); agente: `BotVersion.Status`. Registre a ativa e a mais nova: a demanda cria versão nova, nunca edita a ativa |
+| Há licença livre para o usuário de teste? | `SELECT Name, TotalLicenses, UsedLicenses FROM UserLicense` — só contagens. Sandbox de QA sem licença livre não tem como testar perfil de usuário (achado SOMOSAGILITY-27) |
+| Em que ordem os processos de aprovação do objeto rodam? | retrieve de `ApprovalProcess` do objeto e leia a ordem; deploy de outra demanda pode invertê-la (achado SOMOSAGILITY-17 e 22) |
 | A sandbox de QA tem a mesma metadata? | quando a demanda depende de validation rule ou automação, compare o retrieve das duas orgs (`sbx-<cliente>-dev` e `-qa`) e registre a divergência |
 
 ## Proibido

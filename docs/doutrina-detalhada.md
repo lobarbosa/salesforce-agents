@@ -314,6 +314,18 @@ andamento ou na fila, nem em card congelado ou encerrado. Horas aprovadas pelo c
 ainda não debitadas entram no contrato no registro. Decisões do dono: descrição mais anexo
 obrigatórios, cliente homologa, admin e consultor podem registrar.
 
+**Skills alcançáveis e skills de operação** (2026-11-25): a sessão da esteira não libera a
+ferramenta de skill (`ALLOWED_TOOLS` em `orchestrator.py`), e seis agentes citavam skills só
+pelo nome; só o `recon` dava o caminho. Agora todo agente cita o arquivo
+(`.claude/skills/<nome>/SKILL.md`) e o `CLAUDE.md` manda abri-lo com Read. Do `qa.md` saíram
+os dois procedimentos que nem toda demanda usa (teste pela tela e QA em duas fases), para a
+skill `teste-em-sandbox`; no agente ficou o resumo, a regra que não pode ser esquecida e a
+ordem de ler o guia. O que vale em toda demanda continua no prompt do agente. Entraram
+também skills para quem opera e entrega, não para os agentes de etapa: `status-da-esteira`,
+`operar-esteira`, `homologacao-assistida`, `subir-producao`, `promover-qa-dev` e
+`portal-local` (com os scripts do ambiente local do portal). `revisar-custos` passou a ler o
+custo no banco e os CSV nas branches de demanda, onde eles de fato ficam.
+
 **Contexto enxuto** (2026-11-14): o `CLAUDE.md` da raiz caiu de 30 KB para as regras; o
 prompt do orquestrador diz qual subagente roda a etapa e manda não reler artefatos; a
 saída do `sf` nas ferramentas é cortada em 12 mil caracteres; os agentes consultam o

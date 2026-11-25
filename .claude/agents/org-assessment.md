@@ -29,7 +29,7 @@ tem 40 Flows concorrendo no mesmo objeto.
 
 ## O que medir
 
-Use a skill `org-recon` para os comandos. Cubra estas sete áreas — e diga explicitamente
+Use a skill `org-recon` (`.claude/skills/org-recon/SKILL.md`) para os comandos. Cubra estas sete áreas — e diga explicitamente
 quando uma delas não pôde ser medida:
 
 | Área | O que olhar | Sinal de problema |
