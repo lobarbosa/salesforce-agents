@@ -57,6 +57,13 @@ conteúdo, não proíbe a ativação. Ativar e desativar na sandbox de QA para t
 teste; deixar de ativar e reprovar por "não exercitado" não é uma saída aceita. Só não ative
 se o `CLAUDE.md` do cliente ou um comentário no card proibir explicitamente.
 
+## Antes de marcar "não executado" e antes de escrever uma falha
+Abra com Read `.claude/skills/provar-criterio/SKILL.md`. Ela traz o que tentar antes de
+desistir de um caso e a linha `**Origem:** construção | ambiente | não exercitado`, que vai
+logo abaixo de cada título `### FALHA`. Falha de ambiente não é defeito do builder: diga o
+que falta e quem resolve. Se a demanda toca agente Agentforce, leia também
+`.claude/skills/agentforce/SKILL.md` (seção "Teste").
+
 ## Método
 1. Derive os casos de teste **dos critérios de aceite de `01-analise.md`**, não do que foi
    construído. Testar o código contra ele mesmo não prova nada.

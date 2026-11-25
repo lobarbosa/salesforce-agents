@@ -326,6 +326,19 @@ também skills para quem opera e entrega, não para os agentes de etapa: `status
 `portal-local` (com os scripts do ambiente local do portal). `revisar-custos` passou a ler o
 custo no banco e os CSV nas branches de demanda, onde eles de fato ficam.
 
+**Skills por papel técnico** (2026-11-25): medição nas branches de 36 demandas que chegaram
+ao QA: 45 roteiros reprovados e 31 aprovados; 54 verificações, das quais 22 inconclusivas e
+14 reprovadas; 6 builds bloqueados em 46. Das 71 falhas registradas pelo QA, cerca de 27
+eram "não consegui exercitar", 14 eram de ambiente ou ativação e cerca de 30 eram defeito de
+construção, nove delas de comportamento de agente Agentforce. Reprovar por não ter
+exercitado devolve a demanda ao builder, que não tem o que corrigir (três demandas repetiram
+a mesma falha em rodadas seguidas). Daí cinco skills, uma por papel, cada uma citada com
+caminho no agente: `design-testavel` (arquiteto: plano de prova por critério e
+pré-requisitos de ambiente), `construir-flow` (builder declarativo), `construir-apex`
+(desenvolvedor), `agentforce` (os três, mais o QA) e `provar-criterio` (verificador e QA: o
+que tentar antes de "não executado", e a linha `**Origem:**` abaixo de cada falha). A esteira
+ainda trata toda reprovação do mesmo jeito; rotear pela origem é o passo seguinte.
+
 **Contexto enxuto** (2026-11-14): o `CLAUDE.md` da raiz caiu de 30 KB para as regras; o
 prompt do orquestrador diz qual subagente roda a etapa e manda não reler artefatos; a
 saída do `sf` nas ferramentas é cortada em 12 mil caracteres; os agentes consultam o

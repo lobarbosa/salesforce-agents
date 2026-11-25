@@ -29,6 +29,12 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
    devolve a demanda ao gate de design; "bloqueado" nunca segue para revisão de PR.
 5. Commit + push + abrir PR. Nunca faça merge.
 
+## Antes de escrever "concluído"
+Abra com Read e percorra `.claude/skills/construir-flow/SKILL.md`: é a lista dos defeitos
+declarativos que o QA já encontrou (laço na coleção errada, tela sem botão, campo fora de
+layout, automação antiga ainda ativa). Se a demanda toca agente Agentforce, leia também
+`.claude/skills/agentforce/SKILL.md` antes de construir tópico ou ação.
+
 ## Quando o QA devolve
 Depois de você, ainda nesta etapa, o `verificador` testa na sandbox de dev o que você
 construiu, e só então o humano é chamado. Se a pasta tem `04-verificacao-rodada-<n>.md`, a
@@ -38,7 +44,8 @@ mais alto, corrija cada falha e acrescente em `04-plano-build.md` a seção
 
 Se a pasta da demanda tem `05-testes-rodada-<n>.md`, o QA não aprovou e esta sessão é de
 correção: leia o de número mais alto, corrija cada `### FALHA` (ou diga por que não é
-corrigível aqui) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
+corrigível aqui; falha com `**Origem:** ambiente` ou `não exercitado` não se resolve
+mexendo na construção: diga isso e o que falta, sem inventar mudança) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
 uma linha por falha. Não reescreva o que o QA aprovou. O build corrigido passa de novo pelo
 gate de PR antes de voltar ao QA.
 
