@@ -407,6 +407,31 @@ def test_entregue_com_qa_aprovado_e_documento_passa(repo):
     assert demands.transition("acme", d.id, "entregue", "pipeline").status == "entregue"
 
 
+ENTREGA_MANUAL = (
+    "**Entrega manual:** registrada\n**Por:** Consultora\n**Em:** 2026-11-25T12:00:00Z\n"
+    "**Evidência:** print.png\n\n# Entrega manual\n\n## O que foi feito\n\nRelatório desativado na org.\n"
+)
+
+
+def test_entrega_manual_registrada_vale_como_evidencia(repo):
+    """2026-11-25: trabalho concluído pelo consultor fora da esteira, com registro e evidência."""
+    d = _demanda("backlog")
+    (_pasta(d) / demands.ARQUIVO_ENTREGA_MANUAL).write_text(ENTREGA_MANUAL, encoding="utf-8")
+    assert demands.transition("acme", d.id, "entregue", "Cliente").status == "entregue"
+
+
+def test_entrega_manual_incompleta_nao_vale(repo):
+    """Arquivo vazio ou sem evidência nomeada não abre a porta."""
+    d = _demanda("backlog")
+    registro = _pasta(d) / demands.ARQUIVO_ENTREGA_MANUAL
+    registro.write_text("", encoding="utf-8")
+    with pytest.raises(demands.EntregaSemEvidenciaError):
+        demands.transition("acme", d.id, "entregue", "alguém")
+    registro.write_text(ENTREGA_MANUAL.replace("print.png", ""), encoding="utf-8")
+    with pytest.raises(demands.EntregaSemEvidenciaError):
+        demands.transition("acme", d.id, "entregue", "alguém")
+
+
 def test_saida_longa_do_sf_e_cortada():
     tools = pytest.importorskip("salesforce_agents.tools")
     texto = "x" * 50_000

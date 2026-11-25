@@ -1,5 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import type { Prisma } from "@/lib/generated/prisma/client";
+import { registrarStatusNoGit } from "@/lib/github";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { processarFila } from "@/lib/fila-esteira";
 import { GATE_DO_CLIENTE, estimativaLiberaBuild, marcadorDeGate } from "@/lib/demandas";
@@ -50,6 +52,64 @@ export async function POST(
       { error: "este gate é interno de delivery — quem aprova é o time da Acxya" },
       { status: 403 }
     );
+  }
+
+  // Entrega manual (lib/entrega-manual.ts): o consultor já concluiu o trabalho
+  // e registrou a evidência. Homologar encerra o card aqui mesmo — não há
+  // etapa de agente para disparar, e a demanda pode nem estar no repositório.
+  if (demanda.entregaManualEm && demanda.status === GATE_DO_CLIENTE) {
+    const autor = usuario.nome.trim() || usuario.email;
+    // Ninguém entrega sozinho: quem homologa é o cliente, ou um admin em nome
+    // dele — nunca a mesma pessoa que registrou a entrega.
+    if (usuario.role !== "cliente" && usuario.role !== "admin") {
+      return NextResponse.json(
+        { error: "quem homologa a entrega manual é o cliente (ou um admin em nome dele)" },
+        { status: 403 }
+      );
+    }
+    if (autor === demanda.entregaManualPor) {
+      return NextResponse.json(
+        { error: "você registrou esta entrega — a homologação precisa ser de outra pessoa" },
+        { status: 403 }
+      );
+    }
+    if (demanda.materializadoEm) {
+      try {
+        await registrarStatusNoGit(demanda.client.slug, demanda.code, "entregue", autor, "homologação da entrega manual");
+      } catch (err) {
+        return NextResponse.json(
+          { error: `não consegui gravar a entrega no repositório: ${(err as Error).message}` },
+          { status: 502 }
+        );
+      }
+    }
+    const mudou = await prisma.$transaction(async (tx) => {
+      await travar(tx, `aprovar-gate:${demanda.id}`);
+      const { count } = await tx.demanda.updateMany({
+        where: { id: demanda.id, status: GATE_DO_CLIENTE },
+        data: {
+          status: "entregue",
+          historico: [
+            ...(Array.isArray(demanda.historico) ? demanda.historico : []),
+            { de: GATE_DO_CLIENTE, para: "entregue", autor, em: new Date().toISOString(), motivo: "homologação da entrega manual" },
+          ] as Prisma.InputJsonValue,
+        },
+      });
+      if (count === 0) return false;
+      await tx.comentario.create({
+        data: {
+          demandaId: demanda.id,
+          autor,
+          autorEmail: usuario.email,
+          texto: `${marcadorDeGate(GATE_DO_CLIENTE)} Entrega manual homologada; demanda entregue.`,
+        },
+      });
+      return true;
+    });
+    if (!mudou) {
+      return NextResponse.json({ error: "a demanda saiu deste gate enquanto você decidia — recarregue" }, { status: 409 });
+    }
+    return NextResponse.json({ ok: true, gate: GATE_DO_CLIENTE, por: autor, entregue: true });
   }
 
   if (!demanda.materializadoEm) {

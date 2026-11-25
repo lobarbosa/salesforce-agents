@@ -298,6 +298,22 @@ O cliente não vê esse anexo nem consegue baixá-lo antes da homologação.
 no fluxo e em correção manual. Achado real: quatro demandas da Somos foram marcadas
 "entregue" por correção manual tendo só o texto do pedido.
 
+**Entrega manual** (2026-11-25): alguns cards são concluídos pelo consultor fora da esteira
+(tarefa manual na org, ajuste feito em reunião, trabalho que não é metadata), e a regra
+acima não deixava encerrá-los. A regra continua; muda quem produz a evidência. No card, o
+consultor ou o admin usa "Entregar manualmente" (`components/EntregaManual.tsx`,
+`/api/demandas/[id]/entrega-manual`): descreve o que foi feito (30 caracteres no mínimo) e
+anexa uma evidência, as duas obrigatórias. O Squad OS grava `06-entrega-manual.md` na pasta
+da demanda, com `**Entrega manual:**`, `**Por:**`, `**Em:**` e `**Evidência:**`, e leva o
+card a `aguardando_homologacao`. O cliente vê o registro e a evidência e homologa; só então
+o card vira `entregue`, sem disparar agente (`/aprovar-gate`). Quem homologa é o cliente ou
+um admin em nome dele, nunca quem registrou a entrega. `demands.transition` aceita o
+registro completo no lugar de `05-testes.md` + `06-entrega.md` (`entrega_manual_registrada`);
+arquivo vazio ou sem evidência nomeada não vale. Não entra com execução da esteira em
+andamento ou na fila, nem em card congelado ou encerrado. Horas aprovadas pelo cliente e
+ainda não debitadas entram no contrato no registro. Decisões do dono: descrição mais anexo
+obrigatórios, cliente homologa, admin e consultor podem registrar.
+
 **Contexto enxuto** (2026-11-14): o `CLAUDE.md` da raiz caiu de 30 KB para as regras; o
 prompt do orquestrador diz qual subagente roda a etapa e manda não reler artefatos; a
 saída do `sf` nas ferramentas é cortada em 12 mil caracteres; os agentes consultam o
