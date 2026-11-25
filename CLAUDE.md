@@ -52,7 +52,10 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
   teste" (PDF) com o `05-testes.md` e as capturas de tela que o QA guardou em `evidencias/`.
   Mesma regra de quem vê. Só tela de registro de teste.
 - **Nada é marcado como entregue sem evidência**: `entregue` exige `05-testes.md` aprovado
-  na sandbox de QA e `06-entrega.md`, no fluxo ou em correção manual.
+  na sandbox de QA e `06-entrega.md`, no fluxo ou em correção manual. A única outra porta
+  é a **entrega manual**: trabalho que o consultor concluiu fora da esteira, registrado no
+  Squad OS com descrição e evidência anexada (`06-entrega-manual.md`) e homologado pelo
+  cliente. Só gente registra entrega manual; agente nunca escreve esse arquivo.
 - `gates.md` e `status.yaml` são escritos pela esteira (`sfagents`), nunca pelo agente.
 - Antes de cada sessão a esteira grava `00-preflight.md`: versão ativa de agente e Flow, job
   pendente das classes, e outras demandas do cliente mexendo nos mesmos componentes. Leia antes

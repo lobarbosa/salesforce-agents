@@ -269,6 +269,32 @@ async function branchExiste(nome: string): Promise<boolean> {
   }
 }
 
+// Entrega manual (lib/entrega-manual.ts): grava o registro do consultor na
+// pasta da demanda, no mesmo branch em que a esteira lê o status.
+export async function gravarArquivoDaDemandaNoGit(clientSlug: string, code: string, nome: string, conteudo: string) {
+  const { branch: base, owner, repo } = repoConfig();
+  const feature = `feature/${code}`;
+  const ref = (await branchExiste(feature)) ? feature : base;
+  const path = `clients/${clientSlug}/demandas/${code}/${nome}`;
+  const gh = octokit();
+  let sha: string | undefined;
+  try {
+    const atual = await gh.repos.getContent({ owner, repo, path, ref });
+    if (!Array.isArray(atual.data) && atual.data.type === "file") sha = atual.data.sha;
+  } catch (err) {
+    if ((err as { status?: number }).status !== 404) throw err;
+  }
+  await gh.repos.createOrUpdateFileContents({
+    owner,
+    repo,
+    branch: ref,
+    path,
+    message: `${code}: registrar ${nome} via Squad OS`,
+    content: Buffer.from(conteudo, "utf-8").toString("base64"),
+    sha,
+  });
+}
+
 // Congelar/cancelar/descongelar uma demanda já materializada precisa mudar o
 // status.yaml — ele é a fonte de verdade, e o sync de volta sobrescreveria o
 // Postgres com a etapa antiga na próxima execução. Escreve onde a esteira lê:

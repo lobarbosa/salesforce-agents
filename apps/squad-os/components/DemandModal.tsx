@@ -9,6 +9,7 @@ import { DecisaoProposta } from "@/components/PropostaMelhoria";
 import { propostaPendente } from "@/lib/assessment-propostas";
 import { QuemAgeChips } from "@/components/DemandCard";
 import { Modal } from "@/components/Modal";
+import { EntregaManual } from "@/components/EntregaManual";
 import { Artefato } from "@/components/Artefato";
 import { DemandaPainel } from "@/components/DemandaPainel";
 import {
@@ -75,6 +76,8 @@ export function DemandModal({
   // Decide o botão de aprovar, o artefato que aparece e as perguntas que
   // podem ser respondidas: as três coisas são o mesmo gate.
   const podeAprovarEsteGate = podeAprovarGate(canManage, demanda.status);
+  // Entrega manual esperando a homologação (lib/entrega-manual.ts).
+  const entregaManual = !!demanda.entregaManualEm && demanda.status === "aguardando_homologacao";
   // Liberado = o clique já foi aceito e a próxima etapa está a caminho; o
   // status só muda quando a execução sincroniza. Sem isto, reabrir o card
   // nesse meio-tempo mostrava o botão de novo.
@@ -287,7 +290,9 @@ export function DemandModal({
           {podeAprovarEsteGate ? (
             <>
               <p className="gate-texto">
-                {visaoCliente
+                {entregaManual
+                  ? `Entrega manual: ${demanda.entregaManualPor || "a equipe"} concluiu este trabalho fora da esteira de agentes e registrou abaixo o que foi feito, com a evidência nos anexos. Não houve teste automático. Ao aprovar, a demanda é marcada como entregue.`
+                  : visaoCliente
                   ? "Revise o que foi entregue e aprove quando estiver de acordo. Seu nome e a data ficam registrados, junto com a versão exata do que você aprovou."
                   : "A esteira parou aqui esperando aprovação. Ao liberar, a próxima etapa dispara sozinha na sandbox correspondente — e o seu nome fica registrado como quem aprovou."}
               </p>
@@ -305,9 +310,9 @@ export function DemandModal({
                   className="btn-primary"
                   type="button"
                   onClick={() => setConfirmandoGate(true)}
-                  disabled={!demanda.materializadoEm}
+                  disabled={!demanda.materializadoEm && !entregaManual}
                 >
-                  {visaoCliente ? "Aprovar a entrega" : "Aprovar e liberar a próxima etapa"}
+                  {visaoCliente || entregaManual ? "Aprovar a entrega" : "Aprovar e liberar a próxima etapa"}
                 </button>
               ) : (
                 // Dois passos de propósito: isto aciona agente contra a org do
@@ -315,7 +320,9 @@ export function DemandModal({
                 // ao lado de "Fechar" é acidente esperando acontecer.
                 <div className="gate-confirma" role="group" aria-label="Confirmar aprovação do gate">
                   <span>
-                    {visaoCliente
+                    {entregaManual
+                      ? "Confirma? A demanda será marcada como entregue. Não dá pra desfazer."
+                      : visaoCliente
                       ? "Confirma a aprovação? Não dá pra desfazer."
                       : "Confirma? Isso aciona os agentes agora."}
                   </span>
@@ -350,7 +357,7 @@ export function DemandModal({
                   </button>
                 </div>
               )}
-              {!demanda.materializadoEm && (
+              {!demanda.materializadoEm && !entregaManual && (
                 <p className="gate-texto">
                   {canManage
                     ? "Materialize a demanda primeiro — sem isso ela não existe no repositório pra avançar."
@@ -500,6 +507,7 @@ export function DemandModal({
           {aprovarErro}
         </p>
       )}
+      {canManage && <EntregaManual demanda={demanda} onClose={onClose} />}
       {canManage && <CicloDemanda demanda={demanda} onClose={onClose} />}
       <div className="modal-actions">
         <button className="btn-ghost" type="button" onClick={onClose}>

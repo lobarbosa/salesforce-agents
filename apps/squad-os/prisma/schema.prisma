@@ -343,6 +343,14 @@ model Demanda {
   congeladaDe  StatusDemanda? @map("congelada_de")
   motivoParada String         @default("") @map("motivo_parada")
 
+  // Entrega manual (2026-11-25): o consultor concluiu o trabalho fora da
+  // esteira e registrou o que fez, com evidência anexada. O card vai para a
+  // homologação e só vira `entregue` quando o cliente aprova
+  // (lib/entrega-manual.ts). Nulo = entrega pela esteira.
+  entregaManualEm        DateTime? @map("entrega_manual_em")
+  entregaManualPor       String    @default("") @map("entrega_manual_por")
+  entregaManualDescricao String    @default("") @map("entrega_manual_descricao")
+
   // De qual entregável contratado esta demanda nasceu, quando nasceu de um.
   // Opcional porque demanda de AMS não tem entregável, e porque mesmo em
   // projeto alguém pode abrir uma demanda fora do escopo contratado — e é
