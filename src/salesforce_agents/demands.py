@@ -66,7 +66,10 @@ _STAGE_ORDER = {stage: i for i, stage in enumerate(STAGES_EXECUCAO)}
 # indicado — reflete a "Estrutura de artefatos por demanda" do CLAUDE.md raiz.
 REQUIRED_ARTIFACTS = {
     "analise": ("01-analise.md",),
-    "design": ("02-recon.md", "03-design.md"),
+    # O documento técnico (skill `documento-tecnico`, 2026-11-26) vem antes do
+    # design: `revisao.artefato_do_gate` põe na mesa o último da tupla, e a
+    # decisão que o gate julga continua sendo o 03-design.md.
+    "design": ("02-recon.md", "03-documento-tecnico.md", "03-design.md"),
     "build": ("04-plano-build.md",),
     "qa": ("05-testes.md",),
     "release": ("06-entrega.md",),

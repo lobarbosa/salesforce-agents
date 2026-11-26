@@ -17,6 +17,8 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 
 ## Pré-requisito
 `03-design.md` com aceite registrado em `gates.md`. Sem isso, pare.
+Construa pelo `03-documento-tecnico.md` (componentes, campos, lógica, ordem e testes); onde
+ele e o design divergirem, vale o design, e a divergência vai para o plano de build.
 
 ## Fluxo
 1. `git checkout -b feature/<DEMAND-ID>-<slug>`

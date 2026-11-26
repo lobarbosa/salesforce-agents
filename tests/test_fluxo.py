@@ -49,7 +49,7 @@ QA_APROVADO = "**Veredito:** aprovado\n**Org de teste:** `sbx-acme-qa`\n\n| Caso
 
 TODOS_ARTEFATOS = {
     "analise": ("01-analise.md",),
-    "design": ("02-recon.md", "03-design.md"),
+    "design": ("02-recon.md", "03-documento-tecnico.md", "03-design.md"),
     "build": ("04-plano-build.md",),
     "qa": ("05-testes.md",),
     "release": ("06-entrega.md",),

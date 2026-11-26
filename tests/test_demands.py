@@ -73,7 +73,7 @@ def test_transition_allows_advance_once_artifact_exists():
     assert updated.status == "aguardando_gate_analise"
 
 
-def test_transition_requires_both_design_artifacts():
+def test_transition_requires_all_design_artifacts():
     d = demands.create("acme", "Demanda", "texto")
     demands.transition("acme", d.id, "analise", autor="leo")
     (d.path / "01-analise.md").write_text("# Análise\n", encoding="utf-8")
@@ -86,6 +86,11 @@ def test_transition_requires_both_design_artifacts():
         demands.transition("acme", d.id, "aguardando_gate_design", autor="leo")
 
     (d.path / "03-design.md").write_text("# Design\n", encoding="utf-8")
+    # design sem o documento técnico (skill documento-tecnico) também bloqueia
+    with pytest.raises(demands.ArtifactAusenteError, match="03-documento-tecnico.md"):
+        demands.transition("acme", d.id, "aguardando_gate_design", autor="leo")
+
+    (d.path / "03-documento-tecnico.md").write_text("# Documento técnico\n", encoding="utf-8")
     updated = demands.transition("acme", d.id, "aguardando_gate_design", autor="leo")
     assert updated.status == "aguardando_gate_design"
 
