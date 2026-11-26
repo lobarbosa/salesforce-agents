@@ -1,0 +1,118 @@
+name: Diagnóstico de chave externa repetida
+
+# Só leitura, numa sandbox da esteira. Conta quantos registros repetem uma
+# chave externa (por padrão Account.ProtheusId__c) e se a repetição é
+# duplicata de verdade (mesmo código e mesma loja) ou lojas diferentes do mesmo
+# cliente do ERP. Para um código pedido, lista os Ids das contas com a loja e
+# quantos pedidos, oportunidades e devoluções cada uma tem. Nenhum nome,
+# documento, contato ou valor sai daqui (guardrail #2).
+#
+# Achado que motivou (2026-11-26, Eplast): a integração de devoluções do
+# Protheus recebe HTTP 400 DUPLICATE_EXTERNAL_ID ao gravar SalesReturn__c.
+# Ver scripts/diagnostico_chave_externa.py.
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Cliente (pasta em clients/ e prefixo do GitHub Environment)'
+        required: true
+        default: eplast
+      ambiente:
+        description: 'Qual sandbox consultar'
+        required: true
+        type: choice
+        default: qa
+        options: [dev, qa]
+      codigo:
+        description: 'Opcional: um código para detalhar registro a registro (ex.: 000922)'
+        required: false
+        default: ''
+      ids:
+        description: 'Opcional: Ids de conta separados por vírgula para conferir'
+        required: false
+        default: ''
+      objeto:
+        description: 'Objeto da chave externa'
+        required: false
+        default: Account
+      campo:
+        description: 'Campo da chave externa'
+        required: false
+        default: ProtheusId__c
+      loja:
+        description: 'Campo que separa lojas do mesmo código'
+        required: false
+        default: Store__c
+
+permissions:
+  contents: read
+
+concurrency:
+  group: diagnostico-${{ inputs.client }}-${{ inputs.ambiente }}
+  cancel-in-progress: false
+
+jobs:
+  diagnosticar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: ${{ inputs.client }}-${{ inputs.ambiente }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar Salesforce CLI
+        run: npm install -g @salesforce/cli
+
+      - name: Autenticar via JWT
+        run: |
+          echo "${{ secrets.SF_JWT_KEY }}" > server.key
+          CLIENT_ID="$(printf '%s' "${{ secrets.SF_CLIENT_ID }}" | tr -d '[:space:]')"
+          USERNAME="$(printf '%s' "${{ secrets.SF_USERNAME }}" | tr -d '[:space:]')"
+          sf org login jwt \
+            --client-id "$CLIENT_ID" \
+            --jwt-key-file server.key \
+            --username "$USERNAME" \
+            --instance-url https://test.salesforce.com \
+            --alias "sbx-${{ inputs.client }}-${{ inputs.ambiente }}"
+          rm -f server.key
+
+      - name: Confirmar que é sandbox
+        env:
+          ORG: sbx-${{ inputs.client }}-${{ inputs.ambiente }}
+        run: |
+          SANDBOX=$(sf data query --query "SELECT IsSandbox FROM Organization" --target-org "$ORG" --json | jq -r '.result.records[0].IsSandbox')
+          if [ "$SANDBOX" != "true" ]; then
+            echo "::error::A org autenticada como $ORG não se declara sandbox. Nada foi consultado."
+            exit 1
+          fi
+
+      - name: Diagnosticar
+        env:
+          ORG: sbx-${{ inputs.client }}-${{ inputs.ambiente }}
+          CODIGO: ${{ inputs.codigo }}
+          IDS: ${{ inputs.ids }}
+          OBJETO: ${{ inputs.objeto }}
+          CAMPO: ${{ inputs.campo }}
+          LOJA: ${{ inputs.loja }}
+        run: |
+          python3 scripts/diagnostico_chave_externa.py \
+            --target-org "$ORG" --objeto "$OBJETO" --campo "$CAMPO" --loja "$LOJA" \
+            --codigo "$CODIGO" --ids "$IDS" | tee diagnostico.md
+          cat diagnostico.md >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Guardar o relatório
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: diagnostico-${{ inputs.client }}-${{ inputs.ambiente }}
+          path: diagnostico.md
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Limpar credencial
+        if: always()
+        run: rm -f server.key
