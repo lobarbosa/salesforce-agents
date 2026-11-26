@@ -1,6 +1,6 @@
 # Devoluções do Protheus recusadas com DUPLICATE_EXTERNAL_ID
 
-**Data:** 2026-11-26 · **Org analisada:** metadata do repositório (`clients/eplast/force-app`); dados da `sbx-eplast-qa` pendentes do diagnóstico (abaixo) · **Origem:** proposta "Konecta + Eplast" (16 h, R$ 4.160)
+**Data:** 2026-11-26 · **Org analisada:** metadata do repositório (`clients/eplast/force-app`) e dados da `sbx-eplast-qa` (QAS, Partial Copy), [diagnóstico de 2026-11-26](https://github.com/lobarbosa/salesforce-agents/actions/runs/45733423734) · **Origem:** proposta "Konecta + Eplast" (16 h, R$ 4.160)
 
 ## Resumo
 
@@ -12,8 +12,51 @@ qual usar e recusa o registro (`DUPLICATE_EXTERNAL_ID`, HTTP 400).
 
 A proposta trata o caso como duplicidade de cadastro e corrige apagando o código de uma das
 contas. **Se as contas forem lojas diferentes, isso quebra a loja que perder o código**: os
-pedidos dela deixam de ir ao ERP. A correção certa depende de uma resposta que só os dados
-dão, e o diagnóstico abaixo a obtém sem expor dado de cliente.
+pedidos dela deixam de ir ao ERP.
+
+**O diagnóstico na QAS confirmou: as duas contas do código 000922 citadas na proposta são a
+loja 01 (matriz, com 2 contas filhas e 2 pedidos) e a loja 02 (filial, com conta mãe, 7
+pedidos e 1 devolução).** Não são duplicata. Apagar o código de qualquer uma quebra os pedidos
+dela. Dos 14 códigos repetidos na amostra, 13 são lojas diferentes e só 1 é duplicata de
+verdade.
+
+## Resultado do diagnóstico na QAS (2026-11-26)
+
+| Medida | Valor |
+| --- | --- |
+| Contas com `ProtheusId__c` | 1.210 |
+| Códigos usados por mais de uma conta | 14 (30 contas) |
+| ... dos quais lojas diferentes do mesmo código | 13 |
+| ... dos quais mesmo código e mesma loja (duplicata) | 1 |
+| ... com conta sem loja | 0 |
+| `ProtheusId__c` único na org | não (chave externa, não única, sem diferenciar maiúsculas) |
+| Filiais (`Branch__c.CodeERP__c`) repetidas | 0 |
+| CNPJ (`CompanyDocument__c`) repetido | 2 valores, 4 contas |
+| Devoluções (`SalesReturn__c`) | 281, todas com conta |
+| Devoluções com mesmo número e item | **46 combinações, 144 registros** |
+
+Código 000922, conta a conta (só Id, loja e contagens):
+
+| Id | Loja | Conta mãe | Criada | Pedidos | Oportunidades | Devoluções | Contas filhas |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| `001bJ000005eYOqQAM` | 01 | não | 2024-07-15 | 2 | 2 | 0 | 2 |
+| `001bJ000005fzsxQAA` | 02 | sim | 2024-07-16 | 7 | 7 | 1 | 0 |
+
+O segundo Id da proposta está escrito `001bJ000005fzsXQAA`, com um `X` maiúsculo; a conta é a
+`001bJ000005fzsxQAA`. O Id de 18 caracteres não diferencia maiúsculas, então é a mesma.
+
+O que isso diz:
+
+- **A causa é a chave sem loja, não cadastro sujo.** Em 13 de 14 códigos repetidos a repetição
+  é legítima. Qualquer devolução de cliente com mais de uma loja vai bater no mesmo erro, por
+  mais que se limpe o cadastro.
+- **A filial não é a causa.** Nenhum `CodeERP__c` repetido.
+- **Já há devolução gravada em duplicidade.** 144 registros repetem número e item. Pode ser
+  reenvio por POST (a devolução não tem chave externa) ou um documento legítimo com mesmo
+  número e item em série diferente: a confirmar antes de qualquer reprocessamento.
+- **O CNPJ não serve de chave hoje sem limpeza**: 2 valores repetidos.
+- A QAS é uma amostra antiga; em produção os números são outros, a natureza tende a ser a
+  mesma.
 
 ## O que a metadata mostra
 
@@ -44,7 +87,7 @@ número), repetido em cada item. Daí:
 | `Account.CompanyDocument__c` (CNPJ) também é chave externa, não única | Alternativa de chave por loja que já existe, sem campo novo, se o CNPJ estiver limpo |
 | O nome da conta segue o padrão `<código> - <razão social>` | O código aparece no nome; não serve de chave, mas ajuda a conferir |
 
-## O que falta confirmar nos dados (diagnóstico)
+## Como o diagnóstico foi feito
 
 Workflow **Diagnóstico de chave externa repetida** (`diagnostico-chave-externa.yml`), só
 leitura e só contagens, com `client=eplast`, `ambiente=qa`, `codigo=000922` e
@@ -118,11 +161,12 @@ Salesforce da conta (`AccountId__c` direto), escolhido pela loja que veio na dev
 ## Impacto na proposta enviada
 
 - A Fase 2 ("o registro incorreto terá seu ID Externo removido") só vale para duplicata de
-  verdade. Para lojas diferentes ela quebra a integração de pedidos da loja afetada.
+  verdade. Para lojas diferentes ela quebra a integração de pedidos da loja afetada. **No caso
+  reportado (000922) são lojas diferentes: a Fase 2 não deve ser executada.**
 - A Fase 3 (reprocessar por POST) pode criar devolução repetida para o que já entrou: a
   devolução não tem chave externa. Reprocessar só depois do upsert, ou só o que comprovadamente
   não entrou.
-- A Fase 1 olha só a conta; o erro pode vir da filial (`CodeERP__c` também não é único).
+- A filial foi descartada como causa: nenhum `CodeERP__c` repetido na QAS.
 - O escopo cresce: campo, Flow e carga da chave composta, mais a mudança no ERP ou o Flow da
   devolução. Estimativa a refazer depois do diagnóstico (skill `estimar-esforco`).
 - A premissa "o erro está restrito a duplicidade de dados" precisa virar "o erro vem da chave

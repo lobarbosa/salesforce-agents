@@ -67,6 +67,19 @@ def classificar(pares: list[dict], campo: str, loja: str) -> dict:
     return resultado
 
 
+def mesmo_id(informado: str, da_org: str) -> bool:
+    """Compara um Id informado com o Id de 18 caracteres que a org devolve.
+
+    O Id de 15 caracteres diferencia maiúsculas; o de 18 não (os 3 últimos
+    caracteres existem para isso). Achado do primeiro diagnóstico da Eplast
+    (2026-11-26): um Id copiado com uma letra trocada de caixa foi dado como
+    inexistente, sendo a mesma conta.
+    """
+    if len(informado) == 18:
+        return informado.lower() == da_org.lower()
+    return informado == da_org[:15]
+
+
 def contas_afetadas(pares: list[dict]) -> int:
     return sum(int(l.get("n") or 0) for l in pares)
 
@@ -220,16 +233,14 @@ def main(argv: list[str] | None = None) -> int:
             f"WHERE {campo} = {_lista_soql([a.codigo])} ORDER BY CreatedDate LIMIT 50",
         )
     if ids:
-        ja = {r["Id"] for r in alvo}
-        extra = [i for i in ids if i not in ja and i[:15] not in {x[:15] for x in ja}]
+        extra = [i for i in ids if not any(mesmo_id(i, r["Id"]) for r in alvo)]
         if extra:
             alvo += _consultar(
                 org,
                 f"SELECT Id, {campo}, {loja}, ParentId, CreatedDate, LastModifiedDate FROM {obj} "
                 f"WHERE Id IN ({_lista_soql(extra)})",
             )
-        encontrados = {r["Id"][:15] for r in alvo}
-        faltam = [i for i in ids if i[:15] not in encontrados]
+        faltam = [i for i in ids if not any(mesmo_id(i, r["Id"]) for r in alvo)]
     else:
         faltam = []
 
