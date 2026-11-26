@@ -294,15 +294,27 @@ def main(argv: list[str] | None = None) -> int:
 # devolução cria outra. Estas contagens dizem se a filial também repete chave e
 # se já há devolução gravada duas vezes (mesmo número e item).
 OUTRAS_CHAVES = (
-    ("`Branch__c.CodeERP__c` (filial)",
-     "SELECT CodeERP__c, COUNT(Id) n FROM Branch__c WHERE CodeERP__c != null "
-     f"GROUP BY CodeERP__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"),
-    ("`Account.CompanyDocument__c` (CNPJ)",
-     "SELECT CompanyDocument__c, COUNT(Id) n FROM Account WHERE CompanyDocument__c != null "
-     f"GROUP BY CompanyDocument__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"),
-    ("`SalesReturn__c` com mesmo `ProtheusId__c` e `Item__c`",
-     "SELECT ProtheusId__c, Item__c, COUNT(Id) n FROM SalesReturn__c WHERE ProtheusId__c != null "
-     f"GROUP BY ProtheusId__c, Item__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"),
+    (
+        "`Branch__c.CodeERP__c` (filial)",
+        (
+            "SELECT CodeERP__c, COUNT(Id) n FROM Branch__c WHERE CodeERP__c != null "
+            f"GROUP BY CodeERP__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"
+        ),
+    ),
+    (
+        "`Account.CompanyDocument__c` (CNPJ)",
+        (
+            "SELECT CompanyDocument__c, COUNT(Id) n FROM Account WHERE CompanyDocument__c != null "
+            f"GROUP BY CompanyDocument__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"
+        ),
+    ),
+    (
+        "`SalesReturn__c` com mesmo `ProtheusId__c` e `Item__c`",
+        (
+            "SELECT ProtheusId__c, Item__c, COUNT(Id) n FROM SalesReturn__c WHERE ProtheusId__c != null "
+            f"GROUP BY ProtheusId__c, Item__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"
+        ),
+    ),
 )
 
 
