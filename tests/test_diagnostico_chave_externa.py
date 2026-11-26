@@ -50,3 +50,9 @@ def test_definicao_dos_campos_le_o_describe():
     linhas = "\n".join(diag.linhas_de_definicao(describe, ["ProtheusId__c", "Store__c"]))
     assert "| `ProtheusId__c` | string | 255 | sim | não | não |" in linhas
     assert "`Store__c` | não existe nesta org" in linhas
+
+
+def test_id_de_18_nao_diferencia_maiusculas_e_o_de_15_sim():
+    assert diag.mesmo_id("001bJ000005fzsXQAA", "001bJ000005fzsxQAA")
+    assert diag.mesmo_id("001bJ000005fzsx", "001bJ000005fzsxQAA")
+    assert not diag.mesmo_id("001bJ000005fzsX", "001bJ000005fzsxQAA")
