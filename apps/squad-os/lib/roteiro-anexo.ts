@@ -1,3 +1,4 @@
+import { EMISSOR_DOCUMENTOS } from "@/lib/marca";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { prisma } from "@/lib/prisma";
@@ -50,7 +51,7 @@ export async function publicarRoteiroComoAnexo(d: DemandaDoRoteiro, markdown: st
     const logo = await readFile(join(process.cwd(), "public", "marca.png")).catch(() => null);
     const pdf = await gerarPdfRoteiro(
       markdown,
-      { clienteNome: d.clienteNome, codigo: d.code, titulo: d.titulo, emissor: "Acxya", geradoEm: chaveDia(new Date()) },
+      { clienteNome: d.clienteNome, codigo: d.code, titulo: d.titulo, emissor: EMISSOR_DOCUMENTOS, geradoEm: chaveDia(new Date()) },
       logo
     );
     const { error } = await createServiceClient()
