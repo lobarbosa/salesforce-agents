@@ -1,3 +1,4 @@
+import { EMISSOR_DOCUMENTOS } from "@/lib/marca";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
@@ -66,7 +67,7 @@ export async function publicarDocumentoTecnicoComoAnexo(
     const logo = await readFile(join(process.cwd(), "public", "marca.png")).catch(() => null);
     const pdf = await gerarPdfRoteiro(
       markdown,
-      { clienteNome: d.clienteNome, codigo: d.code, titulo: d.titulo, emissor: "Acxya", geradoEm: chaveDia(new Date()) },
+      { clienteNome: d.clienteNome, codigo: d.code, titulo: d.titulo, emissor: EMISSOR_DOCUMENTOS, geradoEm: chaveDia(new Date()) },
       logo,
       DOCUMENTO_TECNICO
     );

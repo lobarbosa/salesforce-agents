@@ -1,3 +1,4 @@
+import { EMISSOR_DOCUMENTOS } from "@/lib/marca";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { NextResponse, type NextRequest } from "next/server";
@@ -44,7 +45,7 @@ export async function GET(request: NextRequest) {
   const logo = await readFile(join(process.cwd(), "public", "marca.png")).catch(() => null);
   const pdf = await gerarPdfEspelho(
     espelho,
-    { clienteNome: cliente.nome, consultor: nomeConsultor, emissor: "Acxya", geradoEm: hoje },
+    { clienteNome: cliente.nome, consultor: nomeConsultor, emissor: EMISSOR_DOCUMENTOS, geradoEm: hoje },
     logo
   );
   return new NextResponse(new Uint8Array(pdf), {

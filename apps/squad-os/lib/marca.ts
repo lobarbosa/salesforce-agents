@@ -37,3 +37,9 @@ export function marcaDarkUrl(): string | null {
   cacheDark = achado ? `/${achado}` : null;
   return cacheDark;
 }
+
+// Nome de quem emite os documentos que vão para o cliente (espelho de horas,
+// documento técnico, evidências, roteiro), no rodapé e no autor do PDF. Igual
+// ao logo da marca (public/marca.png): decisão do CEO em 26/11/2026 de manter
+// Konecta nos documentos — o rodapé dizia "Acxya" debaixo do logo Konecta.
+export const EMISSOR_DOCUMENTOS = "Konecta";
