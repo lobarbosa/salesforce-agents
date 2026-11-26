@@ -29,6 +29,11 @@ cliente. Antes de qualquer comando, confirme a org com `sf org list` e cite-a pe
    e se a sandbox tem dado para testar.
 5. **Permissões.** Perfis e permission sets que alcançam os objetos, e OWD quando importar.
 
+6. **Impacto cruzado.** Abra com Read `.claude/skills/impacto-cruzado/SKILL.md` e levante o
+   que ela pede: tudo o que roda no mesmo evento (inclusive no objeto pai), quem referencia
+   o que será alterado, as diferenças entre dev e QA e as outras demandas abertas nos
+   mesmos componentes. É o que o arquiteto mais usa e o que mais reprova QA quando falta.
+
 ## Formato de `02-recon.md`
 Tabelas curtas, uma por seção acima, com o comando que provou cada linha. Termine com
 "O que não consegui confirmar", item a item — incerteza declarada vale mais que suposição.

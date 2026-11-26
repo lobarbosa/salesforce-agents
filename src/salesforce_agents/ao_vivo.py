@@ -65,7 +65,7 @@ def resumir_ferramenta(nome: str, entrada: dict | None) -> str:
 
 
 def nome_curto_de_ferramenta(nome: str) -> str:
-    # mcp__salesforce-tools__sf_query → sf_query
+    # mcp__salesforce-tools__qa_browser_open → qa_browser_open
     return nome.rsplit("__", 1)[-1][:60]
 
 

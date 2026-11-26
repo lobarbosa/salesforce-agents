@@ -2,7 +2,7 @@ id: SOMOSAGILITY-26
 client: somos-agility
 titulo: Campos de preenchimento Cenário SF
 tipo: sustentacao
-status: aguardando_homologacao
+status: entregue
 criado_em: '2026-11-04T20:16:11.384Z'
 historico:
 - de: null
@@ -93,3 +93,11 @@ historico:
   para: aguardando_homologacao
   autor: pipeline
   em: '2026-11-20T23:41:42.710511+00:00'
+- de: aguardando_homologacao
+  para: release
+  autor: Carlos Sordi
+  em: '2026-11-26T11:58:32.623106+00:00'
+- de: release
+  para: entregue
+  autor: pipeline
+  em: '2026-11-26T12:02:40.840274+00:00'

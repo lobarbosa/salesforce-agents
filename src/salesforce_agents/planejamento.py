@@ -16,7 +16,7 @@ import json
 from pathlib import Path
 
 
-# Nem `sf_deploy` nem `sf_query`: o planejador lê contrato e briefing, não org.
+# Sem Bash: o planejador lê contrato e briefing, não consulta a org.
 ALLOWED_TOOLS = ["Read", "Write", "Edit", "Grep", "Glob", "Task"]
 
 DEMAND_ID_SENTINELA = "-planejamento-"

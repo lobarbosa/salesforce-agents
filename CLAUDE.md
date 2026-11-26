@@ -19,7 +19,7 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 |---|-------|--------|----------|------|
 | 1 | Análise e critérios de aceite | `ba-discovery` | `01-analise.md` | Humano aprova |
 | 2 | Recon da org | `recon` (skill `org-recon`) | `02-recon.md` | — |
-| 3 | Desenho da solução | `arquiteto` | `03-design.md` | **Arquiteto humano aprova** |
+| 3 | Desenho da solução | `arquiteto` | `03-design.md`, `03-documento-tecnico.md` | **Arquiteto humano aprova** |
 | 4 | Build em branch + sandbox dev, e verificação | `builder-declarativo` / `dev-apex`, depois `verificador` | `04-plano-build.md`, `04-verificacao.md` | Revisão do PR |
 | 5 | Testes na sandbox de QA | `qa` | `05-testes.md`, `05-roteiro-cliente.md` | Cliente homologa |
 | 6–7 | Deploy em QA e documentação | `release`, `doc` | `06-entrega.md` | — |
@@ -40,6 +40,10 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - `05-testes.md` abre com `**Veredito:** aprovado|reprovado` e `**Org de teste:**` com a
   sandbox de QA. Só aprovado, com evidência por caso, chega ao cliente; o resto volta para
   o build, e o roteiro reprovado fica como `05-testes-rodada-<n>.md`.
+- Cada `### FALHA` do roteiro traz `**Origem:** construção|ambiente|não exercitado` (skill
+  `provar-criterio`). Roteiro reprovado sem nenhuma falha de construção não volta ao build:
+  para no gate de build, com uma pessoa, que resolve o ambiente e reaprova para o QA rodar
+  de novo. Falha sem a linha conta como construção.
 - Automação agendada é testada em duas sessões de QA: a primeira arma e grava
   `**Veredito:** aguardando execução` (a demanda espera em `qa`); a segunda, depois do
   horário, confere e dá o veredito final.
@@ -52,13 +56,19 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
   teste" (PDF) com o `05-testes.md` e as capturas de tela que o QA guardou em `evidencias/`.
   Mesma regra de quem vê. Só tela de registro de teste.
 - **Nada é marcado como entregue sem evidência**: `entregue` exige `05-testes.md` aprovado
-  na sandbox de QA e `06-entrega.md`, no fluxo ou em correção manual.
+  na sandbox de QA e `06-entrega.md`, no fluxo ou em correção manual. A única outra porta
+  é a **entrega manual**: trabalho que o consultor concluiu fora da esteira, registrado no
+  Squad OS com descrição e evidência anexada (`06-entrega-manual.md`) e homologado pelo
+  cliente. Só gente registra entrega manual; agente nunca escreve esse arquivo.
 - `gates.md` e `status.yaml` são escritos pela esteira (`sfagents`), nunca pelo agente.
 - Antes de cada sessão a esteira grava `00-preflight.md`: versão ativa de agente e Flow, job
   pendente das classes, e outras demandas do cliente mexendo nos mesmos componentes. Leia antes
   de agir. Todo agente pode consultar e baixar metadata da org do job (`sf data query`,
   `sf project retrieve`) para conferir; o que for baixado fora do build é descartado.
 - Demais linhas que o portal lê: skill `padrao-entrega`.
+- Todo design sai com `03-documento-tecnico.md` no layout padrão (skill `documento-tecnico`):
+  como construir, para os devs Salesforce e o time do outro sistema. Sem ele a etapa não avança.
+  O Squad OS o publica no card como anexo "Documento técnico" (PDF), só para o time.
 
 ## Guardrails inegociáveis
 1. **Produção é proibida.** Só existem `sbx-<cliente>-dev` (build e antes) e
@@ -86,6 +96,12 @@ Tudo o que entra na sessão é relido a cada turno; é o maior custo da esteira.
 - Em `sf`, peça campos e metadata específicos, com LIMIT; não despeje describe ou retrieve
   inteiro na conversa.
 - Subagente devolve um resumo curto ao orquestrador, não o conteúdo do artefato.
+
+## Skills
+As skills citadas aqui e nos agentes são arquivos: `.claude/skills/<nome>/SKILL.md`. A
+sessão da esteira não tem ferramenta para carregá-las pelo nome. Quando um agente ou este
+arquivo mandar seguir uma skill, **abra o arquivo com Read** antes de agir; citar a skill
+sem ter lido não vale.
 
 ## Convenções
 - Flow, agente ou classe que já existe: **primeiro uma versão nova, depois a implementação**;

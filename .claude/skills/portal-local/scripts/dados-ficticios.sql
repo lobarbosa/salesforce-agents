@@ -1,0 +1,40 @@
+-- Dados fictícios para ver o portal: dois clientes inventados, quatro usuários (um por
+-- papel) e demandas em vários estágios. Nada aqui vem de cliente real, e não deve vir.
+insert into clients (id, slug, nome, segmento, contatos, ambiente_salesforce, integracoes, regras, assessment_status, assessment_saude, assessment_resumo, assessment_em) values
+ ('c1','aurora','Aurora Embalagens (fictícia)','Indústria','Contato fictício','Sales Cloud','ERP fictício','Sem regras','concluido','amarelo','Org com automações duplicadas e campos sem uso.', now() - interval '10 days'),
+ ('c2','boreal','Boreal Serviços (fictícia)','Serviços','','','','','nunca','','',null);
+insert into usuarios (id, email, role, nome, client_id) values
+ ('u1','admin@teste.local','admin','Ana Admin',null),
+ ('u2','consultor@teste.local','consultor','Caio Consultor',null),
+ ('u3','cliente@teste.local','cliente','Clara Cliente','c1'),
+ ('u4','financeiro@teste.local','financeiro','Fábio Financeiro',null);
+insert into contratos (id, client_id, tipo, horas_contratadas, ciclo_horas, atualizado_em, inicio_em) values ('k1','c1','ams',40,'mensal',now(), now() - interval '90 days');
+insert into contratos (id, client_id, tipo, horas_contratadas, ciclo_horas, atualizado_em, inicio_em, projeto_nome) values ('k2','c2','projeto',0,'mensal',now(), now() - interval '30 days','Esteira de renovação');
+insert into entregaveis (id, contrato_id, titulo, descricao, ordem, peso, concluido) values ('e1','k2','Esteira de renovação','Tipo de registro e etapas',1,60,false),('e2','k2','Painel de gestão','Relatórios',2,40,false);
+insert into ambientes_org (id, client_id, tipo, org_alias, status_conexao) values ('a1','c1','dev','sbx-aurora-dev','conectado'),('a2','c1','qa','sbx-aurora-qa','conectado'),('a3','c2','dev','sbx-boreal-dev','aguardando_teste');
+insert into demandas (id, client_id, code, titulo, tipo, texto, autor, status, historico, estimativa_consultor_horas, estimativa_aprovada_horas, artefato_nome, artefato_conteudo, criado_em) values
+ ('d1','c1','AURORA-1','Ajustar fluxo de aprovação de desconto','sustentacao','Hoje o desconto acima de 10% não pede aprovação do gerente.','Clara Cliente','aguardando_homologacao','[]',6,6,'05-testes.md', E'**Veredito:** aprovado\n**Org de teste:** `sbx-aurora-qa`\n\n# Testes\n\n| Caso | Status |\n|---|---|\n| Desconto 12% pede aprovação | passou |\n| Desconto 8% não pede | passou |', now() - interval '20 days'),
+ ('d2','c1','AURORA-2','Campo de origem do lead obrigatório','sustentacao','Tornar o campo origem obrigatório na criação do lead.','Clara Cliente','aguardando_gate_design','[]',4,null,'03-design.md', E'# Desenho\n\nRegra de validação no Lead.\n\n## Perguntas\n- Vale para leads importados?', now() - interval '12 days'),
+ ('d3','c1','AURORA-3','Relatório de oportunidades paradas','sustentacao','Preciso de um relatório das oportunidades sem atividade há 30 dias.','Clara Cliente','build','[]',3,3,'03-design.md','# Desenho\n\nRelatório padrão.', now() - interval '9 days'),
+ ('d4','c1','AURORA-4','Erro no somatório de despesas do projeto','sustentacao','O total de despesas não bate com a soma dos lançamentos.','Clara Cliente','aguardando_gate_analise','[]',null,null,'01-analise.md', E'# Análise\n\n## Critérios de aceite\n1. O total reflete a soma.\n\n## Perguntas\n- Quais tipos de despesa entram?', now() - interval '3 days'),
+ ('d5','c1','AURORA-5','Layout da página inicial do vendedor','sustentacao','Quero os atalhos de conta e oportunidade na home.','Clara Cliente','backlog','[]',null,null,'','', now() - interval '2 days'),
+ ('d6','c1','AURORA-6','Automatizar criação de oportunidade de renovação','sustentacao','Criar a oportunidade de renovação 90 dias antes do fim do contrato.','Caio Consultor','aguardando_gate_build','[]',12,12,'04-verificacao.md', E'**Verificação:** inconclusiva\n**Org de teste:** `sbx-aurora-dev`\n\nNão foi possível exercitar o agendamento.', now() - interval '15 days'),
+ ('d7','c1','AURORA-7','Desativar relatório semanal de leads','sustentacao','O relatório semanal não é mais usado.','Clara Cliente','entregue','[]',1,1,'06-entrega.md','# Entrega\n\nRelatório desativado.', now() - interval '40 days'),
+ ('d8','c1','AURORA-8','Carga de histórico de contratos','sustentacao','Carregar o histórico de contratos antigos.','Clara Cliente','standby','[]',19,null,'','', now() - interval '30 days'),
+ ('d9','c1','AURORA-9','Painel de controle financeiro por job','sustentacao','Painel com receita e despesa por job.','Clara Cliente','qa','[]',5,5,'04-plano-build.md','**Resultado do build:** concluído', now() - interval '7 days'),
+ ('d10','c2','BOREAL-1','Tipo de registro de renovação','projeto','Criar o tipo de registro de renovação.','Caio Consultor','planejada','[]',null,null,'','', now() - interval '5 days'),
+ ('d11','c2','BOREAL-2','Relatórios de gestão','projeto','Montar os relatórios do painel.','Caio Consultor','backlog','[]',null,null,'','', now() - interval '5 days');
+update demandas set entregavel_id='e1' where id='d10'; update demandas set entregavel_id='e2' where id='d11';
+update demandas set estimativa_debitada_horas=6, estimativa_debitada_em=now() where id='d1';
+update demandas set congelada_de='aguardando_gate_design', motivo_parada='Aguardando o cliente enviar a planilha' where id='d8';
+insert into disparos_esteira (id, client_id, demanda_id, tipo, gate, autor, criado_em, disparado_em, ambiente) values ('x1','c1','d9','rodar','','Caio Consultor', now() - interval '4 minutes', now() - interval '4 minutes','qa');
+insert into comentarios (id, demanda_id, autor, autor_email, texto, criado_em) values ('m1','d2','Caio Consultor','consultor@teste.local','Precisamos confirmar se vale para leads importados pela planilha.', now() - interval '2 days'),('m2','d2','Clara Cliente','cliente@teste.local','Vale só para os criados na tela.', now() - interval '1 days'),('m3','d1','Caio Consultor','consultor@teste.local','Pronto para homologar na sandbox de QA.', now() - interval '1 days');
+insert into subtarefas (id, demanda_id, titulo) values ('s1','d6','Conferir agendamento na QA');
+insert into checklist_itens (id, demanda_id, texto) values ('h1','d6','Validar com o gerente comercial');
+insert into registros_tempo (id, demanda_id, autor, autor_email, descricao, inicio_em, fim_em, minutos) values ('t1','d1','Caio Consultor','consultor@teste.local','Revisão do design', now() - interval '3 days', now() - interval '3 days' + interval '90 minutes', 90),('t2','d6','Ana Admin','admin@teste.local','Reunião', now() - interval '1 days', now() - interval '1 days' + interval '45 minutes', 45);
+insert into contas_pagar (id, fornecedor, descricao, categoria, valor, vencimento, status, lancado_por_email, atualizado_em, natureza) values ('p1','Fornecedor Alfa (fictício)','Licença de software','software',1200.00, current_date + 5,'aguardando_aprovacao','financeiro@teste.local', now(),'fixo'),('p2','Fornecedor Beta (fictício)','Consultoria externa','servicos',3500.00, current_date - 2,'aprovada','financeiro@teste.local', now(),'direto'),('p3','Fornecedor Gama (fictício)','Hospedagem','infra',420.50, current_date - 20,'paga','financeiro@teste.local', now(),'fixo');
+insert into execucoes_agente (id, client_id, demanda_id, origem, etapa, motivo, resultado, iniciado_em, concluido_em) values ('g1','c1','d1','demanda','qa','','success', now() - interval '2 days', now() - interval '2 days' + interval '9 minutes'),('g2','c1','d6','demanda','build','','failure', now() - interval '1 days', now() - interval '1 days' + interval '6 minutes');
+insert into despesas_recorrentes (id, fornecedor, valor, dia_vencimento, inicio_em, natureza, criado_por_email, atualizado_em) values ('r1','Assinatura Delta (fictícia)', 890.00, 10, current_date - 60, 'fixo','financeiro@teste.local', now());
+-- Dono da demanda: algumas com dono, o resto aparece como "sem dono".
+update demandas set dono_id = 'u2', dono_definido_em = now(), dono_definido_por = 'Ana Admin' where id in ('d1','d3','d6');
+update demandas set dono_id = 'u1', dono_definido_em = now(), dono_definido_por = 'Ana Admin' where id in ('d2');

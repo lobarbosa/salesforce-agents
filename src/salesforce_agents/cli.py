@@ -224,7 +224,7 @@ def conectar_preparar(client: str, ambiente: str, forcar: bool) -> None:
     click.echo(f"  1. Suba {cred.cert_path.name} na Connected App da sandbox {cred.alias}.")
     click.echo("     Permitted Users: Admin approved users are pre-authorized + Permission Set.")
     click.echo(f"  2. Crie/confirme o GitHub Environment '{cred.github_environment}'.")
-    click.echo(f"  3. Cadastre nele os 3 secrets (abrindo o arquivo, nunca colando em chat):")
+    click.echo("  3. Cadastre nele os 3 secrets (abrindo o arquivo, nunca colando em chat):")
     click.echo("     SF_CLIENT_ID    = Consumer Key da Connected App")
     click.echo("     SF_USERNAME     = usuário de integração da sandbox")
     click.echo(f"     SF_JWT_KEY      = conteúdo de {cred.key_path}")
@@ -323,7 +323,18 @@ def rodar(
         if aprovar_gate and reverificar:
             raise click.ClickException("--aprovar-gate e --reverificar não vão juntos.")
         if aprovar_gate:
-            d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
+            try:
+                d = fluxo.aprovar_gate(client, demand_id, aprovar_gate)
+            except fluxo.GateSemMudancaError as exc:
+                # Não é falha do job: a demanda fica no gate, como estava, e o
+                # card já mostra o que o build pediu (bloqueio.py).
+                click.echo(f"::warning::{exc}")
+                atual = demands.Demand.load(client, demand_id)
+                parada = fluxo.Parada("gate", atual.status, ambientes.ambiente_do_estagio(atual.status), ())
+                if github_output and os.environ.get("GITHUB_OUTPUT"):
+                    with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+                        fh.write(parada.as_github_output() + "\n")
+                return
             click.echo(f"{demand_id}: gate aprovado por {aprovar_gate} -> {d.status}")
         if reverificar:
             fluxo.reverificar(client, demand_id, reverificar)

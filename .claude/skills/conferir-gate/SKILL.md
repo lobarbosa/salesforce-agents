@@ -55,6 +55,10 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 
 ## Gate de PR (`aguardando_gate_build`)
 
+- O card abre com "O QA não conseguiu provar: falta algo fora da construção"? Então a
+  demanda voltou do QA sem defeito de build: o que falta é ambiente (licença, fila, usuário,
+  acesso). Resolva cada item da lista **antes** de aprovar; a aprovação leva direto ao QA,
+  sem reconstruir, e aprovar sem resolver repete a mesma rodada.
 - A pasta tem `05-testes-rodada-<n>.md`? Então este PR é correção de um QA reprovado:
   confira no plano a seção "Correções da rodada <n>", falha por falha, antes de devolver
   ao QA.
@@ -95,6 +99,21 @@ Este é o único gate **bloqueante** da doutrina — erro aqui compõe nos 6 cli
 - Se você é o cliente aprovando: o resultado bate com o que você pediu, não só com o que foi
   entregue? Recusar com uma observação concreta é sempre uma opção — a demanda volta para
   correção, não é penalidade.
+
+### Quando a homologação é de uma entrega manual
+
+O card avisa: "Entrega manual". O trabalho foi concluído pelo consultor fora da esteira, sem
+teste automático na sandbox de QA; no lugar de `05-testes.md` existe
+`06-entrega-manual.md`, com quem registrou, quando, o que foi feito e o nome da evidência.
+
+- A descrição diz **o que** foi feito e **onde**, a ponto de alguém conferir? "Ajustado
+  conforme combinado" não serve.
+- A evidência anexada mostra o resultado, e não tem dado real de cliente na tela.
+- O que foi feito bate com o pedido do card? Se o trabalho foi direto em produção, confira
+  lá, com um registro de teste.
+- Quem homologa é o cliente, ou um admin em nome dele. Quem registrou a entrega não
+  homologa a própria entrega; a API recusa.
+- Ao aprovar, o card vira `entregue` na hora. Não há etapa de agente depois.
 
 ## Depois de aprovar
 

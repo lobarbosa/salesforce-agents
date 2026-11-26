@@ -34,6 +34,22 @@ custo de manutenção em projeto Salesforce.
   que parece certo na tela mas não agrupa em relatório nem dispara automação que compara o
   valor (achado SOMOSAGILITY-21). Em diagnóstico de integração, teste payload com e sem o
   campo, e com rótulo vs. API name.
+- Filtro "começa com" (`StartsWith`) em campo de Id é inválido em Get Records de Flow: o
+  Flow salva e falha ao rodar (achado Eplast, 2026-11-17). Compare Id por igualdade; para
+  reconhecer um Id pelo prefixo, teste o texto numa fórmula antes da consulta.
+- Entrada de ação de agente chamada `recordId` recebe o que o modelo mandar, não só Id:
+  já chegou o código da conta (`000682`). Valide a forma (15 ou 18 caracteres, prefixo do
+  objeto) antes do Get Records e trate o resto como outro tipo de busca.
+- Dois caminhos de busca que reaproveitam o mesmo laço: confira de qual coleção o laço lê.
+  Um laço ligado à coleção do outro caminho não itera, o contador fica em zero e a decisão
+  seguinte cai no ramo padrão (achado EPLAST-27, QA rodada 7). Um laço por coleção, ou uma
+  coleção comum alimentada pelos dois.
+- Processos de aprovação do mesmo objeto têm ordem (`processOrder`), e o deploy de um
+  arquivo regrava a ordem dele. Duas demandas no mesmo objeto: a segunda confere e corrige
+  a ordem das duas (achado SOMOSAGILITY-17 e 22).
+- Flow que entra como versão nova chega **inativo** na org de destino. Para a sandbox de QA
+  o pacote leva `<status>Active</status>` quando a QA não tem versão ativa anterior; em
+  produção a ativação continua passo separado.
 - Validation rule ativa numa sandbox e não na outra: teste unitário que passa em dev quebra
   em QA (achado SOMOSAGILITY-10, `ValidaJOB`). Fixture de teste preenche todo campo exigido
   por validation rule do objeto, não só os que a regra da demanda usa.

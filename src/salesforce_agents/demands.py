@@ -66,7 +66,10 @@ _STAGE_ORDER = {stage: i for i, stage in enumerate(STAGES_EXECUCAO)}
 # indicado — reflete a "Estrutura de artefatos por demanda" do CLAUDE.md raiz.
 REQUIRED_ARTIFACTS = {
     "analise": ("01-analise.md",),
-    "design": ("02-recon.md", "03-design.md"),
+    # O documento técnico (skill `documento-tecnico`, 2026-11-26) vem antes do
+    # design: `revisao.artefato_do_gate` põe na mesa o último da tupla, e a
+    # decisão que o gate julga continua sendo o 03-design.md.
+    "design": ("02-recon.md", "03-documento-tecnico.md", "03-design.md"),
     "build": ("04-plano-build.md",),
     "qa": ("05-testes.md",),
     "release": ("06-entrega.md",),
@@ -148,8 +151,33 @@ class EntregaSemEvidenciaError(ArtifactAusenteError):
     """Tentaram marcar como entregue sem QA aprovado ou sem documento de entrega."""
 
 
+# Entrega manual (2026-11-25): o consultor concluiu o trabalho fora da esteira e
+# o Squad OS gravou este registro (quem, quando, o que foi feito, qual evidência
+# foi anexada ao card). Vale no lugar de 05-testes.md + 06-entrega.md — a
+# evidência existe, só não foi produzida por agente — e quem leva a demanda a
+# `entregue` é a homologação do cliente no portal.
+ARQUIVO_ENTREGA_MANUAL = "06-entrega-manual.md"
+_CAMPOS_ENTREGA_MANUAL = ("Entrega manual", "Por", "Em", "Evidência")
+
+
+def entrega_manual_registrada(demand: Demand) -> bool:
+    """O registro existe e traz os quatro campos preenchidos."""
+    arquivo = demand.path / ARQUIVO_ENTREGA_MANUAL
+    if not arquivo.exists():
+        return False
+    campos: dict[str, str] = {}
+    for linha in arquivo.read_text(encoding="utf-8").splitlines()[:12]:
+        if linha.startswith("**") and ":**" in linha:
+            chave, _, valor = linha[2:].partition(":**")
+            campos[chave.strip()] = valor.strip()
+    return all(campos.get(c) for c in _CAMPOS_ENTREGA_MANUAL)
+
+
 def evidencias_que_faltam_para_entregar(demand: Demand) -> list[str]:
     from . import ambientes, veredito  # import tardio: ambientes importa este módulo
+
+    if entrega_manual_registrada(demand):
+        return []
 
     faltam: list[str] = []
     roteiro = demand.path / "05-testes.md"

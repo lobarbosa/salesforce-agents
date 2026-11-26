@@ -5,10 +5,12 @@ cliente, roda uma vez no onboarding (e de novo quando a org mudar muito), e não
 tem `status.yaml` nem gate. Compartilha o resto: mesmo workspace, mesmas
 skills, mesma telemetria de custo.
 
-Read-only por construção, em três camadas: o agente é instruído a não escrever
-na org, a lista de ferramentas abaixo não inclui `sf_deploy`, e o hook
-`guard-prod.sh` continua valendo. A primeira camada é instrução (um modelo pode
-ignorar), a segunda é mecânica.
+Read-only por instrução, não por construção: o agente `org-assessment` é
+instruído a não escrever na org, mas tem Bash, e com Bash o `sf` inteiro. O que
+vale de mecânico é o que vale para toda sessão: o hook `guard-prod.sh` e o alias
+restrito às sandboxes da esteira. Este módulo já afirmou ter uma camada a mais
+("a lista de ferramentas não inclui `sf_deploy`"); ela nunca existiu de fato,
+porque o subagente não usava os wrappers `sf_*`, e eles saíram em 2026-11-25.
 """
 
 from __future__ import annotations
@@ -17,14 +19,7 @@ import json
 from pathlib import Path
 
 
-# Sem `sf_deploy`: o assessment não altera a org, e tirar a ferramenta é mais
-# forte do que pedir por escrito que não use.
-ALLOWED_TOOLS = [
-    "Read", "Write", "Edit", "Grep", "Glob", "Bash", "Task",
-    "mcp__salesforce-tools__sf_retrieve",
-    "mcp__salesforce-tools__sf_query",
-    "mcp__salesforce-tools__sf_org_list",
-]
+ALLOWED_TOOLS = ["Read", "Write", "Edit", "Grep", "Glob", "Bash", "Task"]
 
 # `demand_id` no log de custo — o assessment não tem demanda, e deixar vazio
 # faria a coluna parecer dado faltando em vez de "não se aplica".
@@ -108,6 +103,7 @@ async def run(client: str, target_org: str) -> None:
     from .tools import salesforce_tools_server
 
     workspace = f"clients/{client}"
+    sessao.limitar_saida_do_bash()
 
     options = ClaudeAgentOptions(
         # Ver sessao.MAX_BUFFER_MENSAGEM.

@@ -75,8 +75,28 @@ MAX_VOLTAS_DA_VERIFICACAO = 2
 GATE_QUANDO_O_QA_NAO_FECHA = "aguardando_gate_design"
 
 
+# QA reprovado sem nenhuma falha de construção (2026-11-25, veredito.py): falta
+# algo no ambiente ou o teste não conseguiu executar. Refazer o build não muda
+# nada, então a demanda não vai para o builder: para no gate de build, com uma
+# pessoa, que resolve o que falta e aprova para o QA rodar de novo, sem
+# reconstruir. Achado: três demandas repetiram a mesma falha de ambiente em
+# rodadas seguidas (SOMOSAGILITY-22, SOMOSAGILITY-27, EPLAST-40).
+GATE_QUANDO_O_QA_NAO_CONSEGUE_PROVAR = "aguardando_gate_build"
+
+
 def _rodadas_reprovadas(d: demands.Demand) -> int:
     return len(list(d.path.glob("05-testes-rodada-*.md")))
+
+
+def _rodadas_reprovadas_por_construcao(d: demands.Demand) -> int:
+    """Rodadas em que havia o que o builder corrigir. É o que conta para o teto
+    de voltas: rodada perdida por ambiente não é tentativa de construção."""
+    org = ambientes.org_alias(d.client, "qa")
+    return sum(
+        1
+        for arquivo in d.path.glob("05-testes-rodada-*.md")
+        if not veredito.ler(arquivo.read_text(encoding="utf-8"), org).construcao_nao_resolve
+    )
 
 
 def _aguardando_execucao(d: demands.Demand) -> bool:
@@ -101,6 +121,10 @@ AUTOR_PIPELINE = "pipeline"
 
 class FluxoError(Exception):
     pass
+
+
+class GateSemMudancaError(FluxoError):
+    """Reaprovação de um gate cujo build bloqueou, sem nada novo para o construtor ler."""
 
 
 def eh_gate(status: str) -> bool:
@@ -167,6 +191,16 @@ def aprovar_gate(client: str, demand_id: str, autor: str) -> demands.Demand:
     prox = proxima_etapa(d.status)
     if prox is None:
         raise FluxoError(f"{client}/{demand_id}: '{d.status}' não tem etapa seguinte.")
+
+    # Build que voltou bloqueado: aprovar de novo sem mudar o design nem
+    # responder no card só roda o construtor para ele bloquear igual
+    # (achado SOMOSAGILITY-30, ver bloqueio.py).
+    if d.status == GATE_DE_RETORNO_DO_BUILD and _plano_bloqueado(d) and bloqueio.insumos_sem_mudanca(d.path):
+        raise GateSemMudancaError(
+            f"{client}/{demand_id}: o build voltou bloqueado com uma pergunta, e nem o design "
+            f"(03-design.md) nem os comentários do card mudaram desde então. Registre a resposta "
+            f"no design ou no card e aprove de novo."
+        )
 
     # Registra ANTES de transicionar: o bloco precisa dizer o que estava na mesa
     # no gate, e depois da transição o estágio já é outro. Fica aqui, e não no
@@ -278,6 +312,8 @@ def rodar(
         # SOMOSAGILITY-22: QA refeito em 4 min sem tocar no roteiro antigo).
         if d.status == "build" and _plano_bloqueado(d):
             _plano_de_build(d).unlink()
+        if d.status == "build":
+            (d.path / bloqueio.ARQUIVO_INSUMOS).unlink(missing_ok=True)
 
         # A verificação é da construção que vai rodar agora: a da anterior sai,
         # ou um build refeito chegaria ao gate com a evidência do antigo.
@@ -314,6 +350,7 @@ def rodar(
         # design em vez de seguir para o gate de build, onde seria aprovado
         # como se houvesse PR para revisar (ver bloqueio.py).
         if d.status == "build" and _plano_bloqueado(d):
+            bloqueio.registrar_insumos(d.path)
             demands.transition(client, demand_id, GATE_DE_RETORNO_DO_BUILD, AUTOR_PIPELINE)
             continue
 
@@ -347,8 +384,17 @@ def rodar(
             if v.pendente:
                 return Parada("aguardar", "qa", ambiente_do_job, tuple(rodadas))
             if not v.aprovado:
-                voltas = _rodadas_reprovadas(d)
+                voltas = _rodadas_reprovadas_por_construcao(d)
                 _arquivar_roteiro_reprovado(d)
+                # Nada para o builder corrigir: uma pessoa resolve o ambiente e
+                # reaprova o gate de build, que leva de volta ao QA.
+                if v.construcao_nao_resolve:
+                    demands.transition(
+                        client, demand_id, GATE_QUANDO_O_QA_NAO_CONSEGUE_PROVAR, AUTOR_PIPELINE
+                    )
+                    return Parada(
+                        "gate", GATE_QUANDO_O_QA_NAO_CONSEGUE_PROVAR, ambiente_do_job, tuple(rodadas)
+                    )
                 if voltas >= MAX_VOLTAS_DO_QA:
                     demands.transition(client, demand_id, GATE_QUANDO_O_QA_NAO_FECHA, AUTOR_PIPELINE)
                     return Parada("gate", GATE_QUANDO_O_QA_NAO_FECHA, ambiente_do_job, tuple(rodadas))

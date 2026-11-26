@@ -22,7 +22,7 @@ from __future__ import annotations
 
 import json
 import os
-from urllib import error, request as urlrequest
+from urllib import request as urlrequest
 
 from claude_agent_sdk import create_sdk_mcp_server, tool
 

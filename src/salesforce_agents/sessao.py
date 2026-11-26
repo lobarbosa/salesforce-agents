@@ -44,6 +44,32 @@ MAX_TENTATIVAS = 3
 # size of 1048576 bytes", antes de escrever qualquer coisa.
 MAX_BUFFER_MENSAGEM = 32 * 1024 * 1024
 
+# Teto do que o Bash devolve para a conversa, em caracteres. Tudo o que uma
+# ferramenta devolve é relido a cada turno até o fim da sessão (93% dos tokens
+# da esteira são releitura, medido em 2026-11-14), e os agentes chamam o `sf`
+# pelo Bash: um describe ou um retrieve inteiro custa o tamanho dele vezes os
+# turnos seguintes. O Claude Code já limita a saída do Bash (30 mil por padrão);
+# `BASH_MAX_OUTPUT_LENGTH` baixa esse teto. Acima dele o agente recebe um trecho
+# e, nas versões recentes, o caminho do arquivo com a saída inteira, que ele
+# consulta com Grep ou Read só no que precisar.
+#
+# Vale para todo comando, não só `sf`: a variável não distingue. O valor é o do
+# corte que existia nos wrappers `sf_*` (removidos em 2026-11-25), que nunca
+# chegou a valer porque nenhum agente os chamava.
+LIMITE_SAIDA_BASH = 12_000
+
+
+def limitar_saida_do_bash() -> None:
+    """Chame antes de abrir a sessão: o CLI herda o ambiente deste processo.
+
+    Respeita valor já definido no job, para dar para medir outro teto sem
+    mexer no código.
+    """
+    import os
+
+    os.environ.setdefault("BASH_MAX_OUTPUT_LENGTH", str(LIMITE_SAIDA_BASH))
+
+
 CONTRATO_DA_SESSAO = (
     "Esta sessão é a única execução que vai acontecer: ela roda dentro de um job de CI "
     "e termina no instante em que você parar de responder. Não existe turno seguinte, "

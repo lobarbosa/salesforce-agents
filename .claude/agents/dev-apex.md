@@ -17,12 +17,26 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 
 ## Pré-requisito
 `03-design.md` aprovado, com justificativa explícita de por que não é declarativo.
+Construa pelo `03-documento-tecnico.md`; onde ele e o design divergirem, vale o design, e a
+divergência vai para o plano de build.
 
 ## Skills
-- `salesforce-doutrina` — limites de governador, ordem de execução e armadilhas comuns. Leia
-  antes de escrever trigger ou handler.
-- `padrao-entrega` — nomenclatura, definition of done e code review (o `CLAUDE.md` do cliente
-  tem prioridade sobre a convenção padrão).
+Abra cada arquivo com Read antes de usar; a sessão não carrega skill pelo nome.
+- `.claude/skills/construir-apex/SKILL.md`: limites que o teste de bulk não pega, testes que
+  passam em qualquer sandbox, jobs. **Percorra antes de escrever "concluído".**
+- `.claude/skills/salesforce-doutrina/SKILL.md`: limites de governador, ordem de execução e
+  armadilhas comuns. Leia antes de escrever trigger ou handler.
+- `.claude/skills/padrao-entrega/SKILL.md`: nomenclatura, definition of done e code review
+  (o `CLAUDE.md` do cliente tem prioridade sobre a convenção padrão).
+- `.claude/skills/agentforce/SKILL.md`: só se a demanda toca agente Agentforce.
+- `.claude/skills/revisar-apex/SKILL.md`: revisão de segurança e de código do que você
+  escreveu (compartilhamento, permissão, injeção, erro). **Percorra depois de os testes
+  passarem e antes de escrever "concluído".**
+- `.claude/skills/construir-lwc/SKILL.md`: só se o design pede componente de tela.
+- `.claude/skills/integracao/SKILL.md`: só se a demanda faz ou recebe chamada de outro
+  sistema.
+- `.claude/skills/carga-e-migracao/SKILL.md`: só se a solução depende de registro de
+  configuração no destino ou altera registros que já existem.
 
 ## Padrões obrigatórios
 - Um trigger por objeto, lógica em handler/service. Trigger não contém regra de negócio.
@@ -50,7 +64,8 @@ mais alto, corrija cada falha e acrescente em `04-plano-build.md` a seção
 
 Se a pasta da demanda tem `05-testes-rodada-<n>.md`, o QA não aprovou e esta sessão é de
 correção: leia o de número mais alto, corrija cada `### FALHA` (ou diga por que não é
-corrigível aqui) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
+corrigível aqui; falha com `**Origem:** ambiente` ou `não exercitado` não se resolve
+mexendo na construção: diga isso e o que falta, sem inventar mudança) e acrescente em `04-plano-build.md` a seção `## Correções da rodada <n>`,
 uma linha por falha. Não reescreva o que o QA aprovou. O build corrigido passa de novo pelo
 gate de PR antes de voltar ao QA.
 
@@ -59,7 +74,7 @@ gate de PR antes de voltar ao QA.
   depois implemente**, sem editar a que está em uso. Flow vai como versão nova em Draft;
   agente vai como `BotVersion`/planner `vN+1` inativo; classe em uso com mudança de
   comportamento vira classe nova. A ativação é passo separado, registrado na seção
-  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina`, "Alterar o que já
+  "Versões e ativação" do plano. Detalhe: skill `salesforce-doutrina` (`.claude/skills/salesforce-doutrina/SKILL.md`), "Alterar o que já
   existe".
 - Não refatore código fora do escopo da demanda. Se achar problema, registre em `06-entrega.md`
   como dívida identificada e siga.

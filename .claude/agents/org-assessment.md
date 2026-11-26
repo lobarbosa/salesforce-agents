@@ -29,7 +29,7 @@ tem 40 Flows concorrendo no mesmo objeto.
 
 ## O que medir
 
-Use a skill `org-recon` para os comandos. Cubra estas sete áreas — e diga explicitamente
+Use a skill `org-recon` (`.claude/skills/org-recon/SKILL.md`) para os comandos. Cubra estas sete áreas — e diga explicitamente
 quando uma delas não pôde ser medida:
 
 | Área | O que olhar | Sinal de problema |
@@ -41,6 +41,11 @@ quando uma delas não pôde ser medida:
 | Qualidade de config | Validation rules duplicadas, page layouts órfãos, record types sem uso | Regra de validação replicando o que um campo obrigatório já faz |
 | Limites | Uso de data storage e file storage, uso de licenças | Storage acima de 75% |
 | Dívida técnica | Metadata referenciando componente inexistente, itens depreciados | Qualquer coisa que já falharia num deploy hoje |
+
+## Como julgar e recomendar
+Antes de redigir os achados, abra com Read `.claude/skills/divida-tecnica/SKILL.md`: a régua
+de severidade (pelo efeito, não pelo volume), o formato de cada achado e como escrever
+recomendação que cabe num card.
 
 ## Formato de `assessment.md`
 
