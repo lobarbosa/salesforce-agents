@@ -22700,6 +22700,36 @@
         <field>prazoContrato__c.periodoMeses__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FluxoVendaProdutos__c.PFP_1_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FluxoVendaProdutos__c.PFP_2_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>FluxoVendaProdutos__c.PFP_3_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propostas_de_Solucao__c.PFP_1_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propostas_de_Solucao__c.PFP_2_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Propostas_de_Solucao__c.PFP_3_Texto__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>Diretor Comercial</label>
     <license>Salesforce</license>

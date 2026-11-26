@@ -99,6 +99,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>PFP_1_Texto__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Nome_PFP_1__c</field>
             </layoutItems>
             <layoutItems>
@@ -114,6 +118,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>PFP_2_Texto__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Nome_PFP_2__c</field>
             </layoutItems>
             <layoutItems>
@@ -126,6 +134,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>PFP_3__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PFP_3_Texto__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>

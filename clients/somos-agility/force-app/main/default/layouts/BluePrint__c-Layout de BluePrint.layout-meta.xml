@@ -131,6 +131,10 @@
                 <behavior>Required</behavior>
                 <field>PFP_1_UNC_Path__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PFP_1_Texto__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -162,6 +166,10 @@
                 <behavior>Edit</behavior>
                 <field>PFP_2_UNC_Path__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PFP_2_Texto__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
     </layoutSections>
@@ -192,6 +200,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>PFP_3_UNC_Path__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>PFP_3_Texto__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
