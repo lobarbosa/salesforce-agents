@@ -397,6 +397,11 @@ model Demanda {
   // Serve só para o sync não regerar o PDF quando nada mudou.
   evidenciasHash String @default("") @map("evidencias_hash")
 
+  // Documento técnico de construção (2026-11-26): hash do 03-documento-tecnico.md
+  // que virou o anexo "Documento técnico" (lib/documento-tecnico-anexo.ts).
+  // Mesma função do evidenciasHash: não regerar o PDF quando nada mudou.
+  documentoTecnicoHash String @default("") @map("documento_tecnico_hash")
+
   // Melhoria proposta ao cliente a partir do assessment da org (2026-11-21).
   // O time abre a demanda pelo copiloto (lib/copilot/ferramentas-assessment.ts)
   // e ela nasce no backlog esperando o cliente: só o papel cliente aprova ou

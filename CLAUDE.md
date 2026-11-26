@@ -68,6 +68,7 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - Demais linhas que o portal lê: skill `padrao-entrega`.
 - Todo design sai com `03-documento-tecnico.md` no layout padrão (skill `documento-tecnico`):
   como construir, para os devs Salesforce e o time do outro sistema. Sem ele a etapa não avança.
+  O Squad OS o publica no card como anexo "Documento técnico" (PDF), só para o time.
 
 ## Guardrails inegociáveis
 1. **Produção é proibida.** Só existem `sbx-<cliente>-dev` (build e antes) e

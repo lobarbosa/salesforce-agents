@@ -12,6 +12,11 @@ Toda demanda sai do design com dois arquivos (decisão de 2026-11-26):
 | `03-design.md` | quem aprova o gate | o que foi decidido, por quê, e como cada critério será provado |
 | `03-documento-tecnico.md` | quem constrói e quem integra | o que construir, como, em que ordem, como testar, implantar e desfazer |
 
+O Squad OS publica o documento técnico no card como anexo "Documento técnico - <ID>.pdf",
+só para o time (o cliente não o vê), e o substitui quando o design é refeito. No PDF o
+diagrama mermaid aparece como texto: a tabela de componentes da seção 3 é o que o leitor do
+PDF usa, então ela tem de se sustentar sozinha.
+
 O documento técnico não repete a justificativa do design: aponta para ela. Os dois não podem
 se contradizer; se um muda, o outro muda junto. O builder e o verificador o leem antes de
 construir, e ele vai para o time do outro sistema quando há integração.

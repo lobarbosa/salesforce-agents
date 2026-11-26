@@ -743,6 +743,11 @@ mesa o último da tupla: o gate continua mostrando o `03-design.md`, e o hash do
 técnico vai para o `gates.md` junto. Demanda que já estava no gate de design quando a regra
 entrou não é afetada; a exigência vale para a próxima sessão de design.
 
+O sync manda o texto (`documento_tecnico`, em `revisao.payload_de_sync`) e o Squad OS o
+publica como anexo "Documento técnico" em PDF (`lib/documento-tecnico-anexo.ts`), no mesmo
+desenho do roteiro do cliente. Só o time o vê, em qualquer etapa: tem nomes de metadata e o
+contrato de integração. O `republicar-anexos.yml` também o leva.
+
 ## Escopo duplo: projeto e sustentação
 
 - **Projeto (greenfield):** fluxo completo, etapas 1→7.

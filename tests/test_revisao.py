@@ -133,6 +133,15 @@ def test_payload_leva_o_roteiro_do_cliente_e_vazio_quando_nao_ha(repo):
     assert "Abra a conta de teste" in revisao.payload_de_sync(d)["roteiro_cliente"]
 
 
+def test_payload_leva_o_documento_tecnico_e_vazio_quando_nao_ha(repo):
+    d = _demanda_no_gate("aguardando_gate_design", "03-design.md")
+    assert revisao.payload_de_sync(d)["documento_tecnico"] == ""
+
+    (d.path / "03-documento-tecnico.md").write_text("# Documento técnico\n\n## 1. Resumo\nCampo novo.", encoding="utf-8")
+
+    assert "Campo novo" in revisao.payload_de_sync(d)["documento_tecnico"]
+
+
 def test_artefato_faltando_nao_quebra_o_sync(repo):
     """Quem recusa avançar sem artefato é `demands.transition`. Aqui, informar
     que não há o que mostrar é suficiente — duas vozes recusando a mesma coisa
