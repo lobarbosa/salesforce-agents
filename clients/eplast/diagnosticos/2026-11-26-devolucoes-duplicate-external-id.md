@@ -29,6 +29,21 @@ dão, e o diagnóstico abaixo a obtém sem expor dado de cliente.
 Ou seja: o modelo de dados já distingue lojas na conta e na devolução, mas a chave que liga
 uma à outra ignora a loja.
 
+### O que um registro de devolução mostra (tela enviada em 2026-11-26)
+
+Uma devolução gravada com sucesso pela "Integração Protheus" (sem transcrever dado do
+cliente): ela tem **três vínculos**, conta, filial e pedido, além da loja (`01`) em campo
+próprio, e o `ProtheusId__c` da devolução é o número do documento no ERP (prefixo +
+número), repetido em cada item. Daí:
+
+| Achado | Consequência |
+| --- | --- |
+| A devolução procura também a **filial** por `Branch__c.CodeERP__c`, chave externa **não única** (texto 4) | `DUPLICATE_EXTERNAL_ID` pode vir da filial, não só da conta. A mensagem de erro do Salesforce diz o objeto e o campo: conferir no `Devolucao_badrequest.json` ou na resposta da API antes de sanear conta |
+| O **pedido** também é procurado; os campos de `Order` não estão na linha de base do repositório | A chave do pedido não foi conferida; o diagnóstico na org cobre conta e filial |
+| `SalesReturn__c.ProtheusId__c` **não é chave externa**, e a integração usa POST | Reenviar uma devolução que já entrou cria outra igual. O reprocessamento da proposta (Fase 3) pode duplicar devoluções. A chave de uma linha de devolução é número do documento + item |
+| `Account.CompanyDocument__c` (CNPJ) também é chave externa, não única | Alternativa de chave por loja que já existe, sem campo novo, se o CNPJ estiver limpo |
+| O nome da conta segue o padrão `<código> - <razão social>` | O código aparece no nome; não serve de chave, mas ajuda a conferir |
+
 ## O que falta confirmar nos dados (diagnóstico)
 
 Workflow **Diagnóstico de chave externa repetida** (`diagnostico-chave-externa.yml`), só
@@ -41,6 +56,8 @@ leitura e só contagens, com `client=eplast`, `ambiente=qa`, `codigo=000922` e
 3. Para o 000922 e os dois Ids da proposta: a loja de cada conta e quantos pedidos,
    oportunidades, devoluções e contas filhas cada uma tem.
 4. Quantas devoluções existem e quantas estão sem conta.
+5. Se a filial (`Branch__c.CodeERP__c`) e o CNPJ da conta também repetem, e se já há
+   devolução gravada duas vezes (mesmo número e item).
 
 A `sbx-eplast-qa` é a QAS da Eplast, **Partial Copy**: tem uma amostra da produção, copiada
 numa data passada. O diagnóstico mostra a natureza do problema (lojas diferentes ou
@@ -83,7 +100,17 @@ tem dado real, o diagnóstico lê só contagens e, por conta, apenas Id, loja e 
 - Contas **sem loja**: preencher `Store__c` a partir do Protheus antes da carga do passo 1.
 - `Loja__c` (sem uso): propor desuso, depois de confirmar com a Eplast que nada externo o lê.
 
-### 4. Contingência para as devoluções paradas
+### 4. Reprocessamento sem duplicar devolução
+
+- Chave externa nova e única em `SalesReturn__c` = número do documento + item (ex.:
+  `ProtheusId__c` + `-` + `Item__c`), e a integração passa de POST para upsert por ela. Assim
+  reenviar a mesma devolução atualiza em vez de criar outra.
+- Antes de reprocessar, conferir quais devoluções da janela do erro já entraram (o
+  diagnóstico conta as que já estão repetidas).
+- Se a filial também repete `CodeERP__c`, o mesmo tratamento do passo 1 vale para
+  `Branch__c` (uma filial por código, ou chave composta).
+
+### 5. Contingência para as devoluções paradas
 
 Enquanto 1 e 2 não estão no ar, as devoluções recusadas podem ser reprocessadas com o Id
 Salesforce da conta (`AccountId__c` direto), escolhido pela loja que veio na devolução.
@@ -92,6 +119,10 @@ Salesforce da conta (`AccountId__c` direto), escolhido pela loja que veio na dev
 
 - A Fase 2 ("o registro incorreto terá seu ID Externo removido") só vale para duplicata de
   verdade. Para lojas diferentes ela quebra a integração de pedidos da loja afetada.
+- A Fase 3 (reprocessar por POST) pode criar devolução repetida para o que já entrou: a
+  devolução não tem chave externa. Reprocessar só depois do upsert, ou só o que comprovadamente
+  não entrou.
+- A Fase 1 olha só a conta; o erro pode vir da filial (`CodeERP__c` também não é único).
 - O escopo cresce: campo, Flow e carga da chave composta, mais a mudança no ERP ou o Flow da
   devolução. Estimativa a refazer depois do diagnóstico (skill `estimar-esforco`).
 - A premissa "o erro está restrito a duplicidade de dados" precisa virar "o erro vem da chave

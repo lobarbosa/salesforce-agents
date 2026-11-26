@@ -274,8 +274,36 @@ def main(argv: list[str] | None = None) -> int:
         except (RuntimeError, json.JSONDecodeError) as e:
             out += [f"_Contagem de devoluções indisponível: {e}_", ""]
 
+    # 6. As outras chaves que a devolução usa, e devoluções repetidas.
+    if obj == "Account":
+        out += ["## Outras chaves da devolução", "", "| Chave | Valores repetidos | Registros envolvidos |", "| --- | --- | --- |"]
+        for rotulo, soql in OUTRAS_CHAVES:
+            try:
+                grupos = _consultar(org, soql)
+                out.append(f"| {rotulo} | {len(grupos)} | {contas_afetadas(grupos)} |")
+            except RuntimeError as e:
+                out.append(f"| {rotulo} | indisponível: {str(e)[:80]} | |")
+        out.append("")
+
     print("\n".join(out))
     return 0
+
+
+# A devolução liga três registros (conta, filial e pedido) e é gravada por POST:
+# `SalesReturn__c.ProtheusId__c` não é chave externa, então reenviar a mesma
+# devolução cria outra. Estas contagens dizem se a filial também repete chave e
+# se já há devolução gravada duas vezes (mesmo número e item).
+OUTRAS_CHAVES = (
+    ("`Branch__c.CodeERP__c` (filial)",
+     "SELECT CodeERP__c, COUNT(Id) n FROM Branch__c WHERE CodeERP__c != null "
+     f"GROUP BY CodeERP__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"),
+    ("`Account.CompanyDocument__c` (CNPJ)",
+     "SELECT CompanyDocument__c, COUNT(Id) n FROM Account WHERE CompanyDocument__c != null "
+     f"GROUP BY CompanyDocument__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"),
+    ("`SalesReturn__c` com mesmo `ProtheusId__c` e `Item__c`",
+     "SELECT ProtheusId__c, Item__c, COUNT(Id) n FROM SalesReturn__c WHERE ProtheusId__c != null "
+     f"GROUP BY ProtheusId__c, Item__c HAVING COUNT(Id) > 1 LIMIT {MAX_GRUPOS}"),
+)
 
 
 if __name__ == "__main__":
