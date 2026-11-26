@@ -1,6 +1,6 @@
 # Pré-checagem — SOMOSAGILITY-31
 
-Etapa que vai rodar: `backlog` · org: `sbx-somos-agility-dev`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
+Etapa que vai rodar: `design` · org: `sbx-somos-agility-dev`. Gerado pela esteira antes da sessão; leia antes de agir e trate cada aviso no seu artefato.
 
 ## Bloqueios
 - nenhum

@@ -2,7 +2,7 @@ id: SOMOSAGILITY-31
 client: somos-agility
 titulo: Criar campos de texto longo no objeto Propostas_de_Solucao__c
 tipo: sustentacao
-status: aguardando_gate_analise
+status: aguardando_gate_design
 criado_em: '2026-11-26T12:13:06.470Z'
 historico:
 - de: null
@@ -17,3 +17,11 @@ historico:
   para: aguardando_gate_analise
   autor: pipeline
   em: '2026-11-26T12:18:05.616076+00:00'
+- de: aguardando_gate_analise
+  para: design
+  autor: Carlos Sordi
+  em: '2026-11-26T20:28:29.636888+00:00'
+- de: design
+  para: aguardando_gate_design
+  autor: pipeline
+  em: '2026-11-26T20:36:28.102569+00:00'
