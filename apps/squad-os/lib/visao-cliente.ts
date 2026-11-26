@@ -95,6 +95,11 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     // `?.`: nem toda consulta que passa por aqui carrega os anexos.
     anexos: clienteVeRoteiro(d.status) ? d.anexos : d.anexos?.filter((a) => !ehAnexoDoQa(a)),
     historico: [],
+    // O cliente vê quem responde pela demanda, pelo nome; e-mail e quem
+    // trocou ficam com o time.
+    dono: d.dono ? { id: "", nome: d.dono.nome.trim() || "Time Acxya", email: "" } : null,
+    donoId: null,
+    donoDefinidoPor: "",
     ultimoRunUrl: "",
     ultimoResultado: "",
     // O cliente vê só a faixa total calibrada, e só depois da análise (é

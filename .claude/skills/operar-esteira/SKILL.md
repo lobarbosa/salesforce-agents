@@ -40,6 +40,15 @@ aprovar uma demanda que já saiu do gate.
 Depois, agende uma conferência (10 a 15 minutos) e leia o resultado. Aprovar e não voltar
 para ver é o erro mais comum.
 
+## Abrir uma demanda pelo banco
+
+Prefira o botão "+ nova demanda" do portal. Se precisar criar pelo banco, faça o mesmo que
+`lib/demandas-server.ts`: código sequencial do cliente, `status='backlog'`, `autor` como
+`<Nome do responsável> (via Claude)`, uma entrada no `historico`, e o **dono**: `dono_id`
+com o `id` de quem vai responder por ela em `usuarios` (admin ou consultor),
+`dono_definido_em=now()` e `dono_definido_por` igual ao autor. Sem saber quem é, deixe sem
+dono e diga ao responsável; não escreva o dono no texto da demanda.
+
 ## Registrar uma decisão do responsável
 
 O builder segue o `03-design.md`, não o comentário do card. Decisão de negócio vai para o

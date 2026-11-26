@@ -3,6 +3,7 @@ import { criarComCodigoUnico } from "@/lib/slug";
 import { canAccessClient } from "@/lib/auth";
 import { bloqueioPorEncerramento } from "@/lib/encerramento";
 import type { CurrentUsuario } from "@/lib/current-user";
+import { donoInicial } from "@/lib/dono";
 
 /**
  * Único caminho de criação de demanda no Squad OS — a API (`POST /api/demandas`,
@@ -54,6 +55,10 @@ export async function criarDemanda({
         tipo: tipoFinal,
         texto: (texto ?? "").trim(),
         autor,
+        // Quem cria responde pela demanda até alguém trocar (lib/dono.ts).
+        donoId: donoInicial(usuario),
+        donoDefinidoEm: new Date(),
+        donoDefinidoPor: autor,
         status: "backlog",
         historico: [{ de: null, para: "backlog", autor, em: new Date().toISOString() }],
       },

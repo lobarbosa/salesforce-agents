@@ -1677,3 +1677,13 @@ a.badge-tipo.recorrente:hover { text-decoration: underline; }
   width: 100%; padding: 0.5rem 0.6rem; border: 1px solid var(--border-strong); border-radius: 7px;
   background: var(--surface); font: inherit; font-weight: 400; color: var(--text);
 }
+
+/* Dono da demanda (lib/dono.ts): chip no card, seletor no modal. */
+.dono-chip { padding: 0.1rem 0.45rem; border-radius: 999px; background: var(--surface-alt); border: 1px solid var(--border); color: var(--text); font-family: inherit; }
+.dono-chip.sem-dono { border-style: dashed; border-color: var(--gate-strong); color: var(--gate-strong); background: transparent; }
+.dono-campo { display: inline-flex; align-items: center; gap: 0.35rem; flex-wrap: wrap; }
+.dono-campo label { font-weight: 600; color: var(--text); }
+.dono-campo select { min-height: 32px; padding: 0.15rem 0.4rem; border-radius: 6px; border: 1px solid var(--border-strong); background: var(--surface); color: var(--text); font: inherit; }
+.dono-campo select.sem-dono { border-style: dashed; border-color: var(--gate-strong); color: var(--gate-strong); }
+.dono-campo select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dono-leitura strong { color: var(--text); }

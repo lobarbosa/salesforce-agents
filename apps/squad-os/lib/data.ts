@@ -82,7 +82,17 @@ export function getDemandasByClient(clientId: string) {
       },
       // Tipo do contrato: aprovação de horas pelo cliente só existe em AMS.
       client: { select: { contrato: { select: { tipo: true } } } },
+      dono: { select: { id: true, nome: true, email: true } },
     },
+  });
+}
+
+/** Quem pode ser dono de demanda (lib/dono.ts): o time, por nome. */
+export function listarEquipe() {
+  return prisma.usuario.findMany({
+    where: { role: { in: ["admin", "consultor"] } },
+    select: { id: true, nome: true, email: true },
+    orderBy: [{ nome: "asc" }, { email: "asc" }],
   });
 }
 
@@ -100,6 +110,7 @@ export function getAllDemandas() {
         select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true },
       },
       client: { select: { contrato: { select: { tipo: true } } } },
+      dono: { select: { id: true, nome: true, email: true } },
     },
   });
 }

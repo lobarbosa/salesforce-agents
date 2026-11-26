@@ -16,12 +16,13 @@ import {
   timeAgo,
   aguardaAprovacaoEstimativa,
 } from "@/lib/demandas";
+import { nomeDoDono, primeiroNome } from "@/lib/dono";
 
 // A Visão Geral monta card a partir de uma demanda sem as relações
 // carregadas (getAllDemandas), a aba do cliente com elas — daí o Partial.
 // Sem relação, os indicadores simplesmente não aparecem; nada quebra.
 type DemandaDeCard = Demanda &
-  Partial<Pick<DemandaCompleta, "comentarios" | "subtarefas" | "checklist" | "tempos" | "anexos" | "disparos">>;
+  Partial<Pick<DemandaCompleta, "comentarios" | "subtarefas" | "checklist" | "tempos" | "anexos" | "disparos" | "dono">>;
 
 // O que dá pra saber do card sem abri-lo: quanto da demanda já andou, se tem
 // conversa, se tem arquivo, quanto tempo já custou. Cada indicador só aparece
@@ -245,7 +246,15 @@ export function DemandCard({
           />
         )}
         <ApprovalBadge demanda={demanda} />
-        <span>{demanda.autor}</span>
+        {/* Dono (lib/dono.ts) no lugar de quem criou: no quadro, a pergunta é
+            "de quem é isto?". Quem criou continua no modal. */}
+        {demanda.dono ? (
+          <span className="dono-chip" title={`Dono: ${nomeDoDono(demanda.dono)}`}>
+            {primeiroNome(demanda.dono)}
+          </span>
+        ) : demanda.dono === null && !visaoCliente && demanda.status !== "entregue" && demanda.status !== "cancelada" ? (
+          <span className="dono-chip sem-dono">sem dono</span>
+        ) : null}
         <span>{timeAgo(demanda.criadoEm)}</span>
       </div>
       <Indicadores demanda={demanda} />

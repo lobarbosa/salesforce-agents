@@ -11,6 +11,7 @@ import { ConexaoTab } from "@/components/ConexaoTab";
 import { ContratoTab } from "@/components/ContratoTab";
 import type { DemandaDoProgresso } from "@/lib/contrato";
 import { DemandasTab } from "@/components/DemandasTab";
+import type { PessoaDoTime } from "@/lib/dono";
 import { AprovacoesTab } from "@/components/AprovacaoEstimativa";
 import { aguardaAprovacaoEstimativa } from "@/lib/demandas";
 import { propostaPendente } from "@/lib/assessment-propostas";
@@ -28,6 +29,7 @@ export function ClientDetail({
   initialTab,
   openDemandId,
   bloqueiosExclusao = [],
+  equipe = [],
 }: {
   client: Client & {
     ambientes: AmbienteOrg[];
@@ -42,6 +44,8 @@ export function ClientDetail({
   openDemandId?: string;
   /** Só para admin com cliente encerrado: o que impede a exclusão definitiva. */
   bloqueiosExclusao?: string[];
+  /** Quem pode ser dono de demanda (lib/dono.ts). Só chega para o time. */
+  equipe?: PessoaDoTime[];
 }) {
   const podeGerenciarClientes = usuario.role !== "cliente";
   const [tab, setTab] = useState<Tab>(initialTab ?? "demandas");
@@ -298,6 +302,7 @@ export function ClientDetail({
             canManage
             usuarioEmail={usuario.email}
             isAdmin={usuario.role === "admin"}
+            equipe={equipe}
           />
         </div>
       )}

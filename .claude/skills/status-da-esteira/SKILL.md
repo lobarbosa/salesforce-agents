@@ -17,6 +17,7 @@ o filtro e acrescente `c.nome` com um `join clients c`.
 select d.code, left(d.titulo, 50) titulo, d.status::text,
        d.estimativa_consultor_horas ec, d.estimativa_aprovada_horas ea,
        d.estimativa_debitada_horas deb, d.entrega_manual_em,
+       coalesce(nullif(u.nome, ''), u.email, 'sem dono') dono,
        (select string_agg(x.tipo || '/' || x.ambiente || ' ' ||
                coalesce(to_char(x.disparado_em - interval '3 hours', 'DD HH24:MI'), 'fila'), '; ')
           from disparos_esteira x
@@ -24,6 +25,7 @@ select d.code, left(d.titulo, 50) titulo, d.status::text,
        (select to_char(max((h->>'em')::timestamptz) - interval '3 hours', 'DD/MM HH24:MI')
           from jsonb_array_elements(d.historico::jsonb) h) ultima_mudanca
   from demandas d
+  left join usuarios u on u.id = d.dono_id
  where d.client_id = '<CLIENT_ID>'
    and d.status::text not in ('entregue', 'cancelada')
  order by (regexp_replace(d.code, '\D', '', 'g'))::int;
@@ -46,6 +48,8 @@ Armadilhas que já custaram erro:
 - `disparado_em` nulo é fila; preenchido e sem `concluido_em` é execução em andamento.
 - Horas no banco estão em UTC; mostre em Brasília (UTC−3).
 - Etapa de agente (`build`, `qa`...) **sem** disparo aberto não está rodando: está parada.
+- O dono (`dono_id`) é quem responde pela demanda; `autor` é só quem criou. Demanda parada
+  e sem dono é a primeira a apontar.
 
 ## Como ler cada status
 
