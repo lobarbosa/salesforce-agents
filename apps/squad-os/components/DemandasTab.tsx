@@ -18,6 +18,7 @@ import { useAutoRefresh } from "@/lib/auto-refresh";
 import { DemandCard } from "@/components/DemandCard";
 import { DemandModal } from "@/components/DemandModal";
 import { NewDemandModal } from "@/components/NewDemandModal";
+import type { PessoaDoTime } from "@/lib/dono";
 
 export function DemandasTab({
   client,
@@ -27,6 +28,7 @@ export function DemandasTab({
   usuarioEmail,
   isAdmin,
   visaoCliente = false,
+  equipe = [],
 }: {
   client: Client;
   demandas: DemandaCompleta[];
@@ -36,12 +38,16 @@ export function DemandasTab({
   isAdmin: boolean;
   /** Quadro na lingua de quem esta do lado de fora — ver lib/demandas.ts. */
   visaoCliente?: boolean;
+  /** Quem pode ser dono (lib/dono.ts) — só chega para o time. */
+  equipe?: PessoaDoTime[];
 }) {
   const router = useRouter();
   const [newOpen, setNewOpen] = useState(false);
   // Filtro de "quem age" (2026-10-29): responde "o que é meu agora?" sem ler
   // o quadro inteiro. Esconde os cards; as colunas ficam, para não mudar o mapa.
-  const [filtroQuem, setFiltroQuem] = useState<"" | QuemAge>("");
+  // "minhas" e "sem dono" (2026-11-26) respondem pelo dono da demanda, não
+  // por quem age agora: o que é meu de ponta a ponta, e o que é de ninguém.
+  const [filtroQuem, setFiltroQuem] = useState<"" | QuemAge | "minhas" | "semdono">("");
   const [openId, setOpenId] = useState<string | null>(openDemandId ?? null);
 
   const byId = new Map(demandas.map((d) => [d.id, d]));
@@ -217,7 +223,11 @@ export function DemandasTab({
   // design esperando o arquiteto E o cliente nas horas).
   const quemDe = (d: (typeof demandas)[number]) => acoesPendentes(d).map((a) => a.quem);
   const contagem = (q: QuemAge) => demandas.filter((d) => quemDe(d).includes(q)).length;
-  const passaFiltro = (d: (typeof demandas)[number]) => !filtroQuem || quemDe(d).includes(filtroQuem);
+  const ehMinha = (d: (typeof demandas)[number]) => !!d.dono && d.dono.email === usuarioEmail;
+  const semDono = (d: (typeof demandas)[number]) => !d.dono && d.status !== "entregue" && d.status !== "cancelada";
+  const passaFiltro = (d: (typeof demandas)[number]) =>
+    !filtroQuem ||
+    (filtroQuem === "minhas" ? ehMinha(d) : filtroQuem === "semdono" ? semDono(d) : quemDe(d).includes(filtroQuem));
   const congeladas = demandas.filter((d) => d.status === "standby");
   const FILTROS: { q: QuemAge; rotulo: string }[] = [
     { q: "time", rotulo: "Ação do time" },
@@ -257,6 +267,22 @@ export function DemandasTab({
             {rotulo} <span className="count">{contagem(q)}</span>
           </button>
         ))}
+        <button
+          type="button"
+          className="filtro-btn filtro-dono"
+          aria-pressed={filtroQuem === "minhas"}
+          onClick={() => setFiltroQuem(filtroQuem === "minhas" ? "" : "minhas")}
+        >
+          Minhas <span className="count">{demandas.filter(ehMinha).length}</span>
+        </button>
+        <button
+          type="button"
+          className="filtro-btn filtro-dono"
+          aria-pressed={filtroQuem === "semdono"}
+          onClick={() => setFiltroQuem(filtroQuem === "semdono" ? "" : "semdono")}
+        >
+          Sem dono <span className="count">{demandas.filter(semDono).length}</span>
+        </button>
       </div>
 
       {paradas.length > 0 && (
@@ -376,6 +402,7 @@ export function DemandasTab({
           canManage={canManage}
           usuarioEmail={usuarioEmail}
           isAdmin={isAdmin}
+          equipe={equipe}
           onClose={() => setOpenId(null)}
         />
       )}

@@ -12,6 +12,8 @@ import { Modal } from "@/components/Modal";
 import { EntregaManual } from "@/components/EntregaManual";
 import { Artefato } from "@/components/Artefato";
 import { DemandaPainel } from "@/components/DemandaPainel";
+import { DonoDaDemanda } from "@/components/DonoDaDemanda";
+import type { PessoaDoTime } from "@/lib/dono";
 import {
   asPerguntas,
   asAprovacao,
@@ -36,6 +38,7 @@ export function DemandModal({
   usuarioEmail,
   isAdmin,
   visaoCliente = false,
+  equipe = [],
   onClose,
 }: {
   demanda: DemandaCompleta;
@@ -44,6 +47,8 @@ export function DemandModal({
   isAdmin: boolean;
   /** Sem jargão de esteira — ver ESTADOS_CLIENTE em lib/demandas.ts. */
   visaoCliente?: boolean;
+  /** Quem pode ser dono (lib/dono.ts) — vazio para o cliente. */
+  equipe?: PessoaDoTime[];
   onClose: () => void;
 }) {
   const router = useRouter();
@@ -195,8 +200,9 @@ export function DemandModal({
         <span className={`badge ${demanda.tipo === "projeto" ? "projeto" : "sustentacao"}`}>
           {demanda.tipo === "projeto" ? "projeto" : "sustentação"}
         </span>
-        <span>{demanda.autor}</span>
+        <span>criada por {demanda.autor || "—"}</span>
         <span>{timeAgo(demanda.criadoEm)}</span>
+        <DonoDaDemanda demandaId={demanda.id} dono={demanda.dono} equipe={equipe} canManage={canManage} />
       </div>
 
       <div className="demanda-texto">{demanda.texto || "(sem descrição)"}</div>

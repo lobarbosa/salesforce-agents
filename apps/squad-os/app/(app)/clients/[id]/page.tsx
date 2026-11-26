@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getClientById, getDemandasByClient, demandasPorEntregavel, demandasDoProgresso, horasPorMes, fatorDeCalibracao } from "@/lib/data";
+import { getClientById, getDemandasByClient, demandasPorEntregavel, demandasDoProgresso, horasPorMes, fatorDeCalibracao, listarEquipe } from "@/lib/data";
 import { estimativaCalibrada, sugestaoParaConsultor } from "@/lib/estimativa";
 import { getCurrentUsuario } from "@/lib/current-user";
 import { ClientDetail } from "@/components/ClientDetail";
@@ -28,7 +28,7 @@ export default async function ClientPage({
   // Encerrado: só o admin abre (histórico, reativar, excluir).
   if (!enxergaCliente(usuario.role, client)) notFound();
 
-  const [brutas, horas, porEntregavel, doProgresso, calibracao, historico] = await Promise.all([
+  const [brutas, horas, porEntregavel, doProgresso, calibracao, historico, equipe] = await Promise.all([
     getDemandasByClient(id),
     horasPorMes(id),
     demandasPorEntregavel(id),
@@ -37,6 +37,8 @@ export default async function ClientPage({
     // Só o admin de um cliente encerrado vê o botão de excluir — e o porquê
     // de ele estar bloqueado.
     client.encerradoEm && usuario.role === "admin" ? historicoDoCliente(id) : Promise.resolve(null),
+    // Lista de quem pode ser dono: nome e e-mail do time, nunca para o cliente.
+    usuario.role === "cliente" ? Promise.resolve([]) : listarEquipe(),
   ]);
   const demandas = brutas.map((d) => ({
     ...d,
@@ -65,6 +67,7 @@ export default async function ClientPage({
       initialTab={sp.tab as "conhecimento" | "contrato" | "conexao" | "demandas" | undefined}
       openDemandId={sp.demand}
       bloqueiosExclusao={historico ? bloqueiosDeExclusao(historico) : []}
+      equipe={equipe}
     />
   );
 }

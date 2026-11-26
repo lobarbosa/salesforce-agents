@@ -305,6 +305,8 @@ model Usuario {
   criadoEm     DateTime @default(now()) @map("criado_em")
   concedidoPor String?  @map("concedido_por")
 
+  demandasComoDono Demanda[] @relation("DonoDaDemanda")
+
   @@index([clientId])
   @@map("usuarios")
 }
@@ -350,6 +352,15 @@ model Demanda {
   entregaManualEm        DateTime? @map("entrega_manual_em")
   entregaManualPor       String    @default("") @map("entrega_manual_por")
   entregaManualDescricao String    @default("") @map("entrega_manual_descricao")
+
+  // Dono da demanda (2026-11-26): a pessoa do time que responde por ela do
+  // começo ao fim — não é quem criou (`autor`) nem quem aprova gate. Nasce
+  // com quem cria, se for do time; troca pelo card (/api/demandas/[id]/dono).
+  // Pessoa removida do portal deixa a demanda sem dono, não a apaga.
+  donoId          String?   @map("dono_id")
+  dono            Usuario?  @relation("DonoDaDemanda", fields: [donoId], references: [id], onDelete: SetNull)
+  donoDefinidoEm  DateTime? @map("dono_definido_em")
+  donoDefinidoPor String    @default("") @map("dono_definido_por")
 
   // De qual entregável contratado esta demanda nasceu, quando nasceu de um.
   // Opcional porque demanda de AMS não tem entregável, e porque mesmo em
@@ -447,6 +458,7 @@ model Demanda {
   @@index([status])
   @@index([entregavelId])
   @@index([clientId, origemAssessmentId])
+  @@index([donoId])
   @@map("demandas")
 }
 

@@ -11,7 +11,11 @@ import type { Parada } from "@/lib/esteira-parada";
 
 export interface ParadaComCliente extends Parada {
   clientId: string;
+  /** E-mail do dono (lib/dono.ts); null = sem dono; ausente = não se sabe. */
+  donoEmail?: string | null;
 }
+
+const mesmoEmail = (a: string | null | undefined, b: string) => !!a && a.toLowerCase() === b.toLowerCase();
 
 export interface Email {
   para: string;
@@ -69,13 +73,17 @@ export function emailDoTime(usuario: { email: string }, paradas: ParadaComClient
   const linha = (p: ParadaComCliente) =>
     `- ${p.cliente} · ${p.code} — ${p.titulo}: ${p.acoes.map((a) => `${a.quem} ${a.oque}`).join(", ")} (${dias(p.diasNaEtapa)})${
       p.qaReprovado ? " — QA reprovou" : ""
-    }`;
+    }${p.donoEmail === null || p.donoEmail === "" ? " — sem dono" : ""}`;
   const doTime = velhas.filter((p) => p.acoes.some((a) => a.quem === "time"));
   const doCliente = velhas.filter((p) => !p.acoes.some((a) => a.quem === "time"));
+  // Dono (2026-11-26): o que é seu vem primeiro, e o assunto já diz quanto.
+  // A lista inteira continua abaixo — o time cobre quem está fora.
+  const suas = velhas.filter((p) => mesmoEmail(p.donoEmail, usuario.email));
   return {
     para: usuario.email,
-    assunto: `Esteira: ${doTime.length} com o time, ${doCliente.length} com clientes há mais de ${DIAS_PARA_COBRAR_TIME} dias`,
+    assunto: `Esteira: ${suas.length ? `${suas.length} ${suas.length === 1 ? "sua" : "suas"} · ` : ""}${doTime.length} com o time, ${doCliente.length} com clientes há mais de ${DIAS_PARA_COBRAR_TIME} dias`,
     texto: [
+      ...(suas.length ? [`Com você como dono (${suas.length}):`, ...suas.map(linha), ""] : []),
       `Esperando o time (${doTime.length}):`,
       ...(doTime.length ? doTime.map(linha) : ["- nada"]),
       "",

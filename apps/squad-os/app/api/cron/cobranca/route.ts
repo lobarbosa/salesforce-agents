@@ -32,14 +32,17 @@ export async function GET(request: NextRequest) {
       artefatoNome: true,
       disparos: { select: { tipo: true, gate: true, disparadoEm: true, concluidoEm: true } },
       client: { select: { nome: true, contrato: { select: { tipo: true } } } },
+      dono: { select: { email: true } },
     },
   });
-  const porCode = new Map(demandas.map((d) => [d.code, d.clientId]));
+  // Código só é único por cliente: a chave é cliente + código.
+  const chave = (cliente: string, code: string) => `${cliente}\u0000${code}`;
+  const porCode = new Map(demandas.map((d) => [chave(d.client.nome, d.code), d]));
   // Veredito do QA não entra no e-mail do cliente; o texto do artefato fica de fora.
-  const todas: ParadaComCliente[] = paradas(demandas.map((d) => ({ ...d, artefatoConteudo: "" }))).map((p) => ({
-    ...p,
-    clientId: porCode.get(p.code) ?? "",
-  }));
+  const todas: ParadaComCliente[] = paradas(demandas.map((d) => ({ ...d, artefatoConteudo: "" }))).map((p) => {
+    const d = porCode.get(chave(p.cliente, p.code));
+    return { ...p, clientId: d?.clientId ?? "", donoEmail: d ? (d.dono?.email ?? null) : undefined };
+  });
 
   const usuarios = await prisma.usuario.findMany({
     where: { role: { in: ["cliente", "admin", "consultor"] } },
