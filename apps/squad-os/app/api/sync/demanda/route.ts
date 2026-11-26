@@ -7,7 +7,8 @@ import { recusaSeEncerrado } from "@/lib/encerramento-server";
 import { StatusDemanda } from "@/lib/generated/prisma/client";
 import { publicarRoteiroComoAnexo } from "@/lib/roteiro-anexo";
 import { imagensDoPayload, publicarEvidenciasComoAnexo } from "@/lib/evidencias-anexo";
-import { caminhoDasEvidencias, caminhoDoRoteiro } from "@/lib/visao-cliente";
+import { caminhoDasEvidencias, caminhoDoDocumentoTecnico, caminhoDoRoteiro } from "@/lib/visao-cliente";
+import { hashDoDocumentoTecnico, publicarDocumentoTecnicoComoAnexo } from "@/lib/documento-tecnico-anexo";
 
 // Fecha o laço na direção git → app. `status.yaml` no repositório é a fonte de
 // verdade do estágio (guardrail #5 do CLAUDE.md raiz); o Postgres é espelho, e
@@ -67,6 +68,7 @@ interface DemandaDosAnexos {
   titulo: string;
   roteiroCliente: string;
   evidenciasHash: string;
+  documentoTecnicoHash: string;
 }
 
 /**
@@ -104,6 +106,21 @@ async function publicarAnexosDoQa(body: Record<string, unknown>, demanda: Demand
       // falhou, o próximo sync tenta de novo.
       if (r !== "ignorado" || !texto.trim()) {
         await prisma.demanda.update({ where: { id: demanda.id }, data: { evidenciasHash: hash } });
+      }
+    }
+  }
+
+  // Documento técnico de construção (lib/documento-tecnico-anexo.ts): o
+  // 03-documento-tecnico.md do design vira o anexo "Documento técnico", só do
+  // time. Mesma regra: só refaz quando o texto mudou ou o anexo sumiu.
+  if (typeof body.documento_tecnico === "string") {
+    const texto = body.documento_tecnico.slice(0, CONTEUDO_MAX);
+    const hash = hashDoDocumentoTecnico(texto);
+    const temAnexo = await prisma.anexo.findUnique({ where: { caminho: caminhoDoDocumentoTecnico(demanda.id) }, select: { id: true } });
+    if (hash !== demanda.documentoTecnicoHash || Boolean(hash) !== Boolean(temAnexo)) {
+      const r = await publicarDocumentoTecnicoComoAnexo({ id: demanda.id, code, titulo: demanda.titulo, clienteNome: client.nome }, texto);
+      if (r !== "ignorado") {
+        await prisma.demanda.update({ where: { id: demanda.id }, data: { documentoTecnicoHash: hash } });
       }
     }
   }
@@ -153,7 +170,7 @@ export async function POST(request: NextRequest) {
 
   const demanda = await prisma.demanda.findUnique({
     where: { clientId_code: { clientId: client.id, code } },
-    select: { id: true, titulo: true, roteiroCliente: true, evidenciasHash: true, perguntas: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true, estimativaDebitadaEm: true },
+    select: { id: true, titulo: true, roteiroCliente: true, evidenciasHash: true, documentoTecnicoHash: true, perguntas: true, estimativaConsultorHoras: true, estimativaAprovadaHoras: true, estimativaDebitadaEm: true },
   });
   if (!demanda) {
     // Acontece quando a demanda nasceu pela CLI (`sfagents demanda nova`) e

@@ -5,7 +5,9 @@ tools: Read, Write, Bash, Grep, Glob, mcp__rag__rag_consultar, mcp__salesforce-t
 model: opus
 ---
 
-Você é o Solution Architect. Entrega: `demandas/<DEMAND-ID>/03-design.md`.
+Você é o Solution Architect. Entrega: `demandas/<DEMAND-ID>/03-design.md` (a decisão, para o
+gate) e `demandas/<DEMAND-ID>/03-documento-tecnico.md` (como construir, para os
+desenvolvedores). A etapa não avança sem os dois.
 
 ## Histórico do cliente (RAG)
 Antes de decidir, consulte `mcp__rag__rag_consultar` com os objetos e automações envolvidos: designs anteriores deste cliente, riscos já encontrados e o assessment da org. Cite a fonte quando uma decisão anterior pesar na de agora. O RAG é histórico, não a org — confirme na org o que for afirmar que existe (guardrail #3).
@@ -58,6 +60,12 @@ Leia também, só quando a demanda pedir (abra com Read):
 - Estimativa de esforço humano refinada, já sabendo o que existe na org, no mesmo formato
   da análise (o Squad OS lê esta linha e ela substitui a da análise):
   `**Estimativa de esforço:** <min>–<max> h` + o que mudou em relação à análise e por quê
+
+## Documento técnico
+Depois de decidir, abra com Read `.claude/skills/documento-tecnico/SKILL.md` e grave
+`03-documento-tecnico.md` no layout padrão dela, as dez seções na ordem, em toda demanda,
+inclusive sustentação pequena (aí ele cabe em uma página). Ele detalha a construção; a
+justificativa fica no `03-design.md`, e os dois não podem se contradizer.
 
 ## Regras
 - Quando o desenho altera Flow, agente Agentforce ou classe Apex que já existe, diga qual

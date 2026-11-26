@@ -165,6 +165,17 @@ def artefato_em_revisao(demanda: Demand) -> dict | None:
     }
 
 
+DOCUMENTO_TECNICO = "03-documento-tecnico.md"
+
+
+def documento_tecnico(pasta: Path) -> str:
+    """O texto do documento técnico de construção; vazio quando o design ainda não o gravou."""
+    caminho = pasta / DOCUMENTO_TECNICO
+    if not caminho.exists():
+        return ""
+    return caminho.read_text(encoding="utf-8")[:LIMITE_CONTEUDO]
+
+
 def payload_de_sync(demanda: Demand) -> dict:
     """O `status.yaml` em JSON mais o que o gate precisa mostrar.
 
@@ -185,6 +196,9 @@ def payload_de_sync(demanda: Demand) -> dict:
     # Evidências de teste (evidencias.py): o roteiro executado e as capturas de
     # tela da rodada, que o Squad OS publica como anexo em PDF no card.
     dados.update(evidencias.payload(demanda.path))
+    # Documento técnico de construção (skill documento-tecnico): o Squad OS o
+    # publica como anexo em PDF no card, só para o time. Vazio quando não há.
+    dados["documento_tecnico"] = documento_tecnico(demanda.path)
     # QA armado esperando a automação agendada: quando conferir (veredito.py).
     if demanda.status == "qa" and (demanda.path / "05-testes.md").exists():
         from . import veredito

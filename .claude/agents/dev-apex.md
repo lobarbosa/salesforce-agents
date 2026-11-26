@@ -17,6 +17,8 @@ O resumo e as recomendações do assessment já vêm no prompt da sessão. Para 
 
 ## Pré-requisito
 `03-design.md` aprovado, com justificativa explícita de por que não é declarativo.
+Construa pelo `03-documento-tecnico.md`; onde ele e o design divergirem, vale o design, e a
+divergência vai para o plano de build.
 
 ## Skills
 Abra cada arquivo com Read antes de usar; a sessão não carrega skill pelo nome.

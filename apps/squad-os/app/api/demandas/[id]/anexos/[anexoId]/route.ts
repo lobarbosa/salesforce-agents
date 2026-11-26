@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { resolverDemanda } from "@/lib/demanda-access";
 import { BUCKET_ANEXOS, createServiceClient, serviceRoleConfigurado } from "@/lib/supabase/storage";
 import { canManageClientData } from "@/lib/auth";
-import { clienteVeRoteiro, ehAnexoDoQa } from "@/lib/visao-cliente";
+import { clienteVeRoteiro, ehAnexoDoDocumentoTecnico, ehAnexoDoQa } from "@/lib/visao-cliente";
 
 // URL assinada curta em vez de link público: o link expira antes de virar
 // algo que se encaminha por aí, e cada download passa de novo pelo gate de
@@ -30,7 +30,9 @@ export async function GET(
   // regra que o tira da lista (lib/visao-cliente.ts). A lista nunca foi o gate.
   const roteiroAntesDaHora =
     anexo && ehAnexoDoQa(anexo) && !canManageClientData(acesso.usuario.role) && !clienteVeRoteiro(anexo.demanda.status);
-  if (!anexo || roteiroAntesDaHora) {
+  // O documento técnico é do time em qualquer etapa (lib/visao-cliente.ts).
+  const documentoDoTime = anexo && ehAnexoDoDocumentoTecnico(anexo) && !canManageClientData(acesso.usuario.role);
+  if (!anexo || roteiroAntesDaHora || documentoDoTime) {
     return NextResponse.json({ error: "anexo não encontrado" }, { status: 404 });
   }
 

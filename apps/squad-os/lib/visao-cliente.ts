@@ -68,6 +68,15 @@ export function ehAnexoDasEvidencias(anexo: { caminho: string; demandaId: string
 }
 
 /** Anexo publicado pela esteira de QA (roteiro ou evidências), e não por gente. */
+// Documento técnico de construção (lib/documento-tecnico-anexo.ts, 2026-11-26):
+// escrito para os desenvolvedores, com nomes de metadata e contrato de
+// integração. Fica só com o time, em qualquer etapa.
+export const caminhoDoDocumentoTecnico = (demandaId: string) => `${demandaId}/documento-tecnico.pdf`;
+
+export function ehAnexoDoDocumentoTecnico(anexo: { caminho: string; demandaId: string }): boolean {
+  return anexo.caminho === caminhoDoDocumentoTecnico(anexo.demandaId);
+}
+
 export function ehAnexoDoQa(anexo: { caminho: string; demandaId: string }): boolean {
   return ehAnexoDoRoteiro(anexo) || ehAnexoDasEvidencias(anexo);
 }
@@ -93,7 +102,7 @@ export function demandaParaCliente(d: DemandaCompleta): DemandaCompleta {
     // O texto do roteiro é insumo do PDF, não tela: o cliente recebe o anexo.
     roteiroCliente: "",
     // `?.`: nem toda consulta que passa por aqui carrega os anexos.
-    anexos: clienteVeRoteiro(d.status) ? d.anexos : d.anexos?.filter((a) => !ehAnexoDoQa(a)),
+    anexos: d.anexos?.filter((a) => !ehAnexoDoDocumentoTecnico(a) && (clienteVeRoteiro(d.status) || !ehAnexoDoQa(a))),
     historico: [],
     // O cliente vê quem responde pela demanda, pelo nome; e-mail e quem
     // trocou ficam com o time.

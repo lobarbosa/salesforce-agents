@@ -708,6 +708,7 @@ clients/<cliente>/demandas/<DEMAND-ID>/
   status.yaml        # estágio atual e histórico de transições (mantido pela CLI sfagents)
   01-analise.md      # BA: contexto, critérios de aceite, dúvidas
   02-recon.md        # o que já existe na org e será impactado
+  03-documento-tecnico.md  # como construir, no layout padrão (skill documento-tecnico)
   03-design.md       # decisão declarativo vs código + justificativa
   04-plano-build.md  # passo a passo do que será criado/alterado
   05-testes.md       # roteiro + resultado
@@ -726,6 +727,26 @@ design": `sfagents demanda conferir-gates --client <cliente> <DEMAND-ID>` respon
 se o que está em disco hoje ainda é o que foi aprovado, e sai diferente de zero
 quando não é. Divergir não é erro — corrigir depois do gate às vezes é o certo.
 O que não pode é ninguém conseguir saber.
+
+### Documento técnico de construção (2026-11-26)
+
+O design passou a sair com dois arquivos. O `03-design.md` continua sendo o que o gate julga:
+a decisão, a justificativa e o plano de prova. O `03-documento-tecnico.md` é para quem
+constrói e para quem integra: componentes, campos, lógica, contrato de integração, carga,
+testes, implantação e rollback, sempre nas mesmas dez seções (skill `documento-tecnico`).
+Motivo: o documento de arquitetura da EPLAST-60, escrito à mão para os times Salesforce e
+Protheus, mostrou que o design não servia de referência para o time do outro sistema nem
+dizia ao builder a ordem de construção. O layout padrão é o dele.
+
+Ele entra em `REQUIRED_ARTIFACTS` antes do design, porque `revisao.artefato_do_gate` põe na
+mesa o último da tupla: o gate continua mostrando o `03-design.md`, e o hash do documento
+técnico vai para o `gates.md` junto. Demanda que já estava no gate de design quando a regra
+entrou não é afetada; a exigência vale para a próxima sessão de design.
+
+O sync manda o texto (`documento_tecnico`, em `revisao.payload_de_sync`) e o Squad OS o
+publica como anexo "Documento técnico" em PDF (`lib/documento-tecnico-anexo.ts`), no mesmo
+desenho do roteiro do cliente. Só o time o vê, em qualquer etapa: tem nomes de metadata e o
+contrato de integração. O `republicar-anexos.yml` também o leva.
 
 ## Escopo duplo: projeto e sustentação
 

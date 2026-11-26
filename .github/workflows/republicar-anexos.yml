@@ -84,7 +84,7 @@ jobs:
               PULADAS=$((PULADAS+1)); continue
             fi
             RESPOSTA=$(sfagents demanda status-json --client "$CLIENT" "$ID" \
-              | jq -c '{client, id, status, roteiro_cliente, evidencias_teste, evidencias_imagens, evidencias_hash, somente_anexos: true}' \
+              | jq -c '{client, id, status, roteiro_cliente, evidencias_teste, evidencias_imagens, evidencias_hash, documento_tecnico, somente_anexos: true}' \
               | curl -sS -X POST "$SYNC_URL" -H "Authorization: Bearer $SYNC_TOKEN" \
                   -H "Content-Type: application/json" --data-binary @- -w '\n%{http_code}') || true
             CODIGO=$(echo "$RESPOSTA" | tail -1)
