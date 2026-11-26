@@ -769,6 +769,33 @@ model EventoConta {
   @@map("contas_pagar_eventos")
 }
 
+// Recebimento de NFS-e (26/11/2026): o financeiro registra no Squad OS, em
+// /financeiro/receber, que a nota foi paga. As notas vêm da conciliação
+// contábil (ops.agent_state accounting_reconciliation_agent/nfse); a nota é
+// número + data de emissão (a numeração recomeçou em nov/2026). Um registro
+// por recebimento: desfazer marca `estornadoEm` e a linha fica como histórico.
+// Contrato de colunas com integrations/nfse.py (konecta-agents): o CFO, o fluxo
+// de caixa e a DRE leem daqui as notas recebidas.
+model RecebimentoNota {
+  id                 String    @id @default(cuid())
+  numero             String
+  emissao            DateTime  @db.Date
+  cliente            String    @default("")
+  valorNota          Decimal   @map("valor_nota") @db.Decimal(14, 2)
+  recebidoEm         DateTime  @map("recebido_em") @db.Date
+  valorRecebido      Decimal   @map("valor_recebido") @db.Decimal(14, 2)
+  forma              String    @default("")
+  observacao         String    @default("")
+  registradoPorEmail String    @map("registrado_por_email")
+  registradoEm       DateTime  @default(now()) @map("registrado_em")
+  estornadoEm        DateTime? @map("estornado_em")
+  estornadoPorEmail  String?   @map("estornado_por_email")
+  estornoMotivo      String    @default("") @map("estorno_motivo")
+
+  @@index([numero, emissao])
+  @@map("nfse_recebimentos")
+}
+
 // Documentos que a contabilidade manda todo mês (balancete, DRE, guias de
 // impostos, relação de notas). Substitui a task "Contabilidade MM/AAAA" do
 // ClickUp: o accounting_reconciliation_agent (konecta-agents) lê esta tabela e

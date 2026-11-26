@@ -1115,6 +1115,12 @@ a.tab-btn { text-decoration: none; white-space: nowrap; display: inline-flex; al
 .st-paga { background: var(--success-soft); color: var(--success); }
 .st-recusada { background: var(--danger-soft); color: var(--danger); }
 .st-cancelada { background: var(--surface-alt); color: var(--text-muted); border-color: var(--border-strong); }
+/* Contas a receber: situação da NFS-e. */
+.rc-recebida { background: var(--success-soft); color: var(--success); }
+.rc-vencida { background: var(--danger-soft); color: var(--danger); font-weight: 600; }
+.rc-a_vencer { background: var(--accent-soft); color: var(--accent); }
+.rc-sem_vencimento { background: var(--surface-alt); color: var(--text-muted); border-color: var(--border-strong); }
+.recebimento-bloco { display: flex; flex-direction: column; gap: 0.8rem; }
 
 .secao-titulo { font-size: 0.95rem; margin: 1.4rem 0 0.6rem; }
 .secao-titulo:first-child { margin-top: 0; }

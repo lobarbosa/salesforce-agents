@@ -18,6 +18,8 @@ import { ResultadoChart } from "@/components/ResultadoChart";
 import { CaixaChart } from "@/components/CaixaChart";
 import { compromissoMensal } from "@/lib/recorrencias";
 import { listarModelos } from "@/lib/recorrencias-data";
+import { totais as totaisReceber } from "@/lib/receber";
+import { listarNotas } from "@/lib/receber-data";
 
 // Painel financeiro: a porta de entrada do papel financeiro. Primeiro o que
 // precisa de alguém (cada linha leva à tela onde se resolve); depois os números
@@ -35,7 +37,7 @@ export default async function PainelFinanceiroPage() {
   const mesAtual = hoje.slice(0, 7);
   const compContabil = competenciaPadrao(mesAtual);
 
-  const [contas, divergencias, kpis, docsContabeis, horas, resultadoMensal, relatorio, modelos, margens] = await Promise.all([
+  const [contas, divergencias, kpis, docsContabeis, horas, resultadoMensal, relatorio, modelos, margens, receber] = await Promise.all([
     listarContas(),
     contarDivergenciasAbertas(),
     kpisAtuais(),
@@ -45,6 +47,7 @@ export default async function PainelFinanceiroPage() {
     ultimoRelatorioFinanceiro(),
     listarModelos(hoje),
     margemPorContrato(),
+    listarNotas(hoje).catch(() => null),
   ]);
   const compromisso = compromissoMensal(modelos, hoje);
   const saudeRel = relatorio ? (relatorio.saude ? SAUDE[relatorio.saude] : null) : null;
@@ -65,6 +68,14 @@ export default async function PainelFinanceiroPage() {
     pendencias.push({ href: "/financeiro/contas?ver=vencidas", titulo: `${vencidas.length} conta${vencidas.length > 1 ? "s vencidas" : " vencida"} sem pagamento`, detalhe: soma(vencidas), tag: "vencida" });
   if (pagarLogo.length)
     pendencias.push({ href: "/financeiro/contas?ver=a_pagar", titulo: `${pagarLogo.length} conta${pagarLogo.length > 1 ? "s aprovadas vencem" : " aprovada vence"} em até 3 dias`, detalhe: soma(pagarLogo), tag: "pagar" });
+  const notasVencidas = receber ? totaisReceber(receber.notas, hoje).vencidas : null;
+  if (notasVencidas?.qtd)
+    pendencias.push({
+      href: "/financeiro/receber?ver=vencidas",
+      titulo: `${notasVencidas.qtd} nota${notasVencidas.qtd > 1 ? "s vencidas" : " vencida"} sem recebimento registrado`,
+      detalhe: `${formatarReais(notasVencidas.valor)} · se já entrou, registre o recebimento`,
+      tag: "receber",
+    });
   for (const d of divergencias ?? [])
     pendencias.push({ href: `/financeiro/divergencias?origem=${d.origem}`, titulo: `${d.total} divergência${d.total > 1 ? "s abertas" : " aberta"}`, detalhe: rotuloOrigem(d.origem), tag: "divergência" });
   if (faltamDocs.length)
