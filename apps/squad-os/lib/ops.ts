@@ -356,3 +356,26 @@ export function historicoRelatoriosFinanceiros(n = 30): Promise<RelatorioResumo[
 function textosJson(v: unknown): string[] {
   return Array.isArray(v) ? v.filter((s): s is string => typeof s === "string" && s.trim() !== "") : [];
 }
+
+// ── NFS-e emitidas (contas a receber) ──────────────────────────────────────
+
+/**
+ * Notas publicadas pela conciliação contábil (accounting_reconciliation_agent/nfse)
+ * e o registro antigo de recebimentos (financeiro/nfse_recebimentos, feito à mão
+ * antes de /financeiro/receber). null = schema ops ausente ou leitura falhou.
+ */
+export function notasEmitidas(): Promise<{ notas: Record<string, unknown>[]; atualizadoEm: string | null; legado: Record<string, string> } | null> {
+  return ler(async () => {
+    const r = await prisma.$queryRaw<{ agent: string; key: string; value: unknown }[]>`
+      select agent, key, value from ops.agent_state
+      where (agent = 'accounting_reconciliation_agent' and key = 'nfse')
+         or (agent = 'financeiro' and key = 'nfse_recebimentos')`;
+    const nfse = r.find((x) => x.key === "nfse")?.value as { notas?: unknown[]; atualizado_em?: string } | undefined;
+    const rec = r.find((x) => x.key === "nfse_recebimentos")?.value as { recebimentos?: Record<string, string> } | undefined;
+    return {
+      notas: (Array.isArray(nfse?.notas) ? nfse!.notas : []).filter((n): n is Record<string, unknown> => !!n && typeof n === "object"),
+      atualizadoEm: nfse?.atualizado_em ?? null,
+      legado: rec?.recebimentos && typeof rec.recebimentos === "object" ? rec.recebimentos : {},
+    };
+  });
+}
