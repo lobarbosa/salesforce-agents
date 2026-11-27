@@ -4,6 +4,9 @@ public with sharing class TestSendOrderToProtheus {
     static void makeData(){
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = SendOrderToProtheusTDF.createAccount();
+        Account inserted = [SELECT Name, CompanyDocument__c FROM Account WHERE Id = :acc.Id];
+        Assert.isTrue(AccountUtility.validateCNPJ(inserted.CompanyDocument__c), 'A conta do pedido precisa de CNPJ sintético válido');
+        Assert.isTrue(inserted.Name.contains('TESTE'));
         SendOrderToProtheusTDF.createTestPricebook(acc);
     }
 
