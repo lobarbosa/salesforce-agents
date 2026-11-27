@@ -154,7 +154,7 @@ public with sharing class SendOrderToProtheusTDF {
             Branch__c = createBranch().Id
         );
 
-        insert opp;
+        insertSemConsultaProtheus(opp);
 
         return opp;
     }
@@ -173,9 +173,16 @@ public with sharing class SendOrderToProtheusTDF {
             Branch__c = createBranch().Id
         );
 
-        insert opp;
+        insertSemConsultaProtheus(opp);
 
         return opp;
+    }
+
+    private static void insertSemConsultaProtheus(Opportunity opp){
+        Boolean bypassAnterior = TriggerUtility.bypassTrigger;
+        TriggerUtility.bypassTrigger = true;
+        insert opp;
+        TriggerUtility.bypassTrigger = bypassAnterior;
     }
 
     public static Product2 createProduct(){
@@ -239,7 +246,7 @@ public with sharing class SendOrderToProtheusTDF {
             Pricebook2Id = pricebook.Id
         );
 
-        insert opp;
+        insertSemConsultaProtheus(opp);
 
         return opp;
     }
