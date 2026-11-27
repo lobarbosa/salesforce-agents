@@ -50,7 +50,7 @@
     <formulas>
         <name>TituloAviso</name>
         <dataType>String</dataType>
-        <expression>"Oportunidade sem atividade ha " &amp; TEXT({!DiasParado}) &amp; " dias"</expression>
+        <expression>"Oportunidade sem atividade h&#225; " &amp; TEXT({!DiasParado}) &amp; " dias"</expression>
     </formulas>
     <formulas>
         <name>CorpoAviso</name>
