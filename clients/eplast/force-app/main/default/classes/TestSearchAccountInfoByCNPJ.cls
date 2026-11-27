@@ -1,12 +1,12 @@
 /*@isTest
 public with sharing class TestSearchAccountInfoByCNPJ {
     public static String invalidCNPJErrorMessage = 'CNPJ incompleto ou inválido';
-    public static String insertedAccountCNPJ = '29.190.753/0001-99';
-    public static String updateIncompleteCNPJ = '46.601.881/0001';
-    public static String updateCNPJWithInvalidFirstVerifyingDigit = '42.601.881/0001-66';
-    public static String updateCNPJWithInvalidSecondVerifyingDigit = '42.601.881/0001-44';
-    public static String updateValidCNPJ = '42.601.881/0001-46';
-    public static String validButInexistentCNPJ = '81.520.758/0001-52';
+    public static String insertedAccountCNPJ = '00.000.000/0001-91';
+    public static String updateIncompleteCNPJ = '00.000.000/0001';
+    public static String updateCNPJWithInvalidFirstVerifyingDigit = '00.000.000/0001-81';
+    public static String updateCNPJWithInvalidSecondVerifyingDigit = '00.000.000/0001-90';
+    public static String updateValidCNPJ = '00.000.000/0002-72';
+    public static String validButInexistentCNPJ = '00.000.000/0003-53';
 
     @testSetup
     public static void setup(){
@@ -16,7 +16,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
     @isTest
     public static void insertAccountWithNullCNPJTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = null);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = null);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -31,7 +31,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
     @isTest
     public static void insertAccountWithEmptyCNPJTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = '');
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = '');
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -46,7 +46,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
     @isTest
     public static void insertAccountWithIncompleteCNPJTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = updateIncompleteCNPJ);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = updateIncompleteCNPJ);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -61,7 +61,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
     @isTest
     public static void insertAccountWithWrongFirstVerifyingDigitTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = updateCNPJWithInvalidFirstVerifyingDigit);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = updateCNPJWithInvalidFirstVerifyingDigit);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -76,7 +76,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
     @isTest
     public static void insertAccountWithWrongSecondVerifyingDigitTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = updateCNPJWithInvalidSecondVerifyingDigit);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = updateCNPJWithInvalidSecondVerifyingDigit);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -93,7 +93,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
     public static void insertAccountWithValidButInexistentCNPJTest(){
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJErrorResponse());
 
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = validButInexistentCNPJ);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = validButInexistentCNPJ);
         String oldCNPJ = acc.CompanyDocument__c;
 
         Test.startTest();
@@ -208,22 +208,34 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 @isTest
 public with sharing class TestSearchAccountInfoByCNPJ {
     public static String invalidCNPJErrorMessage = 'CNPJ incompleto ou inválido';
-    public static String insertedAccountCNPJ = '29.190.753/0001-99';
-    public static String updateIncompleteCNPJ = '46.601.881/0001';
-    public static String updateCNPJWithInvalidFirstVerifyingDigit = '42.601.881/0001-66';
-    public static String updateCNPJWithInvalidSecondVerifyingDigit = '42.601.881/0001-44';
-    public static String updateValidCNPJ = '42.601.881/0001-46';
-    public static String validButInexistentCNPJ = '81.520.758/0001-52';
+    public static String insertedAccountCNPJ = SearchAccountInfoByCNPJTDF.CNPJ_VALIDO;
+    public static String updateIncompleteCNPJ = SearchAccountInfoByCNPJTDF.CNPJ_INCOMPLETO;
+    public static String updateCNPJWithInvalidFirstVerifyingDigit = SearchAccountInfoByCNPJTDF.CNPJ_DIGITO_1_ERRADO;
+    public static String updateCNPJWithInvalidSecondVerifyingDigit = SearchAccountInfoByCNPJTDF.CNPJ_DIGITO_2_ERRADO;
+    public static String updateValidCNPJ = SearchAccountInfoByCNPJTDF.CNPJ_OUTRO;
+    public static String validButInexistentCNPJ = SearchAccountInfoByCNPJTDF.CNPJ_TERCEIRO;
 
     @testSetup
     public static void setup(){
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
-        insert SearchAccountInfoByCNPJTDF.createAccountWithCorrectCNPJ();
+        Account acc = SearchAccountInfoByCNPJTDF.createAccountWithCorrectCNPJ();
+        acc.Name = 'TESTE EPLAST Apex CNPJ valido';
+        insert acc;
+    }
+
+    private static void assertCnpjRecusado(Database.SaveResult result){
+        Assert.isFalse(result.isSuccess(), 'CNPJ inválido deve ser recusado');
+        Boolean found = false;
+        for(Database.Error err : result.getErrors()){
+            if(err.getMessage() == invalidCNPJErrorMessage)
+                found = true;
+        }
+        Assert.isTrue(found, 'A recusa deve citar: ' + invalidCNPJErrorMessage);
     }
 
     @isTest
     public static void insertAccountWithNullCNPJTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = null);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = null);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -231,14 +243,12 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
     public static void insertAccountWithEmptyCNPJTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = '');
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = '');
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -246,14 +256,12 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
     public static void insertAccountWithIncompleteCNPJTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = updateIncompleteCNPJ);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = updateIncompleteCNPJ);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -261,14 +269,12 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
     public static void insertAccountWithWrongFirstVerifyingDigitTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = updateCNPJWithInvalidFirstVerifyingDigit);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = updateCNPJWithInvalidFirstVerifyingDigit);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -276,14 +282,12 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
     public static void insertAccountWithWrongSecondVerifyingDigitTest(){
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = updateCNPJWithInvalidSecondVerifyingDigit);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = updateCNPJWithInvalidSecondVerifyingDigit);
 
         Test.startTest();
             Database.SaveResult result = Database.insert(acc, false);
@@ -291,9 +295,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     /*
@@ -301,7 +303,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
     public static void insertAccountWithValidButInexistentCNPJTest(){
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJErrorResponse());
 
-        Account acc = new Account(Name = 'Test Account', CompanyDocument__c = validButInexistentCNPJ);
+        Account acc = new Account(Name = 'TESTE EPLAST Apex CNPJ invalido', CompanyDocument__c = validButInexistentCNPJ);
         String oldCNPJ = acc.CompanyDocument__c;
 
         Test.startTest();
@@ -327,9 +329,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
@@ -343,9 +343,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
@@ -359,9 +357,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
@@ -375,9 +371,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     @isTest
@@ -391,9 +385,7 @@ public with sharing class TestSearchAccountInfoByCNPJ {
 
         Database.Error[] errors = result.getErrors();
 
-        Assert.isTrue(result.isSuccess());
-        Assert.isFalse(errors.size() > 0);
-        //Assert.areEqual(invalidCNPJErrorMessage, errors[0].getMessage());
+        assertCnpjRecusado(result);
     }
 
     /*

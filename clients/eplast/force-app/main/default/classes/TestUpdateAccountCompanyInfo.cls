@@ -1,75 +1,86 @@
 @isTest
 public with sharing class TestUpdateAccountCompanyInfo {
-    private static String cnpj = '29.190.753/0001-99';
-
     @TestSetup
     static void setupData() {
-        Account acc = new Account(
-            Name = 'Test Account',
-            Store__c = '2',
-            CompanyName__c = 'Test Company',
-            BillingPostalCode = '02000-000',
-            BillingStreet = 'Rua B',
-            BillingCity = 'São Paulo',
-            BillingState = 'SP',
-            BillingCountry = 'BR',
-            BillingNeighborhood__c = 'Centro',
-            Phone = '(11) 98888-8888',
-            //CompanyDocument__c = '12345678000195',
-            Risk__c = 'A',
-            LimitAmount__c = 50000,
-            LimitAmountDueDate__c = Date.today().addMonths(1),
-            Email__c = 'test@company.com',
-            CNAE__c = '654321'
-        );
+        TriggerUtility.bypassTrigger = true;
+        Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
+        Account acc = SendAccountToProtheusTDF.createSecAccount();
         insert acc;
     }
 
     @isTest
     public static void updateAccountCompanyInfoTest() {
-        //Account acc = [SELECT Id FROM Account WHERE CompanyDocument__c = :cnpj LIMIT 1];
-		Account acc = SendAccountToProtheusTDF.createSecAccount();
+        TriggerUtility.bypassTrigger = true;
+        User owner = usuarioSemVendedor();
+        Account acc = SendAccountToProtheusTDF.createAccount('M5CWATUALIZA', SearchAccountInfoByCNPJTDF.CNPJ_QUARTO);
+        acc.OwnerId = owner.Id;
         insert acc;
-        
-        acc.CompanyDocument__c = null;
-        update acc;
+
+        acc = [
+            SELECT Id, CompanyDocument__c, Store__c, Owner.ProtheusSellerId__c
+            FROM Account
+            WHERE Id = :acc.Id
+        ];
+        Assert.isNull(acc.Owner.ProtheusSellerId__c);
+
         Test.startTest();
             Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
-
-        	System.enqueueJob(new UpdateAccountCompanyInfo(acc));
+            System.enqueueJob(new UpdateAccountCompanyInfo(acc));
         Test.stopTest();
 
-        Account updatedAcc = [SELECT CompanyName__c, CNAE__c, OpeningDate__c, Phone, BillingPostalCode, BillingStreet, BillingCity, BillingState, BillingCountry, BillingNeighborhood__c, Description FROM Account WHERE Id = :acc.Id];
+        Account updatedAcc = [
+            SELECT CompanyName__c, CNAE__c, OpeningDate__c, Phone, BillingPostalCode, BillingStreet,
+                   BillingCity, BillingState, BillingCountry, BillingNeighborhood__c, Description
+            FROM Account
+            WHERE Id = :acc.Id
+        ];
 
-        System.assertNotEquals(null, updatedAcc.CompanyName__c);
-        System.assertNotEquals(null, updatedAcc.CNAE__c);
-        System.assertNotEquals(null, updatedAcc.OpeningDate__c);
-        System.assertNotEquals(null, updatedAcc.Phone);
-        System.assertNotEquals(null, updatedAcc.BillingPostalCode);
-        System.assertNotEquals(null, updatedAcc.BillingStreet);
-        System.assertNotEquals(null, updatedAcc.BillingCity);
-        System.assertNotEquals(null, updatedAcc.BillingState);
-        System.assertEquals(null, updatedAcc.BillingCountry);
-        System.assertNotEquals(null, updatedAcc.BillingNeighborhood__c);
-        System.assertNotEquals('Quadro Societário: \n\nNão há quadro societário', updatedAcc.Description);
+        Assert.areEqual('TESTE EPLAST COMERCIO LTDA', updatedAcc.CompanyName__c);
+        Assert.areEqual('6201501', updatedAcc.CNAE__c);
+        Assert.areEqual(Date.newInstance(2020, 1, 15), updatedAcc.OpeningDate__c);
+        Assert.areEqual('(11)33334444', updatedAcc.Phone);
+        Assert.areEqual('01310100', updatedAcc.BillingPostalCode);
+        Assert.isTrue(updatedAcc.BillingStreet.contains('RUA TESTE'));
+        Assert.areEqual('CIDADE TESTE', updatedAcc.BillingCity);
+        Assert.areEqual('SP', updatedAcc.BillingState);
+        Assert.isNull(updatedAcc.BillingCountry);
+        Assert.areEqual('BAIRRO TESTE', updatedAcc.BillingNeighborhood__c);
+        Assert.areNotEqual('Quadro Societário: \n\nNão há quadro societário', updatedAcc.Description);
+        Assert.isTrue(updatedAcc.Description.contains('SOCIO TESTE UM'));
     }
 
     @isTest
     public static void updateAccountCompanyInfoWithMissingCNPJTest() {
+        TriggerUtility.bypassTrigger = true;
         Account acc = new Account();
-        acc.Name = 'Test Account no CNPJ';
+        acc.Name = 'TESTE EPLAST Apex Sem CNPJ';
         acc.CompanyDocument__c = 'invalid_cnpj';
         acc.Store__c = '01';
         insert acc;
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJErrorResponse());
-
         System.enqueueJob(new UpdateAccountCompanyInfo(acc));
         Test.stopTest();
 
         Account updatedAcc = [SELECT CompanyName__c FROM Account WHERE Id = :acc.Id];
+        Assert.areEqual('CNPJ não encontrado', updatedAcc.CompanyName__c);
+    }
 
-        System.assertEquals('CNPJ não encontrado', updatedAcc.CompanyName__c);
+    private static User usuarioSemVendedor(){
+        String token = String.valueOf(Datetime.now().getTime());
+        User owner = new User(
+            Username = 'teste.eplast.apex.' + token + '@example.com',
+            LastName = 'TESTE EPLAST',
+            Email = 'teste.eplast.apex@example.com',
+            Alias = 'tapex',
+            TimeZoneSidKey = UserInfo.getTimezone().getId(),
+            LocaleSidKey = UserInfo.getLocale(),
+            EmailEncodingKey = 'UTF-8',
+            LanguageLocaleKey = UserInfo.getLanguage(),
+            ProfileId = UserInfo.getProfileId()
+        );
+        insert owner;
+        return owner;
     }
 }

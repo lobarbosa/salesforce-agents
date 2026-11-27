@@ -35,31 +35,32 @@ public with sharing class SendOrderToProtheusTDF {
 
     public static Account createAccount(){
         User owner = SendAccountToProtheusTDF.createOwner();
+        Boolean bypassAnterior = TriggerUtility.bypassTrigger;
+        TriggerUtility.bypassTrigger = true;
 
-        Account acc = new Account(
-            Name = 'Account Order Test',
-            ProtheusId__c = '123456',
-            //CompanyDocument__c = '29190753000199',
-            CompanyName__c = 'Test Account',
-            BillingCountry = 'Test Country',
-            BillingCity = 'Test City',
-            BillingState = 'Test State',
-            BillingStreet = 'Test Street',
-            BillingPostalCode = '00000000',
-            BillingNeighborhood__c = 'Test Neighborhood',
-            CNAE__c = '123456',
-            Email__c = 'test@test.com',
-            Phone = '(99) 12341234',
-            Owner = owner
-        );
+        Account acc = SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(new Account(), 'ZXQ7PEDIDO');
+        acc.ProtheusId__c = '123456';
+        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_VALIDO;
+        acc.CNAE__c = '6201501';
+        acc.OwnerId = owner.Id;
 
         insert acc;
 
         acc.Store__c = '01';
 
         update acc;
+        TriggerUtility.bypassTrigger = bypassAnterior;
 
         return acc;
+    }
+
+    @isTest
+    static void contaDePedidoTemCnpjSinteticoValido(){
+        Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
+        Account acc = createAccount();
+        Assert.isTrue(acc.Name.contains('TESTE'));
+        Assert.isTrue(AccountUtility.validateCNPJ(acc.CompanyDocument__c));
+        Assert.areEqual('01', acc.Store__c);
     }
 
     public static void createAccountTeamMember(Account acc){
@@ -153,7 +154,7 @@ public with sharing class SendOrderToProtheusTDF {
             Branch__c = createBranch().Id
         );
 
-        insert opp;
+        insertSemConsultaProtheus(opp);
 
         return opp;
     }
@@ -172,9 +173,16 @@ public with sharing class SendOrderToProtheusTDF {
             Branch__c = createBranch().Id
         );
 
-        insert opp;
+        insertSemConsultaProtheus(opp);
 
         return opp;
+    }
+
+    private static void insertSemConsultaProtheus(Opportunity opp){
+        Boolean bypassAnterior = TriggerUtility.bypassTrigger;
+        TriggerUtility.bypassTrigger = true;
+        insert opp;
+        TriggerUtility.bypassTrigger = bypassAnterior;
     }
 
     public static Product2 createProduct(){
@@ -238,7 +246,7 @@ public with sharing class SendOrderToProtheusTDF {
             Pricebook2Id = pricebook.Id
         );
 
-        insert opp;
+        insertSemConsultaProtheus(opp);
 
         return opp;
     }

@@ -4,11 +4,15 @@ public with sharing class TestSendOrderToProtheus {
     static void makeData(){
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = SendOrderToProtheusTDF.createAccount();
+        Account inserted = [SELECT Name, CompanyDocument__c FROM Account WHERE Id = :acc.Id];
+        Assert.isTrue(AccountUtility.validateCNPJ(inserted.CompanyDocument__c), 'A conta do pedido precisa de CNPJ sintético válido');
+        Assert.isTrue(inserted.Name.contains('TESTE'));
         SendOrderToProtheusTDF.createTestPricebook(acc);
     }
 
     @isTest
     public static void testChangeOrderStatus(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -35,6 +39,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testNormalQuote(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -64,6 +69,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderDispatchBranch(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -95,6 +101,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpectedSaleDate(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -126,6 +133,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderDeliveryDate(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -157,6 +165,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderShippingCompany(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -188,6 +197,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderTypeShipping(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -219,6 +229,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderInternalObservation(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -250,6 +261,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderMessageNote(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -281,6 +293,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderVolume1(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -312,6 +325,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderSpecies1(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -343,6 +357,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderTypeOperation(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -375,6 +390,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel1(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -407,6 +423,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel2(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -438,6 +455,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel3(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -469,6 +487,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel4(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -500,6 +519,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel5(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -531,6 +551,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel6(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -562,6 +583,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel7(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -593,6 +615,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel8(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -624,6 +647,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel9(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -655,6 +679,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel10(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -686,6 +711,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel11(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -717,6 +743,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderParcel12(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -748,6 +775,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration1(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -779,6 +807,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration2(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -810,6 +839,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration3(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -841,6 +871,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration4(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -872,6 +903,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration5(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -903,6 +935,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration6(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -934,6 +967,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration7(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -965,6 +999,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration8(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -996,6 +1031,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration9(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -1027,6 +1063,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration10(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -1058,6 +1095,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration11(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];
@@ -1089,6 +1127,7 @@ public with sharing class TestSendOrderToProtheus {
 
     @isTest
     public static void testChangeOrderExpiration12(){
+        TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse());
         Account acc = [ SELECT Id from Account ];
         Pricebook2 pricebook = [ SELECT id FROM Pricebook2 WHERE Account__c = :acc.Id ];

@@ -34,48 +34,32 @@ public with sharing class SendAccountToProtheusTDF {
     }
     
     public static Account createAccount(){
-        Account acc = new Account(
-            Name = 'Test Account',
-            Store__c = '2',
-            CompanyName__c = 'Test Company',
-            BillingPostalCode = '02000-000',
-            BillingStreet = 'Rua B',
-            BillingCity = 'São Paulo',
-            BillingState = 'SP',
-            BillingCountry = 'BR',
-            BillingNeighborhood__c = 'Centro',
-            Phone = '(11) 98888-8888',
-            CompanyDocument__c = '12345678000195',
-            Risk__c = 'A',
-            LimitAmount__c = 50000,
-            LimitAmountDueDate__c = Date.today().addMonths(1),
-            Email__c = 'test@company.com',
-            CNAE__c = '654321'
-        );
-        //insert acc;
+        return createAccount('R9VTENVIO', SearchAccountInfoByCNPJTDF.CNPJ_OUTRO);
+    }
+
+    public static Account createSecAccount(){
+        return createAccount('H8JXSEC', SearchAccountInfoByCNPJTDF.CNPJ_TERCEIRO);
+    }
+
+    public static Account createAccount(String token, String cnpj){
+        Account acc = SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(new Account(), token);
+        acc.Store__c = '2';
+        acc.CompanyDocument__c = cnpj;
+        acc.Risk__c = 'A';
+        acc.LimitAmount__c = 50000;
+        acc.LimitAmountDueDate__c = Date.today().addMonths(1);
+        acc.CNAE__c = '6201501';
         return acc;
     }
-    public static Account createSecAccount(){
-        Account acc = new Account(
-            Name = 'Test Sec Account',
-            Store__c = '2',
-            CompanyName__c = 'Test Company',
-            BillingPostalCode = '02000-000',
-            BillingStreet = 'Rua B',
-            BillingCity = 'São Paulo',
-            BillingState = 'SP',
-            BillingCountry = 'BR',
-            BillingNeighborhood__c = 'Centro',
-            Phone = '(11) 98888-8888',
-            CompanyDocument__c = '12345678000195',
-            Risk__c = 'A',
-            LimitAmount__c = 50000,
-            LimitAmountDueDate__c = Date.today().addMonths(1),
-            Email__c = 'test@company.com',
-            CNAE__c = '654321'
-        );
-        //insert acc;
-        return acc;
+
+    @isTest
+    static void fabricaEntregaContaSinteticaComCnpjValido(){
+        Account acc = createAccount();
+        Account sec = createSecAccount();
+        Assert.isTrue(acc.Name.contains('TESTE'));
+        Assert.isTrue(AccountUtility.validateCNPJ(acc.CompanyDocument__c));
+        Assert.isTrue(AccountUtility.validateCNPJ(sec.CompanyDocument__c));
+        Assert.areNotEqual(acc.CompanyDocument__c, sec.CompanyDocument__c);
     }
 
     public static String getSuccessResponseBody(){
