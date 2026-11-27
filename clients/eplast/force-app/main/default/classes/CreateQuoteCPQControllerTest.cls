@@ -4,56 +4,45 @@ public class CreateQuoteCPQControllerTest {
     @testSetup
     static void setupTestData() {
         Test.setMock(HttpCalloutMock.class, new MockTestSendOrderToProtheusSetupResponse(true));
-        // Criação de uma conta
         Account a = SendOrderToProtheusTDF.createAccount();
-        
-		User owner = SendAccountToProtheusTDF.createOwner();
-        // Criação de uma conta para BlowerCustomer
-        Account blowerAccount =  new Account(
-            Name = 'Account Blower',
+
+        User owner = SendAccountToProtheusTDF.createOwner();
+        TriggerUtility.bypassTrigger = true;
+        Account blowerAccount = new Account(
+            Name = 'TESTE EPLAST Apex Blower',
             ProtheusId__c = '123457',
-            CompanyDocument__c = '21890886000166',
-            CompanyName__c = 'Test Blower',
-            BillingCountry = 'Test Country',
+            CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_QUARTO,
+            CompanyName__c = 'TESTE EPLAST BLOWER',
+            BillingCountry = 'BR',
             BillingCity = 'Blower Shipping City',
-            BillingState = 'Test State',
-            BillingStreet = 'Test Street',
-            BillingPostalCode = '00000000',
-            BillingNeighborhood__c = 'Test Neighborhood',
-            CNAE__c = '123456',
-            Email__c = 'testblower@mail.com',
-            Phone = '(99) 12341244',
-            Owner = owner
+            BillingState = 'SP',
+            BillingStreet = 'Rua Teste Blower',
+            BillingPostalCode = '01310100',
+            BillingNeighborhood__c = 'Bairro Teste',
+            CNAE__c = '6201501',
+            Email__c = 'teste.eplast.apex.blower@example.com',
+            Phone = '(11)33335555',
+            OwnerId = owner.Id
         );
 
         insert blowerAccount;
         blowerAccount.Store__c = '01';
         update blowerAccount;
 
-        // Atualização da conta original para adicionar BlowerCustomer__c
         a.BlowerCustomer__c = blowerAccount.Id;
         update a;
 
         Pricebook2 pb2 = new Pricebook2(
-            Name = 'Catálogo Teste',
+            Name = 'TESTE EPLAST Apex Catalogo',
             IsActive = true,
             Account__c = a.Id
         );
         insert pb2;
 
-        Id pricebookId = Test.getStandardPricebookId();
-        Pricebook2 standardPricebook = new Pricebook2(
-            Id = pricebookId,
-            Account__c = a.Id,
-            IsActive = true
-        );
-        update standardPricebook;
-
-        // Criação de uma oportunidade
         Opportunity opp = new Opportunity(
-            Name = 'Test Opportunity',
+            Name = 'TESTE EPLAST Apex Oportunidade',
             StageName = 'Qualificado',
-            Pricebook2Id = standardPricebook.Id,
+            Pricebook2Id = pb2.Id,
             CloseDate = Date.today(),
             AccountId = a.Id,
             RecordTypeId = SObjectType.Opportunity.getRecordTypeInfosByDeveloperName().get('Sale').getRecordTypeId()
@@ -89,8 +78,8 @@ public class CreateQuoteCPQControllerTest {
 
         // Verificar se a cotação CPQ foi criada corretamente
         List<SBQQ__Quote__c> quotesCPQ = [SELECT SBQQ__ShippingCity__c FROM SBQQ__Quote__c WHERE SBQQ__Opportunity2__c = :opp.Id];
-        Assert.istrue(quotesCPQ.size() >= 1);
-        Assert.areNotEqual('Blower Shipping City', quotesCPQ[0].SBQQ__ShippingCity__c);
+        Assert.isTrue(quotesCPQ.size() >= 1);
+        Assert.areEqual('Blower Shipping City', quotesCPQ[0].SBQQ__ShippingCity__c);
     }
 
     @isTest
@@ -115,6 +104,6 @@ public class CreateQuoteCPQControllerTest {
         // Verificar se a cotação CPQ foi criada corretamente
         List<SBQQ__Quote__c> quotesCPQ = [SELECT SBQQ__ShippingCity__c FROM SBQQ__Quote__c WHERE SBQQ__Opportunity2__c = :opp.Id];
         Assert.isTrue(quotesCPQ.size() >= 1);
-        Assert.areNotEqual('Test City', quotesCPQ[0].SBQQ__ShippingCity__c);
+        Assert.areEqual('Cidade Teste', quotesCPQ[0].SBQQ__ShippingCity__c);
     }
 }

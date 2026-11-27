@@ -35,22 +35,24 @@ public with sharing class SendOrderToProtheusTDF {
 
     public static Account createAccount(){
         User owner = SendAccountToProtheusTDF.createOwner();
+        Boolean bypassAnterior = TriggerUtility.bypassTrigger;
+        TriggerUtility.bypassTrigger = true;
 
         Account acc = new Account(
-            Name = 'Account Order Test',
+            Name = 'TESTE EPLAST Apex Conta Pedido',
             ProtheusId__c = '123456',
-            //CompanyDocument__c = '29190753000199',
-            CompanyName__c = 'Test Account',
-            BillingCountry = 'Test Country',
-            BillingCity = 'Test City',
-            BillingState = 'Test State',
-            BillingStreet = 'Test Street',
-            BillingPostalCode = '00000000',
-            BillingNeighborhood__c = 'Test Neighborhood',
-            CNAE__c = '123456',
-            Email__c = 'test@test.com',
-            Phone = '(99) 12341234',
-            Owner = owner
+            CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_VALIDO,
+            CompanyName__c = 'TESTE EPLAST COMERCIO LTDA',
+            BillingCountry = 'BR',
+            BillingCity = 'Cidade Teste',
+            BillingState = 'SP',
+            BillingStreet = 'Rua Teste 100',
+            BillingPostalCode = '01310100',
+            BillingNeighborhood__c = 'Bairro Teste',
+            CNAE__c = '6201501',
+            Email__c = 'teste.eplast.apex@example.com',
+            Phone = '(11)33334444',
+            OwnerId = owner.Id
         );
 
         insert acc;
@@ -58,8 +60,18 @@ public with sharing class SendOrderToProtheusTDF {
         acc.Store__c = '01';
 
         update acc;
+        TriggerUtility.bypassTrigger = bypassAnterior;
 
         return acc;
+    }
+
+    @isTest
+    static void contaDePedidoTemCnpjSinteticoValido(){
+        Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
+        Account acc = createAccount();
+        Assert.isTrue(acc.Name.startsWith('TESTE'));
+        Assert.isTrue(AccountUtility.validateCNPJ(acc.CompanyDocument__c));
+        Assert.areEqual('01', acc.Store__c);
     }
 
     public static void createAccountTeamMember(Account acc){

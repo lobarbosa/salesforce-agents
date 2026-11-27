@@ -34,48 +34,45 @@ public with sharing class SendAccountToProtheusTDF {
     }
     
     public static Account createAccount(){
-        Account acc = new Account(
-            Name = 'Test Account',
-            Store__c = '2',
-            CompanyName__c = 'Test Company',
-            BillingPostalCode = '02000-000',
-            BillingStreet = 'Rua B',
-            BillingCity = 'São Paulo',
-            BillingState = 'SP',
-            BillingCountry = 'BR',
-            BillingNeighborhood__c = 'Centro',
-            Phone = '(11) 98888-8888',
-            CompanyDocument__c = '12345678000195',
-            Risk__c = 'A',
-            LimitAmount__c = 50000,
-            LimitAmountDueDate__c = Date.today().addMonths(1),
-            Email__c = 'test@company.com',
-            CNAE__c = '654321'
-        );
-        //insert acc;
+        Account acc = baseAccount('TESTE EPLAST Apex Conta Envio');
+        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_OUTRO;
         return acc;
     }
+
     public static Account createSecAccount(){
-        Account acc = new Account(
-            Name = 'Test Sec Account',
+        Account acc = baseAccount('TESTE EPLAST Apex Conta Secundaria');
+        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_TERCEIRO;
+        return acc;
+    }
+
+    private static Account baseAccount(String name){
+        return new Account(
+            Name = name,
             Store__c = '2',
-            CompanyName__c = 'Test Company',
-            BillingPostalCode = '02000-000',
-            BillingStreet = 'Rua B',
-            BillingCity = 'São Paulo',
+            CompanyName__c = 'TESTE EPLAST COMERCIO LTDA',
+            BillingPostalCode = '01310100',
+            BillingStreet = 'Rua Teste 100',
+            BillingCity = 'Cidade Teste',
             BillingState = 'SP',
             BillingCountry = 'BR',
-            BillingNeighborhood__c = 'Centro',
-            Phone = '(11) 98888-8888',
-            CompanyDocument__c = '12345678000195',
+            BillingNeighborhood__c = 'Bairro Teste',
+            Phone = '(11)33334444',
             Risk__c = 'A',
             LimitAmount__c = 50000,
             LimitAmountDueDate__c = Date.today().addMonths(1),
-            Email__c = 'test@company.com',
-            CNAE__c = '654321'
+            Email__c = 'teste.eplast.apex@example.com',
+            CNAE__c = '6201501'
         );
-        //insert acc;
-        return acc;
+    }
+
+    @isTest
+    static void fabricaEntregaContaSinteticaComCnpjValido(){
+        Account acc = createAccount();
+        Account sec = createSecAccount();
+        Assert.isTrue(acc.Name.startsWith('TESTE'));
+        Assert.isTrue(AccountUtility.validateCNPJ(acc.CompanyDocument__c));
+        Assert.isTrue(AccountUtility.validateCNPJ(sec.CompanyDocument__c));
+        Assert.areNotEqual(acc.CompanyDocument__c, sec.CompanyDocument__c);
     }
 
     public static String getSuccessResponseBody(){
