@@ -8,22 +8,12 @@ public class CreateQuoteCPQControllerTest {
 
         User owner = SendAccountToProtheusTDF.createOwner();
         TriggerUtility.bypassTrigger = true;
-        Account blowerAccount = new Account(
-            Name = 'TESTE EPLAST Apex Blower',
-            ProtheusId__c = '123457',
-            CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_QUARTO,
-            CompanyName__c = 'TESTE EPLAST BLOWER',
-            BillingCountry = 'BR',
-            BillingCity = 'Blower Shipping City',
-            BillingState = 'SP',
-            BillingStreet = 'Rua Teste Blower',
-            BillingPostalCode = '01310100',
-            BillingNeighborhood__c = 'Bairro Teste',
-            CNAE__c = '6201501',
-            Email__c = 'teste.eplast.apex.blower@example.com',
-            Phone = '(11)33335555',
-            OwnerId = owner.Id
-        );
+        Account blowerAccount = SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(new Account(), 'P2LRBLOWER');
+        blowerAccount.ProtheusId__c = '123457';
+        blowerAccount.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_QUARTO;
+        blowerAccount.BillingCity = 'Blower Shipping City';
+        blowerAccount.CNAE__c = '6201501';
+        blowerAccount.OwnerId = owner.Id;
 
         insert blowerAccount;
         blowerAccount.Store__c = '01';
@@ -102,8 +92,9 @@ public class CreateQuoteCPQControllerTest {
         Test.stopTest();
 
         // Verificar se a cotação CPQ foi criada corretamente
+        Account conta = [SELECT BillingCity FROM Account WHERE Id = :opp.AccountId];
         List<SBQQ__Quote__c> quotesCPQ = [SELECT SBQQ__ShippingCity__c FROM SBQQ__Quote__c WHERE SBQQ__Opportunity2__c = :opp.Id];
         Assert.isTrue(quotesCPQ.size() >= 1);
-        Assert.areEqual('Cidade Teste', quotesCPQ[0].SBQQ__ShippingCity__c);
+        Assert.areEqual(conta.BillingCity, quotesCPQ[0].SBQQ__ShippingCity__c);
     }
 }

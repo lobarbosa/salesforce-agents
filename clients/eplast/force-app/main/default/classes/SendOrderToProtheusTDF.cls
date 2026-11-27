@@ -38,22 +38,11 @@ public with sharing class SendOrderToProtheusTDF {
         Boolean bypassAnterior = TriggerUtility.bypassTrigger;
         TriggerUtility.bypassTrigger = true;
 
-        Account acc = new Account(
-            Name = 'TESTE EPLAST Apex Conta Pedido',
-            ProtheusId__c = '123456',
-            CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_VALIDO,
-            CompanyName__c = 'TESTE EPLAST COMERCIO LTDA',
-            BillingCountry = 'BR',
-            BillingCity = 'Cidade Teste',
-            BillingState = 'SP',
-            BillingStreet = 'Rua Teste 100',
-            BillingPostalCode = '01310100',
-            BillingNeighborhood__c = 'Bairro Teste',
-            CNAE__c = '6201501',
-            Email__c = 'teste.eplast.apex@example.com',
-            Phone = '(11)33334444',
-            OwnerId = owner.Id
-        );
+        Account acc = SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(new Account(), 'ZXQ7PEDIDO');
+        acc.ProtheusId__c = '123456';
+        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_VALIDO;
+        acc.CNAE__c = '6201501';
+        acc.OwnerId = owner.Id;
 
         insert acc;
 
@@ -69,7 +58,7 @@ public with sharing class SendOrderToProtheusTDF {
     static void contaDePedidoTemCnpjSinteticoValido(){
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
         Account acc = createAccount();
-        Assert.isTrue(acc.Name.startsWith('TESTE'));
+        Assert.isTrue(acc.Name.contains('TESTE'));
         Assert.isTrue(AccountUtility.validateCNPJ(acc.CompanyDocument__c));
         Assert.areEqual('01', acc.Store__c);
     }

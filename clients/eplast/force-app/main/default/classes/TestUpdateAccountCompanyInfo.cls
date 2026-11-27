@@ -5,7 +5,6 @@ public with sharing class TestUpdateAccountCompanyInfo {
         TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
         Account acc = SendAccountToProtheusTDF.createSecAccount();
-        acc.Name = 'TESTE EPLAST Apex Setup Empresa';
         insert acc;
     }
 
@@ -13,9 +12,7 @@ public with sharing class TestUpdateAccountCompanyInfo {
     public static void updateAccountCompanyInfoTest() {
         TriggerUtility.bypassTrigger = true;
         User owner = usuarioSemVendedor();
-        Account acc = SendAccountToProtheusTDF.createSecAccount();
-        acc.Name = 'TESTE EPLAST Apex Atualiza Empresa';
-        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_QUARTO;
+        Account acc = SendAccountToProtheusTDF.createAccount('M5CWATUALIZA', SearchAccountInfoByCNPJTDF.CNPJ_QUARTO);
         acc.OwnerId = owner.Id;
         insert acc;
 

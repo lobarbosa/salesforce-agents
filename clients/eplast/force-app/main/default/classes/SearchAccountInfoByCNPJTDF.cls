@@ -9,6 +9,21 @@ public with sharing class SearchAccountInfoByCNPJTDF {
     public static final String CNPJ_DIGITO_1_ERRADO = '00.000.000/0001-81';
     public static final String CNPJ_DIGITO_2_ERRADO = '00.000.000/0001-90';
 
+    public static Account aplicarEnderecoUnico(Account acc, String token){
+        Integer n = Math.mod(Math.abs(token.hashCode()), 7000) + 1000;
+        acc.Name = token + ' TESTE';
+        acc.CompanyName__c = token + ' LTDA TESTE';
+        acc.BillingCity = 'Cid' + token;
+        acc.BillingStreet = 'Rua ' + token;
+        acc.BillingState = 'SP';
+        acc.BillingCountry = 'BR';
+        acc.BillingNeighborhood__c = 'Bairro ' + token;
+        acc.BillingPostalCode = String.valueOf(21000000 + n);
+        acc.Phone = '(11)' + String.valueOf(31000000 + n);
+        acc.Email__c = token.toLowerCase() + '@example.com';
+        return acc;
+    }
+
     public static Account createAccountWithNullCNPJ(){
         return new Account(
             Name = 'TESTE EPLAST Apex Conta',

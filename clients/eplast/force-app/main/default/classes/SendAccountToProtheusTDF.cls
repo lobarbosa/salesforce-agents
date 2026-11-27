@@ -34,42 +34,29 @@ public with sharing class SendAccountToProtheusTDF {
     }
     
     public static Account createAccount(){
-        Account acc = baseAccount('TESTE EPLAST Apex Conta Envio');
-        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_OUTRO;
-        return acc;
+        return createAccount('R9VTENVIO', SearchAccountInfoByCNPJTDF.CNPJ_OUTRO);
     }
 
     public static Account createSecAccount(){
-        Account acc = baseAccount('TESTE EPLAST Apex Conta Secundaria');
-        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_TERCEIRO;
-        return acc;
+        return createAccount('H8JXSEC', SearchAccountInfoByCNPJTDF.CNPJ_TERCEIRO);
     }
 
-    private static Account baseAccount(String name){
-        return new Account(
-            Name = name,
-            Store__c = '2',
-            CompanyName__c = 'TESTE EPLAST COMERCIO LTDA',
-            BillingPostalCode = '01310100',
-            BillingStreet = 'Rua Teste 100',
-            BillingCity = 'Cidade Teste',
-            BillingState = 'SP',
-            BillingCountry = 'BR',
-            BillingNeighborhood__c = 'Bairro Teste',
-            Phone = '(11)33334444',
-            Risk__c = 'A',
-            LimitAmount__c = 50000,
-            LimitAmountDueDate__c = Date.today().addMonths(1),
-            Email__c = 'teste.eplast.apex@example.com',
-            CNAE__c = '6201501'
-        );
+    public static Account createAccount(String token, String cnpj){
+        Account acc = SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(new Account(), token);
+        acc.Store__c = '2';
+        acc.CompanyDocument__c = cnpj;
+        acc.Risk__c = 'A';
+        acc.LimitAmount__c = 50000;
+        acc.LimitAmountDueDate__c = Date.today().addMonths(1);
+        acc.CNAE__c = '6201501';
+        return acc;
     }
 
     @isTest
     static void fabricaEntregaContaSinteticaComCnpjValido(){
         Account acc = createAccount();
         Account sec = createSecAccount();
-        Assert.isTrue(acc.Name.startsWith('TESTE'));
+        Assert.isTrue(acc.Name.contains('TESTE'));
         Assert.isTrue(AccountUtility.validateCNPJ(acc.CompanyDocument__c));
         Assert.isTrue(AccountUtility.validateCNPJ(sec.CompanyDocument__c));
         Assert.areNotEqual(acc.CompanyDocument__c, sec.CompanyDocument__c);

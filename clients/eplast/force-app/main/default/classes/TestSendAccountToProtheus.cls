@@ -4,7 +4,9 @@ public with sharing class TestSendAccountToProtheus {
 
     private static final String CAMPOS_ENVIO =
         'Id, Phone, Store__c, CompanyName__c, BillingCity, BillingState, BillingStreet, ' +
-        'BillingPostalCode, BillingNeighborhood__c, CNAE__c, CompanyDocument__c, Owner.ProtheusSellerId__c';
+        'BillingPostalCode, BillingNeighborhood__c, CNAE__c, CompanyDocument__c, Owner.ProtheusSellerId__c, ' +
+        'Parent.LimitAmount__c, Parent.LimitAmountDueDate__c, ' +
+        '(SELECT User.ProtheusSellerId__c FROM AccountTeamMembers)';
 
     private static Account inserirContaIsolada(){
         TriggerUtility.bypassTrigger = true;

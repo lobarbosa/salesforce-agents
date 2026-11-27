@@ -6,48 +6,28 @@ private class TestAccountAdapter {
         TriggerUtility.bypassTrigger = true;
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
 
-        Account parentAccount = new Account(
-            Name = 'TESTE EPLAST Apex Conta Pai',
-            LimitAmount__c = 50000,
-            LimitAmountDueDate__c = Date.today().addMonths(1),
-            Store__c = '1',
-            CompanyName__c = 'TESTE EPLAST MATRIZ',
-            BillingCity = 'Cidade Teste',
-            BillingState = 'SP',
-            BillingNeighborhood__c = 'Bairro Teste',
-            BillingStreet = 'Rua Teste 1',
-            BillingPostalCode = '01310100',
-            Phone = '(11)33334444',
-            CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_VALIDO,
-            Email__c = 'teste.eplast.apex.matriz@example.com',
-            Risk__c = 'A',
-            CNAE__c = '6201501'
-        );
+        Account parentAccount = SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(new Account(), 'N2CKPAI');
+        parentAccount.LimitAmount__c = 50000;
+        parentAccount.LimitAmountDueDate__c = Date.today().addMonths(1);
+        parentAccount.Store__c = '1';
+        parentAccount.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_VALIDO;
+        parentAccount.Risk__c = 'A';
+        parentAccount.CNAE__c = '6201501';
         insert parentAccount;
 
-        Account acc = new Account(
-            Name = 'TESTE EPLAST Apex Conta Filha',
-            ParentId = parentAccount.Id,
-            Store__c = '2',
-            CompanyName__c = 'TESTE EPLAST FILIAL',
-            BillingCity = 'Cidade Teste',
-            BillingState = 'SP',
-            BillingNeighborhood__c = 'Bairro Teste',
-            BillingStreet = 'Rua Teste 2',
-            BillingPostalCode = '01310200',
-            Phone = '(11)988888888',
-            CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_OUTRO,
-            Email__c = 'teste.eplast.apex.filial@example.com',
-            Risk__c = 'A',
-            CNAE__c = '654321'
-        );
+        Account acc = SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(new Account(), 'B7QSFILHA');
+        acc.ParentId = parentAccount.Id;
+        acc.Store__c = '2';
+        acc.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_OUTRO;
+        acc.Risk__c = 'A';
+        acc.CNAE__c = '654321';
         insert acc;
     }
 
     @IsTest
     static void testToProtheus() {
         
-        Account acc = [SELECT Id, Store__c, CompanyName__c, BillingCity, BillingState, BillingNeighborhood__c, BillingStreet, BillingPostalCode, Phone, CompanyDocument__c, Email__c, Risk__c, CNAE__c, Owner.ProtheusSellerId__c, Parent.LimitAmount__c, Parent.LimitAmountDueDate__c, (SELECT User.ProtheusSellerId__c FROM AccountTeamMembers) FROM Account WHERE Name = 'TESTE EPLAST Apex Conta Filha' LIMIT 1];
+        Account acc = [SELECT Id, Store__c, CompanyName__c, BillingCity, BillingState, BillingNeighborhood__c, BillingStreet, BillingPostalCode, Phone, CompanyDocument__c, Email__c, Risk__c, CNAE__c, Owner.ProtheusSellerId__c, Parent.LimitAmount__c, Parent.LimitAmountDueDate__c, (SELECT User.ProtheusSellerId__c FROM AccountTeamMembers) FROM Account WHERE Name = 'B7QSFILHA TESTE' LIMIT 1];
 
         Test.startTest();
         Test.setMock(HttpCalloutMock.class, new MockProtheusSendClientSuccessResponse());
@@ -65,8 +45,9 @@ private class TestAccountAdapter {
         System.assertEquals(acc.BillingNeighborhood__c, result.Bairro);
         System.assertEquals(acc.BillingStreet, result.Endereco);
         System.assertEquals(AddressUtility.getFormattedPostalCode(acc.BillingPostalCode), result.CEP);
-        Assert.areEqual('11', result.DDD);
-        Assert.areEqual('988888888', result.Telefone);
+        Map<String, String> phoneParts = PhoneUtility.getPhoneInParts(acc.Phone);
+        Assert.areEqual(phoneParts.get('ddd'), result.DDD);
+        Assert.areEqual(phoneParts.get('phone'), result.Telefone);
         System.assertEquals(acc.CompanyDocument__c, result.CGC);
         //System.assertNotEquals(acc.Email__c, result.Email);
         System.assertEquals(acc.Owner.ProtheusSellerId__c, result.Vend1);

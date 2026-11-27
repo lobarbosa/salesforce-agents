@@ -5,13 +5,13 @@ public with sharing class TestGetAccountFromProtheus {
         Test.setMock(HttpCalloutMock.class, new MockBrasilAPISearchCNPJSuccessResponse());
         TriggerUtility.bypassTrigger = true;
 
-        Account parentAccount = contaParaOportunidade('TESTE EPLAST Apex Matriz', '(11)33334444');
+        Account parentAccount = contaParaOportunidade('K4MNMATRIZ');
         insert parentAccount;
         parentAccount.Store__c = '02';
         parentAccount.ProtheusId__c = '001445';
         update parentAccount;
 
-        Account childAccount = contaParaOportunidade('TESTE EPLAST Apex Filial', '(11)33335555');
+        Account childAccount = contaParaOportunidade('W3PLFILIAL');
         childAccount.CompanyDocument__c = SearchAccountInfoByCNPJTDF.CNPJ_OUTRO;
         childAccount.ParentId = parentAccount.Id;
         insert childAccount;
@@ -20,18 +20,10 @@ public with sharing class TestGetAccountFromProtheus {
         update childAccount;
     }
 
-    private static Account contaParaOportunidade(String name, String phone){
+    private static Account contaParaOportunidade(String token){
         Account acc = SendAccountToProtheusTDF.createAccountWithoutStoreField();
-        acc.Name = name;
-        acc.Phone = phone;
-        acc.CompanyName__c = 'TESTE EPLAST COMERCIO LTDA';
-        acc.BillingCity = 'Cidade Teste';
-        acc.BillingState = 'SP';
-        acc.BillingStreet = 'Rua Teste 100';
-        acc.BillingPostalCode = '01310100';
-        acc.BillingNeighborhood__c = 'Bairro Teste';
+        SearchAccountInfoByCNPJTDF.aplicarEnderecoUnico(acc, token);
         acc.CNAE__c = '6201501';
-        acc.Email__c = 'teste.eplast.apex@example.com';
         return acc;
     }
 
@@ -39,7 +31,7 @@ public with sharing class TestGetAccountFromProtheus {
     public static void getAccountFromProtheusErrorTest(){
         Test.setMock(HttpCalloutMock.class, new MockGetClientFromProtheusResponseBody(true));
 
-        Account acc = [SELECT Id, ProtheusId__c FROM Account WHERE Name = 'TESTE EPLAST Apex Matriz' LIMIT 1];
+        Account acc = [SELECT Id, ProtheusId__c FROM Account WHERE Name = 'K4MNMATRIZ TESTE' LIMIT 1];
         Opportunity opp = GetClientFromProtheusTDF.createOpportunity(acc.Id);
 
         Test.startTest();
@@ -57,7 +49,7 @@ public with sharing class TestGetAccountFromProtheus {
     public static void getAccountFromProtheusOnOppInsertSuccessTest(){
         Test.setMock(HttpCalloutMock.class, new MockGetClientFromProtheusResponseBody(false));
 
-        Account acc = [SELECT Id, ProtheusId__c, Overdue__c FROM Account WHERE Name = 'TESTE EPLAST Apex Matriz' LIMIT 1];
+        Account acc = [SELECT Id, ProtheusId__c, Overdue__c FROM Account WHERE Name = 'K4MNMATRIZ TESTE' LIMIT 1];
         Opportunity opp = GetClientFromProtheusTDF.createOpportunity(acc.Id);
 
         Test.startTest();
@@ -75,7 +67,7 @@ public with sharing class TestGetAccountFromProtheus {
     public static void getAccountWithParentAccountFromProtheusOnOppInsertSuccessTest(){
         Test.setMock(HttpCalloutMock.class, new MockGetClientFromProtheusResponseBody(false));
 
-        Account acc = [SELECT Id, ProtheusId__c, Overdue__c FROM Account WHERE Name = 'TESTE EPLAST Apex Filial' LIMIT 1];
+        Account acc = [SELECT Id, ProtheusId__c, Overdue__c FROM Account WHERE Name = 'W3PLFILIAL TESTE' LIMIT 1];
         Opportunity opp = GetClientFromProtheusTDF.createOpportunity(acc.Id);
 
         Test.startTest();
@@ -94,7 +86,7 @@ public with sharing class TestGetAccountFromProtheus {
     public static void getAccountFromProtheusOnOppUpdateSuccessTest(){
         Test.setMock(HttpCalloutMock.class, new MockGetClientFromProtheusResponseBody(false));
 
-        Account acc = [SELECT Id, ProtheusId__c FROM Account WHERE Name = 'TESTE EPLAST Apex Matriz' LIMIT 1];
+        Account acc = [SELECT Id, ProtheusId__c FROM Account WHERE Name = 'K4MNMATRIZ TESTE' LIMIT 1];
         Opportunity opp = GetClientFromProtheusTDF.createOpportunity(acc.Id);
         insert opp;
 
