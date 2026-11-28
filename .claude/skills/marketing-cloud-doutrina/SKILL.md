@@ -36,7 +36,9 @@ Uma pasta `mc/` dentro da demanda (`clients/<cliente>/demandas/<ID>/mc/`):
 mc/
   README.md                  # ordem de implantação manual, dono de cada passo, rollback
   data-extensions/<Nome>.json   # skill mc-modelo-de-dados
+  segmentos/<Nome>.md        # skill mc-segmentacao (quem recebe, antes de tudo)
   sql/<Nome>.sql             # skill mc-sql (uma Query Activity por arquivo)
+  automacoes/<Nome>.md       # skill mc-automacao (inativa)
   conteudo/<Nome>.html       # skill mc-email (e-mail com AMPscript, skill mc-ampscript)
   jornadas/<Nome>.md         # skill mc-jornada
   massa-de-teste/<DE>.csv    # só dado fictício
@@ -49,8 +51,10 @@ a construção por concluída. Erro do validador é defeito de construção; nã
 
 | Peça | Skill |
 | --- | --- |
+| Quem recebe: critério, consentimento, exclusões, controle, tamanho | `mc-segmentacao` |
 | Data Extension, chave, relação com o contato, retenção | `mc-modelo-de-dados` |
 | Consulta de segmentação ou preparo de dado (Automation Studio) | `mc-sql` |
+| Rotina: gatilho, passos, verificação antes do envio, notificação | `mc-automacao` |
 | Personalização no e-mail | `mc-ampscript` |
 | E-mail (HTML, rodapé, descadastro, acessibilidade) | `mc-email` |
 | Jornada (entrada, reentrada, esperas, divisões, saída) | `mc-jornada` |
@@ -60,6 +64,7 @@ a construção por concluída. Erro do validador é defeito de construção; nã
 
 - Endereço, nome, telefone ou documento real em qualquer arquivo do pacote.
 - Jornada ou automação marcada para ativar ou agendar sozinha.
+- Automação que envia sem uma Verificação do tamanho do público antes do envio.
 - Envio, mesmo de teste, a lista que não seja de endereços do time (lista semente).
 - Credencial (client id, secret, token) em arquivo do repositório.
 - Inventar Data Extension, campo ou pasta que existe na conta: o que já existe vem do

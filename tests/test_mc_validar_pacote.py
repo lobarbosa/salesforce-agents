@@ -76,3 +76,47 @@ def test_de_enviavel_sem_campo_de_envio_e_text_sem_tamanho(tmp_path):
 
 def test_falta_readme(tmp_path):
     assert any("README" in e for e in mcval.validar(_pacote(tmp_path, readme=False)))
+
+
+AUTOMACAO_OK = (
+    "# Acme_MKT_Reativacao\n\n**Estado:** inativa\n**Gatilho:** agenda diária 06:00\n"
+    "**Notificação de erro:** time de marketing do cliente\n\n"
+    "| Passo | Atividade | Peça | Esperado |\n| --- | --- | --- | --- |\n"
+    "| 1 | Consulta SQL | `sql/Reativacao.sql` | 2 a 5 mil |\n"
+    "| 2 | Verificação | Acme_MKT_Reativacao | parar se 0 |\n"
+    "| 3 | Envio de e-mail | `conteudo/Reativacao.html` | — |\n"
+)
+SEGMENTO_OK = (
+    "# Reativação\n\n**Critério:** sem compra há 180 dias\n**Consentimento:** OptInEmail = 1\n"
+    "**Exclusões:** atendimento aberto, rejeição permanente\n**Tamanho esperado:** não medido\n"
+)
+
+
+def _com_extras(mc, automacao=AUTOMACAO_OK, segmento=SEGMENTO_OK):
+    (mc / "automacoes").mkdir(exist_ok=True)
+    (mc / "segmentos").mkdir(exist_ok=True)
+    (mc / "automacoes" / "Reativacao.md").write_text(automacao, encoding="utf-8")
+    (mc / "segmentos" / "Reativacao.md").write_text(segmento, encoding="utf-8")
+    return mc
+
+
+def test_automacao_e_segmento_corretos_passam(tmp_path):
+    assert mcval.validar(_com_extras(_pacote(tmp_path))) == []
+
+
+def test_automacao_ativa_sem_verificacao_e_com_sql_ausente(tmp_path):
+    ruim = (
+        "**Estado:** ativa\n**Gatilho:** agenda\n\n| Passo | Atividade | Peça |\n| --- | --- | --- |\n"
+        "| 1 | Consulta SQL | `sql/NaoExiste.sql` |\n| 2 | Envio de e-mail | x |\n"
+    )
+    erros = mcval.validar(_com_extras(_pacote(tmp_path), automacao=ruim))
+    assert any("inativa" in e for e in erros)
+    assert any("Notificação de erro" in e for e in erros)
+    assert any("NaoExiste.sql" in e for e in erros)
+    assert any("Verificação antes do envio" in e for e in erros)
+
+
+def test_segmento_sem_consentimento_nem_exclusoes(tmp_path):
+    erros = mcval.validar(_com_extras(_pacote(tmp_path), segmento="**Critério:** todos\n**Tamanho esperado:** 10 mil\n"))
+    assert any("Consentimento" in e for e in erros)
+    assert any("Exclusões" in e for e in erros)

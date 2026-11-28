@@ -108,6 +108,36 @@ def validar_email(arquivo: Path) -> list[str]:
     return erros
 
 
+def validar_automacao(arquivo: Path, pasta: Path) -> list[str]:
+    """Skill mc-automacao: inativa, com gatilho e notificação, SQL citado existe, Verificação antes do envio."""
+    erros = []
+    texto = arquivo.read_text(encoding="utf-8")
+    estado = re.search(r"\*\*Estado:\*\*\s*(\w+)", texto)
+    if not estado or estado.group(1).lower() != "inativa":
+        erros.append(f"{arquivo.name}: a automação entra no pacote com '**Estado:** inativa'")
+    for linha in ("Gatilho", "Notificação de erro"):
+        if not re.search(rf"\*\*{linha}:\*\*\s*\S", texto):
+            erros.append(f"{arquivo.name}: falta a linha '**{linha}:**'")
+    for citado in sorted(set(re.findall(r"sql/([A-Za-z0-9_\-]+\.sql)", texto))):
+        if not (pasta / "sql" / citado).is_file():
+            erros.append(f"{arquivo.name}: cita sql/{citado}, que não está no pacote")
+    linhas = [l.lower() for l in texto.splitlines() if l.startswith("|")]
+    envio = next((i for i, l in enumerate(linhas) if "envio de e-mail" in l), None)
+    if envio is not None and not any("verificação" in l for l in linhas[:envio]):
+        erros.append(f"{arquivo.name}: automação com envio sem uma Verificação antes do envio")
+    return erros
+
+
+def validar_segmento(arquivo: Path) -> list[str]:
+    """Skill mc-segmentacao: critério, consentimento, exclusões e tamanho esperado escritos."""
+    texto = arquivo.read_text(encoding="utf-8")
+    return [
+        f"{arquivo.name}: falta a linha '**{linha}:**'"
+        for linha in ("Critério", "Consentimento", "Exclusões", "Tamanho esperado")
+        if not re.search(rf"\*\*{linha}:\*\*\s*\S", texto)
+    ]
+
+
 def dado_pessoal(arquivo: Path) -> list[str]:
     """E-mail fixo fora dos domínios reservados para exemplo (guardrail #2)."""
     texto = arquivo.read_text(encoding="utf-8", errors="ignore")
@@ -129,6 +159,10 @@ def validar(pasta: Path) -> list[str]:
         erros += validar_sql(arq, des)
     for arq in sorted((pasta / "conteudo").glob("*.html")):
         erros += validar_email(arq)
+    for arq in sorted((pasta / "automacoes").glob("*.md")):
+        erros += validar_automacao(arq, pasta)
+    for arq in sorted((pasta / "segmentos").glob("*.md")):
+        erros += validar_segmento(arq)
     for arq in sorted(p for p in pasta.rglob("*") if p.is_file()):
         erros += dado_pessoal(arq)
     return erros

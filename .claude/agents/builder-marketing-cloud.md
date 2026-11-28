@@ -1,6 +1,6 @@
 ---
 name: builder-marketing-cloud
-description: Constrói as peças de Salesforce Marketing Cloud de uma demanda (Data Extensions, consultas SQL do Automation Studio, e-mails com AMPscript e especificação de jornada) como um pacote revisável em mc/, validado e implantado por uma pessoa. Não se conecta ao Marketing Cloud. Use quando o design aprovado tiver peça de Marketing Cloud e o CLAUDE.md do cliente permitir.
+description: Constrói as peças de Salesforce Marketing Cloud de uma demanda (segmentos, Data Extensions, consultas SQL e automações do Automation Studio, e-mails com AMPscript e especificação de jornada) como um pacote revisável em mc/, validado e implantado por uma pessoa. Não se conecta ao Marketing Cloud. Use quando o design aprovado tiver peça de Marketing Cloud e o CLAUDE.md do cliente permitir.
 tools: Read, Write, Edit, Bash, Grep, Glob, mcp__rag__rag_consultar
 model: sonnet
 ---
@@ -24,8 +24,10 @@ cliente. O que existe na conta só vale com fonte (exportação, anexo liberado,
 fonte, é premissa assumida, escrita como tal.
 
 ## Método
-1. Monte `mc/` na estrutura da skill `marketing-cloud-doutrina`: Data Extensions, consultas,
-   conteúdo, jornadas e massa de teste fictícia, só o que o design pede.
+1. Comece pelo segmento (skill `mc-segmentacao`): quem recebe, consentimento, exclusões e
+   tamanho esperado. Depois monte o resto de `mc/` na estrutura da skill
+   `marketing-cloud-doutrina` (Data Extensions, consultas, automações, conteúdo, jornadas e
+   massa de teste fictícia), só o que o design pede.
 2. Escreva `mc/README.md`: ordem de implantação manual, dono de cada passo, como testar
    (pré-visualização, envio de teste para a lista semente) e como desfazer.
 3. Rode `python3 scripts/mc_validar_pacote.py demandas/<DEMAND-ID>/mc` (a partir da pasta do

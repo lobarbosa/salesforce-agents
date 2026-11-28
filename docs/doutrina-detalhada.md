@@ -768,9 +768,11 @@ contrato de integração. O `republicar-anexos.yml` também o leva.
 O agente `builder-marketing-cloud` constrói as peças de Marketing Cloud de uma demanda
 (Data Extensions, consultas do Automation Studio, e-mails com AMPscript, especificação de
 jornada) como um pacote `mc/` dentro da pasta da demanda. Ele entra na etapa de build depois
-do construtor do Sales Cloud, quando o design pede essas peças. Sete skills guiam o trabalho:
-`marketing-cloud-doutrina` (regras e mapa), `mc-modelo-de-dados`, `mc-sql`, `mc-ampscript`,
-`mc-email`, `mc-jornada` e `mc-preparar-sales-cloud`.
+do construtor do Sales Cloud, quando o design pede essas peças. Nove skills guiam o trabalho:
+`marketing-cloud-doutrina` (regras e mapa), `mc-segmentacao`, `mc-modelo-de-dados`, `mc-sql`,
+`mc-automacao`, `mc-ampscript`, `mc-email`, `mc-jornada` e `mc-preparar-sales-cloud`. O
+segmento vem primeiro (quem recebe, consentimento, exclusões, tamanho esperado), e toda
+automação que envia tem uma Verificação do tamanho do público antes do envio.
 
 Por que sem conexão: o Marketing Cloud não tem sandbox, a conta do cliente é produção
 (guardrail #1), e um envio errado chega a clientes reais e não se desfaz. Nesta versão a
