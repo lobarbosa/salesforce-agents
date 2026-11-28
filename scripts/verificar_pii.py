@@ -27,6 +27,10 @@ EMAIL = re.compile(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b")
 # Telefone BR formatado: (11) 91234-5678, 11 91234-5678, +55 11 91234-5678.
 TELEFONE = re.compile(r"\b(?:\+?55\s?)?\(?\d{2}\)?\s?9?\d{4}-\d{4}\b")
 
+# Domínios reservados para exemplo (RFC 2606): nunca são de ninguém. A massa de
+# teste fictícia do Marketing Cloud (skill marketing-cloud-doutrina) usa estes.
+DOMINIOS_DE_EXEMPLO = ("example.com", "example.org", "example.net")
+
 PADROES = {
     "CPF": CPF,
     "e-mail": EMAIL,
@@ -53,6 +57,8 @@ def verificar(caminho: str) -> list[str]:
     for n, linha in enumerate(linhas, start=1):
         for tipo, padrao in PADROES.items():
             for m in padrao.finditer(linha):
+                if tipo == "e-mail" and m.group().lower().endswith(DOMINIOS_DE_EXEMPLO):
+                    continue
                 achados.append(f"{caminho}:{n}: possível {tipo} ({mascarar(m.group())})")
     return achados
 

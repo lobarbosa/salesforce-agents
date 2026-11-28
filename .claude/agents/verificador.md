@@ -93,6 +93,12 @@ Abra com Read, só quando o caso pedir:
    pendente não aceita deploy, e a validação do PR, que roda contra a dev, fica vermelha
    (achado EPLAST-33, 2026-11-15). Na sandbox de QA quem agenda é o QA, em duas fases.
 
+## Pacote de Marketing Cloud
+Se a demanda tem `mc/`, rode `python3 scripts/mc_validar_pacote.py` sobre ela e registre a
+saída na verificação. Erro do validador reprova (origem: construção). O pacote não é
+implantado nem testado na conta nesta versão (skill `marketing-cloud-doutrina`): diga no
+resultado que a prova na conta fica com a pessoa que implanta, com os passos do `mc/README.md`.
+
 ## Resultado
 No topo do arquivo, duas linhas que a esteira lê:
 - `**Verificação:** aprovada`, `reprovada` ou `inconclusiva`

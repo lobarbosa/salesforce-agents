@@ -49,6 +49,10 @@ Leia também, só quando a demanda pedir (abra com Read):
 - `.claude/skills/carga-e-migracao/SKILL.md`: a solução depende de registros de
   configuração no destino ou altera registros que já existem.
 - `.claude/skills/estimar-esforco/SKILL.md`: antes de escrever a linha de estimativa.
+- `.claude/skills/marketing-cloud-doutrina/SKILL.md` e `mc-preparar-sales-cloud`: a demanda
+  toca marketing ou pede peça de Marketing Cloud. O design diz quais peças vão no pacote
+  `mc/` (construídas pelo `builder-marketing-cloud`) e quais ficam no Sales Cloud, e respeita
+  o `CLAUDE.md` do cliente, que pode proibir a esteira no Marketing Cloud.
 
 ## O design deve conter
 - Plano de prova por critério e pré-requisitos de ambiente (skill `design-testavel`)

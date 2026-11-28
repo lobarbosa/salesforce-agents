@@ -763,6 +763,29 @@ publica como anexo "Documento técnico" em PDF (`lib/documento-tecnico-anexo.ts`
 desenho do roteiro do cliente. Só o time o vê, em qualquer etapa: tem nomes de metadata e o
 contrato de integração. O `republicar-anexos.yml` também o leva.
 
+## Marketing Cloud (versão 1, 2026-11-28)
+
+O agente `builder-marketing-cloud` constrói as peças de Marketing Cloud de uma demanda
+(Data Extensions, consultas do Automation Studio, e-mails com AMPscript, especificação de
+jornada) como um pacote `mc/` dentro da pasta da demanda. Ele entra na etapa de build depois
+do construtor do Sales Cloud, quando o design pede essas peças. Sete skills guiam o trabalho:
+`marketing-cloud-doutrina` (regras e mapa), `mc-modelo-de-dados`, `mc-sql`, `mc-ampscript`,
+`mc-email`, `mc-jornada` e `mc-preparar-sales-cloud`.
+
+Por que sem conexão: o Marketing Cloud não tem sandbox, a conta do cliente é produção
+(guardrail #1), e um envio errado chega a clientes reais e não se desfaz. Nesta versão a
+prova automática é `scripts/mc_validar_pacote.py` (DE com chave para Update, consulta só com
+`SELECT` e sem CTE, e-mail com descadastro e `alt`, nenhum e-mail fixo fora de
+`@example.com`), rodado pelo construtor e pelo verificador. Implantação, pré-visualização e
+envio de teste para a lista semente ficam com uma pessoa, pelos passos do `mc/README.md`.
+O scan de PII aceita os domínios reservados `example.com/.org/.net` (RFC 2606), que a massa
+fictícia usa.
+
+Próximo passo (versão 2): unidade de negócio de teste na conta do cliente, com pacote
+instalado de escopo mínimo e credencial em GitHub Environment, para o agente criar e testar
+lá. Produção continua com gente. A regra do cliente vence: a Eplast proíbe a esteira no
+Marketing Cloud, e lá só entra a preparação do Sales Cloud.
+
 ## Escopo duplo: projeto e sustentação
 
 - **Projeto (greenfield):** fluxo completo, etapas 1→7.
