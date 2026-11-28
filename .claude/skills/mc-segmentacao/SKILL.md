@@ -49,3 +49,11 @@ e-mail abre mensagens sozinha): prefira clique e compra quando o objetivo for me
 
 O validador confere em cada `mc/segmentos/<Nome>.md` as linhas `**Critério:**`,
 `**Consentimento:**`, `**Exclusões:**` e `**Tamanho esperado:**`.
+
+## Antes de fechar
+
+- [ ] O critério em linguagem de negócio e em campo e valor dizem a mesma coisa.
+- [ ] Todo campo do critério tem fonte confirmada; o que não tem é premissa assumida.
+- [ ] Consentimento e descadastro aplicados antes de qualquer outro filtro.
+- [ ] Limite de frequência considerado junto com as outras campanhas do cliente.
+- [ ] Tamanho esperado com faixa, que alimenta a Verificação da automação.

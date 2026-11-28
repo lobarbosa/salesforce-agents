@@ -27,6 +27,27 @@ cliente que proíbe a esteira no Marketing Cloud (ex.: Eplast, regra 2 do `CLAUD
    demanda precisa disso no CRM (campo, relatório, automação).
 5. **O que fica com quem opera o Marketing Cloud.** Lista de passos, cada um com o dono.
 
+## Modelo da seção
+
+```markdown
+## Preparação do Sales Cloud para o Marketing Cloud
+
+| # | Pergunta | Resposta | Confirmado em |
+| --- | --- | --- | --- |
+| 1 | Dados que o Marketing Cloud lê | Contact.FirstName, Contact.Email, Opportunity.CloseDate | `sf` na org de dev (alias) |
+| 2 | Como o público fica identificável | membro da campanha "Reativação" com status "Enviar" | design |
+| 3 | Consentimento e descadastro | Contact.HasOptedOutOfEmail; o descadastro do MC volta pelo conector | recon |
+| 4 | O que o Marketing Cloud devolve | resultado de envio nos objetos et4ae5; nada novo no CRM | recon |
+| 5 | O que fica com quem opera o MC | sincronizar Contact.Segmento__c; criar a jornada | — |
+```
+
+## Antes de fechar
+
+- [ ] Todo objeto e campo citado foi confirmado na org (coluna "Confirmado em").
+- [ ] O consentimento tem dono e caminho de volta do descadastro.
+- [ ] Nenhuma automação do CRM envia e-mail de marketing.
+- [ ] O que é do Marketing Cloud está na linha 5, e não construído pelo Sales Cloud.
+
 ## Regras
 
 - O recon confere na org o que o Marketing Cloud Connect já usa (objetos `et4ae5__*`) antes de

@@ -11,6 +11,7 @@ DE_OK = {
     "nome": "Acme_MKT_Reativacao",
     "enviavel": True,
     "campo_de_envio": "ContactId",
+    "retencao_dias": 30,
     "campos": [
         {"nome": "ContactId", "tipo": "Text", "tamanho": 18, "chave": True},
         {"nome": "Email", "tipo": "EmailAddress"},
@@ -20,8 +21,9 @@ SQL_OK = "-- destino: Acme_MKT_Reativacao\n-- acao: Overwrite\nSELECT c.ContactI
 EMAIL_OK = (
     "<!-- assunto: Sentimos sua falta -->\n<!-- preheader: 10% até domingo -->\n"
     '<table><tr><td><img src="x.png" alt="Logo" width="120"></td></tr>'
-    '<tr><td><a href="%%unsub_center_url%%">Descadastrar</a></td></tr></table>'
+    '<tr><td><a href="%%unsub_center_url%%">Descadastrar</a> %%Member_Busname%% %%Member_Addr%%</td></tr></table>'
 )
+README_OK = "# Implantação\n\n## Ordem de implantação\n1. DE\n\n## Como testar\nPré-visualização\n\n## Como desfazer\nApagar a DE\n"
 
 
 def _pacote(tmp_path, de=DE_OK, sql=SQL_OK, email=EMAIL_OK, readme=True):
@@ -32,7 +34,7 @@ def _pacote(tmp_path, de=DE_OK, sql=SQL_OK, email=EMAIL_OK, readme=True):
     (mc / "sql" / "Reativacao.sql").write_text(sql, encoding="utf-8")
     (mc / "conteudo" / "Reativacao.html").write_text(email, encoding="utf-8")
     if readme:
-        (mc / "README.md").write_text("# Implantação\n", encoding="utf-8")
+        (mc / "README.md").write_text(README_OK, encoding="utf-8")
     return mc
 
 
@@ -120,3 +122,54 @@ def test_segmento_sem_consentimento_nem_exclusoes(tmp_path):
     erros = mcval.validar(_com_extras(_pacote(tmp_path), segmento="**Critério:** todos\n**Tamanho esperado:** 10 mil\n"))
     assert any("Consentimento" in e for e in erros)
     assert any("Exclusões" in e for e in erros)
+
+
+JORNADA_OK = (
+    "# Reativação\n\n**Estado:** inativa\n**Fonte de entrada:** DE Acme_MKT_Reativacao, diária\n"
+    "**Reentrada:** só depois de sair\n**Classificação de envio:** comercial\n**Meta:** comprou em 30 dias\n"
+    "**Critério de saída:** descadastrou ou comprou\n\n```mermaid\nflowchart LR\n  A[Entrada] --> B[E-mail 1]\n```\n"
+    "| Envio | E-mail |\n| --- | --- |\n| 1 | `conteudo/Reativacao.html` |\n"
+)
+
+
+def test_jornada_correta_passa_e_incompleta_e_recusada(tmp_path):
+    mc = _pacote(tmp_path)
+    (mc / "jornadas").mkdir()
+    (mc / "jornadas" / "Reativacao.md").write_text(JORNADA_OK, encoding="utf-8")
+    assert mcval.validar(mc) == []
+    (mc / "jornadas" / "Reativacao.md").write_text("**Estado:** ativa\n`conteudo/Outro.html`\n", encoding="utf-8")
+    erros = mcval.validar(mc)
+    assert any("inativa" in e for e in erros)
+    assert any("Reentrada" in e for e in erros)
+    assert any("mermaid" in e for e in erros)
+    assert any("Outro.html" in e for e in erros)
+
+
+def test_ampscript_exige_casos_de_teste_e_blocos_fechados(tmp_path):
+    email = EMAIL_OK + "%%[ SET @n = AttributeValue(\"PrimeiroNome\") "
+    erros = mcval.validar(_pacote(tmp_path, email=email))
+    assert any("sem fechar" in e for e in erros)
+    assert any("casos.md" in e for e in erros)
+    mc = _pacote(tmp_path / "b", email=EMAIL_OK + "%%[ SET @n = AttributeValue(\"PrimeiroNome\") ]%%")
+    (mc / "conteudo" / "Reativacao.casos.md").write_text(
+        "| Entrada | Saída |\n| --- | --- |\n| nome Ana | Olá, Ana |\n| sem nome | Olá, cliente |\n| sem oferta | pula |\n", encoding="utf-8"
+    )
+    assert mcval.validar(mc) == []
+
+
+def test_de_enviavel_por_email_sem_retencao_e_select_estrela(tmp_path):
+    de = {**DE_OK, "campo_de_envio": "Email"}
+    de.pop("retencao_dias")
+    sql = "-- destino: Acme_MKT_Reativacao\n-- acao: Overwrite\nSELECT * FROM [Acme_Contatos]\n"
+    erros = mcval.validar(_pacote(tmp_path, de=de, sql=sql))
+    assert any("Subscriber Key" in e for e in erros)
+    assert any("retenção" in e for e in erros)
+    assert any("SELECT *" in e for e in erros)
+
+
+def test_readme_sem_secoes_e_email_sem_endereco(tmp_path):
+    mc = _pacote(tmp_path, email=EMAIL_OK.replace("%%Member_Addr%%", ""))
+    (mc / "README.md").write_text("# Implantação\n", encoding="utf-8")
+    erros = mcval.validar(mc)
+    assert any("Como desfazer" in e for e in erros)
+    assert any("Member_Addr" in e for e in erros)

@@ -62,3 +62,11 @@ do outro.
 O validador confere: `**Estado:** inativa`, a linha de gatilho, a de notificação de erro,
 que todo `sql/<arquivo>.sql` citado existe no pacote, e que automação com envio tem uma
 Verificação antes dele.
+
+## Antes de fechar
+
+- [ ] Cada passo depende só dos anteriores; nada no mesmo passo depende de outra atividade dele.
+- [ ] A faixa da Verificação vem do tamanho esperado do segmento.
+- [ ] Horário no fuso da conta e longe de outras automações que gravam nas mesmas DEs.
+- [ ] Tempo total estimado, cada consulta abaixo de 30 minutos.
+- [ ] Como pausar e como desfazer (DE a restaurar, envio a cancelar) no README.

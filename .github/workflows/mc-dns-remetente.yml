@@ -1,0 +1,49 @@
+name: Marketing Cloud – DNS do domínio de envio
+
+# Confere SPF, DMARC e DKIM do domínio de envio de um cliente no DNS público
+# (skill mc-arquitetura-da-conta). Só lê registros públicos do domínio; não toca
+# em conta nem em org. O resultado vai para o resumo do job e para um artefato.
+
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: 'Cliente (pasta em clients/)'
+        required: true
+      dominio:
+        description: 'Domínio de envio (ex.: news.cliente.com.br)'
+        required: true
+      seletores_dkim:
+        description: 'Opcional: seletores DKIM separados por espaço'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  dns:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Conferir DNS
+        env:
+          DOMINIO: ${{ inputs.dominio }}
+          SELETORES: ${{ inputs.seletores_dkim }}
+        run: |
+          ARGS=("$DOMINIO")
+          for S in $SELETORES; do ARGS+=(--seletor-dkim "$S"); done
+          python3 scripts/mc_dns_remetente.py "${ARGS[@]}" | tee dns.md
+          cat dns.md >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mc-dns-${{ inputs.client }}
+          path: dns.md
+          retention-days: 30

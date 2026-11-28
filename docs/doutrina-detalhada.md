@@ -772,7 +772,15 @@ do construtor do Sales Cloud, quando o design pede essas peças. Nove skills gui
 `marketing-cloud-doutrina` (regras e mapa), `mc-segmentacao`, `mc-modelo-de-dados`, `mc-sql`,
 `mc-automacao`, `mc-ampscript`, `mc-email`, `mc-jornada` e `mc-preparar-sales-cloud`. O
 segmento vem primeiro (quem recebe, consentimento, exclusões, tamanho esperado), e toda
-automação que envia tem uma Verificação do tamanho do público antes do envio.
+automação que envia tem uma Verificação do tamanho do público antes do envio. Cada skill de
+peça tem formato fixo conferido pelo validador e uma lista "Antes de fechar".
+
+A décima skill, `mc-arquitetura-da-conta`, revisa a conta inteira contra as boas práticas
+(estrutura, acesso, autenticação do domínio de envio, conformidade, dados, integração e
+operação) e entrega `clients/<cliente>/mc-assessment.md` com achados por severidade e o plano
+de correção com dono. Evidência automática: `mc-dns-remetente.yml` confere SPF, DMARC e DKIM
+no DNS público; o resto vem de um levantamento do Setup feito pelo consultor. Nesta versão a
+correção é escrita, não aplicada: a conta é produção.
 
 Por que sem conexão: o Marketing Cloud não tem sandbox, a conta do cliente é produção
 (guardrail #1), e um envio errado chega a clientes reais e não se desfaz. Nesta versão a

@@ -40,8 +40,27 @@ diga no README o critério.
 - Link rastreado: `%%=RedirectTo(@url)=%%` quando a URL é montada.
 - Nada de dado pessoal em parâmetro de URL de rastreamento.
 
-## Teste nesta versão
+## Casos de teste (`mc/conteudo/<Nome>.casos.md`)
 
-O agente não executa AMPscript (versão 1 sem conexão). No README, cada bloco ganha uma tabela
-"dado de entrada → saída esperada" com três linhas no mínimo: dado completo, campo ausente e
-caso de pular. Quem implanta confere na pré-visualização com a massa de teste fictícia.
+O agente não executa AMPscript (versão 1 sem conexão). Todo e-mail com AMPscript tem, ao
+lado, um arquivo de casos com a mesma base de nome, e quem implanta confere cada linha na
+pré-visualização com a massa de teste fictícia:
+
+```markdown
+| Entrada (massa de teste) | Saída esperada |
+| --- | --- |
+| PrimeiroNome = Ana, oferta = 10% | "Olá, Ana" e "10% de desconto" |
+| PrimeiroNome vazio | "Olá, cliente" |
+| sem oferta na DE de apoio | destinatário pulado (RaiseError) |
+```
+
+O validador confere: blocos `%%[ ]%%` e `%%= =%%` fechados, e o arquivo de casos com ao menos
+três linhas (dado completo, campo ausente, pular ou o pior caso da regra).
+
+## Antes de fechar
+
+- [ ] Todo campo personalizado tem valor de reserva.
+- [ ] `AttributeValue` em todo campo que pode faltar na DE de envio.
+- [ ] Consultas a DE pela chave primária e fora de laço.
+- [ ] `RaiseError` só com o critério escrito no README.
+- [ ] Nenhum dado pessoal em URL.

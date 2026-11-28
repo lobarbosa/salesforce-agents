@@ -48,8 +48,18 @@ texto sem tamanho vira 4000 e pesa em consulta.
 }
 ```
 
-O validador confere: nome válido, campos com tipo conhecido, `Text` com tamanho, chave
-presente, e DE enviável com `campo_de_envio` existente.
+O validador confere: nome válido, campos com tipo conhecido, `Text` com tamanho; e, na DE
+enviável, `campo_de_envio` entre os campos e **diferente do e-mail**, um campo
+`EmailAddress`, e retenção declarada (`retencao_dias`, ou `"retencao": "permanente"` com o
+motivo no README).
+
+## Antes de fechar
+
+- [ ] Cada DE tem um papel só (público, apoio ou intermediária), escrito na `descricao`.
+- [ ] Toda DE que recebe Update ou é consultada por AMPscript tem chave primária.
+- [ ] Nenhum campo guarda dado que a demanda não usa (dado pessoal a menos é risco a menos).
+- [ ] Os tamanhos batem com a origem no Sales Cloud.
+- [ ] Relações para o Contact Builder e DEs sincronizadas citadas no README.
 
 ## Contact Builder
 

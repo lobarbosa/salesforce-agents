@@ -22,11 +22,36 @@ inativa, sempre.
 | Critério de saída | quando a pessoa sai antes do fim | campo e valor (ex.: comprou, descadastrou) |
 | Avaliação de contato | quem entra de novo se o dado mudar | regra |
 
-## Diagrama
+## Formato no pacote
 
-Um diagrama mermaid (`flowchart LR`) com cada atividade e cada ramo, mais uma tabela com o
-e-mail de cada envio (arquivo em `mc/conteudo/`). O nome das atividades no diagrama é o nome
-que vai na ferramenta.
+```markdown
+# Acme_MKT_Reativacao
+
+**Estado:** inativa
+**Fonte de entrada:** DE Acme_MKT_ReativacaoClientes, avaliada todo dia às 07:00
+**Reentrada:** só depois de sair
+**Classificação de envio:** comercial
+**Meta:** pedido nos 30 dias seguintes à entrada
+**Critério de saída:** descadastrou, ou fez pedido
+
+(diagrama mermaid `flowchart LR` com cada atividade e cada ramo)
+
+| Envio | Quando | E-mail |
+| --- | --- | --- |
+| 1 | na entrada | `conteudo/Reativacao1.html` |
+| 2 | 3 dias depois, se não clicou | `conteudo/Reativacao2.html` |
+```
+
+O nome das atividades no diagrama é o nome que vai na ferramenta. O validador confere
+`**Estado:** inativa`, as cinco linhas de decisão, o bloco mermaid e que todo
+`conteudo/<arquivo>.html` citado existe no pacote.
+
+## Antes de fechar
+
+- [ ] A entrada usa o segmento da skill `mc-segmentacao`, com consentimento e exclusões.
+- [ ] Cada ramo de divisão tem critério que não se sobrepõe ao outro e um ramo "restante".
+- [ ] Quem atinge a meta ou o critério de saída sai antes do envio seguinte.
+- [ ] Esperas consideram fim de semana e o fuso da conta.
 
 ## Revisão antes de ativar (README)
 

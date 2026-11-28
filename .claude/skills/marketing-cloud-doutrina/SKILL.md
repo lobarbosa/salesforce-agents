@@ -21,6 +21,11 @@ existir uma unidade de negócio de teste (ver "O que vem depois").
   nunca lê nem escreve dado de contato real. Exemplos e massa de teste são fictícios, com
   domínio reservado (`@example.com`).
 
+## Antes da primeira demanda de um cliente
+
+Rode a revisão da conta (skill `mc-arquitetura-da-conta`): sem saber o fuso, o Subscriber Key,
+o domínio de envio e o consentimento da conta, nenhuma peça do pacote é confiável.
+
 ## Regras do cliente vêm primeiro
 
 Leia o `CLAUDE.md` do cliente antes de tudo. A Eplast, por exemplo, proíbe a esteira de fazer
@@ -44,6 +49,9 @@ mc/
   massa-de-teste/<DE>.csv    # só dado fictício
 ```
 
+O `README.md` tem três seções, nesta ordem, com o dono de cada passo: `## Ordem de
+implantação`, `## Como testar` e `## Como desfazer`.
+
 Rode `python3 scripts/mc_validar_pacote.py clients/<cliente>/demandas/<ID>/mc` antes de dar
 a construção por concluída. Erro do validador é defeito de construção; não entregue com erro.
 
@@ -55,6 +63,7 @@ a construção por concluída. Erro do validador é defeito de construção; nã
 | Data Extension, chave, relação com o contato, retenção | `mc-modelo-de-dados` |
 | Consulta de segmentação ou preparo de dado (Automation Studio) | `mc-sql` |
 | Rotina: gatilho, passos, verificação antes do envio, notificação | `mc-automacao` |
+| Revisão da conta: estrutura, acesso, domínio de envio, conformidade, dados, operação | `mc-arquitetura-da-conta` |
 | Personalização no e-mail | `mc-ampscript` |
 | E-mail (HTML, rodapé, descadastro, acessibilidade) | `mc-email` |
 | Jornada (entrada, reentrada, esperas, divisões, saída) | `mc-jornada` |

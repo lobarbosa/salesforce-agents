@@ -39,7 +39,17 @@ Leia antes `.claude/skills/marketing-cloud-doutrina/SKILL.md`. Personalização:
 ## O que o validador confere (`scripts/mc_validar_pacote.py`)
 
 Comentários de assunto e preheader, link de descadastro ou de central de preferências,
-`alt` em toda imagem, e ausência de endereço de e-mail fixo fora de `@example.com`.
+endereço do remetente (`%%Member_Addr%%`), `alt` em toda imagem, ausência de endereço de
+e-mail fixo fora de `@example.com`, e, havendo AMPscript, os casos de teste (skill
+`mc-ampscript`).
+
+## Antes de fechar
+
+- [ ] Assunto com até cerca de 50 caracteres e pré-cabeçalho que completa o assunto.
+- [ ] Legível com imagens bloqueadas e no celular (coluna única abaixo de 600 px).
+- [ ] Um objetivo e uma chamada principal por e-mail.
+- [ ] Rodapé com descadastro, remetente e motivo do recebimento.
+- [ ] Links com o rastreamento que o cliente usa (parâmetros de campanha), sem dado pessoal.
 
 ## Teste nesta versão
 

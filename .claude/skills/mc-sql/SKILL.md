@@ -36,7 +36,15 @@ WHERE c.OptInEmail = 1
 
 O validador recusa arquivo sem `destino` e `acao`, com comando que não é `SELECT`
 (`INSERT`, `UPDATE`, `DELETE`, `DROP`, `TRUNCATE`, `EXEC`, `DECLARE`), com `WITH` de CTE, e
-com `acao: Update` cujo destino no pacote não tem chave primária.
+com `acao: Update` cujo destino no pacote não tem chave primária, e com `SELECT *`.
+
+## Antes de fechar
+
+- [ ] Os campos do `SELECT` são exatamente os da DE de destino, com os mesmos nomes.
+- [ ] A ação (Overwrite, Update, Append) é a que o segmento pede, dita no cabeçalho.
+- [ ] Público de envio filtra consentimento e exclui descadastro (skill `mc-segmentacao`).
+- [ ] Nenhuma janela de engajamento maior que a retenção das data views.
+- [ ] Junções por campo de chave, sem produto cartesiano que multiplique linhas.
 
 ## Data views
 
