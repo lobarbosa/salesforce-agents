@@ -29,8 +29,12 @@ fi
 # job e devolve ao conteúdo commitado ao sair, para nada enxugado entrar num
 # commit: os arquivos-fonte da branch continuam inteiros.
 RAIZ=$(pwd)
-trap 'git -C "$RAIZ" checkout HEAD -- "clients/$CLIENT/force-app/main/default/profiles" "clients/$CLIENT/force-app/main/default/permissionsets" 2>/dev/null || true' EXIT
+trap 'git -C "$RAIZ" checkout HEAD -- "clients/$CLIENT/force-app/main/default/profiles" "clients/$CLIENT/force-app/main/default/permissionsets" "clients/$CLIENT/force-app/main/default/flows" 2>/dev/null || true' EXIT
 python3 scripts/permissoes_so_o_diff.py "$BASE" "$CLIENT" /tmp/pacote-args.txt
+# Flow que o pacote manda desativar (definição com activeVersionNumber 0) não pode
+# ir com <status>Active</status>: a plataforma cria versão nova ativa (achado
+# EPLAST-47). Corrige na cópia de trabalho; o trap acima devolve o commitado.
+FLOWS_DESATIVAR=$(python3 scripts/coerencia_ativacao_flows.py "clients/$CLIENT" /tmp/pacote-args.txt)
 mapfile -t ARGS < /tmp/pacote-args.txt
 echo "Implantando em $TARGET_ORG: ${ARGS[*]}"
 cd "clients/$CLIENT"
@@ -213,6 +217,20 @@ if [ "$RC" -ne 0 ] && python3 ../../scripts/jobs_pendentes.py /tmp/deploy-qa.jso
     jq -r '.message // empty' /tmp/abortar.json | head -5 || true
   fi
 fi
+# Confere na org que o Flow mandado desativar ficou sem versão ativa. Só metadata.
+FLOWS_CONFERIDOS=""
+if [ "$RC" -eq 0 ] && [ -n "$FLOWS_DESATIVAR" ]; then
+  for F in $FLOWS_DESATIVAR; do
+    case "$F" in *[!A-Za-z0-9_]*|"") continue;; esac
+    ATIVA=$(sf data query --query "SELECT ActiveVersionId FROM FlowDefinitionView WHERE ApiName = '$F'" --target-org "$TARGET_ORG" --json 2>/dev/null | jq -r '.result.records[0].ActiveVersionId // "nenhuma"')
+    if [ "$ATIVA" = "nenhuma" ] || [ "$ATIVA" = "null" ]; then
+      FLOWS_CONFERIDOS=$(printf '%s\n%s: sem versão ativa na QA (conferido)' "$FLOWS_CONFERIDOS" "$F")
+    else
+      echo "::warning::$F deveria estar desativado na QA, mas tem versão ativa ($ATIVA)."
+      FLOWS_CONFERIDOS=$(printf '%s\n%s: **ainda com versão ativa na QA** (%s). O QA deve tratar como falha de ambiente' "$FLOWS_CONFERIDOS" "$F" "$ATIVA")
+    fi
+  done
+fi
 ID=$(jq -r '.result.id // "sem id"' /tmp/deploy-qa.json)
 ESTADO=$(jq -r '.result.status // .name // "desconhecido"' /tmp/deploy-qa.json)
 if [ "$RC" -ne 0 ]; then
@@ -255,6 +273,12 @@ fi
     echo "A plataforma recusa atualizar classe com trabalho pendente. Estes trabalhos das classes do pacote, deixados por rodada anterior, foram cancelados na sandbox de QA e **não foram rearmados**: o teste arma de novo o que precisar."
     echo
     printf '%s\n' "$JOBS_CANCELADOS" | sed 's/^/- /'
+  fi
+  if [ -n "$FLOWS_CONFERIDOS" ]; then
+    echo
+    echo "## Flows desativados por este deploy"
+    echo
+    printf '%s\n' "$FLOWS_CONFERIDOS" | sed '/^$/d; s/^/- /'
   fi
   echo
   echo "## Componentes"

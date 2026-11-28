@@ -55,6 +55,18 @@ Logo abaixo do título `### FALHA <n> (crítica|média|branda) — <resumo>`, um
 O título continua no formato que o Squad OS lê; a linha de origem vem abaixo e não muda
 isso.
 
+**Falha que já estava na rodada anterior.** Antes de escrever as falhas, leia o
+`05-testes-rodada-<n>.md` mais recente. Se uma falha de construção desta rodada é a mesma de
+lá (o builder tentou e não corrigiu), acrescente abaixo da origem:
+
+`**Repete:** FALHA <n> da rodada <m>`
+
+A esteira lê essa linha: falha de construção repetida não volta sozinha ao builder, vai ao
+gate de design para o arquiteto decidir outro caminho (`fluxo.py`, 2026-11-28; achado
+EPLAST-27 e EPLAST-29, que reconstruíram várias vezes pela mesma falha). Não marque como
+repetida uma falha nova só porque é parecida: é a mesma quando o critério, o passo e o
+obtido são os mesmos.
+
 **A esteira lê essa linha e decide por ela para onde a demanda vai** (`fluxo.py`,
 2026-11-25):
 

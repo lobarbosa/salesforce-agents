@@ -20,7 +20,7 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 | 1 | Análise e critérios de aceite | `ba-discovery` | `01-analise.md` | Humano aprova |
 | 2 | Recon da org | `recon` (skill `org-recon`) | `02-recon.md` | — |
 | 3 | Desenho da solução | `arquiteto` | `03-design.md`, `03-documento-tecnico.md` | **Arquiteto humano aprova** |
-| 4 | Build em branch + sandbox dev, e verificação | `builder-declarativo` / `dev-apex`, depois `verificador` | `04-plano-build.md`, `04-verificacao.md` | Revisão do PR |
+| 4 | Build em branch + sandbox dev, e verificação | `builder-declarativo` / `dev-apex` (e `builder-marketing-cloud` para peças de Marketing Cloud), depois `verificador` | `04-plano-build.md`, `04-verificacao.md` | Revisão do PR |
 | 5 | Testes na sandbox de QA | `qa` | `05-testes.md`, `05-roteiro-cliente.md` | Cliente homologa |
 | 6–7 | Deploy em QA e documentação | `release`, `doc` | `06-entrega.md` | — |
 
@@ -69,6 +69,9 @@ explícita. Não existe "vou seguindo e depois você revisa". Nenhum agente apro
 - Todo design sai com `03-documento-tecnico.md` no layout padrão (skill `documento-tecnico`):
   como construir, para os devs Salesforce e o time do outro sistema. Sem ele a etapa não avança.
   O Squad OS o publica no card como anexo "Documento técnico" (PDF), só para o time.
+- Peça de Marketing Cloud sai como pacote `mc/` na demanda, conferido por
+  `scripts/mc_validar_pacote.py` e implantado por uma pessoa: a esteira não se conecta ao
+  Marketing Cloud (skill `marketing-cloud-doutrina`). O `CLAUDE.md` do cliente pode proibir.
 
 ## Guardrails inegociáveis
 1. **Produção é proibida.** Só existem `sbx-<cliente>-dev` (build e antes) e

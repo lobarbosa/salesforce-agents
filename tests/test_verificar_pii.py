@@ -59,10 +59,10 @@ def test_mascarar_nunca_devolve_o_valor_original():
 
 
 def test_main_devolve_1_quando_acha_pii(tmp_path: Path, capsys):
-    caminho = escreve(tmp_path, "demanda.md", "e-mail: joao@example.com")
+    caminho = escreve(tmp_path, "demanda.md", "e-mail: joao@empresa.com.br")
     assert main([caminho]) == 1
     saida = capsys.readouterr().out
-    assert "joao@example.com" not in saida  # nunca imprime o valor real
+    assert "joao@empresa.com.br" not in saida  # nunca imprime o valor real
 
 
 def test_main_devolve_0_para_arquivo_limpo(tmp_path: Path):
@@ -73,3 +73,19 @@ def test_main_devolve_0_para_arquivo_limpo(tmp_path: Path):
 def test_main_ignora_arquivo_que_nao_e_md(tmp_path: Path):
     caminho = escreve(tmp_path, "notas.txt", "CPF 123.456.789-00")
     assert main([caminho]) == 0
+
+
+def test_dominio_reservado_de_exemplo_nao_e_pii(tmp_path):
+    """Massa fictícia do Marketing Cloud usa @example.com (RFC 2606); e-mail real continua barrado."""
+    import importlib.util
+    from pathlib import Path
+
+    raiz = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("pii_exemplo", raiz / "scripts" / "verificar_pii.py")
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    arq = tmp_path / "README.md"
+    arq.write_text("Envio de teste para semente@example.com\n", encoding="utf-8")
+    assert mod.verificar(str(arq)) == []
+    arq.write_text("Envio de teste para fulano@cliente.com.br\n", encoding="utf-8")
+    assert len(mod.verificar(str(arq))) == 1
