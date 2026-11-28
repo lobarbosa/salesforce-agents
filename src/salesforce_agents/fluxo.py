@@ -395,7 +395,10 @@ def rodar(
                     return Parada(
                         "gate", GATE_QUANDO_O_QA_NAO_CONSEGUE_PROVAR, ambiente_do_job, tuple(rodadas)
                     )
-                if voltas >= MAX_VOLTAS_DO_QA:
+                # A mesma falha de construção voltou depois de o builder já ter
+                # tentado: reconstruir sozinho de novo não muda nada. Decide o
+                # arquiteto, no gate de design (2026-11-28, achado EPLAST-27/29).
+                if voltas >= MAX_VOLTAS_DO_QA or (v.repete and voltas >= 1):
                     demands.transition(client, demand_id, GATE_QUANDO_O_QA_NAO_FECHA, AUTOR_PIPELINE)
                     return Parada("gate", GATE_QUANDO_O_QA_NAO_FECHA, ambiente_do_job, tuple(rodadas))
                 demands.transition(client, demand_id, "build", AUTOR_PIPELINE)

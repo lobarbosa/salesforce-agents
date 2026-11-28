@@ -151,6 +151,21 @@ executar" e 14 de ambiente; SOMOSAGILITY-22, SOMOSAGILITY-27 e EPLAST-40 voltara
 builder e repetiram a mesma falha na rodada seguinte, gastando um build e uma verificação
 cada.
 
+**Falha de construção que se repete vai ao arquiteto** (2026-11-28): o QA marca com
+`**Repete:** FALHA <n> da rodada <m>` a falha de construção que já estava na rodada
+anterior (ou o título diz "persiste"/"repete"). Com uma rodada de construção anterior e a
+falha repetida, a demanda não volta sozinha ao builder: para no gate de design, como no
+teto de voltas. Achado: nas 5 demandas com mais builds (54 builds, US$ 28,62), a mesma
+falha voltou ao builder em rodadas seguidas (EPLAST-27, rodadas 3 a 5; EPLAST-29, rodadas
+1 e 4), sem nada novo para ele tentar.
+
+**Flow mandado desativar não vai como ativo** (2026-11-28): o deploy da QA
+(`scripts/coerencia_ativacao_flows.py`) troca para `Obsolete` o `<status>Active</status>`
+de um Flow cujo `flowDefinition` do mesmo pacote traz `activeVersionNumber` 0, e depois
+confere na org (`FlowDefinitionView.ActiveVersionId`) que ficou sem versão ativa,
+registrando em `05-deploy-qa.md`. Achado EPLAST-47 (rodadas 4 e 5): o pacote levava as
+duas coisas, a plataforma criou uma versão nova ativa e o agendado antigo seguiu armado.
+
 Nova versão antes de implementar (2026-11-15): o deploy da EPLAST-27 na QA foi recusado
 porque alterava a versão ativa do agente `SFAgent2`, e a validação da EPLAST-33 foi recusada
 porque reimplantava classes Apex com job agendado. Decisão do responsável: Flow, agente e

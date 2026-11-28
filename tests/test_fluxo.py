@@ -765,3 +765,38 @@ def test_card_do_design_mostra_o_bloqueio_no_topo(repo):
     assert "aceitar o limite de CPU?" in art["conteudo"]
     assert "detalhes que não vão para o topo" not in art["conteudo"]
     assert "seção 6: estourou" in art["conteudo"]
+
+
+QA_REPETE = (
+    "**Veredito:** reprovado\n**Org de teste:** `sbx-acme-qa`\n\n"
+    "### FALHA 1 (crítica) — o agente diz que criou sem chamar a ação\n"
+    "**Origem:** construção\n**Repete:** FALHA 1 da rodada 1\n"
+)
+
+
+def test_falha_de_construcao_que_se_repete_vai_ao_arquiteto_sem_reconstruir(repo):
+    """2026-11-28: a mesma falha voltou ao builder em rodadas seguidas (EPLAST-27, EPLAST-29)."""
+    d = _demanda("qa")
+    (_pasta(d) / "05-testes-rodada-1.md").write_text(QA_MISTO, encoding="utf-8")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(QA_REPETE))
+    assert parada.motivo == "gate"
+    assert parada.etapa == "aguardando_gate_design"
+    assert (_pasta(d) / "05-testes-rodada-2.md").exists()
+
+
+def test_repeticao_na_primeira_rodada_ainda_volta_ao_builder(repo):
+    """Sem rodada de construção anterior, ainda não houve tentativa do builder."""
+    d = _demanda("qa")
+    parada = fluxo.rodar("acme", d.id, executor=_executor_de_qa(QA_REPETE))
+    assert parada.motivo == "refazer"
+
+
+def test_repeticao_so_conta_em_falha_de_construcao():
+    from salesforce_agents import veredito
+
+    titulo = "**Veredito:** reprovado\n\n### FALHA 1 (média) — persiste da rodada 3\n"
+    assert veredito.ler(titulo, "sbx-acme-qa").repete
+    ambiente = "**Veredito:** reprovado\n\n### FALHA 1 — v17 ausente na QA (repetição)\n**Origem:** ambiente\n"
+    assert not veredito.ler(ambiente, "sbx-acme-qa").repete
+    nova = "**Veredito:** reprovado\n\n### FALHA 1 — campo fora do layout\n**Origem:** construção\n"
+    assert not veredito.ler(nova, "sbx-acme-qa").repete

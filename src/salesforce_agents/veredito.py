@@ -40,6 +40,13 @@ _FALHA = re.compile(r"^#{2,4}\s*(FALHA\b[^\n]*)$", re.I | re.M)
 _TITULO = re.compile(r"^#{1,6}\s", re.M)
 _ORIGEM = re.compile(r"\*\*Origem:\*\*\s*\**\s*`?(constru[çc][ãa]o|ambiente|n[ãa]o exercitado)", re.I)
 CONSTRUCAO = "construção"
+
+# Falha que já estava na rodada anterior (2026-11-28, skill `provar-criterio`): a
+# linha `**Repete:** FALHA <n> da rodada <m>` abaixo do título, ou o título dizendo
+# "persiste" / "repete" / "repetição". Medição nas 5 demandas com mais builds: a
+# mesma falha voltou ao builder em rodadas seguidas (EPLAST-27, rodadas 3 a 5;
+# EPLAST-29, rodadas 1 e 4) sem nada novo para ele tentar.
+_REPETE = re.compile(r"\*\*Repete:\*\*|\b(persiste|repete|repeti[çc][ãa]o)\b", re.I)
 AMBIENTE = "ambiente"
 NAO_EXERCITADO = "não exercitado"
 
@@ -51,6 +58,18 @@ def _origem_normalizada(texto: str) -> str:
     if t.startswith("n"):
         return NAO_EXERCITADO
     return CONSTRUCAO
+
+
+def _repete_rodada_anterior(texto: str) -> bool:
+    """Alguma falha de construção diz que já estava na rodada anterior."""
+    for m in _FALHA.finditer(texto):
+        proximo = _TITULO.search(texto, m.end())
+        trecho = texto[m.start() : proximo.start() if proximo else len(texto)]
+        achada = _ORIGEM.search(trecho)
+        origem = _origem_normalizada(achada.group(1)) if achada else CONSTRUCAO
+        if origem == CONSTRUCAO and _REPETE.search(trecho):
+            return True
+    return False
 
 
 def _origens(texto: str) -> tuple[str, ...]:
@@ -76,6 +95,8 @@ class Veredito:
     pendente: bool = False
     # Uma origem por falha, na mesma ordem de `falhas` (ver `_origens`).
     origens: tuple[str, ...] = ()
+    # Uma falha de construção repete a da rodada anterior (ver `_REPETE`).
+    repete: bool = False
 
     @property
     def construcao_nao_resolve(self) -> bool:
@@ -101,7 +122,7 @@ def ler(texto: str, org_de_qa: str) -> Veredito:
     if not explicito:
         return Veredito(False, "o roteiro não declara `**Veredito:**` — sem veredito não há evidência de aprovação", falhas)
     if explicito.group(1).lower() == "reprovado":
-        return Veredito(False, "QA reprovou", falhas, origens=origens)
+        return Veredito(False, "QA reprovou", falhas, origens=origens, repete=_repete_rodada_anterior(texto))
     if explicito.group(1).lower().startswith("aguardando"):
         if not org or org.group(1).strip() != org_de_qa:
             return Veredito(False, f"teste armado fora de `{org_de_qa}`", falhas)
