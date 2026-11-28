@@ -62,6 +62,15 @@ Responda nesta ordem, e escreva a resposta no design:
 5. **Quem não deve ver**: dado sensível tem a permissão de campo negada por padrão e
    concedida só a quem precisa.
 
+Se a org já organiza acesso em **grupos de permission set** (`PermissionSetGroup`, que junta
+permission sets por função ou tarefa), o design diz em qual grupo o permission set da
+demanda entra, em vez de pedir atribuição pessoa a pessoa. Grupo também é metadata
+(`permissionsetgroups/<Nome>.permissionsetgroup`), e editá-lo exige "Manage Profiles and
+Permission Sets". Fonte: Metadata API, `PermissionSetGroup`
+(https://developer.salesforce.com/docs/platform/api-metadata/references/meta-types/metadata-permissionsetgroup.html,
+lida em 2026-11-28). Recalcular o grupo, permissões silenciadas (muting) e limites de grupos
+estão na ajuda, não conferida nesta revisão.
+
 Escreva também o que cada perfil afetado vê quando **não** tem o acesso: painel vazio,
 campo ausente do layout, botão que não aparece (EPLAST-39: painel vazio para quem não
 tinha o campo).

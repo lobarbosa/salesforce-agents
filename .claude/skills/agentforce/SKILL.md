@@ -74,6 +74,41 @@ passaram a sair do Flow.
   intermitente: repita o caso crítico e registre quantas vezes passou ("1 de 2").
 - Só dados de teste. O agente não é testado com conta, pessoa ou valor real.
 
+## Teste automatizado (Testing Center, Agentforce DX, Testing API)
+
+Conferido no Agentforce Developer Guide, lido em 2026-11-28:
+"Get Started with Testing Agents"
+(https://developer.salesforce.com/docs/ai/agentforce/guide/testing-api-get-started.html),
+"Test an Agent with Agentforce DX"
+(https://developer.salesforce.com/docs/ai/agentforce/guide/agent-dx-test.html), "Run Agent
+Tests with Agentforce DX"
+(https://developer.salesforce.com/docs/ai/agentforce/guide/agent-dx-test-run.html) e a lista
+de comandos `agent` da Salesforce CLI
+(https://developer.salesforce.com/docs/platform/salesforce-cli-reference/guide/cli_reference_agent.html).
+
+- **Só em sandbox**, e com pelo menos um agente ativo. Rodar teste não consome Einstein
+  Requests nem Flex Credits, mas consulta ao Data 360 consome crédito e **o teste pode
+  alterar dado**: na esteira, só na sandbox de QA (ou de dev, na verificação), com o
+  `--target-org` explícito e o mesmo cuidado de dado de teste da conversa.
+- Três caminhos para o mesmo teste: Testing Center (tela, CSV), Agentforce DX (`sf agent
+  generate test-spec` gera o YAML; `sf agent test create` cria na org; `sf agent test run`
+  roda, com `--wait` para esperar e `--result-format junit` ou `json` para guardar o
+  resultado; `sf agent test results` relê um resultado) e Testing API (Metadata API + Connect
+  API).
+- **Duas gerações.** Teste novo usa o tipo de metadata `AiTestingDefinition` e os recursos
+  `/einstein/ai-testing`; o legado usa `AiEvaluationDefinition` e `/einstein/ai-evaluations`,
+  e as páginas de Agentforce DX ainda descrevem o legado. Confira no recon qual a org tem
+  antes de escrever o teste.
+- O resultado separa três verificações por caso: o subagente (tópico) escolhido, as ações
+  chamadas e o resultado, este comparado **pelo sentido** e não pelo texto. Passar no
+  resultado não prova o efeito: a regra desta skill continua, consulte o registro que
+  deveria existir.
+- O teste é metadata como outra qualquer: o arquivo da demanda entra no pacote dela e fica
+  para a regressão da próxima demanda no mesmo agente (skill `teste-de-regressao`).
+- Ativar e desativar agente também existe na CLI (`sf agent activate`, `sf agent
+  deactivate`), além da pré-visualização em passos (`sf agent preview start`, `send`, `end`)
+  já usada acima.
+
 ## Quando o QA reprova
 
 Leia a causa antes de mexer na instrução. Se a falha é o modelo não chamando a ação ou

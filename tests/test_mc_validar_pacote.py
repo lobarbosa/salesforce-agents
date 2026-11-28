@@ -173,3 +173,20 @@ def test_readme_sem_secoes_e_email_sem_endereco(tmp_path):
     erros = mcval.validar(mc)
     assert any("Como desfazer" in e for e in erros)
     assert any("Member_Addr" in e for e in erros)
+
+
+def test_raise_error_sem_true_para_o_envio_inteiro(tmp_path):
+    casos = "| Entrada | Saída |\n| --- | --- |\n| completo | ok |\n| vazio | reserva |\n| sem oferta | pulado |\n"
+    for n, chamada in enumerate(('RaiseError("sem oferta")', 'RaiseError("sem oferta", false)', "raiseerror('a, b', 0)")):
+        email = EMAIL_OK + f"%%[ IF Empty(@oferta) THEN {chamada} ENDIF ]%%"
+        mc = _pacote(tmp_path / str(n), email=email)
+        (mc / "conteudo" / "Reativacao.casos.md").write_text(casos, encoding="utf-8")
+        assert any("RaiseError" in e for e in mcval.validar(mc)), chamada
+
+
+def test_raise_error_que_pula_so_o_destinatario_passa(tmp_path):
+    casos = "| Entrada | Saída |\n| --- | --- |\n| completo | ok |\n| vazio | reserva |\n| sem oferta | pulado |\n"
+    email = EMAIL_OK + '%%[ IF Empty(@oferta) THEN RaiseError("sem oferta, pulado", true, "1", 1, true) ENDIF ]%%'
+    mc = _pacote(tmp_path, email=email)
+    (mc / "conteudo" / "Reativacao.casos.md").write_text(casos, encoding="utf-8")
+    assert mcval.validar(mc) == []

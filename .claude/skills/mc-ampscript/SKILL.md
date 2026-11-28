@@ -11,8 +11,12 @@ Leia antes `.claude/skills/marketing-cloud-doutrina/SKILL.md` e `mc-email`.
 
 - Bloco: `%%[ ... ]%%`. Saída na linha: `%%=v(@nome)=%%`.
 - Variável: `SET @nome = AttributeValue("PrimeiroNome")`. Use `AttributeValue` em vez de
-  `%%PrimeiroNome%%` quando o campo pode não existir na DE de envio: ele devolve vazio, a
-  outra forma derruba o envio.
+  `%%PrimeiroNome%%` quando o campo pode não existir no dado de envio: a documentação diz que
+  ele é melhor que a referência direta porque **devolve nulo** quando não acha o dado (procura
+  no perfil do assinante, na DE de envio e nos atributos da entrada da jornada). O que a
+  referência direta faz nesse caso não está na página: não prometa. Fonte: "AttributeValue()"
+  (https://developer.salesforce.com/docs/marketing/marketing-cloud-ampscript/references/mc-ampscript-utilities/mc-ampscript-reference-utilities-attribute-value.html,
+  lida em 2026-11-28).
 - Condição: `IF Empty(@nome) THEN SET @nome = "cliente" ENDIF`.
 
 ## Valor ausente é regra, não exceção
@@ -23,9 +27,17 @@ Todo campo personalizado tem um valor de reserva. Saudação sem nome vira "Olá
 
 ## Consultar outra Data Extension
 
-- `Lookup("DE", "CampoRetorno", "CampoFiltro", valor)`: um valor.
-- `LookupRows` / `LookupOrderedRows`: várias linhas; `LookupRows` devolve no máximo 2000.
-  Consulte pela chave primária da DE (skill `mc-modelo-de-dados`).
+- `Lookup("DE", "CampoRetorno", "CampoFiltro", valor)`: um valor. Com mais de uma linha que
+  casa, devolve **a primeira que achar**: só consulte por campo único na DE (a chave
+  primária). Fonte: "Lookup()"
+  (https://developer.salesforce.com/docs/marketing/marketing-cloud-ampscript/references/mc-ampscript-data-extension/mc-ampscript-reference-data-extension-lookup.html).
+- `LookupRows`: várias linhas, **no máximo 2.000 e sem ordem**, sem distinguir maiúscula de
+  minúscula (`LookupRowsCS` distingue). Precisa de ordem ("a última compra")? Use
+  `LookupOrderedRows`, que recebe coluna e direção. A DE pode passar de 2.000 linhas para o
+  mesmo filtro? Então o filtro está errado para AMPscript: monte a lista antes, numa
+  consulta (skill `mc-sql`). Fonte: "LookupRows()"
+  (https://developer.salesforce.com/docs/marketing/marketing-cloud-ampscript/references/mc-ampscript-data-extension/mc-ampscript-reference-data-extension-lookup-rows.html),
+  lidas em 2026-11-28. Consulte pela chave primária da DE (skill `mc-modelo-de-dados`).
 - Uma consulta por informação, fora de laço quando possível: AMPscript roda por destinatário.
 
 ## Quando não enviar
@@ -33,6 +45,22 @@ Todo campo personalizado tem um valor de reserva. Saudação sem nome vira "Olá
 `RaiseError("motivo", true)` pula aquele destinatário sem derrubar o envio (por exemplo,
 oferta obrigatória ausente). Use só quando enviar sem o dado seria pior que não enviar, e
 diga no README o critério.
+
+O que a documentação diz ("RaiseError",
+https://developer.salesforce.com/docs/marketing/marketing-cloud-ampscript/references/mc-ampscript-utilities/mc-ampscript-reference-utilities-raise-error.html,
+lida em 2026-11-28):
+
+- O segundo parâmetro **vale `false` por padrão, e `false` para o envio inteiro**. Sem o
+  `true`, um destinatário sem oferta cancela a campanha de todos. O validador recusa
+  `RaiseError` sem `true` no segundo parâmetro.
+- **Não é ferramenta de segmentação**: a recomendação é usar só para tratar erro; quem não
+  deve receber sai antes, na consulta ou na lista de exclusão (skill `mc-segmentacao`).
+- Na jornada, pula a pessoa só daquele envio; ela segue para os próximos passos.
+- O e-mail pulado não conta como uso para cobrança, mas **entra nas métricas** de envio: o
+  relatório de entregues não bate com o tamanho do público, e o README diz isso.
+- Gravação em DE feita pelo AMPscript antes do erro se perde, salvo com o quinto parâmetro
+  (`boolPreserveDataExt`) verdadeiro. Registro de erro numa DE de log, antes do
+  `RaiseError`, precisa dele.
 
 ## Segurança
 
@@ -54,13 +82,17 @@ pré-visualização com a massa de teste fictícia:
 | sem oferta na DE de apoio | destinatário pulado (RaiseError) |
 ```
 
-O validador confere: blocos `%%[ ]%%` e `%%= =%%` fechados, e o arquivo de casos com ao menos
-três linhas (dado completo, campo ausente, pular ou o pior caso da regra).
+O validador confere: blocos `%%[ ]%%` e `%%= =%%` fechados, o arquivo de casos com ao menos
+três linhas (dado completo, campo ausente, pular ou o pior caso da regra), e todo
+`RaiseError` com `true` no segundo parâmetro.
 
 ## Antes de fechar
 
 - [ ] Todo campo personalizado tem valor de reserva.
 - [ ] `AttributeValue` em todo campo que pode faltar na DE de envio.
 - [ ] Consultas a DE pela chave primária e fora de laço.
-- [ ] `RaiseError` só com o critério escrito no README.
+- [ ] `RaiseError` só com o critério escrito no README, sempre com `true` no segundo
+      parâmetro, e nunca no lugar de um filtro do segmento.
+- [ ] `Lookup` só por campo único; `LookupRows` com filtro que nunca passa de 2.000 linhas, e
+      `LookupOrderedRows` quando a ordem importa.
 - [ ] Nenhum dado pessoal em URL.

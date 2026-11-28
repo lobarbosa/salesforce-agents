@@ -4,7 +4,8 @@
 Versão 1 do agente de Marketing Cloud (2026-11-28, skill `marketing-cloud-doutrina`): ele
 não se conecta à conta, então a única prova automática é esta leitura do pacote. Confere o
 que, errado, sai caro depois: DE sem chave para Update, consulta que altera dado ou usa o que
-o Automation Studio não aceita, e-mail sem descadastro, e dado pessoal fixo no pacote.
+o Automation Studio não aceita, e-mail sem descadastro, `RaiseError` que para o envio inteiro,
+e dado pessoal fixo no pacote.
 
 Uso: mc_validar_pacote.py <pasta mc/>
      mc_validar_pacote.py --assessment <clients/<cliente>/mc-assessment.md>
@@ -28,6 +29,10 @@ _IMG = re.compile(r"<img\b[^>]*>", re.I)
 _ALT = re.compile(r"\balt\s*=", re.I)
 _DESCADASTRO = re.compile(r"%%(unsub_center_url|profile_center_url)%%|unsub_center_url|profile_center_url", re.I)
 _DOMINIOS_FICTICIOS = {"example.com", "example.org", "example.net"}
+# RaiseError(mensagem, boolSkipCurrentOnly, ...): o segundo parâmetro vale false por padrão, e
+# false para o envio inteiro (página "RaiseError" da referência de AMPscript, lida em
+# 2026-11-28). Captura os argumentos até o parêntese que fecha, ignorando texto entre aspas.
+_RAISE_ERROR = re.compile(r"\bRaiseError\s*\(((?:\"[^\"]*\"|'[^']*'|[^()\"'])*)\)", re.I)
 
 
 def _sem_comentario_sql(texto: str) -> str:
@@ -100,6 +105,16 @@ def validar_sql(arquivo: Path, des: dict[str, dict]) -> list[str]:
     return erros
 
 
+def _argumentos(texto: str) -> list[str]:
+    """Divide os argumentos de uma chamada pelas vírgulas fora de aspas."""
+    return [a.strip() for a in re.findall(r"(?:\"[^\"]*\"|'[^']*'|[^,\"'])+", texto)]
+
+
+def raise_error_sem_pular(texto: str) -> list[str]:
+    """Chamadas de RaiseError cujo segundo parâmetro não é true: param o envio de todos."""
+    return [m.group(0)[:60] for m in _RAISE_ERROR.finditer(texto) if len(a := _argumentos(m.group(1))) < 2 or a[1].lower() != "true"]
+
+
 def validar_email(arquivo: Path) -> list[str]:
     erros = []
     texto = arquivo.read_text(encoding="utf-8")
@@ -116,6 +131,8 @@ def validar_email(arquivo: Path) -> list[str]:
         erros.append(f"{arquivo.name}: rodapé sem o endereço do remetente (%%Member_Addr%%)")
     if texto.count("%%[") != texto.count("]%%") or texto.count("%%=") != texto.count("=%%"):
         erros.append(f"{arquivo.name}: bloco de AMPscript aberto sem fechar (%%[ ]%% ou %%= =%%)")
+    for chamada in raise_error_sem_pular(texto):
+        erros.append(f"{arquivo.name}: RaiseError sem true no segundo parâmetro para o envio inteiro ({chamada})")
     if "%%[" in texto or "%%=" in texto:
         casos = arquivo.with_name(arquivo.stem + ".casos.md")
         linhas = [l for l in casos.read_text(encoding="utf-8").splitlines() if l.startswith("|")] if casos.is_file() else []

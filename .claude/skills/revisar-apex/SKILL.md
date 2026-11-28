@@ -16,11 +16,27 @@ que eles não cobrem.
 - **Compartilhamento declarado.** Toda classe diz `with sharing`, `without sharing` ou
   `inherited sharing`. Sem declaração não passa. `without sharing` só com o motivo escrito
   num comentário e no plano de build.
-- **Permissão de objeto e de campo.** Apex roda em modo de sistema: ele lê e grava o que o
-  usuário não poderia. Código chamado por tela, por agente ou por API respeita a permissão
-  de quem chamou (`WITH USER_MODE` na consulta, modo de usuário na gravação, ou a
-  verificação equivalente da versão da org). Onde o modo de sistema é intencional
-  (automação que precisa gravar campo que o usuário não edita), diga isso no plano.
+- **Permissão de objeto e de campo: depende da versão da classe.** Na API 67.0 em diante, o
+  Apex roda as operações de banco em **modo de usuário por padrão** (permissão de objeto, de
+  campo e compartilhamento de quem executa); na 66.0 e anteriores, o padrão é o modo de
+  sistema, que lê e grava o que o usuário não poderia. Fonte: Apex Developer Guide, "Set an
+  Access Mode for Database Operations"
+  (https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-classes-enforce-usermode.html,
+  lida em 2026-11-28). Leia a `<apiVersion>` do `-meta.xml` antes de revisar:
+  - **67.0 ou mais:** código chamado por tela, agente ou API já respeita quem chamou; deixe
+    explícito com `WITH USER_MODE` / `as user` mesmo assim, para a regra não depender da
+    versão. Onde o modo de sistema é intencional (trigger ou job que grava campo que o
+    usuário não edita), escreva `WITH SYSTEM_MODE`, `as system` ou
+    `AccessLevel.SYSTEM_MODE` na operação e o motivo no plano. Sem isso, a automação falha
+    para o usuário comum e passa no teste do administrador.
+  - **66.0 ou menos:** o padrão é sistema; código chamado por tela, agente ou API precisa de
+    `WITH USER_MODE` na consulta e modo de usuário na gravação.
+  - Em modo de usuário a operação sempre respeita o compartilhamento; em modo de sistema,
+    quem decide é a palavra `with`/`without`/`inherited sharing` da classe (mesma página).
+  - Erro de permissão em modo de usuário: `QueryException.getInaccessibleFields()` na
+    consulta e `DmlException.getDmlFieldNames()` na gravação dizem quais campos faltaram.
+  - Não suba a `<apiVersion>` de classe antiga para 67.0 dentro de uma demanda sem testar
+    com o usuário que executa: muda o comportamento.
 - **O que volta para a tela.** Método `@AuraEnabled` e método invocável devolvem só o que
   quem chamou pode ver. Não devolva o registro inteiro por comodidade.
 
@@ -60,6 +76,12 @@ que eles não cobrem.
   importa mudou.
 - Respeita o mecanismo de desvio de trigger da org, se o cliente tem um (veja o `CLAUDE.md`
   da conta e as fixtures).
+- Lote: o trigger recebe até 200 registros por vez; consulta e gravação fora do laço, com
+  os Ids num conjunto e uma consulta com `IN` (Apex Developer Guide, "Trigger and Bulk
+  Request Best Practices",
+  https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-triggers-bestpract.html).
+- Dois triggers no mesmo objeto e evento rodam em ordem não garantida (skill
+  `salesforce-doutrina`, "Ordem de execução"): mais um motivo para um trigger só.
 
 ## Leitura
 

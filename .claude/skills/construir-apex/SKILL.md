@@ -20,6 +20,16 @@ chegaram ao QA em demanda real, e como evitar cada um.
   assíncrono.
 - **Consultas somadas.** Sua classe roda na mesma transação dos Flows e triggers do objeto.
   Conte as consultas do caminho inteiro, não só as suas.
+- **Dentro de job assíncrono, um `enqueueJob` só.** Em Batch ou Queueable, `System.enqueueJob`
+  aceita **1** job por transação (50 no síncrono), e um Queueable encadeia **um** filho; em
+  Batch e `@future` não se chama `@future`. Fonte: "Queueable Apex"
+  (https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-queueing-jobs.html)
+  e "Execution Governors and Limits"
+  (https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-gov-limits.html),
+  lidas em 2026-11-28.
+- **Apex agendado roda com os limites síncronos** (100 consultas, 10 s de CPU), não com os
+  assíncronos (mesma página de limites). Volume grande no agendado: o `execute` só dispara
+  um Batch ou um Queueable.
 - Escreva no plano de build o pior caso que você testou, com número.
 
 ## Testes que passam em qualquer sandbox
@@ -32,16 +42,39 @@ chegaram ao QA em demanda real, e como evitar cada um.
   só numa org. Usuário de teste se cria no teste.
 - Resultado vazio é caso de teste: pai sem filho devolve `0`, não `null`, quando o critério
   fala em total (SOMOSAGILITY-10).
-- Asserts no resultado, não só "não lançou exceção".
-- Cobertura mínima de 85% por classe, com a classe `<Classe>Test` dedicada.
+- Asserts no resultado, não só "não lançou exceção" (métodos da classe `Assert`).
+- Cada ramo de condição exercitado, com entrada válida e inválida; bulk com pelo menos 20
+  registros (o mínimo da documentação; a esteira pede o pior caso real); `System.runAs`
+  para o perfil que de fato usa; não suponha Ids em ordem: use `ORDER BY`. Fonte: "Testing
+  Best Practices"
+  (https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-testing-best-practices.html,
+  lida em 2026-11-28).
+- Classe na API 67.0 ou mais roda em modo de usuário por padrão (skill `revisar-apex`): o
+  teste com `System.runAs` do usuário comum é o que pega a permissão de campo que falta.
+- Cobertura mínima de 85% por classe, com a classe `<Classe>Test` dedicada. A plataforma
+  exige 75% do código da org, com todos os testes passando, para implantar em produção
+  ("Testing and Code Coverage",
+  https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-code-coverage-intro.html):
+  os 85% são régua da esteira, acima da plataforma.
 
 ## Jobs e agendamento
 
 - Classe `Schedulable` se prova no teste, agendando dentro de `Test.startTest`.
 - Não deixe job agendado na dev: classe com job pendente não aceita deploy e a validação
-  do PR fica vermelha (EPLAST-33). Se agendou para conferir, desagende e diga no plano.
-- O usuário que agenda roda o job. Se o job precisa de um permission set da demanda,
-  escreva isso no plano; sem ele, o job falha em silêncio.
+  do PR fica vermelha (EPLAST-33). Se agendou para conferir, desagende e diga no plano. A
+  documentação confirma: com job agendado ativo, a classe e as que ela referencia não se
+  alteram pela interface; pela Metadata API só se a org permitir deploy com job pendente
+  (configuração de deploy da org, que a esteira não altera). Fonte: "Apex Scheduler"
+  (https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-scheduler.html,
+  lida em 2026-11-28).
+- No máximo **100** jobs de Apex agendados ao mesmo tempo na org, e agendamento no máximo de
+  hora em hora: nunca agende a partir de trigger (mesma página).
+- Apex agendado **não faz chamada externa síncrona**: a chamada vai num Queueable com
+  `Database.AllowsCallouts` (mesma página).
+- O usuário que agenda roda o job. A classe roda mesmo que ele não tenha acesso a ela, mas
+  as permissões de objeto e campo dele valem em toda operação em modo de usuário (padrão na
+  API 67.0). Se o job precisa de um permission set da demanda, escreva isso no plano; sem
+  ele, o job falha em silêncio.
 
 ## Classe chamada por agente ou Flow
 

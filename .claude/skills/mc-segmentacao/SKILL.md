@@ -38,6 +38,10 @@ só a forma de executar. Escreva o segmento antes de escrever qualquer uma delas
 | A pessoa já está numa jornada e o caminho depende de dado ou engajamento | divisão por dado ou engajamento na jornada (`mc-jornada`) |
 | Regra que só se sabe na hora do envio | exclusão no envio, documentada no README; evite quando der para resolver antes |
 
+`RaiseError` no AMPscript não é exclusão de segmento: a documentação recomenda usá-lo só para
+tratar erro e resolver a segmentação na consulta ou na lista de exclusão (skill
+`mc-ampscript`, "Quando não enviar").
+
 ## Engajamento
 
 Segmento por engajamento (abriu, clicou, não abre há N dias) lê as data views `_Open`,

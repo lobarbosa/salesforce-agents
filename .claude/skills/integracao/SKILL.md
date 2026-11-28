@@ -22,7 +22,13 @@ Para cada chamada, uma linha:
 | O que vai e o que volta | Campos, sem exemplo com dado real |
 | Erro | O que acontece em cada falha (tabela abaixo) |
 
-**Credencial.** Sempre por Named Credential (com External Credential). Nunca endereço,
+**Credencial.** Sempre por Named Credential (com External Credential), chamada como
+`callout:<Nome>/caminho`. A documentação prevê o mesmo nome de Named Credential com endereço
+diferente em cada org, e o mesmo código implantado em todas: é o que deixa a sandbox apontar
+para o ambiente de teste do outro sistema sem mudar o pacote ("Named Credentials as Callout
+Endpoints",
+https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-callouts-named-credentials.html,
+lida em 2026-11-28). Nunca endereço,
 usuário, senha ou token em classe, em Flow, em Custom Metadata, em Custom Setting ou em
 artefato da demanda. A esteira não cria nem preenche credencial: é passo humano, listado em
 "Pré-requisitos" com dono. Sandbox aponta para o ambiente de teste do outro sistema; se só
@@ -41,10 +47,27 @@ existe o de produção, a chamada real não se testa na esteira, e isso vai escr
 Falha de integração nunca é silenciosa: fica num registro de log consultável, com o que
 foi tentado, sem dado pessoal no texto.
 
-**Limites.** Chamadas por transação, tempo total de espera por transação e tamanho de
-resposta têm teto (skill `salesforce-doutrina`, "Governador"). Confirme os números na
-documentação da versão da org antes de desenhar em cima deles. Não se faz chamada externa
-depois de gravação pendente na mesma transação: separe as duas.
+**Limites.** Conferidos no Apex Developer Guide, "Callout Limits and Limitations"
+(https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-callouts-timeouts.html)
+e "Execution Governors and Limits"
+(https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-gov-limits.html),
+lidas em 2026-11-28:
+
+| Limite | Valor |
+| --- | --- |
+| Chamadas por transação | 100 |
+| Tempo de espera padrão de cada chamada | 10 s (ajustável de 1 ms a 120 s) |
+| Espera somada de todas as chamadas da transação | 120 s |
+| Tamanho da requisição ou da resposta | 6 MB síncrono, 12 MB assíncrono, e conta no heap |
+
+- **Não se faz chamada depois de operação pendente na mesma transação**: DML, job
+  assíncrono (`@future`, Batch), Apex agendado ou envio de e-mail. Chame antes, ou leve a
+  chamada para um Queueable com `Database.AllowsCallouts`.
+- Apex agendado não faz chamada síncrona ("Apex Scheduler",
+  https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-scheduler.html).
+- Em modo somente leitura da org (manutenção da Salesforce), a chamada sai mas a gravação
+  seguinte falha; `System.getApplicationReadWriteMode()` diz o modo (mesma página de limites
+  de chamada). Integração que grava a resposta trata esse caso como erro reprocessável.
 
 ## Build
 
@@ -56,6 +79,13 @@ depois de gravação pendente na mesma transação: separe as duas.
   (`.claude/skills/construir-flow/SKILL.md`).
 - Entrada recebida de fora é desconfiada: valide tipo, tamanho e obrigatórios antes de
   gravar.
+- Entrada recebida de fora passa pelas **regras de duplicidade** do objeto. Regra com ação
+  "Allow" e alerta devolve erro pela API e **não grava**, até a chamada repetir com
+  `allowSave` verdadeiro no `DuplicateRuleHeader`; com "Block", recusa sempre. Fonte:
+  Metadata API, `DuplicateRule`
+  (https://developer.salesforce.com/docs/platform/api-metadata/references/meta-types/metadata-duplicaterule.html,
+  lida em 2026-11-28). O design diz qual dos dois o sistema de origem deve fazer, e o recon
+  lista as regras ativas do objeto (`DuplicateRule.IsActive`).
 - No plano de build, seção "Integração": Named Credential usada, o que precisa ser
   preenchido à mão em cada sandbox, e o que não pôde ser exercitado.
 

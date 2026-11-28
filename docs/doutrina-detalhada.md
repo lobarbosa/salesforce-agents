@@ -785,8 +785,9 @@ correção é escrita, não aplicada: a conta é produção.
 Por que sem conexão: o Marketing Cloud não tem sandbox, a conta do cliente é produção
 (guardrail #1), e um envio errado chega a clientes reais e não se desfaz. Nesta versão a
 prova automática é `scripts/mc_validar_pacote.py` (DE com chave para Update, consulta só com
-`SELECT` e sem CTE, e-mail com descadastro e `alt`, nenhum e-mail fixo fora de
-`@example.com`), rodado pelo construtor e pelo verificador. Implantação, pré-visualização e
+`SELECT` e sem CTE, e-mail com descadastro e `alt`, `RaiseError` sempre com `true` no segundo
+parâmetro, nenhum e-mail fixo fora de `@example.com`), rodado pelo construtor e pelo
+verificador. Implantação, pré-visualização e
 envio de teste para a lista semente ficam com uma pessoa, pelos passos do `mc/README.md`.
 O scan de PII aceita os domínios reservados `example.com/.org/.net` (RFC 2606), que a massa
 fictícia usa.
@@ -795,6 +796,38 @@ Próximo passo (versão 2): unidade de negócio de teste na conta do cliente, co
 instalado de escopo mínimo e credencial em GitHub Environment, para o agente criar e testar
 lá. Produção continua com gente. A regra do cliente vence: a Eplast proíbe a esteira no
 Marketing Cloud, e lá só entra a preparação do Sales Cloud.
+
+## Revisão das skills contra a documentação oficial (2026-11-28)
+
+As skills de plataforma e de Marketing Cloud foram relidas contra o developer.salesforce.com;
+cada mudança cita na própria skill a página lida e a data. O help.salesforce.com não abriu
+nesta revisão (devolve só a casca da página ao navegador sem tela), então o que só ele
+documenta ficou **não conferido** e não mudou: limites de Flow, sandboxes, SQL e data views
+do Automation Studio, atividade de Verificação, Subscriber Key com o Marketing Cloud Connect,
+Sender Authentication Package, Journey Builder, Optimizer e release updates. O relatório
+completo está no PR da branch `claude/revisao-skills-doc-oficial`.
+
+Regras que mudaram:
+
+- **Apex em modo de usuário por padrão desde a API 67.0** (na 66.0 e antes, modo de sistema).
+  A `<apiVersion>` de cada classe decide; os projetos estão em 67.0 e o repositório tem classes
+  das duas faixas. Automação nova que grava campo que o usuário não edita declara o modo de
+  sistema na operação, com o motivo; subir a versão de classe antiga muda o comportamento
+  (skills `salesforce-doutrina`, `revisar-apex`, `construir-apex`).
+- **Heap de 10 MB síncrono / 25 MB assíncrono**, não 6/12; Apex agendado usa os limites
+  síncronos; dentro de job assíncrono só um `enqueueJob` (skill `salesforce-doutrina`).
+- **Ordem de execução** completa, com regras de escalonamento, Process Builder sem ordem
+  garantida e caminhos assíncronos de Flow no pós-commit.
+- **Ativação de Flow**: o `<status>` decide; em sandbox, `Active` por cima de um Flow ativo
+  vira versão ativa na hora. A documentação diz que a `FlowDefinition` sobrepõe o status, o
+  oposto do que a esteira viu na EPLAST-47: os dois ficam coerentes e a versão ativa se
+  confere na org depois do deploy.
+- **`RaiseError` no AMPscript** para o envio inteiro quando o segundo parâmetro não é `true`
+  (o padrão é `false`): o validador recusa; e não é ferramenta de segmentação.
+- **Testes de agente** (Testing Center, Agentforce DX, Testing API) só existem em sandbox e
+  podem alterar dado (skill `agentforce`).
+- Skill nova `health-check-seguranca`: o assessment lê a nota e os riscos do Security Health
+  Check pela Tooling API, só leitura.
 
 ## Escopo duplo: projeto e sustentação
 

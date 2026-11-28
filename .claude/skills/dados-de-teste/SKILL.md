@@ -30,7 +30,16 @@ Antes de tentar criar, leia o que o objeto exige:
 - campos obrigatórios (descrição do objeto);
 - validation rules ativas e a **fórmula** de cada uma (Tooling API), para saber o que
   preencher em vez de adivinhar pelo erro;
-- regras de duplicidade, que recusam o segundo registro parecido;
+- regras de duplicidade, que recusam o segundo registro parecido. Liste as ativas
+  (`SELECT DeveloperName, SobjectType, IsActive FROM DuplicateRule WHERE IsActive = true`, só
+  metadata). Ação "Block" recusa sempre; ação "Allow" com alerta, pela API, devolve erro e
+  não grava até a chamada repetir com `allowSave` no `DuplicateRuleHeader`. Prefira dado de
+  teste que não colida (nome com `TESTE <DEMAND-ID>` e documento sintético único) a
+  contornar a regra. Fonte: Metadata API, `DuplicateRule`
+  (https://developer.salesforce.com/docs/platform/api-metadata/references/meta-types/metadata-duplicaterule.html)
+  e Object Reference, `DuplicateRule`
+  (https://developer.salesforce.com/docs/platform/object-reference/references/standard-objects/object-duplicaterule.html),
+  lidas em 2026-11-28;
 - o que o trigger do objeto valida ou chama, e se o cliente tem desvio oficial de trigger
   (está no README das fixtures ou no `CLAUDE.md` da conta).
 

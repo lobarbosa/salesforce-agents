@@ -47,9 +47,23 @@ custo de manutenção em projeto Salesforce.
 - Processos de aprovação do mesmo objeto têm ordem (`processOrder`), e o deploy de um
   arquivo regrava a ordem dele. Duas demandas no mesmo objeto: a segunda confere e corrige
   a ordem das duas (achado SOMOSAGILITY-17 e 22).
-- Flow que entra como versão nova chega **inativo** na org de destino. Para a sandbox de QA
-  o pacote leva `<status>Active</status>` quando a QA não tem versão ativa anterior; em
-  produção a ativação continua passo separado.
+- Quem decide se o Flow chega ativo é o `<status>` do arquivo. Em sandbox, implantar um
+  Flow com `<status>Active</status>` por cima de um Flow ativo cria **na hora** uma versão nova
+  já ativa, que substitui a de quem está usando; em produção isso só acontece com a
+  preferência "Deploy processes and flows as active" ligada. Com `Draft` ou `Obsolete` a
+  versão nova chega inativa e a ativa continua. Para a sandbox de QA o pacote leva `Active`
+  só quando a QA não tem versão ativa anterior; em produção a ativação continua passo
+  separado. Fonte: Metadata API, tipo Flow
+  (https://developer.salesforce.com/docs/platform/api-metadata/references/meta-types/metadata-flow.html,
+  lida em 2026-11-28).
+- `FlowDefinition` (arquivo `.flowDefinition-meta.xml`): a documentação diz que o
+  `activeVersionNumber` dela **sobrepõe** o `<status>` dos Flows no deploy e recomenda, desde a
+  API 44.0, ativar e desativar pelo `<status>` do Flow, não pela definição
+  (https://developer.salesforce.com/docs/platform/api-metadata/references/meta-types/metadata-flowdefinition.html).
+  Na esteira o contrário já aconteceu (EPLAST-47: `activeVersionNumber` 0 não prevaleceu
+  sobre `Active`, e o `coerencia_ativacao_flows.py` corrige isso). Não confie em nenhum dos
+  dois sozinho: deixe `<status>` e definição dizendo a mesma coisa, e confira a versão ativa
+  na org depois do deploy (`FlowDefinitionView.ActiveVersionId`).
 - Validation rule ativa numa sandbox e não na outra: teste unitário que passa em dev quebra
   em QA (achado SOMOSAGILITY-10, `ValidaJOB`). Fixture de teste preenche todo campo exigido
   por validation rule do objeto, não só os que a regra da demanda usa.
@@ -138,22 +152,89 @@ comportamento de quem usa a org sem ninguém ter decidido.
   criado como versão nova, o que continua ativo, o passo de ativação (quem, onde, quando)
   e como desfazer.
 
+## Ordem de execução
 
-Validação de sistema → before-save Flows → before triggers → validation rules custom →
-duplicate rules → gravação (sem commit) → after triggers → assignment/auto-response →
-workflow (legado) → after-save Flows → entitlement → roll-up summary e cross-object →
-sharing por critério → commit → pós-commit (e-mail, `@future`, Queueable, platform events).
-Se a solução depende dessa ordem, isso é um risco: documente explicitamente no design.
+Conferida no Apex Developer Guide, "Triggers and Order of Execution"
+(https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-triggers-order-of-execution.html,
+lida em 2026-11-28; vale para a versão de API da página):
+
+1. Carrega o registro e sobrepõe os valores novos; validações de sistema (na tela: layout,
+   obrigatórios, formato e tamanho; por API/Apex: chaves, formato, tamanho e picklist restrita).
+2. Flows record-triggered **before-save**.
+3. Triggers **before**.
+4. Validações de sistema de novo e **validation rules** custom.
+5. **Regras de duplicidade**: com ação de bloqueio, o registro não é gravado e nada adiante roda.
+6. Gravação, sem commit.
+7. Triggers **after**.
+8. Regras de atribuição, depois de resposta automática.
+9. Workflow rules (legado); field update de workflow regrava o registro e roda os triggers
+   before e after update mais uma vez (e só mais uma).
+10. Regras de escalonamento.
+11. Process Builder e Flows disparados por workflow, **sem ordem garantida** entre eles.
+12. Flows record-triggered **after-save**.
+13. Regras de direito (entitlement).
+14. Roll-up summary e workflow entre objetos no pai, e no avô; cada um passa pela gravação.
+15. Compartilhamento por critério.
+16. Commit.
+17. Pós-commit, sem ordem entre si: e-mail, jobs assíncronos (Queueable, `@future`) e os
+    **caminhos assíncronos** dos Flows record-triggered.
+
+Dois triggers no mesmo objeto e evento não têm ordem garantida entre si. Na regravação
+recursiva, os passos de atribuição até o roll-up do avô não rodam de novo. Se a solução
+depende dessa ordem, isso é um risco: documente explicitamente no design. A ordem entre
+Flows record-triggered do mesmo objeto se controla pela ordem de disparo do próprio Flow
+(a documentação remete à ajuda "Manage Record-Triggered Flows", não conferida: o
+help.salesforce.com não abriu nesta revisão).
 
 ## Governador (números que importam)
-- 100 SOQL síncronos por transação
-- 150 DML por transação
-- 50.000 registros retornados
-- 10.000 registros por DML
-- 6 MB heap síncrono / 12 MB assíncrono
-- 10s CPU síncrono / 60s assíncrono
 
-Ao desenhar, estime contra esses números com o volume real do cliente (do recon).
+Por transação, síncrono / assíncrono (Batch, `@future`, Queueable). Fonte: Apex Developer
+Guide, "Execution Governors and Limits"
+(https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-gov-limits.html,
+lida em 2026-11-28). Exceder um limite lança exceção que **não** se trata com `catch`.
+
+| Limite | Síncrono | Assíncrono |
+| --- | --- | --- |
+| Consultas SOQL | 100 | 200 |
+| Registros retornados por SOQL | 50.000 | 50.000 |
+| Comandos DML | 150 | 150 |
+| Registros processados por DML | 10.000 | 10.000 |
+| Heap | 10 MB | 25 MB |
+| CPU | 10.000 ms | 60.000 ms |
+| Chamadas externas (callouts) | 100, somando no máximo 120 s | igual |
+| Jobs com `System.enqueueJob` | 50 | 1 |
+| Métodos `@future` | 50 | 0 em Batch e `@future`; 50 em Queueable |
+| Profundidade de triggers recursivos | 16 | 16 |
+
+- **Apex agendado usa os limites síncronos**, mesmo sendo assíncrono.
+- Trigger recebe os registros em lotes de **200**; evento de plataforma e Change Data
+  Capture, em lotes de 2.000.
+- Subconsulta pai-filho conta como consulta a mais.
+- Limites valem por método de teste, e cada lote do `execute` de um Batch recomeça a conta.
+- Pacote gerenciado **certificado** tem limites próprios para a maioria dos contadores, mas
+  heap e CPU são da transação inteira: o pacote come do mesmo CPU que a sua automação.
+- Até a revisão de 2026-11-28 esta skill dizia heap de 6 MB / 12 MB; a página oficial diz
+  10 MB / 25 MB.
+
+Ao desenhar, estime contra esses números com o volume real do cliente (do recon). Os limites
+próprios de Flow (elementos executados, interviews) estão no help.salesforce.com, que não
+abriu nesta revisão: **não conferidos**; até lá, meça na sandbox.
+
+## Acesso a dado no Apex: modo de usuário é o padrão desde a API 67.0
+
+Fonte: Apex Developer Guide, "Set an Access Mode for Database Operations"
+(https://developer.salesforce.com/docs/platform/apex-dev/references/apex-dev/apex-classes-enforce-usermode.html,
+lida em 2026-11-28): **na API 67.0 em diante, o Apex roda em contexto de usuário por padrão**
+(permissão de objeto, de campo e compartilhamento de quem executa); na 66.0 e anteriores o
+padrão é o modo de sistema. Vale a `<apiVersion>` do `-meta.xml` de cada classe: os projetos
+dos clientes estão em `sourceApiVersion` 67.0, e no repositório (2026-11-28) há 31 classes na
+67.0 e as demais entre 13.0 e 66.0. Duas consequências:
+
+- Classe nova (67.0) chamada por trigger, job ou ação de agente que grava campo que o usuário
+  não edita falha, a menos que a operação diga `AccessLevel.SYSTEM_MODE`, `WITH SYSTEM_MODE`
+  ou `as system`, de propósito e com o motivo (skill `revisar-apex`).
+- **Subir a `<apiVersion>` de uma classe antiga para 67.0 muda o comportamento dela**: é
+  mudança de contrato, com teste do usuário que de fato executa, não ajuste de rotina.
 
 ### CPU: o limite que o teste de bulk não pega
 Achado SOMOSAGILITY-10 (2026-10-30): SOQL e DML ficaram estáveis, mas uma **única
