@@ -16,15 +16,28 @@ Use o nível mais simples que resolve, nesta ordem:
 1. **Componentes base de formulário de registro** (`lightning-record-form` e os de
    visualização e edição): respeitam layout, permissão de campo e validação sem código.
 2. **Lightning Data Service** por adaptadores (`getRecord`, `getRelatedListRecords` e as
-   funções de criar e atualizar registro): cache compartilhado e permissão respeitada.
+   funções de criar e atualizar registro): cache compartilhado e permissão respeitada. Para
+   várias consultas numa operação, o adaptador **GraphQL** (`lightning/graphql`) vem antes do
+   Apex.
 3. **Apex**, só para o que os dois acima não fazem (consulta que cruza objetos, regra no
    servidor).
 
+Fonte: LWC Developer Guide, "Data Guidelines"
+(https://developer.salesforce.com/docs/platform/lwc/guide/data-guidelines.html, lida em
+2026-11-28). O LDS não consome chamada de API, mas **não atende Custom Metadata Type**; nos
+formulários base, prefira listar os campos a usar o layout, que traz todos os campos dele.
+
 Quando for Apex:
 
-- Método só de leitura é `@AuraEnabled(cacheable=true)` e não grava nada.
+- Método só de leitura é `@AuraEnabled(cacheable=true)` e não grava nada; `@wire` exige
+  `cacheable=true`. Não suponha tempo de cache. Depois de gravar por Apex imperativo, chame
+  `refreshApex()` no dado do `@wire` e `notifyRecordUpdateAvailable(recordIds)` para o LDS:
+  o LDS não enxerga o que o Apex imperativo gravou. Fonte: "Client-Side Caching of Apex
+  Method Results"
+  (https://developer.salesforce.com/docs/platform/lwc/guide/apex-result-caching.html, lida
+  em 2026-11-28).
 - A classe declara `with sharing`, e a consulta respeita permissão de objeto e de campo
-  (`WITH USER_MODE` ou equivalente da versão da org).
+  (`WITH USER_MODE` explícito; na API 67.0 em diante é o padrão, skill `revisar-apex`).
 - Nunca monte consulta concatenando texto vindo do componente.
 - Devolva só os campos que a tela mostra. Não devolva o registro inteiro.
 - O método valida a entrada: o que chega do navegador pode ser qualquer coisa.
@@ -81,6 +94,7 @@ página, ela está no pacote; se não, é passo manual listado.
 
 - [ ] A justificativa de código está no design.
 - [ ] Os quatro estados da tela estão tratados.
+- [ ] Depois de gravar, a tela mostra o dado novo (`refreshApex` / `notifyRecordUpdateAvailable`).
 - [ ] Apex com `with sharing`, permissão respeitada e entrada validada.
 - [ ] Deploy passou na dev e o componente abre na página, conferido.
 - [ ] O plano diz em que página o componente fica e como chegar nele.

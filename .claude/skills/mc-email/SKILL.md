@@ -40,8 +40,8 @@ Leia antes `.claude/skills/marketing-cloud-doutrina/SKILL.md`. Personalização:
 
 Comentários de assunto e preheader, link de descadastro ou de central de preferências,
 endereço do remetente (`%%Member_Addr%%`), `alt` em toda imagem, ausência de endereço de
-e-mail fixo fora de `@example.com`, e, havendo AMPscript, os casos de teste (skill
-`mc-ampscript`).
+e-mail fixo fora de `@example.com`, e, havendo AMPscript, os casos de teste e o `true` de
+todo `RaiseError` (skill `mc-ampscript`).
 
 ## Antes de fechar
 

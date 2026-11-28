@@ -37,7 +37,7 @@ quando uma delas não pôde ser medida:
 | Automação | Flows por objeto/evento, Process Builders vivos, Workflow Rules, Apex triggers | Mais de um ponto de automação no mesmo evento do mesmo objeto; Process Builder ainda em uso (fim de vida) |
 | Código | Nº de classes, cobertura de teste, classes sem `<Classe>Test`, API version antiga | Cobertura abaixo de 85%; classes em API version muito atrás da org |
 | Modelo de dados | Objetos custom, campos por objeto, campos sem descrição, campos não usados | Objeto passando de ~400 campos; campo sem descrição em massa (ninguém sabe pra que serve) |
-| Segurança | Perfis vs permission sets, quantos perfis custom, sharing settings | Permissão concedida por perfil em vez de permission set; perfil custom por pessoa |
+| Segurança | Perfis vs permission sets, quantos perfis custom, sharing settings, nota e riscos do Security Health Check (skill `health-check-seguranca`) | Permissão concedida por perfil em vez de permission set; perfil custom por pessoa; configuração `HIGH_RISK` no Health Check |
 | Qualidade de config | Validation rules duplicadas, page layouts órfãos, record types sem uso | Regra de validação replicando o que um campo obrigatório já faz |
 | Limites | Uso de data storage e file storage, uso de licenças | Storage acima de 75% |
 | Dívida técnica | Metadata referenciando componente inexistente, itens depreciados | Qualquer coisa que já falharia num deploy hoje |

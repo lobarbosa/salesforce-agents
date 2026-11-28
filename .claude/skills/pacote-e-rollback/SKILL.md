@@ -51,6 +51,22 @@ Nenhuma remoção de campo, objeto ou classe entra no pacote de uma demanda comu
 design pede remover algo, isso vai num `destructiveChanges` separado, com aprovação nominal
 e backup, e é sempre escalado. Tirar de uso (layout, permissão, desativar) não é remover.
 
+Quando a remoção aprovada existir, o formato é o da Metadata API, "Deleting Components from
+an Organization"
+(https://developer.salesforce.com/docs/platform/api-metadata/references/file-based-calls/meta-deploy-deleting-files.html,
+lida em 2026-11-28):
+
+- `destructiveChanges.xml` no formato do `package.xml`, **sem curinga**, ao lado de um
+  `package.xml` (vazio, se só remove). Por padrão as remoções rodam antes das inclusões;
+  `destructiveChangesPre.xml` e `destructiveChangesPost.xml` escolhem a ordem (ex.: tirar a
+  referência da classe primeiro, apagar o objeto depois).
+- Item removido vai para a lixeira, salvo `purgeOnDelete`, que a esteira não usa. Campo de
+  roll-up summary é apagado de vez, mesmo sem `purgeOnDelete`.
+- Componente usado por página Lightning ativa não se remove assim: primeiro se desativa a
+  página no Lightning App Builder.
+- Componente que não existe no destino não para o resto: as demais remoções seguem, e o
+  relato diz o que não foi achado.
+
 ## 5. Plano de rollback que funciona
 
 "Reverter o deploy" não é plano. Para cada componente, diga como voltar:
@@ -83,6 +99,15 @@ agente (está no preflight e em "Versões e ativação"). Sem isso não há para
 - o plano de rollback;
 - o material para produção: o mesmo pacote, a sequência e os passos manuais, escritos para
   o consultor executar.
+- os testes que a produção vai rodar. Sem nível de teste escolhido, o deploy em produção roda
+  **todos os testes locais** quando o pacote tem Apex ou qualquer componente de tipos como
+  `CustomField`, `CustomObject`, `Flow`, `PermissionSet`, `Profile`, `RecordType`, regra de
+  compartilhamento ou `ValidationRule`; um teste que falha desfaz o deploy inteiro. Só
+  relatório, painel ou app não rodam teste. Fonte: Metadata API, "Running Tests in a
+  Deployment"
+  (https://developer.salesforce.com/docs/platform/api-metadata/guide/meta-deploy-running-tests.html,
+  lida em 2026-11-28). Diga ao consultor se a suíte da org passou na QA, para ele não
+  descobrir na janela de produção um teste quebrado de outra demanda.
 
 ## Nunca
 
